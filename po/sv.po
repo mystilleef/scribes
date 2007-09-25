@@ -1,0 +1,2394 @@
+# Swedish translation for scribes.
+# Copyright (C) 2007 Free Software Foundation, Inc.
+# This file is distributed under the same license as the scribes package.
+# Daniel Nylander <po@danielnylander.se>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: scribes\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-05-13 21:38+0200\n"
+"PO-Revision-Date: 2007-05-20 20:48+0100\n"
+"Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
+"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. .decode(encoding).encode("utf-8")
+#: ../data/scribes.desktop.in.h:1
+#: ../SCRIBES/internationalization.py:321
+msgid "Edit text files"
+msgstr "Redigera textfiler"
+
+#. .decode(encoding).encode("utf-8")
+#. From scribes.desktop
+#: ../data/scribes.desktop.in.h:2
+#: ../SCRIBES/internationalization.py:320
+msgid "Scribes Text Editor"
+msgstr "Textredigeraren Scribes"
+
+#: ../data/scribes.schemas.in.h:1
+msgid "A list of encodings selected by the user."
+msgstr "En lista över kodningar valda av användaren."
+
+#: ../data/scribes.schemas.in.h:2
+msgid "Case sensitive"
+msgstr "Skiftlägeskänslig"
+
+#: ../data/scribes.schemas.in.h:3
+msgid "Detach Scribes from the shell terminal"
+msgstr "Koppla loss Scribes från skalterminalen"
+
+#: ../data/scribes.schemas.in.h:4
+msgid "Determines whether or not to use GTK theme colors when drawing the text editor buffer foreground and background colors. If the value is true, the GTK theme colors are used. Otherwise the color determined by one assigned by the user."
+msgstr ""
+
+#: ../data/scribes.schemas.in.h:5
+msgid "Determines whether to show or hide the status area."
+msgstr "Bestämmer huruvida statusrutan ska visas eller döljas."
+
+#: ../data/scribes.schemas.in.h:6
+msgid "Determines whether to show or hide the toolbar."
+msgstr "Fastställer huruvida verktygsraden ska visas eller döljas."
+
+#: ../data/scribes.schemas.in.h:7
+msgid "Editor background color"
+msgstr "Bakgrundsfärg för redigeraren"
+
+#: ../data/scribes.schemas.in.h:8
+msgid "Editor foreground color"
+msgstr "Förgrundsfärg för redigeraren"
+
+#: ../data/scribes.schemas.in.h:9
+msgid "Editor's font"
+msgstr "Typsnitt för redigeraren"
+
+#: ../data/scribes.schemas.in.h:10
+msgid "Enable or disable spell checking"
+msgstr "Aktivera eller inaktivera stavningskontroll"
+
+#: ../data/scribes.schemas.in.h:11
+msgid "Enables or disables right margin"
+msgstr "Aktiverar eller inaktiverar högermarginalen"
+
+#: ../data/scribes.schemas.in.h:12
+msgid "Enables or disables text wrapping"
+msgstr "Aktiverar eller inaktiverar radbrytning"
+
+#. .decode(encoding).encode("utf-8")
+#: ../data/scribes.schemas.in.h:13
+#: ../SCRIBES/internationalization.py:138
+msgid "Find occurrences of the string that match the entire word only"
+msgstr "Hitta förekomster av strängen som endast matchar hela ordet"
+
+#. .decode(encoding).encode("utf-8")
+#: ../data/scribes.schemas.in.h:14
+#: ../SCRIBES/internationalization.py:136
+msgid "Find occurrences of the string that match upper and lower cases only"
+msgstr "Hitta förekomster av strängen som endast matchar angivna versaler och gemener"
+
+#: ../data/scribes.schemas.in.h:15
+msgid "Lexical scope highlight color"
+msgstr ""
+
+#: ../data/scribes.schemas.in.h:16
+msgid "Match word"
+msgstr "Matcha hela ord"
+
+#: ../data/scribes.schemas.in.h:17
+msgid "Position of margin"
+msgstr "Marginalens position"
+
+#: ../data/scribes.schemas.in.h:18
+msgid "Selected encodings"
+msgstr "Valda kodningar"
+
+#: ../data/scribes.schemas.in.h:19
+msgid "Sets the margin's position within the editor"
+msgstr "Ställer in marginalens position i redigeraren"
+
+#: ../data/scribes.schemas.in.h:20
+msgid "Sets the width of tab stops within the editor"
+msgstr "Ställer in bredden på tabulatorstopp i redigeraren"
+
+#: ../data/scribes.schemas.in.h:21
+msgid "Show margin"
+msgstr "Visa marginal"
+
+#: ../data/scribes.schemas.in.h:22
+msgid "Show or hide the status area."
+msgstr "Visa eller dölj statusrutan."
+
+#: ../data/scribes.schemas.in.h:23
+msgid "Show or hide the toolbar."
+msgstr "Visa eller dölj verktygsraden."
+
+#: ../data/scribes.schemas.in.h:24
+msgid "Spell checking"
+msgstr "Stavningskontroll"
+
+#: ../data/scribes.schemas.in.h:25
+msgid "Tab width"
+msgstr "Tabulatorbredd"
+
+#: ../data/scribes.schemas.in.h:26
+msgid "Text wrapping"
+msgstr "Radbrytning"
+
+#: ../data/scribes.schemas.in.h:27
+msgid "The color used to render normal text in the text editor's buffer."
+msgstr "Färgen som används för att rita normal text i textredigerarens buffert."
+
+# Skum engelska?
+#: ../data/scribes.schemas.in.h:28
+msgid "The color used to render the text editor buffer background."
+msgstr "Färgen som används för att rita textredigerarens buffertbakgrund."
+
+#: ../data/scribes.schemas.in.h:29
+msgid "The editor's font. Must be a string value"
+msgstr "Redigerarens typsnitt. Måste vara ett strängvärde"
+
+#: ../data/scribes.schemas.in.h:30
+msgid "The highlight color when the cursor is around opening or closing pair characters."
+msgstr ""
+
+#: ../data/scribes.schemas.in.h:31
+msgid "True to detach Scribes from the shell terminal and run it in its own process, false otherwise. For debugging purposes, it may be useful to set this to false."
+msgstr ""
+
+#: ../data/scribes.schemas.in.h:32
+msgid "True to use tabs instead of spaces, false otherwise."
+msgstr "Sant för att använda tabulatorer istället för blanksteg, falskt om inte."
+
+#: ../data/scribes.schemas.in.h:33
+msgid "Use GTK theme colors"
+msgstr "Använd GTK-temafärger"
+
+#: ../data/scribes.schemas.in.h:34
+msgid "Use Tabs instead of spaces"
+msgstr "Använd tabulatorer istället för blanksteg"
+
+#. From module accelerators.py
+#: ../SCRIBES/internationalization.py:41
+#: ../plugins/UndoRedo/i18n.py:27
+msgid "Cannot redo action"
+msgstr "Kan inte gör om åtgärden"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:44
+msgid "Leave Fullscreen"
+msgstr "Lämna helskärmsläge"
+
+#. .decode(encoding).encode("utf-8")
+#. From module editor_ng.py, fileloader.py, timeout.py
+#: ../SCRIBES/internationalization.py:47
+#: ../plugins/SaveDialog/i18n.py:25
+msgid "Unsaved Document"
+msgstr "Osparat dokument"
+
+#. .decode(encoding).encode("utf-8")
+#. From module filechooser.py
+#: ../SCRIBES/internationalization.py:51
+msgid "All Documents"
+msgstr "Alla dokument"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:52
+msgid "Python Documents"
+msgstr "Python-dokument"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:53
+msgid "Text Documents"
+msgstr "Textdokument"
+
+#. .decode(encoding).encode("utf-8")
+#. From module fileloader.py
+#: ../SCRIBES/internationalization.py:56
+#, python-format
+msgid "Loaded file \"%s\""
+msgstr "Läste in filen \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:57
+msgid "The encoding of the file you are trying to open could not be determined. Try opening the file with another encoding."
+msgstr "Kodningen för filen som du försöker att öppna kunde inte fastställas. Prova att öppna filen med en annan kodning."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:59
+msgid "Loading file please wait..."
+msgstr "Läser in filen, vänta..."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:60
+msgid "An error occurred while openning the file. Please file a bug report at http://scribes.sourceforge.net"
+msgstr "Ett fel inträffade vid öppnandet av filen. Skicka in en felrapport på http://scribes.sourceforge.net"
+
+#. .decode(encoding).encode("utf-8")
+#. From module fileloader.py, savechooser.py
+#: ../SCRIBES/internationalization.py:64
+msgid " <READONLY>"
+msgstr " <SKRIVSKYDDAD>"
+
+#. .decode(encoding).encode("utf-8")
+#. From module fileloader.py
+#: ../SCRIBES/internationalization.py:67
+msgid "You do not have permission to view this file."
+msgstr "Du har inte behörighet att visa den här filen."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:68
+msgid "The file you are trying to open is not a text file."
+msgstr "Filen som du försöker att öppna är inte en textfil."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:69
+msgid "The file you are trying to open does not exist."
+msgstr "Filen som du försöker att öppna finns inte."
+
+#. .decode(encoding).encode("utf-8")
+#. From module main.py
+#: ../SCRIBES/internationalization.py:72
+#, python-format
+msgid "Unrecognized option: '%s'"
+msgstr "Okänd flagga: \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:73
+msgid "Try 'scribes --help' for more information"
+msgstr "Prova \"scribes --help\" för mer information"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:74
+msgid "Scribes only supports using one option at a time"
+msgstr "Scribes har endast stöd för en flagga åt gången"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:75
+#, python-format
+msgid "scribes: %s takes no arguments"
+msgstr "scribes: %s tar inga argument"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:76
+#, python-format
+msgid "Scribes version %s"
+msgstr "Scribes version %s"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:77
+#, python-format
+msgid "%s does not exist"
+msgstr "%s finns inte"
+
+#. .decode(encoding).encode("utf-8")
+#. From module timeout.py
+#: ../SCRIBES/internationalization.py:80
+#, python-format
+msgid "The file \"%s\" is open in readonly mode"
+msgstr "Filen \"%s\" är öppnad i skrivskyddat läge"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:81
+#, python-format
+msgid "The file \"%s\" is open"
+msgstr "Filen \"%s\" är öppnad"
+
+#. .decode(encoding).encode("utf-8")
+#. From modules findbar.py
+#: ../SCRIBES/internationalization.py:84
+#, python-format
+msgid "Found %d match"
+msgstr "Hittade %d sökträffar"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:85
+msgid "_Search for:    "
+msgstr "_Sök efter:    "
+
+#. .decode(encoding).encode("utf-8")
+#. From module indent.py
+#: ../SCRIBES/internationalization.py:89
+msgid "No indentation selection found"
+msgstr "Ingen indenteringsmarkering hittades"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:90
+#: ../plugins/Indent/i18n.py:25
+msgid "Selection indented"
+msgstr "Markeringen indenterades"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:91
+#: ../plugins/Indent/i18n.py:27
+msgid "Unindentation is not possible"
+msgstr ""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:92
+#: ../plugins/Indent/i18n.py:28
+msgid "Selection unindented"
+msgstr ""
+
+#. .decode(encoding).encode("utf-8")
+#. From module modes.py
+#: ../SCRIBES/internationalization.py:95
+msgid "loading..."
+msgstr "läser in..."
+
+#. .decode(encoding).encode("utf-8")
+#. From module preferences.py
+#. From module replace.py
+#: ../SCRIBES/internationalization.py:100
+#, python-format
+msgid "\"%s\" has been replaced with \"%s\""
+msgstr "\"%s\" har ersatts med \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:101
+#, python-format
+msgid "Replaced all occurrences of \"%s\" with \"%s\""
+msgstr "Ersatte alla förekomster av \"%s\" med \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#. From module savefile.py
+#: ../SCRIBES/internationalization.py:104
+msgid "An error occurred while saving this file."
+msgstr "Ett fel inträffade vid sparandet av den här filen."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:105
+msgid "An error occurred while decoding your file. Please file a bug report at \"http://openusability.org/forum/?group_id=141\""
+msgstr "Ett fel inträffade vid avkodning av din fil. Skicka in en felrapport på \"http://openusability.org/forum/?group_id=141\""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:107
+#, python-format
+msgid "Saved \"%s\""
+msgstr "Sparade \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#. From module textview.py
+#: ../SCRIBES/internationalization.py:110
+msgid "_Find Matching Bracket"
+msgstr ""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:111
+msgid "Copied selected text"
+msgstr "Kopierade markerad text"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:112
+msgid "No selection to copy"
+msgstr "Ingen markering att kopiera"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:113
+msgid "Cut selected text"
+msgstr "Klipp ut markerad text"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:114
+msgid "No selection to cut"
+msgstr "Ingen markering att klippa ut"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:115
+msgid "Pasted copied text"
+msgstr "Klistrade in kopierad text"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:116
+msgid "No text content in the clipboard"
+msgstr "Inget textinnehåll i urklipp"
+
+#. .decode(encoding).encode("utf-8")
+#. From module timeout.py
+#: ../SCRIBES/internationalization.py:119
+#, python-format
+msgid "%d%% complete"
+msgstr "%d%% färdig"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:120
+msgid "completed"
+msgstr "färdig"
+
+#. .decode(encoding).encode("utf-8")
+#. From module tooltips.py
+#: ../SCRIBES/internationalization.py:123
+msgid "Open a new window"
+msgstr "Öppna ett nytt fönster"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:124
+msgid "Open a file"
+msgstr "Öppna en fil"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:125
+msgid "Rename the current file"
+msgstr "Byt namn på aktuell fil"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:126
+msgid "Print the current file"
+msgstr "Skriv ut aktuell fil"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:127
+msgid "Undo last action"
+msgstr "Ångra senaste åtgärden"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:128
+msgid "Redo undone action"
+msgstr "Gör om ångrad åtgärd"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:129
+#: ../plugins/IncrementalBar/i18n.py:28
+#: ../plugins/FindBar/i18n.py:28
+#: ../plugins/ReplaceBar/i18n.py:28
+msgid "Search for text"
+msgstr "Sök efter text"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:130
+#: ../plugins/ReplaceBar/i18n.py:31
+msgid "Search for and replace text"
+msgstr "Sök och ersätt text"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:131
+msgid "Go to a specific line"
+msgstr "Gå till en specifik rad"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:132
+msgid "Configure the editor"
+msgstr "Konfigurera redigeraren"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:133
+msgid "Launch the help browser"
+msgstr "Starta hjälpvisaren"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:134
+msgid "Search for previous occurrence of the string"
+msgstr "Sök efter föregående förekomst av strängen"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:135
+msgid "Search for next occurrence of the string"
+msgstr "Sök efter nästa förekomst av strängen"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:139
+msgid "Type in the text you want to search for"
+msgstr "Ange texten som du vill söka efter"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:140
+msgid "Type in the text you want to replace with"
+msgstr "Ange texten som du vill ersätta med"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:141
+msgid "Replace the selected found match"
+msgstr ""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:142
+msgid "Replace all found matches"
+msgstr "Ersätt alla sökträffar"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:143
+msgid "Click to specify the font type, style, and size to use for text."
+msgstr "Klicka för att ange typsnittstypen, stil och storlek att använda för text."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:144
+msgid "Click to specify the width of the space that is inserted when you press the Tab key."
+msgstr ""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:146
+msgid "Select to wrap text onto the next line when you reach the text window boundary."
+msgstr ""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:148
+msgid "Select to display a vertical line that indicates the right margin."
+msgstr "Välj för att visa en vertikal linje som indikerar högermarginalen."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:150
+msgid "Click to specify the location of the vertical line."
+msgstr "Klicka för att ange platsen för den vertikala linjen."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:151
+msgid "Select to enable spell checking"
+msgstr "Aktivera stavningskontrollen"
+
+#. .decode(encoding).encode("utf-8")
+#. From module usage.py
+#: ../SCRIBES/internationalization.py:155
+msgid "A text editor for GNOME."
+msgstr "En textredigerare för GNOME."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:156
+msgid "usage: scribes [OPTION] [FILE] [...]"
+msgstr "användning: scribes [FLAGGA] [FIL] [...]"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:157
+msgid "Options:"
+msgstr "Flaggor:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:158
+msgid "display this help screen"
+msgstr "visa den här hjälpskärmen"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:159
+msgid "output version information of Scribes"
+msgstr "skriv ut versionsinformation för Scribes"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:160
+msgid "create a new file and open the file with Scribes"
+msgstr "skapa en ny fil och öppna filen med Scribes"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:161
+msgid "open file in readonly mode"
+msgstr "öppna filen i skrivskyddat läge"
+
+#. .decode(encoding).encode("utf-8")
+#. From module utility.py
+#: ../SCRIBES/internationalization.py:164
+msgid "Could not find Scribes' data folder"
+msgstr "Kunde inte hitta Scribes datamapp"
+
+#. .decode(encoding).encode("utf-8")
+#. From preferences.py
+#. From error.py
+#: ../SCRIBES/internationalization.py:170
+msgid "error"
+msgstr "fel"
+
+#. .decode(encoding).encode("utf-8")
+#. From module indent.py
+#: ../SCRIBES/internationalization.py:173
+#, python-format
+msgid "Removed spaces at end of line %d"
+msgstr "Tog bort blanksteg på slutet av rad %d"
+
+#. .decode(encoding).encode("utf-8")
+#. From module indent.py
+#: ../SCRIBES/internationalization.py:176
+msgid "No spaces were found at beginning of line"
+msgstr "Inga blanksteg hittades i början av rad"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:177
+#, python-format
+msgid "Removed spaces at beginning of line %d"
+msgstr "Tog bort blanksteg från början av rad %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:178
+msgid "Removed spaces at beginning of selected lines"
+msgstr "Tog bort blanksteg från början av markerade rader"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:179
+msgid "Removed spaces at end of selected lines"
+msgstr "Tog bort blanksteg på slutet av markerade rader"
+
+#. .decode(encoding).encode("utf-8")
+#. From module actions.py
+#: ../SCRIBES/internationalization.py:182
+#: ../plugins/Indent/i18n.py:23
+#: ../plugins/Selection/i18n.py:23
+#: ../plugins/Lines/i18n.py:23
+#: ../plugins/SaveFile/i18n.py:23
+#: ../plugins/UndoRedo/i18n.py:23
+#: ../plugins/Spaces/i18n.py:23
+msgid "Cannot perform operation in readonly mode"
+msgstr "Kan inte genomföra åtgärden i skrivskyddat läge"
+
+#. .decode(encoding).encode("utf-8")
+#. From module indent.py
+#: ../SCRIBES/internationalization.py:185
+#: ../plugins/Indent/i18n.py:29
+#, python-format
+msgid "Unindented line %d"
+msgstr "Avindenterade rad %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:186
+msgid "No selected lines can be indented"
+msgstr "Inga av de markerade raderna kan indenteras"
+
+#. .decode(encoding).encode("utf-8")
+#. From module savefile.py
+#: ../SCRIBES/internationalization.py:189
+msgid "An error occurred while encoding your file. Try saving your file using another character encoding, preferably UTF-8."
+msgstr "Ett fel inträffade vid kodning av din fil. Prova att spara din fil med en annan teckenkodning, föredragsvis UTF-8."
+
+#. .decode(encoding).encode("utf-8")
+#. From module fileloader.py
+#: ../SCRIBES/internationalization.py:193
+msgid "An encoding error occurred. Please file a bug report at http://openusability.org/forum/?group_id=141"
+msgstr "Ett kodningsfel inträffade. Skicka in en felrapport på http://openusability.org/forum/?group_id=141"
+
+#. .decode(encoding).encode("utf-8")
+#. From autocomplete.py
+#: ../SCRIBES/internationalization.py:198
+#: ../plugins/WordCompletionGUI/i18n.py:3
+msgid "Word completion occurred"
+msgstr ""
+
+#. .decode(encoding).encode("utf-8")
+#. From encoding.py
+#: ../SCRIBES/internationalization.py:201
+msgid "Character _Encoding: "
+msgstr "Tecken_kodning: "
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:202
+msgid "Add or Remove Encoding ..."
+msgstr "Lägg till eller ta bort kodning ..."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:203
+msgid "Recommended (UTF-8)"
+msgstr "Rekommenderad (UTF-8)"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:204
+msgid "Add or Remove Character Encoding"
+msgstr "Lägg till eller ta bort teckenkodning"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:205
+msgid "Language and Region"
+msgstr "Språk och region"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:206
+msgid "Character Encoding"
+msgstr "Teckenkodning"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:207
+msgid "Select"
+msgstr "Välj"
+
+#. .decode(encoding).encode("utf-8")
+#. From filechooser.py, savechooser.py
+#: ../SCRIBES/internationalization.py:210
+msgid "Select character _encoding"
+msgstr "Välj tecken_kodning"
+
+#. .decode(encoding).encode("utf-8")
+#. From filechooser.py
+#: ../SCRIBES/internationalization.py:213
+msgid "Closed dialog window"
+msgstr "Stängde dialogfönster"
+
+#. .decode(encoding).encode("utf-8")
+#. From error.py
+#: ../SCRIBES/internationalization.py:216
+#, python-format
+msgid "Cannot open %s"
+msgstr "Kan inte öppna %s"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:217
+msgid "Closed error dialog"
+msgstr "Stängde feldialog"
+
+#. .decode(encoding).encode("utf-8")
+#. From fileloader.py
+#: ../SCRIBES/internationalization.py:220
+#, python-format
+msgid ""
+"The MIME type of the file you are trying to open could not be determined. Make sure the file is a text file.\n"
+"\n"
+"<b>MIME type</b>: %s"
+msgstr ""
+"MIME-typen för filen som du försöker att öppna kunde inte fastställas. Kontrollera att filen är en textfil.\n"
+"\n"
+"<b>MIME-typ</b>: %s"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:222
+#, python-format
+msgid ""
+"The MIME type of the file you are trying to open is not for a text file.\n"
+"\n"
+"<b>MIME type</b>: %s"
+msgstr ""
+"MIME-typen för filen som du försöker att öppna är inte för en textfil.\n"
+"\n"
+"<b>MIME-typ</b>: %s"
+
+#. .decode(encoding).encode("utf-8")
+#. From printing.py
+#: ../SCRIBES/internationalization.py:226
+#, python-format
+msgid "Printing \"%s\""
+msgstr "Skriver ut \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#. From encoding.py
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:229
+#: ../SCRIBES/internationalization.py:232
+#: ../SCRIBES/internationalization.py:234
+msgid "English"
+msgstr "Engelska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:230
+#: ../SCRIBES/internationalization.py:231
+#: ../SCRIBES/internationalization.py:255
+msgid "Traditional Chinese"
+msgstr "Traditionell kinesiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:233
+#: ../SCRIBES/internationalization.py:241
+#: ../SCRIBES/internationalization.py:245
+#: ../SCRIBES/internationalization.py:264
+#: ../SCRIBES/internationalization.py:290
+msgid "Hebrew"
+msgstr "Hebreiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:235
+#: ../SCRIBES/internationalization.py:238
+#: ../SCRIBES/internationalization.py:258
+#: ../SCRIBES/internationalization.py:261
+#: ../SCRIBES/internationalization.py:295
+#: ../SCRIBES/internationalization.py:303
+msgid "Western Europe"
+msgstr "Västra Europa"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:236
+#: ../SCRIBES/internationalization.py:250
+#: ../SCRIBES/internationalization.py:252
+#: ../SCRIBES/internationalization.py:262
+#: ../SCRIBES/internationalization.py:289
+#: ../SCRIBES/internationalization.py:300
+msgid "Greek"
+msgstr "Grekiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:237
+#: ../SCRIBES/internationalization.py:266
+#: ../SCRIBES/internationalization.py:293
+msgid "Baltic languages"
+msgstr "Baltiska språk"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:239
+#: ../SCRIBES/internationalization.py:259
+#: ../SCRIBES/internationalization.py:284
+#: ../SCRIBES/internationalization.py:302
+msgid "Central and Eastern Europe"
+msgstr "Centrala och Östeuropa"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:240
+#: ../SCRIBES/internationalization.py:260
+#: ../SCRIBES/internationalization.py:287
+#: ../SCRIBES/internationalization.py:299
+msgid "Bulgarian, Macedonian, Russian, Serbian"
+msgstr "Bulgariska, makedonska, ryska, serbiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:242
+#: ../SCRIBES/internationalization.py:257
+#: ../SCRIBES/internationalization.py:263
+#: ../SCRIBES/internationalization.py:291
+#: ../SCRIBES/internationalization.py:304
+msgid "Turkish"
+msgstr "Turkiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:243
+msgid "Portuguese"
+msgstr "Portugisiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:244
+#: ../SCRIBES/internationalization.py:301
+msgid "Icelandic"
+msgstr "Isländska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:246
+msgid "Canadian"
+msgstr "Kanadensiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:247
+#: ../SCRIBES/internationalization.py:265
+#: ../SCRIBES/internationalization.py:288
+msgid "Arabic"
+msgstr "Arabiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:248
+msgid "Danish, Norwegian"
+msgstr "Danska, norska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:249
+#: ../SCRIBES/internationalization.py:297
+msgid "Russian"
+msgstr "Ryska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:251
+msgid "Thai"
+msgstr "Thai"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:253
+#: ../SCRIBES/internationalization.py:268
+#: ../SCRIBES/internationalization.py:269
+#: ../SCRIBES/internationalization.py:270
+#: ../SCRIBES/internationalization.py:276
+#: ../SCRIBES/internationalization.py:277
+#: ../SCRIBES/internationalization.py:279
+#: ../SCRIBES/internationalization.py:280
+#: ../SCRIBES/internationalization.py:281
+#: ../SCRIBES/internationalization.py:306
+#: ../SCRIBES/internationalization.py:307
+#: ../SCRIBES/internationalization.py:308
+msgid "Japanese"
+msgstr "Japanska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:254
+#: ../SCRIBES/internationalization.py:271
+#: ../SCRIBES/internationalization.py:282
+#: ../SCRIBES/internationalization.py:296
+msgid "Korean"
+msgstr "Koreanska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:256
+msgid "Urdu"
+msgstr "Urdu"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:267
+msgid "Vietnamese"
+msgstr "Vietnamesiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:272
+#: ../SCRIBES/internationalization.py:275
+msgid "Simplified Chinese"
+msgstr "Förenklad kinesiska"
+
+# Traditionell?
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:273
+#: ../SCRIBES/internationalization.py:274
+msgid "Unified Chinese"
+msgstr "Förenad kinesiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:278
+msgid "Japanese, Korean, Simplified Chinese"
+msgstr "Japanska, koreanska, förenklad kinesiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:283
+msgid "West Europe"
+msgstr "Västeuropa"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:285
+msgid "Esperanto, Maltese"
+msgstr "Esperanto, Maltesiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:286
+msgid "Baltic languagues"
+msgstr "Baltiska språk"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:292
+msgid "Nordic languages"
+msgstr "Nordiska språk"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:294
+msgid "Celtic languages"
+msgstr "Keltiska språk"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:298
+msgid "Ukrainian"
+msgstr "Ukrainska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:305
+msgid "Kazakh"
+msgstr "Kazakiska"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:309
+msgid "All languages"
+msgstr "Alla språk"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:310
+#: ../SCRIBES/internationalization.py:311
+msgid "All Languages (BMP only)"
+msgstr "Alla språk (endast BMP)"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:312
+msgid "All Languages"
+msgstr "Alla språk"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:313
+#: ../plugins/SyntaxColorSwitcher/i18n.py:24
+msgid "None"
+msgstr "Ingen"
+
+#. .decode(encoding).encode("utf-8")
+#. From indent.py
+#: ../SCRIBES/internationalization.py:317
+msgid "Replaced tabs with spaces on selected lines"
+msgstr "Ersatte tabulatorer med blanksteg på markerade rader"
+
+#. .decode(encoding).encode("utf-8")
+#. From syntaxcoloreditor.py
+#: ../SCRIBES/internationalization.py:325
+msgid "Co_lor: "
+msgstr "Fä_rg: "
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:326
+#: ../plugins/ColorEditor/i18n.py:37
+msgid "B_old"
+msgstr "_Fet"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:327
+#: ../plugins/ColorEditor/i18n.py:38
+msgid "I_talic"
+msgstr "K_ursiv"
+
+#. .decode(encoding).encode("utf-8")
+#. From templateadd.py
+#: ../SCRIBES/internationalization.py:331
+msgid "_Name:"
+msgstr "_Namn:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:332
+msgid "_Description:"
+msgstr "_Beskrivning:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:333
+msgid "_Template:"
+msgstr "_Mall:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:334
+msgid "Add New Template"
+msgstr "Lägg till ny mall"
+
+#. .decode(encoding).encode("utf-8")
+#. From templateedit.py
+#: ../SCRIBES/internationalization.py:337
+#: ../plugins/TemplateEditor/i18n.py:28
+msgid "Edit Template"
+msgstr "Redigera mall"
+
+#. .decode(encoding).encode("utf-8")
+#. From tooltips.py
+#: ../SCRIBES/internationalization.py:340
+msgid "Select to use themes' foreground and background colors"
+msgstr "Välj för att använda temats förgrund- och bakgrundsfärger"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:341
+msgid "Click to choose a new color for the editor's text"
+msgstr "Klicka för att välja en ny färg för redigerarens text"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:342
+msgid "Click to choose a new color for the editor's background"
+msgstr "Klicka för att välja en ny färg för redigerarens bakgrund"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:343
+msgid "Click to choose a new color for the language syntax element"
+msgstr "Klicka för att välja en ny färg för språksyntaxelementet"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:344
+msgid "Select to make the language syntax element bold"
+msgstr "Välj för att göra språksyntaxelementet i fet text"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:345
+msgid "Select to make the language syntax element italic"
+msgstr "Välj för att göra språksyntaxelementet i kursiv text"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:346
+msgid "Select to reset the language syntax element to its default settings"
+msgstr "Välj för att återställa språksyntaxelementet till dess standardinställningar"
+
+#. .decode(encoding).encode("utf-8")
+#. From syntaxcoloreditor.py
+#. From readonly.py
+#: ../SCRIBES/internationalization.py:353
+msgid "Toggled readonly mode on"
+msgstr ""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:354
+msgid "Toggled readonly mode off"
+msgstr ""
+
+#. .decode(encoding).encode("utf-8")
+#. From tooltips.py
+#: ../SCRIBES/internationalization.py:357
+msgid "Menu for advanced configuration"
+msgstr "Meny för avancerad konfiguration"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:358
+msgid "Configure the editor's foreground, background or syntax colors"
+msgstr "Konfigurera redigerarens förgrunds-, bakgrunds- eller syntaxfärger"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:359
+msgid "Create, modify or manage templates"
+msgstr "Skapa, ändra eller hantera mallar"
+
+#. .decode(encoding).encode("utf-8")
+#. From cursor.py
+#: ../SCRIBES/internationalization.py:362
+#, python-format
+msgid "Ln %d col %d"
+msgstr "Rad %d kol %d"
+
+#. .decode(encoding).encode("utf-8")
+#. From passworddialog.py
+#: ../SCRIBES/internationalization.py:365
+msgid "Authentication Required"
+msgstr "Autentisering krävs"
+
+#: ../SCRIBES/internationalization.py:366
+#, python-format
+msgid "You must log in to access %s"
+msgstr "Du måste logga in för att komma åt %s"
+
+#: ../SCRIBES/internationalization.py:367
+msgid "_Password:"
+msgstr "_Lösenord:"
+
+#: ../SCRIBES/internationalization.py:368
+msgid "_Remember password for this session"
+msgstr "_Kom ihåg lösenordet under sessionen"
+
+#: ../SCRIBES/internationalization.py:369
+msgid "Save password in _keyring"
+msgstr "Spara lösenordet i _nyckelring"
+
+#. From fileloader.py
+#: ../SCRIBES/internationalization.py:372
+#, python-format
+msgid "Loading \"%s\"..."
+msgstr "Läser in \"%s\"..."
+
+#. From bookmark.py
+#: ../SCRIBES/internationalization.py:375
+msgid "Moved to most recently bookmarked line"
+msgstr "Flyttade till senaste bokmärkta rad"
+
+#: ../SCRIBES/internationalization.py:376
+msgid "Already on most recently bookmarked line"
+msgstr "Redan på den senaste bokmärkta raden"
+
+#. bookmarktrigger.py
+#: ../SCRIBES/internationalization.py:377
+#: ../SCRIBES/internationalization.py:452
+#: ../plugins/BookmarkBrowser/i18n.py:27
+msgid "No bookmarks found"
+msgstr "Inga bokmärken hittades"
+
+#. From dialogfilter.py
+#: ../SCRIBES/internationalization.py:381
+msgid "Ruby Documents"
+msgstr "Ruby-dokument"
+
+#: ../SCRIBES/internationalization.py:382
+msgid "Perl Documents"
+msgstr "Perl-dokument"
+
+#: ../SCRIBES/internationalization.py:383
+msgid "C Documents"
+msgstr "C-dokument"
+
+#: ../SCRIBES/internationalization.py:384
+msgid "C++ Documents"
+msgstr "C++-dokument"
+
+#: ../SCRIBES/internationalization.py:385
+msgid "C# Documents"
+msgstr "C#-dokument"
+
+#: ../SCRIBES/internationalization.py:386
+msgid "Java Documents"
+msgstr "Java-dokument"
+
+#: ../SCRIBES/internationalization.py:387
+msgid "PHP Documents"
+msgstr "PHP-dokument"
+
+#: ../SCRIBES/internationalization.py:388
+msgid "HTML Documents"
+msgstr "HTML-dokument"
+
+#: ../SCRIBES/internationalization.py:389
+#: ../plugins/TemplateEditor/i18n.py:27
+msgid "XML Documents"
+msgstr "XML-dokument"
+
+#: ../SCRIBES/internationalization.py:390
+msgid "Haskell Documents"
+msgstr "Haskell-dokument"
+
+#: ../SCRIBES/internationalization.py:391
+msgid "Scheme Documents"
+msgstr "Scheme-dokument"
+
+# Infoga
+#. From textview.py
+#: ../SCRIBES/internationalization.py:394
+msgid "INS"
+msgstr "INF"
+
+# Skriv över
+#: ../SCRIBES/internationalization.py:395
+msgid "OVR"
+msgstr "SRÖ"
+
+#. From loader.py
+#: ../SCRIBES/internationalization.py:398
+msgid "Open Error: An error occurred while opening the file. Try opening the file again or file a bug report."
+msgstr "Öppningsfel: Ett fel inträffade vid öppnandet av filen. Prova att öppna filen igen eller skicka in en felrapport."
+
+#: ../SCRIBES/internationalization.py:400
+#, python-format
+msgid "Info Error: Information on %s cannot be retrieved."
+msgstr "Informationsfel: Information om %s kan inte hämtas."
+
+#: ../SCRIBES/internationalization.py:401
+msgid "Info Error: Access has been denied to the requested file."
+msgstr "Informationsfel: Åtkomst till den begärda filen nekades."
+
+#: ../SCRIBES/internationalization.py:402
+msgid "Permission Error: Access has been denied to the requested file."
+msgstr "Rättighetsfel: Åtkomst till den begärda filen nekades."
+
+#: ../SCRIBES/internationalization.py:403
+msgid "Cannot open file"
+msgstr "Kan inte öppna filen"
+
+#. From save.py
+#: ../SCRIBES/internationalization.py:406
+msgid "You do not have permission to save the file. Try saving the file to your desktop, or to a folder you own. Automatic saving has been disabled until the file is saved correctly without errors."
+msgstr "Du har inte behörighet att spara filen. Prova att spara filen på ditt skrivbord eller till en annan mapp. Automatiskt sparande kommer att vara inaktiverat tills filen sparas korrekt utan fel."
+
+#: ../SCRIBES/internationalization.py:409
+msgid "A saving operation failed. Could not create swap area. Make sure you have permission to save to your home folder. Also check to see that you have not run out of disk space. Automatic saving will be disabled until the document is properly saved."
+msgstr "En sparningsåtgärd misslyckades. Kunde inte skapa växlingsutrymme. Försäkra dig om att du har behörighet att spara till din hemmapp. Kontrollera även att du inte har slut på diskutrymme. Automatiskt sparande kommer att vara inaktiverat tills filen sparas korrekt."
+
+#: ../SCRIBES/internationalization.py:413
+msgid "An error occured while creating the file. Automatic saving has been disabled until the file is saved correctly without errors."
+msgstr "Ett fel inträffade vid skapandet av filen. Automatiskt sparande kommer att vara inaktiverat tills filen sparas korrekt utan fel."
+
+#: ../SCRIBES/internationalization.py:415
+msgid "A saving error occured. The document could not be transfered from its temporary location. Automatic saving has been disabled until the file is saved correctly without errors."
+msgstr "Ett fel vid sparandet inträffade. Dokumentet kunde inte överföras från sin temporära plats. Automatiskt sparande kommer att vara inaktiverat tills filen sparas korrekt utan fel."
+
+#: ../SCRIBES/internationalization.py:418
+msgid "You do not have permission to save the file. Automatic saving will be disabled until the file is properly saved."
+msgstr "Du har inte behörighet att spara filen. Automatiskt sparande kommer att vara inaktiverat tills filen sparas korrekt."
+
+#: ../SCRIBES/internationalization.py:420
+msgid "A decoding error occured while saving the file. Automatic saving will be disabled until the file is properly saved."
+msgstr "Ett avkodningsfel inträffade vid sparandet av filen. Automatiskt sparande kommer att vara inaktiverat tills filen sparas korrekt."
+
+#: ../SCRIBES/internationalization.py:422
+msgid "An encoding error occurred while saving the file. Automatic saving will be disabled until the file is properly saved."
+msgstr "Ett avkodningsfel inträffade vid sparande av filen. Automatiskt sparande kommer att vara inaktiverat tills filen sparas korrekt."
+
+#. From regexbar.py
+#: ../SCRIBES/internationalization.py:426
+msgid "Search for text using regular expression"
+msgstr "Sök efter text med hjälp av reguljärt uttryck"
+
+#: ../SCRIBES/internationalization.py:427
+msgid "Close regular expression bar"
+msgstr "Stäng regulära uttryck"
+
+#. From replacestopbutton.py
+#: ../SCRIBES/internationalization.py:430
+msgid "Stopped replacing"
+msgstr "Stoppade ersättningen"
+
+#. templateeditorexportbutton.py
+#: ../SCRIBES/internationalization.py:433
+#: ../plugins/TemplateEditor/Template.glade.h:6
+msgid "E_xport"
+msgstr "E_xportera"
+
+#. templateeditorimportbutton.py
+#: ../SCRIBES/internationalization.py:436
+#: ../plugins/TemplateEditor/Template.glade.h:8
+msgid "I_mport"
+msgstr "I_mportera"
+
+#. templateadddialog.py
+#: ../SCRIBES/internationalization.py:439
+msgid "Error: Name field must contain a string."
+msgstr "Fel: Namnfältet måste innehålla en sträng."
+
+#: ../SCRIBES/internationalization.py:440
+#, python-format
+msgid "Error: '%s' already in use. Please choose another string."
+msgstr "Fel: \"%s\" används redan. Välj en annan sträng."
+
+#: ../SCRIBES/internationalization.py:441
+msgid "Error: Name field cannot have any spaces."
+msgstr "Fel: Namnfältet får inte innehålla blanksteg."
+
+#: ../SCRIBES/internationalization.py:442
+msgid "Error: Template editor can only have one '${cursor}' placeholder."
+msgstr "Fel: Mallredigeraren kan endast ha en \"${cursor}\"-platshållare."
+
+#. importdialog.py
+#: ../SCRIBES/internationalization.py:445
+msgid "Error: Invalid template file."
+msgstr "Fel: Ogiltig mallfil."
+
+#. exportdialog.py
+#: ../SCRIBES/internationalization.py:449
+#: ../plugins/TemplateEditor/Template.glade.h:7
+msgid "Export Template"
+msgstr "Exportera mall"
+
+#. preftabcheckbutton.py
+#: ../SCRIBES/internationalization.py:457
+msgid "Use spaces instead of tabs for indentation"
+msgstr "Använd blanksteg istället för tabulatorer för indentering"
+
+#: ../SCRIBES/internationalization.py:461
+msgid "Select to underline language syntax element"
+msgstr "Välj för att understryka språksyntaxelement"
+
+#: ../SCRIBES/internationalization.py:464
+#: ../plugins/DocumentBrowser/i18n.py:24
+msgid "Open Documents"
+msgstr "Öppna dokument"
+
+#: ../SCRIBES/internationalization.py:466
+msgid "Current document is focused"
+msgstr "Aktuellt dokument är fokuserat"
+
+#: ../SCRIBES/internationalization.py:467
+msgid "Open recently used files"
+msgstr "Öppna tidigare använda filer"
+
+#: ../SCRIBES/internationalization.py:469
+msgid "Failed to save file"
+msgstr "Misslyckades med att spara fil"
+
+#: ../SCRIBES/internationalization.py:470
+msgid "Save Error: You do not have permission to modify this file or save to its location."
+msgstr "Fel vid sparande: Du har inte behörighet att ändra den här filen eller att spara till dess plats."
+
+#: ../SCRIBES/internationalization.py:472
+msgid "Save Error: Failed to transfer file from swap to permanent location."
+msgstr "Fel vid sparande: Misslyckades med att överföra filen från växlingsutrymme till permanent plats."
+
+#: ../SCRIBES/internationalization.py:473
+msgid "Save Error: Failed to create swap location or file."
+msgstr "Fel vid sparande: Misslyckades med att skapa växlingsplats eller fil."
+
+#: ../SCRIBES/internationalization.py:474
+msgid "Save Error: Failed to create swap file for saving."
+msgstr "Fel vid sparande: Misslyckades med att skapa växlingsplats för sparandet."
+
+#: ../SCRIBES/internationalization.py:475
+msgid "Save Error: Failed to write swap file for saving."
+msgstr "Fel vid sparande: Misslyckades med att skriva växlingsfil för sparandet."
+
+#: ../SCRIBES/internationalization.py:476
+msgid "Save Error: Failed to close swap file for saving."
+msgstr "Fel vid sparande: Misslyckades med att stänga växlingsfil för sparandet."
+
+#: ../SCRIBES/internationalization.py:477
+msgid "Save Error: Failed decode contents of file from \"UTF-8\" to Unicode."
+msgstr "Fel vid sparande: Misslyckades med att avkoda innehållet i filen från \"UTF-8\" till Unicode."
+
+#: ../SCRIBES/internationalization.py:478
+msgid "Save Error: Failed to encode contents of file. Make sure the encoding of the file is properly set in the save dialog. Press (Ctrl - s) to show the save dialog."
+msgstr ""
+
+#: ../SCRIBES/internationalization.py:482
+#, python-format
+msgid "File: %s"
+msgstr "Fil: %s"
+
+#: ../SCRIBES/internationalization.py:484
+msgid "Failed to load file."
+msgstr "Misslyckades med att läsa filen."
+
+#: ../SCRIBES/internationalization.py:486
+msgid "Load Error: You do not have permission to view this file."
+msgstr "Inläsningsfel: Du har inte behörighet att visa den här filen."
+
+#: ../SCRIBES/internationalization.py:487
+msgid "Load Error: Failed to access remote file for permission reasons."
+msgstr "Inläsningsfel: Misslyckades med att komma åt fjärrfilen på grund av behörighetsproblem."
+
+#: ../SCRIBES/internationalization.py:488
+msgid "Load Error: Failed to get file information for loading. Please try loading the file again."
+msgstr "Inläsningsfel: Misslyckades med att få information om filen för inläsning. Prova att läsa in filen igen."
+
+#: ../SCRIBES/internationalization.py:490
+msgid "Load Error: File does not exist."
+msgstr "Inläsningsfel: Filen finns inte."
+
+#: ../SCRIBES/internationalization.py:491
+msgid "Damn! Unknown Error"
+msgstr "Argh! Okänt fel"
+
+#: ../SCRIBES/internationalization.py:492
+msgid "Load Error: Failed to open file for loading."
+msgstr "Inläsningsfel: Misslyckades med att öppna filen för inläsning."
+
+#: ../SCRIBES/internationalization.py:493
+msgid "Load Error: Failed to read file for loading."
+msgstr "Inläsningsfel: Misslyckades med att läsa filen för inläsning."
+
+#: ../SCRIBES/internationalization.py:494
+msgid "Load Error: Failed to close file for loading."
+msgstr "Inläsningsfel: Misslyckades med att stänga filen för inläsning."
+
+#: ../SCRIBES/internationalization.py:495
+msgid "Load Error: Failed to decode file for loading. The file your are loading may not be a text file. If you are sure it is a text file, try to open the file with the correct encoding via the open dialog. Press (control - o) to show the open dialog."
+msgstr "Inläsningsfel: Misslyckades med att avkoda filen för inläsning. Filen som du läser in kanske inte är en textfil. Om du är säker på att den är en textfil kan du prova att öppna filen med den korrekta kodningen via Öppna-dialogen. Tryck (Ctrl - o) för att visa Öppna-dialogen."
+
+#: ../SCRIBES/internationalization.py:499
+msgid "Load Error: Failed to encode file for loading. Try to open the file with the correct encoding via the open dialog. Press (control - o) to show the open dialog."
+msgstr "Inläsningsfel: Misslyckades med att koda filen för inläsning. Prova att öppna filen med den korrekta kodningen via Öppna-dialogen. Tryck (Ctrl - o) för att visa Öppna-dialogen."
+
+#: ../SCRIBES/internationalization.py:503
+#, python-format
+msgid "Reloading %s"
+msgstr "Läser om %s"
+
+#: ../SCRIBES/internationalization.py:504
+#, python-format
+msgid "'%s' has been modified by another program"
+msgstr "\"%s\" har ändrats av ett annat program"
+
+#: ../plugins/BookmarkBrowser/i18n.py:23
+msgid "Move to bookmarked line"
+msgstr "Flytta till bokmärkt rad"
+
+#: ../plugins/BookmarkBrowser/i18n.py:24
+msgid "Bookmark Browser"
+msgstr "Bokmärkesbläddare"
+
+#: ../plugins/BookmarkBrowser/i18n.py:25
+msgid "Line"
+msgstr "Rad"
+
+#: ../plugins/BookmarkBrowser/i18n.py:26
+msgid "Bookmarked Text"
+msgstr "Bokmärkt text"
+
+#: ../plugins/BookmarkBrowser/i18n.py:28
+#: ../plugins/Bookmark/i18n.py:27
+#, python-format
+msgid "Moved to bookmark on line %d"
+msgstr "Flyttade till bokmärke på rad %d"
+
+#: ../plugins/PrintDialog/i18n.py:23
+msgid "Print Document"
+msgstr "Skriv ut dokument"
+
+#: ../plugins/PrintDialog/i18n.py:24
+msgid "Print file"
+msgstr "Skriv ut fil"
+
+#: ../plugins/PrintDialog/i18n.py:25
+msgid "File: "
+msgstr "Fil: "
+
+#: ../plugins/PrintDialog/i18n.py:26
+msgid "Print Preview"
+msgstr "Förhandsvisning"
+
+#: ../plugins/RemoteDialog/i18n.py:23
+#: ../plugins/OpenDialog/i18n.py:23
+msgid "Open Document"
+msgstr "Öppna dokument"
+
+#: ../plugins/RemoteDialog/i18n.py:24
+msgid "Type URI for loading"
+msgstr "Ange URI för inläsning"
+
+#: ../plugins/RemoteDialog/i18n.py:25
+msgid "Enter the location (URI) of the file you _would like to open:"
+msgstr "Ange platsen (URI) till filen som du _vill öppna:"
+
+#: ../plugins/AutoReplace/i18n.py:23
+#, python-format
+msgid "Replaced '%s' with '%s'"
+msgstr "Ersatte \"%s\" med \"%s\""
+
+#: ../plugins/Templates/i18n.py:23
+msgid "Template mode is active"
+msgstr "Malläget är aktivt"
+
+#: ../plugins/Templates/i18n.py:24
+msgid "Inserted template"
+msgstr "Infogade mall"
+
+#: ../plugins/Templates/i18n.py:25
+msgid "Selected next placeholder"
+msgstr "Valde nästa platshållare"
+
+#: ../plugins/Templates/i18n.py:26
+msgid "Selected previous placeholder"
+msgstr "Valde föregående platshållare"
+
+#: ../plugins/About/i18n.py:23
+msgid "Scribes is a text editor for GNOME."
+msgstr "Scribes är en textredigerare för GNOME."
+
+#: ../plugins/About/i18n.py:24
+msgid "Information about the text editor"
+msgstr "Information om textredigeraren"
+
+#: ../plugins/TemplateEditor/Template.glade.h:1
+msgid "<b><span color=\"blue\" underline=\"single\">here</span></b>"
+msgstr "<b><span color=\"blue\" underline=\"single\">här</span></b>"
+
+#: ../plugins/TemplateEditor/Template.glade.h:2
+msgid "<b>_Description:</b>"
+msgstr "<b>_Beskrivning:</b>"
+
+#: ../plugins/TemplateEditor/Template.glade.h:3
+msgid "<b>_Name:</b>"
+msgstr "<b>_Namn:</b>"
+
+#: ../plugins/TemplateEditor/Template.glade.h:4
+msgid "<b>_Template:</b>"
+msgstr "<b>_Mall:</b>"
+
+#: ../plugins/TemplateEditor/Template.glade.h:5
+msgid "Download templates from"
+msgstr "Hämta ner mallar"
+
+#: ../plugins/TemplateEditor/Template.glade.h:9
+#: ../plugins/TemplateEditor/i18n.py:26
+msgid "Import Template"
+msgstr "Importera mall"
+
+#: ../plugins/TemplateEditor/Template.glade.h:10
+#: ../plugins/TemplateEditor/i18n.py:32
+msgid "Template Editor"
+msgstr "Mallredigerare"
+
+#: ../plugins/TemplateEditor/Template.glade.h:11
+msgid "gtk-add"
+msgstr "Lägg till"
+
+#: ../plugins/TemplateEditor/Template.glade.h:12
+msgid "gtk-cancel"
+msgstr "Avbryt"
+
+#: ../plugins/TemplateEditor/Template.glade.h:13
+msgid "gtk-edit"
+msgstr "Redigera"
+
+#: ../plugins/TemplateEditor/Template.glade.h:14
+msgid "gtk-help"
+msgstr "Hjälp"
+
+#: ../plugins/TemplateEditor/Template.glade.h:15
+msgid "gtk-remove"
+msgstr "Ta bort"
+
+#: ../plugins/TemplateEditor/Template.glade.h:16
+msgid "gtk-save"
+msgstr "Spara"
+
+#: ../plugins/TemplateEditor/i18n.py:23
+msgid "_Language"
+msgstr "_Språk"
+
+#: ../plugins/TemplateEditor/i18n.py:24
+msgid "_Name"
+msgstr "_Namn"
+
+#: ../plugins/TemplateEditor/i18n.py:25
+msgid "_Description"
+msgstr "_Beskrivning"
+
+#: ../plugins/TemplateEditor/i18n.py:29
+msgid "Error: Name field cannot be empty"
+msgstr "Fel: Namnfältet får inte vara blankt"
+
+#: ../plugins/TemplateEditor/i18n.py:30
+msgid "Error: Trigger name already in use. Please use another trigger name."
+msgstr ""
+
+#: ../plugins/TemplateEditor/i18n.py:31
+msgid "Add Template"
+msgstr "Lägg till mall"
+
+#: ../plugins/TemplateEditor/i18n.py:33
+msgid "Error: You do not have permission to save at the location"
+msgstr "Fel: Du har inte behörighet att spara på platsen"
+
+#: ../plugins/TemplateEditor/i18n.py:34
+msgid "Error: No selection to export"
+msgstr "Fel: Ingen markering att exportera"
+
+#: ../plugins/TemplateEditor/i18n.py:35
+msgid "Error: File not found"
+msgstr "Fel: Filen hittades inte"
+
+#: ../plugins/TemplateEditor/i18n.py:36
+msgid "Error: Invalid template file"
+msgstr "Fel: Ogiltig mallfil"
+
+#: ../plugins/TemplateEditor/i18n.py:37
+msgid "Error: No template information found"
+msgstr "Fel: Ingen mallinformation hittades"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:23
+msgid "Auto Replace Editor"
+msgstr "Automatisk ersättning"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:24
+msgid "_Abbreviations"
+msgstr "_Förkortningar"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:25
+msgid "_Replacements"
+msgstr "_Ersättningar"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:26
+#, python-format
+msgid "Error: '%s' is already in use. Please use another abbreviation."
+msgstr "Fel: \"%s\" används redan. Använd en annan förkortning."
+
+#: ../plugins/AutoReplaceGUI/i18n.py:27
+msgid "Automatic Replacement"
+msgstr "Automatisk ersättning"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:28
+msgid "Modify words for auto-replacement"
+msgstr "Ändra ord för automatisk ersättning"
+
+#: ../plugins/Indent/i18n.py:24
+msgid "Indenting please wait..."
+msgstr "Indenterar, vänta..."
+
+#: ../plugins/Indent/i18n.py:26
+#, python-format
+msgid "Indented line %d"
+msgstr "Drog in rad %d"
+
+#: ../plugins/Indent/i18n.py:30
+msgid "I_ndentation"
+msgstr "I_ndentering"
+
+#: ../plugins/Indent/i18n.py:31
+msgid "Shift _Right"
+msgstr "Dra in _höger"
+
+#: ../plugins/Indent/i18n.py:32
+msgid "Shift _Left"
+msgstr "Dra in _vänster"
+
+#: ../plugins/Selection/i18n.py:24
+msgid "Selected word"
+msgstr "Markerat ord"
+
+#: ../plugins/Selection/i18n.py:25
+msgid "No word to select"
+msgstr "Inget ord att markera"
+
+#: ../plugins/Selection/i18n.py:26
+msgid "Selected sentence"
+msgstr "Markerad mening"
+
+#: ../plugins/Selection/i18n.py:27
+msgid "No sentence to select"
+msgstr "Ingen mening att markera"
+
+#: ../plugins/Selection/i18n.py:28
+#, python-format
+msgid "No text to select on line %d"
+msgstr "Ingen text att markera på rad %d"
+
+#: ../plugins/Selection/i18n.py:29
+#, python-format
+msgid "Selected line %d"
+msgstr "Markerade rad %d"
+
+#: ../plugins/Selection/i18n.py:30
+msgid "Selected paragraph"
+msgstr "Markerade stycke"
+
+#: ../plugins/Selection/i18n.py:31
+msgid "No paragraph to select"
+msgstr "Inget stycke att markera"
+
+#: ../plugins/Selection/i18n.py:32
+msgid "S_election"
+msgstr "_Markering"
+
+#: ../plugins/Selection/i18n.py:33
+msgid "Select _Word"
+msgstr "Markera _ord"
+
+#: ../plugins/Selection/i18n.py:34
+msgid "Select _Line"
+msgstr "Markera _rad"
+
+#: ../plugins/Selection/i18n.py:35
+msgid "Select _Sentence"
+msgstr "Markera _mening"
+
+#: ../plugins/Selection/i18n.py:36
+msgid "Select _Paragraph"
+msgstr "Markera _stycke"
+
+#: ../plugins/Lines/i18n.py:24
+#, python-format
+msgid "Deleted line %d"
+msgstr "Tog bort rad %d"
+
+#: ../plugins/Lines/i18n.py:25
+#, python-format
+msgid "Joined line %d to line %d"
+msgstr "Sammanförde rad %d till rad %d"
+
+#: ../plugins/Lines/i18n.py:26
+msgid "No more lines to join"
+msgstr "Inga fler rader att sammanföra"
+
+#: ../plugins/Lines/i18n.py:27
+#, python-format
+msgid "Freed line %d"
+msgstr "Frigjorde rad %d"
+
+#: ../plugins/Lines/i18n.py:28
+#, python-format
+msgid "Deleted text from cursor to end of line %d"
+msgstr "Tog bort text från markören till slutet av rad %d"
+
+#: ../plugins/Lines/i18n.py:29
+msgid "Cursor is already at the end of line"
+msgstr "Markören är redan på slutet av raden"
+
+#: ../plugins/Lines/i18n.py:30
+#, python-format
+msgid "Deleted text from cursor to beginning of line %d"
+msgstr "Tog bort text från markören till början av rad %d"
+
+#: ../plugins/Lines/i18n.py:31
+msgid "Cursor is already at the beginning of line"
+msgstr "Markören är redan på början av raden"
+
+#: ../plugins/Lines/i18n.py:32
+msgid "_Lines"
+msgstr "_Rader"
+
+#: ../plugins/Lines/i18n.py:33
+msgid "_Delete Line"
+msgstr "_Ta bort rad"
+
+#: ../plugins/Lines/i18n.py:34
+msgid "_Join Line"
+msgstr "_Sammanför rad"
+
+#: ../plugins/Lines/i18n.py:35
+msgid "Free Line _Above"
+msgstr "Frigör _överliggande rad"
+
+#: ../plugins/Lines/i18n.py:36
+msgid "Free Line _Below"
+msgstr "Frigör _underliggande rad"
+
+#: ../plugins/Lines/i18n.py:37
+msgid "Delete Cursor to Line _End"
+msgstr "Ta bort från markör till rad_slut"
+
+#: ../plugins/Lines/i18n.py:38
+msgid "Delete _Cursor to Line Begin"
+msgstr "Ta bort från _markör till radens början"
+
+#: ../plugins/Preferences/i18n.py:23
+msgid "<b>Font</b>"
+msgstr "<b>Typsnitt</b>"
+
+#: ../plugins/Preferences/i18n.py:24
+msgid "Editor _font: "
+msgstr "Typsnitt för _redigerare: "
+
+#: ../plugins/Preferences/i18n.py:25
+msgid "<b>Tab Stops</b>"
+msgstr "<b>Tabulatorstopp</b>"
+
+#: ../plugins/Preferences/i18n.py:26
+msgid "_Tab width: "
+msgstr "_Tabulatorbredd: "
+
+#: ../plugins/Preferences/i18n.py:27
+msgid "<b>Text Wrapping</b>"
+msgstr "<b>Radbrytning</b>"
+
+#: ../plugins/Preferences/i18n.py:28
+msgid "<b>Right Margin</b>"
+msgstr "<b>Högermarginal</b>"
+
+#: ../plugins/Preferences/i18n.py:29
+msgid "_Right margin position: "
+msgstr "Position för _högermarginal: "
+
+#: ../plugins/Preferences/i18n.py:30
+msgid "<b>Spell Checking</b>"
+msgstr "<b>Stavningskontroll</b>"
+
+#: ../plugins/Preferences/i18n.py:31
+msgid "Change editor settings"
+msgstr "Ändra redigerarinställningar"
+
+#: ../plugins/Preferences/i18n.py:32
+msgid "Preferences"
+msgstr "Inställningar"
+
+#: ../plugins/Preferences/i18n.py:33
+#, python-format
+msgid "Changed font to \"%s\""
+msgstr "Ändrade typsnitt till \"%s\""
+
+#: ../plugins/Preferences/i18n.py:34
+#, python-format
+msgid "Changed tab width to %d"
+msgstr "Ändrade tabulatorbredd till %d"
+
+#: ../plugins/Preferences/i18n.py:35
+msgid "_Use spaces instead of tabs"
+msgstr "_Använd blanksteg istället för tabulatorer"
+
+#: ../plugins/Preferences/i18n.py:36
+msgid "Use tabs for indentation"
+msgstr "Använd tabulatorer för indentering"
+
+#: ../plugins/Preferences/i18n.py:37
+msgid "Use spaces for indentation"
+msgstr "Använd blanksteg för indentering"
+
+#: ../plugins/Preferences/i18n.py:38
+msgid "Enable text _wrapping"
+msgstr "Aktivera text_brytning"
+
+#: ../plugins/Preferences/i18n.py:39
+msgid "Enabled text wrapping"
+msgstr "Aktiverade radbrytning"
+
+#: ../plugins/Preferences/i18n.py:40
+msgid "Disabled text wrapping"
+msgstr "Inaktiverade radbrytning"
+
+#: ../plugins/Preferences/i18n.py:41
+msgid "Display right _margin"
+msgstr "Visa höger_marginal"
+
+#: ../plugins/Preferences/i18n.py:42
+msgid "Show right margin"
+msgstr "Visa högermarginal"
+
+#: ../plugins/Preferences/i18n.py:43
+msgid "Hide right margin"
+msgstr "Dölj högermarginal"
+
+#: ../plugins/Preferences/i18n.py:44
+msgid "_Enable spell checking"
+msgstr "A_ktivera stavningskontroll"
+
+#: ../plugins/Preferences/i18n.py:45
+#: ../plugins/SpellCheck/i18n.py:24
+msgid "Enabled spellchecking"
+msgstr "Aktiverade stavningskontroll"
+
+#: ../plugins/Preferences/i18n.py:46
+#: ../plugins/SpellCheck/i18n.py:23
+msgid "Disabled spellchecking"
+msgstr "Inaktiverade stavningskontroll"
+
+#: ../plugins/Preferences/i18n.py:47
+#, python-format
+msgid "Positioned margin line at column %d"
+msgstr "Positionerade marginalen på kolumn %d"
+
+#: ../plugins/BracketCompletion/i18n.py:23
+msgid "Pair character completion occurred"
+msgstr ""
+
+#: ../plugins/BracketCompletion/i18n.py:24
+msgid "Enclosed selected text"
+msgstr ""
+
+#: ../plugins/BracketCompletion/i18n.py:25
+msgid "Removed pair character completion"
+msgstr ""
+
+#: ../plugins/DocumentBrowser/i18n.py:23
+msgid "Select document to focus"
+msgstr "Välj dokument att fokusera"
+
+#: ../plugins/DocumentBrowser/i18n.py:25
+msgid "File _Type"
+msgstr "Fil_typ"
+
+#: ../plugins/DocumentBrowser/i18n.py:26
+msgid "File _Name"
+msgstr "Fil_namn"
+
+#: ../plugins/DocumentBrowser/i18n.py:27
+msgid "Full _Path Name"
+msgstr ""
+
+#: ../plugins/DocumentBrowser/i18n.py:28
+msgid "No documents open"
+msgstr "Inga dokument öppnade"
+
+#: ../plugins/SearchPreviousNext/i18n.py:23
+msgid "No previous match"
+msgstr "Ingen tidigare sökträff"
+
+#: ../plugins/IncrementalBar/i18n.py:23
+#: ../plugins/FindBar/i18n.py:23
+#: ../plugins/ReplaceBar/i18n.py:23
+msgid "Match _case"
+msgstr "Matcha _skiftläge"
+
+#: ../plugins/IncrementalBar/i18n.py:24
+#: ../plugins/FindBar/i18n.py:24
+#: ../plugins/ReplaceBar/i18n.py:24
+msgid "Match _word"
+msgstr "Matcha _ord"
+
+#: ../plugins/IncrementalBar/i18n.py:25
+#: ../plugins/FindBar/i18n.py:25
+#: ../plugins/ReplaceBar/i18n.py:25
+msgid "_Previous"
+msgstr "_Föregående"
+
+#: ../plugins/IncrementalBar/i18n.py:26
+#: ../plugins/FindBar/i18n.py:26
+#: ../plugins/ReplaceBar/i18n.py:26
+msgid "_Next"
+msgstr "_Nästa"
+
+#: ../plugins/IncrementalBar/i18n.py:27
+#: ../plugins/FindBar/i18n.py:27
+#: ../plugins/ReplaceBar/i18n.py:27
+msgid "_Search for:"
+msgstr "_Sök efter:"
+
+#: ../plugins/IncrementalBar/i18n.py:29
+#: ../plugins/FindBar/i18n.py:29
+#: ../plugins/ReplaceBar/i18n.py:29
+msgid "Closed search bar"
+msgstr ""
+
+#: ../plugins/IncrementalBar/i18n.py:30
+msgid "Incrementally search for text"
+msgstr "Inkrementell sökning efter text"
+
+#: ../plugins/IncrementalBar/i18n.py:31
+msgid "Close incremental search bar"
+msgstr ""
+
+#: ../plugins/OpenDialog/i18n.py:24
+msgid "Select file for loading"
+msgstr "Välj fil för inläsning"
+
+#: ../plugins/ToolbarVisibility/i18n.py:23
+msgid "Hide toolbar"
+msgstr "Dölj verktygsrad"
+
+#: ../plugins/ToolbarVisibility/i18n.py:24
+msgid "Showed toolbar"
+msgstr "Visade verktygsraden"
+
+#: ../plugins/MatchingBracket/i18n.py:23
+#, python-format
+msgid "Found matching bracket on line %d"
+msgstr ""
+
+#: ../plugins/MatchingBracket/i18n.py:24
+msgid "No matching bracket found"
+msgstr ""
+
+#: ../plugins/BracketSelection/i18n.py:23
+msgid "Selected characters inside bracket"
+msgstr ""
+
+#: ../plugins/BracketSelection/i18n.py:24
+msgid "No brackets found for selection"
+msgstr ""
+
+#: ../plugins/Case/i18n.py:23
+msgid "No selection to change case"
+msgstr "Ingen markering att ändra skiftläge på"
+
+#: ../plugins/Case/i18n.py:24
+msgid "Selected text is already uppercase"
+msgstr "Markerad text är redan versal"
+
+#: ../plugins/Case/i18n.py:25
+msgid "Changed selected text to uppercase"
+msgstr "Ändrade markerad text till versaler"
+
+#: ../plugins/Case/i18n.py:26
+msgid "Selected text is already lowercase"
+msgstr "Markerad text är redan gemen"
+
+#: ../plugins/Case/i18n.py:27
+msgid "Changed selected text to lowercase"
+msgstr "Ändrade markerad text till gemener"
+
+#: ../plugins/Case/i18n.py:28
+msgid "Selected text is already capitalized"
+msgstr ""
+
+#: ../plugins/Case/i18n.py:29
+msgid "Capitalized selected text"
+msgstr ""
+
+#: ../plugins/Case/i18n.py:30
+msgid "Swapped the case of selected text"
+msgstr ""
+
+#: ../plugins/Case/i18n.py:31
+msgid "_Case"
+msgstr "_Skiftläge"
+
+#: ../plugins/Case/i18n.py:32
+msgid "_Uppercase"
+msgstr "_Versal"
+
+#: ../plugins/Case/i18n.py:33
+msgid "_Lowercase"
+msgstr "_Gemen"
+
+#: ../plugins/Case/i18n.py:34
+msgid "_Titlecase"
+msgstr "_Titeltyp"
+
+#: ../plugins/Case/i18n.py:35
+msgid "_Swapcase"
+msgstr "_Växla skiftläge"
+
+#: ../plugins/Bookmark/i18n.py:23
+#, python-format
+msgid "Removed bookmark on line %d"
+msgstr "Tog bort bokmärket på rad %d"
+
+#: ../plugins/Bookmark/i18n.py:24
+#, python-format
+msgid "Bookmarked line %d"
+msgstr "Bokmärkte rad %d"
+
+#: ../plugins/Bookmark/i18n.py:25
+msgid "No bookmarks found to remove"
+msgstr "Inga bokmärken hittades att ta bort"
+
+#: ../plugins/Bookmark/i18n.py:26
+msgid "Removed all bookmarks"
+msgstr "Tog bort alla bokmärken"
+
+#: ../plugins/Bookmark/i18n.py:28
+msgid "No next bookmark to move to"
+msgstr "Inget nästa bokmärke att flytta till"
+
+#: ../plugins/Bookmark/i18n.py:29
+msgid "No previous bookmark to move to"
+msgstr "Inget föregående bokmärke att flytta till"
+
+#: ../plugins/Bookmark/i18n.py:30
+msgid "Already on first bookmark"
+msgstr "Redan på det första bokmärket"
+
+#: ../plugins/Bookmark/i18n.py:31
+msgid "Moved to first bookmark"
+msgstr "Flyttade till första bokmärket"
+
+#: ../plugins/Bookmark/i18n.py:32
+msgid "Already on last bookmark"
+msgstr "Redan på det sista bokmärket"
+
+#: ../plugins/Bookmark/i18n.py:33
+msgid "Moved to last bookmark"
+msgstr "Flyttade till sista bokmärket"
+
+#: ../plugins/Bookmark/i18n.py:34
+msgid "_Bookmark"
+msgstr "_Bokmärk"
+
+#: ../plugins/Bookmark/i18n.py:35
+msgid "Bookmark _Line"
+msgstr "Bokmärk _rad"
+
+#: ../plugins/Bookmark/i18n.py:36
+msgid "_Remove Bookmark"
+msgstr "_Ta bort bokmärke"
+
+#: ../plugins/Bookmark/i18n.py:37
+msgid "Remove _All Bookmarks"
+msgstr "Ta bort _alla bokmärken"
+
+#: ../plugins/Bookmark/i18n.py:38
+msgid "Move to _Next Bookmark"
+msgstr "Flytta till _nästa bokmärke"
+
+#: ../plugins/Bookmark/i18n.py:39
+msgid "Move to _Previous Bookmark"
+msgstr "Flytta till _föregående bokmärke"
+
+#: ../plugins/Bookmark/i18n.py:40
+msgid "Move to _First Bookmark"
+msgstr "Flytta till _första bokmärket"
+
+#: ../plugins/Bookmark/i18n.py:41
+msgid "Move to Last _Bookmark"
+msgstr "Flytta till _sista bokmärket"
+
+#: ../plugins/Bookmark/i18n.py:42
+msgid "_Show Bookmark Browser"
+msgstr "_Visa bokmärken"
+
+#: ../plugins/SaveDialog/i18n.py:23
+#: ../plugins/SaveDialog/Dialog.glade.h:1
+msgid "Save Document"
+msgstr "Spara dokument"
+
+#: ../plugins/SaveDialog/i18n.py:24
+msgid "Change name of file and save"
+msgstr "Ändra namn på filen och spara"
+
+#: ../plugins/UserGuide/i18n.py:23
+msgid "Launching help browser"
+msgstr "Startar hjälpvisaren"
+
+#: ../plugins/UserGuide/i18n.py:24
+msgid "Could not open help browser"
+msgstr "Kunde inte öppna hjälpvisaren"
+
+#: ../plugins/ReadOnly/i18n.py:23
+msgid "File has not been saved to disk"
+msgstr "Filen har inte sparats till disk"
+
+#: ../plugins/ReadOnly/i18n.py:24
+msgid "No permission to modify file"
+msgstr "Ingen behörighet att ändra filen"
+
+#: ../plugins/UndoRedo/i18n.py:24
+msgid "Undid last action"
+msgstr ""
+
+#: ../plugins/UndoRedo/i18n.py:25
+msgid "Cannot undo action"
+msgstr "Kan inte ångra åtgärd"
+
+#: ../plugins/UndoRedo/i18n.py:26
+msgid "Redid undone action"
+msgstr ""
+
+#: ../plugins/Spaces/i18n.py:24
+msgid "Replacing spaces please wait..."
+msgstr "Ersätter blanksteg, vänta ..."
+
+#: ../plugins/Spaces/i18n.py:25
+msgid "No spaces found to replace"
+msgstr "Inga blanksteg hittades att ersätta"
+
+#: ../plugins/Spaces/i18n.py:26
+msgid "Replaced spaces with tabs"
+msgstr "Ersatte blanksteg med tabulatorer"
+
+#: ../plugins/Spaces/i18n.py:27
+msgid "Replacing tabs please wait..."
+msgstr "Ersätter tabulatorer, vänta..."
+
+#: ../plugins/Spaces/i18n.py:28
+msgid "Replaced tabs with spaces"
+msgstr "Ersatte tabulatorer med blanksteg"
+
+#: ../plugins/Spaces/i18n.py:29
+msgid "No tabs found to replace"
+msgstr "Inga tabulatorer hittades att ersätta"
+
+#: ../plugins/Spaces/i18n.py:30
+msgid "Removing spaces please wait..."
+msgstr "Tar bort blanksteg, vänta..."
+
+#: ../plugins/Spaces/i18n.py:31
+msgid "No spaces were found at end of line"
+msgstr "Inga blanksteg hittades på slutet av rad"
+
+#: ../plugins/Spaces/i18n.py:32
+msgid "Removed spaces at end of lines"
+msgstr "Tog bort blanksteg på slutet av raderna"
+
+#: ../plugins/Spaces/i18n.py:33
+msgid "S_paces"
+msgstr "B_lanksteg"
+
+#: ../plugins/Spaces/i18n.py:34
+msgid "_Tabs to Spaces"
+msgstr "_Tabulatorer till blanksteg"
+
+#: ../plugins/Spaces/i18n.py:35
+msgid "_Spaces to Tabs"
+msgstr "_Blanksteg till tabulatorer"
+
+#: ../plugins/Spaces/i18n.py:36
+msgid "_Remove Trailing Spaces"
+msgstr "Ta bort _efterliggande blanksteg"
+
+#: ../plugins/GotoBar/i18n.py:23
+msgid "Move cursor to a specific line"
+msgstr "Flytta markören till en specifik rad"
+
+#: ../plugins/GotoBar/i18n.py:24
+msgid "Closed goto line bar"
+msgstr "Stängde Gå till rad-rad"
+
+#: ../plugins/GotoBar/i18n.py:25
+#, python-format
+msgid " of %d"
+msgstr " av %d"
+
+#: ../plugins/GotoBar/i18n.py:26
+msgid "Line number:"
+msgstr "Radnummer:"
+
+#: ../plugins/GotoBar/i18n.py:27
+#, python-format
+msgid "Moved cursor to line %d"
+msgstr "Flyttade markören till rad %d"
+
+#: ../plugins/SearchReplace/i18n.py:23
+msgid "Searching please wait..."
+msgstr "Söker, vänta..."
+
+#: ../plugins/SearchReplace/i18n.py:24
+#, python-format
+msgid "Found %d matches"
+msgstr "Hittade %d sökträffar"
+
+#: ../plugins/SearchReplace/i18n.py:25
+#, python-format
+msgid "Match %d of %d"
+msgstr "Sökträff %d av %d"
+
+#: ../plugins/SearchReplace/i18n.py:26
+msgid "No match found"
+msgstr "Ingen sökträff hittades"
+
+#: ../plugins/SearchReplace/i18n.py:27
+msgid "No next match found"
+msgstr "Ingen nästa sökträff hittades"
+
+#: ../plugins/SearchReplace/i18n.py:28
+msgid "Stopped operation"
+msgstr "Stoppade åtgärden"
+
+#: ../plugins/SearchReplace/i18n.py:29
+msgid "Replacing please wait..."
+msgstr "Ersätter, vänta..."
+
+#: ../plugins/SearchReplace/i18n.py:30
+msgid "Replace found match"
+msgstr ""
+
+#: ../plugins/SearchReplace/i18n.py:31
+msgid "Replaced all found matches"
+msgstr "Ersatte alla funna sökträffar"
+
+#: ../plugins/SearchReplace/i18n.py:32
+msgid "No previous match found"
+msgstr "Ingen föregående sökträff hittades"
+
+#: ../plugins/ReplaceBar/i18n.py:30
+msgid "Replac_e with:"
+msgstr "Ersät_t med:"
+
+#: ../plugins/ReplaceBar/i18n.py:32
+msgid "Closed replace bar"
+msgstr ""
+
+#: ../plugins/ReplaceBar/i18n.py:33
+msgid "_Replace"
+msgstr "_Ersätt"
+
+#: ../plugins/ReplaceBar/i18n.py:34
+msgid "Replace _All"
+msgstr "Ersätt _alla"
+
+#: ../plugins/ReplaceBar/i18n.py:35
+msgid "Incre_mental"
+msgstr "Inkre_mentell"
+
+#: ../plugins/ColorEditor/i18n.py:23
+msgid "Change editor colors"
+msgstr "Ändra redigerarfärger"
+
+#: ../plugins/ColorEditor/i18n.py:24
+msgid "Syntax Color Editor"
+msgstr "Redigerare för syntaxfärger"
+
+#: ../plugins/ColorEditor/i18n.py:25
+msgid "_Use default theme"
+msgstr "_Använd standardtema"
+
+#: ../plugins/ColorEditor/i18n.py:26
+msgid "Using theme colors"
+msgstr "Använder temafärger"
+
+#: ../plugins/ColorEditor/i18n.py:27
+msgid "Using custom colors"
+msgstr "Använder anpassade färger"
+
+#: ../plugins/ColorEditor/i18n.py:28
+msgid "Select foreground color"
+msgstr "Välj förgrundsfärg"
+
+#: ../plugins/ColorEditor/i18n.py:29
+msgid "_Normal text color: "
+msgstr "_Normal textfärg: "
+
+#: ../plugins/ColorEditor/i18n.py:30
+msgid "_Background color: "
+msgstr "_Bakgrundsfärg: "
+
+#: ../plugins/ColorEditor/i18n.py:31
+msgid "_Foreground:"
+msgstr "_Förgrund:"
+
+#: ../plugins/ColorEditor/i18n.py:32
+msgid "Back_ground:"
+msgstr "Bak_grund:"
+
+#: ../plugins/ColorEditor/i18n.py:33
+msgid "Select background color"
+msgstr "Välj bakgrundsfärg"
+
+#: ../plugins/ColorEditor/i18n.py:34
+msgid "Language Elements"
+msgstr "Språkelement"
+
+#: ../plugins/ColorEditor/i18n.py:35
+msgid "Select foreground syntax color"
+msgstr "Välj förgrundsfärg för syntax"
+
+#: ../plugins/ColorEditor/i18n.py:36
+msgid "Select background syntax color"
+msgstr "Välj bakgrundsfärg för syntax"
+
+#: ../plugins/ColorEditor/i18n.py:39
+msgid "_Underline"
+msgstr "_Understruken"
+
+#: ../plugins/ColorEditor/i18n.py:40
+msgid "_Reset to Default"
+msgstr "_Återställ till standard"
+
+#: ../plugins/SyntaxColorSwitcher/i18n.py:23
+msgid "_Highlight Mode"
+msgstr "_Uppmärkningsläge"
+
+#: ../plugins/SyntaxColorSwitcher/i18n.py:25
+#, python-format
+msgid "Activated '%s' syntax color"
+msgstr "Aktiverade färg för \"%s\"-syntax"
+
+#: ../plugins/SyntaxColorSwitcher/i18n.py:26
+msgid "Disabled syntax color"
+msgstr "Inaktiverade syntaxfärg"
+
+#: ../data/ModificationDialog.glade.h:1
+msgid "<b>This file has been modified by another program</b>"
+msgstr "<b>Den här filen har ändrats av ett annat program</b>"
+
+#: ../data/ModificationDialog.glade.h:2
+msgid "Discard current file and load modified file"
+msgstr "Förkasta aktuell fil och läs in den ändrade filen"
+
+#: ../data/ModificationDialog.glade.h:3
+msgid "I_gnore"
+msgstr "I_gnorera"
+
+#: ../data/ModificationDialog.glade.h:4
+msgid "Neither reload nor overwrite file"
+msgstr "Läs varken om eller skriv över filen"
+
+#: ../data/ModificationDialog.glade.h:5
+msgid "Save current file and overwrite changes made by other program"
+msgstr "Spara aktuell fil och skriv över ändringarna gjorda av det andra programmet"
+
+#: ../data/ModificationDialog.glade.h:6
+msgid "Warning"
+msgstr "Varning"
+
+#: ../data/ModificationDialog.glade.h:7
+msgid "_Overwrite File"
+msgstr "S_kriv över fil"
+
+#: ../data/ModificationDialog.glade.h:8
+msgid "_Reload File"
+msgstr "Läs _om fil"
+

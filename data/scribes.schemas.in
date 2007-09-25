@@ -1,0 +1,243 @@
+<?xml version="1.0"?>
+<gconfschemafile>
+	<schemalist>
+
+		<schema>
+			<key>/schemas/apps/scribes/font</key>
+			<applyto>/apps/scribes/font</applyto>
+			<owner>Scribes</owner>
+			<type>string</type>
+			<default>Monospace 12</default>
+			<locale name="C">
+				<short>Editor's font</short>
+				<long>The editor's font. Must be a string value</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/tab</key>
+			<applyto>/apps/scribes/tab</applyto>
+			<owner>Scribes</owner>
+			<type>int</type>
+			<default>4</default>
+			<locale name="C">
+				<short>Tab width</short>
+				<long>Sets the width of tab stops within the editor</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/use_tabs</key>
+			<applyto>/apps/scribes/use_tabs</applyto>
+			<owner>Scribes</owner>
+			<type>bool</type>
+			<default>true</default>
+			<locale name="C">
+				<short>Use Tabs instead of spaces</short>
+				<long>
+					True to use tabs instead of spaces, false otherwise.
+				</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/text_wrapping</key>
+			<applyto>/apps/scribes/text_wrapping</applyto>
+			<owner>Scribes</owner>
+			<type>bool</type>
+			<default>true</default>
+			<locale name="C">
+				<short>Text wrapping</short>
+				<long>Enables or disables text wrapping</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/margin</key>
+			<applyto>/apps/scribes/margin</applyto>
+			<owner>Scribes</owner>
+			<type>bool</type>
+			<default>false</default>
+			<locale name="C">
+				<short>Show margin</short>
+				<long>Enables or disables right margin</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/margin_position</key>
+			<applyto>/apps/scribes/margin_position</applyto>
+			<owner>Scribes</owner>
+			<type>int</type>
+			<default>72</default>
+			<locale name="C">
+				<short>Position of margin</short>
+				<long>Sets the margin's position within the editor</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/spell_check</key>
+			<applyto>/apps/scribes/spell_check</applyto>
+			<owner>Scribes</owner>
+			<type>bool</type>
+			<default>false</default>
+			<locale name="C">
+				<short>Spell checking</short>
+				<long>Enable or disable spell checking</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/match_case</key>
+			<applyto>/apps/scribes/match_case</applyto>
+			<owner>Scribes</owner>
+			<type>bool</type>
+			<default>false</default>
+			<locale name="C">
+				<short>Case sensitive</short>
+				<long>
+					Find occurrences of the string that match upper and lower
+					cases only
+				</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/match_word</key>
+			<applyto>/apps/scribes/match_word</applyto>
+			<owner>Scribes</owner>
+			<type>bool</type>
+			<default>true</default>
+			<locale name="C">
+				<short>Match word</short>
+				<long>
+					Find occurrences of the string that match the entire word
+					only
+				</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/encodings</key>
+			<applyto>/apps/scribes/encodings</applyto>
+			<owner>Scribes</owner>
+			<type>list</type>
+			<list_type>string</list_type>
+			<default>[ISO-8859-1,ISO-8859-15]</default>
+			<locale name="C">
+				<short>Selected encodings</short>
+				<long>
+					A list of encodings selected by the user.
+				</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/use_theme_colors</key>
+			<applyto>/apps/scribes/use_theme_colors</applyto>
+			<owner>Scribes</owner>
+			<type>bool</type>
+			<default>true</default>
+			<locale name="C">
+				<short>Use GTK theme colors</short>
+				<long>
+					Determines whether or not to use GTK theme colors when
+					drawing the text editor buffer foreground and background
+					colors. If the value is true, the GTK theme colors are used.
+					Otherwise the color determined by one assigned by the user.
+				</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/fgcolor</key>
+			<applyto>/apps/scribes/fgcolor</applyto>
+			<owner>Scribes</owner>
+			<type>string</type>
+			<default>#000000</default>
+			<locale name="C">
+				<short>Editor foreground color</short>
+				<long>
+					The color used to render normal text in the text editor's
+					buffer.
+				</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/bgcolor</key>
+			<applyto>/apps/scribes/bgcolor</applyto>
+			<owner>Scribes</owner>
+			<type>string</type>
+			<default>#ffffff</default>
+			<locale name="C">
+				<short>Editor background color</short>
+				<long>
+					The color used to render the text editor buffer background.
+				</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/scope_highlight_color</key>
+			<applyto>/apps/scribes/scope_highlight_color</applyto>
+			<owner>Scribes</owner>
+			<type>string</type>
+			<default>#cfcfcf</default>
+			<locale name="C">
+				<short>Lexical scope highlight color</short>
+				<long>
+					The highlight color when the cursor is around
+					opening or closing pair characters.
+				</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/hide_toolbar</key>
+			<applyto>/apps/scribes/hide_toolbar</applyto>
+			<owner>Scribes</owner>
+			<type>bool</type>
+			<default>false</default>
+			<locale name="C">
+				<short>Show or hide the toolbar.</short>
+				<long>
+					Determines whether to show or hide the toolbar.
+				</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/fork_scribes</key>
+			<applyto>/apps/scribes/fork_scribes</applyto>
+			<owner>Scribes</owner>
+			<type>bool</type>
+			<default>true</default>
+			<locale name="C">
+				<short>Detach Scribes from the shell terminal</short>
+				<long>
+					True to detach Scribes from the shell terminal and
+					run it in its own process, false otherwise. For
+					debugging purposes, it may be useful to set this
+					to false.
+				</long>
+			</locale>
+		</schema>
+
+		<schema>
+			<key>/schemas/apps/scribes/hide_status_area</key>
+			<applyto>/apps/scribes/hide_status_area</applyto>
+			<owner>Scribes</owner>
+			<type>bool</type>
+			<default>false</default>
+			<locale name="C">
+				<short>Show or hide the status area.</short>
+				<long>
+					Determines whether to show or hide the status area.
+				</long>
+			</locale>
+		</schema>
+
+	</schemalist>
+</gconfschemafile>

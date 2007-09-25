@@ -1,0 +1,1235 @@
+# Italian translations for scribes package
+# Traduzioni italiane per il pacchetto scribes.
+# Copyright (C) 2005 YHE scribes'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the scribes package.
+# Stefano Esposito <ragnarok@email.it>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: scribes 0.2.3_beta1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-01-26 19:53-0500\n"
+"PO-Revision-Date: 2005-12-29 17:18+0100\n"
+"Last-Translator: Stefano Esposito <ragnarok@email.it>\n"
+"Language-Team: Italian <tp@lists.linux.it>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: Scribes/internationalization.py:87
+msgid "Scribes is a text editor for GNOME."
+msgstr "Scribes e' un editor di testo per GNOME"
+
+#: Scribes/internationalization.py:91
+msgid "Cannot undo action"
+msgstr "Impossibile annullare"
+
+#: Scribes/internationalization.py:92
+msgid "Cannot redo action"
+msgstr "Impossibile ripetere"
+
+#: Scribes/internationalization.py:96
+#, python-format
+msgid "Deleted line %d"
+msgstr "Riga %d cancellata"
+
+#: Scribes/internationalization.py:97
+#, python-format
+msgid "Joined line %d to line %d"
+msgstr "Le righe %d e %d sono state unite"
+
+#: Scribes/internationalization.py:98
+msgid "No more lines to join"
+msgstr "Non ci sono altre righe da unire"
+
+#: Scribes/internationalization.py:102
+msgid "Selected word"
+msgstr "Parola selezionata"
+
+#: Scribes/internationalization.py:103
+msgid "No word to select"
+msgstr "Nessuna parola da selezionare"
+
+#: Scribes/internationalization.py:104
+#, python-format
+msgid "No text to select in line %d"
+msgstr "Non c'e' testo da selezionare nella riga %d"
+
+#: Scribes/internationalization.py:105
+#, python-format
+msgid "Selected line %d"
+msgstr "Riga %d selezionata"
+
+#: Scribes/internationalization.py:106
+msgid "Selected paragraph"
+msgstr "Paragrafo selezionato"
+
+#: Scribes/internationalization.py:107
+msgid "No paragraph to select"
+msgstr "Nessun paragrafo da selezionare"
+
+#: Scribes/internationalization.py:108
+msgid "Selected sentence"
+msgstr "Frase selezionata"
+
+#: Scribes/internationalization.py:109
+msgid "No sentence to select"
+msgstr "Nessuna frase da selezionare"
+
+#: Scribes/internationalization.py:113
+msgid "No selection to change case"
+msgstr "Nessuna seleziona a cui cambiare il case"
+
+#: Scribes/internationalization.py:114
+msgid "Selected text is already uppercase"
+msgstr "Il testo selezionato e' già maiuscolo"
+
+#: Scribes/internationalization.py:115
+msgid "Changed selected text from lowercase to uppercase"
+msgstr "Il testo selezionato e' stato cambiato da minuscolo in maiuscolo"
+
+#: Scribes/internationalization.py:116
+msgid "Selected text is already lowercase"
+msgstr "Il testo selezionato e' già minuscolo"
+
+#: Scribes/internationalization.py:117
+msgid "Changed selected text from uppercase to lowercase"
+msgstr "Il testo selezionato e' stato cambiato da maiuscolo in minuscolo"
+
+#: Scribes/internationalization.py:121
+#, python-format
+msgid "Found matching bracket on line %d"
+msgstr "Trovata la parentesi corrispondente sulla riga %d"
+
+#: Scribes/internationalization.py:122
+msgid "No matching bracket found"
+msgstr "Non e' stata trovata una parentesi corrispondente"
+
+#: Scribes/internationalization.py:126
+msgid "Disabled spellchecking"
+msgstr "Il controllo ortografico e' stato disabilitato"
+
+#: Scribes/internationalization.py:127
+msgid "Enabled spellchecking"
+msgstr "Il controllo ortografico e' stato abilitato"
+
+#: Scribes/internationalization.py:128
+msgid "Leave Fullscreen"
+msgstr "Esci dal fullscreen"
+
+#: Scribes/internationalization.py:132
+msgid "Unsaved Document"
+msgstr "Documento non salvato"
+
+#: Scribes/internationalization.py:136
+msgid "Open Document"
+msgstr "Apri Documento"
+
+#: Scribes/internationalization.py:137
+msgid "All Documents"
+msgstr "Tutti i documenti"
+
+#: Scribes/internationalization.py:138
+msgid "Python Documents"
+msgstr "Documenti Python"
+
+#: Scribes/internationalization.py:139
+msgid "Text Documents"
+msgstr "Documenti di testo"
+
+#: Scribes/internationalization.py:143
+#, python-format
+msgid "Loaded file \"%s\""
+msgstr "Il file \"%s\" e' stato caricato"
+
+#: Scribes/internationalization.py:144
+msgid ""
+"The encoding of the file you are trying to open could not be determined. Try "
+"opening the file with another encoding."
+msgstr ""
+"L'encoding del file che stai tentando di aprire non può essere determinato."
+"Prova ad aprire il file con un altro encoding"
+
+#: Scribes/internationalization.py:146
+msgid "Loading file please wait..."
+msgstr "Caricamento file in corso. Attendere prego..."
+
+#: Scribes/internationalization.py:147
+msgid ""
+"An error occurred while openning the file. Please file a bug report at "
+"http://scribes.sourceforge.net"
+msgstr ""
+"C'e' stato un errore durante l'apertura del file. Compila un bug report su "
+"http://scribes.sourceforge.net. Grazie."
+
+#: Scribes/internationalization.py:152
+msgid " <READONLY>"
+msgstr " <SOLA LETTURA>"
+
+#: Scribes/internationalization.py:156
+msgid "You do not have permission to view this file."
+msgstr "Non hai i permessi per vedere questo file."
+
+#: Scribes/internationalization.py:157
+msgid "The file you are trying to open is not a text file."
+msgstr "Il file che stai cercando di aprire non e' un file di testo."
+
+#: Scribes/internationalization.py:158
+msgid "The file you are trying to open does not exist."
+msgstr "Il file che stai cercando di aprire non esiste."
+
+#: Scribes/internationalization.py:162
+#, python-format
+msgid "Unrecognized option: '%s'"
+msgstr "Opzione sconosciuta: '%s'"
+
+#: Scribes/internationalization.py:163
+msgid "Try 'scribes --help' for more information"
+msgstr "'scribes --help' per maggiori informazioni."
+
+#: Scribes/internationalization.py:164
+msgid "Scribes only supports using one option at a time"
+msgstr "Scribes supporta l'uso di una sola opzione alla volta."
+
+#: Scribes/internationalization.py:165
+#, python-format
+msgid "scribes: %s takes no arguments"
+msgstr "scribes: %s non necessita di argomenti"
+
+#: Scribes/internationalization.py:166
+#, python-format
+msgid "Scribes version %s"
+msgstr "Scribes, Versione: %s"
+
+#: Scribes/internationalization.py:167
+#, python-format
+msgid "%s does not exist"
+msgstr "%s non esiste"
+
+#: Scribes/internationalization.py:171
+#, python-format
+msgid "The file \"%s\" is open in readonly mode"
+msgstr "Il file \"%s\" e' aperto in modalità di sola lettura"
+
+#: Scribes/internationalization.py:172
+#, python-format
+msgid "The file \"%s\" is open"
+msgstr "Il file \"%s\" e' aperto"
+
+#: Scribes/internationalization.py:176
+msgid "No match was found"
+msgstr "Nessuna corrispondenza trovata"
+
+#: Scribes/internationalization.py:177
+#, python-format
+msgid "%d match was found"
+msgstr "E' stata trovate %d corrispondenza"
+
+#: Scribes/internationalization.py:178
+#, python-format
+msgid "%d matches were found"
+msgstr "Sono state trovate %d corrispondenze"
+
+#: Scribes/internationalization.py:179
+msgid "_Search for:    "
+msgstr "_Cerca:    "
+
+#: Scribes/internationalization.py:180
+msgid "_Search for:"
+msgstr "_Cerca:"
+
+#: Scribes/internationalization.py:181
+msgid "_Previous"
+msgstr "_Precedente"
+
+#: Scribes/internationalization.py:182
+msgid "_Next"
+msgstr "P_rossimo"
+
+#: Scribes/internationalization.py:183
+msgid "Match _case"
+msgstr "M_aiuscolo/minuscolo"
+
+#: Scribes/internationalization.py:184
+msgid "Match _word"
+msgstr "_Tutta la parola"
+
+#: Scribes/internationalization.py:188
+msgid "Line number:"
+msgstr "Numero di riga:"
+
+#: Scribes/internationalization.py:189
+#, python-format
+msgid " of %d"
+msgstr " di %d"
+
+#: Scribes/internationalization.py:193
+msgid "Launching help browser"
+msgstr "Avvio dell'help browser in corso"
+
+#: Scribes/internationalization.py:197
+msgid "No indentation selection found"
+msgstr "Non e' stata trovata nessuna selezione da indentare"
+
+#: Scribes/internationalization.py:198
+msgid "Selection indented"
+msgstr "La selezione e' stata indentata"
+
+#: Scribes/internationalization.py:199
+msgid "Unindentation is not possible"
+msgstr "Impossibile disindentare"
+
+#: Scribes/internationalization.py:200
+msgid "Selection unindented"
+msgstr "La selezione e' stata disindentata"
+
+#: Scribes/internationalization.py:204
+msgid "loading..."
+msgstr "caricamento..."
+
+#: Scribes/internationalization.py:208
+msgid "<b>Font</b>"
+msgstr "<b>Carattere</b>"
+
+#: Scribes/internationalization.py:209
+msgid "Editor _font: "
+msgstr "_Carattere dell'editor"
+
+#: Scribes/internationalization.py:210
+msgid "<b>Tab Stops</b>"
+msgstr "<b>Spazi di Tabulatura</b>"
+
+#: Scribes/internationalization.py:211
+msgid "_Tab width: "
+msgstr "Larghezza della _Tabulatura: "
+
+#: Scribes/internationalization.py:212
+msgid "<b>Text Wrapping</b>"
+msgstr "<b>Divisione del testo</b>"
+
+#: Scribes/internationalization.py:213
+msgid "Enable text _wrapping"
+msgstr "Abilita la _divisione del testo"
+
+#: Scribes/internationalization.py:214
+msgid "<b>Right Margin</b>"
+msgstr "<b>Margine destro</b>"
+
+#: Scribes/internationalization.py:215
+msgid "Display right _margin"
+msgstr "Mostra il _margine destro"
+
+#: Scribes/internationalization.py:216
+msgid "_Right margin position: "
+msgstr "Posizione del ma_rgine destro: "
+
+#: Scribes/internationalization.py:217
+msgid "<b>Spell Checking</b>"
+msgstr "<b>Controllo Ortografico</b>"
+
+#: Scribes/internationalization.py:218
+msgid "_Enable spell checking"
+msgstr "_Abilita il controllo ortografico"
+
+#: Scribes/internationalization.py:222
+msgid "Print Preview"
+msgstr "Anteprima di stampa"
+
+#: Scribes/internationalization.py:223
+msgid "File: "
+msgstr ""
+
+#: Scribes/internationalization.py:224
+msgid "Print Document"
+msgstr "Stampa documento"
+
+#: Scribes/internationalization.py:228
+#, python-format
+msgid "\"%s\" has been replaced with \"%s\""
+msgstr "\"%s\" e' stato sostutuito con \"%s\""
+
+#: Scribes/internationalization.py:229
+#, python-format
+msgid "Replaced all occurrences of \"%s\" with \"%s\""
+msgstr "Tuttele occorrenze di \"%s\" sono state sostituite con \"%s\""
+
+#: Scribes/internationalization.py:230
+msgid "Replac_e with:"
+msgstr "S_ostituisci con:"
+
+#: Scribes/internationalization.py:231
+msgid "_Replace"
+msgstr "_Sostituisci"
+
+#: Scribes/internationalization.py:232
+msgid "Replace _All"
+msgstr "S_ostituisci tutto"
+
+#: Scribes/internationalization.py:236
+msgid "Save Document"
+msgstr "Salva documento"
+
+#: Scribes/internationalization.py:240
+msgid "An error occurred while saving this file."
+msgstr "C'e' stato un errore durante il salvataggio di questo file"
+
+#: Scribes/internationalization.py:241
+msgid ""
+"An error occurred while decoding your file. Please file a bug report at "
+"\"http://openusability.org/forum/?group_id=141\""
+msgstr ""
+"C'e' stato un errore durante la decodifica del tuo file. Compila un bug "
+"report su \"http://openusability.org/forum/?group_id=141\". Grazie."
+
+#: Scribes/internationalization.py:243
+#, python-format
+msgid "Saved \"%s\""
+msgstr "\"%s\" e' stato salvato"
+
+#: Scribes/internationalization.py:247
+msgid "Shift _Right"
+msgstr "_Aumenta l'indentazione"
+
+#: Scribes/internationalization.py:248
+msgid "Shift _Left"
+msgstr "_Dimunuisci l'indentazione"
+
+#: Scribes/internationalization.py:249
+msgid "_Find Matching Bracket"
+msgstr "_Cerca parentesi corrispondente"
+
+#: Scribes/internationalization.py:250
+msgid "Copied selected text"
+msgstr "Il testo selezionato e' stato copiato"
+
+#: Scribes/internationalization.py:251
+msgid "No selection to copy"
+msgstr "Nessuna selezione da copiare"
+
+#: Scribes/internationalization.py:252
+msgid "Cut selected text"
+msgstr "Il testo selezionato e' stato tagliato"
+
+#: Scribes/internationalization.py:253
+msgid "No selection to cut"
+msgstr "Nessuna selezione da tagliare"
+
+#: Scribes/internationalization.py:254
+msgid "Pasted copied text"
+msgstr "Il testo copiato e' stato incollato"
+
+#: Scribes/internationalization.py:255
+msgid "No text content in the clipboard"
+msgstr "Non c'e' testo negli appunti"
+
+#: Scribes/internationalization.py:259
+#, python-format
+msgid "%d%% complete"
+msgstr "%d%% completo"
+
+#: Scribes/internationalization.py:260
+msgid "completed"
+msgstr "completato"
+
+#: Scribes/internationalization.py:264
+msgid "Create a new file"
+msgstr "Nuovo file"
+
+#: Scribes/internationalization.py:265
+msgid "Open a file"
+msgstr "Apri un file"
+
+#: Scribes/internationalization.py:266
+msgid "Change the name of current file and save it"
+msgstr "Salva con nome"
+
+#: Scribes/internationalization.py:267
+msgid "Print the current file"
+msgstr "Stampa il file corrente"
+
+#: Scribes/internationalization.py:268
+msgid "Undo last action"
+msgstr "Annulla"
+
+#: Scribes/internationalization.py:269
+msgid "Redo undone action"
+msgstr "Ripeti"
+
+#: Scribes/internationalization.py:270 Scribes/internationalization.py:422
+msgid "Search for text"
+msgstr "Cerca testo"
+
+#: Scribes/internationalization.py:271 Scribes/internationalization.py:427
+msgid "Search for and replace text"
+msgstr "Cerca e sostituisci testo"
+
+#: Scribes/internationalization.py:272
+msgid "Go to a specific line"
+msgstr "Vai ad una riga specifica"
+
+#: Scribes/internationalization.py:273
+msgid "Configure the editor"
+msgstr "Configura l'editor"
+
+#: Scribes/internationalization.py:274
+msgid "Launch the help browser"
+msgstr "Avvia l'help browser"
+
+#: Scribes/internationalization.py:275
+msgid "Search for previous occurrence of the string"
+msgstr "Cerca l'occorrenza precedente della stringa"
+
+#: Scribes/internationalization.py:276
+msgid "Search for next occurrence of the string"
+msgstr "Cerca la prossima occorrenza della stringa"
+
+#: Scribes/internationalization.py:277
+msgid "Find occurrences of the string that match upper and lower cases only"
+msgstr ""
+"Cerca solo occorrenze della stringa corrispondenti per maiuscolo e minuscolo"
+
+#: Scribes/internationalization.py:279
+msgid "Find occurrences of the string that match the entire word only"
+msgstr "Cerca solo occorrenze della stringa che corrispondo all'intera parola"
+
+#: Scribes/internationalization.py:280
+msgid "Type in the text you want to search for"
+msgstr "Scrivi il testo che vuoi cercare"
+
+#: Scribes/internationalization.py:281
+msgid "Type in the text you want to replace with"
+msgstr "Scrivi il testo con cui vuoi sostituire"
+
+#: Scribes/internationalization.py:282
+msgid "Replace the selected found match"
+msgstr "Sostituisci il risultato della ricerca selezionato"
+
+#: Scribes/internationalization.py:283
+msgid "Replace all found matches"
+msgstr "Sostituisci tutti i risultati della ricerca"
+
+#: Scribes/internationalization.py:284
+msgid "Click to specify the font type, style, and size to use for text."
+msgstr ""
+"Clicca per specificare il tipo, lo stile e la dimensione del carattere da "
+"utilizzare per il testo"
+
+#: Scribes/internationalization.py:285
+msgid ""
+"Click to specify the width of the space that is inserted when you press the "
+"Tab key."
+msgstr ""
+"Clicca per specificare la larghezza della spazio da inserire con il tasto Tab"
+
+#: Scribes/internationalization.py:287
+msgid ""
+"Select to wrap text onto the next line when you reach the text window "
+"boundary."
+msgstr ""
+"Seleziona per dividere il testo quando raggiungi il limite della finestra."
+
+#: Scribes/internationalization.py:289
+msgid "Select to display a vertical line that indicates the right margin."
+msgstr ""
+"Seleziona per mostrare una linea verticale che indichi il margine destro"
+
+#: Scribes/internationalization.py:291
+msgid "Click to specify the location of the vertical line."
+msgstr "Clicca per specificare la posizione della linea verticale"
+
+#: Scribes/internationalization.py:292
+msgid "Select to enable spell checking"
+msgstr "Seleziona per attivare il controllo ortografico"
+
+#: Scribes/internationalization.py:296
+msgid "Undid last action"
+msgstr "Annulato"
+
+#: Scribes/internationalization.py:297
+msgid "Redid undone action"
+msgstr "Ripetuto"
+
+#: Scribes/internationalization.py:301
+msgid "A text editor for GNOME."
+msgstr "Un editor di testo per GNOME"
+
+#: Scribes/internationalization.py:302
+msgid "usage: scribes [OPTION] [FILE] [...]"
+msgstr "utilizzo: scribes [OPZIONI] [FILE] [...]"
+
+#: Scribes/internationalization.py:303
+msgid "Options:"
+msgstr "Opzioni:"
+
+#: Scribes/internationalization.py:304
+msgid "display this help screen"
+msgstr "mostra questo help"
+
+#: Scribes/internationalization.py:305
+msgid "output version information of Scribes"
+msgstr "stampa la versione di Scribes"
+
+#: Scribes/internationalization.py:306
+msgid "create a new file and open the file with Scribes"
+msgstr "crea un nuovo file e lo apre con Scribes"
+
+#: Scribes/internationalization.py:307
+msgid "open file in readonly mode"
+msgstr "apre il file in modalità di sola lettura"
+
+#: Scribes/internationalization.py:311
+msgid "Could not find Scribes' data folder"
+msgstr "Impossibile trovare la cartella dati di Scribes"
+
+#: Scribes/internationalization.py:315
+msgid "Preferences"
+msgstr "Preferenze"
+
+#: Scribes/internationalization.py:319
+msgid "error"
+msgstr "errore"
+
+#: Scribes/internationalization.py:323
+msgid "No spaces were found at end of line"
+msgstr "Non sono stati trovati spazi alla fine della riga"
+
+#: Scribes/internationalization.py:324
+#, python-format
+msgid "Removed spaces at end of line %d"
+msgstr "Rimossi gli spazi alla fine della riga"
+
+#: Scribes/internationalization.py:328
+#, python-format
+msgid "Freed line %d"
+msgstr "Riga %d liberata"
+
+#: Scribes/internationalization.py:329
+#, python-format
+msgid "Deleted text from cursor to end of line %d"
+msgstr "Il testo dal cursore alla fine della riga %d e' stato cancellato"
+
+#: Scribes/internationalization.py:330
+msgid "Cursor is already at the end of line"
+msgstr "Il cursore e' già alla fine della riga"
+
+#: Scribes/internationalization.py:331
+#, python-format
+msgid "Deleted text from cursor to beginning of line %d"
+msgstr "Il testo dal cursore all'inizio della riga %d e' stato cancellato"
+
+#: Scribes/internationalization.py:332
+msgid "Cursor is already at the beginning of line"
+msgstr "Il cursore e' già all'inizio della riga"
+
+#: Scribes/internationalization.py:336
+msgid "No spaces were found at beginning of line"
+msgstr "Non sono stati trovati spazi all'inizio della riga"
+
+#: Scribes/internationalization.py:337
+#, python-format
+msgid "Removed spaces at beginning of line %d"
+msgstr "Rimossi gli spazi all'inizio della riga %d"
+
+#: Scribes/internationalization.py:338
+msgid "Removed spaces at beginning of selected lines"
+msgstr "Rimossi gli spazi all'inizio delle righe selezionate"
+
+#: Scribes/internationalization.py:339
+msgid "Removed spaces at end of selected lines"
+msgstr "Rimossi gli spazi alla fine delle righe selezionate"
+
+#: Scribes/internationalization.py:343
+msgid "Cannot perform operation in readonly mode"
+msgstr "Impossibile compiere questa operazione in modalità di sola lettura"
+
+#: Scribes/internationalization.py:347
+#, python-format
+msgid "Indented line %d"
+msgstr "La riga %d e' stata indentata"
+
+#: Scribes/internationalization.py:348
+#, python-format
+msgid "Unindented line %d"
+msgstr "La riga %d e' stata disindentata"
+
+#: Scribes/internationalization.py:349
+msgid "No selected lines can be indented"
+msgstr "Nessuna delle righe selezionate può essere indentata"
+
+#: Scribes/internationalization.py:353
+msgid "Swapped the case of selected text"
+msgstr "Scambiato il case del testo selezionato."
+
+#: Scribes/internationalization.py:354
+msgid "Capitalized selected text"
+msgstr "Il testo selezionato e' stato capitalizzato."
+
+#: Scribes/internationalization.py:355
+msgid "Selected text is already capitalized"
+msgstr "Il testo selezionato e' già capitalizzato"
+
+#: Scribes/internationalization.py:359
+msgid ""
+"An error occurred while encoding your file. Try saving your file using "
+"another character encoding, preferably UTF-8."
+msgstr ""
+"C'e' stato un errore durante la codifica del tuo file. Prova a salvare il "
+"tuo file usando un'altr codifica, preferibilmente UTF-8."
+
+#: Scribes/internationalization.py:364
+msgid ""
+"An encoding error occurred. Please file a bug report at http://openusability."
+"org/forum/?group_id=141"
+msgstr ""
+"C'e' stato un errore di codifica. Compila un bug report su http://"
+"openusability.org/forum/?group_id=141. Grazie."
+
+#: Scribes/internationalization.py:369
+msgid "Bracket completion occurred"
+msgstr "C'e' stato un completamento di parentesi"
+
+#: Scribes/internationalization.py:373
+msgid "Word completion occurred"
+msgstr "C'e' stato un completamento di parola"
+
+#: Scribes/internationalization.py:377
+msgid "Removed bracket completion"
+msgstr "Il completamento di parentesi e' stato rimosso"
+
+#: Scribes/internationalization.py:381
+msgid "_Character Encoding: "
+msgstr "_Codifica di carattere:"
+
+#: Scribes/internationalization.py:382
+msgid "Add or Remove Encoding"
+msgstr "Aggiungi o rimuovi codifica"
+
+#: Scribes/internationalization.py:383
+msgid "Recommended (UTF-8)"
+msgstr "Raccomandato (UTF-8)"
+
+#: Scribes/internationalization.py:384
+msgid "Add or Remove Character Encoding"
+msgstr "Aggiungi o rimuovi codifica di carattere"
+
+#: Scribes/internationalization.py:385
+msgid "Language and Region"
+msgstr "Lingua e Regione"
+
+#: Scribes/internationalization.py:386
+msgid "Character Encoding"
+msgstr "Codifica di carattere"
+
+#: Scribes/internationalization.py:387
+msgid "Select"
+msgstr "Seleziona"
+
+#: Scribes/internationalization.py:391
+#, python-format
+msgid "Line %d is already bookmarked"
+msgstr "La riga %d ha già un segnalibro"
+
+#: Scribes/internationalization.py:392
+#, python-format
+msgid "Bookmarked line %d"
+msgstr "Aggiunto segnalibro alla riga %d"
+
+#: Scribes/internationalization.py:393
+#, python-format
+msgid "No bookmark on line %d to remove"
+msgstr "Nessun segnalibro da rimuovere alla riga %d"
+
+#: Scribes/internationalization.py:394
+#, python-format
+msgid "Removed bookmark on line %d"
+msgstr "Rimosso segnalibro dalla riga &d"
+
+#: Scribes/internationalization.py:395
+msgid "No bookmarks found to remove"
+msgstr "Non e' stato trovato alcun segnalibro da rimuovere"
+
+#: Scribes/internationalization.py:396
+msgid "Removed all bookmarks"
+msgstr "Tutti i segnalibri sono stati rimossi"
+
+#: Scribes/internationalization.py:397
+msgid "No next bookmark to move to"
+msgstr "Nessun segnalibro verso cui muovere"
+
+#: Scribes/internationalization.py:398
+#, python-format
+msgid "Moved to bookmark on line %d"
+msgstr "Spostato sul segnalibro alla riga %s"
+
+#: Scribes/internationalization.py:399
+msgid "No previous bookmark to move to"
+msgstr "Nessun segnalibro precedente verso cui spostarsi"
+
+#: Scribes/internationalization.py:403
+msgid "Select character _encoding"
+msgstr "Seleziona la codifica di caratt_ere"
+
+#: Scribes/internationalization.py:407
+#, python-format
+msgid "Replaced tabs with spaces on line %d"
+msgstr "Sostituiti i tab con gli spazi alla riga %d"
+
+#: Scribes/internationalization.py:408
+msgid "Replacing tabs please wait..."
+msgstr "Tab in sostituzione. Attendere prego..."
+
+#: Scribes/internationalization.py:409
+#, python-format
+msgid "No tabs found on line %d"
+msgstr "Nessun tab trovato sulla riga %d"
+
+#: Scribes/internationalization.py:410
+msgid "No tabs found in selected text"
+msgstr "Nessun tab trovato nel testo selezionato"
+
+#: Scribes/internationalization.py:411
+msgid "Removing spaces please wait..."
+msgstr "Spazi in rimozione. Attendere prego..."
+
+#: Scribes/internationalization.py:412
+msgid "Indenting please wait..."
+msgstr "Indentazione in corso. Attendere prego..."
+
+#: Scribes/internationalization.py:416
+msgid "Move cursor to a specific line"
+msgstr "Sposta il cursore su una riga specifica"
+
+#: Scribes/internationalization.py:417
+#, python-format
+msgid "Moved cursor to line %d"
+msgstr "Il cursore e' stato spostato sulla riga %d"
+
+#: Scribes/internationalization.py:418
+msgid "Closed goto line bar"
+msgstr "Barra spostamento di riga chiusa"
+
+#: Scribes/internationalization.py:423
+msgid "Closed findbar"
+msgstr "Barra di ricerca chiusa"
+
+#: Scribes/internationalization.py:428
+msgid "Closed replacebar"
+msgstr "Barra di sostituzione chiusa"
+
+#: Scribes/internationalization.py:432
+msgid "Closed dialog window"
+msgstr "Finestra di dialogo chiusa"
+
+#: Scribes/internationalization.py:433
+msgid "Select file for loading"
+msgstr "Seleziona il file da caricare"
+
+#: Scribes/internationalization.py:437
+#, python-format
+msgid "Cannot open %s"
+msgstr "Impossibile aprire %s"
+
+#: Scribes/internationalization.py:438
+msgid "Closed error dialog"
+msgstr "Dialog d'errore chiuso"
+
+#: Scribes/internationalization.py:442
+#, python-format
+msgid ""
+"The MIME type of the file you are trying to open could not be determined. "
+"Make sure the file is a text file.\n"
+"\n"
+"<b>MIME type</b>: %s"
+msgstr ""
+"Il tipo MIME del file che stai cercando di aprire non può essere "
+"determinato. Assicurati che si tratti di un file di testo.\n"
+"\n"
+"<b>Tipo MIME</b>: %s"
+
+#: Scribes/internationalization.py:444
+#, python-format
+msgid ""
+"The MIME type of the file you are trying to open is not for a text file.\n"
+"\n"
+"<b>MIME type</b>: %s"
+msgstr ""
+"Il tipo MIME del file che stai cercando di aprire non e' di un file di "
+"testo.\n"
+"\n"
+"<b>Tipo MIME</b>: %s"
+
+#: Scribes/internationalization.py:449
+msgid "Change name of file and save"
+msgstr "Cambia il nome del file e salvalo"
+
+#: Scribes/internationalization.py:453
+msgid "Print file"
+msgstr "Stampa file"
+
+#: Scribes/internationalization.py:454
+#, python-format
+msgid "Printing \"%s\""
+msgstr "Stampa di \"%s\" in corso"
+
+#: Scribes/internationalization.py:458
+msgid "Change editor settings"
+msgstr "Cambia i settaggi dell'editor"
+
+#: Scribes/internationalization.py:459
+#, python-format
+msgid "Changed font to \"%s\""
+msgstr "Carrattere combiato a \"%s\""
+
+#: Scribes/internationalization.py:460
+#, python-format
+msgid "Changed tab width to %d"
+msgstr "Cambiata la larghezza del tab a %d"
+
+#: Scribes/internationalization.py:461
+msgid "Enabled text wrapping"
+msgstr "Divisione testo attivata"
+
+#: Scribes/internationalization.py:462
+msgid "Disabled text wrapping"
+msgstr "Divisione testo disattivata"
+
+#: Scribes/internationalization.py:463
+msgid "Show right margin"
+msgstr "Mostra il margine destro"
+
+#: Scribes/internationalization.py:464
+msgid "Hide right margin"
+msgstr "Nascondi il margine destro"
+
+#: Scribes/internationalization.py:465
+#, python-format
+msgid "Positioned margin line at column %d"
+msgstr "La line del margine e' stata posizionata sulla colonna %d"
+
+#: Scribes/internationalization.py:469
+msgid "Information about the text editor"
+msgstr "Informazioni sull'editor"
+
+#: Scribes/internationalization.py:472
+msgid "No brackets found for selection"
+msgstr "Non sono state trvate parentesi per la selezione"
+
+#: Scribes/internationalization.py:473
+msgid "Selected characters inside bracket"
+msgstr "Selezionati i caratteri all'interno della parentesi"
+
+#: Scribes/internationalization.py:477
+msgid "Enclosed selected text"
+msgstr "Il testo selezionato e' stato racchiuso"
+
+#: Scribes/internationalization.py:481 Scribes/internationalization.py:484
+#: Scribes/internationalization.py:486
+msgid "English"
+msgstr "Inglese"
+
+#: Scribes/internationalization.py:482 Scribes/internationalization.py:483
+#: Scribes/internationalization.py:507
+msgid "Traditional Chinese"
+msgstr "Cinese Tradizionale"
+
+#: Scribes/internationalization.py:485 Scribes/internationalization.py:493
+#: Scribes/internationalization.py:497 Scribes/internationalization.py:516
+#: Scribes/internationalization.py:542
+msgid "Hebrew"
+msgstr "Ebraico"
+
+#: Scribes/internationalization.py:487 Scribes/internationalization.py:490
+#: Scribes/internationalization.py:510 Scribes/internationalization.py:513
+#: Scribes/internationalization.py:547 Scribes/internationalization.py:555
+msgid "Western Europe"
+msgstr "Europa occidentale"
+
+#: Scribes/internationalization.py:488 Scribes/internationalization.py:502
+#: Scribes/internationalization.py:504 Scribes/internationalization.py:514
+#: Scribes/internationalization.py:541 Scribes/internationalization.py:552
+msgid "Greek"
+msgstr "Greco"
+
+#: Scribes/internationalization.py:489 Scribes/internationalization.py:518
+#: Scribes/internationalization.py:545
+msgid "Baltic languages"
+msgstr "Lingue Baltiche"
+
+#: Scribes/internationalization.py:491 Scribes/internationalization.py:511
+#: Scribes/internationalization.py:536 Scribes/internationalization.py:554
+msgid "Central and Eastern Europe"
+msgstr "Europa centrale ed Europa orientale"
+
+#: Scribes/internationalization.py:492 Scribes/internationalization.py:512
+#: Scribes/internationalization.py:539 Scribes/internationalization.py:551
+msgid "Bulgarian, Macedonian, Russian, Serbian"
+msgstr "Bulgaro, Macedone, Russo, Serbo"
+
+#: Scribes/internationalization.py:494 Scribes/internationalization.py:509
+#: Scribes/internationalization.py:515 Scribes/internationalization.py:543
+#: Scribes/internationalization.py:556
+msgid "Turkish"
+msgstr "Turco"
+
+#: Scribes/internationalization.py:495
+msgid "Portuguese"
+msgstr "Portoghese"
+
+#: Scribes/internationalization.py:496 Scribes/internationalization.py:553
+msgid "Icelandic"
+msgstr "Islandese"
+
+#: Scribes/internationalization.py:498
+msgid "Canadian"
+msgstr "Canadese"
+
+#: Scribes/internationalization.py:499 Scribes/internationalization.py:517
+#: Scribes/internationalization.py:540
+msgid "Arabic"
+msgstr "Arabo"
+
+#: Scribes/internationalization.py:500
+msgid "Danish, Norwegian"
+msgstr "Danese, Norvegiese"
+
+#: Scribes/internationalization.py:501 Scribes/internationalization.py:549
+msgid "Russian"
+msgstr "Russo"
+
+#: Scribes/internationalization.py:503
+msgid "Thai"
+msgstr "Thai"
+
+#: Scribes/internationalization.py:505 Scribes/internationalization.py:520
+#: Scribes/internationalization.py:521 Scribes/internationalization.py:522
+#: Scribes/internationalization.py:528 Scribes/internationalization.py:529
+#: Scribes/internationalization.py:531 Scribes/internationalization.py:532
+#: Scribes/internationalization.py:533 Scribes/internationalization.py:558
+#: Scribes/internationalization.py:559 Scribes/internationalization.py:560
+msgid "Japanese"
+msgstr "Giapponese"
+
+#: Scribes/internationalization.py:506 Scribes/internationalization.py:523
+#: Scribes/internationalization.py:534 Scribes/internationalization.py:548
+msgid "Korean"
+msgstr "Coreano"
+
+#: Scribes/internationalization.py:508
+msgid "Urdu"
+msgstr "Urdu"
+
+#: Scribes/internationalization.py:519
+msgid "Vietnamese"
+msgstr "Vietnamita"
+
+#: Scribes/internationalization.py:524 Scribes/internationalization.py:527
+msgid "Simplified Chinese"
+msgstr "Cinese semplificato"
+
+#: Scribes/internationalization.py:525 Scribes/internationalization.py:526
+msgid "Unified Chinese"
+msgstr "Cinese unificato"
+
+#: Scribes/internationalization.py:530
+msgid "Japanese, Korean, Simplified Chinese"
+msgstr "Giapponese, Coreano, Cinese semplificato"
+
+#: Scribes/internationalization.py:535
+msgid "West Europe"
+msgstr "Europa occidentale"
+
+#: Scribes/internationalization.py:537
+msgid "Esperanto, Maltese"
+msgstr "Esperanto, Maltese"
+
+#: Scribes/internationalization.py:538
+msgid "Baltic languagues"
+msgstr "Lingue Baltiche"
+
+#: Scribes/internationalization.py:544
+msgid "Nordic languages"
+msgstr "Lingue Nordiche"
+
+#: Scribes/internationalization.py:546
+msgid "Celtic languages"
+msgstr "Lingue Celtiche"
+
+#: Scribes/internationalization.py:550
+msgid "Ukrainian"
+msgstr "Ucraino"
+
+#: Scribes/internationalization.py:557
+msgid "Kazakh"
+msgstr "Kazaco"
+
+#: Scribes/internationalization.py:561
+msgid "All languages"
+msgstr "Tutte le lingue"
+
+#: Scribes/internationalization.py:562 Scribes/internationalization.py:563
+msgid "All Languages (BMP only)"
+msgstr "Tutte le lingue (solo BMP)"
+
+#: Scribes/internationalization.py:564
+msgid "All Languages"
+msgstr "Tutte le lingue"
+
+#: Scribes/internationalization.py:565
+msgid "None"
+msgstr "Nessuno"
+
+#: Scribes/internationalization.py:570
+msgid "Replaced tabs with spaces on selected lines"
+msgstr "Sostituiti i tabs con gli spazi sulle linee selezionate"
+
+#: Scribes/internationalization.py:574
+msgid "Scribes Text Editor"
+msgstr "Scribes - Editor di testo"
+
+#: Scribes/internationalization.py:575
+msgid "Edit text files"
+msgstr "Modifica file di testo"
+
+#: Scribes/internationalization.py:579
+msgid "Syntax Color Editor"
+msgstr "Editor dei colori di sintassi"
+
+#: Scribes/internationalization.py:580
+msgid "_Use default theme"
+msgstr "_usa il tema iniziale"
+
+#: Scribes/internationalization.py:581
+msgid "_Normal text color: "
+msgstr "Colore del testo _normale"
+
+#: Scribes/internationalization.py:582
+msgid "_Background color: "
+msgstr "Colore di _background"
+
+#: Scribes/internationalization.py:583
+msgid "Language Elements"
+msgstr "Elementi del linguaggio"
+
+#: Scribes/internationalization.py:584
+msgid "Co_lor: "
+msgstr "Co_lori: "
+
+#: Scribes/internationalization.py:585
+msgid "B_old"
+msgstr "_Grassetto"
+
+#: Scribes/internationalization.py:586
+msgid "I_talic"
+msgstr "_Corsivo"
+
+#: Scribes/internationalization.py:587
+msgid "_Reset to Default"
+msgstr "_Ripristina i valori iniziali"
+
+#: Scribes/internationalization.py:591
+msgid "Template Editor"
+msgstr "Editor per i template"
+
+#: Scribes/internationalization.py:592
+msgid "Language"
+msgstr "Linguaggio"
+
+#: Scribes/internationalization.py:593
+msgid "Name"
+msgstr "Nome"
+
+#: Scribes/internationalization.py:594
+msgid "Description"
+msgstr "Descrizione"
+
+#: Scribes/internationalization.py:597
+msgid "_Name:"
+msgstr "_Nome"
+
+#: Scribes/internationalization.py:598
+msgid "_Description:"
+msgstr "_Descrizione"
+
+#: Scribes/internationalization.py:599
+msgid "_Template:"
+msgstr ""
+
+#: Scribes/internationalization.py:600
+msgid "Add New Template"
+msgstr "Aggiungi nuovo template"
+
+#: Scribes/internationalization.py:603
+msgid "Edit Template"
+msgstr "Modifica Template"
+
+#: Scribes/internationalization.py:606
+msgid "Select to use themes' foreground and background colors"
+msgstr "Seleziona per usare i colori di foreground e background del tema"
+
+#: Scribes/internationalization.py:607
+msgid "Click to choose a new color for the editor's text"
+msgstr "Clicca per selezionare un nuovo colo per il testo dell'editor"
+
+#: Scribes/internationalization.py:608
+msgid "Click to choose a new color for the editor's background"
+msgstr "Clicca per selzionare un nuovo colore per lo sfondo dell'editor"
+
+#: Scribes/internationalization.py:609
+msgid "Click to choose a new color for the language syntax element"
+msgstr ""
+"Clicca per selezionare un nuovo colore per gli elementi di sintassi del linguaggio"
+
+#: Scribes/internationalization.py:610
+msgid "Select to make the language syntax element bold"
+msgstr ""
+"Seleziona per rendere in grassetto gli elementi di sintassi del linguaggio"
+
+#: Scribes/internationalization.py:611
+msgid "Select to make the language syntax element italic"
+msgstr ""
+"Seleziona per rendere in corsivo gli elementi di sintassi del linguaggio"
+
+#: Scribes/internationalization.py:612
+msgid "Select to reset the language syntax element to its default settings"
+msgstr ""
+"Seleziona per ripristinare i valori iniziali degli elementi di sintassi del"
+" linguaggio"
+
+#: Scribes/internationalization.py:616
+msgid "Change editor colors"
+msgstr "Cambia i colori dell'editor"
+
+#: Scribes/internationalization.py:619
+msgid "Toggled readonly mode on"
+msgstr "Entrato nella modalità di sola lettura"
+
+#: Scribes/internationalization.py:620
+msgid "File has not been saved to disk"
+msgstr "Il file non e' stato salvato sul disco"
+
+#: Scribes/internationalization.py:621
+msgid "Toggled readonly mode off"
+msgstr "Uscito dalla modalità di sola lettura"
+
+#: Scribes/internationalization.py:622
+msgid "No permission to modify file"
+msgstr "Non hai i permessi per modificare questo file."
+
+#: Scribes/internationalization.py:625
+msgid "Menu for advanced configuration"
+msgstr "Menu per la configurazione avanzata"
+
+#: Scribes/internationalization.py:626
+msgid "Configure the editor's foreground, background or syntax colors"
+msgstr ""
+"Configura i colori di foreground, di background o di sintassi dell'editor"
+
+#: Scribes/internationalization.py:627
+msgid "Create, modify or manage templates"
+msgstr "Crea, modifica o gestisci i template"
+
+#: Scribes/internationalization.py:630
+#, python-format
+msgid "Ln %d col %d"
+msgstr "Linea %d colonna %d"

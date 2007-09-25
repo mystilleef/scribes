@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<omf>
+  <resource>
+    <creator>(Lateef Alabi-Oki)</creator>
+    <maintainer>(Lateef Alabi-Oki)</maintainer>
+    <title>Scribes Manual V0.3</title>
+    <date>August 2005</date>
+    <version identifier="Scribes Manual V0.3" date="August 2005"/>
+    <subject category="GNOME|Applications|Accessories"/>
+    <description>
+			Scribes is a GNOME text editor.
+		</description>
+    <type>user's guide</type>
+    <format mime="text/xml" dtd="-//OASIS//DTD DocBook XML V4.1.2//EN"/>
+    <identifier url="file:///usr/share/gnome/help/scribes/C/scribes.xml"/>
+    <language code="C"/>
+    <relation seriesid="081c7e56-2acd-11d9-819f-e6a11scribes"/>
+    <rights type="GNU FDL" license.version="1.1" holder="Lateef Alabi-Oki"/>
+  </resource>
+</omf>

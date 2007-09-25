@@ -1,0 +1,2212 @@
+# translation of PACKAGE.
+# Copyright (C) 2006 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# <>, 2006.
+# , fuzzy
+# <>, 2006.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-10-08 14:46+0200\n"
+"PO-Revision-Date: 2007-04-28 09:30+0200\n"
+"Last-Translator: Hanusz Leszek <leszek.hanusz@gmail.com>\n"
+"Language-Team: French <gnomefr@traduc.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#. From module about.py
+#: ../SCRIBES/internationalization.py:68
+msgid "Scribes is a text editor for GNOME."
+msgstr "Scribes est un éditeur de texte pour GNOME."
+
+#. .decode(encoding).encode("utf-8")
+#. From module accelerators.py
+#: ../SCRIBES/internationalization.py:71
+msgid "Cannot undo action"
+msgstr "Impossible d'annuler l'action"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:72
+msgid "Cannot redo action"
+msgstr "Impossible de refaire l'action"
+
+#. .decode(encoding).encode("utf-8")
+#. From module lines.py
+#: ../SCRIBES/internationalization.py:75
+#, python-format
+msgid "Deleted line %d"
+msgstr "Ligne effacée %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:76
+#, python-format
+msgid "Joined line %d to line %d"
+msgstr "Collé la ligne %d à la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:77
+msgid "No more lines to join"
+msgstr "Plus de lignes à coller"
+
+#. .decode(encoding).encode("utf-8")
+#. From module select.py
+#: ../SCRIBES/internationalization.py:80
+msgid "Selected word"
+msgstr "Mot sélectionné"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:81
+msgid "No word to select"
+msgstr "Pas de mot à sélectionner"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:82
+#, python-format
+msgid "No text to select on line %d"
+msgstr "Pas de texte à sélectionner dans la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:83
+#, python-format
+msgid "Selected line %d"
+msgstr "Ligne %d sélectionnée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:84
+msgid "Selected paragraph"
+msgstr "Paragraphe sélectionné"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:85
+msgid "No paragraph to select"
+msgstr "Pas de paragraphe à sélectionner"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:86
+msgid "Selected sentence"
+msgstr "Phrase sélectionnée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:87
+msgid "No sentence to select"
+msgstr "Pas de phrase à sélectionner"
+
+#. .decode(encoding).encode("utf-8")
+#. From module case.py
+#: ../SCRIBES/internationalization.py:90
+msgid "No selection to change case"
+msgstr "Pas de sélection pour appliquer un changement de casse"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:91
+msgid "Selected text is already uppercase"
+msgstr "Le texte sélectionné est déjà en majuscules"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:92
+msgid "Changed selected text from lowercase to uppercase"
+msgstr "Le texte sélectionné a été changé de minuscules en majuscules"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:93
+msgid "Selected text is already lowercase"
+msgstr "Le texte sélectionné est déjà en minuscules"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:94
+msgid "Changed selected text from uppercase to lowercase"
+msgstr "Le texte sélectionné a été changé de majuscules en minuscules"
+
+#. .decode(encoding).encode("utf-8")
+#. From module bracket.py
+#: ../SCRIBES/internationalization.py:97
+#, python-format
+msgid "Found matching bracket on line %d"
+msgstr "Parenthèse correspondante trouvée à la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:98
+msgid "No matching bracket found"
+msgstr "Pas de parenthèse correspondante trouvée"
+
+#. .decode(encoding).encode("utf-8")
+#. From module editor_ng.py
+#: ../SCRIBES/internationalization.py:101
+#: ../SCRIBES/internationalization.py:738
+msgid "Disabled spellchecking"
+msgstr "Correction orthographique désactivée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:102
+#: ../SCRIBES/internationalization.py:737
+msgid "Enabled spellchecking"
+msgstr "Correction orthographique activée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:103
+msgid "Leave Fullscreen"
+msgstr "Quitter le plein écran"
+
+#. .decode(encoding).encode("utf-8")
+#. From module editor_ng.py, fileloader.py, timeout.py
+#: ../SCRIBES/internationalization.py:106
+msgid "Unsaved Document"
+msgstr "Document non sauvé"
+
+#. .decode(encoding).encode("utf-8")
+#. From module filechooser.py
+#: ../SCRIBES/internationalization.py:109
+msgid "Open Document"
+msgstr "Ouvre document"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:110
+msgid "All Documents"
+msgstr "Tous les documents"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:111
+msgid "Python Documents"
+msgstr "Document Python"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:112
+msgid "Text Documents"
+msgstr "Document texte"
+
+#. .decode(encoding).encode("utf-8")
+#. From module fileloader.py
+#: ../SCRIBES/internationalization.py:115
+#, python-format
+msgid "Loaded file \"%s\""
+msgstr "Fichier \"%s\" chargé"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:116
+msgid ""
+"The encoding of the file you are trying to open could not be determined. Try "
+"opening the file with another encoding."
+msgstr ""
+"Erreur de décodage. L'encodage de caractères du fichier que vous essayez "
+"d'ouvrir n'est pas reconnu. Essayez d'ouvrir le fichier avec un autre "
+"encodage de caractères."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:118
+msgid "Loading file please wait..."
+msgstr "Chargement du fichier, patientez SVP..."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:119
+msgid ""
+"An error occurred while openning the file. Please file a bug report at "
+"http://scribes.sourceforge.net"
+msgstr ""
+"Erreur lors de l'ouverture du fichier. Reportez le bogue sur notre site:"
+"http://scribes.sourceforge.net"
+
+#. .decode(encoding).encode("utf-8")
+#. From module fileloader.py, savechooser.py
+#: ../SCRIBES/internationalization.py:123
+msgid " <READONLY>"
+msgstr " <LECTURESEULE>"
+
+#. .decode(encoding).encode("utf-8")
+#. From module fileloader.py
+#: ../SCRIBES/internationalization.py:126
+msgid "You do not have permission to view this file."
+msgstr "Vous n'avez pas la permission d'ouvrir ce fichier."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:127
+msgid "The file you are trying to open is not a text file."
+msgstr "Le fichier que vous essayez d'ouvrir n'est pas un fichier texte"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:128
+msgid "The file you are trying to open does not exist."
+msgstr "Le fichier que vous essayez d'ouvrir n'existe pas."
+
+#. .decode(encoding).encode("utf-8")
+#. From module main.py
+#: ../SCRIBES/internationalization.py:131
+#, python-format
+msgid "Unrecognized option: '%s'"
+msgstr "Option non reconnue: '%s'"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:132
+msgid "Try 'scribes --help' for more information"
+msgstr "Essayez 'scribes --help' pour plus d'information"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:133
+msgid "Scribes only supports using one option at a time"
+msgstr "Scribes ne supporte qu'une option à la fois"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:134
+#, python-format
+msgid "scribes: %s takes no arguments"
+msgstr "scribes: %s ne prend pas de paramètres"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:135
+#, python-format
+msgid "Scribes version %s"
+msgstr "Scribes version %s"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:136
+#, python-format
+msgid "%s does not exist"
+msgstr "%s n'existe pas"
+
+#. .decode(encoding).encode("utf-8")
+#. From module timeout.py
+#: ../SCRIBES/internationalization.py:139
+#, python-format
+msgid "The file \"%s\" is open in readonly mode"
+msgstr "Le fichier \"%s\" est ouvert en lecture seule"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:140
+#, python-format
+msgid "The file \"%s\" is open"
+msgstr "Le fichier \"%s\" est ouvert"
+
+#. .decode(encoding).encode("utf-8")
+#. From modules findbar.py
+#: ../SCRIBES/internationalization.py:143
+msgid "No match found"
+msgstr "Pas de correspondance trouvée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:144
+#, python-format
+msgid "Found %d match"
+msgstr "%d correspondance trouvée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:145
+#, python-format
+msgid "Found %d matches"
+msgstr "%d correspondances trouvées"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:146
+msgid "_Search for:    "
+msgstr "_Rechercher:    "
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:147
+msgid "_Search for:"
+msgstr "_Rechercher:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:148
+msgid "_Previous"
+msgstr "_Précédent"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:149
+msgid "_Next"
+msgstr "_Suivant"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:150
+msgid "Match _case"
+msgstr "Respecter la casse"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:151
+msgid "Match _word"
+msgstr "Mot entier"
+
+#. .decode(encoding).encode("utf-8")
+#. From modules gotobar.py
+#: ../SCRIBES/internationalization.py:154
+msgid "Line number:"
+msgstr "Numéro de ligne:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:155
+#, python-format
+msgid " of %d"
+msgstr " de %d"
+
+#. .decode(encoding).encode("utf-8")
+#. From module help.py
+#: ../SCRIBES/internationalization.py:158
+msgid "Launching help browser"
+msgstr "Lancement de l'aide"
+
+#. .decode(encoding).encode("utf-8")
+#. From module indent.py
+#: ../SCRIBES/internationalization.py:161
+msgid "No indentation selection found"
+msgstr "Pas de sélection à indenter"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:162
+msgid "Selection indented"
+msgstr "Sélection indentée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:163
+msgid "Unindentation is not possible"
+msgstr "Désindentation impossible"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:164
+msgid "Selection unindented"
+msgstr "Sélection désindentée"
+
+#. .decode(encoding).encode("utf-8")
+#. From module modes.py
+#: ../SCRIBES/internationalization.py:167
+msgid "loading..."
+msgstr "chargement..."
+
+#. .decode(encoding).encode("utf-8")
+#. From module preferences.py
+#: ../SCRIBES/internationalization.py:170
+msgid "<b>Font</b>"
+msgstr "<b>Fonte</b>"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:171
+msgid "Editor _font: "
+msgstr "_Fonte de l'éditeur:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:172
+msgid "<b>Tab Stops</b>"
+msgstr "<b>Utilisation des Tabulations</b>"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:173
+msgid "_Tab width: "
+msgstr "_Taille des tabulations:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:174
+msgid "<b>Text Wrapping</b>"
+msgstr "<b>Mise à la ligne</b>"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:175
+msgid "Enable text _wrapping"
+msgstr "Activer la mise a la _ligne"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:176
+msgid "<b>Right Margin</b>"
+msgstr "<b>Marge à droite</b>"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:177
+msgid "Display right _margin"
+msgstr "Afficher la marge à _droite"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:178
+msgid "_Right margin position: "
+msgstr "_Position de la marge à droite: "
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:179
+msgid "<b>Spell Checking</b>"
+msgstr "<b>Correction orthographique</b>"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:180
+msgid "_Enable spell checking"
+msgstr "_Activer la correction orthographique"
+
+#. .decode(encoding).encode("utf-8")
+#. From modules printing.py
+#: ../SCRIBES/internationalization.py:183
+msgid "Print Preview"
+msgstr "Aperçu avant impression"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:184
+msgid "File: "
+msgstr "Fichier: "
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:185
+msgid "Print Document"
+msgstr "Imprimer le Document"
+
+#. .decode(encoding).encode("utf-8")
+#. From module replace.py
+#: ../SCRIBES/internationalization.py:188
+#, python-format
+msgid "\"%s\" has been replaced with \"%s\""
+msgstr "\"%s\" a été remplacé par \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:189
+#, python-format
+msgid "Replaced all occurrences of \"%s\" with \"%s\""
+msgstr "Toutes les occurences de \"%s\" ont été remplacées par \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:190
+msgid "Replac_e with:"
+msgstr "R_emplacer par:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:191
+msgid "_Replace"
+msgstr "_Remplacer"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:192
+msgid "Replace _All"
+msgstr "Remplacer _Tout"
+
+#. .decode(encoding).encode("utf-8")
+#. From module savechooser.py
+#: ../SCRIBES/internationalization.py:195
+msgid "Save Document"
+msgstr "Sauver le Document"
+
+#. .decode(encoding).encode("utf-8")
+#. From module savefile.py
+#: ../SCRIBES/internationalization.py:198
+msgid "An error occurred while saving this file."
+msgstr "Une erreur est arrivée lors de la sauvegarde du fichier."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:199
+msgid ""
+"An error occurred while decoding your file. Please file a bug report at "
+"\"http://openusability.org/forum/?group_id=141\""
+msgstr ""
+"Une erreur est arrivée lors du décodage du fichier. Reportez le bogue sur "
+"notre site:\"http://openusability.org/forum/?group_id=141\""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:201
+#, python-format
+msgid "Saved \"%s\""
+msgstr "\"%s\" sauvé"
+
+#. .decode(encoding).encode("utf-8")
+#. From module textview.py
+#: ../SCRIBES/internationalization.py:204
+msgid "Shift _Right"
+msgstr "Déplacer à _Droite"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:205
+msgid "Shift _Left"
+msgstr "Déplacer à _Gauche"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:206
+msgid "_Find Matching Bracket"
+msgstr "_Rechercher la parenthèse correspondante"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:207
+msgid "Copied selected text"
+msgstr "Le texte sélectionné a été copié"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:208
+msgid "No selection to copy"
+msgstr "Pas de sélection à copier"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:209
+msgid "Cut selected text"
+msgstr "Couper le texte sélectionné"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:210
+msgid "No selection to cut"
+msgstr "Pas de sélection à couper"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:211
+msgid "Pasted copied text"
+msgstr "Le texte a été collé"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:212
+msgid "No text content in the clipboard"
+msgstr "Pas de texte dans le presse-papier"
+
+#. .decode(encoding).encode("utf-8")
+#. From module timeout.py
+#: ../SCRIBES/internationalization.py:215
+#, python-format
+msgid "%d%% complete"
+msgstr "%d%% effectué"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:216
+msgid "completed"
+msgstr "terminé"
+
+#. .decode(encoding).encode("utf-8")
+#. From module tooltips.py
+#: ../SCRIBES/internationalization.py:219
+msgid "Open a new window"
+msgstr "Ouvrir une nouvelle fenêtre"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:220
+msgid "Open a file"
+msgstr "Ouvrir un fichier"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:221
+msgid "Rename the current file"
+msgstr "Renommer le fichier"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:222
+msgid "Print the current file"
+msgstr "Imprimer le fichier"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:223
+msgid "Undo last action"
+msgstr "Défaire l'action précédente"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:224
+msgid "Redo undone action"
+msgstr "Refaire l'action annulée"
+
+#. .decode(encoding).encode("utf-8")
+#. .decode(encoding).encode("utf-8")
+#. From findbar.py
+#: ../SCRIBES/internationalization.py:225
+#: ../SCRIBES/internationalization.py:355
+msgid "Search for text"
+msgstr "Rechercher dans le texte"
+
+#. .decode(encoding).encode("utf-8")
+#. .decode(encoding).encode("utf-8")
+#. From replacebar.py
+#: ../SCRIBES/internationalization.py:226
+#: ../SCRIBES/internationalization.py:359
+msgid "Search for and replace text"
+msgstr "Chercher et Remplacer dans le texte"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:227
+msgid "Go to a specific line"
+msgstr "Aller à une ligne spécifiée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:228
+msgid "Configure the editor"
+msgstr "Configurer l'éditeur"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:229
+msgid "Launch the help browser"
+msgstr "Afficher l'aide"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:230
+msgid "Search for previous occurrence of the string"
+msgstr "Rechercher des occurences précédentes de la chaine"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:231
+msgid "Search for next occurrence of the string"
+msgstr "Rechercher la prochaine occurence de la chaine"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:232
+msgid "Find occurrences of the string that match upper and lower cases only"
+msgstr "Rechercher des occurences de la chaine en respectant la casse"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:234
+msgid "Find occurrences of the string that match the entire word only"
+msgstr "Rechercher des occurences de la chaine par mot entier seulement"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:235
+msgid "Type in the text you want to search for"
+msgstr "Entrez le texte que vous désirez chercher"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:236
+msgid "Type in the text you want to replace with"
+msgstr "Entrez le texte que vous désirez remplacer"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:237
+msgid "Replace the selected found match"
+msgstr "Remplacer cette occurence"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:238
+msgid "Replace all found matches"
+msgstr "Remplacer toutes les occurences"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:239
+msgid "Click to specify the font type, style, and size to use for text."
+msgstr ""
+"Cliquez pour specifier les caractéristiques de la fonte à utiliser pour le "
+"texte"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:240
+msgid ""
+"Click to specify the width of the space that is inserted when you press the "
+"Tab key."
+msgstr ""
+"Cliquez pour specifier le nombre d'espaces à inserer lorsque vous pressez la "
+"touche Tabulation."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:242
+msgid ""
+"Select to wrap text onto the next line when you reach the text window "
+"boundary."
+msgstr "Activer la coupure du texte lorsque vous atteignez la marge à droite."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:244
+msgid "Select to display a vertical line that indicates the right margin."
+msgstr "Afficher la ligne verticale qui indique la marge à droite."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:246
+msgid "Click to specify the location of the vertical line."
+msgstr "Cliquer pour spécifier la position de la marge à droite."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:247
+msgid "Select to enable spell checking"
+msgstr "Activer la correction orthographique"
+
+#. .decode(encoding).encode("utf-8")
+#. From module undo_redo.py
+#: ../SCRIBES/internationalization.py:250
+msgid "Undid last action"
+msgstr "Action précédente annulée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:251
+msgid "Redid undone action"
+msgstr "Action annulée réactivée"
+
+#. .decode(encoding).encode("utf-8")
+#. From module usage.py
+#: ../SCRIBES/internationalization.py:254
+msgid "A text editor for GNOME."
+msgstr "Un éditeur de texte pour GNOME"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:255
+msgid "usage: scribes [OPTION] [FILE] [...]"
+msgstr "usage: scribes [OPTION] [FILE] [...]"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:256
+msgid "Options:"
+msgstr "Options:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:257
+msgid "display this help screen"
+msgstr "affiche cette page d'aide"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:258
+msgid "output version information of Scribes"
+msgstr "affiche les informations de version de Scribes"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:259
+msgid "create a new file and open the file with Scribes"
+msgstr "créer un nouveau fichier et l'ouvrir avec Scribes"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:260
+msgid "open file in readonly mode"
+msgstr "ouvrir le fichier en lecture seule"
+
+#. .decode(encoding).encode("utf-8")
+#. From module utility.py
+#: ../SCRIBES/internationalization.py:263
+msgid "Could not find Scribes' data folder"
+msgstr "Impossible de trouver le répertoire de données de Scribes"
+
+#. .decode(encoding).encode("utf-8")
+#. From preferences.py
+#: ../SCRIBES/internationalization.py:266
+msgid "Preferences"
+msgstr "Préférences"
+
+#. .decode(encoding).encode("utf-8")
+#. From error.py
+#: ../SCRIBES/internationalization.py:269
+msgid "error"
+msgstr "erreur"
+
+#. .decode(encoding).encode("utf-8")
+#. From module indent.py
+#: ../SCRIBES/internationalization.py:272
+msgid "No spaces were found at end of line"
+msgstr "Aucun espace n'a été trouvé à la fin de la ligne"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:273
+#, python-format
+msgid "Removed spaces at end of line %d"
+msgstr "Les espaces de fin de la ligne ont été supprimés à la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#. From module lines.py
+#: ../SCRIBES/internationalization.py:276
+#, python-format
+msgid "Freed line %d"
+msgstr "Ligne %d libérée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:277
+#, python-format
+msgid "Deleted text from cursor to end of line %d"
+msgstr "Le texte a été supprimé du curseur à la fin de la ligne à la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:278
+msgid "Cursor is already at the end of line"
+msgstr "Le curseur est déjà à la fin de la ligne"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:279
+#, python-format
+msgid "Deleted text from cursor to beginning of line %d"
+msgstr "Le texte a été supprimé du curseur au début de la ligne, à la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:280
+msgid "Cursor is already at the beginning of line"
+msgstr "Le curseur est déjà au début de la ligne"
+
+#. .decode(encoding).encode("utf-8")
+#. From module indent.py
+#: ../SCRIBES/internationalization.py:283
+msgid "No spaces were found at beginning of line"
+msgstr "Aucun espace n'a été trouvé au début de la ligne"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:284
+#, python-format
+msgid "Removed spaces at beginning of line %d"
+msgstr "Les espaces de début de ligne ont été supprimés, à la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:285
+msgid "Removed spaces at beginning of selected lines"
+msgstr ""
+"Les espaces de début de ligne ont été supprimés sur les lignes sélectionnées"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:286
+msgid "Removed spaces at end of selected lines"
+msgstr ""
+"Les espaces de fin de ligne ont été supprimés sur les lignes sélectionnées"
+
+#. .decode(encoding).encode("utf-8")
+#. From module actions.py
+#: ../SCRIBES/internationalization.py:289
+msgid "Cannot perform operation in readonly mode"
+msgstr "Impossible d'effectuer cette opération en mode lecture seule"
+
+#. .decode(encoding).encode("utf-8")
+#. From module indent.py
+#: ../SCRIBES/internationalization.py:292
+#, python-format
+msgid "Indented line %d"
+msgstr "La ligne %d a été indentée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:293
+#, python-format
+msgid "Unindented line %d"
+msgstr "La ligne %d a été désindentée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:294
+msgid "No selected lines can be indented"
+msgstr "Les lignes sélectionnées ne peuvent être indentées"
+
+#. .decode(encoding).encode("utf-8")
+#. From module case.py
+#: ../SCRIBES/internationalization.py:297
+msgid "Swapped the case of selected text"
+msgstr "La casse du texte sélectionné a été inversée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:298
+msgid "Capitalized selected text"
+msgstr "Le texte sélectionné a été capitalisé"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:299
+msgid "Selected text is already capitalized"
+msgstr "Le texte sélectionné est déjà capitalisé"
+
+#. .decode(encoding).encode("utf-8")
+#. From module savefile.py
+#: ../SCRIBES/internationalization.py:302
+msgid ""
+"An error occurred while encoding your file. Try saving your file using "
+"another character encoding, preferably UTF-8."
+msgstr ""
+"Une erreur est apparue lors de l'encodage du fichier. Essayez de le sauver en "
+"utilisant un autre codage de caractère, de préférence UTF-8."
+
+#. .decode(encoding).encode("utf-8")
+#. From module fileloader.py
+#: ../SCRIBES/internationalization.py:306
+msgid ""
+"An encoding error occurred. Please file a bug report at http://openusability."
+"org/forum/?group_id=141"
+msgstr "Une erreur d'encodage est apparue."
+
+#. .decode(encoding).encode("utf-8")
+#. From brackets.py
+#: ../SCRIBES/internationalization.py:310
+msgid "Pair character completion occurred"
+msgstr "Autocompletion de parenthèse"
+
+#. .decode(encoding).encode("utf-8")
+#. From autocomplete.py
+#: ../SCRIBES/internationalization.py:313
+msgid "Word completion occurred"
+msgstr "Autocompletion de mot"
+
+#. .decode(encoding).encode("utf-8")
+#. From brackets.py
+#: ../SCRIBES/internationalization.py:316
+msgid "Removed pair character completion"
+msgstr "Autocompletion de parenthèse annulée"
+
+#. .decode(encoding).encode("utf-8")
+#. From encoding.py
+#: ../SCRIBES/internationalization.py:319
+msgid "Character _Encoding: "
+msgstr "_Codage des caractères: "
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:320
+msgid "Add or Remove Encoding ..."
+msgstr "Ajouter ou Supprimer le codage ..."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:321
+msgid "Recommended (UTF-8)"
+msgstr "Recommandé (UTF-8)"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:322
+msgid "Add or Remove Character Encoding"
+msgstr "Ajouter ou Supprimer l'Encodage de Caractère"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:323
+msgid "Language and Region"
+msgstr "Langue et Région"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:324
+msgid "Character Encoding"
+msgstr "Encodage de Caractère"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:325
+msgid "Select"
+msgstr "Selectionner"
+
+#. .decode(encoding).encode("utf-8")
+#. From bookmark.py
+#: ../SCRIBES/internationalization.py:328
+#, python-format
+msgid "Line %d is already bookmarked"
+msgstr "La ligne %d a déjà un signet"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:329
+#, python-format
+msgid "Bookmarked line %d"
+msgstr "Un signet a été placé sur la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:330
+#, python-format
+msgid "No bookmark on line %d to remove"
+msgstr "Pas de signet à supprimer sur la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:331
+#, python-format
+msgid "Removed bookmark on line %d"
+msgstr "Le signet sur la ligne %s a été supprimé"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:332
+msgid "No bookmarks found to remove"
+msgstr "Aucun signets n'a été trouvé"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:333
+msgid "Removed all bookmarks"
+msgstr "Tous les signets ont été supprimés"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:334
+msgid "No next bookmark to move to"
+msgstr "Pas de signet suivant"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:335
+#, python-format
+msgid "Moved to bookmark on line %d"
+msgstr "Curseur placé sur le signet de la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:336
+msgid "No previous bookmark to move to"
+msgstr "Pas de signet précédent"
+
+#. .decode(encoding).encode("utf-8")
+#. From filechooser.py, savechooser.py
+#: ../SCRIBES/internationalization.py:339
+msgid "Select character _encoding"
+msgstr "Encodage de caractère"
+
+#. .decode(encoding).encode("utf-8")
+#. From indent.py
+#: ../SCRIBES/internationalization.py:342
+#, python-format
+msgid "Replaced tabs with spaces on line %d"
+msgstr "Remplacé les tabulations par des espaces à la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:343
+#: ../SCRIBES/internationalization.py:655
+msgid "Replacing tabs please wait..."
+msgstr "Changement des tabulations, patientez SVP..."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:344
+#, python-format
+msgid "No tabs found on line %d"
+msgstr "Pas de tabulations dans la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:345
+msgid "No tabs found in selected text"
+msgstr "Pas de tabulations dans le texte sélectionné"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:346
+msgid "Removing spaces please wait..."
+msgstr "Effacement des espaces, patientez SVP..."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:347
+msgid "Indenting please wait..."
+msgstr "Indentation en cours, patientez SVP..."
+
+#. .decode(encoding).encode("utf-8")
+#. From gotobar.py
+#: ../SCRIBES/internationalization.py:350
+msgid "Move cursor to a specific line"
+msgstr "Déplacer le curseur à une ligne spécifiée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:351
+#, python-format
+msgid "Moved cursor to line %d"
+msgstr "Curseur placé à la ligne %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:352
+msgid "Closed goto line bar"
+msgstr "Barre 'aller à la ligne' masquée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:356
+msgid "Closed search bar"
+msgstr "Barre de recherche masquée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:360
+msgid "Closed replace bar"
+msgstr "Barre de remplacement masquée"
+
+#. .decode(encoding).encode("utf-8")
+#. From filechooser.py
+#: ../SCRIBES/internationalization.py:363
+msgid "Closed dialog window"
+msgstr "Fenêtre de dialogue fermée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:364
+msgid "Select file for loading"
+msgstr "Selectionner le fichier à charger"
+
+#. .decode(encoding).encode("utf-8")
+#. From error.py
+#: ../SCRIBES/internationalization.py:367
+#, python-format
+msgid "Cannot open %s"
+msgstr "Impossible d'ouvrir %s"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:368
+msgid "Closed error dialog"
+msgstr "Fenêtre d'erreur fermée"
+
+#. .decode(encoding).encode("utf-8")
+#. From fileloader.py
+#: ../SCRIBES/internationalization.py:371
+#, python-format
+msgid ""
+"The MIME type of the file you are trying to open could not be determined. "
+"Make sure the file is a text file.\n"
+"\n"
+"<b>MIME type</b>: %s"
+msgstr ""
+"Le type MIME du fichier que vous essayez d'ouvrir ne peut être déterminé,"
+"Verifiez que le fichier est bien un format texte\n"
+"\n"
+"<b>type MIME</b>: %s"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:373
+#, python-format
+msgid ""
+"The MIME type of the file you are trying to open is not for a text file.\n"
+"\n"
+"<b>MIME type</b>: %s"
+msgstr ""
+"Erreur lors de la vérification du fichier. Le fichier que vous essayez "
+"d'ouvrir n'est pas un fichier texte.\n"
+"\n"
+"<b>Type MIME</b> : %s"
+
+#. .decode(encoding).encode("utf-8")
+#. From savechooser.py
+#: ../SCRIBES/internationalization.py:377
+msgid "Change name of file and save"
+msgstr "Changer le nom du fichier et le sauver"
+
+#. .decode(encoding).encode("utf-8")
+#. From printing.py
+#: ../SCRIBES/internationalization.py:380
+msgid "Print file"
+msgstr "Imprimer fichier"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:381
+#, python-format
+msgid "Printing \"%s\""
+msgstr "Impression de \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#. From preferences.py
+#: ../SCRIBES/internationalization.py:384
+msgid "Change editor settings"
+msgstr "Modifier les paramètres de l'éditeur"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:385
+#, python-format
+msgid "Changed font to \"%s\""
+msgstr "La fonte est maintenant: \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:386
+#, python-format
+msgid "Changed tab width to %d"
+msgstr "Taille des tabulations: %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:387
+msgid "Enabled text wrapping"
+msgstr "Mise à la ligne activée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:388
+msgid "Disabled text wrapping"
+msgstr "Mise à la _ligne désactivée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:389
+msgid "Show right margin"
+msgstr "Affiche la marge à droite"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:390
+msgid "Hide right margin"
+msgstr "Cache la marge à droite"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:391
+#, python-format
+msgid "Positioned margin line at column %d"
+msgstr "Marge à droite placée à la colonne %d"
+
+#. .decode(encoding).encode("utf-8")
+#. From about.py
+#: ../SCRIBES/internationalization.py:394
+msgid "Information about the text editor"
+msgstr "Informations à propos de l'éditeur de texte"
+
+#. .decode(encoding).encode("utf-8")
+#. From select.py
+#: ../SCRIBES/internationalization.py:397
+msgid "No brackets found for selection"
+msgstr "Aucun crochet n'a été trouvé"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:398
+msgid "Selected characters inside bracket"
+msgstr "Les caractères à l'intérieur des parenthèses ont été sélectionnés"
+
+#. .decode(encoding).encode("utf-8")
+#. From bracket.py
+#: ../SCRIBES/internationalization.py:401
+msgid "Enclosed selected text"
+msgstr "Le texte sélectionné a été entouré"
+
+#. .decode(encoding).encode("utf-8")
+#. From encoding.py
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:404
+#: ../SCRIBES/internationalization.py:407
+#: ../SCRIBES/internationalization.py:409
+msgid "English"
+msgstr "Anglais"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:405
+#: ../SCRIBES/internationalization.py:406
+#: ../SCRIBES/internationalization.py:430
+msgid "Traditional Chinese"
+msgstr "Chinois Traditionnel"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:408
+#: ../SCRIBES/internationalization.py:416
+#: ../SCRIBES/internationalization.py:420
+#: ../SCRIBES/internationalization.py:439
+#: ../SCRIBES/internationalization.py:465
+msgid "Hebrew"
+msgstr "Hébreu"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:410
+#: ../SCRIBES/internationalization.py:413
+#: ../SCRIBES/internationalization.py:433
+#: ../SCRIBES/internationalization.py:436
+#: ../SCRIBES/internationalization.py:470
+#: ../SCRIBES/internationalization.py:478
+msgid "Western Europe"
+msgstr "Europe Occidentale"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:411
+#: ../SCRIBES/internationalization.py:425
+#: ../SCRIBES/internationalization.py:427
+#: ../SCRIBES/internationalization.py:437
+#: ../SCRIBES/internationalization.py:464
+#: ../SCRIBES/internationalization.py:475
+msgid "Greek"
+msgstr "Grec"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:412
+#: ../SCRIBES/internationalization.py:441
+#: ../SCRIBES/internationalization.py:468
+msgid "Baltic languages"
+msgstr "Langues Baltiques"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:414
+#: ../SCRIBES/internationalization.py:434
+#: ../SCRIBES/internationalization.py:459
+#: ../SCRIBES/internationalization.py:477
+msgid "Central and Eastern Europe"
+msgstr "Europe Centrale et Orientale"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:415
+#: ../SCRIBES/internationalization.py:435
+#: ../SCRIBES/internationalization.py:462
+#: ../SCRIBES/internationalization.py:474
+msgid "Bulgarian, Macedonian, Russian, Serbian"
+msgstr "Bulgare, Macédonien, Russe, Serbe"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:417
+#: ../SCRIBES/internationalization.py:432
+#: ../SCRIBES/internationalization.py:438
+#: ../SCRIBES/internationalization.py:466
+#: ../SCRIBES/internationalization.py:479
+msgid "Turkish"
+msgstr "Turc"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:418
+msgid "Portuguese"
+msgstr "Portugais"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:419
+#: ../SCRIBES/internationalization.py:476
+msgid "Icelandic"
+msgstr "Icelandais"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:421
+msgid "Canadian"
+msgstr "Canadien"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:422
+#: ../SCRIBES/internationalization.py:440
+#: ../SCRIBES/internationalization.py:463
+msgid "Arabic"
+msgstr "Arabe"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:423
+msgid "Danish, Norwegian"
+msgstr "Danois, Norvégien"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:424
+#: ../SCRIBES/internationalization.py:472
+msgid "Russian"
+msgstr "Russe"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:426
+msgid "Thai"
+msgstr "Thaï"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:428
+#: ../SCRIBES/internationalization.py:443
+#: ../SCRIBES/internationalization.py:444
+#: ../SCRIBES/internationalization.py:445
+#: ../SCRIBES/internationalization.py:451
+#: ../SCRIBES/internationalization.py:452
+#: ../SCRIBES/internationalization.py:454
+#: ../SCRIBES/internationalization.py:455
+#: ../SCRIBES/internationalization.py:456
+#: ../SCRIBES/internationalization.py:481
+#: ../SCRIBES/internationalization.py:482
+#: ../SCRIBES/internationalization.py:483
+msgid "Japanese"
+msgstr "Japonais"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:429
+#: ../SCRIBES/internationalization.py:446
+#: ../SCRIBES/internationalization.py:457
+#: ../SCRIBES/internationalization.py:471
+msgid "Korean"
+msgstr "Koréen"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:431
+msgid "Urdu"
+msgstr "Ourdou"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:442
+msgid "Vietnamese"
+msgstr "Vietnamien"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:447
+#: ../SCRIBES/internationalization.py:450
+msgid "Simplified Chinese"
+msgstr "Chinois Simplifié"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:448
+#: ../SCRIBES/internationalization.py:449
+msgid "Unified Chinese"
+msgstr "Chinois Unifié"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:453
+msgid "Japanese, Korean, Simplified Chinese"
+msgstr "Japonais, Koréen, Chinois SImplifié"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:458
+msgid "West Europe"
+msgstr "Europe Occidentale"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:460
+msgid "Esperanto, Maltese"
+msgstr "Esperanto, Maltais"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:461
+msgid "Baltic languagues"
+msgstr "Langues Baltiques"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:467
+msgid "Nordic languages"
+msgstr "Langues Nordiques"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:469
+msgid "Celtic languages"
+msgstr "Langues Celtiques"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:473
+msgid "Ukrainian"
+msgstr "Ukrainien"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:480
+msgid "Kazakh"
+msgstr "Kazak"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:484
+msgid "All languages"
+msgstr "Toutes les langues"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:485
+#: ../SCRIBES/internationalization.py:486
+msgid "All Languages (BMP only)"
+msgstr "Toutes les langues (BMP uniquement)"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:487
+msgid "All Languages"
+msgstr "Toutes les langues"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:488
+msgid "None"
+msgstr "Aucun"
+
+#. .decode(encoding).encode("utf-8")
+#. From indent.py
+#: ../SCRIBES/internationalization.py:492
+msgid "Replaced tabs with spaces on selected lines"
+msgstr ""
+"Les espaces de fin de ligne ont été supprimés sur les lignes sélectionnées"
+
+#. .decode(encoding).encode("utf-8")
+#. From scribes.desktop
+#: ../SCRIBES/internationalization.py:495
+msgid "Scribes Text Editor"
+msgstr "Scribes Editeur de Texte"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:496
+msgid "Edit text files"
+msgstr "Edite les fichiers textes"
+
+#. .decode(encoding).encode("utf-8")
+#. From syntaxcoloreditor.py
+#: ../SCRIBES/internationalization.py:499
+msgid "Syntax Color Editor"
+msgstr "Configuration de la Coloration Syntaxique"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:500
+msgid "_Use default theme"
+msgstr "Utiliser le thème par défa_ut"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:501
+msgid "_Normal text color: "
+msgstr "Couleur du texte _normal"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:502
+msgid "_Background color: "
+msgstr "Couleur de _Fond"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:503
+msgid "Language Elements"
+msgstr "Elements de Language"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:504
+msgid "Co_lor: "
+msgstr "Cou_leur:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:505
+#: ../SCRIBES/internationalization.py:750
+msgid "B_old"
+msgstr "_Gras"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:506
+#: ../SCRIBES/internationalization.py:751
+msgid "I_talic"
+msgstr "_Italique"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:507
+msgid "_Reset to Default"
+msgstr "_Remise à zéro"
+
+#. .decode(encoding).encode("utf-8")
+#. From templateseditor.py
+#: ../SCRIBES/internationalization.py:510
+msgid "Template Editor"
+msgstr "Editeur de Patrons"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:511
+msgid "_Language"
+msgstr "_Langue"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:512
+msgid "_Name"
+msgstr "_Nom"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:513
+msgid "Description"
+msgstr "Description"
+
+#. .decode(encoding).encode("utf-8")
+#. From templateadd.py
+#: ../SCRIBES/internationalization.py:516
+msgid "_Name:"
+msgstr "_Nom:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:517
+msgid "_Description:"
+msgstr "_Description:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:518
+msgid "_Template:"
+msgstr "_Patron:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:519
+msgid "Add New Template"
+msgstr "Ajouter un Patron"
+
+#. .decode(encoding).encode("utf-8")
+#. From templateedit.py
+#: ../SCRIBES/internationalization.py:522
+msgid "Edit Template"
+msgstr "Editer un Patron"
+
+#. .decode(encoding).encode("utf-8")
+#. From tooltips.py
+#: ../SCRIBES/internationalization.py:525
+msgid "Select to use themes' foreground and background colors"
+msgstr "Sélectionner pour utiliser les couleurs du thème par défaut"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:526
+msgid "Click to choose a new color for the editor's text"
+msgstr "Cliquer pour choisir une couleur pour le texte"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:527
+msgid "Click to choose a new color for the editor's background"
+msgstr "Cliquer pour choisir une couleur pour le fond"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:528
+msgid "Click to choose a new color for the language syntax element"
+msgstr "Cliquer pour choisir une couleur pour cet élément de syntaxe"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:529
+msgid "Select to make the language syntax element bold"
+msgstr "Cocher pour mettre l'élément de syntaxe en gras"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:530
+msgid "Select to make the language syntax element italic"
+msgstr "Cocher pour mettre l'élément de syntaxe en italique"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:531
+msgid "Select to reset the language syntax element to its default settings"
+msgstr "Cliquer pour remettre a zéro les paramètres de l'élement de syntaxe"
+
+#. .decode(encoding).encode("utf-8")
+#. From syntaxcoloreditor.py
+#: ../SCRIBES/internationalization.py:535
+msgid "Change editor colors"
+msgstr "Changer les couleurs de l'éditeur"
+
+#. .decode(encoding).encode("utf-8")
+#. From readonly.py
+#: ../SCRIBES/internationalization.py:538
+msgid "Toggled readonly mode on"
+msgstr "Mode lecture seule activé"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:539
+msgid "File has not been saved to disk"
+msgstr "Le fichier n'a pas été sauvé sur le disque"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:540
+msgid "Toggled readonly mode off"
+msgstr "Mode lecture seule désactivé"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:541
+msgid "No permission to modify file"
+msgstr "Vous n'avez pas la permission d'écrire dans ce fichier."
+
+#. .decode(encoding).encode("utf-8")
+#. From tooltips.py
+#: ../SCRIBES/internationalization.py:544
+msgid "Menu for advanced configuration"
+msgstr "Menu de configuration avancée"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:545
+msgid "Configure the editor's foreground, background or syntax colors"
+msgstr "Changer les couleurs de l'éditeur"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:546
+msgid "Create, modify or manage templates"
+msgstr "Créer, et modifier les Patrons"
+
+#. .decode(encoding).encode("utf-8")
+#. From cursor.py
+#: ../SCRIBES/internationalization.py:549
+#, python-format
+msgid "Ln %d col %d"
+msgstr "Li %d col %d"
+
+#. .decode(encoding).encode("utf-8")
+#. From passworddialog.py
+#: ../SCRIBES/internationalization.py:552
+msgid "Authentication Required"
+msgstr "Authentification requise"
+
+#: ../SCRIBES/internationalization.py:553
+#, python-format
+msgid "You must log in to access %s"
+msgstr "Vous devez vous identifier pour acceder à %s"
+
+#: ../SCRIBES/internationalization.py:554
+msgid "_Password:"
+msgstr "Mot de _passe:"
+
+#: ../SCRIBES/internationalization.py:555
+msgid "_Remember password for this session"
+msgstr "_Enregistrer le mot de passe pour cette session"
+
+#: ../SCRIBES/internationalization.py:556
+msgid "Save password in _keyring"
+msgstr "Sauver le mot de passe dans le _trousseau"
+
+#. From fileloader.py
+#: ../SCRIBES/internationalization.py:559
+#, python-format
+msgid "Loading \"%s\"..."
+msgstr "chargement de \"%s\"..."
+
+#. From bookmarkbrowser.py
+#: ../SCRIBES/internationalization.py:562
+msgid "Bookmark Browser"
+msgstr "Gestionnaire de signets"
+
+#: ../SCRIBES/internationalization.py:563
+msgid "Line"
+msgstr "Ligne"
+
+#: ../SCRIBES/internationalization.py:564
+msgid "Bookmarked Text"
+msgstr "Signet ajouté"
+
+#. bookmarktrigger.py
+#: ../SCRIBES/internationalization.py:565
+#: ../SCRIBES/internationalization.py:570
+#: ../SCRIBES/internationalization.py:727
+msgid "No bookmarks found"
+msgstr "Aucun signet n'a été trouvé"
+
+#. From bookmark.py
+#: ../SCRIBES/internationalization.py:568
+msgid "Moved to most recently bookmarked line"
+msgstr "Curseur placé sur le signet le plus récent"
+
+#: ../SCRIBES/internationalization.py:569
+msgid "Already on most recently bookmarked line"
+msgstr "Déjà sur le signet le plus récent"
+
+#. From dialogfilter.py
+#: ../SCRIBES/internationalization.py:574
+msgid "Ruby Documents"
+msgstr "Documents Ruby"
+
+#: ../SCRIBES/internationalization.py:575
+msgid "Perl Documents"
+msgstr "Documents Perl"
+
+#: ../SCRIBES/internationalization.py:576
+msgid "C Documents"
+msgstr "Documents C"
+
+#: ../SCRIBES/internationalization.py:577
+msgid "C++ Documents"
+msgstr "Documents C++"
+
+#: ../SCRIBES/internationalization.py:578
+msgid "C# Documents"
+msgstr "Documents C#"
+
+#: ../SCRIBES/internationalization.py:579
+msgid "Java Documents"
+msgstr "Documents Java"
+
+#: ../SCRIBES/internationalization.py:580
+msgid "PHP Documents"
+msgstr "Documents PHP"
+
+#: ../SCRIBES/internationalization.py:581
+msgid "HTML Documents"
+msgstr "Documents HTML"
+
+#: ../SCRIBES/internationalization.py:582
+msgid "XML Documents"
+msgstr "Documents XML"
+
+#: ../SCRIBES/internationalization.py:583
+msgid "Haskell Documents"
+msgstr "Documents Haskell"
+
+#: ../SCRIBES/internationalization.py:584
+msgid "Scheme Documents"
+msgstr "Documents Scheme"
+
+#. From textview.py
+#: ../SCRIBES/internationalization.py:587
+msgid "INS"
+msgstr "INS"
+
+#: ../SCRIBES/internationalization.py:588
+msgid "OVR"
+msgstr "OVR"
+
+#. From remotedialog.py
+#: ../SCRIBES/internationalization.py:591
+msgid "Enter the location (URI) of the file you _would like to open:"
+msgstr "Entrer l'adresse du fichier que vous _désirez ouvrir:"
+
+#: ../SCRIBES/internationalization.py:592
+msgid "Type URI for loading"
+msgstr "Taper une adresse à charger"
+
+#. From loader.py
+#: ../SCRIBES/internationalization.py:595
+msgid ""
+"Open Error: An error occurred while opening the file. Try opening the file "
+"again or file a bug report."
+msgstr ""
+"Erreur lors de l'ouverture du fichier. Essayez encore ou reportez un bogue."
+
+#: ../SCRIBES/internationalization.py:597
+#, python-format
+msgid "Info Error: Information on %s cannot be retrieved."
+msgstr "Erreur Info: Impossible d'obtenir des informations sur %s."
+
+#: ../SCRIBES/internationalization.py:598
+msgid "Info Error: Access has been denied to the requested file."
+msgstr "Erreur Info: Accès refusé au fichier."
+
+#: ../SCRIBES/internationalization.py:599
+msgid "Permission Error: Access has been denied to the requested file."
+msgstr "Erreur de Permission: Accès refusé au fichier."
+
+#: ../SCRIBES/internationalization.py:600
+msgid "Cannot open file"
+msgstr "Impossible d'ouvrir le fichier"
+
+#. From save.py
+#: ../SCRIBES/internationalization.py:603
+msgid ""
+"You do not have permission to save the file. Try saving the file to your "
+"desktop, or to a folder you own. Automatic saving has been disabled until "
+"the file is saved correctly without errors."
+msgstr ""
+""
+
+#: ../SCRIBES/internationalization.py:606
+msgid ""
+"A saving operation failed. Could not create swap area. Make sure you have "
+"permission to save to your home folder. Also check to see that you have not "
+"run out of disk space. Automatic saving will be disabled until the document "
+"is properly saved."
+msgstr ""
+"La sauvegarde a échouée. Impossible de créer un fichier d'échange. Votre disque est probablement plein. La sauvegarde automatique sera désormais désactivée."
+
+#: ../SCRIBES/internationalization.py:610
+msgid ""
+"An error occured while creating the file. Automatic saving has been disabled "
+"until the file is saved correctly without errors."
+msgstr ""
+"Une erreur est survenue lors de la création du fichier. La sauvegarde automatique sera rétablie quand le fichier sera sauvé sans erreurs."
+
+#: ../SCRIBES/internationalization.py:612
+msgid ""
+"A saving error occured. The document could not be transfered from its "
+"temporary location. Automatic saving has been disabled until the file is "
+"saved correctly without errors."
+msgstr ""
+"La sauvegarde a échouée. Impossible de déplacer le fichier temporaire. La sauvegarde automatique sera désormais désactivée."
+
+#: ../SCRIBES/internationalization.py:615
+msgid ""
+"You do not have permission to save the file. Automatic saving will be "
+"disabled until the file is properly saved."
+msgstr ""
+"Vous n'avez pas la permission d'écrire ce fichier. La sauvegarde automatique sera désormais désactivée."
+
+#: ../SCRIBES/internationalization.py:617
+msgid ""
+"A decoding error occured while saving the file. Automatic saving will be "
+"disabled until the file is properly saved."
+msgstr ""
+"La sauvegarde a échouée. Impossible de créer un fichier d'échange. Votre disque est probablement plein. La sauvegarde automatique sera désormais désactivée."
+
+#: ../SCRIBES/internationalization.py:619
+msgid ""
+"An encoding error occurred while saving the file. Automatic saving will be "
+"disabled until the file is properly saved."
+msgstr ""
+"Erreur d'encodage lors de la sauvegarde du fichier. La sauvegarde automatique sera désormais désactivée."
+
+#. From findprevious.py
+#: ../SCRIBES/internationalization.py:623
+#, python-format
+msgid "Match %d of %d"
+msgstr "Correspondance %d de %d"
+
+#. From regexbar.py
+#: ../SCRIBES/internationalization.py:626
+msgid "Search for text using regular expression"
+msgstr "Recherche dans le texte par expression régulière."
+
+#: ../SCRIBES/internationalization.py:627
+msgid "Close regular expression bar"
+msgstr "Masquer la barre d'expression régulière"
+
+#. From incsearchbar.py
+#: ../SCRIBES/internationalization.py:630
+msgid "Incrementally search for text"
+msgstr "Rechercher dans le texte à la volée"
+
+#: ../SCRIBES/internationalization.py:631
+msgid "Close incremental search bar"
+msgstr "Masquer la barre de recherche"
+
+#. From findbar.py
+#: ../SCRIBES/internationalization.py:634
+msgid "Searching please wait..."
+msgstr "Recherche, patientez SVP..."
+
+#. From findstopbutton.py
+#: ../SCRIBES/internationalization.py:637
+msgid "Stopped operation"
+msgstr "Operation arretée"
+
+#. From findnextbutton.py
+#: ../SCRIBES/internationalization.py:640
+msgid "No next match found"
+msgstr "Pas de correspondance suivante trouvée"
+
+#. From replacebar.py
+#: ../SCRIBES/internationalization.py:643
+msgid "Replacing please wait..."
+msgstr "Remplacement, patientez SVP..."
+
+#. From replacestopbutton.py
+#: ../SCRIBES/internationalization.py:646
+msgid "Stopped replacing"
+msgstr "Remplacement arrété"
+
+#. From popupindent.py
+#: ../SCRIBES/internationalization.py:649
+msgid "I_ndentation"
+msgstr "I_ndentation"
+
+#. From actions.py
+#: ../SCRIBES/internationalization.py:652
+msgid "Replacing spaces please wait..."
+msgstr "Remplacement des espaces, patientez SVP..."
+
+#: ../SCRIBES/internationalization.py:653
+msgid "Replaced spaces with tabs"
+msgstr "Remplacé les tabulations par des espaces"
+
+#: ../SCRIBES/internationalization.py:654
+msgid "No spaces found to replace"
+msgstr "Aucun espace à remplacer n'a été trouvé"
+
+#: ../SCRIBES/internationalization.py:656
+msgid "Replaced tabs with spaces"
+msgstr "Remplacé les tabulations par des espaces"
+
+#: ../SCRIBES/internationalization.py:657
+msgid "No tabs found to replace"
+msgstr "Pas de tabulations à remplacer"
+
+#: ../SCRIBES/internationalization.py:658
+msgid "Removed spaces at end of lines"
+msgstr "Les espaces de fin de la ligne ont été supprimés"
+
+#. From popupspaces.py
+#: ../SCRIBES/internationalization.py:661
+msgid "S_paces"
+msgstr "E_spaces"
+
+#: ../SCRIBES/internationalization.py:662
+msgid "_Tabs to Spaces"
+msgstr "_Tabs en espaces"
+
+#: ../SCRIBES/internationalization.py:663
+msgid "_Spaces to Tabs"
+msgstr "E_spaces en Tabs"
+
+#: ../SCRIBES/internationalization.py:664
+msgid "_Remove Trailing Spaces"
+msgstr "_Enlever les espaces en fin de ligne"
+
+#. From popupselection.py
+#: ../SCRIBES/internationalization.py:667
+msgid "S_election"
+msgstr "S_electionner"
+
+#: ../SCRIBES/internationalization.py:668
+msgid "Select _Word"
+msgstr "Sélectionner _Mot"
+
+#: ../SCRIBES/internationalization.py:669
+msgid "Select _Line"
+msgstr "Sélectionne ligne"
+
+#. From popuplines.py
+#: ../SCRIBES/internationalization.py:672
+msgid "_Lines"
+msgstr "_Lignes"
+
+#: ../SCRIBES/internationalization.py:673
+msgid "_Delete Line"
+msgstr "Ligne _effacée"
+
+#: ../SCRIBES/internationalization.py:674
+msgid "_Join Line"
+msgstr "_Joindre Ligne"
+
+#: ../SCRIBES/internationalization.py:675
+msgid "Free Line _Above"
+msgstr "Insérer une ligne _dessous"
+
+#: ../SCRIBES/internationalization.py:676
+msgid "Free Line _Below"
+msgstr "Insérer une ligne _au dessus"
+
+#: ../SCRIBES/internationalization.py:677
+msgid "Delete Cursor to Line _End"
+msgstr "Supprimer le curseur à la fin de la ligne"
+
+#: ../SCRIBES/internationalization.py:678
+msgid "Delete _Cursor to Line Begin"
+msgstr "Supprimer le _curseur au début de la ligne"
+
+#. From popupselection.py
+#: ../SCRIBES/internationalization.py:681
+msgid "Select _Sentence"
+msgstr "Sélectionner _Phrase"
+
+#: ../SCRIBES/internationalization.py:682
+msgid "Select _Paragraph"
+msgstr "Sélectionner Paragraphe"
+
+#. From popupbookmarks.py
+#: ../SCRIBES/internationalization.py:685
+msgid "_Bookmark"
+msgstr "_Signet"
+
+#: ../SCRIBES/internationalization.py:686
+msgid "Bookmark _Line"
+msgstr "Placer un signet sur la ligne"
+
+#: ../SCRIBES/internationalization.py:687
+msgid "_Remove Bookmark"
+msgstr "Supprimer signet"
+
+#: ../SCRIBES/internationalization.py:688
+msgid "Remove _All Bookmarks"
+msgstr "Suppression de tous les signets"
+
+#: ../SCRIBES/internationalization.py:689
+msgid "Move to _Next Bookmark"
+msgstr "Aller au prochain signet"
+
+#: ../SCRIBES/internationalization.py:690
+msgid "Move to _Previous Bookmark"
+msgstr "Aller au Signet _Précedent"
+
+#: ../SCRIBES/internationalization.py:691
+msgid "Move to _First Bookmark"
+msgstr "Aller au P_remier Signet"
+
+#: ../SCRIBES/internationalization.py:692
+msgid "Move to Last _Bookmark"
+msgstr "Aller au _dernier signet"
+
+#: ../SCRIBES/internationalization.py:693
+msgid "_Show Bookmark Browser"
+msgstr "_Afficher la liste des Signets"
+
+#. From bookmarktriggers.py
+#: ../SCRIBES/internationalization.py:696
+msgid "Moved to first bookmark"
+msgstr "Curseur placé sur le premier signet"
+
+#: ../SCRIBES/internationalization.py:697
+msgid "Moved to last bookmark"
+msgstr "Curseur placé sur le dernier signet"
+
+#: ../SCRIBES/internationalization.py:698
+msgid "Already on first bookmark"
+msgstr "Déjà sur le premier Signet"
+
+#: ../SCRIBES/internationalization.py:699
+msgid "Already on last bookmark"
+msgstr "Déjà sur le dernier Signet"
+
+#. From bookmarkbrowser.py
+#: ../SCRIBES/internationalization.py:702
+msgid "Move to bookmarked line"
+msgstr "Curseur placé sur le signet à la ligne %d"
+
+#. From replaceincrementalbutton.py
+#: ../SCRIBES/internationalization.py:705
+msgid "Incre_mental"
+msgstr "Incré_mental"
+
+#. templateeditorexportbutton.py
+#: ../SCRIBES/internationalization.py:708
+msgid "E_xport"
+msgstr "E_xport"
+
+#. templateeditorimportbutton.py
+#: ../SCRIBES/internationalization.py:711
+msgid "I_mport"
+msgstr "I_mport"
+
+#. templateadddialog.py
+#: ../SCRIBES/internationalization.py:714
+msgid "Error: Name field must contain a string."
+msgstr "Erreur: Le champ doit contenir une chaîne."
+
+#: ../SCRIBES/internationalization.py:715
+#, python-format
+msgid "Error: '%s' already in use. Please choose another string."
+msgstr "Erreur: '%s' déjà en cours d'utilisation. Choisissez une autre chaîne."
+
+#: ../SCRIBES/internationalization.py:716
+msgid "Error: Name field cannot have any spaces."
+msgstr "Erreur: Le champ ne doit pas contenir d'espaces."
+
+#: ../SCRIBES/internationalization.py:717
+msgid "Error: Template editor can only have one '${cursor}' placeholder."
+msgstr "Erreur: Le gestionnaire d'extraits de code ne peut avoir qu'un élément '${cursor}'"
+
+#. importdialog.py
+#: ../SCRIBES/internationalization.py:720
+msgid "Error: Invalid template file."
+msgstr "Erreur: Fichier invalide"
+
+#: ../SCRIBES/internationalization.py:721
+msgid "Import Template"
+msgstr "Importer des extraits de code"
+
+#. exportdialog.py
+#: ../SCRIBES/internationalization.py:724
+msgid "Export Template"
+msgstr "Exporter des extraits de code"
+
+#. actions.py
+#: ../SCRIBES/internationalization.py:730
+msgid "Could not open help browser"
+msgstr "Impossible d'afficher l'aide"
+
+#. preftabcheckbutton.py
+#: ../SCRIBES/internationalization.py:733
+msgid "_Use spaces instead of tabs"
+msgstr "_Utiliser des espaces au lieu des tabulations"
+
+#: ../SCRIBES/internationalization.py:734
+msgid "Use tabs for indentation"
+msgstr "Utiliser des tabulations pour l'indentation"
+
+#: ../SCRIBES/internationalization.py:735
+msgid "Use spaces for indentation"
+msgstr "Utiliser des espaces pour l'indentation"
+
+#: ../SCRIBES/internationalization.py:739
+msgid "Use spaces instead of tabs for indentation"
+msgstr "Utiliser des espaces au lieu des tabulations pour l'indentation"
+
+#: ../SCRIBES/internationalization.py:741
+msgid "Using theme colors"
+msgstr "Utiliser les couleurs du thème"
+
+#: ../SCRIBES/internationalization.py:742
+msgid "Using custom colors"
+msgstr "Utilise les couleurs modifiées"
+
+#: ../SCRIBES/internationalization.py:744
+msgid "Select foreground color"
+msgstr "Couleur d'_avant-plan"
+
+#: ../SCRIBES/internationalization.py:745
+msgid "Select background color"
+msgstr "Couleur d'a_rrière-plan"
+
+#: ../SCRIBES/internationalization.py:746
+msgid "Select foreground syntax color"
+msgstr "Choisir la couleur d'avant-plan"
+
+#: ../SCRIBES/internationalization.py:747
+msgid "Select background syntax color"
+msgstr "Choisissez la Couleur de _Fond"
+
+#: ../SCRIBES/internationalization.py:748
+msgid "_Foreground:"
+msgstr "_Avant plan:"
+
+#: ../SCRIBES/internationalization.py:749
+msgid "Back_ground:"
+msgstr "Couleur de _Fond:"
+
+#: ../SCRIBES/internationalization.py:752
+msgid "_Underline"
+msgstr "_Souligner"
+
+#: ../SCRIBES/internationalization.py:753
+msgid "Select to underline language syntax element"
+msgstr "Cocher pour souligner l'élément de syntaxe"
+
+#: ../SCRIBES/internationalization.py:755
+msgid "Select document to focus"
+msgstr "Selectionner le document"
+
+#: ../SCRIBES/internationalization.py:756
+msgid "Open Documents"
+msgstr "Ouvrir documents"
+
+#: ../SCRIBES/internationalization.py:757
+msgid "File _Type"
+msgstr "_Type de fichier"
+
+#: ../SCRIBES/internationalization.py:758
+msgid "File _Name"
+msgstr "_Nom du fichier"
+
+#: ../SCRIBES/internationalization.py:759
+msgid "Full _Path Name"
+msgstr "_Chemin d'accès complet"
+
+#: ../SCRIBES/internationalization.py:760
+msgid "No documents open"
+msgstr "Pas de documents ouverts"
+
+#: ../SCRIBES/internationalization.py:761
+msgid "Current document is focused"
+msgstr "Le document courant est actif"
+
+#: ../SCRIBES/internationalization.py:763
+msgid "_Case"
+msgstr "_Casse"
+
+#: ../SCRIBES/internationalization.py:764
+msgid "_Uppercase"
+msgstr "_Majuscule"
+
+#: ../SCRIBES/internationalization.py:765
+msgid "_Lowercase"
+msgstr "_Minuscule"
+
+#: ../SCRIBES/internationalization.py:766
+msgid "_Titlecase"
+msgstr "Majuscule en _début de mot"
+
+#: ../SCRIBES/internationalization.py:767
+msgid "_Swapcase"
+msgstr "_Inverser la casse"
+
+#: ../SCRIBES/internationalization.py:769
+msgid "Open recently used files"
+msgstr "Ouvrir les fichiers récents"
+
+#: ../SCRIBES/internationalization.py:770
+msgid "No previous match found"
+msgstr "Pas de correspondance précedente trouvée"
+
+#: ../SCRIBES/internationalization.py:771
+msgid "Replace found match"
+msgstr "Occurence trouvée"
+
+#: ../SCRIBES/internationalization.py:772
+msgid "Replaced all found matches"
+msgstr "Toutes les occurences ont été remplacées·"
+
+#: ../SCRIBES/internationalization.py:774
+msgid "Inserted template"
+msgstr "Insérer un patron"
+
+#: ../SCRIBES/internationalization.py:775
+msgid "Selected next placeholder"
+msgstr "Élement suivant sélectionné"
+
+#: ../SCRIBES/internationalization.py:776
+msgid "Selected previous placeholder"
+msgstr "Emplacement précedent selectionné"
+
+#: ../SCRIBES/internationalization.py:777
+msgid "Template mode is active"
+msgstr "Patrons activés"

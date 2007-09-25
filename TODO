@@ -1,0 +1,28 @@
+Version 0.3.3
+=============
+
+	- Move the saving system to an external process (like the word
+completion indexer) to improve design, efficiency and editing
+performance, especially under heavy system load.
+	- Fix other issues with the saving system.
+	- Fix issues with file modification detection.
+	- Improve the design of the file modification dialog.
+	- Per document statistics and properties dialog that shows useful
+information about a document (name, full path, size, type, language, etc)
+	- Close all reported bugs.
+
+Roadmap for Version 0.4
+=======================
+
+	- Refactor and cleanup the trigger system for plugin system.
+	- Refactor and cleanup the generic plugin system.
+	- Implement the language plugin system.
+	- Symbol browser for Python (language plugin)
+	- Smart indentation for Python (language plugin)
+	- Class, function, block selection for Python (language plugin)
+	- Class, function, block navigation for Python (language plugin)
+	- Line operations for Python (language plugin)
+	- (Un)comment plugin for several languages. (language plugin)
+	- Selectable locale/language spell checking (new dep, pyenchant)
+	- Documentation for extending Scribes and writing plugins.
+	- User interface for managing plugins.

@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no"?>
+<omf>
+	<resource>
+		<creator>
+			mystilleef@gmail.com (Lateef Alabi-Oki)
+		</creator>
+		<title>
+			Scribes Manual
+		</title>
+		<subject category="GNOME|Applications|Accessories"/>
+		<type>user's guide</type>
+		<relation seriesid="081c7e56-2acd-11d9-819f-e6a11scribes"/>
+		<rights type="GNU FDL" license.version="1.1" holder="Lateef Alabi-Oki"/>
+	</resource>
+</omf>

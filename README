@@ -1,0 +1,58 @@
+Version
+=======
+
+	0.3.2.6
+
+What is Scribes?
+================
+
+Scribes is the text editor for GNOME that focuses on
+streamlining your workflow. It does so by ensuring common
+and repetitive operations are intelligently automated.
+And also by eliminating factors that prevent you
+from focusing on your tasks.
+
+	http://scribes.sourceforge.net/
+
+
+Requirements
+============
+
+To use scribes you need the following software installed on
+your computer:
+
+	- D-Bus-0.70
+	- Python-2.4
+	- PyGTK-2.10
+	- Yelp-2.12
+	- gnome-python-2.12
+	- gnome-python-desktop-2.12
+	- gnome-python-extras-2.12
+
+
+Installation
+============
+
+To install Scribes, launch gnome-terminal and type the
+following at the command prompt as root:
+
+	./configure --prefix=/usr
+	make
+	make install
+
+You can install scribes into a test or temporary location as follows:
+
+	./configure --prefix=/home/$(USERNAME)/testscribes
+	make
+	make install
+
+Usage
+=====
+
+To start Scribes, type the following at the command prompt:
+
+	scribes
+
+You can also start Scribes from the GNOME Application Menu.
+
+	Application Menu -> Accessories -> Scribes Text Editor

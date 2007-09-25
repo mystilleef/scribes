@@ -1,0 +1,2488 @@
+# Brazilian Portuguese translation of Scribes
+# Copyright (C) 2005 Lateef Alabi-Oki
+# This file is distributed under the same license as the Scribes package.
+# Leonardo Ferreira Fontenelle <leo.fontenelle@gmail.com>, 2006, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Scribes 0.2.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-05-07 01:52-0300\n"
+"PO-Revision-Date: 2007-05-07 02:04-0300\n"
+"Last-Translator: Leonardo Ferreira Fontenelle <leo.fontenelle@gmail.com>\n"
+"Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cispa.org.br>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. .decode(encoding).encode("utf-8")
+#: ../data/scribes.desktop.in.h:1 ../SCRIBES/internationalization.py:321
+msgid "Edit text files"
+msgstr "Edite documentos de texto"
+
+#. .decode(encoding).encode("utf-8")
+#. From scribes.desktop
+#: ../data/scribes.desktop.in.h:2 ../SCRIBES/internationalization.py:320
+msgid "Scribes Text Editor"
+msgstr "Editor de Texto Scribes"
+
+#: ../data/scribes.schemas.in.h:1
+msgid "A list of encodings selected by the user."
+msgstr "Uma lista de codificações selecionada pelo usuário."
+
+#: ../data/scribes.schemas.in.h:2
+msgid "Case sensitive"
+msgstr "Dif. maiúsc./minúsc."
+
+#: ../data/scribes.schemas.in.h:3
+msgid "Detach Scribes from the shell terminal"
+msgstr "Destaca o Scribes do terminal"
+
+#: ../data/scribes.schemas.in.h:4
+msgid ""
+"Determines whether or not to use GTK theme colors when drawing the text "
+"editor buffer foreground and background colors. If the value is true, the "
+"GTK theme colors are used. Otherwise the color determined by one assigned by "
+"the user."
+msgstr ""
+"Usar ou não cores do tema GTK no primeiro plano e no plano de fundo do "
+"editor de texto. Se o valor for verdadeiro, as cores do tema GTK serão "
+"usadas; se não, as cores determinadas pelo usuário."
+
+#: ../data/scribes.schemas.in.h:5
+msgid "Determines whether to show or hide the status area."
+msgstr "Mostrar ou ocultar a área de estado."
+
+#: ../data/scribes.schemas.in.h:6
+msgid "Determines whether to show or hide the toolbar."
+msgstr "Mostrar ou ocultar a barra de ferramentas."
+
+#: ../data/scribes.schemas.in.h:7
+msgid "Editor background color"
+msgstr "Cor do plano de fundo do editor"
+
+#: ../data/scribes.schemas.in.h:8
+msgid "Editor foreground color"
+msgstr "Cor de primeiro plano do editor"
+
+#: ../data/scribes.schemas.in.h:9
+msgid "Editor's font"
+msgstr "Fonte do editor"
+
+#: ../data/scribes.schemas.in.h:10
+msgid "Enable or disable spell checking"
+msgstr "Ativa ou desativa a verificação ortográfica"
+
+#: ../data/scribes.schemas.in.h:11
+msgid "Enables or disables right margin"
+msgstr "Ativa ou desativa a margem direita"
+
+#: ../data/scribes.schemas.in.h:12
+msgid "Enables or disables text wrapping"
+msgstr "Ativa ou desativa quebra de texto"
+
+#. .decode(encoding).encode("utf-8")
+#: ../data/scribes.schemas.in.h:13 ../SCRIBES/internationalization.py:138
+msgid "Find occurrences of the string that match the entire word only"
+msgstr "Procurar ocorrências da expressão coincidindo com palavra inteira"
+
+#. .decode(encoding).encode("utf-8")
+#: ../data/scribes.schemas.in.h:14 ../SCRIBES/internationalization.py:136
+msgid "Find occurrences of the string that match upper and lower cases only"
+msgstr "Procurar ocorrências da expressão diferenciando maiúsculas/minúsculas"
+
+#: ../data/scribes.schemas.in.h:15
+msgid "Lexical scope highlight color"
+msgstr "Cor para destaque de escopo léxico"
+
+#: ../data/scribes.schemas.in.h:16
+msgid "Match word"
+msgstr "Coincidir palavra"
+
+#: ../data/scribes.schemas.in.h:17
+msgid "Position of margin"
+msgstr "Posição da margem"
+
+#: ../data/scribes.schemas.in.h:18
+msgid "Selected encodings"
+msgstr "Codificações selecionadas"
+
+#: ../data/scribes.schemas.in.h:19
+msgid "Sets the margin's position within the editor"
+msgstr "Configura a posição da margem no editor"
+
+#: ../data/scribes.schemas.in.h:20
+msgid "Sets the width of tab stops within the editor"
+msgstr "Configura a largura das tabulações no editor"
+
+#: ../data/scribes.schemas.in.h:21
+msgid "Show margin"
+msgstr "Mostrar margem"
+
+#: ../data/scribes.schemas.in.h:22
+msgid "Show or hide the status area."
+msgstr "Mostrar ou ocultar a área de estado."
+
+#: ../data/scribes.schemas.in.h:23
+msgid "Show or hide the toolbar."
+msgstr "Mostrar ou ocultar a barra de ferramentas."
+
+#: ../data/scribes.schemas.in.h:24
+msgid "Spell checking"
+msgstr "Verificação ortográfica"
+
+#: ../data/scribes.schemas.in.h:25
+msgid "Tab width"
+msgstr "Largura da tabulação"
+
+#: ../data/scribes.schemas.in.h:26
+msgid "Text wrapping"
+msgstr "Quebra automática de texto"
+
+#: ../data/scribes.schemas.in.h:27
+msgid "The color used to render normal text in the text editor's buffer."
+msgstr "A cor usada para renderizar texto normal no buffer to editor de texto."
+
+#: ../data/scribes.schemas.in.h:28
+msgid "The color used to render the text editor buffer background."
+msgstr ""
+"A cor usada para renderizar o plano de fundo do buffer do editor de texto."
+
+#: ../data/scribes.schemas.in.h:29
+msgid "The editor's font. Must be a string value"
+msgstr "A fonte do editor. Precisa ser uma \"string\""
+
+#: ../data/scribes.schemas.in.h:30
+msgid ""
+"The highlight color when the cursor is around opening or closing pair "
+"characters."
+msgstr ""
+"A cor de seleção usada quando o cursor está ao redor de caracteres abrindo "
+"ou fechando parênteses, colchetes, chaves etc.."
+
+#: ../data/scribes.schemas.in.h:31
+msgid ""
+"True to detach Scribes from the shell terminal and run it in its own "
+"process, false otherwise. For debugging purposes, it may be useful to set "
+"this to false."
+msgstr ""
+"Verdadeiro para destacar o Scribes do terminal e executá-lo em seu próprio "
+"processo, senão falso. Para propósitos de depuração, pode ser útil definir "
+"esta opção para falso."
+
+#: ../data/scribes.schemas.in.h:32
+msgid "True to use tabs instead of spaces, false otherwise."
+msgstr "Verdadeiro para usar tabulações ao invés de falso; falso para não."
+
+#: ../data/scribes.schemas.in.h:33
+msgid "Use GTK theme colors"
+msgstr "Usar cores do tema GTK"
+
+#: ../data/scribes.schemas.in.h:34
+msgid "Use Tabs instead of spaces"
+msgstr "Usar tabulações em vez de espaços"
+
+#. From module accelerators.py
+#: ../SCRIBES/internationalization.py:41 ../plugins/UndoRedo/i18n.py:27
+msgid "Cannot redo action"
+msgstr "Impossível refazer ação"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:44
+msgid "Leave Fullscreen"
+msgstr "Deixar Tela Cheia"
+
+#. .decode(encoding).encode("utf-8")
+#. From module editor_ng.py, fileloader.py, timeout.py
+#: ../SCRIBES/internationalization.py:47 ../plugins/SaveDialog/i18n.py:25
+msgid "Unsaved Document"
+msgstr "Documento Novo"
+
+#. .decode(encoding).encode("utf-8")
+#. From module filechooser.py
+#: ../SCRIBES/internationalization.py:51
+msgid "All Documents"
+msgstr "Todos os Documentos"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:52
+msgid "Python Documents"
+msgstr "Documentos Python"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:53
+msgid "Text Documents"
+msgstr "Documentos de Texto"
+
+#. .decode(encoding).encode("utf-8")
+#. From module fileloader.py
+#: ../SCRIBES/internationalization.py:56
+#, python-format
+msgid "Loaded file \"%s\""
+msgstr "Documento \"%s\" aberto"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:57
+msgid ""
+"The encoding of the file you are trying to open could not be determined. Try "
+"opening the file with another encoding."
+msgstr ""
+"A codificação do arquivo que você está tentando abrir não pôde ser "
+"reconhecida. Tente abrir o arquivo com outra codificação."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:59
+msgid "Loading file please wait..."
+msgstr "Abrindo o documento, por favor aguarde..."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:60
+msgid ""
+"An error occurred while openning the file. Please file a bug report at "
+"http://scribes.sourceforge.net"
+msgstr ""
+"Ocorreu um erro ao abrir esse documento. Por favor, envie um relatório de "
+"erro através de http://scribes.sourceforge.net"
+
+#. .decode(encoding).encode("utf-8")
+#. From module fileloader.py, savechooser.py
+#: ../SCRIBES/internationalization.py:64
+msgid " <READONLY>"
+msgstr " <Somente Leitura>"
+
+#. .decode(encoding).encode("utf-8")
+#. From module fileloader.py
+#: ../SCRIBES/internationalization.py:67
+msgid "You do not have permission to view this file."
+msgstr "Você não tem permissão para leitura deste documento."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:68
+msgid "The file you are trying to open is not a text file."
+msgstr "O arquivo que você está tentando abrir não é um arquivo de texto."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:69
+msgid "The file you are trying to open does not exist."
+msgstr "O documento que você está tentando abrir não existe."
+
+#. .decode(encoding).encode("utf-8")
+#. From module main.py
+#: ../SCRIBES/internationalization.py:72
+#, python-format
+msgid "Unrecognized option: '%s'"
+msgstr "Opção não reconhecida: \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:73
+msgid "Try 'scribes --help' for more information"
+msgstr "Tente \"scribes --help\" para mais informações"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:74
+msgid "Scribes only supports using one option at a time"
+msgstr "Scribes só dá suporte a uma opção por vez"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:75
+#, python-format
+msgid "scribes: %s takes no arguments"
+msgstr "scribes: %s não leva argumentos"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:76
+#, python-format
+msgid "Scribes version %s"
+msgstr "Scribes versão %s"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:77
+#, python-format
+msgid "%s does not exist"
+msgstr "%s não existe"
+
+#. .decode(encoding).encode("utf-8")
+#. From module timeout.py
+#: ../SCRIBES/internationalization.py:80
+#, python-format
+msgid "The file \"%s\" is open in readonly mode"
+msgstr "O documento \"%s\" está aberto em modo somente leitura"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:81
+#, python-format
+msgid "The file \"%s\" is open"
+msgstr "O documento \"%s\" está aberto"
+
+#. .decode(encoding).encode("utf-8")
+#. From modules findbar.py
+#: ../SCRIBES/internationalization.py:84
+#, python-format
+msgid "Found %d match"
+msgstr "%d ocorrência encontrada"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:85
+msgid "_Search for:    "
+msgstr "Pesquisar por: "
+
+#. .decode(encoding).encode("utf-8")
+#. From module indent.py
+#: ../SCRIBES/internationalization.py:89
+msgid "No indentation selection found"
+msgstr "Nenhuma seleção de recuo encontrada"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:90 ../plugins/Indent/i18n.py:25
+msgid "Selection indented"
+msgstr "Recuo realizado"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:91 ../plugins/Indent/i18n.py:27
+msgid "Unindentation is not possible"
+msgstr "Impossível desfazer recuo"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:92 ../plugins/Indent/i18n.py:28
+msgid "Selection unindented"
+msgstr "Recuo desfeito"
+
+#. .decode(encoding).encode("utf-8")
+#. From module modes.py
+#: ../SCRIBES/internationalization.py:95
+msgid "loading..."
+msgstr "abrindo..."
+
+#. .decode(encoding).encode("utf-8")
+#. From module preferences.py
+#. From module replace.py
+#: ../SCRIBES/internationalization.py:100
+#, python-format
+msgid "\"%s\" has been replaced with \"%s\""
+msgstr "\"%s\" foi substituído por \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:101
+#, python-format
+msgid "Replaced all occurrences of \"%s\" with \"%s\""
+msgstr "Todas ocorrências de \"%s\" substituídas por \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#. From module savefile.py
+#: ../SCRIBES/internationalization.py:104
+msgid "An error occurred while saving this file."
+msgstr "Surgiu um erro ao salvar esse documento."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:105
+msgid ""
+"An error occurred while decoding your file. Please file a bug report at "
+"\"http://openusability.org/forum/?group_id=141\""
+msgstr ""
+"Surgiu um erro ao codificar o seu documento. Por favor, envie um relatório "
+"de erro através de \"http://openusability.org/forum/?group_id=141\""
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:107
+#, python-format
+msgid "Saved \"%s\""
+msgstr "\"%s\" salvado"
+
+#. .decode(encoding).encode("utf-8")
+#. From module textview.py
+#: ../SCRIBES/internationalization.py:110
+msgid "_Find Matching Bracket"
+msgstr "Localizar _Parêntese Correspondente"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:111
+msgid "Copied selected text"
+msgstr "Texto copiado"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:112
+msgid "No selection to copy"
+msgstr "Não há texto selecionado para copiar"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:113
+msgid "Cut selected text"
+msgstr "Texto cortado"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:114
+msgid "No selection to cut"
+msgstr "Não há texto selecionado para cortar"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:115
+msgid "Pasted copied text"
+msgstr "Texto colado"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:116
+msgid "No text content in the clipboard"
+msgstr "Não há texto na área de transferência"
+
+#. .decode(encoding).encode("utf-8")
+#. From module timeout.py
+#: ../SCRIBES/internationalization.py:119
+#, python-format
+msgid "%d%% complete"
+msgstr "%d%% completo"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:120
+msgid "completed"
+msgstr "completado"
+
+#. .decode(encoding).encode("utf-8")
+#. From module tooltips.py
+#: ../SCRIBES/internationalization.py:123
+msgid "Open a new window"
+msgstr "Abre uma nova janela"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:124
+msgid "Open a file"
+msgstr "Abre um arquivo"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:125
+msgid "Rename the current file"
+msgstr "Renomeia o arquivo atual"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:126
+msgid "Print the current file"
+msgstr "Imprime o arquivo atual"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:127
+msgid "Undo last action"
+msgstr "Desfaz a última ação"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:128
+msgid "Redo undone action"
+msgstr "Refaz a ação desfeita"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:129 ../plugins/IncrementalBar/i18n.py:28
+#: ../plugins/FindBar/i18n.py:28 ../plugins/ReplaceBar/i18n.py:28
+msgid "Search for text"
+msgstr "Pesquisa por texto"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:130 ../plugins/ReplaceBar/i18n.py:31
+msgid "Search for and replace text"
+msgstr "Pesquisa por texto e o substitui"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:131
+msgid "Go to a specific line"
+msgstr "Vai até uma determinada linha"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:132
+msgid "Configure the editor"
+msgstr "Configura o editor"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:133
+msgid "Launch the help browser"
+msgstr "Lança o navegador da ajuda"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:134
+msgid "Search for previous occurrence of the string"
+msgstr "Pesquisa pela ocorrência anterior da expressão"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:135
+msgid "Search for next occurrence of the string"
+msgstr "Pesquisa pela próxima ocorrência da expressão"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:139
+msgid "Type in the text you want to search for"
+msgstr "Digite o texto pelo qual deseja pesquisa"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:140
+msgid "Type in the text you want to replace with"
+msgstr "Digite o texto pelo qual deseja substituir"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:141
+msgid "Replace the selected found match"
+msgstr "Substituir a ocorrência selecionada"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:142
+msgid "Replace all found matches"
+msgstr "Substituir todas as ocorrências encontradas"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:143
+msgid "Click to specify the font type, style, and size to use for text."
+msgstr "Especifica família, estilo e tamanho de fonte usados no texto."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:144
+msgid ""
+"Click to specify the width of the space that is inserted when you press the "
+"Tab key."
+msgstr ""
+"Especifica a largura do espaço inserido quando você pressiona a tecla Tab."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:146
+msgid ""
+"Select to wrap text onto the next line when you reach the text window "
+"boundary."
+msgstr "Quebra a linha quando o texto alcançar o limite da janela."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:148
+msgid "Select to display a vertical line that indicates the right margin."
+msgstr "Exibe uma linha vertical indicando a margem direita."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:150
+msgid "Click to specify the location of the vertical line."
+msgstr "Especifica a localização da linha vertical."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:151
+msgid "Select to enable spell checking"
+msgstr "Ativa a verificação ortográfica"
+
+#. .decode(encoding).encode("utf-8")
+#. From module usage.py
+#: ../SCRIBES/internationalization.py:155
+msgid "A text editor for GNOME."
+msgstr "Um editor de texto para o GNOME."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:156
+msgid "usage: scribes [OPTION] [FILE] [...]"
+msgstr "uso: scribes [OPÇÃO] [ARQUIVO] [...]"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:157
+msgid "Options:"
+msgstr "Opções:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:158
+msgid "display this help screen"
+msgstr "exibir essa tela de ajuda"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:159
+msgid "output version information of Scribes"
+msgstr "exibir informação sobre a versão do Scribes"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:160
+msgid "create a new file and open the file with Scribes"
+msgstr "criar um documento novo e abri-lo com o Scribes"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:161
+msgid "open file in readonly mode"
+msgstr "abrir um documento em modo somente leitura"
+
+#. .decode(encoding).encode("utf-8")
+#. From module utility.py
+#: ../SCRIBES/internationalization.py:164
+msgid "Could not find Scribes' data folder"
+msgstr "Não foi possível encontrar o diretório de dados do Scribes"
+
+#. .decode(encoding).encode("utf-8")
+#. From preferences.py
+#. From error.py
+#: ../SCRIBES/internationalization.py:170
+msgid "error"
+msgstr "erro"
+
+#. .decode(encoding).encode("utf-8")
+#. From module indent.py
+#: ../SCRIBES/internationalization.py:173
+#, python-format
+msgid "Removed spaces at end of line %d"
+msgstr "Espaços removidos ao fim da linha %d"
+
+#. .decode(encoding).encode("utf-8")
+#. From module indent.py
+#: ../SCRIBES/internationalization.py:176
+msgid "No spaces were found at beginning of line"
+msgstr "Não há espaços no começo da linha"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:177
+#, python-format
+msgid "Removed spaces at beginning of line %d"
+msgstr "Espaços removidos do começo da linha %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:178
+msgid "Removed spaces at beginning of selected lines"
+msgstr "Espaços removidos do começo das linhas selecionadas"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:179
+msgid "Removed spaces at end of selected lines"
+msgstr "Espaços removidos do fim das linhas selecionadas"
+
+#. .decode(encoding).encode("utf-8")
+#. From module actions.py
+#: ../SCRIBES/internationalization.py:182 ../plugins/Indent/i18n.py:23
+#: ../plugins/Selection/i18n.py:23 ../plugins/Lines/i18n.py:23
+#: ../plugins/SaveFile/i18n.py:23 ../plugins/UndoRedo/i18n.py:23
+#: ../plugins/Spaces/i18n.py:23
+msgid "Cannot perform operation in readonly mode"
+msgstr "Impossível realizar operação em modo somente leitura"
+
+#. .decode(encoding).encode("utf-8")
+#. From module indent.py
+#: ../SCRIBES/internationalization.py:185 ../plugins/Indent/i18n.py:29
+#, python-format
+msgid "Unindented line %d"
+msgstr "Recuo desfeito na linha %d"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:186
+msgid "No selected lines can be indented"
+msgstr "Não há recuo para desfazer nas linha selecionadas"
+
+#. .decode(encoding).encode("utf-8")
+#. From module savefile.py
+#: ../SCRIBES/internationalization.py:189
+msgid ""
+"An error occurred while encoding your file. Try saving your file using "
+"another character encoding, preferably UTF-8."
+msgstr ""
+"Ocorreu um erro ao codificar o seu documento. Tente salvar seu documento "
+"usando outra codificação, de preferência UTF-8."
+
+#. .decode(encoding).encode("utf-8")
+#. From module fileloader.py
+#: ../SCRIBES/internationalization.py:193
+msgid ""
+"An encoding error occurred. Please file a bug report at http://openusability."
+"org/forum/?group_id=141"
+msgstr ""
+"Ocorreu um erro ao abrir esse arquivo. Por favor, envie um relatório de erro "
+"através de http://openusability.org/forum/?group_id=141"
+
+#. .decode(encoding).encode("utf-8")
+#. From autocomplete.py
+#: ../SCRIBES/internationalization.py:198
+#: ../plugins/WordCompletionGUI/i18n.py:3
+msgid "Word completion occurred"
+msgstr "Palavra completada"
+
+#. .decode(encoding).encode("utf-8")
+#. From encoding.py
+#: ../SCRIBES/internationalization.py:201
+msgid "Character _Encoding: "
+msgstr "C_odificação: "
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:202
+msgid "Add or Remove Encoding ..."
+msgstr "Adicionar ou Remover Codificação..."
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:203
+msgid "Recommended (UTF-8)"
+msgstr "UTF-8 (recommendado)"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:204
+msgid "Add or Remove Character Encoding"
+msgstr "Adicionar ou Remover Codificação"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:205
+msgid "Language and Region"
+msgstr "Língua e Região"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:206
+msgid "Character Encoding"
+msgstr "Codificação"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:207
+msgid "Select"
+msgstr "Selecionar"
+
+#. .decode(encoding).encode("utf-8")
+#. From filechooser.py, savechooser.py
+#: ../SCRIBES/internationalization.py:210
+msgid "Select character _encoding"
+msgstr "Selecionar _codificação"
+
+#. .decode(encoding).encode("utf-8")
+#. From filechooser.py
+#: ../SCRIBES/internationalization.py:213
+msgid "Closed dialog window"
+msgstr "Janela de diálogo fechada"
+
+#. .decode(encoding).encode("utf-8")
+#. From error.py
+#: ../SCRIBES/internationalization.py:216
+#, python-format
+msgid "Cannot open %s"
+msgstr "Impossível abrir %s"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:217
+msgid "Closed error dialog"
+msgstr "Diálogo de erro fechado"
+
+#. .decode(encoding).encode("utf-8")
+#. From fileloader.py
+#: ../SCRIBES/internationalization.py:220
+#, python-format
+msgid ""
+"The MIME type of the file you are trying to open could not be determined. "
+"Make sure the file is a text file.\n"
+"\n"
+"<b>MIME type</b>: %s"
+msgstr ""
+"Não foi possível determinar o tipo de arquivo que você está tentando abrir. "
+"Certifique-se de que seja um arquivo de texto.\n"
+"\n"
+"<b>Tipo MIME</b>: %s"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:222
+#, python-format
+msgid ""
+"The MIME type of the file you are trying to open is not for a text file.\n"
+"\n"
+"<b>MIME type</b>: %s"
+msgstr ""
+"O arquivo que você está tentando abrir não é de texto.\n"
+"\n"
+"<b>Tipo MIME</b>: %s"
+
+#. .decode(encoding).encode("utf-8")
+#. From printing.py
+#: ../SCRIBES/internationalization.py:226
+#, python-format
+msgid "Printing \"%s\""
+msgstr "Imprimindo \"%s\""
+
+#. .decode(encoding).encode("utf-8")
+#. From encoding.py
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:229
+#: ../SCRIBES/internationalization.py:232
+#: ../SCRIBES/internationalization.py:234
+msgid "English"
+msgstr "Inglês"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:230
+#: ../SCRIBES/internationalization.py:231
+#: ../SCRIBES/internationalization.py:255
+msgid "Traditional Chinese"
+msgstr "Chinês Tradicional"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:233
+#: ../SCRIBES/internationalization.py:241
+#: ../SCRIBES/internationalization.py:245
+#: ../SCRIBES/internationalization.py:264
+#: ../SCRIBES/internationalization.py:290
+msgid "Hebrew"
+msgstr "Judaico "
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:235
+#: ../SCRIBES/internationalization.py:238
+#: ../SCRIBES/internationalization.py:258
+#: ../SCRIBES/internationalization.py:261
+#: ../SCRIBES/internationalization.py:295
+#: ../SCRIBES/internationalization.py:303
+msgid "Western Europe"
+msgstr "Europa Ocidental"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:236
+#: ../SCRIBES/internationalization.py:250
+#: ../SCRIBES/internationalization.py:252
+#: ../SCRIBES/internationalization.py:262
+#: ../SCRIBES/internationalization.py:289
+#: ../SCRIBES/internationalization.py:300
+msgid "Greek"
+msgstr "Grego"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:237
+#: ../SCRIBES/internationalization.py:266
+#: ../SCRIBES/internationalization.py:293
+msgid "Baltic languages"
+msgstr "Línguas bálticas"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:239
+#: ../SCRIBES/internationalization.py:259
+#: ../SCRIBES/internationalization.py:284
+#: ../SCRIBES/internationalization.py:302
+msgid "Central and Eastern Europe"
+msgstr "Europa Central e Oriental"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:240
+#: ../SCRIBES/internationalization.py:260
+#: ../SCRIBES/internationalization.py:287
+#: ../SCRIBES/internationalization.py:299
+msgid "Bulgarian, Macedonian, Russian, Serbian"
+msgstr "Búlgaro, Macedoniano, Russo, Sérvio"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:242
+#: ../SCRIBES/internationalization.py:257
+#: ../SCRIBES/internationalization.py:263
+#: ../SCRIBES/internationalization.py:291
+#: ../SCRIBES/internationalization.py:304
+msgid "Turkish"
+msgstr "Turco"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:243
+msgid "Portuguese"
+msgstr "Português"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:244
+#: ../SCRIBES/internationalization.py:301
+msgid "Icelandic"
+msgstr "Islandês"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:246
+msgid "Canadian"
+msgstr "Canadense"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:247
+#: ../SCRIBES/internationalization.py:265
+#: ../SCRIBES/internationalization.py:288
+msgid "Arabic"
+msgstr "Árabe"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:248
+msgid "Danish, Norwegian"
+msgstr "Dinamarquês, Norueguês"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:249
+#: ../SCRIBES/internationalization.py:297
+msgid "Russian"
+msgstr "Russo"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:251
+msgid "Thai"
+msgstr "Tailandês"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:253
+#: ../SCRIBES/internationalization.py:268
+#: ../SCRIBES/internationalization.py:269
+#: ../SCRIBES/internationalization.py:270
+#: ../SCRIBES/internationalization.py:276
+#: ../SCRIBES/internationalization.py:277
+#: ../SCRIBES/internationalization.py:279
+#: ../SCRIBES/internationalization.py:280
+#: ../SCRIBES/internationalization.py:281
+#: ../SCRIBES/internationalization.py:306
+#: ../SCRIBES/internationalization.py:307
+#: ../SCRIBES/internationalization.py:308
+msgid "Japanese"
+msgstr "Japonês"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:254
+#: ../SCRIBES/internationalization.py:271
+#: ../SCRIBES/internationalization.py:282
+#: ../SCRIBES/internationalization.py:296
+msgid "Korean"
+msgstr "Coreano"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:256
+msgid "Urdu"
+msgstr "Urdu"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:267
+msgid "Vietnamese"
+msgstr "Vietnamita"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:272
+#: ../SCRIBES/internationalization.py:275
+msgid "Simplified Chinese"
+msgstr "Chinês Simplificado"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:273
+#: ../SCRIBES/internationalization.py:274
+msgid "Unified Chinese"
+msgstr "Chinês Unificado"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:278
+msgid "Japanese, Korean, Simplified Chinese"
+msgstr "Japonês, Coreano, Chinês Simplificado"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:283
+msgid "West Europe"
+msgstr "Europa Ocidental"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:285
+msgid "Esperanto, Maltese"
+msgstr "Esperando, Maltês"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:286
+msgid "Baltic languagues"
+msgstr "Línguas bálticas"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:292
+msgid "Nordic languages"
+msgstr "Línguas nórdicas"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:294
+msgid "Celtic languages"
+msgstr "Língas célticas"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:298
+msgid "Ukrainian"
+msgstr "Ucraniano"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:305
+msgid "Kazakh"
+msgstr "Cazaque"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:309
+msgid "All languages"
+msgstr "Todas as línguas"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:310
+#: ../SCRIBES/internationalization.py:311
+msgid "All Languages (BMP only)"
+msgstr "Todas as línguas (apenas BMP)"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:312
+msgid "All Languages"
+msgstr "Todas as línguas"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:313
+#: ../plugins/SyntaxColorSwitcher/i18n.py:24
+msgid "None"
+msgstr "Nenhuma"
+
+#. .decode(encoding).encode("utf-8")
+#. From indent.py
+#: ../SCRIBES/internationalization.py:317
+msgid "Replaced tabs with spaces on selected lines"
+msgstr "Tabulações substituídas por espaços nas linhas selecionadas"
+
+#. .decode(encoding).encode("utf-8")
+#. From syntaxcoloreditor.py
+#: ../SCRIBES/internationalization.py:325
+msgid "Co_lor: "
+msgstr "_Cor: "
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:326 ../plugins/ColorEditor/i18n.py:37
+msgid "B_old"
+msgstr "_Negrito"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:327 ../plugins/ColorEditor/i18n.py:38
+msgid "I_talic"
+msgstr "_Itálico"
+
+#. .decode(encoding).encode("utf-8")
+#. From templateadd.py
+#: ../SCRIBES/internationalization.py:331
+msgid "_Name:"
+msgstr "_Nome:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:332
+msgid "_Description:"
+msgstr "_Descrição:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:333
+msgid "_Template:"
+msgstr "_Modelo:"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:334
+msgid "Add New Template"
+msgstr "Adicionar Modelo"
+
+#. .decode(encoding).encode("utf-8")
+#. From templateedit.py
+#: ../SCRIBES/internationalization.py:337 ../plugins/TemplateEditor/i18n.py:28
+msgid "Edit Template"
+msgstr "Editar Modelo"
+
+#. .decode(encoding).encode("utf-8")
+#. From tooltips.py
+#: ../SCRIBES/internationalization.py:340
+msgid "Select to use themes' foreground and background colors"
+msgstr "Usa as cores do tema padrão para primeiro plano e plano de fundo"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:341
+msgid "Click to choose a new color for the editor's text"
+msgstr "Escolhe a cor do texto do editor"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:342
+msgid "Click to choose a new color for the editor's background"
+msgstr "Escolhe a cor do plano de fundo do editor"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:343
+msgid "Click to choose a new color for the language syntax element"
+msgstr "Escolhe a cor do elemento da sintaxe da linguagem"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:344
+msgid "Select to make the language syntax element bold"
+msgstr "Negrita o elemento de sintaxe"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:345
+msgid "Select to make the language syntax element italic"
+msgstr "Italiciza o elemento de linguagem"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:346
+msgid "Select to reset the language syntax element to its default settings"
+msgstr ""
+"Reverte o elemento da sintaxe da linguagem para sua configuração padrão"
+
+#. .decode(encoding).encode("utf-8")
+#. From syntaxcoloreditor.py
+#. From readonly.py
+#: ../SCRIBES/internationalization.py:353
+msgid "Toggled readonly mode on"
+msgstr "Modo somente leitura ativado"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:354
+msgid "Toggled readonly mode off"
+msgstr "Modo somente leitura desativado"
+
+#. .decode(encoding).encode("utf-8")
+#. From tooltips.py
+#: ../SCRIBES/internationalization.py:357
+msgid "Menu for advanced configuration"
+msgstr "Menu para configuração avançada"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:358
+msgid "Configure the editor's foreground, background or syntax colors"
+msgstr ""
+"Configurar as cores de primeiro plano, plano de fundo ou destaque de sintaxe"
+
+#. .decode(encoding).encode("utf-8")
+#: ../SCRIBES/internationalization.py:359
+msgid "Create, modify or manage templates"
+msgstr "Criar, modificar ou gerenciar modelos"
+
+#. .decode(encoding).encode("utf-8")
+#. From cursor.py
+#: ../SCRIBES/internationalization.py:362
+#, python-format
+msgid "Ln %d col %d"
+msgstr "Li %d col %d"
+
+#. .decode(encoding).encode("utf-8")
+#. From passworddialog.py
+#: ../SCRIBES/internationalization.py:365
+msgid "Authentication Required"
+msgstr "Autenticação Necessária"
+
+#: ../SCRIBES/internationalization.py:366
+#, python-format
+msgid "You must log in to access %s"
+msgstr "Você precisa identificar-se para acessar %s"
+
+#: ../SCRIBES/internationalization.py:367
+msgid "_Password:"
+msgstr "_Senha:"
+
+#: ../SCRIBES/internationalization.py:368
+msgid "_Remember password for this session"
+msgstr "_Lembrar senha durante essa sessão"
+
+#: ../SCRIBES/internationalization.py:369
+msgid "Save password in _keyring"
+msgstr "Salvar a senha no c_haveiro"
+
+#. From fileloader.py
+#: ../SCRIBES/internationalization.py:372
+#, python-format
+msgid "Loading \"%s\"..."
+msgstr "Carregando \"%s\"..."
+
+#. From bookmark.py
+#: ../SCRIBES/internationalization.py:375
+msgid "Moved to most recently bookmarked line"
+msgstr "Cursor movido para o marcador mais recente"
+
+#: ../SCRIBES/internationalization.py:376
+msgid "Already on most recently bookmarked line"
+msgstr "Cursor já está no marcador mais recente"
+
+#. bookmarktrigger.py
+#: ../SCRIBES/internationalization.py:377
+#: ../SCRIBES/internationalization.py:452
+#: ../plugins/BookmarkBrowser/i18n.py:27
+msgid "No bookmarks found"
+msgstr "Nenhum marcador encontrado"
+
+#. From dialogfilter.py
+#: ../SCRIBES/internationalization.py:381
+msgid "Ruby Documents"
+msgstr "Documentos Ruby"
+
+#: ../SCRIBES/internationalization.py:382
+msgid "Perl Documents"
+msgstr "Documentos Perl"
+
+#: ../SCRIBES/internationalization.py:383
+msgid "C Documents"
+msgstr "Documentos C"
+
+#: ../SCRIBES/internationalization.py:384
+msgid "C++ Documents"
+msgstr "Documentos C++"
+
+#: ../SCRIBES/internationalization.py:385
+msgid "C# Documents"
+msgstr "Documentos C#"
+
+#: ../SCRIBES/internationalization.py:386
+msgid "Java Documents"
+msgstr "Documentos Java"
+
+#: ../SCRIBES/internationalization.py:387
+msgid "PHP Documents"
+msgstr "Documentos PHP"
+
+#: ../SCRIBES/internationalization.py:388
+msgid "HTML Documents"
+msgstr "Documentos HTML"
+
+#: ../SCRIBES/internationalization.py:389 ../plugins/TemplateEditor/i18n.py:27
+msgid "XML Documents"
+msgstr "Documentos XML"
+
+#: ../SCRIBES/internationalization.py:390
+msgid "Haskell Documents"
+msgstr "Documentos Haskell"
+
+#: ../SCRIBES/internationalization.py:391
+msgid "Scheme Documents"
+msgstr "Documentos Scheme"
+
+#. From textview.py
+#: ../SCRIBES/internationalization.py:394
+msgid "INS"
+msgstr "INS"
+
+#: ../SCRIBES/internationalization.py:395
+msgid "OVR"
+msgstr "SE"
+
+#. From loader.py
+#: ../SCRIBES/internationalization.py:398
+msgid ""
+"Open Error: An error occurred while opening the file. Try opening the file "
+"again or file a bug report."
+msgstr ""
+"Erro ao Abrir: Ocorreu um erro ao abrir o arquivo. Tente abri-lo novamente "
+"ou faça um relatório de erro."
+
+#: ../SCRIBES/internationalization.py:400
+#, python-format
+msgid "Info Error: Information on %s cannot be retrieved."
+msgstr "Erro de Informação: Não foi possível recuperar informações de %s."
+
+#: ../SCRIBES/internationalization.py:401
+msgid "Info Error: Access has been denied to the requested file."
+msgstr "Erro de Informação: Acesso negado ao arquivo solicitado."
+
+#: ../SCRIBES/internationalization.py:402
+msgid "Permission Error: Access has been denied to the requested file."
+msgstr "Erro de Permissão: Acesso negado ao arquivo solicitado."
+
+#: ../SCRIBES/internationalization.py:403
+msgid "Cannot open file"
+msgstr "Não foi possível abrir o arquivo"
+
+#. From save.py
+#: ../SCRIBES/internationalization.py:406
+msgid ""
+"You do not have permission to save the file. Try saving the file to your "
+"desktop, or to a folder you own. Automatic saving has been disabled until "
+"the file is saved correctly without errors."
+msgstr ""
+"Você não tem permissão para salvar o arquivo. Tente salvá-lo em sua Área de "
+"Trabalho, ou para outra pasta que você possua. O recurso de salvar "
+"automaticamente permanecerá desativado até que o arquivo seja salvo sem "
+"erros."
+
+#: ../SCRIBES/internationalization.py:409
+msgid ""
+"A saving operation failed. Could not create swap area. Make sure you have "
+"permission to save to your home folder. Also check to see that you have not "
+"run out of disk space. Automatic saving will be disabled until the document "
+"is properly saved."
+msgstr ""
+"Uma operação de gravação falhou. Não foi possível criar área de troca. "
+"Certifique-se de ter permissão para salvar em sua pasta pessoal. Verifique "
+"também de ter espaço em disco. O recurso de salvar automaticamente será "
+"desativado até que o arquivo seja salvado sem erros."
+
+#: ../SCRIBES/internationalization.py:413
+msgid ""
+"An error occured while creating the file. Automatic saving has been disabled "
+"until the file is saved correctly without errors."
+msgstr ""
+"Ocorreu um erro ao criar o arquivo. O recurso de salvar automaticamente será "
+"desativado até que o arquivo seja salvo sem erros."
+
+#: ../SCRIBES/internationalization.py:415
+msgid ""
+"A saving error occured. The document could not be transfered from its "
+"temporary location. Automatic saving has been disabled until the file is "
+"saved correctly without errors."
+msgstr ""
+"Ocorreu um erro de gravação. Não foi possível transferir o documento de sua "
+"localização temporária. O recurso de salvar automaticamente será desativado "
+"até que o arquivo seja salvo sem erros."
+
+#: ../SCRIBES/internationalization.py:418
+msgid ""
+"You do not have permission to save the file. Automatic saving will be "
+"disabled until the file is properly saved."
+msgstr ""
+"Você não tem permissão para salvar o arquivo. O recurso de salvar "
+"automaticamente será desativado até que o arquivo seja salvo sem erros."
+
+#: ../SCRIBES/internationalization.py:420
+msgid ""
+"A decoding error occured while saving the file. Automatic saving will be "
+"disabled until the file is properly saved."
+msgstr ""
+"Ocorreu um erro de decodificação ao salvar o arquivo. O recurso de salvar "
+"automaticamente será desativado até que o arquivo seja salvo sem erros."
+
+#: ../SCRIBES/internationalization.py:422
+msgid ""
+"An encoding error occurred while saving the file. Automatic saving will be "
+"disabled until the file is properly saved."
+msgstr ""
+"Ocorreu um erro de codificação ao salvar o arquivo. O recurso de salvar "
+"automaticamente será desativado até que o arquivo seja salvo sem erros."
+
+#. From regexbar.py
+#: ../SCRIBES/internationalization.py:426
+msgid "Search for text using regular expression"
+msgstr "Pesquisar texto usando expressão regular"
+
+#: ../SCRIBES/internationalization.py:427
+msgid "Close regular expression bar"
+msgstr "Fechar barra de expressão regular"
+
+#. From replacestopbutton.py
+#: ../SCRIBES/internationalization.py:430
+msgid "Stopped replacing"
+msgstr "Substituição interrompida"
+
+#. templateeditorexportbutton.py
+#: ../SCRIBES/internationalization.py:433
+#: ../plugins/TemplateEditor/Template.glade.h:6
+msgid "E_xport"
+msgstr "E_xportar"
+
+#. templateeditorimportbutton.py
+#: ../SCRIBES/internationalization.py:436
+#: ../plugins/TemplateEditor/Template.glade.h:8
+msgid "I_mport"
+msgstr "I_mportar"
+
+#. templateadddialog.py
+#: ../SCRIBES/internationalization.py:439
+msgid "Error: Name field must contain a string."
+msgstr "Erro: Campo nome deve conter uma expressão."
+
+#: ../SCRIBES/internationalization.py:440
+#, python-format
+msgid "Error: '%s' already in use. Please choose another string."
+msgstr "Erro: \"%s\" já em uso. Por favor, escolha outra expressão."
+
+#: ../SCRIBES/internationalization.py:441
+msgid "Error: Name field cannot have any spaces."
+msgstr "Erro: Campo Nome não pode conter espaço."
+
+#: ../SCRIBES/internationalization.py:442
+msgid "Error: Template editor can only have one '${cursor}' placeholder."
+msgstr ""
+"Erro: Editor de modelos pode conter apenas um espaço reservado \"${cursor}\"."
+
+#. importdialog.py
+#: ../SCRIBES/internationalization.py:445
+msgid "Error: Invalid template file."
+msgstr "Erro: Arquivo de modelos inválido."
+
+#. exportdialog.py
+#: ../SCRIBES/internationalization.py:449
+#: ../plugins/TemplateEditor/Template.glade.h:7
+msgid "Export Template"
+msgstr "Exporta o Modelo"
+
+#. preftabcheckbutton.py
+#: ../SCRIBES/internationalization.py:457
+msgid "Use spaces instead of tabs for indentation"
+msgstr "Usar espaço ao invés de tabulação recuar o texto"
+
+#: ../SCRIBES/internationalization.py:461
+msgid "Select to underline language syntax element"
+msgstr "Sublinha o elemento da sintaxe da linguagem"
+
+#: ../SCRIBES/internationalization.py:464
+#: ../plugins/DocumentBrowser/i18n.py:24
+msgid "Open Documents"
+msgstr "Documentos Abertos"
+
+#: ../SCRIBES/internationalization.py:466
+msgid "Current document is focused"
+msgstr "Documento atual já focado"
+
+#: ../SCRIBES/internationalization.py:467
+msgid "Open recently used files"
+msgstr "Abre arquivos usados recentemente"
+
+#: ../SCRIBES/internationalization.py:469
+msgid "Failed to save file"
+msgstr "Não foi possível salvar arquivo"
+
+#: ../SCRIBES/internationalization.py:470
+msgid ""
+"Save Error: You do not have permission to modify this file or save to its "
+"location."
+msgstr ""
+"Erro ao Salvar: Você não tem permissão para modificar este arquivo ou salvar "
+"em sua localização."
+
+#: ../SCRIBES/internationalization.py:472
+msgid "Save Error: Failed to transfer file from swap to permanent location."
+msgstr ""
+"Erro ao Salvar: Não foi possível transferir arquivo da localização "
+"temporária para a permanente."
+
+#: ../SCRIBES/internationalization.py:473
+msgid "Save Error: Failed to create swap location or file."
+msgstr ""
+"Erro ao Salvar: Não foi possível criar localização ou arquivo temporário."
+
+#: ../SCRIBES/internationalization.py:474
+msgid "Save Error: Failed to create swap file for saving."
+msgstr "Erro ao Salvar: Não foi possível criar arquivo temporário para salvar."
+
+#: ../SCRIBES/internationalization.py:475
+msgid "Save Error: Failed to write swap file for saving."
+msgstr ""
+"Erro ao Salvar: Não foi possível gravar no arquivo temporário para salvar."
+
+#: ../SCRIBES/internationalization.py:476
+msgid "Save Error: Failed to close swap file for saving."
+msgstr ""
+"Erro ao Salvar: Não foi possível fechar arquivo temporário para salvar."
+
+#: ../SCRIBES/internationalization.py:477
+msgid "Save Error: Failed decode contents of file from \"UTF-8\" to Unicode."
+msgstr ""
+"Erro ao Salvar: Não foi possível decodificar o conteúdo do arquivo de \"UTF-8"
+"\" para Unicode."
+
+#: ../SCRIBES/internationalization.py:478
+msgid ""
+"Save Error: Failed to encode contents of file. Make sure the encoding of the "
+"file is properly set in the save dialog. Press (Ctrl - s) to show the save "
+"dialog."
+msgstr ""
+"Erro ao Salvar: Não foi possível codificar o conteúdo do arquivo. Certifique-"
+"se de que a codificação do arquivo esteja configurada adequadamente no "
+"diálogo Salvar Arquivo. Pressione (Ctrl - s_ para exibi-lo."
+
+#: ../SCRIBES/internationalization.py:482
+#, python-format
+msgid "File: %s"
+msgstr "Arquivo: %s"
+
+#: ../SCRIBES/internationalization.py:484
+msgid "Failed to load file."
+msgstr "Não foi possível carregar o arquivo %s"
+
+#: ../SCRIBES/internationalization.py:486
+msgid "Load Error: You do not have permission to view this file."
+msgstr "Erro ao Carrgar: Você não tem permissão para ver este arquivo."
+
+#: ../SCRIBES/internationalization.py:487
+msgid "Load Error: Failed to access remote file for permission reasons."
+msgstr ""
+"Erro ao Carregar: Não foi possível acessar arquivo remoto por motivos de "
+"permissão."
+
+#: ../SCRIBES/internationalization.py:488
+msgid ""
+"Load Error: Failed to get file information for loading. Please try loading "
+"the file again."
+msgstr ""
+"Erro ao Carregar: Não foi possível obter informações do arquivo para "
+"carregamento. Por favor, tente carregá-lo novamente."
+
+#: ../SCRIBES/internationalization.py:490
+msgid "Load Error: File does not exist."
+msgstr "Erro ao Carregar: O arquivo não existe."
+
+#: ../SCRIBES/internationalization.py:491
+msgid "Damn! Unknown Error"
+msgstr "Droga! Erro desconhecido"
+
+#: ../SCRIBES/internationalization.py:492
+msgid "Load Error: Failed to open file for loading."
+msgstr "Erro ao Carregar: Não foi possível abrir o arquivo para carregá-lo."
+
+#: ../SCRIBES/internationalization.py:493
+msgid "Load Error: Failed to read file for loading."
+msgstr "Erro ao Carregar: Não foi possível ler o arquivo para carregá-lo."
+
+#: ../SCRIBES/internationalization.py:494
+msgid "Load Error: Failed to close file for loading."
+msgstr "Erro ao Carregar: Não foi possível fechar o arquivo para carregá-lo."
+
+#: ../SCRIBES/internationalization.py:495
+msgid ""
+"Load Error: Failed to decode file for loading. The file your are loading may "
+"not be a text file. If you are sure it is a text file, try to open the file "
+"with the correct encoding via the open dialog. Press (control - o) to show "
+"the open dialog."
+msgstr ""
+"Erro ao Carregar: Não foi possível decodificar o arquivo para carregá-lo. O "
+"arquivo que você está carregando pode não ser um arquivo de texto. Se você "
+"tiver certeza de que o mesmo seja um arquivo de texto, tente abrir o arquivo "
+"com a codificação correta através do diálogo Abrir Arquivo. Pressione "
+"(Control - o) para mostrar o diálogo."
+
+#: ../SCRIBES/internationalization.py:499
+msgid ""
+"Load Error: Failed to encode file for loading. Try to open the file with the "
+"correct encoding via the open dialog. Press (control - o) to show the open "
+"dialog."
+msgstr ""
+"Erro ao Carregar: Não foi possível codificar o arquivo para carregá-lo. "
+"Tente abri-lo com a codificação correta através do diálogo Abrir Arquivo. "
+"Pressione (Control - o) para mostrar o diálogo."
+
+#: ../SCRIBES/internationalization.py:503
+#, python-format
+msgid "Reloading %s"
+msgstr "Recarregando %s"
+
+#: ../SCRIBES/internationalization.py:504
+#, python-format
+msgid "'%s' has been modified by another program"
+msgstr "\"%s\" foi midificado por outro programa"
+
+#: ../plugins/BookmarkBrowser/i18n.py:23
+msgid "Move to bookmarked line"
+msgstr "Mover cursor para linha marcada"
+
+#: ../plugins/BookmarkBrowser/i18n.py:24
+msgid "Bookmark Browser"
+msgstr "Navegador dos Marcadores"
+
+#: ../plugins/BookmarkBrowser/i18n.py:25
+msgid "Line"
+msgstr "Linha"
+
+#: ../plugins/BookmarkBrowser/i18n.py:26
+msgid "Bookmarked Text"
+msgstr "Texto Marcado"
+
+#: ../plugins/BookmarkBrowser/i18n.py:28 ../plugins/Bookmark/i18n.py:27
+#, python-format
+msgid "Moved to bookmark on line %d"
+msgstr "Cursor movido para marcador da linha %d"
+
+#: ../plugins/PrintDialog/i18n.py:23
+msgid "Print Document"
+msgstr "Imprimir Documento"
+
+#: ../plugins/PrintDialog/i18n.py:24
+msgid "Print file"
+msgstr "Imprimir documento"
+
+#: ../plugins/PrintDialog/i18n.py:25
+msgid "File: "
+msgstr "Documento: "
+
+#: ../plugins/PrintDialog/i18n.py:26
+msgid "Print Preview"
+msgstr "Visualizar Impressão"
+
+#: ../plugins/RemoteDialog/i18n.py:23 ../plugins/OpenDialog/i18n.py:23
+msgid "Open Document"
+msgstr "Abrir Documento"
+
+#: ../plugins/RemoteDialog/i18n.py:24
+msgid "Type URI for loading"
+msgstr "Digite a URI a ser carregada"
+
+#: ../plugins/RemoteDialog/i18n.py:25
+msgid "Enter the location (URI) of the file you _would like to open:"
+msgstr "Digite a localização (URI) do arquivo que você gostaria de abrir:"
+
+#: ../plugins/AutoReplace/i18n.py:23
+#, python-format
+msgid "Replaced '%s' with '%s'"
+msgstr "\"%s\" substituído por \"%s\""
+
+#: ../plugins/Templates/i18n.py:23
+msgid "Template mode is active"
+msgstr "Modo de modelo ativado"
+
+#: ../plugins/Templates/i18n.py:24
+msgid "Inserted template"
+msgstr "Modelo inserido"
+
+#: ../plugins/Templates/i18n.py:25
+msgid "Selected next placeholder"
+msgstr "Próximo espaço reservado selecionado"
+
+#: ../plugins/Templates/i18n.py:26
+msgid "Selected previous placeholder"
+msgstr "Espaço reservado anterior selecionado"
+
+#: ../plugins/About/i18n.py:23
+msgid "Scribes is a text editor for GNOME."
+msgstr "Scribes é um editor de texto para GNOME."
+
+#: ../plugins/About/i18n.py:24
+msgid "Information about the text editor"
+msgstr "Informação sobre o editor de texto"
+
+#: ../plugins/TemplateEditor/Template.glade.h:1
+msgid "<b><span color=\"blue\" underline=\"single\">here</span></b>"
+msgstr "<b><span color=\"blue\" underline=\"single\">daqui</span></b>"
+
+#: ../plugins/TemplateEditor/Template.glade.h:2
+msgid "<b>_Description:</b>"
+msgstr "<b>_Descrição:</b>"
+
+#: ../plugins/TemplateEditor/Template.glade.h:3
+msgid "<b>_Name:</b>"
+msgstr "<b>_Nome:</b>"
+
+#: ../plugins/TemplateEditor/Template.glade.h:4
+msgid "<b>_Template:</b>"
+msgstr "<b>_Modelo:</b>"
+
+#: ../plugins/TemplateEditor/Template.glade.h:5
+msgid "Download templates from"
+msgstr "Baixar modelos"
+
+#: ../plugins/TemplateEditor/Template.glade.h:9
+#: ../plugins/TemplateEditor/i18n.py:26
+msgid "Import Template"
+msgstr "Importa o Modelo"
+
+#: ../plugins/TemplateEditor/Template.glade.h:10
+#: ../plugins/TemplateEditor/i18n.py:32
+msgid "Template Editor"
+msgstr "Editor de Modelos"
+
+#: ../plugins/TemplateEditor/Template.glade.h:11
+msgid "gtk-add"
+msgstr "gtk-add"
+
+#: ../plugins/TemplateEditor/Template.glade.h:12
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
+#: ../plugins/TemplateEditor/Template.glade.h:13
+msgid "gtk-edit"
+msgstr "gtk-edit"
+
+#: ../plugins/TemplateEditor/Template.glade.h:14
+msgid "gtk-help"
+msgstr "gtk-help"
+
+#: ../plugins/TemplateEditor/Template.glade.h:15
+msgid "gtk-remove"
+msgstr "gtk-remove"
+
+#: ../plugins/TemplateEditor/Template.glade.h:16
+msgid "gtk-save"
+msgstr "gtk-save"
+
+#: ../plugins/TemplateEditor/i18n.py:23
+msgid "_Language"
+msgstr "_Idioma"
+
+#: ../plugins/TemplateEditor/i18n.py:24
+msgid "_Name"
+msgstr "_Nome"
+
+#: ../plugins/TemplateEditor/i18n.py:25
+msgid "_Description"
+msgstr "_Descrição"
+
+#: ../plugins/TemplateEditor/i18n.py:29
+msgid "Error: Name field cannot be empty"
+msgstr "Erro: O campo nome não pode ficar vazio"
+
+#: ../plugins/TemplateEditor/i18n.py:30
+msgid "Error: Trigger name already in use. Please use another trigger name."
+msgstr ""
+"Erro: O nome do gatilho já está sendo usado. Por favor, use outro nome."
+
+#: ../plugins/TemplateEditor/i18n.py:31
+msgid "Add Template"
+msgstr "Adicionar Modelo"
+
+#: ../plugins/TemplateEditor/i18n.py:33
+msgid "Error: You do not have permission to save at the location"
+msgstr "Erro: Você não tem permissão para salvar na localização"
+
+#: ../plugins/TemplateEditor/i18n.py:34
+msgid "Error: No selection to export"
+msgstr "Erro: Nenhuma seleção para exportar"
+
+#: ../plugins/TemplateEditor/i18n.py:35
+msgid "Error: File not found"
+msgstr "Erro: Arquivo não localizado"
+
+#: ../plugins/TemplateEditor/i18n.py:36
+msgid "Error: Invalid template file"
+msgstr "Erro: Arquivo de modelo inválido"
+
+#: ../plugins/TemplateEditor/i18n.py:37
+msgid "Error: No template information found"
+msgstr "Erro: Não foram encontradas informações sobre o modelo"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:23
+msgid "Auto Replace Editor"
+msgstr "Editor de Substituição Automática"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:24
+msgid "_Abbreviations"
+msgstr "A_breviações"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:25
+msgid "_Replacements"
+msgstr "_Substituições"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:26
+#, python-format
+msgid "Error: '%s' is already in use. Please use another abbreviation."
+msgstr "Erro: \"%s\" já está sendo usada. Por favor, utilize outra abreviação."
+
+#: ../plugins/AutoReplaceGUI/i18n.py:27
+msgid "Automatic Replacement"
+msgstr "Substituição Automática"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:28
+msgid "Modify words for auto-replacement"
+msgstr "Substitua palavras automaticamente"
+
+#: ../plugins/Indent/i18n.py:24
+msgid "Indenting please wait..."
+msgstr "Fazendo recuos, por favor aguarde..."
+
+#: ../plugins/Indent/i18n.py:26
+#, python-format
+msgid "Indented line %d"
+msgstr "Linha %d recuada"
+
+#: ../plugins/Indent/i18n.py:30
+msgid "I_ndentation"
+msgstr "Rec_uo"
+
+#: ../plugins/Indent/i18n.py:31
+msgid "Shift _Right"
+msgstr "Recuar para a _Direita"
+
+#: ../plugins/Indent/i18n.py:32
+msgid "Shift _Left"
+msgstr "Recuar para a _Esquerda"
+
+#: ../plugins/Selection/i18n.py:24
+msgid "Selected word"
+msgstr "Palavra selecionada"
+
+#: ../plugins/Selection/i18n.py:25
+msgid "No word to select"
+msgstr "Não há palavra para selecionar"
+
+#: ../plugins/Selection/i18n.py:26
+msgid "Selected sentence"
+msgstr "Frase selecionada"
+
+#: ../plugins/Selection/i18n.py:27
+msgid "No sentence to select"
+msgstr "Não há frase para selecionar"
+
+#: ../plugins/Selection/i18n.py:28
+#, python-format
+msgid "No text to select on line %d"
+msgstr "Sem texto para selecionar na linha %d"
+
+#: ../plugins/Selection/i18n.py:29
+#, python-format
+msgid "Selected line %d"
+msgstr "Linha %d selecionada"
+
+#: ../plugins/Selection/i18n.py:30
+msgid "Selected paragraph"
+msgstr "Parágrafo selecionado"
+
+#: ../plugins/Selection/i18n.py:31
+msgid "No paragraph to select"
+msgstr "Não há parágrafo para selecionar"
+
+#: ../plugins/Selection/i18n.py:32
+msgid "S_election"
+msgstr "Se_leção"
+
+#: ../plugins/Selection/i18n.py:33
+msgid "Select _Word"
+msgstr "Selecionar _Palavra"
+
+#: ../plugins/Selection/i18n.py:34
+msgid "Select _Line"
+msgstr "Selecionar _Linha"
+
+#: ../plugins/Selection/i18n.py:35
+msgid "Select _Sentence"
+msgstr "Selecionar _Sentença"
+
+#: ../plugins/Selection/i18n.py:36
+msgid "Select _Paragraph"
+msgstr "Selecionar Pa_rágrafo"
+
+#: ../plugins/Lines/i18n.py:24
+#, python-format
+msgid "Deleted line %d"
+msgstr "Linha %d excluída"
+
+#: ../plugins/Lines/i18n.py:25
+#, python-format
+msgid "Joined line %d to line %d"
+msgstr "Linha %d unida à linha %d"
+
+#: ../plugins/Lines/i18n.py:26
+msgid "No more lines to join"
+msgstr "Não há mais linhas para unir"
+
+#: ../plugins/Lines/i18n.py:27
+#, python-format
+msgid "Freed line %d"
+msgstr "Linha %d apagada"
+
+#: ../plugins/Lines/i18n.py:28
+#, python-format
+msgid "Deleted text from cursor to end of line %d"
+msgstr "Texto removido do cursor até o fim da linha %d"
+
+#: ../plugins/Lines/i18n.py:29
+msgid "Cursor is already at the end of line"
+msgstr "O cursor já está no fim da linha"
+
+#: ../plugins/Lines/i18n.py:30
+#, python-format
+msgid "Deleted text from cursor to beginning of line %d"
+msgstr "Texto excluído do cursor até o começo da linha %d"
+
+#: ../plugins/Lines/i18n.py:31
+msgid "Cursor is already at the beginning of line"
+msgstr "O cursor já está no começo da linha"
+
+#: ../plugins/Lines/i18n.py:32
+msgid "_Lines"
+msgstr "_Linhas"
+
+#: ../plugins/Lines/i18n.py:33
+msgid "_Delete Line"
+msgstr "E_xcluir Linha"
+
+#: ../plugins/Lines/i18n.py:34
+msgid "_Join Line"
+msgstr "_Unir Linha"
+
+#: ../plugins/Lines/i18n.py:35
+msgid "Free Line _Above"
+msgstr "Abrir Linha _Acima"
+
+#: ../plugins/Lines/i18n.py:36
+msgid "Free Line _Below"
+msgstr "Abrir Linha A_baixo"
+
+#: ../plugins/Lines/i18n.py:37
+msgid "Delete Cursor to Line _End"
+msgstr "Excluir do Cursor até o _Fim da Linha"
+
+#: ../plugins/Lines/i18n.py:38
+msgid "Delete _Cursor to Line Begin"
+msgstr "Excluir do Cursor até o _Começo da Linha"
+
+#: ../plugins/Preferences/i18n.py:23
+msgid "<b>Font</b>"
+msgstr "<b>Fonte</b>"
+
+#: ../plugins/Preferences/i18n.py:24
+msgid "Editor _font: "
+msgstr "_Corpo de texto: "
+
+#: ../plugins/Preferences/i18n.py:25
+msgid "<b>Tab Stops</b>"
+msgstr "<b>Paradas de tabulação</b>"
+
+#: ../plugins/Preferences/i18n.py:26
+msgid "_Tab width: "
+msgstr "_Largura da tabulação: "
+
+#: ../plugins/Preferences/i18n.py:27
+msgid "<b>Text Wrapping</b>"
+msgstr "<b>Quebra de Texto</b>"
+
+#: ../plugins/Preferences/i18n.py:28
+msgid "<b>Right Margin</b>"
+msgstr "<b>Margem Direita</b>"
+
+#: ../plugins/Preferences/i18n.py:29
+msgid "_Right margin position: "
+msgstr "_Posição da margem direita: "
+
+#: ../plugins/Preferences/i18n.py:30
+msgid "<b>Spell Checking</b>"
+msgstr "<b>Verificação Ortográgica</b>"
+
+#: ../plugins/Preferences/i18n.py:31
+msgid "Change editor settings"
+msgstr "Mudar configurações do editor"
+
+#: ../plugins/Preferences/i18n.py:32
+msgid "Preferences"
+msgstr "Preferências"
+
+#: ../plugins/Preferences/i18n.py:33
+#, python-format
+msgid "Changed font to \"%s\""
+msgstr "Fonte alterada para \"%s\""
+
+#: ../plugins/Preferences/i18n.py:34
+#, python-format
+msgid "Changed tab width to %d"
+msgstr "Largura de tabulação alterada para %d"
+
+#: ../plugins/Preferences/i18n.py:35
+msgid "_Use spaces instead of tabs"
+msgstr "_Usar espaços em vez de tabulações"
+
+#: ../plugins/Preferences/i18n.py:36
+msgid "Use tabs for indentation"
+msgstr "Usar tabulação para recuo"
+
+#: ../plugins/Preferences/i18n.py:37
+msgid "Use spaces for indentation"
+msgstr "Usar espaço para recuo"
+
+#: ../plugins/Preferences/i18n.py:38
+msgid "Enable text _wrapping"
+msgstr "_Quebrar texto automaticamente"
+
+#: ../plugins/Preferences/i18n.py:39
+msgid "Enabled text wrapping"
+msgstr "Quebra de texto ativada"
+
+#: ../plugins/Preferences/i18n.py:40
+msgid "Disabled text wrapping"
+msgstr "Quebra de texto desativada"
+
+#: ../plugins/Preferences/i18n.py:41
+msgid "Display right _margin"
+msgstr "Exibir _margem direita"
+
+#: ../plugins/Preferences/i18n.py:42
+msgid "Show right margin"
+msgstr "Margem direita mostrada"
+
+#: ../plugins/Preferences/i18n.py:43
+msgid "Hide right margin"
+msgstr "Margem direita escondida"
+
+#: ../plugins/Preferences/i18n.py:44
+msgid "_Enable spell checking"
+msgstr "_Verificação ortográfica"
+
+#: ../plugins/Preferences/i18n.py:45 ../plugins/SpellCheck/i18n.py:24
+msgid "Enabled spellchecking"
+msgstr "Verificação ortográfica ativada"
+
+#: ../plugins/Preferences/i18n.py:46 ../plugins/SpellCheck/i18n.py:23
+msgid "Disabled spellchecking"
+msgstr "Verificação ortográfica desativada"
+
+#: ../plugins/Preferences/i18n.py:47
+#, python-format
+msgid "Positioned margin line at column %d"
+msgstr "Linha de margem posicionada na coluna %d"
+
+#: ../plugins/BracketCompletion/i18n.py:23
+msgid "Pair character completion occurred"
+msgstr "Parêntese fechado"
+
+#: ../plugins/BracketCompletion/i18n.py:24
+msgid "Enclosed selected text"
+msgstr "Texto incluído em parênteses"
+
+#: ../plugins/BracketCompletion/i18n.py:25
+msgid "Removed pair character completion"
+msgstr "Fechamento de parêntese removido"
+
+#: ../plugins/DocumentBrowser/i18n.py:23
+msgid "Select document to focus"
+msgstr "Selecione documento a focar"
+
+#: ../plugins/DocumentBrowser/i18n.py:25
+msgid "File _Type"
+msgstr "_Tipo de Arquivo"
+
+#: ../plugins/DocumentBrowser/i18n.py:26
+msgid "File _Name"
+msgstr "_Nome de Arquivo"
+
+#: ../plugins/DocumentBrowser/i18n.py:27
+msgid "Full _Path Name"
+msgstr "_Caminho Completo"
+
+#: ../plugins/DocumentBrowser/i18n.py:28
+msgid "No documents open"
+msgstr "Nenhum documento aberto"
+
+#: ../plugins/SearchPreviousNext/i18n.py:23
+msgid "No previous match"
+msgstr "Nenhuma ocorrência prévia"
+
+#: ../plugins/IncrementalBar/i18n.py:23 ../plugins/FindBar/i18n.py:23
+#: ../plugins/ReplaceBar/i18n.py:23
+msgid "Match _case"
+msgstr "Coinc. _maiúsc./minúsc."
+
+#: ../plugins/IncrementalBar/i18n.py:24 ../plugins/FindBar/i18n.py:24
+#: ../plugins/ReplaceBar/i18n.py:24
+msgid "Match _word"
+msgstr "_Coinc. palavra"
+
+#: ../plugins/IncrementalBar/i18n.py:25 ../plugins/FindBar/i18n.py:25
+#: ../plugins/ReplaceBar/i18n.py:25
+msgid "_Previous"
+msgstr "A_nterior"
+
+#: ../plugins/IncrementalBar/i18n.py:26 ../plugins/FindBar/i18n.py:26
+#: ../plugins/ReplaceBar/i18n.py:26
+msgid "_Next"
+msgstr "Pró_ximo"
+
+#: ../plugins/IncrementalBar/i18n.py:27 ../plugins/FindBar/i18n.py:27
+#: ../plugins/ReplaceBar/i18n.py:27
+msgid "_Search for:"
+msgstr "_Pesquisar por:"
+
+#: ../plugins/IncrementalBar/i18n.py:29 ../plugins/FindBar/i18n.py:29
+#: ../plugins/ReplaceBar/i18n.py:29
+msgid "Closed search bar"
+msgstr "Barra \"pesquisar\" fechada"
+
+#: ../plugins/IncrementalBar/i18n.py:30
+msgid "Incrementally search for text"
+msgstr "Pesquisa enquanto digita"
+
+#: ../plugins/IncrementalBar/i18n.py:31
+msgid "Close incremental search bar"
+msgstr "Fechar barra de pesquisa incremental"
+
+#: ../plugins/OpenDialog/i18n.py:24
+msgid "Select file for loading"
+msgstr "Seleciona o arquivo a ser aberto"
+
+#: ../plugins/ToolbarVisibility/i18n.py:23
+msgid "Hide toolbar"
+msgstr "Ocultar barra de ferramentas"
+
+#: ../plugins/ToolbarVisibility/i18n.py:24
+msgid "Showed toolbar"
+msgstr "Barra de ferramentas exibida"
+
+#: ../plugins/MatchingBracket/i18n.py:23
+#, python-format
+msgid "Found matching bracket on line %d"
+msgstr "Parêntese correspondente encontrado na linha %d"
+
+#: ../plugins/MatchingBracket/i18n.py:24
+msgid "No matching bracket found"
+msgstr "Parêntese correspondente não encontrado"
+
+#: ../plugins/BracketSelection/i18n.py:23
+msgid "Selected characters inside bracket"
+msgstr "Caracteres selecionados dentro dos parênteses"
+
+#: ../plugins/BracketSelection/i18n.py:24
+msgid "No brackets found for selection"
+msgstr "Não há parêntese para remover"
+
+#: ../plugins/Case/i18n.py:23
+msgid "No selection to change case"
+msgstr "Não há texto selecionado para alterar maiúsculas/minúsculas"
+
+#: ../plugins/Case/i18n.py:24
+msgid "Selected text is already uppercase"
+msgstr "O texto selecionado já está em letras maiúsculas"
+
+#: ../plugins/Case/i18n.py:25
+msgid "Changed selected text to uppercase"
+msgstr "Seleção de texto alterada minúsculas para maiúsculas"
+
+#: ../plugins/Case/i18n.py:26
+msgid "Selected text is already lowercase"
+msgstr "O texto selecionado já está em letras minúsculas"
+
+#: ../plugins/Case/i18n.py:27
+msgid "Changed selected text to lowercase"
+msgstr "Seleção de texto alterada de maiúsculas para maiúsculas"
+
+#: ../plugins/Case/i18n.py:28
+msgid "Selected text is already capitalized"
+msgstr "Texto selecionado já está em caixa alta"
+
+#: ../plugins/Case/i18n.py:29
+msgid "Capitalized selected text"
+msgstr "Texto alternado para caixa alta"
+
+#: ../plugins/Case/i18n.py:30
+msgid "Swapped the case of selected text"
+msgstr "Maiúsculas/minúsculas alternadas no texto selecionado"
+
+#: ../plugins/Case/i18n.py:31
+msgid "_Case"
+msgstr "M_aiusculização"
+
+#: ../plugins/Case/i18n.py:32
+msgid "_Uppercase"
+msgstr "_Maiúsculas"
+
+#: ../plugins/Case/i18n.py:33
+msgid "_Lowercase"
+msgstr "Mi_núsculas"
+
+#: ../plugins/Case/i18n.py:34
+msgid "_Titlecase"
+msgstr "_Iniciais em Maiúsculas"
+
+#: ../plugins/Case/i18n.py:35
+msgid "_Swapcase"
+msgstr "_Trocar Minúsculas/Maiúsculas"
+
+#: ../plugins/Bookmark/i18n.py:23
+#, python-format
+msgid "Removed bookmark on line %d"
+msgstr "Marcador removido da linha %d"
+
+#: ../plugins/Bookmark/i18n.py:24
+#, python-format
+msgid "Bookmarked line %d"
+msgstr "Linha %d marcada"
+
+#: ../plugins/Bookmark/i18n.py:25
+msgid "No bookmarks found to remove"
+msgstr "Não há marcador para remover"
+
+#: ../plugins/Bookmark/i18n.py:26
+msgid "Removed all bookmarks"
+msgstr "Todos marcadores removidos"
+
+#: ../plugins/Bookmark/i18n.py:28
+msgid "No next bookmark to move to"
+msgstr "Não há marcador seguir"
+
+#: ../plugins/Bookmark/i18n.py:29
+msgid "No previous bookmark to move to"
+msgstr "Não marcador prévio"
+
+#: ../plugins/Bookmark/i18n.py:30
+msgid "Already on first bookmark"
+msgstr "Cursor já no primeiro marcador"
+
+#: ../plugins/Bookmark/i18n.py:31
+msgid "Moved to first bookmark"
+msgstr "Cursor movido para o primeiro marcador"
+
+#: ../plugins/Bookmark/i18n.py:32
+msgid "Already on last bookmark"
+msgstr "Cursor já no último marcador"
+
+#: ../plugins/Bookmark/i18n.py:33
+msgid "Moved to last bookmark"
+msgstr "Cursor movido para o último marcador"
+
+#: ../plugins/Bookmark/i18n.py:34
+msgid "_Bookmark"
+msgstr "_Marcadores"
+
+#: ../plugins/Bookmark/i18n.py:35
+msgid "Bookmark _Line"
+msgstr "Marcar _Linha"
+
+#: ../plugins/Bookmark/i18n.py:36
+msgid "_Remove Bookmark"
+msgstr "_Remover Marcador"
+
+#: ../plugins/Bookmark/i18n.py:37
+msgid "Remove _All Bookmarks"
+msgstr "Remover _Todos os Marcadores"
+
+#: ../plugins/Bookmark/i18n.py:38
+msgid "Move to _Next Bookmark"
+msgstr "Pró_ximo Marcador"
+
+#: ../plugins/Bookmark/i18n.py:39
+msgid "Move to _Previous Bookmark"
+msgstr "Marcador A_nterior"
+
+#: ../plugins/Bookmark/i18n.py:40
+msgid "Move to _First Bookmark"
+msgstr "_Primeiro Marcador"
+
+#: ../plugins/Bookmark/i18n.py:41
+msgid "Move to Last _Bookmark"
+msgstr "Últim_o Marcador"
+
+#: ../plugins/Bookmark/i18n.py:42
+msgid "_Show Bookmark Browser"
+msgstr "_Mostrar Navegador de Marcadores"
+
+#: ../plugins/SaveDialog/i18n.py:23
+msgid "Save Document"
+msgstr "Salvar Como"
+
+#: ../plugins/SaveDialog/i18n.py:24
+msgid "Change name of file and save"
+msgstr "Altera o nome do arquivo e o salva"
+
+#: ../plugins/UserGuide/i18n.py:23
+msgid "Launching help browser"
+msgstr "Obtendo ajuda"
+
+#: ../plugins/UserGuide/i18n.py:24
+msgid "Could not open help browser"
+msgstr "Não foi possível abrir o navegador da ajuda"
+
+#: ../plugins/ReadOnly/i18n.py:23
+msgid "File has not been saved to disk"
+msgstr "O documento não foi salvado em disco"
+
+#: ../plugins/ReadOnly/i18n.py:24
+msgid "No permission to modify file"
+msgstr "Você não tem permissão para modificar este documento"
+
+#: ../plugins/UndoRedo/i18n.py:24
+msgid "Undid last action"
+msgstr "Ação desfeita"
+
+#: ../plugins/UndoRedo/i18n.py:25
+msgid "Cannot undo action"
+msgstr "Impossível desfazer ação"
+
+#: ../plugins/UndoRedo/i18n.py:26
+msgid "Redid undone action"
+msgstr "Ação refeita"
+
+#: ../plugins/Spaces/i18n.py:24
+msgid "Replacing spaces please wait..."
+msgstr "Substituindo espaços, por favor aguarde..."
+
+#: ../plugins/Spaces/i18n.py:25
+msgid "No spaces found to replace"
+msgstr "Nenhum espaço encontrado para ser substituído"
+
+#: ../plugins/Spaces/i18n.py:26
+msgid "Replaced spaces with tabs"
+msgstr "Espaços substituídos por tabulações"
+
+#: ../plugins/Spaces/i18n.py:27
+msgid "Replacing tabs please wait..."
+msgstr "Substituindo tabulações, por favor aguarde..."
+
+#: ../plugins/Spaces/i18n.py:28
+msgid "Replaced tabs with spaces"
+msgstr "Tabulações subtituídas por espaços"
+
+#: ../plugins/Spaces/i18n.py:29
+msgid "No tabs found to replace"
+msgstr "Nenhuma tabulação encontrada para ser substituída"
+
+#: ../plugins/Spaces/i18n.py:30
+msgid "Removing spaces please wait..."
+msgstr "Removendo espaços, por favor aguarde..."
+
+#: ../plugins/Spaces/i18n.py:31
+msgid "No spaces were found at end of line"
+msgstr "Não foram encontrados espaços no fim das linhas"
+
+#: ../plugins/Spaces/i18n.py:32
+msgid "Removed spaces at end of lines"
+msgstr "Espaços removidos ao fim das linhas"
+
+#: ../plugins/Spaces/i18n.py:33
+msgid "S_paces"
+msgstr "_Espaços"
+
+#: ../plugins/Spaces/i18n.py:34
+msgid "_Tabs to Spaces"
+msgstr "_Tabulações para Espaços"
+
+#: ../plugins/Spaces/i18n.py:35
+msgid "_Spaces to Tabs"
+msgstr "_Espaços para Tabulações"
+
+#: ../plugins/Spaces/i18n.py:36
+msgid "_Remove Trailing Spaces"
+msgstr "_Remover Espaços ao Fim da Linha"
+
+#: ../plugins/GotoBar/i18n.py:23
+msgid "Move cursor to a specific line"
+msgstr "Move o cursor para uma determinada linha"
+
+#: ../plugins/GotoBar/i18n.py:24
+msgid "Closed goto line bar"
+msgstr "Barra \"ir para linha\" fechada"
+
+#: ../plugins/GotoBar/i18n.py:25
+#, python-format
+msgid " of %d"
+msgstr " de %d"
+
+#: ../plugins/GotoBar/i18n.py:26
+msgid "Line number:"
+msgstr "Linha número:"
+
+#: ../plugins/GotoBar/i18n.py:27
+#, python-format
+msgid "Moved cursor to line %d"
+msgstr "Cursor movido para linha %d"
+
+#: ../plugins/SearchReplace/i18n.py:23
+msgid "Searching please wait..."
+msgstr "Pesquisando, por favor aguarde..."
+
+#: ../plugins/SearchReplace/i18n.py:24
+#, python-format
+msgid "Found %d matches"
+msgstr "%d ocorrências encontradas"
+
+#: ../plugins/SearchReplace/i18n.py:25
+#, python-format
+msgid "Match %d of %d"
+msgstr "Ocorrência %d de %d"
+
+#: ../plugins/SearchReplace/i18n.py:26
+msgid "No match found"
+msgstr "Nenhuma ocorrência encontrada"
+
+#: ../plugins/SearchReplace/i18n.py:27
+msgid "No next match found"
+msgstr "Nenhuma ocorrência a seguir"
+
+#: ../plugins/SearchReplace/i18n.py:28
+msgid "Stopped operation"
+msgstr "Operação interrompida"
+
+#: ../plugins/SearchReplace/i18n.py:29
+msgid "Replacing please wait..."
+msgstr "Substituindo, por favor aguarde..."
+
+#: ../plugins/SearchReplace/i18n.py:30
+msgid "Replace found match"
+msgstr "Ocorrência substituída"
+
+#: ../plugins/SearchReplace/i18n.py:31
+msgid "Replaced all found matches"
+msgstr "Todas as ocorrências substituídas"
+
+#: ../plugins/SearchReplace/i18n.py:32
+msgid "No previous match found"
+msgstr "Nenhuma ocorrência anterior"
+
+#: ../plugins/ReplaceBar/i18n.py:30
+msgid "Replac_e with:"
+msgstr "S_ubstituir por:"
+
+#: ../plugins/ReplaceBar/i18n.py:32
+msgid "Closed replace bar"
+msgstr "Barra \"substituir\" fechada"
+
+#: ../plugins/ReplaceBar/i18n.py:33
+msgid "_Replace"
+msgstr "_Substituir"
+
+#: ../plugins/ReplaceBar/i18n.py:34
+msgid "Replace _All"
+msgstr "Substituir _Todas"
+
+#: ../plugins/ReplaceBar/i18n.py:35
+msgid "Incre_mental"
+msgstr "_Incremental"
+
+#: ../plugins/ColorEditor/i18n.py:23
+msgid "Change editor colors"
+msgstr "Mudar as cores do editor"
+
+#: ../plugins/ColorEditor/i18n.py:24
+msgid "Syntax Color Editor"
+msgstr "Editor de Cores"
+
+#: ../plugins/ColorEditor/i18n.py:25
+msgid "_Use default theme"
+msgstr "_Usar tema padrão"
+
+#: ../plugins/ColorEditor/i18n.py:26
+msgid "Using theme colors"
+msgstr "Usando cores do tema"
+
+#: ../plugins/ColorEditor/i18n.py:27
+msgid "Using custom colors"
+msgstr "Usando cores personalizadas"
+
+#: ../plugins/ColorEditor/i18n.py:28
+msgid "Select foreground color"
+msgstr "Selecionar Cor do Primeiro Plano"
+
+#: ../plugins/ColorEditor/i18n.py:29
+msgid "_Normal text color: "
+msgstr "Corpo de _texto: "
+
+#: ../plugins/ColorEditor/i18n.py:30
+msgid "_Background color: "
+msgstr "_Plano de fundo: "
+
+#: ../plugins/ColorEditor/i18n.py:31
+msgid "_Foreground:"
+msgstr "_Primeiro plano:"
+
+#: ../plugins/ColorEditor/i18n.py:32
+msgid "Back_ground:"
+msgstr "Plano de _fundo:"
+
+#: ../plugins/ColorEditor/i18n.py:33
+msgid "Select background color"
+msgstr "Selecionar Cor do Plano de Fundo"
+
+#: ../plugins/ColorEditor/i18n.py:34
+msgid "Language Elements"
+msgstr "Modo de destaque"
+
+#: ../plugins/ColorEditor/i18n.py:35
+msgid "Select foreground syntax color"
+msgstr "Selecionar Cor do do Primeiro Plano da Sintaxe"
+
+#: ../plugins/ColorEditor/i18n.py:36
+msgid "Select background syntax color"
+msgstr "Selecionar Cor do Plano de Fundo da Sintaxe"
+
+#: ../plugins/ColorEditor/i18n.py:39
+msgid "_Underline"
+msgstr "_Sublinhado"
+
+#: ../plugins/ColorEditor/i18n.py:40
+msgid "_Reset to Default"
+msgstr "_Restaurar Padrão"
+
+#: ../plugins/SyntaxColorSwitcher/i18n.py:23
+msgid "_Highlight Mode"
+msgstr "Modo de _Destaque"
+
+#: ../plugins/SyntaxColorSwitcher/i18n.py:25
+#, python-format
+msgid "Activated '%s' syntax color"
+msgstr "Cor da sintaxe \"%s\" ativada"
+
+#: ../plugins/SyntaxColorSwitcher/i18n.py:26
+msgid "Disabled syntax color"
+msgstr "Cor da sintaxe desativada"
+
+#~ msgid "%d match was found"
+#~ msgstr "%d ocorrência encontrada"
+
+#~ msgid "%d matches were found"
+#~ msgstr "%d ocorrências encontradas"
+
+#~ msgid "Create a new file"
+#~ msgstr "Criar um novo documento"
+
+#~ msgid "Change the name of current file and save it"
+#~ msgstr "Salvar documento com outro nome"
+
+#~ msgid "Line %d is already bookmarked"
+#~ msgstr "Linha %d já está marcada"
+
+#~ msgid "No bookmark on line %d to remove"
+#~ msgstr "Não há marcador para remover na linha %d"
+
+#~ msgid "No tabs found in selected text"
+#~ msgstr "Não há tabulações no texto selecionado"
+
+#~ msgid "Closed findbar"
+#~ msgstr "Barra de localizar fechada"
+
+#~ msgid "Name"
+#~ msgstr "Nome"
+
+#~ msgid "Description"
+#~ msgstr "Descrição"
+
+#~ msgid "scribes: %s is an invalid option"
+#~ msgstr "scribes: opção \"%s\" não reconhecida"

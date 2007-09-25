@@ -1,0 +1,2354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd"[
+	<!ENTITY legal SYSTEM "legal.xml">
+	<!ENTITY appversion "0.3.0">
+	<!ENTITY manrevision "0.3">
+	<!ENTITY date "August 2005">
+	<!ENTITY app "Scribes">
+]>
+<?yelp:chunk-depth 2?>
+<article id="index" lang="en">
+<!-- =============Document Header ============================= -->
+<!-- please do not change the id; for translations, change lang to -->
+<!-- appropriate code -->
+	<articleinfo>
+		<title>&app; Manual V&manrevision;</title>
+		<copyright>
+			<year>2005</year>
+			<holder>Lateef Alabi-Oki</holder>
+		</copyright>
+
+<!-- translators: uncomment this:
+		<copyright>
+			<year>2005</year>
+			<holder>ME-THE-TRANSLATOR (Latin translation)</holder>
+		</copyright>
+-->
+	<publisher>
+		<publishername>Scribes Documentation Project</publishername>
+	</publisher>
+	&legal;
+	<authorgroup>
+		<author role="maintainer">
+			<firstname>Lateef</firstname>
+			<surname>Alabi-Oki</surname>
+			<affiliation>
+				<orgname>Scribes Documentation Project</orgname>
+				<address><email>mystilleef@gmail.com</email> </address>
+			</affiliation>
+		</author>
+	</authorgroup>
+
+<!-- According to GNU FDL, revision history is mandatory if you are -->
+<!-- modifying/reusing someone else's document.  If not, you can omit it. -->
+
+	<revhistory>
+
+	<!-- Remember to remove the &manrevision; entity from the revision entries
+		other than the current revision. -->
+
+		<revision>
+			<revnumber>&app; Manual V&manrevision;</revnumber>
+			<date>&date;</date>
+			<revdescription>
+				<para role="author">Lateef Alabi-Oki</para>
+				<para role="publisher">Scribes Documentation Project</para>
+			</revdescription>
+		</revision>
+	</revhistory>
+
+	<releaseinfo>
+		This manual describes version &appversion; of &app;.
+	</releaseinfo>
+
+	<!-- Change the link to point to Scribe's website -->
+
+	<legalnotice>
+		<title>Feedback</title>
+		<para>
+			To report a bug or make a suggestion regarding the
+			<application>&app;</application> application or this manual, follow
+			the directions in the <ulink url="ghelp:gnome-feedback" type="help">
+			Scribes Feedback Page</ulink>.
+		</para>
+
+	<!-- Translators may also add here feedback address for translations -->
+
+	</legalnotice>
+		<abstract role="description">
+			<para>&app; is a GNOME text editor.</para>
+		</abstract>
+	</articleinfo>
+
+	<indexterm><primary>scribes</primary></indexterm>
+	<indexterm><primary>text editor</primary></indexterm>
+
+<!-- =================== Document Body ============================= -->
+<!-- =================== Introduction ============================== -->
+
+	<sect1 id="scribes-intro">
+		<title>Introduction</title>
+		<para>
+			<application>&app;</application> is an extensible text editor
+			that is simple and powerful. You can use
+			<application>&app;</application> to create, view and edit
+			text files. <application>&app;</application> provides
+			powerful functions to manipulate text easily and a plugin
+			system to extend the capabilities of the editor.
+		</para>
+		<para>
+			Scribes is
+			<ulink
+				type="http"
+				url="http://www.gnu.org/philosophy/free-sw.html">Free Software</ulink>.
+			However, writing software is time-consuming, painstaking and
+			costly. Kindly support the project by
+			<ulink type="http" url="http://scribes.sf.net/donate.html">
+			donating</ulink>. Your donation will help advance the
+			development of the project. Thank you.
+		</para>
+		<para>
+			<ulink type="http" url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+	</sect1>
+
+	<!-- ============= Getting Started =========================== -->
+
+	<sect1 id="scribes-getting-started">
+		<title>Getting Started</title>
+
+<!-- ==================== To Start Scribes ========================= -->
+
+		<sect2 id="scribes-to-start">
+			<title>Starting &app;</title>
+			<para>
+				You can start <application>&app;</application> in the
+				following ways:
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term><guimenu>Applications</guimenu> menu</term>
+					<listitem>
+						<para>
+							Choose
+							<menuchoice>
+								<guisubmenu>Accessories</guisubmenu>
+									<guimenuitem>
+										Scribes Text Editor
+									</guimenuitem>
+							</menuchoice>.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Command line</term>
+					<listitem>
+						<para>
+							Execute the following command:
+							<command>scribes</command>
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<para>
+				<ulink type="http" url="http://scribes.sf.net/donate.html">
+				Support Scribes</ulink>.
+			</para>
+		</sect2>
+
+<!-- ================== User Interface Description ================= -->
+
+		<sect2 id="scribes-editor-window">
+			<title>Text Editor Window</title>
+			<para>
+				When you start <application>&app;</application>, the
+				following window is displayed.
+			</para>
+			<figure id="scribes-FIG-editor-window">
+				<title>&app; Window</title>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="figures/scribes_window.png"
+								format="PNG"/>
+						</imageobject>
+						<textobject>
+							<phrase>
+								Shows the text editor window. Contains
+								toolbar, editing area and statusbar.
+							</phrase>
+						</textobject>
+					</mediaobject>
+				</screenshot>
+			</figure>
+			<para>
+				The <application>&app;</application> window contains
+				the following element:
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term>Toolbar</term>
+					<listitem>
+						<para>
+							The toolbar provides access to the most used
+							operations of the text editor. Point to a
+							toolbar button to activate the tooltip for
+							the toolbar button. The tooltip provides
+							information on	what operation the toolbar
+							button can perform.
+							<note>
+								<para>
+									The operations on the toolbar only
+									represent some of the operations
+									that the editor can perform. See
+									shortcut keys for all the operations
+									that can be performed by the editor.
+								</para>
+							</note>
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Editing Area</term>
+					<listitem>
+						<para>
+							Use the editing area to view and type text.
+							The editing area contains a line margin. The
+							line margin displays line numbers. The
+							editing area also contains a line highlight.
+							The line highlight is a visual aid that
+							shows the line the cursor is on.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Statusbar</term>
+					<listitem>
+						<para>
+							The statusbar displays information about
+							the operations of the editor. The statusbar
+							contains four sections. The first one shows
+							an image that changes corresponding to the
+							operations carried out by the editor. The
+							second section usually shows the full path
+							of the document shown in the editing area.
+							It also shows text representing operations
+							performed. The third sections shows the
+							current position of the cursor in the
+							editing area. The last sections shows the
+							mode the editor is in. The editor has two
+							main modes: the insert mode; and the
+							overwrite mode.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<para>
+				<ulink type="http" url="http://scribes.sf.net/donate.html">
+				Support Scribes</ulink>.
+			</para>
+		</sect2>
+
+<!-- ======================== The Popup Menu ======================= -->
+
+		<sect2 id="scribes-popup-menu">
+			<title>Popup Menu</title>
+			<para>
+				Some advanced text editing functions are displayed in
+				the popup menu. Right-click on the editing area to
+				display the popup menu. You can also display the popup
+				menu by pressing <keycap>Shift-F10</keycap>. Or by
+				pressing the <keycap>Menu</keycap> key.
+			</para>
+			<figure id="scribes-FIG-editor-popup-menu">
+				<title>&app; Popup Menu</title>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="figures/scribes_popup_menu.png"
+								format="PNG"/>
+						</imageobject>
+						<textobject>
+							<phrase>
+								Shows the text editor's popup menu.
+							</phrase>
+						</textobject>
+					</mediaobject>
+				</screenshot>
+			</figure>
+			<para>
+				<ulink type="http" url="http://scribes.sf.net/donate.html">
+				Support Scribes</ulink>.
+			</para>
+		</sect2>
+
+<!-- ================== Launching Multiple Files =================== -->
+
+		<sect2 id="scribes-command-line">
+			<title>Command Line</title>
+			<para>
+				You can run <application>&app;</application> from a
+				command line and open a single file or multiple files.
+				To open multiple files from a command line, type the
+				following command, then press <keycap>Return</keycap>:
+			</para>
+			<para>
+				<command>scribes
+					<replaceable>
+						file1.txt file2.txt file3.txt
+					</replaceable>
+				</command>
+			</para>
+			<para>
+				When the application starts, the files that you specify
+				are displayed in separate
+				<application>&app;</application> windows.
+			</para>
+			<para>
+				<ulink type="http" url="http://scribes.sf.net/donate.html">
+				Support Scribes</ulink>.
+			</para>
+		</sect2>
+	</sect1>
+
+<!-- =================== Scribes File Usage ======================== -->
+
+	<sect1 id="scribes-usage">
+		<title>Usage</title>
+		<para>
+			Most operations discussed in this section can be found in
+			<application>&app;</application> popup menu.
+		</para>
+		<para>
+			<ulink type="http" url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+
+<!-- ===================== File Operations ========================= -->
+
+		<sect2 id="scribes-file-operations">
+			<title>File Operations</title>
+			<para>
+				This section shows you how to perform file operations.
+			</para>
+			<sect3 id="scribes-open-existing-file">
+				<title>To Open An Existing File</title>
+				<para>
+					To open a file, click on the
+					<guibutton>Open</guibutton> toolbar button to show
+					an <guilabel>Open File</guilabel> dialog. You can
+					also press <keycap>Ctrl-O</keycap> to show the
+					<guilabel>Open File</guilabel> dialog. Use the
+					<guilabel>Open File</guilabel> dialog to select the
+					file you wish to view or edit. Press
+					<keycap>Enter</keycap> to load the file into the
+					editing area of the editor.
+				</para>
+			</sect3>
+			<sect3 id="scribes-open-remote-file">
+				<title>
+					To Open An Existing File at a Remote Location
+				</title>
+				<para>
+					To open a file at a remote location, press
+					<keycap>Ctrl-L</keycap> to show the
+					<guilabel>Open Location</guilabel> dialog. Enter the
+					location of the file in the entry field. Press
+					<keycap>Enter</keycap> to load the file into the
+					editing area of the editor.
+				</para>
+			</sect3>
+			<sect3 id="scribes-save-file">
+				<title>To Save a File</title>
+				<para>
+					Press <keycap>Ctrl-S</keycap> to save your file.
+					<note>
+						<title>Automatic Saving</title>
+						<para>
+							<application>&app;</application>
+							automatically saves your files. There is no
+							need to manually save files.
+						</para>
+					</note>
+				</para>
+			</sect3>
+			<sect3 id="scribes-rename-file">
+				<title>To Rename a File</title>
+				<para>
+					To rename a file, press <keycap>Ctrl-Shift-S</keycap>
+					to display the <guilabel>Save Document</guilabel>
+					dialog. Type the new name of the file in the
+					entry field. Press <keycap>Enter</keycap> to change
+					the name of the file.
+				</para>
+				<para>
+					You can also click on the
+					<guibutton>Save As</guibutton> toolbar button to
+					display the <guilabel>Save Document</guilabel>
+					dialog.
+				</para>
+			</sect3>
+			<para>
+				<ulink type="http" url="http://scribes.sf.net/donate.html">
+				Support Scribes</ulink>.
+			</para>
+		</sect2>
+
+<!-- ====================== Common Operations ===================== -->
+
+		<sect2 id="scribes-common-operations">
+			<title>Common Operations</title>
+			<para>
+				This section shows you how to perform common text
+				operations with the text editor.
+			</para>
+			<sect3 id="scribes-undo">
+				<title>To Undo Edits</title>
+				<para>
+					To undo an action, click on the
+					<guibutton>Undo</guibutton> toolbar button.
+					You can also press <keycap>Ctrl-Z</keycap> shortcut
+					key to undo an edit.
+				</para>
+			</sect3>
+			<sect3 id="scribes-redo">
+				<title>To Redo Edits</title>
+				<para>
+					To redo an action, click on the
+					<guibutton>Redo</guibutton> toolbar button. You can
+					also press <keycap>Ctrl-Shift-Z</keycap> shortcut
+					key to redo an edit.
+				</para>
+			</sect3>
+			<sect3 id="scribes-cut">
+				<title>To Cut Text</title>
+				<para>
+					Press <keycap>Ctrl-X</keycap> to cut a selected
+					text.
+				</para>
+			</sect3>
+			<sect3 id="scribes-copy">
+				<title>To Copy Text</title>
+				<para>
+					Press <keycap>Ctrl-C</keycap> to copy a selected
+					text.
+				</para>
+			</sect3>
+			<sect3 id="scribes-paste">
+				<title>To Paste Text</title>
+				<para>
+					Press <keycap>Ctrl-V</keycap> to paste cut text or
+					copied text.
+				</para>
+			</sect3>
+			<sect3 id="scribes-search">
+				<title>To Search for Text</title>
+				<para>
+					To search for text in the editing area, click on the
+					<guibutton>Search</guibutton> toolbar button to
+					display the <guilabel>Search</guilabel> bar. You can
+					also press <keycap>Ctrl-F</keycap> to display the
+					<guilabel>Search</guilabel> bar. The
+					<guilabel>Search</guilabel> bar appears right above
+					the <guibutton>statusbar</guibutton>. Type the text
+					you wish to search for in the
+					<guibutton>text entry</guibutton> field. Press
+					<keycap>Enter</keycap> to start searching.
+				</para>
+				<para>
+					Found matches are highlighted in the editing area.
+					Selected matches are highlighted in a different
+					color. Click on the <guibutton>Next</guibutton>
+					button to select the next match. Click on the
+					<guibutton>Previous</guibutton> button to select the
+					previous match.
+				</para>
+				<para>
+					Press <keycap>Esc</keycap> to hide the search bar.
+					Clicking on the editing area also hides the search
+					bar. Hiding the search bar removes all highlights
+					in the editing area.
+				</para>
+			</sect3>
+			<sect3 id="scribes-incremental-search">
+				<title>To Search for Text Incrementally</title>
+				<para>
+					To incrementally search for text in the editing
+					area, press <keycap>Ctrl-K</keycap> to display
+					the incremental search bar. The incremental search
+					bar works just like the search bar.
+				</para>
+			</sect3>
+			<sect3 id="scribes-replace">
+				<title>To Replace Text</title>
+				<para>
+					To replace text in the editing area, click on the
+					<guibutton>Replace</guibutton> toolbar button to
+					display the <guilabel>Replace</guilabel> bar. The
+					<guilabel>Replace</guilabel> bar appears right above
+					the <guibutton>statusbar</guibutton>. Type the
+					text you wish to replace in the
+					<guilabel>search entry</guilabel> field.
+				</para>
+				<para>
+					Type the text you wish to insert in the editing area
+					in the <guilabel>replace entry</guilabel> field.
+					Then press <keycap>Enter</keycap> to find all
+					occurences of the text. You can also click the
+					<guibutton>Replace</guibutton> button to replace the
+					occurrence of the string with the text in the
+					<guilabel>Replace with</guilabel> field. Click
+					<guibutton>Replace All</guibutton> to replace all
+					occurrences of the string.
+				</para>
+				<para>
+					Found matches are highlighted. Replaced text are
+					highlighted in a different color. Use the
+					<guibutton>Next</guibutton> and
+					<guibutton>Previous</guibutton> button to navigate
+					between found matches.
+				</para>
+				<para>
+					Click on the display area to hide the
+					<guilabel>Replace</guilabel> bar. You can also press
+					<keycap>Esc</keycap> to hide the
+					<guilabel>Replace</guilabel> bar.
+				</para>
+			</sect3>
+			<sect3 id="scribes-goto">
+				<title>To Position the Cursor on a Specific Line</title>
+				<para>
+					To position the cursor on a specific line in the
+					current file, click on the
+					<guibutton>GOTO</guibutton> toolbar button to show
+					the <guilabel>GOTO</guilabel> bar. The
+					<guilabel>GOTO</guilabel> bar appears right above
+					the <guibutton>statusbar</guibutton>. Enter the the
+					specific line you wish to position the cursor on in
+					the text entry field. Press <keycap>Enter</keycap>.
+					Alternatively, you can use the
+					<guibutton>spin button</guibutton> to scroll the
+					specific line you wish to position the cursor on.
+				</para>
+			</sect3>
+			<para>
+				<ulink type="http" url="http://scribes.sf.net/donate.html">
+				Support Scribes</ulink>.
+			</para>
+		</sect2>
+
+<!-- ==================== Format Operations ======================== -->
+
+		<sect2 id="scribes-format-operations">
+			<title>Format Operations</title>
+			<para>
+				This section shows you how to perform formating in the
+				editing area.
+			</para>
+			<sect3 id="scribes-indentation-operations">
+				<title>To Indent Lines</title>
+				<para>
+					Press <keycap>Ctrl-T</keycap> to indent a line or
+					selection of lines.
+				</para>
+				<note>
+					<para>
+						<application>&app;</application> indents lines
+						to the nearest tab stop. A tab stop is a fixed
+						point in the editing area that represents
+						the beginning of an indentation.
+					</para>
+				</note>
+			</sect3>
+			<sect3 id="scribes-unindentation-operations">
+				<title>To Unindent Lines</title>
+				<para>
+					Press <keycap>Ctrl-Shift-T</keycap> to unindent a
+					line or selection of lines.
+				</para>
+			</sect3>
+			<sect3 id="scribes-convert-spaces-to-tabs">
+				<title>To Convert Spaces to Tabs</title>
+				<para>
+					Press <keycap>Alt-T</keycap> to convert all space
+					characters to tab ones in the editing area.
+				</para>
+				<note>
+					<para>
+						Only space characters at the beginning of each
+						line will be converted. Space characters that do
+						not serve indentation purposes are removed.
+					</para>
+				</note>
+			</sect3>
+			<sect3 id="scribes-convert-tabs-to-spaces">
+				<title>To Convert Tabs to Spaces</title>
+				<para>
+					Press <keycap>Alt-Shift-T</keycap> to convert all
+					tab characters to space ones in the editing area.
+				</para>
+				<note>
+					<para>
+						Only tab characters at the beginning of each
+						line will be converted. Space characters that do
+						not serve indentation purposes are removed.
+					</para>
+				</note>
+			</sect3>
+			<sect3 id="scribes-remove-trailing-spaces">
+				<title>To Remove Trailing Spaces</title>
+				<para>
+					Press <keycap>Alt-R</keycap> to remove space or tab
+					characters at the end of all lines in the editing
+					area.
+				</para>
+			</sect3>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+		</sect2>
+
+<!-- ====================== Selection Operations =================== -->
+
+		<sect2 id="scribes-selection-operations">
+			<title>Selection Operations</title>
+			<para>
+				This section shows you how to perform selection
+				operations in the editing area.
+			</para>
+			<sect3 id="scribes-word-selection">
+				<title>To Select a Word</title>
+				<para>
+					Press <keycap>Alt-W</keycap> to select a word in the
+					editing area.
+				</para>
+			</sect3>
+			<sect3 id="scribes-sentence-selection">
+				<title>To Select a Sentence</title>
+				<para>
+					Press <keycap>Alt-S</keycap> to select a sentence
+					in the editing area.
+				</para>
+			</sect3>
+			<sect3 id="scribes-line-selection">
+				<title>To Select a Line</title>
+				<para>
+					Press <keycap>Alt-L</keycap> to select a line in the
+					in the editing area.
+				</para>
+			</sect3>
+			<sect3 id="scribes-paragraph-selection">
+				<title>To Select a Paragraph</title>
+				<para>
+					Press <keycap>Alt-P</keycap> to select a paragraph
+					in the editing area.
+				</para>
+			</sect3>
+			<sect3 id="scribes-pair-character-selection">
+				<title>To Select Text Within Pair Characters</title>
+				<para>
+					Press <keycap>Alt-B</keycap> to select text within
+					pair characters in the editing area.
+				</para>
+				<note>
+					<para>
+						Pair characters selection does not work for
+						the single or double quote characters. However,
+						characters like parenthesis and brackets
+						are supported.
+					</para>
+				</note>
+			</sect3>
+		</sect2>
+		<sect2 id="scribes-line-operations">
+			<title>Line Operations</title>
+			<para>
+				This section discusses operations you can perform with
+				lines in the editing area.
+			</para>
+			<sect3 id="scribes-delete-line">
+				<title>To Delete a Line</title>
+				<para>
+					Press <keycap>Alt-D</keycap> to delete all text on a
+					line in the editing area.
+				</para>
+			</sect3>
+			<sect3 id="scribes-join-line">
+				<title>To Join Lines</title>
+				<para>
+					Press <keycap>Alt-J</keycap> to join the next line
+					to the current one.
+				</para>
+			</sect3>
+			<sect3 id="scribes-free-line-below">
+				<title>To Free the Next Line</title>
+				<para>
+					Press <keycap>Alt-O</keycap> to free the next line
+					and move the cursor to it.
+				</para>
+			</sect3>
+			<sect3 id="scribes-free-current-line">
+				<title>To Free the Current Line</title>
+				<para>
+					Press <keycap>Alt-Shift-O</keycap> to free the
+					current line and keep the cursor on it.
+				</para>
+			</sect3>
+			<sect3 id="scribes-delete-cursor-to-end">
+				<title>To Delete Text From Cursor to End of Line</title>
+				<para>
+					Press <keycap>Alt-End</keycap> to delete text from
+					the cursor position to the end of the current line.
+				</para>
+			</sect3>
+			<sect3 id="scribes-delete-cursor-to-start">
+				<title>
+					To Delete Text From Cursor to the Start of a Line
+				</title>
+				<para>
+					Press <keycap>Alt-Home</keycap> to delete text from
+					the cursor position to the start of the current
+					line.
+				</para>
+			</sect3>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+		</sect2>
+
+<!-- ======================Case Operations ========================= -->
+
+		<sect2 id="scribes-case-operations">
+			<title>Case Operations</title>
+			<para>
+				This section shows you how to perform case operations
+				in the editing area.
+			</para>
+			<sect3 id="scribes-uppercase">
+				<title>To Convert Selected Text to Uppercase</title>
+				<para>
+					Press <keycap>Alt-U</keycap> to convert selected
+					text to uppercase or lowercase characters.
+				</para>
+				<note>
+					If selected text is uppercase, they'll be converted
+					to lowercase and vice-versa.
+				</note>
+			</sect3>
+			<sect3 id="scribes-titlecase">
+				<title>
+					To Capitalize the First Character in Selected Text
+				</title>
+				<para>
+					Press <keycap>Alt-Shift-U</keycap> to capitalize
+					the first Character in selected text. Other letters
+					are converted to lowercase characters.
+				</para>
+			</sect3>
+			<sect3 id="scribes-swapcase">
+				<title>
+					To Swap the Case of Characters in Selected Text
+				</title>
+				<para>
+					Press <keycap>Alt-Shift-L</keycap> to swap the
+					case of individual characters in selected text.
+					Lowercase characters are converted to uppercase
+					and vice-versa.
+				</para>
+			</sect3>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+		</sect2>
+
+<!-- ==================== Bookmark Operations ====================== -->
+
+		<sect2 id="scribes-bookmark-operations">
+			<title>Bookmark Operations</title>
+			<para>
+				This section shows you how to perform bookmark
+				operations in the editing area.
+			</para>
+			<sect3 id="scribes-bookmark-line">
+				<title>To Add or Remove a Bookmark on a Line</title>
+				<para>
+					Press <keycap>Ctrl-D</keycap> to add or remove a
+					bookmark a line in the editing area.
+				</para>
+				<note>
+					If line is bookmarked, bookmark will be removed. If
+					line is not bookmarked, line will be bookmarked.
+				</note>
+			</sect3>
+			<sect3 id="scribes-remove-all-bookmarks">
+				<title>To Remove all Bookmarks</title>
+				<para>
+					Press <keycap>Alt-Ctrl-Delete</keycap> to remove
+					all bookmarks in the editing area.
+				</para>
+			</sect3>
+			<sect3 id="scribes-next-bookmark">
+				<title>To Jump to the Next Bookmark</title>
+				<para>
+					Press <keycap>Alt-Right</keycap> to jump to the
+					next bookmark in the editing area.
+				</para>
+			</sect3>
+			<sect3 id="scribes-previous-bookmark">
+				<title>To Jump to the Previous Bookmark</title>
+				<para>
+					Press <keycap>Alt-Left</keycap> to jump to the
+					previous bookmark in the editing area.
+				</para>
+			</sect3>
+			<sect3 id="scribes-first-bookmark">
+				<title>To Jump to the first Bookmark</title>
+				<para>
+					Press <keycap>Alt-Ctrl-Home</keycap> to jump to
+					the first bookmark in the editing area.
+				</para>
+			</sect3>
+			<sect3 id="scribes-last-bookmark">
+				<title>To Jump to the Last Bookmark</title>
+				<para>
+					Press <keycap>Alt-Ctrl-Down</keycap> to jump to
+					the last bookmark in the editing area.
+				</para>
+			</sect3>
+			<sect3 id="scribes-show-bookmark-browser">
+				<title>To Display the Bookmark Browser</title>
+				<para>
+					Press <keycap>Ctrl-B</keycap> to display the
+					bookmark browser. The bookmark browser contains a
+					list of all bookmarked lines in the editing area.
+					You can select the line you wish to jump to and
+					press <keycap>Enter</keycap> to navigate to it.
+				</para>
+				<para>
+					The bookmark browser contains two columns. One
+					representing bookmarked lines and the other
+					representing the text associated with the
+					bookmarked line. Each column can be sorted in
+					ascending or descending order. Press
+					<keycap>Esc</keycap> to hide the bookmark browser.
+				</para>
+			</sect3>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+		</sect2>
+	</sect1>
+
+<!-- ====================== Advanced Usage ========================= -->
+
+	<sect1 id="scribes-advanced-usage">
+		<title>Advanced Usage</title>
+		<para>
+			This sections discusses some advanced features of the text
+			editor.
+		</para>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+
+<!-- ====================== Word Completion ======================== -->
+
+		<sect2 id="scribes-automatic-word-completion">
+			<title>Automatic Word Operations</title>
+			<para>
+				This section shows you how to use automatic word
+				completion.
+			</para>
+			<sect3 id="scribes-automatic-word-completion-intro">
+				<title>Introduction</title>
+				<para>
+					When typing text in the editing area, a suggestion
+					box displaying a list of words may appear
+					periodically. The suggestion box lists words found
+					in the editing area. Only words longer than 3
+					characters appear in the suggestion box.
+				</para>
+				<figure id="scribes-FIG-editor-word-completion-window">
+					<title>&app; Suggestion Box</title>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="figures/scribes_completion.png"
+									format="PNG"/>
+							</imageobject>
+							<textobject>
+								<phrase>
+									Shows the text editor's editing area
+									with a word completion window or
+									suggestion box.
+								</phrase>
+							</textobject>
+						</mediaobject>
+					</screenshot>
+				</figure>
+			</sect3>
+			<sect3 id="scribes-automatic-word-completion-usage">
+				<title>Usage</title>
+				<para>
+					As you type, the editor tries to guess text that is
+					likely to be entered into the editing area. It shows
+					a suggestion box containing possible words for
+					completion. The list of words in the suggestion box
+					is filtered as you type to remove unlikely words for
+					completion.
+				</para>
+				<para>
+					Press <keycap>Up</keycap> or <keycap>Down</keycap>
+					to select words in the suggestion box. Press
+					<keycap>Enter</keycap> to insert selected words into
+					the editing area. Press <keycap>Esc</keycap> to hide
+					the suggestion box at any time.
+				</para>
+				<tip>
+					<para>
+						To improve workflow, learn to filter the list of
+						words in the suggestion box until the right word
+						is the first in the box. The goal is use the
+						<keycap>Enter</keycap> key to insert text into
+						the editing area without using the
+						<keycap>Up</keycap> or <keycap>Down</keycap> key
+						to select words in the suggestion box. This
+						skill takes a little practice, but it is worth
+						learning.
+					</para>
+				</tip>
+			</sect3>
+			<sect3 id="scribes-automatic-word-completion-preference">
+				<title>Purpose</title>
+				<para>
+					The purpose of automatic word completion is to
+					improve workflow and reduce typing and errors.
+				</para>
+				<note>
+					<para>
+						The process of showing and hiding the suggestion
+						box is handled automatically by
+						<application>&app;</application>. However,
+						pressing <keycap>Esc</keycap> will hide the
+						suggestion box at any time.
+					</para>
+				</note>
+			</sect3>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+<!-- ================== Pair Completion ============================ -->
+
+		</sect2>
+		<sect2 id="scribes-pair-completion">
+			<title>Automatic Pair Character Completion</title>
+			<para>
+				This section shows you how to use automatic pair
+				character completion.
+			</para>
+			<sect3 id="scribes-pair-completion-intro">
+				<title>Introduction</title>
+				<para>
+					<application>Scribes</application> supports
+					automatic completion for pair characters. Supported
+					pair characters include,
+					<userinput>&apos;&apos;</userinput>,
+					<userinput>&quot;&quot;</userinput>,
+					<userinput>&lt;&gt;</userinput>,
+					<userinput>()</userinput>,
+					<userinput>{}</userinput>,
+					<userinput>[]</userinput>, and quote characters for
+					different locales and languages.
+				</para>
+			</sect3>
+			<sect3 id="scribes-pair-completion-usage">
+				<title>Usage</title>
+				<para>
+					Type the opening character of any pair character
+					and the closing character is automatically inserted
+					into the editing area. For example, if you type
+					<userinput>{</userinput>,
+					<application>&app;</application> automatically
+					inserts <userinput>}</userinput> into the editing
+					area. You can move the cursor after the closing
+					pair character by typing the closing pair character,
+					or by pressing <keycap>Esc</keycap>.
+				</para>
+				<note>
+					<title>Special Character</title>
+					<para>
+						<application>&app;</application> may or may not
+						automatically complete the apostrophe
+						character depending on the context it is being
+						used. Completion does not occur when the
+						character is used to signify possession.
+					</para>
+					<para>
+						Pair completion works for the angle
+						bracket only when editing markup source code
+						files. <application>&app;</application> supports
+						pair completion for the dollar sign when
+						editing LaTeX files.
+					</para>
+				</note>
+			</sect3>
+			<sect3 id="scribes-pair-completion-enclose">
+				<title>Enclosing Selected Text in Pair Characters</title>
+				<para>
+					Select text and press any opening pair character
+					to enclose the selected text in the pair characters.
+				</para>
+			</sect3>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+		</sect2>
+
+<!-- ========================== Templates ========================== -->
+
+		<sect2 id="scribes-templates">
+			<title>Templates</title>
+			<sect3 id="scribes-templates-introduction">
+				<title>Introduction</title>
+				<para>
+					Templates are pre-configured text you can insert
+					into the editing area. Optionally, it can contain
+					placeholders. Placeholders are text you can modify.
+					The following screenshot contains a template with
+					placeholders. The placeholders are highlighted.
+				</para>
+				<figure id="scribes-FIG-editor-placeholders">
+					<title>A Template Containing Placeholders</title>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="figures/scribes_placeholder.png"
+									format="PNG"/>
+							</imageobject>
+							<textobject>
+								<phrase>
+									Shows a template containing
+									placeholders in the text
+									editor&apos;s editing area.
+								</phrase>
+							</textobject>
+						</mediaobject>
+					</screenshot>
+				</figure>
+			</sect3>
+			<sect3 id="scribes-templates-show-template-editor">
+				<title>To Show the Template Editor</title>
+				<para>
+					You can manage templates via the template editor.
+					The template editor is displayed by
+					pressing <keycap>Alt-F12</keycap>.
+				</para>
+				<figure id="scribes-FIG-editor-template-editor">
+					<title>
+						<application>&app;</application> Template Editor
+					</title>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="figures/scribes_template_editor.png"
+									format="PNG"/>
+							</imageobject>
+							<textobject>
+								<phrase>
+									Shows a template editor.
+								</phrase>
+							</textobject>
+						</mediaobject>
+					</screenshot>
+				</figure>
+			</sect3>
+			<sect3 id="scribes-templates-new-templates">
+				<title>To Add a New Template</title>
+				<para>
+					After displaying the template editor, click on the
+					<guibutton>Add</guibutton> button to display the
+					<guilabel>Add New Template</guilabel> dialog. You
+					can also press <keycap>Alt-A</keycap> to display
+					the <guilabel>Add New Template</guilabel> dialog.
+					The following screenshot illustrates the process of
+					creating a snippet called &quot;test.&quot;
+				</para>
+				<figure id="scribes-FIG-editor-add-template-dialog">
+					<title>Template Editor Add Dialog</title>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="figures/scribes_add_dialog.png"
+									format="PNG"/>
+							</imageobject>
+							<textobject>
+								<phrase>
+									Shows the
+									<keycap>Add New Template</keycap>
+									dialog for the template editor.
+								</phrase>
+							</textobject>
+						</mediaobject>
+					</screenshot>
+				</figure>
+				<para>
+					Use the <guilabel>Add New Template</guilabel>
+					dialog to create new templates. Type the name of the
+					template in the <guilabel>Name</guilabel> entry
+					field. Optionally, type the description of the
+					template in the <guilabel>Description</guilabel>
+					entry field. Type the content of the template in
+					<guilabel>Template</guilabel> entry field. Press
+					the <guibutton>Save</guibutton> to create the new
+					template.
+				</para>
+			</sect3>
+			<sect3 id="scribes-placeholders">
+				<title>Placeholders</title>
+				<para>
+					Placeholders are highlighted text within a template
+					that you can modify. Placeholders are inserted
+					between ${...}, where ... is an arbitrary name you
+					provide. There is a special placeholder called
+					${cursor}. The ${cursor} placeholder indicates the
+					last navigation point in a template. You can only
+					have one ${cursor} placeholder within a template.
+					Two or more placeholders with the same name will be
+					modified simultaneously.
+				</para>
+				<tip>
+					<title>Placeholder Navigation</title>
+					<para>
+						Press <keycap>Tab</keycap> to navigate between
+						placeholders. Press <keycap>Shift-Tab</keycap>
+						to cycle between placeholders indefinitely.
+					</para>
+				</tip>
+				<figure id="scribes-FIG-editor-test-template">
+					<title>
+						Test Template Expanded in Editing Area
+					</title>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="figures/scribes_test_template.png"
+									format="PNG"/>
+							</imageobject>
+							<textobject>
+								<phrase>
+									Shows the
+									<keycap>Add New Template</keycap>
+									dialog for the template editor.
+								</phrase>
+							</textobject>
+						</mediaobject>
+					</screenshot>
+				</figure>
+			</sect3>
+			<sect3 id="scribes-to-use-templates">
+				<title>To Use Templates</title>
+				<para>
+					To use a template, type the trigger of the template
+					in the editing area. A trigger is the name assigned
+					to a template. Press <keycap>Tab</keycap> to expand
+					the trigger into a template. If the template
+					contains placeholders, press <keycap>Tab</keycap> to
+					navigate between placeholders. Type over selected
+					placeholders to modify them.
+				</para>
+				<para>
+					<application>&app;</application> exits template
+					mode when there are no more placeholders to navigate
+					to. Typing over the last selected placeholder also
+					exits template mode. So does moving the cursor out
+					of the template region. Placeholder highlights are
+					removed when <application>&app;</application> exits
+					template mode. The <guilabel>statusbar</guilabel>
+					provides feedback when template mode is exited.
+				</para>
+				<note>
+					<title>
+						To Insert Tab Character in Template Mode
+					</title>
+					<para>
+						Press <keycap>Ctrl-T</keycap> to insert a tab
+						character in template mode.
+					</para>
+				</note>
+			</sect3>
+			<sect3 id="scribes-to-import-templates">
+				<title>To Import Templates</title>
+				<para>
+					To import templates, download the template tarball
+					from the website. A link to the template tarball
+					is also provided in the template editor. Unpack the
+					tarball. Then drag and drop each XML template file to
+					the template editor to import premade templates.
+				</para>
+				<para>
+					You can also click on the
+					<guilabel>Import Button</guilabel> to show the
+					<guilabel>Import Dialog</guilabel>. Then use the
+					<guilabel>Import Dialog</guilabel> to select and
+					import XML template files.
+				</para>
+			</sect3>
+			<sect3 id="scribes-to-export-templates">
+				<title>To Export Templates</title>
+				<para>
+					To export templates, select the language you wish to
+					export on the left pane of the template editor. Then
+					drag and drop the selection to the desktop. You can
+					also press the <guilabel>Export Button</guilabel> to
+					show the <guilabel>Export Dialog</guilabel>. Then
+					use the <guilabel>Export Dialog</guilabel> to
+					export selected templates.
+				</para>
+			</sect3>
+			<para>
+				<ulink
+				type="http"
+				url="http://scribes.sf.net/donate.html">
+				Support Scribes</ulink>.
+			</para>
+		</sect2>
+
+<!-- =================== Document Switcher ========================= -->
+
+		<sect2 id="scribes-document-switcher">
+			<title>Document Switcher</title>
+			<sect3 id="scribes-document-switcher-intro">
+				<title>Introduction</title>
+				<para>
+					The document switcher allows you to focus any
+					window containing a document open by
+					<application>&app;</application>. It is a better,
+					efficient and effective replacement for tabs.
+				</para>
+				<figure id="scribes-FIG-editor-document-switcher">
+					<title>
+						<application>&app;</application> Document Switcher
+					</title>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="figures/scribes_document_switcher.png"
+									format="PNG"/>
+							</imageobject>
+							<textobject>
+								<phrase>
+									Shows the
+									<guilabel>Open Documents</guilabel>
+									dialog.
+								</phrase>
+							</textobject>
+						</mediaobject>
+					</screenshot>
+				</figure>
+			</sect3>
+			<sect3 id="scribes-document-switcher-usage">
+				<title>Usage</title>
+				<para>
+					Press <keycap>F9</keycap> to display the document
+					switcher. Use the <keycap>Up</keycap> and
+					<keycap>Down</keycap> arrow keys to navigate to
+					the document you wish to focus. Press
+					<keycap>Enter</keycap> to focus the window
+					associated with the document. You can also
+					double-click to focus the window associated with
+					the document.
+				</para>
+				<note>
+					<title>Closing Documents via the Switcher</title>
+					<para>
+						Press the <keycap>Delete</keycap> key on
+						selected item to close the associated document.
+					</para>
+				</note>
+			</sect3>
+			<para>
+				<ulink
+				type="http"
+				url="http://scribes.sf.net/donate.html">
+				Support Scribes</ulink>.
+			</para>
+		</sect2>
+	</sect1>
+
+<!-- ======================Scribes Configuring =====================
+
+	<sect1 id="scribes-prefs">
+		<title>Editor Preferences</title>
+
+		<para>
+			To configure the text editor, click on the
+			<guibutton>Preferences</guibutton> toolbar button to show the
+			<guilabel>Preferences</guilabel> dialog. You can also use the
+			<keycap>Ctrl-Alt-P</keycap> shortcut key to launch the
+			<guilabel>Preferences</guilabel> dialog. The
+			<guilabel>Preferences</guilabel> dialog contains the following
+			categories:
+		</para>
+
+	<sect2 id="scribes-prefs-fonts">
+		<title>Font</title>
+
+		<para>
+			The <guilabel>Editor font</guilabel> field displays the font that
+			the text editor uses to display text. Click on the button to specify
+			the font type, style, and size to use for text.
+		</para>
+
+	</sect2>
+
+	<sect2 id="scribes-prefs-tabs">
+		<title>Tab</title>
+
+		<para>
+			Use the <guibutton>Tabs width</guibutton> spin box to specify the
+			width of the space that the editor inserts when you press the Tab key.
+		</para>
+
+	</sect2>
+
+	<sect2 id="scribes-prefs-text">
+		<title>Text Wrapping</title>
+
+		<para>
+			Select the <guibutton>Enable text wrapping</guibutton> option to
+			wrap text onto the next line when you reach the text window
+			boundary.
+		</para>
+
+	</sect2>
+
+	<sect2 id="scribes-prefs-margin">
+		<title>Right Margin</title>
+
+		<para>
+			Select the <guilabel>Display right margin</guilabel> option to
+			display a vertical line that indicates the right margin.
+		</para>
+
+		<para>
+			Use the <guilabel>Right margin</guilabel> at column spin box to
+			specify the location of the vertical line.
+		</para>
+
+		<tip>
+			<para>
+				Text is most legible with at most 60-70 characters per line.
+				On computer screens, you don't want to go much over 60 for
+				regular text files and 80 for programming code. Use the right
+				margin guide to aid you keep track of characters per line.
+			</para>
+		</tip>
+	</sect2>
+
+	<sect2 id="scribes-prefs-spell">
+		<title>Spell Checking</title>
+
+		<para>
+			Select the <guilabel>Enable spell checking</guilabel> option to
+			enable spell checking.
+		</para>
+
+	</sect2>
+
+	</sect1>
+-->
+
+<!-- ====================== Scribes Shortcuts ====================== -->
+
+	<sect1 id="scribes-keyboard-shortcuts">
+		<title>Keyboard Shortcuts</title>
+		<para>
+			All functions in <application>&app;</application> are
+			mapped to keyboard shortcuts. Keyboard shortcuts are the
+			<emphasis>recommended</emphasis> way to perform operations.
+			This section shows you how to use keyboard shortcuts in
+			<keycap>&app;</keycap>.
+		</para>
+		<tip>
+			<title>Efficient Text Editing</title>
+			<para>
+				It may not be possible to learn all keyboard shortcuts
+				available in <application>&app;</application> at once.
+				However, if you find yourself using an operation
+				repeatedly, learn its keyboard shortcut. Using keyboard
+				shortcuts to perform operations is fast and efficient.
+				It also improves the fluidity of your workflow.
+			</para>
+		</tip>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+
+<!-- =============== Shortcuts Table File Operations =============== -->
+
+	<sect2 id="scribes-short-file">
+		<title>Shortcuts for File Operations</title>
+		<table frame="topbot" id="scribe-TBL-file-ops">
+			<title></title>
+			<tgroup cols="2" colsep="0" rowsep="0">
+			<colspec colname="colspec0" colwidth="29.39*"/>
+			<colspec colname="colspec1" colwidth="70.61*"/>
+			<thead>
+				<row rowsep="1">
+					<entry valign="top">
+						<para>Shortcut</para>
+					</entry>
+					<entry valign="top">
+						<para>Description</para>
+					</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-O</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Open an existing file.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-S</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Save a file.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-Shift-S</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Rename a file.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-P</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Print the current file.</para>
+					</entry>
+				</row>
+			</tbody>
+			</tgroup>
+		</table>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+	</sect2>
+
+<!-- =================== Format Operations ========================= -->
+
+	<sect2 id="scribes-short-format">
+		<title>Shortcuts for Format Operations</title>
+		<table frame="topbot" id="scribe-TBL-format-ops">
+			<title></title>
+			<tgroup cols="2" colsep="0" rowsep="0">
+			<colspec colname="colspec0" colwidth="29.39*"/>
+			<colspec colname="colspec1" colwidth="70.61*"/>
+			<thead>
+				<row rowsep="1">
+					<entry valign="top">
+						<para>Shortcut</para>
+					</entry>
+					<entry valign="top">
+						<para>Description</para>
+					</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-T</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Indent line or selected lines.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-Shift-T</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Unindent line or selected lines.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-T</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Convert spaces to tabs.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Shift-T</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Convert tabs to spaces.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-R</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Remove trailing spaces.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Q</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Reflow or refill a paragraph.</para>
+					</entry>
+				</row>
+			</tbody>
+			</tgroup>
+		</table>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+	</sect2>
+
+<!-- =================== Selection Operations ====================== -->
+
+	<sect2 id="scribes-short-selection">
+		<title>Shortcuts for Selection Operations</title>
+		<table frame="topbot" id="scribe-TBL-selection-ops">
+			<title></title>
+			<tgroup cols="2" colsep="0" rowsep="0">
+			<colspec colname="colspec0" colwidth="29.39*"/>
+			<colspec colname="colspec1" colwidth="70.61*"/>
+			<thead>
+				<row rowsep="1">
+					<entry valign="top">
+						<para>Shortcut</para>
+					</entry>
+					<entry valign="top">
+						<para>Description</para>
+					</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-W</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Select a word.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-S</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Select a sentence.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-L</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Select a line.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-P</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Select a paragraph.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Shift-Left</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Select previous character.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Shift-Right</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Select next character.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Shift-End</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Select from cursor to line end.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Shift-Home</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Select from cursor to line start.</para>
+					</entry>
+				</row>
+			</tbody>
+			</tgroup>
+		</table>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+	</sect2>
+
+<!-- ==================== Line Operations ========================== -->
+
+	<sect2 id="scribes-short-line">
+		<title>Shortcuts for Line Operations</title>
+		<table frame="topbot" id="scribe-TBL-line-ops">
+			<title></title>
+			<tgroup cols="2" colsep="0" rowsep="0">
+			<colspec colname="colspec0" colwidth="29.39*"/>
+			<colspec colname="colspec1" colwidth="70.61*"/>
+			<thead>
+				<row rowsep="1">
+					<entry valign="top">
+						<para>Shortcut</para>
+					</entry>
+					<entry valign="top">
+						<para>Description</para>
+					</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-I</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Move the cursor to a specific line.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-D</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Delete a line.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-J</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Join next line to current line.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-O</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Free next line.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Shift-O</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Free current line.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-End</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Delete text from cursor to line end.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Home</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Delete text from cursor to line start.</para>
+					</entry>
+				</row>
+			</tbody>
+			</tgroup>
+		</table>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+	</sect2>
+
+<!-- ====================== Case Operations ======================== -->
+
+	<sect2 id="scribes-short-case">
+		<title>Shortcuts for Case Operations</title>
+		<table frame="topbot" id="scribe-TBL-case-ops">
+			<title></title>
+			<tgroup cols="2" colsep="0" rowsep="0">
+			<colspec colname="colspec0" colwidth="29.39*"/>
+			<colspec colname="colspec1" colwidth="70.61*"/>
+			<thead>
+				<row rowsep="1">
+					<entry valign="top">
+						<para>Shortcut</para>
+					</entry>
+					<entry valign="top">
+						<para>Description</para>
+					</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-U</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Change selected text to uppercase or lowercase.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Shift-U</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Capitalize selected text.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Shift-L</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Swap the case of selected text.</para>
+					</entry>
+				</row>
+			</tbody>
+			</tgroup>
+		</table>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+	</sect2>
+
+<!-- ==================== Bookmark Operations ====================== -->
+
+	<sect2 id="scribes-short-boomark">
+		<title>Shortcuts for Bookmark Operations</title>
+		<table frame="topbot" id="scribe-TBL-bookmark-ops">
+			<title></title>
+			<tgroup cols="2" colsep="0" rowsep="0">
+			<colspec colname="colspec0" colwidth="29.39*"/>
+			<colspec colname="colspec1" colwidth="70.61*"/>
+			<thead>
+				<row rowsep="1">
+					<entry valign="top">
+						<para>Shortcut</para>
+					</entry>
+					<entry valign="top">
+						<para>Description</para>
+					</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-B</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Display the bookmark browser.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-D</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Bookmark a line or remove bookmark from a
+						bookmarked line.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Right</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Move to next bookmark.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Left</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Move to previous bookmark.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Ctrl-Home</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Move to first bookmark.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Ctrl-Down</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Move to last bookmark.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Ctrl-Delete</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Delete all bookmarks.</para>
+					</entry>
+				</row>
+			</tbody>
+			</tgroup>
+		</table>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+	</sect2>
+
+<!-- ====================== Navigation Operations ================== -->
+
+	<sect2 id="scribes-short-gen">
+		<title>Shortcuts for Navigation Operations</title>
+		<table frame="topbot" id="scribe-TBL-gen-ops">
+			<title></title>
+			<tgroup cols="2" colsep="0" rowsep="0">
+			<colspec colname="colspec0" colwidth="29.39*"/>
+			<colspec colname="colspec1" colwidth="70.61*"/>
+			<thead>
+				<row rowsep="1">
+					<entry valign="top">
+						<para>Shortcut</para>
+					</entry>
+					<entry valign="top">
+						<para>Description</para>
+					</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Home</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Move the cursor to the beginning of the line.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>End</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Move cursor to the end of the line.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-Home</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Move cursor to the last line.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-End</keycap></para>
+					</entry>
+
+					<entry colname="colspec1" valign="top">
+						<para>Move cursor to the first line.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-Right</keycap></para>
+					</entry>
+
+					<entry colname="colspec1" valign="top">
+						<para>
+							Move cursor to the beginning of the next word.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-Left</keycap></para>
+					</entry>
+
+					<entry colname="colspec1" valign="top">
+						<para>
+							Move cursor to the begining of the previous word.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Page Up</keycap></para>
+					</entry>
+
+					<entry colname="colspec1" valign="top">
+						<para>Move the cursor up by one page.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Page Down</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Move the cursor down by one page.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-Up</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Keyboard scrolling.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-Down</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Keyboard scrolling.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Up</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Previous paragraph.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Down</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Next paragraph.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-M</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Center current line in the editing area.
+						</para>
+					</entry>
+				</row>
+			</tbody>
+			</tgroup>
+		</table>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+	</sect2>
+
+<!-- ==================== Window Operations ======================== -->
+
+	<sect2 id="scribes-short-win">
+		<title>Shortcuts for Window Operations</title>
+		<table frame="topbot" id="scribe-TBL-win-ops">
+			<title></title>
+			<tgroup cols="2" colsep="0" rowsep="0">
+			<colspec colname="colspec0" colwidth="29.39*"/>
+			<colspec colname="colspec1" colwidth="70.61*"/>
+			<thead>
+				<row rowsep="1">
+					<entry valign="top">
+						<para>Shortcut</para>
+					</entry>
+					<entry valign="top">
+						<para>Description</para>
+					</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>F9</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Display the document switcher.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-W</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Close the window of the text editor.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-Shift-W</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Close the window of the text editor without
+							saving.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-Shift-Q</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Close all text editor windows.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-F4</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Close the window of the text editor.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-F5</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Unmaximize the window of the text editor.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-F7</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Move the window of the text editor.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-F8</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Resize the window of the text editor.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-F9</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Minimize the window of the text editor.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-F10</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Maximize the window of the text editor.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Space</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Active the window menu of the text editor.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Al-Tab</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>
+							Move between windows with pop up.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Shift-Tab</keycap></para>
+					</entry>
+
+					<entry colname="colspec1" valign="top">
+						<para>
+							Move between windows with pop up in reverse
+							order.
+						</para>
+					</entry>
+				</row>
+			</tbody>
+			</tgroup>
+		</table>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+	</sect2>
+
+<!-- ==================== Miscellaneous Operations ================= -->
+
+	<sect2 id="scribes-short-misc">
+		<title>Shortcuts for Miscellaneous Operations</title>
+		<table frame="topbot" id="scribe-TBL-misc-ops">
+			<title></title>
+			<tgroup cols="2" colsep="0" rowsep="0">
+			<colspec colname="colspec0" colwidth="29.39*"/>
+			<colspec colname="colspec1" colwidth="70.61*"/>
+			<thead>
+				<row rowsep="1">
+					<entry valign="top">
+						<para>Shortcut</para>
+					</entry>
+					<entry valign="top">
+						<para>Description</para>
+					</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>F1</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Launch the help browser.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>F3</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Toggle readonly mode.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>F6</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Toggle spell checking.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>F12</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Display the preference dialog.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-F12</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Display the template editor.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Alt-Shift-F12</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Display the syntax color editor.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-Alt-M</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Toggle the minimal user interface.</para>
+					</entry>
+				</row>
+				<row>
+					<entry colname="colspec0" valign="top">
+						<para><keycap>Ctrl-Shift-O</keycap></para>
+					</entry>
+					<entry colname="colspec1" valign="top">
+						<para>Show the recent menu.</para>
+					</entry>
+				</row>
+			</tbody>
+			</tgroup>
+		</table>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+	</sect2>
+	</sect1>
+
+<!-- ======================== Scribes About ======================== -->
+
+	<sect1 id="scribes-about">
+		<title>About Scribes</title>
+		<para>
+			Scribes is developed by Lateef Alabi-Oki
+			(<email>mystilleef@gmail.com</email>). To find out more about
+			Scribes visit the
+			<ulink
+				type="http"
+				url="http://scribes.sourceforge.net">Scribes Web Site</ulink>.
+		</para>
+		<para>
+			This manual is written by Lateef Alabi-Oki
+			(<email>mystilleef@gmail.com</email>).
+		</para>
+		<para>
+			This program is distributed under the terms of the GNU General
+			Public license as published by the Free Software Foundation; either
+			version 2 of the License, or any later version. A copy of this
+			license can be found at this
+			<ulink url="ghelp:gpl" type="help">link</ulink>, or in the file
+			COPYING included with the source code of this program.
+		</para>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+	</sect1>
+
+
+<!-- ========================= Scribes Donation ==================== -->
+
+	<sect1 id="scribes-donation">
+		<title>Support Scribes</title>
+		<para>
+			Scribes is
+			<ulink
+				type="http"
+				url="http://www.gnu.org/philosophy/free-sw.html">Free Software</ulink>.
+			However, writing software is time-consuming, painstaking and
+			costly. Kindly support the project by
+			<ulink type="http" url="http://scribes.sf.net/donate.html">
+			donating</ulink>. Your donation will help advance the
+			development of the project. Thank you.
+		</para>
+		<para>
+			<ulink
+			type="http"
+			url="http://scribes.sf.net/donate.html">
+			Support Scribes</ulink>.
+		</para>
+	</sect1>
+</article>
