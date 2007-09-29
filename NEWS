@@ -1,3 +1,11 @@
+ChangeLog for Version 0.3.2.9
+=============================
+	- New Editor API
+	- New Plugin System and API
+	- New Trigger Management System and API
+	- Fixed "freeze on close" bug exposed by PyGTK-2.12
+	- Many bug fixes
+
 ChangeLog for Version 0.3.2.8
 =============================
 	- Allow open dialog to open multiple documents
