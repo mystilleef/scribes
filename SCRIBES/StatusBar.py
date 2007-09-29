@@ -70,7 +70,7 @@ class ScribesStatusbar(Statusbar):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__registration_id = editor.register_termination_id()
+		self.__registration_id = editor.register_object()
 		self.__signal_id_1 = self.__signal_id_2 = None
 		return
 
@@ -82,13 +82,11 @@ class ScribesStatusbar(Statusbar):
 		@type self: A Store object.
 		"""
 		# Disconnect signals.
-		from utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.destroy()
 		# Unregister object so that editor can quit.
-		self.__editor.unregister_termination_id(self.__registration_id)
-		delete_attributes(self)
+		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.
 		del self
 		self = None

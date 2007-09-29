@@ -100,7 +100,7 @@ class ScribesWindow(Window):
 		self.__signal_id_19 = self.__signal_id_20 = self.__signal_id_21 = None
 		self.__signal_id_22 = None
 		# Register a unique number with the editor's termination queue
-		self.__termination_id = editor.register_termination_id()
+		self.__termination_id = editor.register_object()
 		return
 
 	def __get_is_maximized(self):
@@ -119,8 +119,7 @@ class ScribesWindow(Window):
 		@param self: Reference to the ScribesWindow instance.
 		@type self: A ScribesWindow object.
 		"""
-		from utils import calculate_resolution_independence
-		width, height = calculate_resolution_independence(self, 1.462857143,
+		width, height = self.__editor.calculate_resolution_independence(self, 1.462857143,
 															1.536)
 		from internationalization import msg0025
 		self.set_property("title", msg0025)
@@ -476,7 +475,7 @@ class ScribesWindow(Window):
 			self.__bar.hide_bar()
 			return True
 		if event.keyval == keysyms.Escape and self.__uri is None and editor.contains_document is False:
-			editor.triggermanager.trigger("close_window")
+			editor.trigger("close_window")
 		from gtk.gdk import CONTROL_MASK, SHIFT_MASK
 		if event.state & CONTROL_MASK and event.state & SHIFT_MASK:
 			if event.keyval == keysyms.W and self.__uri is None:
@@ -562,8 +561,7 @@ class ScribesWindow(Window):
 		@type editor: An Editor object.
 		"""
 		self.__editor.response()
-		from utils import disconnect_signal
-		disconnect_signal(self.__signal_id_17, self)
+		self.__editor.disconnect_signal(self.__signal_id_17, self)
 		# Get the text editor's window size and position.
 		xcoordinate, ycoordinate = self.get_position()
 		width, height = self.get_size()
@@ -576,8 +574,7 @@ class ScribesWindow(Window):
 		return
 
 	def __close_document_no_save_cb(self, editor):
-		from utils import disconnect_signal
-		disconnect_signal(self.__signal_id_17, self)
+		self.__editor.disconnect_signal(self.__signal_id_17, self)
 		self.__destroy()
 		return
 
@@ -628,32 +625,31 @@ class ScribesWindow(Window):
 		return
 
 	def __destroy(self):
-		from utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_17, self)
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, self)
-		disconnect_signal(self.__signal_id_3, self)
-		disconnect_signal(self.__signal_id_16, self)
-		disconnect_signal(self.__signal_id_4, self.__editor)
-		disconnect_signal(self.__signal_id_5, self.__editor)
-		disconnect_signal(self.__signal_id_6, self.__editor)
-		disconnect_signal(self.__signal_id_7, self.__editor)
-		disconnect_signal(self.__signal_id_8, self.__editor)
-		disconnect_signal(self.__signal_id_9, self.__editor)
-		disconnect_signal(self.__signal_id_10, self.__editor)
-		disconnect_signal(self.__signal_id_11, self.__editor)
-		disconnect_signal(self.__signal_id_12, self.__editor)
-		disconnect_signal(self.__signal_id_13, self.__editor)
-		disconnect_signal(self.__signal_id_14, self.__editor)
-		disconnect_signal(self.__signal_id_15, self.__editor)
-		disconnect_signal(self.__signal_id_18, self.__editor.textbuffer)
-		disconnect_signal(self.__signal_id_19, self.__editor)
-		disconnect_signal(self.__signal_id_20, self.__editor)
-		disconnect_signal(self.__signal_id_21, self.__editor)
-		disconnect_signal(self.__signal_id_22, self.__editor)
-		disconnect_signal(self.__signal_id_23, self.__editor)
-		self.__editor.unregister_termination_id(self.__termination_id)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_17, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
+		self.__editor.disconnect_signal(self.__signal_id_16, self)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_10, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_11, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_12, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_13, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_14, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_15, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_18, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__signal_id_19, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_20, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_21, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_22, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_23, self.__editor)
+		self.__editor.unregister_object(self.__termination_id)
 		del self
 		self = None
 		return
+

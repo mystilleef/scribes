@@ -106,7 +106,7 @@ class ScribesTextView(SourceView):
 		"""
 		self.__client = editor.gconf_client
 		self.__editor = editor
-		self.__registration_id = editor.register_termination_id()
+		self.__registration_id = editor.register_object()
 		self.__spell_checker = None
 		self.__bar_is_visible = False
 		self.__bar = None
@@ -1033,36 +1033,33 @@ class ScribesTextView(SourceView):
 		@type self: A Store object.
 		"""
 		# Disconnect signals.
-		from utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, self)
-		disconnect_signal(self.__signal_id_3, self)
-		disconnect_signal(self.__signal_id_4, self)
-		disconnect_signal(self.__signal_id_5, self)
-		disconnect_signal(self.__signal_id_6, self)
-		disconnect_signal(self.__signal_id_7, self)
-		disconnect_signal(self.__signal_id_8, self)
-		disconnect_signal(self.__signal_id_9, self)
-		disconnect_signal(self.__signal_id_10, self)
-		disconnect_signal(self.__signal_id_11, self)
-		disconnect_signal(self.__signal_id_12, self.__editor)
-		disconnect_signal(self.__signal_id_13, self.__editor)
-		disconnect_signal(self.__signal_id_14, self.__editor)
-		disconnect_signal(self.__signal_id_15, self.__editor)
-		disconnect_signal(self.__signal_id_16, self.__editor)
-		disconnect_signal(self.__signal_id_17, self.__editor)
-		disconnect_signal(self.__signal_id_18, self.__editor)
-		disconnect_signal(self.__signal_id_19, self.__editor)
-		disconnect_signal(self.__signal_id_20, self.__editor)
-		disconnect_signal(self.__signal_id_21, self.__editor)
-		disconnect_signal(self.__signal_id_22, self.__editor)
-		disconnect_signal(self.__signal_id_23, self)
-		disconnect_signal(self.__signal_id_24, self)
-		disconnect_signal(self.__signal_id_25, self.__editor)
-		#self.destroy()
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
+		self.__editor.disconnect_signal(self.__signal_id_4, self)
+		self.__editor.disconnect_signal(self.__signal_id_5, self)
+		self.__editor.disconnect_signal(self.__signal_id_6, self)
+		self.__editor.disconnect_signal(self.__signal_id_7, self)
+		self.__editor.disconnect_signal(self.__signal_id_8, self)
+		self.__editor.disconnect_signal(self.__signal_id_9, self)
+		self.__editor.disconnect_signal(self.__signal_id_10, self)
+		self.__editor.disconnect_signal(self.__signal_id_11, self)
+		self.__editor.disconnect_signal(self.__signal_id_12, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_13, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_14, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_15, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_16, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_17, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_18, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_19, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_20, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_21, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_22, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_23, self)
+		self.__editor.disconnect_signal(self.__signal_id_24, self)
+		self.__editor.disconnect_signal(self.__signal_id_25, self.__editor)
 		# Unregister object so that editor can quit.
-		self.__editor.unregister_termination_id(self.__registration_id)
-		delete_attributes(self)
+		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.
 		del self
 		self = None

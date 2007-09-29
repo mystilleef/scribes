@@ -72,7 +72,7 @@ class ScribesToolbarContainer(HBox):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__registration_id = editor.register_termination_id()
+		self.__registration_id = editor.register_object()
 		# Initialize the fullscreen button.
 		self.__fsbutton = None
 		self.__timer = None
@@ -102,22 +102,19 @@ class ScribesToolbarContainer(HBox):
 		@type self: A Store object.
 		"""
 		# Disconnect signals.
-		from utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		disconnect_signal(self.__signal_id_4, self.__editor)
-		disconnect_signal(self.__signal_id_5, self.__editor)
-		disconnect_signal(self.__signal_id_6, self.__editor)
-		disconnect_signal(self.__signal_id_7, self.__editor)
-		disconnect_signal(self.__signal_id_8, self.__editor)
-		disconnect_signal(self.__handler_id, self.__editor.window)
-		if self.__fsbutton:
-			self.__fsbutton.destroy()
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
+		self.__editor.disconnect_signal(self.__handler_id, self.__editor.window)
+		if self.__fsbutton: self.__fsbutton.destroy()
 		self.destroy()
 		# Unregister object so that editor can quit.
-		self.__editor.unregister_termination_id(self.__registration_id)
-		delete_attributes(self)
+		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.
 		del self
 		self = None

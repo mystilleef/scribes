@@ -71,7 +71,7 @@ class FeedbackManager(object):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__registration_id = editor.register_termination_id()
+		self.__registration_id = editor.register_object()
 		self.__icon_dictionary = self.__create_feedback_icons()
 		self.__spinner = editor.store.get_object("Spinner")
 		self.__message_stack = []
@@ -129,8 +129,7 @@ class FeedbackManager(object):
 		@return: A unique number associated with a set of feedback data.
 		@rtype: An Integer object.
 		"""
-		from utils import generate_random_number
-		message_id = generate_random_number(self.__message_stack)
+		message_id = self.__editor.generate_random_number(self.__message_stack)
 		self.__message_stack.append((message, icon, message_id))
 		from gobject import idle_add
 		idle_add(self.__set_message, message)
@@ -512,25 +511,23 @@ class FeedbackManager(object):
 		"""
 		self.__remove_timer()
 		# Disconnect signals.
-		from utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		disconnect_signal(self.__signal_id_4, self.__editor)
-		disconnect_signal(self.__signal_id_5, self.__editor)
-		disconnect_signal(self.__signal_id_6, self.__editor)
-		disconnect_signal(self.__signal_id_7, self.__editor)
-		disconnect_signal(self.__signal_id_8, self.__editor)
-		disconnect_signal(self.__signal_id_9, self.__editor)
-		disconnect_signal(self.__signal_id_10, self.__editor)
-		disconnect_signal(self.__signal_id_11, self.__editor.textbuffer)
-		disconnect_signal(self.__signal_id_12, self.__editor)
-		disconnect_signal(self.__signal_id_13, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_10, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_11, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__signal_id_12, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_13, self.__editor)
 		self.__icon_dictionary.clear()
 		# Unregister object so that editor can quit.
 		self.__spinner.destroy_object()
-		self.__editor.unregister_termination_id(self.__registration_id)
-		delete_attributes(self)
+		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.
 		del self
 		self = None

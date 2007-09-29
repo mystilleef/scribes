@@ -107,7 +107,7 @@ class ScribesErrorDialog(MessageDialog):
 		self.__editor = editor
 		self.__signal_id_1 = self.__signal_id_2 = None
 		self.__signal_id_3 = self.__signal_id_4 = None
-		self.__registration_id = editor.register_termination_id()
+		self.__registration_id = editor.register_object()
 		return
 
 	def __set_properties(self):
@@ -142,8 +142,7 @@ class ScribesErrorDialog(MessageDialog):
 		@param self: Reference to the ScribesDialog instance.
 		@type self: A ScribesDialog object.
 		"""
-		if self.__use_signals:
-			self.__editor.emit("show-dialog", self)
+		if self.__use_signals: self.__editor.emit("show-dialog", self)
 		self.show_all()
 		self.run()
 		self.__hide_dialog()
@@ -156,8 +155,7 @@ class ScribesErrorDialog(MessageDialog):
 		@param self: Reference to the ScribesErrorDialog instance.
 		@type self: A ScribesErrorDialog object.
 		"""
-		if self.__use_signals:
-			self.__editor.emit("hide-dialog", self)
+		if self.__use_signals: self.__editor.emit("hide-dialog", self)
 		self.hide_all()
 		self.__use_signals = False
 		return
@@ -169,15 +167,13 @@ class ScribesErrorDialog(MessageDialog):
 		@param self: Reference to the ScribesErrorDialog instance.
 		@type self: A ScribesErrorDialog object.
 		"""
-		from utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, self)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		disconnect_signal(self.__signal_id_4, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
 		# Unregister object so that editor can quit.
 		self.destroy()
-		self.__editor.unregister_termination_id(self.__registration_id)
-		delete_attributes(self)
+		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.
 		del self
 		self = None

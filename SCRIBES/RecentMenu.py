@@ -66,7 +66,7 @@ class RecentMenu(RecentChooserMenu):
 		self.__editor = editor
 		self.__limit = 10
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
-		self.__registration_id = editor.register_termination_id()
+		self.__registration_id = editor.register_object()
 		return
 
 	def __set_properties(self):
@@ -109,14 +109,12 @@ class RecentMenu(RecentChooserMenu):
 		@param self: Reference to the RecentMenu.
 		@type self: A RecentMenu object.
 		"""
-		from utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
 		# Unregister object so that editor can quit.
 		self.destroy()
-		self.__editor.unregister_termination_id(self.__registration_id)
-		delete_attributes(self)
+		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.
 		del self
 		self = None

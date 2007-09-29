@@ -77,7 +77,7 @@ class RecentManager(object):
 		self.__manager = self.__create_recent_manager()
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = None
-		self.__registration_id = editor.register_termination_id()
+		self.__registration_id = editor.register_object()
 		return
 
 	def __create_recent_manager(self):
@@ -126,14 +126,12 @@ class RecentManager(object):
 		@param self: Reference to the RecentManager.
 		@type self: A RecentManager object.
 		"""
-		from utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		disconnect_signal(self.__signal_id_4, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
 		# Unregister object so that editor can quit.
-		self.__editor.unregister_termination_id(self.__registration_id)
-		delete_attributes(self)
+		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.
 		del self
 		self = None

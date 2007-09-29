@@ -81,8 +81,7 @@ class ScribesEncodingDialog(ScribesDialog):
 		@param self: Reference to the ScribesEncodingDialog instance.
 		@type self: A ScribesEncodingDialog object.
 		"""
-		from utils import calculate_resolution_independence
-		width, heigth = calculate_resolution_independence(self.editor.window,
+		width, heigth = self.editor.calculate_resolution_independence(self.editor.window,
 														1.6, 1.6)
 		from internationalization import msg0160
 		self.set_property("title", msg0160)
@@ -116,11 +115,11 @@ class ScribesEncodingDialog(ScribesDialog):
 		self.hide()
 		return
 
-################################################################################
+########################################################################
 #
 #								ListStore/Model
 #
-################################################################################
+########################################################################
 
 	def __create_encoding_model(self):
 		"""

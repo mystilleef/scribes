@@ -83,8 +83,7 @@ class ScribesErrorDialog(MessageDialog):
 		@type editor: An Editor object.
 		"""
 		from gtk import MESSAGE_ERROR
-		from utils import response
-		response()
+		editor.response()
 		MessageDialog.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()

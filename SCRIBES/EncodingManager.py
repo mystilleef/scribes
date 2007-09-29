@@ -64,7 +64,7 @@ class EncodingManager(object):
 		self.__determined_encoding = None
 		self.__signal_id_1 = None
 		self.__store_id = editor.add_object("EncodingManager", self)
-		self.__termination_id = editor.register_termination_id()
+		self.__termination_id = editor.register_object()
 		return
 
 ########################################################################
@@ -163,7 +163,7 @@ class EncodingManager(object):
 		@type self: An EncodingManager object.
 		"""
 		from operator import not_, contains, truth
-		if not_(self.__editor.uri): return
+		if not_(self.__editor.uri): return False
 		default_encodings = ("utf8", "utf-8", "UTF-8", "UTF8", "Utf8", "Utf-8")
 		user_defined = contains(default_encodings, self.__user_defined_encoding)
 		determined_encoding = contains(default_encodings, self.__determined_encoding)
@@ -173,7 +173,7 @@ class EncodingManager(object):
 		elif truth(self.__determined_encoding) and not_(determined_encoding):
 			from encoding_metadata import update_encoding_in_database
 			update_encoding_in_database(self.__editor.uri, self.__determined_encoding)
-		return
+		return False
 
 	def __destroy(self):
 		"""
@@ -182,11 +182,9 @@ class EncodingManager(object):
 		@param self: Reference to the EncodingManager instance.
 		@type self: A EncodingManager object.
 		"""
-		from utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.remove_object("EncodingManager", self.__store_id)
-		self.__editor.unregister_termination_id(self.__termination_id)
-		delete_attributes(self)
+		self.__editor.unregister_object(self.__termination_id)
 		self = None
 		del self
 		return
@@ -217,6 +215,6 @@ class EncodingManager(object):
 		@param self: Reference to the EncodingManager instance.
 		@type self: An EncodingManager object.
 		"""
-		from thread import start_new_thread
-		start_new_thread(self.__set_encoding_in_database, ())
+		from gobject import idle_add
+		idle_add(self.__set_encoding_in_database)
 		return

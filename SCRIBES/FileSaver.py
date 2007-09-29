@@ -74,7 +74,7 @@ class FileSaver(object):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__termination_id = editor.register_termination_id()
+		self.__termination_id = editor.register_object()
 		self.__encoding_manager = self.__editor.get_object("EncodingManager")
 		self.__should_rename = False
 		self.__can_quit = False
@@ -396,12 +396,11 @@ class FileSaver(object):
 		"""
 		# Create a temporary folder.
 		from tempfile import mkdtemp, NamedTemporaryFile
-		from info import home_folder
 		try:
 			self.__can_save()
 			self.__swap_folder = mkdtemp(suffix="scribes",
 										prefix=".Scribes",
-										dir=home_folder)
+										dir= self.__editor.home_folder)
 			# Create a randomly generated temporary file in the
 			# temporary folder created above.
 			self.__swap_file = NamedTemporaryFile(mode="w+",
@@ -465,7 +464,7 @@ class FileSaver(object):
 		else:
 			# Show the save dialog if the text editor's buffer is empty and
 			# there is no document to save.
-			self.__editor.triggermanager.trigger("show_save_dialog")
+			self.__editor.trigger("show_save_dialog")
 		from Exceptions import DoNothingError
 		raise DoNothingError
 		return
@@ -561,20 +560,19 @@ class FileSaver(object):
 		self.__encoding_manager.destroy()
 		self.__remove_save_timer()
 		self.__delete_swap_folder_and_file()
-		from utils import disconnect_signal
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		disconnect_signal(self.__signal_id_4, self.__editor)
-		disconnect_signal(self.__signal_id_5, self.__editor)
-		disconnect_signal(self.__signal_id_6, self.__editor)
-		disconnect_signal(self.__signal_id_7, self.__editor.textbuffer)
-		disconnect_signal(self.__signal_id_8, self.__editor)
-		disconnect_signal(self.__signal_id_9, self.__editor)
-		disconnect_signal(self.__signal_id_10, self.__editor)
-		disconnect_signal(self.__signal_id_11, self.__editor)
-		disconnect_signal(self.__signal_id_12, self.__editor)
-		self.__editor.unregister_termination_id(self.__termination_id)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_10, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_11, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_12, self.__editor)
+		self.__editor.unregister_object(self.__termination_id)
 		del self
 		self = None
 		return

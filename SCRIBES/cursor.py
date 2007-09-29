@@ -177,7 +177,6 @@ def word_to_cursor(textbuffer):
 	cursor_position = get_cursor_iterator(textbuffer)
 	if cursor_position.starts_line():
 		return None
-	from cursor import get_cursor_line
 	line = get_cursor_line(textbuffer)
 	begin_position = textbuffer.get_iter_at_line(line)
 	text = textbuffer.get_text(begin_position, cursor_position)

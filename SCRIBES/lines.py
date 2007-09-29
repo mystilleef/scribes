@@ -39,7 +39,7 @@ def get_line_bounds(textbuffer):
 	@return: The beginning and end position of a line.
 	@rtype: A Tuple object containing a pair of gtk.TextIter.
 	"""
-	from SCRIBES.cursor import get_cursor_line
+	from cursor import get_cursor_line
 	cursor_line = get_cursor_line(textbuffer)
 	begin_position = textbuffer.get_iter_at_line(cursor_line)
 	end_position = begin_position.copy()
@@ -120,7 +120,7 @@ def delete_empty_line(textbuffer):
 	@param textbuffer: The text buffer to operate on.
 	@type textbuffer: A gtk.TextBuffer object.
 	"""
-	from SCRIBES.cursor import get_cursor_line
+	from cursor import get_cursor_line
 	cursor_line = get_cursor_line(textbuffer)
 	begin_position = textbuffer.get_iter_at_line(cursor_line)
 	end_position = begin_position.copy()
@@ -231,7 +231,7 @@ def free_line_above(textbuffer):
 	if string:
 		textbuffer.insert(begin_position, string)
 	textbuffer.end_user_action()
-	from SCRIBES.cursor import get_cursor_line
+	from cursor import get_cursor_line
 	return get_cursor_line(textbuffer)
 
 def free_line_below(textbuffer):
@@ -262,7 +262,7 @@ def free_line_below(textbuffer):
 	if string:
 		textbuffer.insert(begin_position, string)
 	textbuffer.end_user_action()
-	from SCRIBES.cursor import get_cursor_line
+	from cursor import get_cursor_line
 	return get_cursor_line(textbuffer)
 
 def get_beginning_spaces(textbuffer):
@@ -291,7 +291,7 @@ def delete_cursor_to_line_end(textbuffer):
 	begin_position, end_position = get_line_bounds(textbuffer)
 	if begin_position.get_char() in ["\n", "\x00"]:
 		return False
-	from SCRIBES.cursor import get_cursor_iterator
+	from cursor import get_cursor_iterator
 	cursor_position = get_cursor_iterator(textbuffer)
 	if cursor_position.get_char() in ["\n", "\x00"]:
 		return False
@@ -302,12 +302,10 @@ def delete_cursor_to_line_end(textbuffer):
 
 def delete_cursor_to_line_begin(textbuffer):
 	begin_position, end_position = get_line_bounds(textbuffer)
-	if begin_position.get_char() in ["\n", "\x00"]:
-		return False
-	from SCRIBES.cursor import get_cursor_iterator
+	if begin_position.get_char() in ["\n", "\x00"]: return False
+	from cursor import get_cursor_iterator
 	cursor_position = get_cursor_iterator(textbuffer)
-	if cursor_position.equal(begin_position):
-		return False
+	if cursor_position.equal(begin_position): return False
 	textbuffer.begin_user_action()
 	textbuffer.delete(begin_position, cursor_position)
 	textbuffer.end_user_action()

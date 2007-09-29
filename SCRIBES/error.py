@@ -141,8 +141,6 @@ class ScribesErrorDialog(MessageDialog):
 			pass
 		self = None
 		del self
-		from gc import collect
-		collect()
 		return
 
 ################################################################################

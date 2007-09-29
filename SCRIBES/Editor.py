@@ -257,6 +257,82 @@ class Editor(GObject):
 		from info import session_bus
 		return session_bus
 
+	def __get_dbus_iface(self):
+		from info import dbus_iface
+		return dbus_iface
+
+	def __get_home_folder(self):
+		from info import home_folder
+		return home_folder
+
+	def __get_desktop_folder(self):
+		from info import desktop_folder
+		return desktop_folder
+
+	def __get_metadata_folder(self):
+		from info import metadata_folder
+		return metadata_folder
+
+	def __get_home_plugin_folder(self):
+		from info import home_plugin_folder
+		return home_plugin_folder
+
+	def __get_core_plugin_folder(self):
+		from info import core_plugin_folder
+		return core_plugin_folder
+
+	def __get_scribes_prefix(self):
+		from info import scribes_prefix
+		return scribes_prefix
+
+	def __get_scribes_executable_path(self):
+		from info import scribes_executable_path
+		return scribes_executable_path
+
+	def __get_scribes_data_path(self):
+		from info import scribes_data_path
+		return scribes_data_path
+
+	def __get_scribes_sysconfdir(self):
+		from info import scribes_sysconfdir
+		return scribes_sysconfdir
+
+	def __get_scribes_data_folder(self):
+		from info import scribes_data_folder
+		return scribes_data_folder
+
+	def __get_python_path(self):
+		from info import python_path
+		return python_path
+
+	def __get_version(self):
+		from info import version
+		return version
+
+	def __get_author(self):
+		from info import author
+		return author
+
+	def __get_documenters(self):
+		from info import documenters
+		return documenters
+
+	def __get_artists(self):
+		from info import artists
+		return artists
+
+	def __get_website(self):
+		from info import website
+		return website
+
+	def __get_translators(self):
+		from info import translators
+		return translators
+
+	def __get_copyrights(self):
+		from infor import copyrights
+		return copyrights
+
 #########################################################################
 #					Public API Properties
 #
@@ -303,6 +379,31 @@ class Editor(GObject):
 	mimetype = property(__get_mimetype)
 	will_load_document = property(__get_will_load_documents)
 	session_bus = property(__get_session_bus)
+	home_folder = property(__get_home_folder)
+	desktop_folder = property(__get_desktop_folder)
+	home_plugin_folder = property(__get_home_plugin_folder)
+	core_plugin_folder = property(__get_core_plugin_folder)
+	dbus_iface = property(__get_dbus_iface)
+	metadata_folder = property(__get_metadata_folder)
+	scribes_prefix = property(__get_scribes_prefix)
+	scribes_executable_path = property(__get_scribes_executable_path)
+	scribes_sysconfdir = property(__get_scribes_sysconfdir)
+	scribes_data_path = property(__get_scribes_data_path)
+	scribes_data_folder = property(__get_scribes_data_folder)
+	python_path = property(__get_python_path)
+	version = property(__get_version)
+	author = property(__get_author)
+	documenters = property(__get_documenters)
+	artists = property(__get_artists)
+	website = property(__get_website)
+	translators = property(__get_translators)
+	copyrights = property(__get_copyrights)
+
+########################################################################
+#
+#						Public API Methods
+#
+########################################################################
 
 	def load_uri(self, uri, encoding=None):
 		manager = self.get_object("EncodingManager")
@@ -493,6 +594,14 @@ class Editor(GObject):
 		from utils import create_menuitem
 		return create_menuitem(string, stock_id)
 
+	def calculate_resolution_independence(self, window, width, height):
+		from utils import calculate_resolution_independence
+		return calculate_resolution_independence(window, width, height)
+		
+	def generate_random_number(self, sequence):
+		from utils import generate_random_number
+		return generate_random_number(sequence)
+
 ########################################################################
 
 	def __create_widgets(self):
@@ -599,7 +708,6 @@ class Editor(GObject):
 		disconnect_signal(self.__signal_id_13, self)
 		disconnect_signal(self.__signal_id_14, self)
 		self.__instance_manager.unregister_editor(self, self.__manager_registration_id)
-		delete_attributes(self)
 		del self
 		self = None
 		from gc import collect
@@ -660,6 +768,7 @@ class Editor(GObject):
 		@param self: Reference to the Editor instance.
 		@type self: A Editor object.
 		"""
+		self.__response()
 		# Initialize encoding manager.
 		from EncodingManager import EncodingManager
 		EncodingManager(self, self.__encoding)
@@ -672,6 +781,7 @@ class Editor(GObject):
 		# Initialize the trigger manager.
 		from TriggerManager import TriggerManager
 		self.__trigger_manager = TriggerManager(self)
+		self.__response()
 		return
 
 	def __created_widgets_after_cb(self, editor):

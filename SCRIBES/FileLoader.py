@@ -345,8 +345,6 @@ class FileLoader(object):
 		@param self: Reference to the FileLoader instance.
 		@type self: A FileLoader object.
 		"""
-		from utils import delete_attributes
-		delete_attributes(self)
 		del self
 		self = None
 		return

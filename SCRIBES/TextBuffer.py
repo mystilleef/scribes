@@ -78,7 +78,7 @@ class ScribesTextBuffer(SourceBuffer):
 		self.__editor = editor
 		self.__uri = None
 		# Register a unique number with the editor's termination queue
-		self.__termination_id = editor.register_termination_id()
+		self.__termination_id = editor.register_object()
 		self.__undoable_action = False
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
@@ -364,21 +364,19 @@ class ScribesTextBuffer(SourceBuffer):
 		return False
 
 	def __destroy(self):
-		from utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		disconnect_signal(self.__signal_id_4, self.__editor)
-		disconnect_signal(self.__signal_id_5, self.__editor)
-		disconnect_signal(self.__signal_id_6, self.__editor)
-		disconnect_signal(self.__signal_id_7, self.__editor)
-		disconnect_signal(self.__signal_id_8, self.__editor)
-		disconnect_signal(self.__signal_id_9, self.__editor)
-		disconnect_signal(self.__signal_id_10, self)
-		disconnect_signal(self.__signal_id_11, self.__editor)
-		disconnect_signal(self.__signal_id_12, self)
-		self.__editor.unregister_termination_id(self.__termination_id)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_10, self)
+		self.__editor.disconnect_signal(self.__signal_id_11, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_12, self)
+		self.__editor.unregister_object(self.__termination_id)
 		del self
 		self = None
 		return False

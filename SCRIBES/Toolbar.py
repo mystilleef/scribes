@@ -77,7 +77,7 @@ class ScribesToolbar(Toolbar):
 		self.__client = editor.gconf_client
 		# Initialize gconf, the gnome configuration system
 		self.__is_visible = False
-		self.__registration_id = editor.register_termination_id()
+		self.__registration_id = editor.register_object()
 		self.__signal_id_1 = self.__signal_id_2 = None
 		return
 

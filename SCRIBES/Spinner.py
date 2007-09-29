@@ -137,10 +137,8 @@ class Spinner(ToolItem):
 		@type self: A Spinner object.
 		"""
 		# Disconnect signals.
-		from utils import delete_attributes
 		self.destroy()
 		self.__editor.store.remove_object("Spinner", self.__store_id)
-		delete_attributes(self)
 		# Delete data attributes.
 		del self
 		self = None

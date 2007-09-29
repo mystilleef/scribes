@@ -495,12 +495,6 @@ def start_psyco():
 	"""
 	Use the psyco optimization virtual machine if present.
 	"""
-	# Import Psyco if available
-	try:
-		from psyco import background, full
-		background()
-	except ImportError:
-		pass
 	return False
 
 def select_row(treeview, column=0):
@@ -585,4 +579,3 @@ try:
 	bind(response)
 except ImportError:
 	pass
-
