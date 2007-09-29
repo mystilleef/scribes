@@ -74,4 +74,5 @@ translators = "Brazilian Portuguese translation by Leonardo F. Fontenelle \
 <ragnarok@email.it>\nFrench translation by Gautier Portet \
 <kassoulet@gmail.com>\nDutch translation by Filip Vervloesem \
 <filipvervloesem@users.sourceforge.net> \
-\nSwedish translation by Daniel Nylander <po@danielnylander.se>"
+\nSwedish translation by Daniel Nylander <po@danielnylander.se> \
+\nChinese translation by chaos proton <chaos.proton@gmail.com>"

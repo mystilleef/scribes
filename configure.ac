@@ -19,7 +19,7 @@ dnl ================================================================
 GETTEXT_PACKAGE=scribes
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package])
-ALL_LINGUAS="de fr nl it pt_BR sv"
+ALL_LINGUAS="de fr nl it pt_BR sv zh_CN"
 AM_GLIB_GNU_GETTEXT
 
 # Checks for programs.

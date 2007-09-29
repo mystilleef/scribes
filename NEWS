@@ -5,6 +5,7 @@ ChangeLog for Version 0.3.2.9
 	- New Trigger Management System and API
 	- Fixed "freeze on close" bug exposed by PyGTK-2.12
 	- Many bug fixes
+	- Chinese translation by chaos proton <chaos.proton@gmail.com> 
 
 ChangeLog for Version 0.3.2.8
 =============================
