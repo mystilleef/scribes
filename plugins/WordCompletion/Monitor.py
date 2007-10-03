@@ -248,17 +248,15 @@ class CompletionMonitor(object):
 		@param manager: Reference to the CompletionManager.
 		@type manager: An CompletionManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__manager)
-		disconnect_signal(self.__signal_id_2, self.__manager)
-		disconnect_signal(self.__signal_id_3, self.__editor.textbuffer)
-		disconnect_signal(self.__signal_id_4, self.__editor.textview)
-		disconnect_signal(self.__signal_id_5, self.__editor.textview)
-		disconnect_signal(self.__signal_id_6, self.__editor.textview)
-		disconnect_signal(self.__signal_id_7, self.__editor.textview)
-		disconnect_signal(self.__signal_id_8, self.__editor.textview)
-		disconnect_signal(self.__signal_id_9, self.__editor.textview)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor.textview)
 		del self
 		self = None
 		return

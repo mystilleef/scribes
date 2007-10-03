@@ -62,9 +62,8 @@ class CompletionIndexer(object):
 		from os import nice
 		nice(19)
 		from gobject import timeout_add, idle_add, PRIORITY_LOW
-		timeout_add(600000, self.__check_instances)
+		timeout_add(600000, self.__check_instances, priority=PRIORITY_LOW)
 		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
-		#idle_add(self.__start_psyco, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, dbus):
 		"""

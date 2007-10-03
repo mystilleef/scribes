@@ -195,8 +195,7 @@ class ScribesTextBuffer(SourceBuffer):
 		@type editor: An Editor object.
 		"""
 		self.__uri = None
-		if self.__undoable_action:
-			self.end_not_undoable_action()
+		if self.__undoable_action: self.end_not_undoable_action()
 		self.__set_properties()
 		return
 
@@ -340,7 +339,7 @@ class ScribesTextBuffer(SourceBuffer):
 		if gt(cursor_line, number_of_lines):
 			self.place_cursor(start_iterator)
 			self.__editor.response()
-			return
+			return False
 		iterator = self.get_iter_at_line(cursor_line - 1)
 		line_index = iterator.get_bytes_in_line()
 		if gt(cursor_index, line_index):

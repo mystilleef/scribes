@@ -89,9 +89,7 @@ class CompletionManager(GObject):
 		@type manager: An CompletionManager object.
 		"""
 		self.__editor.remove_object("WordCompletionManager", self.__store_id)
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		del self
 		self = None
 		return

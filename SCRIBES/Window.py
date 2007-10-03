@@ -622,7 +622,7 @@ class ScribesWindow(Window):
 	def __determine_title(self, uri):
 		from gnomevfs import URI
 		self.__title = URI(uri).short_name
-		return
+		return False
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__signal_id_17, self)
@@ -652,4 +652,3 @@ class ScribesWindow(Window):
 		del self
 		self = None
 		return
-

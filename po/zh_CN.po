@@ -1,0 +1,1575 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# grissiom <chaos.proton@gmail.con>, YEAR.
+#  "我将拿不准的翻译都用 #!!!! 标记了，如果有好的意见，欢迎交流~~~~"
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: chaos.proton@gmail.con\n"
+"POT-Creation-Date: 2007-09-02 20:17+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: grissiom <chaos.proton@gmail.con>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+
+msgid "Scribes Text Editor"
+msgstr "Scribes 文本编辑器"
+
+msgid "Edit text files"
+msgstr "编辑文本文件"
+
+
+#: ../plugins/About/i18n.py:23
+msgid "Scribes is a text editor for GNOME."
+msgstr "Scribes是GNOME的一个文本编辑器。"
+
+#: ../plugins/About/i18n.py:24
+msgid "Information about the text editor"
+msgstr "关于这个文本编辑器的信息"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:23
+msgid "Auto Replace Editor"
+msgstr "自动替换编辑器"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:24
+msgid "_Abbreviations"
+msgstr "缩写(_A)"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:25
+msgid "_Replacements"
+msgstr "替换为(_R)"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:26
+#, python-format
+msgid "Error: '%s' is already in use. Please use another abbreviation."
+msgstr "错误：'%s' 已经被使用了。请使用另外的缩写。"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:27
+msgid "Automatic Replacement"
+msgstr "自动替换"
+
+#: ../plugins/AutoReplaceGUI/i18n.py:28
+#!!!!
+msgid "Modify words for auto-replacement"
+msgstr "为自动替换而修改词"
+
+#: ../plugins/AutoReplace/i18n.py:23
+#, python-format !!!!
+msgid "Replaced '%s' with '%s'"
+msgstr "用 %2$s 来替换 %1$s"
+
+#: ../plugins/BookmarkBrowser/i18n.py:23
+msgid "Move to bookmarked line"
+msgstr "转到被书签标记了的行"
+
+#: ../plugins/BookmarkBrowser/i18n.py:24
+msgid "Bookmark Browser"
+msgstr "书签浏览器"
+
+#: ../plugins/BookmarkBrowser/i18n.py:25
+msgid "Line"
+msgstr "行"
+
+#: ../plugins/BookmarkBrowser/i18n.py:26
+msgid "Bookmarked Text"
+msgstr "被书签标记了的文本"
+
+#: ../plugins/BookmarkBrowser/i18n.py:27
+msgid "No bookmarks found"
+msgstr "没有找到书签"
+
+#: ../plugins/BookmarkBrowser/i18n.py:28 ../plugins/Bookmark/i18n.py:27
+#, python-format
+msgid "Moved to bookmark on line %d"
+msgstr "转到了第 %d 行的书签"
+
+#: ../plugins/Bookmark/i18n.py:23
+#, python-format
+msgid "Removed bookmark on line %d"
+msgstr "删除了第 %d 行的书签"
+
+#: ../plugins/Bookmark/i18n.py:24
+#, python-format
+msgid "Bookmarked line %d"
+msgstr "被书签标记了的第 %d 行"
+
+#: ../plugins/Bookmark/i18n.py:25
+msgid "No bookmarks found to remove"
+msgstr "没有找到书签"
+
+#: ../plugins/Bookmark/i18n.py:26
+msgid "Removed all bookmarks"
+msgstr "删除了的所有的书签"
+
+#: ../plugins/Bookmark/i18n.py:28
+msgid "No next bookmark to move to"
+msgstr "没有下一个书签了"
+
+#: ../plugins/Bookmark/i18n.py:29
+msgid "No previous bookmark to move to"
+msgstr "没有上一个书签了"
+
+#: ../plugins/Bookmark/i18n.py:30
+msgid "Already on first bookmark"
+msgstr "已经是第一个书签了"
+
+#: ../plugins/Bookmark/i18n.py:31
+msgid "Moved to first bookmark"
+msgstr "移动到了第一个书签"
+
+#: ../plugins/Bookmark/i18n.py:32
+msgid "Already on last bookmark"
+msgstr "已经是最后一个书签了"
+
+#: ../plugins/Bookmark/i18n.py:33
+msgid "Moved to last bookmark"
+msgstr "移动到了最后一个书签"
+
+#: ../plugins/Bookmark/i18n.py:34
+msgid "_Bookmark"
+msgstr "书签(_B)"
+
+#: ../plugins/Bookmark/i18n.py:35
+msgid "Bookmark _Line"
+msgstr "用书签标记这一行(_L)"
+
+#: ../plugins/Bookmark/i18n.py:36
+msgid "_Remove Bookmark"
+msgstr "删除书签(_R)"
+
+#: ../plugins/Bookmark/i18n.py:37
+msgid "Remove _All Bookmarks"
+msgstr "删除所有书签(_A)"
+
+#: ../plugins/Bookmark/i18n.py:38
+msgid "Move to _Next Bookmark"
+msgstr "移动到下一个书签(_P)"
+
+#: ../plugins/Bookmark/i18n.py:39
+msgid "Move to _Previous Bookmark"
+msgstr "移动到上一个书签(_P)"
+
+#: ../plugins/Bookmark/i18n.py:40
+msgid "Move to _First Bookmark"
+msgstr "移动到第一个书签(_F)"
+
+#: ../plugins/Bookmark/i18n.py:41
+msgid "Move to Last _Bookmark"
+msgstr "移动到最后一个书签(_B)"
+
+#: ../plugins/Bookmark/i18n.py:42
+msgid "_Show Bookmark Browser"
+msgstr "显示书签浏览器(_S)"
+
+#: ../plugins/BracketCompletion/i18n.py:23
+#!!!!
+msgid "Pair character completion occurred"
+msgstr "自动补全了一对字符"
+
+#: ../plugins/BracketCompletion/i18n.py:24
+#!!!!
+#msgid "Enclosed selected text"
+#msgstr ""
+
+#: ../plugins/BracketCompletion/i18n.py:25
+msgid "Removed pair character completion"
+msgstr "删除了一对字符"
+
+#: ../plugins/BracketSelection/i18n.py:23
+msgid "Selected characters inside bracket"
+msgstr "选种了括号间的所有字"
+
+#: ../plugins/BracketSelection/i18n.py:24
+msgid "No brackets found for selection"
+msgstr "没有找到括号"
+
+#: ../plugins/Case/i18n.py:23
+msgid "No selection to change case"
+msgstr "没有为转换大小写选择文本"
+
+#: ../plugins/Case/i18n.py:24
+msgid "Selected text is already uppercase"
+msgstr "选中的文本已经是大写了"
+
+#: ../plugins/Case/i18n.py:25
+msgid "Changed selected text to uppercase"
+msgstr "选中的文本转换成了大写"
+
+#: ../plugins/Case/i18n.py:26
+msgid "Selected text is already lowercase"
+msgstr "选中的文本已经是小写了"
+
+#: ../plugins/Case/i18n.py:27
+msgid "Changed selected text to lowercase"
+msgstr "选中的文本转换成了小写"
+
+#: ../plugins/Case/i18n.py:28
+#!!!!
+msgid "Selected text is already capitalized"
+msgstr "选中的文本已经是词首大写了"
+
+#: ../plugins/Case/i18n.py:29
+msgid "Capitalized selected text"
+msgstr "将选中的文本词首大写"
+
+#: ../plugins/Case/i18n.py:30
+msgid "Swapped the case of selected text"
+msgstr "交换选中文本的大小写"
+
+#: ../plugins/Case/i18n.py:31
+msgid "_Case"
+msgstr "大小写(_C)"
+
+#: ../plugins/Case/i18n.py:32
+msgid "_Uppercase"
+msgstr "大写(_U)"
+
+#: ../plugins/Case/i18n.py:33
+msgid "_Lowercase"
+msgstr "小写(_L)"
+
+#: ../plugins/Case/i18n.py:34
+#msgid "_Titlecase"
+#msgstr ""
+
+#: ../plugins/Case/i18n.py:35
+msgid "_Swapcase"
+msgstr "交换大小写(_S)"
+
+#: ../plugins/ColorEditor/i18n.py:23
+msgid "Change editor colors"
+msgstr "改变编辑器颜色"
+
+#: ../plugins/ColorEditor/i18n.py:24
+msgid "Syntax Color Editor"
+msgstr "语法高亮编辑器"
+
+#: ../plugins/ColorEditor/i18n.py:25
+msgid "_Use default theme"
+msgstr "使用默认主题(_U)"
+
+#: ../plugins/ColorEditor/i18n.py:26
+msgid "Using theme colors"
+msgstr "使用主题颜色"
+
+#: ../plugins/ColorEditor/i18n.py:27
+msgid "Using custom colors"
+msgstr "使用自定义颜色"
+
+#: ../plugins/ColorEditor/i18n.py:28
+msgid "Select foreground color"
+msgstr "选择前景色"
+
+#: ../plugins/ColorEditor/i18n.py:29
+#!!!!
+msgid "_Normal text color: "
+msgstr "普通文本颜色(_N)："
+
+#: ../plugins/ColorEditor/i18n.py:30
+msgid "_Background color: "
+msgstr "背景色(_B)："
+
+#: ../plugins/ColorEditor/i18n.py:31
+msgid "_Foreground:"
+msgstr "前景色(_F)："
+
+#: ../plugins/ColorEditor/i18n.py:32
+msgid "Back_ground:"
+msgstr "背景(_g)："
+
+#: ../plugins/ColorEditor/i18n.py:33
+msgid "Select background color"
+msgstr "选择背景色"
+
+#: ../plugins/ColorEditor/i18n.py:34
+#!!!!
+msgid "Language Elements"
+msgstr "语言元素"
+
+#: ../plugins/ColorEditor/i18n.py:35
+msgid "Select foreground syntax color"
+msgstr "选择语法前景颜色"
+
+#: ../plugins/ColorEditor/i18n.py:36
+msgid "Select background syntax color"
+msgstr "选择语法背景颜色"
+
+#: ../plugins/ColorEditor/i18n.py:37
+msgid "B_old"
+msgstr "粗体(_o)"
+
+#: ../plugins/ColorEditor/i18n.py:38
+msgid "I_talic"
+msgstr "斜体(_t)"
+
+#: ../plugins/ColorEditor/i18n.py:39
+msgid "_Underline"
+msgstr "下滑线(_U)"
+
+#: ../plugins/ColorEditor/i18n.py:40
+msgid "_Reset to Default"
+msgstr "重设为默认(_R)"
+
+#: ../plugins/DocumentBrowser/i18n.py:23
+msgid "Select document to focus"
+msgstr "选择文档"
+
+#: ../plugins/DocumentBrowser/i18n.py:24
+msgid "Open Documents"
+msgstr "打开文档"
+
+#: ../plugins/DocumentBrowser/i18n.py:25
+msgid "File _Type"
+msgstr "文档类型(_T)"
+
+#: ../plugins/DocumentBrowser/i18n.py:26
+msgid "File _Name"
+msgstr "文档名称(_N)"
+
+#: ../plugins/DocumentBrowser/i18n.py:27
+#msgid "Full _Path Name"
+#msgstr ""
+
+#: ../plugins/DocumentBrowser/i18n.py:28
+msgid "No documents open"
+msgstr "没有打开文档"
+
+#: ../plugins/FindBar/i18n.py:23 ../plugins/IncrementalBar/i18n.py:23
+#: ../plugins/ReplaceBar/i18n.py:23
+msgid "Match _case"
+msgstr "符合大小写(_c)"
+
+#: ../plugins/FindBar/i18n.py:24 ../plugins/IncrementalBar/i18n.py:24
+#: ../plugins/ReplaceBar/i18n.py:24
+msgid "Match _word"
+msgstr "符合整词(_W)"
+
+#: ../plugins/FindBar/i18n.py:25 ../plugins/IncrementalBar/i18n.py:25
+#: ../plugins/ReplaceBar/i18n.py:25
+msgid "_Previous"
+msgstr "上一个(_P)"
+
+#: ../plugins/FindBar/i18n.py:26 ../plugins/IncrementalBar/i18n.py:26
+#: ../plugins/ReplaceBar/i18n.py:26
+msgid "_Next"
+msgstr "下一个(_N)"
+
+#: ../plugins/FindBar/i18n.py:27 ../plugins/IncrementalBar/i18n.py:27
+#: ../plugins/ReplaceBar/i18n.py:27
+msgid "_Search for:"
+msgstr "搜索(_S)："
+
+#: ../plugins/FindBar/i18n.py:29 ../plugins/IncrementalBar/i18n.py:29
+#: ../plugins/ReplaceBar/i18n.py:29
+msgid "Closed search bar"
+msgstr "关闭了搜索条"
+
+#: ../plugins/GotoBar/i18n.py:23
+msgid "Move cursor to a specific line"
+msgstr "将光标移动到指定行"
+
+#: ../plugins/GotoBar/i18n.py:24
+#!!!!
+msgid "Closed goto line bar"
+msgstr "关闭了跳转条"
+
+#: ../plugins/GotoBar/i18n.py:25
+#, pgython-format #!!!!
+#msgid " of %d"
+#msgstr ""
+
+#: ../plugins/GotoBar/i18n.py:26
+msgid "Line number:"
+msgstr "行号："
+
+#: ../plugins/GotoBar/i18n.py:27
+#, python-format
+msgid "Moved cursor to line %d"
+msgstr "光标移动到了第 %d 行"
+
+#: ../plugins/IncrementalBar/i18n.py:30
+#!!!!
+#msgid "Incrementally search for text"
+#msgstr ""
+
+#: ../plugins/IncrementalBar/i18n.py:31
+#!!!!
+#msgid "Close incremental search bar"
+#msgstr ""
+
+#: ../plugins/Indent/i18n.py:23 ../plugins/Lines/i18n.py:23
+#: ../plugins/Paragraph/i18n.py:32 ../plugins/SaveFile/i18n.py:23
+#: ../plugins/Selection/i18n.py:23 ../plugins/Spaces/i18n.py:23
+#: ../plugins/UndoRedo/i18n.py:23 ../SCRIBES/internationalization.py:126
+msgid "Cannot perform operation in readonly mode"
+msgstr "不能在只读模式下进行的操作"
+
+#: ../plugins/Indent/i18n.py:24
+msgid "Indenting please wait..."
+msgstr "正在缩进，请稍候……"
+
+#: ../plugins/Indent/i18n.py:25
+msgid "Selection indented"
+msgstr "缩进了选择的文本"
+
+#: ../plugins/Indent/i18n.py:26
+#, python-format
+msgid "Indented line %d"
+msgstr "第 %d 行缩进了"
+
+#: ../plugins/Indent/i18n.py:27
+msgid "Unindentation is not possible"
+msgstr "不缩进是不可能的"
+
+#: ../plugins/Indent/i18n.py:28
+msgid "Selection unindented"
+msgstr "取消了被选文本的缩进"
+
+#: ../plugins/Indent/i18n.py:29
+#, python-format
+msgid "Unindented line %d"
+msgstr "取消了第 %d 行的缩进"
+
+#: ../plugins/Indent/i18n.py:30
+msgid "I_ndentation"
+msgstr "缩进(_n)"
+
+#: ../plugins/Indent/i18n.py:31
+msgid "Shift _Right"
+msgstr "右移位(_R)"
+
+#: ../plugins/Indent/i18n.py:32
+msgid "Shift _Left"
+msgstr "左移位(_L)"
+
+#: ../plugins/Lines/i18n.py:24
+#, python-format
+msgid "Deleted line %d"
+msgstr "删除了第 %d 行"
+
+#: ../plugins/Lines/i18n.py:25
+#, python-format
+msgid "Joined line %d to line %d"
+msgstr "将第 %d 行合并到第 %d 行"
+
+#: ../plugins/Lines/i18n.py:26
+msgid "No more lines to join"
+msgstr "没有更多行可以合并了"
+
+#: ../plugins/Lines/i18n.py:27
+#, python-format
+msgid "Freed line %d"
+msgstr "新插入了行 %d"
+
+#: ../plugins/Lines/i18n.py:28
+#, python-format
+msgid "Deleted text from cursor to end of line %d"
+msgstr "将从光标到第 %d 行尾的文本删除"
+
+#: ../plugins/Lines/i18n.py:29
+msgid "Cursor is already at the end of line"
+msgstr "光标已经在行尾了"
+
+#: ../plugins/Lines/i18n.py:30
+#, python-format
+msgid "Deleted text from cursor to beginning of line %d"
+msgstr "将从光标到第 %d 行首的文本删除"
+
+#: ../plugins/Lines/i18n.py:31
+msgid "Cursor is already at the beginning of line"
+msgstr "光标已经在行首了"
+
+#: ../plugins/Lines/i18n.py:32
+msgid "_Lines"
+msgstr "行(_L)"
+
+#: ../plugins/Lines/i18n.py:33
+msgid "_Delete Line"
+msgstr "删除行(_D)"
+
+#: ../plugins/Lines/i18n.py:34
+msgid "_Join Line"
+msgstr "合并行(_J)"
+
+#: ../plugins/Lines/i18n.py:35
+msgid "Free Line _Above"
+msgstr "在上面插入一行(_A)"
+
+#: ../plugins/Lines/i18n.py:36
+msgid "Free Line _Below"
+msgstr "在下面插入一行(_B)"
+
+#: ../plugins/Lines/i18n.py:37
+msgid "Delete Cursor to Line _End"
+msgstr "删除从光标到行尾的(_E)"
+
+#: ../plugins/Lines/i18n.py:38
+msgid "Delete _Cursor to Line Begin"
+msgstr "删除从光标到行首的(_C)"
+
+#: ../plugins/Lines/i18n.py:39
+msgid "Duplicated line"
+msgstr "复制了行"
+
+#: ../plugins/Lines/i18n.py:40
+msgid "D_uplicate line"
+msgstr "复制行(_u)"
+
+#: ../plugins/MatchingBracket/i18n.py:23
+#, python-format
+msgid "Found matching bracket on line %d"
+msgstr "在第 %d 行找到了对应的括号"
+
+#: ../plugins/MatchingBracket/i18n.py:24
+msgid "No matching bracket found"
+msgstr "没有找到对应的括号"
+
+#: ../plugins/OpenDialog/i18n.py:23 ../plugins/RemoteDialog/i18n.py:23
+msgid "Open Document"
+msgstr "打开文件"
+
+#: ../plugins/OpenDialog/i18n.py:24
+msgid "Select file for loading"
+msgstr "选择要载入的文件"
+
+#: ../plugins/Paragraph/i18n.py:23
+msgid "No paragraph found"
+msgstr "没有找到段落"
+
+#: ../plugins/Paragraph/i18n.py:24
+msgid "No text found"
+msgstr "没有找到文本"
+
+#: ../plugins/Paragraph/i18n.py:25
+msgid "Moved to previous paragraph"
+msgstr "移动到了上一段"
+
+#: ../plugins/Paragraph/i18n.py:26
+msgid "No previous paragraph"
+msgstr "前面没有段落了"
+
+#: ../plugins/Paragraph/i18n.py:27
+msgid "Moved to next paragraph"
+msgstr "移动到了下一段"
+
+#: ../plugins/Paragraph/i18n.py:28
+msgid "No next paragraph"
+msgstr "下面没有段落了"
+
+#: ../plugins/Paragraph/i18n.py:29 ../plugins/Selection/i18n.py:30
+msgid "Selected paragraph"
+msgstr "选择了段落"
+
+#: ../plugins/Paragraph/i18n.py:30
+#!!!!
+msgid "Reflowed selected text"
+msgstr "将选择的文本逆序"
+
+#: ../plugins/Paragraph/i18n.py:31
+#!!!!
+msgid "Reflowed paragraph"
+msgstr "整理了选择的段"
+
+#: ../plugins/Paragraph/i18n.py:33
+msgid "Para_graph"
+msgstr "段落(_g)"
+
+#: ../plugins/Paragraph/i18n.py:34
+msgid "_Previous Paragraph"
+msgstr "上一段(_P)"
+
+#: ../plugins/Paragraph/i18n.py:35
+msgid "_Next Paragraph"
+msgstr "下一段(_N)"
+
+#: ../plugins/Paragraph/i18n.py:36
+msgid "_Reflow Paragraph"
+msgstr "整理段(_R)"
+
+#: ../plugins/Paragraph/i18n.py:37
+msgid "_Select Paragraph"
+msgstr "选择段(_S)"
+
+#: ../plugins/Preferences/i18n.py:23
+msgid "<b>Font</b>"
+msgstr "<b>字体</b>"
+
+#: ../plugins/Preferences/i18n.py:24
+#msgid "Editor _font: "
+#msgstr ""
+
+#: ../plugins/Preferences/i18n.py:25
+msgid "<b>Tab Stops</b>"
+msgstr "<b> Tab宽度</b>"
+
+#: ../plugins/Preferences/i18n.py:26
+msgid "_Tab width: "
+msgstr "_Tab 宽度："
+
+#: ../plugins/Preferences/i18n.py:27
+msgid "<b>Text Wrapping</b>"
+msgstr "<b>自动换行</b>"
+
+#: ../plugins/Preferences/i18n.py:28
+msgid "<b>Right Margin</b>"
+msgstr "<b>右空格</b>"
+
+#: ../plugins/Preferences/i18n.py:29
+msgid "_Right margin position: "
+msgstr "右空格位置：(_R)"
+
+#: ../plugins/Preferences/i18n.py:30
+msgid "<b>Spell Checking</b>"
+msgstr "<b>拼写检查</b>"
+
+#: ../plugins/Preferences/i18n.py:31
+msgid "Change editor settings"
+msgstr "更改编辑器设置"
+
+#: ../plugins/Preferences/i18n.py:32
+msgid "Preferences"
+msgstr "偏好"
+
+#: ../plugins/Preferences/i18n.py:33
+#, python-format
+msgid "Changed font to \"%s\""
+msgstr "将字体变为 \"%s\" "
+
+#: ../plugins/Preferences/i18n.py:34
+#, python-format
+msgid "Changed tab width to %d"
+msgstr "将tab宽度变为 %d"
+
+#: ../plugins/Preferences/i18n.py:35
+msgid "_Use spaces instead of tabs"
+msgstr "使用空格代替tab(_u)"
+
+#: ../plugins/Preferences/i18n.py:36
+msgid "Use tabs for indentation"
+msgstr "使用tab来缩进"
+
+#: ../plugins/Preferences/i18n.py:37
+msgid "Use spaces for indentation"
+msgstr "使用空格来缩进"
+
+#: ../plugins/Preferences/i18n.py:38
+msgid "Enable text _wrapping"
+msgstr "激活自动换行(_w)"
+
+#: ../plugins/Preferences/i18n.py:39
+msgid "Enabled text wrapping"
+msgstr "激活自动换行"
+
+#: ../plugins/Preferences/i18n.py:40
+msgid "Disabled text wrapping"
+msgstr "禁用自动换行"
+
+#: ../plugins/Preferences/i18n.py:41
+msgid "Display right _margin"
+msgstr "显示右空白(_m)"
+
+#: ../plugins/Preferences/i18n.py:42
+msgid "Show right margin"
+msgstr "显示右空白"
+
+#: ../plugins/Preferences/i18n.py:43
+msgid "Hide right margin"
+msgstr "隐藏右空白"
+
+#: ../plugins/Preferences/i18n.py:44
+msgid "_Enable spell checking"
+msgstr "激活拼写检查(_e)"
+
+#: ../plugins/Preferences/i18n.py:45
+msgid "Enabled spellchecking"
+msgstr "激活拼写检查"
+
+#: ../plugins/Preferences/i18n.py:46
+msgid "Disabled spellchecking"
+msgstr "禁用拼写检查"
+
+#: ../plugins/Preferences/i18n.py:47
+#, python-format
+msgid "Positioned margin line at column %d"
+msgstr "右空白线在 %d 行"
+
+
+#: ../plugins/PrintDialog/i18n.py:23
+msgid "Print Document"
+msgstr "打印文档"
+
+#: ../plugins/PrintDialog/i18n.py:24
+msgid "Print file"
+msgstr "打印文件"
+
+#: ../plugins/PrintDialog/i18n.py:25
+msgid "File: "
+msgstr "文件："
+
+#: ../plugins/PrintDialog/i18n.py:26
+msgid "Print Preview"
+msgstr "打印预览"
+
+#: ../plugins/ReadOnly/i18n.py:23
+msgid "File has not been saved to disk"
+msgstr "文件还未存盘"
+
+#: ../plugins/ReadOnly/i18n.py:24
+msgid "No permission to modify file"
+msgstr "没有修改文件的权限"
+
+#: ../plugins/RemoteDialog/i18n.py:24
+#!!!!
+msgid "Type URI for loading"
+msgstr "输入目标的URI"
+
+#: ../plugins/RemoteDialog/i18n.py:25
+msgid "Enter the location (URI) of the file you _would like to open:"
+msgstr "输入您所要打开的文件的地址(URI):"
+
+#: ../plugins/ReplaceBar/i18n.py:30
+msgid "Replac_e with:"
+msgstr "替换为(_e)："
+
+#: ../plugins/ReplaceBar/i18n.py:32
+msgid "Closed replace bar"
+msgstr "关闭了替换条"
+
+#: ../plugins/ReplaceBar/i18n.py:33
+msgid "_Replace"
+msgstr "替换(_R)"
+
+#: ../plugins/ReplaceBar/i18n.py:34
+msgid "Replace _All"
+msgstr "替换所有(_A)"
+
+#: ../plugins/ReplaceBar/i18n.py:35
+#!!!!
+#msgid "Incre_mental"
+#msgstr "(_m)追加"
+
+#: ../plugins/SaveDialog/i18n.py:23
+msgid "Save Document"
+msgstr "保存文档"
+
+#: ../plugins/SaveDialog/i18n.py:24
+msgid "Change name of file and save"
+msgstr "更改文件名并保存"
+
+#: ../plugins/ScrollNavigation/i18n.py:23
+msgid "Centered current line"
+msgstr "以当前行为中心"
+
+#: ../plugins/SearchPreviousNext/i18n.py:23
+msgid "No previous match"
+msgstr "没有上一个了"
+
+#: ../plugins/SearchReplace/i18n.py:23
+msgid "Searching please wait..."
+msgstr "搜索中，请稍候……"
+
+#: ../plugins/SearchReplace/i18n.py:24
+#, python-format
+msgid "Found %d matches"
+msgstr "找到 %d 个对应"
+
+#: ../plugins/SearchReplace/i18n.py:25
+#, python-format 
+msgid "Match %d of %d"
+msgstr "第 %d 个，共找到 %d 个"
+
+#: ../plugins/SearchReplace/i18n.py:26
+msgid "No match found"
+msgstr "没有找到对应的"
+
+#: ../plugins/SearchReplace/i18n.py:27
+msgid "No next match found"
+msgstr "没有下一个了"
+
+#: ../plugins/SearchReplace/i18n.py:28
+msgid "Stopped operation"
+msgstr "停止的操作"
+
+#: ../plugins/SearchReplace/i18n.py:29
+msgid "Replacing please wait..."
+msgstr "替换中，请稍候……"
+
+#: ../plugins/SearchReplace/i18n.py:30
+msgid "Replace found match"
+msgstr "替换所找到的"
+
+#: ../plugins/SearchReplace/i18n.py:31
+msgid "Replaced all found matches"
+msgstr "替换所有符合的"
+
+#: ../plugins/SearchReplace/i18n.py:32
+msgid "No previous match found"
+msgstr "没有上一个了"
+
+#: ../plugins/Selection/i18n.py:24
+msgid "Selected word"
+msgstr "选择了一个词"
+
+#: ../plugins/Selection/i18n.py:25
+msgid "No word to select"
+msgstr "没有词可以选择"
+
+#: ../plugins/Selection/i18n.py:26
+msgid "Selected sentence"
+msgstr "选择了一个句子"
+
+#: ../plugins/Selection/i18n.py:27
+msgid "No sentence to select"
+msgstr "没有句子可以选择"
+
+#: ../plugins/Selection/i18n.py:28
+#, python-format
+msgid "No text to select on line %d"
+msgstr "在第 %d 行里没有文本可选"
+
+#: ../plugins/Selection/i18n.py:29
+#, python-format
+msgid "Selected line %d"
+msgstr "选择了第 %d 行"
+
+#: ../plugins/Selection/i18n.py:31
+msgid "No paragraph to select"
+msgstr "没有段落可选"
+
+#: ../plugins/Selection/i18n.py:32
+msgid "S_election"
+msgstr "选择(_S)"
+
+#: ../plugins/Selection/i18n.py:33
+msgid "Select _Word"
+msgstr "选择词(_W)"
+
+#: ../plugins/Selection/i18n.py:34
+msgid "Select _Line"
+msgstr "选择行(_L)"
+
+#: ../plugins/Selection/i18n.py:35
+msgid "Select _Sentence"
+msgstr "选择句子(_S)"
+
+#: ../plugins/Selection/i18n.py:36
+msgid "Select _Paragraph"
+msgstr "选择段落(_P)"
+
+#: ../plugins/Spaces/i18n.py:24
+msgid "Replacing spaces please wait..."
+msgstr "正在替换空格，请稍候……"
+
+#: ../plugins/Spaces/i18n.py:25
+msgid "No spaces found to replace"
+msgstr "没有空格可替换了"
+
+#: ../plugins/Spaces/i18n.py:26
+msgid "Replaced spaces with tabs"
+msgstr "用tab替换了空格"
+
+#: ../plugins/Spaces/i18n.py:27
+msgid "Replacing tabs please wait..."
+msgstr "正在替换tab，请稍候……"
+
+#: ../plugins/Spaces/i18n.py:28
+msgid "Replaced tabs with spaces"
+msgstr "用空格替换了tab"
+
+#: ../plugins/Spaces/i18n.py:29
+msgid "No tabs found to replace"
+msgstr "没有tab可替换了"
+
+#: ../plugins/Spaces/i18n.py:30
+msgid "Removing spaces please wait..."
+msgstr "正在删除空格，请稍候……"
+
+#: ../plugins/Spaces/i18n.py:31
+msgid "No spaces were found at end of line"
+msgstr "行尾没有空格了"
+
+#: ../plugins/Spaces/i18n.py:32
+msgid "Removed spaces at end of lines"
+msgstr "删除了行尾的空格"
+
+#: ../plugins/Spaces/i18n.py:33
+msgid "S_paces"
+msgstr "空格(_S)"
+
+#: ../plugins/Spaces/i18n.py:34
+msgid "_Tabs to Spaces"
+msgstr "tab换成空格(_T)"
+
+#: ../plugins/Spaces/i18n.py:35
+msgid "_Spaces to Tabs"
+msgstr "空格换成tab(_S)"
+
+#: ../plugins/Spaces/i18n.py:36
+#!!!!
+#msgid "_Remove Trailing Spaces"
+#msgstr ""
+
+#: ../plugins/SyntaxColorSwitcher/i18n.py:23
+msgid "_Highlight Mode"
+msgstr "高亮模式(_H)"
+
+#: ../plugins/SyntaxColorSwitcher/i18n.py:24
+#: ../SCRIBES/internationalization.py:225
+msgid "None"
+msgstr ""
+
+#: ../plugins/SyntaxColorSwitcher/i18n.py:25
+#, python-format
+msgid "Activated '%s' syntax color"
+msgstr "'%s' 的语法颜色被激活了"
+
+#: ../plugins/SyntaxColorSwitcher/i18n.py:26
+msgid "Disabled syntax color"
+msgstr "禁用了语法颜色"
+
+#: ../plugins/TemplateEditor/i18n.py:23
+msgid "_Language"
+msgstr "语言(_L)"
+
+#: ../plugins/TemplateEditor/i18n.py:24
+msgid "_Name"
+msgstr "名字(_N)"
+
+#: ../plugins/TemplateEditor/i18n.py:25
+msgid "_Description"
+msgstr "描述(_D)"
+
+#: ../plugins/TemplateEditor/i18n.py:26
+msgid "Import Template"
+msgstr "导入模板"
+
+#: ../plugins/TemplateEditor/i18n.py:27 ../SCRIBES/internationalization.py:264
+msgid "XML Documents"
+msgstr "XML 文档"
+
+#: ../plugins/TemplateEditor/i18n.py:28
+msgid "Edit Template"
+msgstr "编辑模板"
+
+#: ../plugins/TemplateEditor/i18n.py:29
+msgid "Error: Name field cannot be empty"
+msgstr "错误：名字不能为空"
+
+#: ../plugins/TemplateEditor/i18n.py:30
+#!!!!
+msgid "Error: Trigger name already in use. Please use another trigger name."
+msgstr "错误：已经用了的击发名。请另选一个。"
+
+#: ../plugins/TemplateEditor/i18n.py:31
+msgid "Add Template"
+msgstr "添加模板"
+
+#: ../plugins/TemplateEditor/i18n.py:32
+msgid "Template Editor"
+msgstr "模板编辑器"
+
+#: ../plugins/TemplateEditor/i18n.py:33
+#!!!!
+msgid "Error: You do not have permission to save at the location"
+msgstr "错误：您没有权限在那个位置保存"
+
+#: ../plugins/TemplateEditor/i18n.py:34
+msgid "Error: No selection to export"
+msgstr "错误：没有选择要导入的文件"
+
+#: ../plugins/TemplateEditor/i18n.py:35
+msgid "Error: File not found"
+msgstr "错误：文件没有找到"
+
+#: ../plugins/TemplateEditor/i18n.py:36
+msgid "Error: Invalid template file"
+msgstr "错误：非法的模板文件"
+
+#: ../plugins/TemplateEditor/i18n.py:37
+msgid "Error: No template information found"
+msgstr "错误：没有找到模板信息"
+
+#: ../plugins/Templates/i18n.py:23
+msgid "Template mode is active"
+msgstr "激活了模板模式"
+
+#: ../plugins/Templates/i18n.py:24
+msgid "Inserted template"
+msgstr "插入了模板"
+
+#: ../plugins/Templates/i18n.py:25
+msgid "Selected next placeholder"
+msgstr "选择了下一个占位符"
+
+#: ../plugins/Templates/i18n.py:26
+msgid "Selected previous placeholder"
+msgstr "选择了上一个占位符"
+
+#: ../plugins/ToolbarVisibility/i18n.py:23
+msgid "Hide toolbar"
+msgstr "隐藏工具栏"
+
+#: ../plugins/ToolbarVisibility/i18n.py:24
+msgid "Showed toolbar"
+msgstr "显示工具栏"
+
+#: ../plugins/UndoRedo/i18n.py:24
+msgid "Undid last action"
+msgstr "撤消了上一个动作"
+
+#: ../plugins/UndoRedo/i18n.py:25
+msgid "Cannot undo action"
+msgstr "不能撤消动作"
+
+#: ../plugins/UndoRedo/i18n.py:26
+msgid "Redid undone action"
+msgstr "重做了撤消的动作"
+
+#: ../plugins/UndoRedo/i18n.py:27 ../SCRIBES/internationalization.py:41
+msgid "Cannot redo action"
+msgstr "不能重做动作"
+
+#: ../plugins/UserGuide/i18n.py:23
+msgid "Launching help browser"
+msgstr "启动帮助浏览器"
+
+#: ../plugins/UserGuide/i18n.py:24
+msgid "Could not open help browser"
+msgstr "不能启动帮助浏览器"
+
+#: ../plugins/WordCompletionGUI/i18n.py:3
+msgid "Word completion occurred"
+msgstr "自动补全了单词"
+
+#: ../SCRIBES/internationalization.py:44
+msgid "Leave Fullscreen"
+msgstr "全屏"
+
+#: ../SCRIBES/internationalization.py:47
+msgid "Unsaved Document"
+msgstr "未保存文档"
+
+#: ../SCRIBES/internationalization.py:51
+msgid "All Documents"
+msgstr "所有文档"
+
+#: ../SCRIBES/internationalization.py:52
+msgid "Python Documents"
+msgstr "Python文档"
+
+#: ../SCRIBES/internationalization.py:53
+msgid "Text Documents"
+msgstr "Text文档"
+
+#: ../SCRIBES/internationalization.py:56
+#, python-format
+msgid "Loaded file \"%s\""
+msgstr "载入的文件 \"%s\""
+
+#: ../SCRIBES/internationalization.py:57
+msgid "Loading file please wait..."
+msgstr "载入文件，请等待……"
+
+#: ../SCRIBES/internationalization.py:59
+msgid " <READONLY>"
+msgstr "〈只读〉"
+
+#: ../SCRIBES/internationalization.py:62
+#, python-format
+msgid "Unrecognized option: '%s'"
+msgstr "不识别的选项：'%s'"
+
+#: ../SCRIBES/internationalization.py:63
+msgid "Try 'scribes --help' for more information"
+msgstr "请尝试 'scribes --help' 以获得更多信息"
+
+#: ../SCRIBES/internationalization.py:64
+msgid "Scribes only supports using one option at a time"
+msgstr "Scribes只支持一次使用一个选项"
+
+#: ../SCRIBES/internationalization.py:65
+#, python-format
+msgid "Scribes version %s"
+msgstr "Scribes 版本 %s"
+
+#: ../SCRIBES/internationalization.py:66
+#, python-format
+msgid "%s does not exist"
+msgstr "%s 不存在"
+
+#: ../SCRIBES/internationalization.py:69
+#, python-format
+msgid "The file \"%s\" is open in readonly mode"
+msgstr "文件 \"%s\" 以只读模式打开"
+
+#: ../SCRIBES/internationalization.py:70
+#, python-format
+msgid "The file \"%s\" is open"
+msgstr "文件 \"%s\" 已经打开"
+
+#: ../SCRIBES/internationalization.py:72
+#, python-format
+msgid "Saved \"%s\""
+msgstr "文件 \"%s\" 已保存"
+
+#: ../SCRIBES/internationalization.py:74
+msgid "Copied selected text"
+msgstr "复制了选中的文本"
+
+#: ../SCRIBES/internationalization.py:75
+msgid "No selection to copy"
+msgstr "没有选中所要复制的"
+
+#: ../SCRIBES/internationalization.py:76
+msgid "Cut selected text"
+msgstr "剪切选中的文本"
+
+#: ../SCRIBES/internationalization.py:77
+msgid "No selection to cut"
+msgstr "没有选中要剪切的"
+
+#: ../SCRIBES/internationalization.py:78
+msgid "Pasted copied text"
+msgstr "粘贴复制了的文本"
+
+#: ../SCRIBES/internationalization.py:79
+msgid "No text content in the clipboard"
+msgstr "剪贴板没有文本"
+
+#: ../SCRIBES/internationalization.py:82
+msgid "Open a new window"
+msgstr "打开一个新窗口"
+
+#: ../SCRIBES/internationalization.py:83
+msgid "Open a file"
+msgstr "打开一个文件"
+
+#: ../SCRIBES/internationalization.py:84
+msgid "Rename the current file"
+msgstr "重命名当前文件"
+
+#: ../SCRIBES/internationalization.py:85
+msgid "Print the current file"
+msgstr "打印当前文件"
+
+#: ../SCRIBES/internationalization.py:86
+msgid "Undo last action"
+msgstr "撤消上一次操作"
+
+#: ../SCRIBES/internationalization.py:87
+msgid "Redo undone action"
+msgstr "重做动作"
+
+#: ../SCRIBES/internationalization.py:88
+msgid "Search for text"
+msgstr "查找"
+
+#: ../SCRIBES/internationalization.py:89
+msgid "Search for and replace text"
+msgstr "查找并替换"
+
+#: ../SCRIBES/internationalization.py:90
+msgid "Go to a specific line"
+msgstr "转到指定行"
+
+#: ../SCRIBES/internationalization.py:91
+#,!!!!
+msgid "Configure the editor"
+msgstr "设置"
+
+#: ../SCRIBES/internationalization.py:92
+#,!!!!
+msgid "Launch the help browser"
+msgstr "帮助"
+
+#: ../SCRIBES/internationalization.py:93
+#,!!!!
+msgid "Search for previous occurrence of the string"
+msgstr "寻找前一个符合的字符串"
+
+#: ../SCRIBES/internationalization.py:94
+#,!!!!
+msgid "Search for next occurrence of the string"
+msgstr "寻找下一个符合的字符串"
+
+#: ../SCRIBES/internationalization.py:95
+#,!!!!
+#msgid "Find occurrences of the string that match upper and lower cases only"
+#msgstr ""
+
+#: ../SCRIBES/internationalization.py:97
+#!!!!
+msgid "Find occurrences of the string that match the entire word only"
+msgstr ""
+
+#: ../SCRIBES/internationalization.py:98
+msgid "Type in the text you want to search for"
+msgstr "输入您想寻找的文本"
+
+#: ../SCRIBES/internationalization.py:99
+msgid "Type in the text you want to replace with"
+msgstr "输入您想替换成的文本"
+
+#: ../SCRIBES/internationalization.py:100
+msgid "Replace the selected found match"
+msgstr "替换找到的"
+
+#: ../SCRIBES/internationalization.py:101
+msgid "Replace all found matches"
+msgstr "替换所有找到的"
+
+#: ../SCRIBES/internationalization.py:102
+msgid "Click to specify the font type, style, and size to use for text."
+msgstr "点击指定文本的字体，风格和字号。"
+
+#: ../SCRIBES/internationalization.py:103
+msgid ""
+"Click to specify the width of the space that is inserted when you press the "
+"Tab key."
+msgstr "点击指定tab的宽度。"
+
+#: ../SCRIBES/internationalization.py:105
+#!!!!
+msgid ""
+"Select to wrap text onto the next line when you reach the text window "
+"boundary."
+msgstr "自动换行。"
+
+#: ../SCRIBES/internationalization.py:107
+#!!!!
+msgid "Select to display a vertical line that indicates the right margin."
+msgstr "显示一条虚拟线来指示又空白。"
+
+#: ../SCRIBES/internationalization.py:109
+msgid "Click to specify the location of the vertical line."
+msgstr "点击指定虚拟线的位置。"
+
+#: ../SCRIBES/internationalization.py:110
+msgid "Select to enable spell checking"
+msgstr "激活拼写检查"
+
+#: ../SCRIBES/internationalization.py:114
+msgid "A text editor for GNOME."
+msgstr "GNOME 的一个文本编辑器。"
+
+#: ../SCRIBES/internationalization.py:115
+msgid "usage: scribes [OPTION] [FILE] [...]"
+msgstr "用途：scribes [选项] [文件] [...]"
+
+#: ../SCRIBES/internationalization.py:116
+msgid "Options:"
+msgstr "选项："
+
+#: ../SCRIBES/internationalization.py:117
+msgid "display this help screen"
+msgstr "显示帮助"
+
+#: ../SCRIBES/internationalization.py:118
+msgid "output version information of Scribes"
+msgstr "输出 Scribes 的版本信息"
+
+#: ../SCRIBES/internationalization.py:119
+msgid "create a new file and open the file with Scribes"
+msgstr "新建一个文件并用 Scribes 打开"
+
+#: ../SCRIBES/internationalization.py:120
+msgid "open file in readonly mode"
+msgstr "以只读模式打开文件"
+
+#: ../SCRIBES/internationalization.py:123
+msgid "error"
+msgstr "错误"
+
+#: ../SCRIBES/internationalization.py:129
+msgid "Character _Encoding: "
+msgstr "字符编码："
+
+#: ../SCRIBES/internationalization.py:130
+msgid "Add or Remove Encoding ..."
+msgstr "添加或删除编码……"
+
+#: ../SCRIBES/internationalization.py:131
+msgid "Recommended (UTF-8)"
+msgstr "推荐(UTF-8)"
+
+#: ../SCRIBES/internationalization.py:132
+msgid "Add or Remove Character Encoding"
+msgstr "添加或删除字符编码"
+
+#: ../SCRIBES/internationalization.py:133
+msgid "Language and Region"
+msgstr "语言和地区"
+
+#: ../SCRIBES/internationalization.py:134
+msgid "Character Encoding"
+msgstr "字符编码"
+
+#: ../SCRIBES/internationalization.py:135
+msgid "Select"
+msgstr "选择"
+
+#: ../SCRIBES/internationalization.py:138
+msgid "Closed dialog window"
+msgstr "以关闭的对话窗口"
+
+#: ../SCRIBES/internationalization.py:142 ../SCRIBES/internationalization.py:143
+#: ../SCRIBES/internationalization.py:167
+msgid "Traditional Chinese"
+msgstr "繁体中文"
+
+#: ../SCRIBES/internationalization.py:184 ../SCRIBES/internationalization.py:187
+msgid "Simplified Chinese"
+msgstr "简体中文"
+
+#: ../SCRIBES/internationalization.py:228
+msgid "Select to use themes' foreground and background colors"
+msgstr "使用主题的前景和背景色"
+
+#: ../SCRIBES/internationalization.py:229
+msgid "Click to choose a new color for the editor's text"
+msgstr "为编辑器的文本选择一个新的颜色"
+
+
+#
+# 像这种"Click to choose"，“Select to make”，实在不好翻，干脆省去了，应该也不影响达意。
+# 再一个就是“the language syntax”译成“这种语言的语法元素”也比较罗嗦，
+# 所以直接成“语法元素”了。如果大家有好的意见欢迎交流
+#
+
+
+#: ../SCRIBES/internationalization.py:230
+msgid "Click to choose a new color for the editor's background"
+msgstr "为编辑器的背景选择一个新的颜色"
+
+#: ../SCRIBES/internationalization.py:231
+msgid "Click to choose a new color for the language syntax element"
+msgstr "为语法元素选择一个新的颜色"
+
+#: ../SCRIBES/internationalization.py:232
+msgid "Select to make the language syntax element bold"
+msgstr "使语法元素变为粗体"
+
+#: ../SCRIBES/internationalization.py:233
+msgid "Select to make the language syntax element italic"
+msgstr "使语法元素变为斜体"
+
+#: ../SCRIBES/internationalization.py:234
+msgid "Select to reset the language syntax element to its default settings"
+msgstr "将语法显示全部重设为默认值"
+
+#: ../SCRIBES/internationalization.py:241
+#msgid "Toggled readonly mode on"
+#msgstr ""
+
+#: ../SCRIBES/internationalization.py:242
+#msgid "Toggled readonly mode off"
+#msgstr ""
+
+#: ../SCRIBES/internationalization.py:245
+msgid "Menu for advanced configuration"
+msgstr "高级设置菜单"
+
+#: ../SCRIBES/internationalization.py:246
+msgid "Configure the editor's foreground, background or syntax colors"
+msgstr "设置编辑器的前景，背景或者语法高亮"
+
+#: ../SCRIBES/internationalization.py:247
+msgid "Create, modify or manage templates"
+msgstr "创建，修改或者管理模板"
+
+#: ../SCRIBES/internationalization.py:250
+#, python-format
+msgid "Ln %d col %d"
+msgstr "%d 行 %d 列"
+
+#: ../SCRIBES/internationalization.py:253
+#, python-format
+msgid "Loading \"%s\"..."
+msgstr "加载 \"%s\" ……"
+
+#: ../SCRIBES/internationalization.py:256
+msgid "Ruby Documents"
+msgstr "Ruby 文档"
+
+#: ../SCRIBES/internationalization.py:257
+msgid "Perl Documents"
+msgstr "Perl 文档"
+
+#: ../SCRIBES/internationalization.py:258
+msgid "C Documents"
+msgstr "C 文档"
+
+#: ../SCRIBES/internationalization.py:259
+msgid "C++ Documents"
+msgstr "C++ 文档"
+
+#: ../SCRIBES/internationalization.py:260
+msgid "C# Documents"
+msgstr "C# 文档"
+
+#: ../SCRIBES/internationalization.py:261
+msgid "Java Documents"
+msgstr "Java 文档"
+
+#: ../SCRIBES/internationalization.py:262
+msgid "PHP Documents"
+msgstr "PHP 文档"
+
+#: ../SCRIBES/internationalization.py:263
+msgid "HTML Documents"
+msgstr "HTML 文档"
+
+#: ../SCRIBES/internationalization.py:265
+msgid "Haskell Documents"
+msgstr "Haskell 文档"
+
+#: ../SCRIBES/internationalization.py:266
+msgid "Scheme Documents"
+msgstr "Scheme 文档"
+
+#: ../SCRIBES/internationalization.py:268
+msgid "INS"
+msgstr "插入"
+
+#: ../SCRIBES/internationalization.py:269
+msgid "OVR"
+msgstr "替换"
+
+#: ../SCRIBES/internationalization.py:272
+msgid "Use spaces instead of tabs for indentation"
+msgstr "使用空格代替tab缩进"
+
+#: ../SCRIBES/internationalization.py:273
+#msgid "Select to underline language syntax element"
+#msgstr ""
+
+#: ../SCRIBES/internationalization.py:274
+msgid "Open recently used files"
+msgstr "打开最近打开的文档"
+
+#: ../SCRIBES/internationalization.py:275
+msgid "Failed to save file"
+msgstr "保存文件失败"
+
+#: ../SCRIBES/internationalization.py:277
+msgid ""
+"Save Error: You do not have permission to modify this file or save to its "
+"location."
+msgstr "保存失败：您没有权限在他的目录下修改或保存这个文件。"
+
+#: ../SCRIBES/internationalization.py:279
+#msgid "Save Error: Failed to transfer file from swap to permanent location."
+#msgstr ""
+
+#: ../SCRIBES/internationalization.py:280
+msgid "Save Error: Failed to create swap location or file."
+msgstr "保存失败：未能建立交换位置或文件。"
+
+#: ../SCRIBES/internationalization.py:281
+msgid "Save Error: Failed to create swap file for saving."
+msgstr "保存失败：未能为保存而建立交换文件。"
+
+#: ../SCRIBES/internationalization.py:282
+msgid "Save Error: Failed to write swap file for saving."
+msgstr "保存失败：未能为保存而写交换文件。"
+
+#: ../SCRIBES/internationalization.py:283
+msgid "Save Error: Failed to close swap file for saving."
+msgstr "保存失败:未能为保存而关闭交换文件。"
+
+#: ../SCRIBES/internationalization.py:284
+msgid "Save Error: Failed decode contents of file from \"UTF-8\" to Unicode."
+msgstr "保存失败：未能把文件 \"UTF-8\" 中的内容解码成Unicode。"
+
+#: ../SCRIBES/internationalization.py:285
+msgid ""
+"Save Error: Failed to encode contents of file. Make sure the encoding of the "
+"file is properly set in the save dialog. Press (Ctrl - s) to show the save "
+"dialog."
+msgstr "保存失败：未能编码文件内容。请确认在保存对话框里设置了合适的字符编码。"
+         "按(Ctrl+s)显示保存对话框。"
+#: ../SCRIBES/internationalization.py:289
+#, python-format
+msgid "File: %s"
+msgstr "文件： %s"
+
+#: ../SCRIBES/internationalization.py:290
+msgid "Failed to load file."
+msgstr "未能载入文件。"
+
+#: ../SCRIBES/internationalization.py:291
+msgid "Load Error: You do not have permission to view this file."
+msgstr "载入错误：您没有阅读这个文件的权限。"
+
+#: ../SCRIBES/internationalization.py:292
+msgid "Load Error: Failed to access remote file for permission reasons."
+msgstr "载入错误：因为权限原因，未能访问远程文件。"
+
+#: ../SCRIBES/internationalization.py:293
+msgid ""
+"Load Error: Failed to get file information for loading. Please try loading "
+"the file again."
+msgstr "载入错误：未能为加载取得文件信息，请重新载入。"
+
+#: ../SCRIBES/internationalization.py:295
+msgid "Load Error: File does not exist."
+msgstr "载入错误：文件不存在。"
+
+#: ../SCRIBES/internationalization.py:296
+msgid "Damn! Unknown Error"
+msgstr "天啊！未知错误"
+
+#: ../SCRIBES/internationalization.py:297
+msgid "Load Error: Failed to open file for loading."
+msgstr "载入错误：未能打开文件。"
+
+#: ../SCRIBES/internationalization.py:298
+msgid "Load Error: Failed to read file for loading."
+msgstr "载入错误：未能读文件。"
+
+#: ../SCRIBES/internationalization.py:299
+msgid "Load Error: Failed to close file for loading."
+msgstr "载入错误：未能关闭文件。"
+
+#: ../SCRIBES/internationalization.py:300
+msgid ""
+"Load Error: Failed to decode file for loading. The file your are loading may "
+"not be a text file. If you are sure it is a text file, try to open the file "
+"with the correct encoding via the open dialog. Press (control - o) to show "
+"the open dialog."
+msgstr "载入错误：未能解码文件。您所加载的文件可能并不是一个文本文件。如果您确信它是文本文件，"
+"请您从打开对话窗口中选择相应的编码打开文件。按(Ctrl+o)显示打开对话窗口。"
+#: ../SCRIBES/internationalization.py:304
+msgid ""
+"Load Error: Failed to encode file for loading. Try to open the file with the "
+"correct encoding via the open dialog. Press (control - o) to show the open "
+"dialog."
+msgstr "载入错误：未能解码文件。"
+"请您从打开对话窗口中选择相应的编码打开文件。按(Ctrl+o)显示打开对话窗口。"
+#: ../SCRIBES/internationalization.py:308
+#, python-format
+msgid "Reloading %s"
+msgstr "重新载入 %s "
+
+#: ../SCRIBES/internationalization.py:309
+#, python-format
+msgid "'%s' has been modified by another program"
+msgstr "'%s' 已经被其他程序修改"
+
+msgid "I_mport"
+msgstr "导入(_m)"
+
+msgid "E_xport"
+msgstr "导出(_x)"
+
+msgid "of %d"
+msgstr "之 %d"
+
+msgid "Download templates from"
+msgstr "您可以从这里下载模板"

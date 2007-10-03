@@ -306,19 +306,19 @@ def check_uri_permission(uri):
 			value = False
 	return value
 
-from gobject import main_context_default
-context = main_context_default()
-pending = context.pending
-iteration = context.iteration
+#from gobject import main_context_default
+#context = main_context_default()
+#pending = context.pending
+#iteration = context.iteration
 
 def response():
 	"""
 	Allow scribes GUI to be responsive when performing tasks that can
 	potentially	lock the GUI.
 	"""
-	global pending, iteration
-	while pending():
-		iteration(False)
+#	global pending, iteration
+#	while pending():
+#		iteration(True)
 	return False
 
 def get_file_size(uri):
@@ -556,8 +556,7 @@ def delete_list(sequence):
 	Delete a list and its content
 	"""
 	from operator import truth
-	if truth(sequence):
-		[sequence.remove(x) for x in sequence]
+	if truth(sequence): [sequence.remove(x) for x in sequence]
 	return
 
 def init_gnome():

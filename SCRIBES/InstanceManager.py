@@ -278,6 +278,17 @@ class EditorManager(object):
 		@rtype: A List object.
 		"""
 		return self.__editor_instances
+		
+	def response(self):
+		"""
+		Improve responsiveness.
+		
+		@param self: Reference to the InstanceManager instance.
+		@type self: An InstanceManager object.
+		"""
+		from gobject import main_context_default
+		while main_context_default().pending(): main_context_default().iteration(True)
+		return False
 
 ########################################################################
 #

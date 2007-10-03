@@ -118,15 +118,13 @@ class DocumentManager(GObject):
 		@param manager: Reference to the DocumentManager instance.
 		@type manager: A DocumentManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
 		from operator import truth
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, self.__close_button)
-		disconnect_signal(self.__signal_id_3, self.__treeview)
-		disconnect_signal(self.__signal_id_4, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__close_button)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__treeview)
+		self.__editor.disconnect_signal(self.__signal_id_4, self)
 		if truth(self.__close_button):
 			self.__close_button.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

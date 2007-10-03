@@ -225,7 +225,7 @@ class FeedbackManager(object):
 		"""
 		try:
 			from operator import not_
-			if not_(message): return
+			if not_(message): return False
 			statusbar = self.__editor.statusone
 			statusbar.pop(statusbar.context_id)
 			context_id = statusbar.get_context_id(message)
@@ -248,7 +248,7 @@ class FeedbackManager(object):
 		"""
 		try:
 			from operator import not_
-			if not_(icon): return
+			if not_(icon): return False
 			image = self.__editor.status_image
 			frame = self.__editor.status_image_frame
 			image.clear()
@@ -722,8 +722,8 @@ class FeedbackManager(object):
 		@type args: A Tuple object.
 		"""
 		from operator import not_, ne, is_
-		if is_(self.__filename, None): return
-		if not_(self.__default_message_is_set): return
+		if is_(self.__filename, None): return False
+		if not_(self.__default_message_is_set): return False
 		from gtk import STOCK_EDIT
 		if ne(self.__editor.status_image.get_stock()[0], STOCK_EDIT):
 			self.__set_icon("edit")

@@ -874,12 +874,13 @@ class Editor(GObject):
 		@param type: A String object.
 		"""
 		# A function to improve responsiveness.
-		from utils import response
-		self.__response = response
+		#from utils import response
+		
 		self.__id = id(self)
 		self.__encoding = encoding
 		# An object that manages instances of editors.
 		self.__instance_manager = manager
+		self.__response = manager.response
 		# A file to open or none.
 		self.__file_uri = file_uri
 		# Whether or not the editor can load a file.

@@ -284,10 +284,10 @@ class CompletionUpdater(object):
 		@param error: An error message.
 		@type error: A String object.
 		"""
-		print "INDEXER ERROR: Failed to index text"
-		print "========================================================"
-		print error
-		print "========================================================"
+#		print "INDEXER ERROR: Failed to index text"
+#		print "========================================================"
+#		print error
+#		print "========================================================"
 		self.__is_indexing = False
 		return
 
