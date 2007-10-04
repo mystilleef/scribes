@@ -73,6 +73,10 @@ class EditorManager(object):
 		from gconf import client_get_default
 		self.__client = client_get_default()
 		self.__authentication_manager_is_initialized = False
+		from gobject import main_context_default
+		context = main_context_default()
+		self.__pending = context.pending
+		self.__iteration = context.iteration
 		return
 
 ########################################################################
@@ -276,16 +280,15 @@ class EditorManager(object):
 		@rtype: A List object.
 		"""
 		return self.__editor_instances
-		
+
 	def response(self):
 		"""
 		Improve responsiveness.
-		
+
 		@param self: Reference to the InstanceManager instance.
 		@type self: An InstanceManager object.
 		"""
-		#from gobject import main_context_default
-		#while main_context_default().pending(): main_context_default().iteration(False)
+		while self.__pending(): self.__iteration(False)
 		return False
 
 ########################################################################

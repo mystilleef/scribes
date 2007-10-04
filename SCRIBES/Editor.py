@@ -231,8 +231,8 @@ class Editor(GObject):
 	def __get_status_image_frame(self):
 		return self.__status_image_frame
 
-	def __get_response(self):
-		return self.__response
+#	def __get_response(self):
+#		return self.__response
 
 	def __get_statusone(self):
 		return self.__statusone
@@ -372,7 +372,7 @@ class Editor(GObject):
 	readonly = is_readonly = property(__get_is_readonly)
 	contains_document = property(__get_contains_document)
 	gconf_client = property(__get_gconf_client)
-	response = property(__get_response)
+	#response = property(__get_response)
 	can_load_file = property(__get_can_load_file)
 	id = property(__get_id)
 	language = property(__get_language)
@@ -489,6 +489,17 @@ class Editor(GObject):
 	def unregister_object(self, object_id):
 		return self.unregister_termination_id(object_id)
 
+	def response(self):
+		"""
+		Improve responsiveness.
+		
+		Prevent GUI freezing. Use with caution.
+
+		@param self: Reference to the InstanceManager instance.
+		@type self: An InstanceManager object.
+		"""
+		while self.__pending(): self.__iteration(False)
+		return False
 
 	def trigger(self, string):
 		self.__trigger_manager.trigger(string)
@@ -860,6 +871,9 @@ class Editor(GObject):
 		self.__response()
 		return
 
+	def __response(self):
+		return self.response()
+			
 ########################################################################
 #
 #						Editor Attributes
@@ -886,7 +900,7 @@ class Editor(GObject):
 		self.__encoding = encoding
 		# An object that manages instances of editors.
 		self.__instance_manager = manager
-		self.__response = manager.response
+		#self.__response = manager.response
 		# A file to open or none.
 		self.__file_uri = file_uri
 		# Whether or not the editor can load a file.
@@ -943,6 +957,10 @@ class Editor(GObject):
 		self.__toolbarcontainer = None
 		self.__viewcontainer = None
 		self.__statuscontainer = None
+		from gobject import main_context_default
+		context = main_context_default()
+		self.__pending = context.pending
+		self.__iteration = context.iteration		
 		# A signal emitted after crucial data attributes have been created.
 		self.emit("initialized-attributes")
 		return False
