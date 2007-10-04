@@ -74,7 +74,7 @@ class BookmarkManager(GObject):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.editor = editor
+		self.editor = self.__editor = editor
 		self.textbuffer = editor.textbuffer
 		self.bookmark_list = []
 		self.bookmark_image = self.__create_bookmark_image()
@@ -100,8 +100,7 @@ class BookmarkManager(GObject):
 		@rtype: A Boolean object.
 		"""
 		markers = self.__get_bookmark_on_line(line)
-		if markers:
-			return True
+		if markers: return True
 		return False
 
 	def bookmark_line(self, line):
@@ -117,10 +116,8 @@ class BookmarkManager(GObject):
 		iterator = self.textbuffer.get_iter_at_line(line)
 		marker = self.textbuffer.create_marker(None, "scribes_bookmark", iterator)
 		self.bookmark_list.append(marker)
-		from SCRIBES.utils import response
 		self.textview.set_show_line_markers(True)
 		self.textview.set_marker_pixbuf("scribes_bookmark", self.bookmark_image)
-		response()
 		from gobject import idle_add
 		idle_add(self.__update_bookmark_database)
 		return
@@ -295,17 +292,14 @@ class BookmarkManager(GObject):
 		@param manager: Reference to the BookmarkManager instance.
 		@type manager: A BookmarkManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
 		self.__update_bookmark_database()
 		# Remove bookmark manager from global repository.
-		if self.__store_id and self.editor.store:
-			self.editor.store.remove_object("BookmarkManager", self.__store_id)
+		if self.__store_id and self.editor.store: self.editor.remove_object("BookmarkManager", self.__store_id)
 		# Disconnect signals.
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_3, self.textbuffer)
-		disconnect_signal(self.__signal_id_2, self.editor)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.textbuffer)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.editor)
 		self.remove_all_bookmarks()
-		delete_attributes(self)
 		del self
 		self = None
 		return
@@ -341,10 +335,11 @@ class BookmarkManager(GObject):
 		@param self: Reference to the BookmarkManager instance.
 		@type self: A BookmarkManager object.
 		"""
-		if self.editor.uri is None:
-			return False
-		from BookmarkMetadata import update_bookmarks_in_database
+		if self.editor.uri is None: return False
 		lines = self.get_bookmarked_lines()
+#		from operator import not_
+#		if not_(lines): return False
+		from BookmarkMetadata import update_bookmarks_in_database
 		update_bookmarks_in_database(str(self.editor.uri), lines)
 		return False
 

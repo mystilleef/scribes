@@ -284,8 +284,8 @@ class EditorManager(object):
 		@param self: Reference to the InstanceManager instance.
 		@type self: An InstanceManager object.
 		"""
-		from gobject import main_context_default
-		while main_context_default().pending(): main_context_default().iteration(False)
+		#from gobject import main_context_default
+		#while main_context_default().pending(): main_context_default().iteration(False)
 		return False
 
 ########################################################################
