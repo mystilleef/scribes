@@ -79,7 +79,7 @@ class AboutPopupMenuItem(ImageMenuItem):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		self.__editor.triggermanager.trigger("show_about_dialog")
+		self.__editor.trigger("show_about_dialog")
 		return True
 
 	def __focus_in_event_cb(self, textview, event):
@@ -103,7 +103,8 @@ class AboutPopupMenuItem(ImageMenuItem):
 		if self.__signal_id_2 and self.__editor.textview.handler_is_connected(self.__signal_id_2):
 			self.__editor.textview.disconnect(self.__signal_id_2)
 		self.destroy()
-		del self.__editor, self.__signal_id_1, self.__signal_id_2
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor.textview)
 		del self
 		self = None
 		return False

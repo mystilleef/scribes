@@ -139,7 +139,7 @@ class CompletionUpdater(object):
 			self.__index_timer = idle_add(self.__index, priority=PRIORITY_LOW)
 		else:
 			from operator import not_
-			if not_(self.__indexer): return
+			if not_(self.__indexer): return False
 			self.__is_indexing = True
 			self.__indexer.process(self.__get_text(), self.__editor.id,
 					dbus_interface=indexer_dbus_service,
@@ -328,7 +328,6 @@ class CompletionUpdater(object):
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor.textbuffer)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__manager)
 		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
-		self.__editor.delete_attributes(self)
 		del self
 		self = None
 		return

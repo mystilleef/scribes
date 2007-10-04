@@ -349,7 +349,6 @@ class ScribesWindow(Window):
 		@type editor: An Editor object.
 		"""
 		if self.__editor.will_load_document: return
-		from gobject import timeout_add
 		self.__show_window()
 		return
 
@@ -374,10 +373,9 @@ class ScribesWindow(Window):
 		@return: True to propagate signals to parent widgets.
 		@rtype: A Boolean object.
 		"""
-		if self.__uri:
-			from operator import eq
-			if eq(self.get_title(), self.__title):
-				self.set_title("*" + self.__title)
+		if not self.__uri: return False
+		from operator import eq
+		if eq(self.get_title(), self.__title): self.set_title("*" + self.__title)
 		return True
 
 	def __enable_fullscreen_cb(self, editor):
@@ -516,7 +514,7 @@ class ScribesWindow(Window):
 		@type self: A ScribesWindow object.
 		"""
 		try:
-			if not self.__uri: return
+			if not self.__uri: return False
 			# Get window position from the position database, if possible.
 			from position_metadata import get_window_position_from_database
 			maximize, width, height, xcoordinate, ycoordinate = \

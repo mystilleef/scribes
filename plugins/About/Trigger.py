@@ -84,8 +84,7 @@ class AboutTrigger(GObject):
 		@type self: A AboutTrigger object.
 		"""
 		# Trigger to show the about dialog.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("show_about_dialog")
+		self.__trigger = self.__editor.create_trigger("show_about_dialog")
 		self.__editor.add_trigger(self.__trigger)
 		return
 
@@ -118,13 +117,11 @@ class AboutTrigger(GObject):
 		@type trigger: An AboutTrigger object.
 		"""
 		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__trigger)
-		disconnect_signal(self.__signal_id_2, self)
-		disconnect_signal(self.__signal_id_3, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor.textview)
 		if self.__about_dialog:
 			self.__about_dialog.emit("delete")
-		delete_attributes(self)
 		del self
 		self = None
 		return

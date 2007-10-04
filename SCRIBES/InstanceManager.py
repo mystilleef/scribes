@@ -57,7 +57,7 @@ class EditorManager(object):
 		signal(SIGSEGV, self.__kernel_signals_cb)
 		signal(SIGTERM, self.__kernel_signals_cb)
 		from gobject import timeout_add, idle_add, PRIORITY_LOW
-		timeout_add(600000, self.__init_garbage_collector, priority=PRIORITY_LOW)
+#		timeout_add(600000, self.__init_garbage_collector, priority=PRIORITY_LOW)
 		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
 		#idle_add(self.__start_psyco, priority=PRIORITY_LOW)
 
@@ -118,8 +118,7 @@ class EditorManager(object):
 		@param type: An Integer object.
 		"""
 		try:
-			from utils import response
-			response()
+			self.response()
 			from operator import contains, not_
 			self.__registration_ids.remove(number)
 			self.__editor_instances.remove(instance)
@@ -130,7 +129,7 @@ class EditorManager(object):
 			print "Instance not found,", instance
 			print "===================================================="
 		if not_(self.__editor_instances): self.__quit()
-		response()
+		self.response()
 		return
 
 	def open_window(self):
@@ -183,7 +182,7 @@ class EditorManager(object):
 		@type uris: A list object.
 		"""
 		from operator import not_
-		if not_(uris): return
+		if not_(uris): return False
 		from gobject import idle_add
 		for uri in uris:
 			idle_add(self.__close_file, uri)
@@ -214,14 +213,13 @@ class EditorManager(object):
 		from operator import truth, not_, eq
 		same = lambda editor: eq(str(editor.uri), uri)
 		found_instance = filter(same, self.__editor_instances)
-		if not_(found_instance): return
+		if not_(found_instance): return False
 		editor = found_instance[0]
 		editor.window.set_focus_on_map(True)
 		xcoordinate, ycoordinate = editor.window.get_position()
 		window_is_maximized = editor.window.is_maximized
 		editor.window.hide()
-		if not_(window_is_maximized):
-			editor.window.move(xcoordinate, ycoordinate)
+		if not_(window_is_maximized): editor.window.move(xcoordinate, ycoordinate)
 		editor.window.window.show()
 		editor.window.show_all()
 		editor.window.deiconify()
@@ -287,7 +285,7 @@ class EditorManager(object):
 		@type self: An InstanceManager object.
 		"""
 		from gobject import main_context_default
-		while main_context_default().pending(): main_context_default().iteration(True)
+		while main_context_default().pending(): main_context_default().iteration(False)
 		return False
 
 ########################################################################
@@ -307,7 +305,7 @@ class EditorManager(object):
 		@type uri: A String object.
 		"""
 		from operator import not_, truth
-		if not_(uri): return
+		if not_(uri): return False
 		instances = self.__editor_instances
 		empty_windows = [x for x in instances if x.can_load_file]
 		if truth(empty_windows):

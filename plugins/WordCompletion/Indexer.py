@@ -101,7 +101,9 @@ class CompletionIndexer(object):
 
 	def __process_text(self, text, id):
 		from operator import not_
-		if not_(text): return self.__dbus.finished_indexing(id, self.__empty_dict)
+		if not_(text): 
+			self.__dbus.finished_indexing(id, self.__empty_dict)
+			return False
 		completions = self.__generate_completion_list(text)
 		dictionary = self.__generate_completion_dictionary(completions)
 		self.__dbus.finished_indexing(id, dictionary)

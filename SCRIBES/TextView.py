@@ -1028,20 +1028,20 @@ class ScribesTextView(SourceView):
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
 		"""
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__refresh, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__refresh, priority=PRIORITY_LOW)
 		self.grab_focus()
 		return False
 
 	def __refresh(self):
-		self.queue_draw()
-		self.queue_resize()
-		self.resize_children()
-		try:
-			self.window.process_updates(True)
-		except:
-			pass
-		self.__editor.response()
+#		self.queue_draw()
+#		self.queue_resize()
+#		self.resize_children()
+#		try:
+#			self.window.process_updates(True)
+#		except:
+#			pass
+#		self.__editor.response()
 		return False
 
 	def __destroy(self):

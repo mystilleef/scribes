@@ -28,7 +28,7 @@ This module documents a class that saves files.
 @contact: mystilleef@gmail.com
 """
 
-PRIORITY = 0
+PRIORITY = 10
 
 class FileSaver(object):
 	"""
@@ -61,7 +61,7 @@ class FileSaver(object):
 		self.__signal_id_11 = editor.connect_after("renamed-document", self.__renamed_document_cb)
 		self.__signal_id_12 = editor.connect_after("reload-document", self.__reload_document_cb)
 		from gobject import timeout_add
-		timeout_add(100, self.__check_encoding_manager)
+		timeout_add(500, self.__check_encoding_manager)
 
 	def __init_attributes(self, editor):
 		"""

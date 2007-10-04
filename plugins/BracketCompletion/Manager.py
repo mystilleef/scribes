@@ -53,7 +53,6 @@ class BracketManager(object):
 		self.__signal_id_1 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_2 = editor.connect("cursor-moved", self.__cursor_moved_cb)
 		self.__signal_id_3 = editor.connect("loaded-document", self.__loaded_document_cb)
-		self.__signal_id_4 = editor.textview.connect_after("key-press-event", self.__key_press_event_after_cb)
 
 	def __init_attributes(self, editor):
 		"""
@@ -454,12 +453,9 @@ class BracketManager(object):
 		@param self: Reference to the BracketManager instance.
 		@type self: A BracketManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, self.__editor.textview)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		disconnect_signal(self.__signal_id_4, self.__editor.textview)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
 		self = None
 		del self
 		return
@@ -515,15 +511,6 @@ class BracketManager(object):
 		if contains(self.__open_pair_characters, event.keyval):
 			self.__insert_closing_pair_character(event.keyval)
 			return True
-		return False
-
-	def __key_press_event_after_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__response)
-		return False
-
-	def __response(self):
-		self.__editor.response()
 		return False
 
 	def __cursor_moved_cb(self, editor):

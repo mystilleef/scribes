@@ -489,9 +489,15 @@ class Editor(GObject):
 	def unregister_object(self, object_id):
 		return self.unregister_termination_id(object_id)
 
+
 	def trigger(self, string):
 		self.__trigger_manager.trigger(string)
 		return
+
+	def create_trigger(self, name, accelerator=None, description=None, error=True, removable=True):
+		from Trigger import Trigger
+		trigger = Trigger(name, accelerator, description, error, removable)
+		return trigger
 
 	def add_trigger(self, trigger):
 		self.__trigger_manager.add_trigger(trigger)
