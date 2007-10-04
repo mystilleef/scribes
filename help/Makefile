@@ -72,18 +72,18 @@ CONFIG_CLEAN_FILES =
 SOURCES =
 DIST_SOURCES =
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/goldenmyst/scribes-dev/missing --run aclocal-1.9
+ACLOCAL = ${SHELL} /home/meek/scribes/missing --run aclocal-1.9
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 ALL_LINGUAS = de fr nl it pt_BR sv
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/goldenmyst/scribes-dev/missing --run tar
-AUTOCONF = ${SHELL} /home/goldenmyst/scribes-dev/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/goldenmyst/scribes-dev/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/goldenmyst/scribes-dev/missing --run automake-1.9
+AMTAR = ${SHELL} /home/meek/scribes/missing --run tar
+AUTOCONF = ${SHELL} /home/meek/scribes/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/meek/scribes/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/meek/scribes/missing --run automake-1.9
 AWK = mawk
-CATALOGS =  de.gmo fr.gmo nl.gmo it.gmo pt_BR.gmo sv.gmo
-CATOBJEXT = .gmo
+CATALOGS = 
+CATOBJEXT = NONE
 CC = gcc
 CCDEPMODE = depmode=none
 CFLAGS = -g -O2
@@ -91,7 +91,7 @@ CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
 DATADIRNAME = share
-DEFS = -DPACKAGE_NAME=\"scribes\" -DPACKAGE_TARNAME=\"scribes\" -DPACKAGE_VERSION=\"0.3.2.9\" -DPACKAGE_STRING=\"scribes\ 0.3.2.9\" -DPACKAGE_BUGREPORT=\"\<mystilleef@gmail.com\>\" -DPACKAGE=\"scribes\" -DVERSION=\"0.3.2.9\" -DGETTEXT_PACKAGE=\"scribes\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LOCALE_H=1 -DHAVE_LC_MESSAGES=1 -DHAVE_BIND_TEXTDOMAIN_CODESET=1 -DHAVE_GETTEXT=1 -DHAVE_DCGETTEXT=1 -DENABLE_NLS=1
+DEFS = -DPACKAGE_NAME=\"scribes\" -DPACKAGE_TARNAME=\"scribes\" -DPACKAGE_VERSION=\"0.3.2.9\" -DPACKAGE_STRING=\"scribes\ 0.3.2.9\" -DPACKAGE_BUGREPORT=\"\<mystilleef@gmail.com\>\" -DPACKAGE=\"scribes\" -DVERSION=\"0.3.2.9\" -DGETTEXT_PACKAGE=\"scribes\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LOCALE_H=1 -DHAVE_LC_MESSAGES=1 -DHAVE_BIND_TEXTDOMAIN_CODESET=1 -DHAVE_GETTEXT=1
 DEPDIR = .deps
 DOC_USER_FORMATS = 
 ECHO_C = 
@@ -108,7 +108,7 @@ GCONF_SCHEMA_CONFIG_SOURCE = xml:merged:/etc/gconf/gconf.xml.defaults
 GCONF_SCHEMA_FILE_DIR = $(sysconfdir)/gconf/schemas
 GETTEXT_PACKAGE = scribes
 GMOFILES =  de.gmo fr.gmo nl.gmo it.gmo pt_BR.gmo sv.gmo
-GMSGFMT = /usr/bin/msgfmt
+GMSGFMT = 
 GREP = /bin/grep
 HAVE_GNOME_DOC_UTILS_FALSE = #
 HAVE_GNOME_DOC_UTILS_TRUE = 
@@ -117,7 +117,7 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = ${SHELL} $(install_sh) -c -s
-INSTOBJEXT = .mo
+INSTOBJEXT = 
 INTLLIBS = 
 INTLTOOL_CAVES_RULE = %.caves:     %.caves.in     $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 INTLTOOL_DESKTOP_RULE = %.desktop:   %.desktop.in   $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
@@ -149,10 +149,10 @@ LTLIBOBJS =
 MAINT = #
 MAINTAINER_MODE_FALSE = 
 MAINTAINER_MODE_TRUE = #
-MAKEINFO = ${SHELL} /home/goldenmyst/scribes-dev/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/meek/scribes/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
-MSGFMT = /usr/bin/msgfmt
-MSGFMT_OPTS = -c
+MSGFMT = no
+MSGFMT_OPTS = 
 OBJEXT = o
 OMF_DIR = ${datadir}/omf
 PACKAGE = scribes
@@ -178,7 +178,7 @@ SHELL = /bin/bash
 STRIP = 
 USE_NLS = yes
 VERSION = 0.3.2.9
-XGETTEXT = /usr/bin/xgettext
+XGETTEXT = :
 YELP = /usr/bin/yelp
 ac_ct_CC = gcc
 am__fastdepCC_FALSE = 
@@ -207,7 +207,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = /home/goldenmyst/scribes-dev/install-sh
+install_sh = /home/meek/scribes/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -233,7 +233,7 @@ _DOC_REAL_LINGUAS = $(if $(filter environment,$(origin LINGUAS)),		\
 	$(filter $(LINGUAS),$(DOC_LINGUAS)),					\
 	$(DOC_LINGUAS))
 
-_DOC_ABS_SRCDIR = /home/goldenmyst/scribes-dev/help
+_DOC_ABS_SRCDIR = /home/meek/scribes/help
 _ENABLE_SK = true
 
 ################################################################################

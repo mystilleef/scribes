@@ -36,7 +36,7 @@ libdir = ${exec_prefix}/lib
 DATADIRNAME = share
 itlocaledir = $(prefix)/$(DATADIRNAME)/locale
 subdir = po
-install_sh = /home/goldenmyst/scribes-dev/install-sh
+install_sh = /home/meek/scribes/install-sh
 # Automake >= 1.8 provides mkdir -p --.
 # Until it can be supposed, use the safe fallback:
 mkdir_p = $(install_sh) -d
@@ -44,9 +44,9 @@ mkdir_p = $(install_sh) -d
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 
-GMSGFMT = /usr/bin/msgfmt
-MSGFMT = /usr/bin/msgfmt
-XGETTEXT = /usr/bin/xgettext
+GMSGFMT = 
+MSGFMT = no
+XGETTEXT = :
 INTLTOOL_UPDATE = $(top_builddir)/intltool-update
 INTLTOOL_EXTRACT = $(top_builddir)/intltool-extract
 MSGMERGE = INTLTOOL_EXTRACT=$(INTLTOOL_EXTRACT) srcdir=$(srcdir) $(INTLTOOL_UPDATE) --gettext-package $(GETTEXT_PACKAGE) --dist
