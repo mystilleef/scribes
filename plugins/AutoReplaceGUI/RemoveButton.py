@@ -91,13 +91,11 @@ class AutoReplaceRemoveButton(Button):
 		@param manager: Reference to the AutoReplaceGUIManager instance.
 		@type manager: An AutoReplaceGUIManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__manager)
-		disconnect_signal(self.__signal_id_4, self.__model)
-		disconnect_signal(self.__signal_id_2, self.__manager)
-		disconnect_signal(self.__signal_id_3, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__model)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

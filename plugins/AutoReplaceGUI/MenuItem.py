@@ -71,9 +71,8 @@ class AutoReplaceMenuItem(object):
 		self.__signal_id_1 = None
 		self.__signal_id_2 = None
 		from gtk import STOCK_SELECT_COLOR, STOCK_PROPERTIES
-		from SCRIBES.utils import create_menuitem
 		from i18n import msg0001
-		self.__menuitem = create_menuitem(msg0001, STOCK_PROPERTIES)
+		self.__menuitem = editor.create_menuitem(msg0001, STOCK_PROPERTIES)
 		return
 
 	def __add_menuitem(self):
@@ -97,12 +96,10 @@ class AutoReplaceMenuItem(object):
 		@param trigger: Reference to the AutoReplaceTrigger instance.
 		@type trigger: An AutoReplaceTrigger object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_2, self.__menuitem)
-		disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		self.__editor.preference_menu.remove(self.__menuitem)
 		self.__menuitem.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return
@@ -120,5 +117,5 @@ class AutoReplaceMenuItem(object):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		self.__editor.triggermanager.trigger("show_autoreplace_dialog")
+		self.__editor.trigger("show_autoreplace_dialog")
 		return False

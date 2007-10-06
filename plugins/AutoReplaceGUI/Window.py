@@ -83,8 +83,7 @@ class AutoReplaceWindow(Dialog):
 		self.set_property("name", "scribes automatic replacement dialog")
 		from i18n import msg0005
 		self.set_property("title", msg0005)
-		from SCRIBES.utils import calculate_resolution_independence
-		width, height = calculate_resolution_independence(self.__editor.window, 2.67, 2.67)
+		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 2.67, 2.67)
 		self.set_property("default-width", 640)
 		self.set_property("default-height", 480)
 		self.set_transient_for(self.__editor.window)
@@ -100,10 +99,8 @@ class AutoReplaceWindow(Dialog):
 		@param manager: Reference to the AutoReplaceGUIManager.
 		@type manager: An AutoReplaceGUIManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id, self.__manager)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

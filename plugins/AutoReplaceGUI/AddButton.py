@@ -37,7 +37,7 @@ class AutoReplaceAddButton(Button):
 	to the automatic replacement dialog.
 	"""
 
-	def __init__(self, manager):
+	def __init__(self, manager, editor):
 		"""
 		Initialize the object.
 
@@ -52,11 +52,11 @@ class AutoReplaceAddButton(Button):
 		"""
 		from gtk import STOCK_ADD
 		Button.__init__(self, stock=STOCK_ADD, use_underline=True)
-		self.__init_attributes(manager)
+		self.__init_attributes(manager, editor)
 		self.__signal_id_1 = self.__manager.connect("destroy", self.__button_destroy_cb)
 		self.__signal_id_2 = self.connect("clicked", self.__button_clicked_cb)
 
-	def __init_attributes(self, manager):
+	def __init_attributes(self, manager, editor):
 		"""
 		Initialize data attributes.
 
@@ -70,6 +70,7 @@ class AutoReplaceAddButton(Button):
 		@type editor: An Editor object.
 		"""
 		self.__manager = manager
+		self.__editor = editor
 		self.__signal_id_1 = None
 		self.__signal_id_2 = None
 		return
@@ -84,11 +85,9 @@ class AutoReplaceAddButton(Button):
 		@param manager: Reference to the AutoReplaceGUIManager instance.
 		@type manager: An AutoReplaceGUIManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__manager)
-		disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

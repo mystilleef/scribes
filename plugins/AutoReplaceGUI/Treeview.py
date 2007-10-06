@@ -95,8 +95,7 @@ class AutoReplaceTreeView(TreeView):
 		self.__signal_id_5 = None
 		self.__monitor_id = None
 		# Path to the abbreviation database.
-		from SCRIBES.info import metadata_folder
-		self.__database_path = metadata_folder + "abbreviations.gdb"
+		self.__database_path = editor.metadata_folder + "abbreviations.gdb"
 		from gnomevfs import get_uri_from_local_path
 		self.__database_uri = get_uri_from_local_path(self.__database_path)
 		return
@@ -148,8 +147,7 @@ class AutoReplaceTreeView(TreeView):
 		if self.__signal_id_4:
 			self.__model.handler_unblock(self.__signal_id_4)
 			self.__model.handler_unblock(self.__signal_id_5)
-		from SCRIBES.utils import select_row
-		select_row(self)
+		self.__editor.select_row(self)
 		return
 
 	def __create_model(self,):
@@ -222,8 +220,7 @@ class AutoReplaceTreeView(TreeView):
 		return column
 
 	def __treeview_map_cb(self, treeview):
-		from SCRIBES.utils import select_row
-		select_row(self)
+		self.__editor.select_row(self)
 		return False
 
 	def __treeview_destroy_cb(self, manager):
@@ -236,17 +233,14 @@ class AutoReplaceTreeView(TreeView):
 		@param manager: Reference to the AutoReplaceManager instance.
 		@type manager: An AutoReplaceManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__manager)
-		disconnect_signal(self.__signal_id_2, self.__abbreviation_renderer)
-		disconnect_signal(self.__signal_id_3, self.__replacement_renderer)
-		disconnect_signal(self.__signal_id_4, self.__model)
-		disconnect_signal(self.__signal_id_5, self.__model)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__abbreviation_renderer)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__replacement_renderer)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__model)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__model)
 		from gnomevfs import monitor_cancel
-		if self.__monitor_id:
-			monitor_cancel(self.__monitor_id)
+		if self.__monitor_id: monitor_cancel(self.__monitor_id)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return
@@ -296,8 +290,7 @@ class AutoReplaceTreeView(TreeView):
 		if not len(self.__model):
 			self.set_property("sensitive", False)
 		else:
-			from SCRIBES.utils import select_row
-			select_row(self)
+			self.__editor.select_row(self)
 		return False
 
 	def __treeview_abbr_edited_cb(self, cell, path , text, data):

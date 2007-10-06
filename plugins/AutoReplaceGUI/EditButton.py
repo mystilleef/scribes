@@ -37,7 +37,7 @@ class AutoReplaceEditButton(Button):
 	to the automatic replacement dialog.
 	"""
 
-	def __init__(self, manager):
+	def __init__(self, manager, editor):
 		"""
 		Initialize the object.
 
@@ -52,13 +52,13 @@ class AutoReplaceEditButton(Button):
 		"""
 		from gtk import STOCK_EDIT
 		Button.__init__(self, stock=STOCK_EDIT, use_underline=True)
-		self.__init_attributes(manager)
+		self.__init_attributes(manager, editor)
 		self.__signal_id_1 = self.__manager.connect("destroy", self.__button_destroy_cb)
 		self.__signal_id_2 = self.__manager.treeview.connect("cursor-changed", self.__button_cursor_changed_cb)
 		self.__signal_id_3 = self.connect("clicked", self.__button_clicked_cb)
 		self.__signal_id_4 = self.__model.connect("row-deleted", self.__button_row_deleted_cb)
 
-	def __init_attributes(self, manager):
+	def __init_attributes(self, manager, editor):
 		"""
 		Initialize data attributes.
 
@@ -71,6 +71,7 @@ class AutoReplaceEditButton(Button):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
+		self.__editor = editor
 		self.__manager = manager
 		self.__model = manager.treeview.get_model()
 		self.__signal_id_1 = None
@@ -90,13 +91,11 @@ class AutoReplaceEditButton(Button):
 		@param manager: Reference to the AutoReplaceGUIManager instance.
 		@type manager: An AutoReplaceGUIManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__manager)
-		disconnect_signal(self.__signal_id_2, self.__manager)
-		disconnect_signal(self.__signal_id_4, self.__model)
-		disconnect_signal(self.__signal_id_3, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__model)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

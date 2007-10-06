@@ -571,6 +571,14 @@ class Editor(GObject):
 		self.__tip.set_tip(instance, tip)
 		return
 
+	def create_scrollwin(self):
+		from utils import create_scrollwin
+		return create_scrollwin()
+
+	def create_menuitem(self, string, stock_id=None):
+		from utils import create_menuitem
+		return create_menuitem(string, stock_id)
+
 	def get_cursor_position(self):
 		from cursor import get_cursor_iterator
 		return get_cursor_iterator(self.__textbuffer)
@@ -581,6 +589,10 @@ class Editor(GObject):
 	def word_to_cursor(self):
 		from cursor import word_to_cursor
 		return word_to_cursor(self.__textbuffer)
+
+	def select_row(self, treeview):
+		from utils import select_row
+		return select_row(treeview)
 
 	def mark(self, iterator, alignment="right"):
 		from operator import eq

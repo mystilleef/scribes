@@ -84,14 +84,15 @@ class AutoReplaceGUIManager(GObject):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
+		self.__editor = editor
 		from Window import AutoReplaceWindow
 		self.__window = AutoReplaceWindow(self, editor)
 		from Treeview import AutoReplaceTreeView
 		self.__treeview = AutoReplaceTreeView(self, editor)
 		from AddButton import AutoReplaceAddButton
-		self.__add_button = AutoReplaceAddButton(self)
+		self.__add_button = AutoReplaceAddButton(self, editor)
 		from EditButton import AutoReplaceEditButton
-		self.__edit_button = AutoReplaceEditButton(self)
+		self.__edit_button = AutoReplaceEditButton(self, editor)
 		from RemoveButton import AutoReplaceRemoveButton
 		self.__remove_button = AutoReplaceRemoveButton(self, editor)
 		self.__enable_button = None
@@ -110,8 +111,7 @@ class AutoReplaceGUIManager(GObject):
 		@type self: An AutoReplaceGUIManager object.
 		"""
 		from gtk import HBox, VBox
-		from SCRIBES.utils import create_scrollwin
-		scrolled_window = create_scrollwin()
+		scrolled_window = self.__editor.create_scrollwin()
 		scrolled_window.add(self.__treeview)
 		main_container = HBox(homogeneous=False, spacing=10)
 		self.__window.main_area.pack_start(main_container, True, True, 0)
@@ -134,11 +134,9 @@ class AutoReplaceGUIManager(GObject):
 		@param manager: Reference to the AutoReplaceGUIManager instance.
 		@type manager: An AutoReplaceGUIManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_2, self.__close_button)
-		disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__close_button)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__close_button.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return
