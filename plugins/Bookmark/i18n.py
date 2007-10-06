@@ -18,8 +18,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
 # USA
 
-from gettext import gettext
-_ = gettext
+from gettext import gettext as _
 msg0001 = _("Removed bookmark on line %d")
 msg0002 = _("Bookmarked line %d")
 msg0003 = _("No bookmarks found to remove")

@@ -586,6 +586,14 @@ class Editor(GObject):
 	def get_cursor_iterator(self):
 		return self.get_cursor_position()
 
+	def get_cursor_line(self):
+		from cursor import get_cursor_line
+		return get_cursor_line(self.__textbuffer)
+
+	def move_view_to_cursor(self):
+		from cursor import move_view_to_cursor
+		return move_view_to_cursor(self.__textview)
+
 	def word_to_cursor(self):
 		from cursor import word_to_cursor
 		return word_to_cursor(self.__textbuffer)
@@ -593,6 +601,10 @@ class Editor(GObject):
 	def select_row(self, treeview):
 		from utils import select_row
 		return select_row(treeview)
+
+	def create_image(self, image_file):
+		from utils import create_image
+		return create_image(image_file)
 
 	def mark(self, iterator, alignment="right"):
 		from operator import eq

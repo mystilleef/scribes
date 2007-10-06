@@ -73,7 +73,7 @@ class BookmarkTrigger(GObject):
 		@param self: Reference to the BookmarkTrigger instance.
 		@type self: A BookmarkTrigger object.
 		"""
-		self.editor = editor
+		self.editor = self.__editor = editor
 		self.__manager = None
 		self.__trigger_1 = self.__trigger_2 = self.__trigger_3 = None
 		self.__trigger_4 = self.__trigger_5 = self.__trigger_6 = None
@@ -93,32 +93,31 @@ class BookmarkTrigger(GObject):
 		@type self: A BookmarkTrigger object.
 		"""
 		# Trigger to bookmark a line.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger_1 = Trigger("bookmark_line", "ctrl - d")
-		self.editor.triggermanager.add_trigger(self.__trigger_1)
+		self.__trigger_1 = self.__editor.create_trigger("bookmark_line", "ctrl - d")
+		self.editor.add_trigger(self.__trigger_1)
 
-		self.__trigger_2 = Trigger("remove_bookmark")
-		self.editor.triggermanager.add_trigger(self.__trigger_2)
+		self.__trigger_2 = self.__editor.create_trigger("remove_bookmark")
+		self.editor.add_trigger(self.__trigger_2)
 
 		# Trigger to remove all bookmarks from the document.
-		self.__trigger_3 = Trigger("remove_all_bookmarks", "alt - ctrl - Delete")
-		self.editor.triggermanager.add_trigger(self.__trigger_3)
+		self.__trigger_3 = self.__editor.create_trigger("remove_all_bookmarks", "alt - ctrl - Delete")
+		self.editor.add_trigger(self.__trigger_3)
 
 		# Trigger to move to the next bookmark in the document.
-		self.__trigger_4 = Trigger("next_bookmark", "alt - Right")
-		self.editor.triggermanager.add_trigger(self.__trigger_4)
+		self.__trigger_4 = self.__editor.create_trigger("next_bookmark", "alt - Right")
+		self.editor.add_trigger(self.__trigger_4)
 
 		# Trigger to move to the next bookmark in the document.
-		self.__trigger_5 = Trigger("previous_bookmark", "alt - Left")
-		self.editor.triggermanager.add_trigger(self.__trigger_5)
+		self.__trigger_5 = self.__editor.create_trigger("previous_bookmark", "alt - Left")
+		self.editor.add_trigger(self.__trigger_5)
 
 		# Trigger to move to the first bookmark in the document
-		self.__trigger_6 = Trigger("first_bookmark", "alt - ctrl - Home")
-		self.editor.triggermanager.add_trigger(self.__trigger_6)
+		self.__trigger_6 = self.__editor.create_trigger("first_bookmark", "alt - ctrl - Home")
+		self.editor.add_trigger(self.__trigger_6)
 
 		# Trigger to move to the first bookmark in the document
-		self.__trigger_7 = Trigger("last_bookmark", "alt - ctrl - End")
-		self.editor.triggermanager.add_trigger(self.__trigger_7)
+		self.__trigger_7 = self.__editor.create_trigger("last_bookmark", "alt - ctrl - End")
+		self.editor.add_trigger(self.__trigger_7)
 		return
 
 	def __toggle_bookmark_cb(self, trigger):
@@ -140,8 +139,7 @@ class BookmarkTrigger(GObject):
 		except AttributeError:
 			from Manager import BookmarkManager
 			self.__manager = BookmarkManager(self.editor)
-		from SCRIBES.cursor import get_cursor_line, move_view_to_cursor
-		line = get_cursor_line(self.editor.textbuffer)
+		line = self.__editor.get_cursor_line(self.editor.textbuffer)
 		if self.__manager.line_is_bookmarked(line):
 			self.__manager.remove_bookmark_on_line(line)
 			from i18n import msg0001
@@ -149,7 +147,7 @@ class BookmarkTrigger(GObject):
 			self.editor.feedback.update_status_message(message, "succeed")
 			return
 		self.__manager.bookmark_line(line)
-		move_view_to_cursor(self.editor.textview)
+		self.__editor.move_view_to_cursor(self.editor.textview)
 		from i18n import msg0002
 		message = msg0002 % (line+1)
 		self.editor.feedback.update_status_message(message, "succeed")
@@ -170,7 +168,6 @@ class BookmarkTrigger(GObject):
 		except AttributeError:
 			from Manager import BookmarkManager
 			self.__manager = BookmarkManager(self.editor)
-		from SCRIBES.cursor import get_cursor_line
 		if not self.__manager.get_bookmarked_lines():
 			from i18n import msg0003
 			self.editor.feedback.update_status_message(msg0003, "fail")
@@ -202,8 +199,7 @@ class BookmarkTrigger(GObject):
 		result = self.__manager.move_to_next_bookmark()
 		if result:
 			from i18n import msg0005
-			from SCRIBES.cursor import get_cursor_line
-			line = get_cursor_line(self.editor.textbuffer)
+			line = self.__editor.get_cursor_line(self.editor.textbuffer)
 			message = msg0005 % (line+1)
 			self.editor.feedback.update_status_message(message, "succeed")
 		else:
@@ -233,8 +229,7 @@ class BookmarkTrigger(GObject):
 		result = self.__manager.move_to_previous_bookmark()
 		if result:
 			from i18n import msg0005
-			from SCRIBES.cursor import get_cursor_line
-			line = get_cursor_line(self.editor.textbuffer)
+			line = self.__editor.get_cursor_line(self.editor.textbuffer)
 			message = msg0005 % (line+1)
 			self.editor.feedback.update_status_message(message, "succeed")
 		else:
@@ -347,12 +342,10 @@ class BookmarkTrigger(GObject):
 		@param self: Reference to the BookmarkTrigger instance.
 		@type self: A BookmarkTrigger object.
 		"""
-		if self.editor.contains_document is False or self.editor.uri is None:
-			return False
+		if self.editor.contains_document is False or self.editor.uri is None: return False
 		from BookmarkMetadata import get_bookmarks_from_database
 		bookmarked_lines = get_bookmarks_from_database(str(self.editor.uri))
-		if bookmarked_lines is None:
-			return False
+		if bookmarked_lines is None: return False
 		try:
 			self.__manager.is_initialized
 		except AttributeError:
@@ -374,38 +367,20 @@ class BookmarkTrigger(GObject):
 		# Remove all triggers.
 		triggers = (self.__trigger_1, self.__trigger_2, self.__trigger_3, self.__trigger_4,
 			self.__trigger_5, self.__trigger_6, self.__trigger_7)
-		self.editor.triggermanager.remove_triggers(triggers)
+		self.editor.remove_triggers(triggers)
 		# Disconnect all signals.
-		if self.__signal_id_1 and self.__trigger_1.handler_is_connected(self.__signal_id_1):
-			self.__trigger_1.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.__trigger_2.handler_is_connected(self.__signal_id_2):
-			self.__trigger_2.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.__trigger_3.handler_is_connected(self.__signal_id_3):
-			self.__trigger_3.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.__trigger_4.handler_is_connected(self.__signal_id_4):
-			self.__trigger_4.disconnect(self.__signal_id_4)
-		if self.__signal_id_5 and self.__trigger_5.handler_is_connected(self.__signal_id_5):
-			self.__trigger_5.disconnect(self.__signal_id_5)
-		if self.__signal_id_6 and self.__trigger_6.handler_is_connected(self.__signal_id_6):
-			self.__trigger_6.disconnect(self.__signal_id_6)
-		if self.__signal_id_7 and self.__trigger_7.handler_is_connected(self.__signal_id_7):
-			self.__trigger_7.disconnect(self.__signal_id_7)
-		if self.__signal_id_8 and self.editor.handler_is_connected(self.__signal_id_8):
-			self.editor.disconnect(self.__signal_id_8)
-		if self.__signal_id_9 and self.handler_is_connected(self.__signal_id_9):
-			self.disconnect(self.__signal_id_9)
-		if self.__signal_id_10 and self.editor.textview.handler_is_connected(self.__signal_id_10):
-			self.editor.textview.disconnect(self.__signal_id_10)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger_1)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__trigger_2)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__trigger_3)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__trigger_4)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__trigger_5)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__trigger_6)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__trigger_7)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_9, self)
+		self.__editor.disconnect_signal(self.__signal_id_10, self.__editor.textview)
 		# Destroy bookmark manager.
-		if self.__manager:
-			self.__manager.emit("destroy")
-		# Delete object attributes.
-		del self.editor, self.__manager, self.__trigger_1, self.__trigger_2
-		del self.__trigger_3, self.__trigger_4, self.__trigger_5
-		del self.__trigger_6, self.__trigger_7, self.__signal_id_1
-		del self.__signal_id_2, self.__signal_id_3, self.__signal_id_4
-		del self.__signal_id_5, self.__signal_id_6, self.__signal_id_7
-		del self.__signal_id_8, self.__signal_id_9, self.__signal_id_10
+		if self.__manager: self.__manager.emit("destroy")
 		del self
 		self = None
 		return

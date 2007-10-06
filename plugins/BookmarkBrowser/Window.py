@@ -100,13 +100,10 @@ class BookmarkWindow(Dialog):
 		@param manager: Reference to the BookmarkManager.
 		@type manager: An BookmarkManager object.
 		"""
-		if self.__signal_id and self.__manager.handler_is_connected(self.__signal_id):
-			self.__manager.disconnect(self.__signal_id)
-		if self.__signal_id_1 and self.__editor.store.handler_is_connected(self.__signal_id_1):
-			self.__editor.store.disconnect(self.__signal_id_1)
+		self.__editor.disconnect_signal(self.__signal_id, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor.store)
 		self.destroy()
-		del self.__editor, self.__signal_id, self.__signal_id_1, self.__manager
-		del self.__status_id, self.__bookmark_manager, self
+		del self
 		self = None
 		return
 
@@ -128,7 +125,7 @@ class BookmarkWindow(Dialog):
 		self.__signal_id = None
 		self.__signal_id_1 = None
 		self.__status_id = None
-		self.__bookmark_manager = editor.store.get_object("BookmarkManager")
+		self.__bookmark_manager = editor.get_object("BookmarkManager")
 		return
 
 	def __set_properties(self):
@@ -141,8 +138,7 @@ class BookmarkWindow(Dialog):
 		self.set_property("name", "scribes bookmark browser dialog")
 		from i18n import msg0002
 		self.set_property("title", msg0002)
-		from SCRIBES.utils import calculate_resolution_independence
-		width, height = calculate_resolution_independence(self.__editor.window, 1.679790026, 1.865209472)
+		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 1.679790026, 1.865209472)
 		self.set_property("default-width", width)
 		self.set_property("default-height", height)
 		self.set_transient_for(self.__editor.window)
@@ -163,5 +159,5 @@ class BookmarkWindow(Dialog):
 		"""
 		if name in ["BookmarkManager"]:
 			if self.__editor.store:
-				self.__bookmark_manager = self.__editor.store.get_object("BookmarkManager")
+				self.__bookmark_manager = self.__editor.get_object("BookmarkManager")
 		return

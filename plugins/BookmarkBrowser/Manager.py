@@ -99,8 +99,7 @@ class BookmarkManager(GObject):
 		@param self: Reference to the BookmarkManager instance.
 		@type self: A BookmarkManager object.
 		"""
-		from SCRIBES.utils import create_scrollwin
-		scrollwin = create_scrollwin()
+		scrollwin = self.__editor.create_scrollwin()
 		scrollwin.add(self.__treeview)
 		self.__window.main_area.pack_start(scrollwin, True, True, 0)
 		self.__window.button_area.pack_start(self.__close_button, False, False, 0)
@@ -116,15 +115,10 @@ class BookmarkManager(GObject):
 		@param manager: Reference to the BookmarkManager instance.
 		@type manager: A BookmarkManager object.
 		"""
-		if self.__signal_id_1 and self.handler_is_connected(self.__signal_id_1):
-			self.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.__close_button.handler_is_connected(self.__signal_id_2):
-			self.__close_button.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.__treeview.handler_is_connected(self.__signal_id_3):
-			self.__treeview.disconnect(self.__signal_id_3)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__close_button)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__treeview)
 		self.__close_button.destroy()
-		del self.__editor, self.__window, self.__treeview, self.__signal_id_1
-		del self.__close_button, self.__signal_id_2
 		del self
 		self = None
 		return

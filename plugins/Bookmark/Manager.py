@@ -59,7 +59,7 @@ class BookmarkManager(GObject):
 		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		self.__store_id = self.editor.store.add_object("BookmarkManager", self)
+		self.__store_id = self.editor.add_object("BookmarkManager", self)
 		self.__signal_id_1 = self.connect("destroy", self.__manager_destroy_cb)
 		self.__signal_id_2 = self.editor.connect("saved-document", self.__manager_saved_document_cb)
 		self.__signal_id_3 = self.textbuffer.connect("mark-deleted", self.__manager_mark_deleted_cb)
@@ -178,18 +178,15 @@ class BookmarkManager(GObject):
 		@param self: Reference to the BookmarkManager instance.
 		@type self: A BookmarkManager object.
 		"""
-		from SCRIBES.cursor import get_cursor_line
-		cursor_line = get_cursor_line(self.textbuffer)
+		cursor_line = self.__editor.get_cursor_line()
 		bookmarked_lines = self.get_bookmarked_lines()
-		if not len(bookmarked_lines): #  2:
-			return False
+		if not len(bookmarked_lines): return False
 		bookmarked_lines.sort()
 		for line in bookmarked_lines:
 			if line > cursor_line:
-				from SCRIBES.cursor import move_view_to_cursor
 				iterator = self.textbuffer.get_iter_at_line(line)
 				self.textbuffer.place_cursor(iterator)
-				move_view_to_cursor(self.textview)
+				self.__editor.move_view_to_cursor(self.textview)
 				return True
 		return False
 
@@ -200,19 +197,16 @@ class BookmarkManager(GObject):
 		@param self: Reference to the BookmarkManager instance.
 		@type self: A BookmarkManager object.
 		"""
-		from SCRIBES.cursor import get_cursor_line
-		cursor_line = get_cursor_line(self.textbuffer)
+		cursor_line = self.__editor.get_cursor_line()
 		bookmarked_lines = self.get_bookmarked_lines()
-		if not len(bookmarked_lines): # < 2:
-			return False
+		if not len(bookmarked_lines): return False
 		bookmarked_lines.sort()
 		bookmarked_lines.reverse()
 		for line in bookmarked_lines:
 			if line < cursor_line:
-				from SCRIBES.cursor import move_view_to_cursor
 				iterator = self.textbuffer.get_iter_at_line(line)
 				self.textbuffer.place_cursor(iterator)
-				move_view_to_cursor(self.textview)
+				self.__editor.move_view_to_cursor(self.textview)
 				return True
 		return False
 
@@ -226,8 +220,7 @@ class BookmarkManager(GObject):
 		line = min(self.get_bookmarked_lines())
 		iterator = self.textbuffer.get_iter_at_line(line)
 		self.textbuffer.place_cursor(iterator)
-		from SCRIBES.cursor import move_view_to_cursor
-		move_view_to_cursor(self.textview)
+		self.__editor.move_view_to_cursor(self.textview)
 		return
 
 	def move_to_last_bookmark(self):
@@ -240,8 +233,7 @@ class BookmarkManager(GObject):
 		line = max(self.get_bookmarked_lines())
 		iterator = self.textbuffer.get_iter_at_line(line)
 		self.textbuffer.place_cursor(iterator)
-		from SCRIBES.cursor import move_view_to_cursor
-		move_view_to_cursor(self.textview)
+		self.__editor.move_view_to_cursor(self.textview)
 		return
 
 	def __manager_mark_deleted_cb(self, textbuffer, textmark):
@@ -371,9 +363,8 @@ class BookmarkManager(GObject):
 		@rtype: A String object.
 		"""
 		try:
-			from SCRIBES.info import scribes_data_folder
 			from os import path
-			image_path = path.join(scribes_data_folder, "bookmarks.png")
+			image_path = path.join(self.__editor.scribes_data_folder, "bookmarks.png")
 		except:
 			print "Error: Could not find scribes data files."
 		return image_path

@@ -82,8 +82,7 @@ class BookmarkBrowserTrigger(GObject):
 		@type self: A BookmarkBrowserTrigger object.
 		"""
 		# Trigger to show a bookmark browser.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("show_bookmark_browser", "ctrl - b")
+		self.__trigger = self.__editor.create_trigger("show_bookmark_browser", "ctrl - b")
 		self.__editor.add_trigger(self.__trigger)
 		return
 
@@ -115,15 +114,10 @@ class BookmarkBrowserTrigger(GObject):
 		@param trigger: Reference to the BookmarkBrowserTrigger instance.
 		@type trigger: A BookmarkBrowserTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		if self.__signal_id_1 and self.__trigger.handler_is_connected(self.__signal_id_1):
-			self.__trigger.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.handler_is_connected(self.__signal_id_2):
-			self.disconnect(self.__signal_id_2)
-		if self.__manager:
-			self.__manager.emit("destroy")
-		del self.__editor, self.__trigger, self.__manager
-		del self.__signal_id_2, self.__signal_id_1
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		if self.__manager: self.__manager.emit("destroy")
 		del self
 		self = None
 		return

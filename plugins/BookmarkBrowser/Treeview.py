@@ -161,30 +161,16 @@ class BookmarkTreeView(TreeView):
 		@param manager: Reference to the BookmarkManager instance.
 		@type manager: A BookmarkManager object.
 		"""
-		if self.__signal_id_1 and self.__manager.handler_is_connected(self.__signal_id_1):
-			self.__manager.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.__editor.store.handler_is_connected(self.__signal_id_2):
-			self.__editor.store.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.__manager.handler_is_connected(self.__signal_id_3):
-			self.__manager.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.handler_is_connected(self.__signal_id_4):
-			self.disconnect(self.__signal_id_4)
-		if self.__model:
-			self.__model.clear()
-		if self.__line_renderer:
-			self.__line_renderer.destroy()
-		if self.__text_renderer:
-			self.__text_renderer.destroy()
-		if self.__line_column:
-			self.__line_column.destroy()
-		if self.__text_column:
-			self.__text_column.destroy()
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor.store)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self)
+		if self.__model: self.__model.clear()
+		if self.__line_renderer: self.__line_renderer.destroy()
+		if self.__text_renderer: self.__text_renderer.destroy()
+		if self.__line_column: self.__line_column.destroy()
+		if self.__text_column: self.__text_column.destroy()
 		self.destroy()
-		del self.__manager, self.__editor, self.__model, self.__line_renderer
-		del self.__text_renderer, self.__line_column, self.__text_column
-		del self.__bookmark_manager, self.__bookmarked_lines
-		del self.__signal_id_1, self.__signal_id_2, self.__signal_id_3
-		del self.__signal_id_4
 		del self
 		self = None
 		return
@@ -256,8 +242,7 @@ class BookmarkTreeView(TreeView):
 				value = True
 			self.__model.append([(line+1), text, value])
 			value = False
-		from SCRIBES.utils import select_row
-		select_row(self)
+		self.__editor.select_row(self)
 		return
 
 	def __row_activated_cb(self, treeview, path, column):
@@ -284,8 +269,7 @@ class BookmarkTreeView(TreeView):
 		# Move cursor to the selected line in the dialog's treeview.
 		iterator = self.__editor.textbuffer.get_iter_at_line(int(line)-1)
 		self.__editor.textbuffer.place_cursor(iterator)
-		from SCRIBES.cursor import move_view_to_cursor
-		move_view_to_cursor(self.__editor.textview)
+		self.__editor.move_view_to_cursor()
 		# Feedback to the statusbar.
 		from i18n import msg0006
 		message = msg0006 % int(line)

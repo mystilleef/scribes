@@ -68,7 +68,7 @@ class BookmarkPopupMenuItem(ImageMenuItem):
 		@type scribesview: A ScribesTextView object.
 		"""
 		self.scribesview = editor.textview
-		self.editor = editor
+		self.editor = self.__editor = editor
 		self.__manager = manager
 		self.menu = None
 		self.image = None
@@ -106,22 +106,20 @@ class BookmarkPopupMenuItem(ImageMenuItem):
 		@type self: A BookmarkPopupMenuItem object.
 		"""
 		from gtk import Menu
-		from SCRIBES.utils import create_image, create_menuitem
-		from SCRIBES.info import scribes_data_folder
-		image = scribes_data_folder + "/bookmarks.png"
-		self.image = create_image(image)
+		image = self.__editor.scribes_data_folder + "/bookmarks.png"
+		self.image = self.__editor.create_image(image)
 		self.menu = Menu()
 		from i18n import msg0013, msg0014
 		from i18n import msg0015, msg0016, msg0017
 		from i18n import msg0018, msg0019, msg0020
-		self.bookmark_line_menuitem = create_menuitem(msg0013)
-		self.remove_bookmark_menuitem = create_menuitem(msg0014)
-		self.remove_all_bookmarks_menuitem = create_menuitem(msg0015)
-		self.next_bookmark_menuitem = create_menuitem(msg0016)
-		self.previous_bookmark_menuitem = create_menuitem(msg0017)
-		self.first_bookmark_menuitem = create_menuitem(msg0018)
-		self.last_bookmark_menuitem = create_menuitem(msg0019)
-		self.show_browser_menuitem = create_menuitem(msg0020)
+		self.bookmark_line_menuitem = self.__editor.create_menuitem(msg0013)
+		self.remove_bookmark_menuitem = self.__editor.create_menuitem(msg0014)
+		self.remove_all_bookmarks_menuitem = self.__editor.create_menuitem(msg0015)
+		self.next_bookmark_menuitem = self.__editor.create_menuitem(msg0016)
+		self.previous_bookmark_menuitem = self.__editor.create_menuitem(msg0017)
+		self.first_bookmark_menuitem = self.__editor.create_menuitem(msg0018)
+		self.last_bookmark_menuitem = self.__editor.create_menuitem(msg0019)
+		self.show_browser_menuitem = self.__editor.create_menuitem(msg0020)
 		return
 
 	def __set_properties(self):
@@ -141,8 +139,7 @@ class BookmarkPopupMenuItem(ImageMenuItem):
 		self.menu.append(self.first_bookmark_menuitem)
 		self.menu.append(self.last_bookmark_menuitem)
 		self.menu.append(self.show_browser_menuitem)
-		if self.editor.is_readonly:
-			self.set_property("sensitive", False)
+		if self.editor.is_readonly: self.set_property("sensitive", False)
 		return
 
 	def __popup_activate_cb(self, menuitem):
@@ -159,21 +156,21 @@ class BookmarkPopupMenuItem(ImageMenuItem):
 		@type: A Boolean Object.
 		"""
 		if menuitem == self.show_browser_menuitem:
-			self.editor.triggermanager.trigger("show_bookmark_browser")
+			self.editor.trigger("show_bookmark_browser")
 		elif menuitem == self.bookmark_line_menuitem:
-			self.editor.triggermanager.trigger("bookmark_line")
+			self.editor.trigger("bookmark_line")
 		elif menuitem == self.remove_bookmark_menuitem:
-			self.editor.triggermanager.trigger("remove_bookmark")
+			self.editor.trigger("remove_bookmark")
 		elif menuitem == self.remove_all_bookmarks_menuitem:
-			self.editor.triggermanager.trigger("remove_all_bookmarks")
+			self.editor.trigger("remove_all_bookmarks")
 		elif menuitem == self.next_bookmark_menuitem:
-			self.editor.triggermanager.trigger("next_bookmark")
+			self.editor.trigger("next_bookmark")
 		elif menuitem == self.previous_bookmark_menuitem:
-			self.editor.triggermanager.trigger("previous_bookmark")
+			self.editor.trigger("previous_bookmark")
 		elif menuitem == self.first_bookmark_menuitem:
-			self.editor.triggermanager.trigger("first_bookmark")
+			self.editor.trigger("first_bookmark")
 		elif menuitem == self.last_bookmark_menuitem:
-			self.editor.triggermanager.trigger("last_bookmark")
+			self.editor.trigger("last_bookmark")
 		return True
 
 	def __popup_map_event_cb(self, menuitem, event):
@@ -220,69 +217,33 @@ class BookmarkPopupMenuItem(ImageMenuItem):
 		return
 
 	def __popup_destroy_cb(self, textview, event):
-		if self.__signal_id_1 and self.bookmark_line_menuitem.handler_is_connected(self.__signal_id_1):
-			self.bookmark_line_menuitem.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.remove_bookmark_menuitem.handler_is_connected(self.__signal_id_2):
-			self.remove_bookmark_menuitem.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.remove_bookmark_menuitem.handler_is_connected(self.__signal_id_3):
-			self.remove_bookmark_menuitem.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.remove_all_bookmarks_menuitem.handler_is_connected(self.__signal_id_4):
-			self.remove_all_bookmarks_menuitem.disconnect(self.__signal_id_4)
-		if self.__signal_id_5 and self.remove_all_bookmarks_menuitem.handler_is_connected(self.__signal_id_5):
-			self.remove_all_bookmarks_menuitem.disconnect(self.__signal_id_5)
-		if self.__signal_id_6 and self.next_bookmark_menuitem.handler_is_connected(self.__signal_id_6):
-			self.next_bookmark_menuitem.disconnect(self.__signal_id_6)
-		if self.__signal_id_7 and self.next_bookmark_menuitem.handler_is_connected(self.__signal_id_7):
-			self.next_bookmark_menuitem.disconnect(self.__signal_id_7)
-		if self.__signal_id_8 and self.previous_bookmark_menuitem.handler_is_connected(self.__signal_id_8):
-			self.previous_bookmark_menuitem.disconnect(self.__signal_id_8)
-		if self.__signal_id_9 and self.previous_bookmark_menuitem.handler_is_connected(self.__signal_id_9):
-			self.previous_bookmark_menuitem.disconnect(self.__signal_id_9)
-		if self.__signal_id_10 and self.first_bookmark_menuitem.handler_is_connected(self.__signal_id_10):
-			self.first_bookmark_menuitem.disconnect(self.__signal_id_10)
-		if self.__signal_id_11 and self.first_bookmark_menuitem.handler_is_connected(self.__signal_id_11):
-			self.first_bookmark_menuitem.disconnect(self.__signal_id_11)
-		if self.__signal_id_12 and self.last_bookmark_menuitem.handler_is_connected(self.__signal_id_12):
-			self.last_bookmark_menuitem.disconnect(self.__signal_id_12)
-		if self.__signal_id_13 and self.last_bookmark_menuitem.handler_is_connected(self.__signal_id_13):
-			self.last_bookmark_menuitem.disconnect(self.__signal_id_13)
-		if self.__signal_id_14 and self.show_browser_menuitem.handler_is_connected(self.__signal_id_14):
-			self.show_browser_menuitem.disconnect(self.__signal_id_14)
-		if self.__signal_id_15 and self.show_browser_menuitem.handler_is_connected(self.__signal_id_15):
-			self.show_browser_menuitem.disconnect(self.__signal_id_15)
-		if self.__signal_id_16 and self.scribesview.handler_is_connected(self.__signal_id_16):
-			self.scribesview.disconnect(self.__signal_id_16)
-		if self.bookmark_line_menuitem:
-			self.bookmark_line_menuitem.destroy()
-		if self.remove_bookmark_menuitem:
-			self.remove_bookmark_menuitem.destroy()
-		if self.remove_all_bookmarks_menuitem:
-			self.remove_all_bookmarks_menuitem.destroy()
-		if self.next_bookmark_menuitem:
-			self.next_bookmark_menuitem.destroy()
-		if self.previous_bookmark_menuitem:
-			self.previous_bookmark_menuitem.destroy()
-		if self.first_bookmark_menuitem:
-			self.first_bookmark_menuitem.destroy()
-		if self.last_bookmark_menuitem:
-			self.last_bookmark_menuitem.destroy()
-		if self.show_browser_menuitem:
-			self.show_browser_menuitem.destroy()
-		if self.menu:
-			self.menu.destroy()
-		if self.image:
-			self.image.destroy()
+		self.__editor.disconnect_signal(self.__signal_id_1, self.bookmark_line_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.remove_bookmark_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.remove_bookmark_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.remove_all_bookmarks_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.remove_all_bookmarks_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.next_bookmark_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.next_bookmark_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.previous_bookmark_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.previous_bookmark_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_10, self.first_bookmark_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_11, self.first_bookmark_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_12, self.last_bookmark_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_13, self.last_bookmark_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_14, self.show_browser_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_15, self.show_browser_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_16, self.scribesview)
+		if self.bookmark_line_menuitem: self.bookmark_line_menuitem.destroy()
+		if self.remove_bookmark_menuitem: self.remove_bookmark_menuitem.destroy()
+		if self.remove_all_bookmarks_menuitem: self.remove_all_bookmarks_menuitem.destroy()
+		if self.next_bookmark_menuitem: self.next_bookmark_menuitem.destroy()
+		if self.previous_bookmark_menuitem: self.previous_bookmark_menuitem.destroy()
+		if self.first_bookmark_menuitem: self.first_bookmark_menuitem.destroy()
+		if self.last_bookmark_menuitem: self.last_bookmark_menuitem.destroy()
+		if self.show_browser_menuitem: self.show_browser_menuitem.destroy()
+		if self.menu: self.menu.destroy()
+		if self.image: self.image.destroy()
 		self.destroy()
-		del self.scribesview, self.editor, self.bookmark_line_menuitem
-		del self.remove_bookmark_menuitem, self.remove_all_bookmarks_menuitem
-		del self.next_bookmark_menuitem, self.previous_bookmark_menuitem
-		del self.first_bookmark_menuitem, self.last_bookmark_menuitem
-		del self.show_browser_menuitem, self.menu, self.image, self.__manager
-		del self.__signal_id_1, self.__signal_id_2, self.__signal_id_3
-		del self.__signal_id_4, self.__signal_id_5, self.__signal_id_6
-		del self.__signal_id_7, self.__signal_id_8, self.__signal_id_9
-		del self.__signal_id_10, self.__signal_id_11, self.__signal_id_12
-		del self.__signal_id_13, self.__signal_id_14, self.__signal_id_15
-		del self.__signal_id_16, self
+		del self
 		self = None
 		return
