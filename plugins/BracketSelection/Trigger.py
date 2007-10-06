@@ -93,8 +93,7 @@ class BracketSelectionTrigger(object):
 		@param self: Reference to the BracketSelectionTrigger instance.
 		@type self: A BracketSelectionTrigger object.
 		"""
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("select_text_within_characters", "alt - b")
+		self.__trigger = self.__editor.create_trigger("select_text_within_characters", "alt - b")
 		self.__editor.add_trigger(self.__trigger)
 		return
 
@@ -109,8 +108,7 @@ class BracketSelectionTrigger(object):
 		@rtype: A Boolean object.
 		"""
 		open_pair_characters = ("(", "[", "{", "<")
-		from SCRIBES.cursor import get_cursor_iterator
-		cursor_iterator = get_cursor_iterator(self.__editor.textbuffer)
+		cursor_iterator = self.__editor.get_cursor_iterator()
 		transition_iterator = cursor_iterator.copy()
 		from operator import truth, contains, ge
 		while True:
@@ -133,9 +131,7 @@ class BracketSelectionTrigger(object):
 		@type self: An BracketSelectionTrigger object.
 		"""
 		self.__editor.remove_trigger(self.__trigger)
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, self.__trigger)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		del self
 		self = None
 		return

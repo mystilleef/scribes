@@ -176,14 +176,12 @@ class BracketManager(object):
 		from gtk.gdk import keyval_to_unicode
 		utf8_open_character = unichr(keyval_to_unicode(open_keyval)).encode("utf-8")
 		utf8_closing_character = unichr(keyval_to_unicode(close_keyval)).encode("utf-8")
-		from SCRIBES.cursor import get_cursor_iterator
-		cursor_position = get_cursor_iterator(textbuffer)
+		cursor_position = self.__editor.get_cursor_iterator()
 		begin_mark = textbuffer.create_mark(None, cursor_position, True)
 		textbuffer.begin_user_action()
 		textbuffer.insert_at_cursor(utf8_open_character+utf8_closing_character)
 		textbuffer.end_user_action()
-		from SCRIBES.cursor import get_cursor_iterator
-		cursor_position = get_cursor_iterator(textbuffer)
+		cursor_position = self.__editor.get_cursor_iterator()
 		end_mark = textbuffer.create_mark(None, cursor_position, False)
 		cursor_position.backward_char()
 		textbuffer.place_cursor(cursor_position)
@@ -281,8 +279,7 @@ class BracketManager(object):
 		end_mark = self.__monitor_list[-1][1][1]
 		iterator = textbuffer.get_iter_at_mark(end_mark)
 		textbuffer.place_cursor(iterator)
-		from SCRIBES.cursor import move_view_to_cursor
-		move_view_to_cursor(self.__editor.textview)
+		self.__editor.move_view_to_cursor()
 		return
 
 	def __stop_monitoring(self):
@@ -376,8 +373,7 @@ class BracketManager(object):
 		@return: True to insert automatically insert apostrophe.
 		@rtype: A Boolean object.
 		"""
-		from SCRIBES.cursor import get_cursor_iterator
-		iterator = get_cursor_iterator(self.__editor.textbuffer)
+		iterator = self.__editor.get_cursor_iterator()
 		from operator import truth
 		if truth(iterator.starts_line()): return True
 		iterator.backward_char()
@@ -535,8 +531,7 @@ class BracketManager(object):
 		end_mark = self.__monitor_list[-1][1][1]
 		begin = textbuffer.get_iter_at_mark(begin_mark)
 		end = textbuffer.get_iter_at_mark(end_mark)
-		from SCRIBES.cursor import get_cursor_iterator
-		cursor_position = get_cursor_iterator(textbuffer)
+		cursor_position = self.__editor.get_cursor_iterator()
 		if truth(cursor_position.equal(begin)) or truth(cursor_position.equal(end)):
 			self.__stop_monitoring()
 		elif not_(cursor_position.in_range(begin, end)):
