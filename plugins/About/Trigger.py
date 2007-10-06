@@ -116,12 +116,11 @@ class AboutTrigger(GObject):
 		@param trigger: Reference to the AboutTrigger instance.
 		@type trigger: An AboutTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
+		self.__editor.remove_trigger(self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor.textview)
-		if self.__about_dialog:
-			self.__about_dialog.emit("delete")
+		if self.__about_dialog: self.__about_dialog.emit("delete")
 		del self
 		self = None
 		return

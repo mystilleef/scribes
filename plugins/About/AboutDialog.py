@@ -78,28 +78,25 @@ class ScribesAboutDialog(AboutDialog):
 		@param self: Reference to the ScribesAboutDialog instance.
 		@type self: A ScribesAboutDialog object.
 		"""
-		from SCRIBES.info import artists, author, documenters, copyrights
-		from SCRIBES.info import translators, version, website
-		from SCRIBES.license import license_string
 		from i18n import msg0001
 		# Set dialog properties.
 		from gtk import about_dialog_set_url_hook
 		from gnome import url_show
-		about_dialog_set_url_hook(lambda self, url:url_show(website))
-		self.set_artists(artists)
-		self.set_authors(author)
+		about_dialog_set_url_hook(lambda self, url:url_show(self.__editor.website))
+		self.set_artists(self.__editor.artists)
+		self.set_authors(self.__editor.author)
 		self.set_role("Scribes About Dialog")
-		self.set_documenters(documenters)
+		self.set_documenters(self.__editor.documenters)
 		self.set_transient_for(self.__editor.window)
 		self.set_property("comments", msg0001)
-		self.set_property("copyright", copyrights)
-		self.set_property("license", license_string.strip())
+		self.set_property("copyright", self.__editor.copyrights)
+		self.set_property("license", self.__editor.license.strip())
 		self.set_property("logo-icon-name", "scribes")
 		self.set_property("name", "Scribes")
-		self.set_property("translator-credits", translators)
-		self.set_property("version", version)
-		self.set_property("website", website)
-		self.set_property("website-label", website)
+		self.set_property("translator-credits", self.__editor.translators)
+		self.set_property("version", self.__editor.version)
+		self.set_property("website", self.__editor.website)
+		self.set_property("website-label", self.__editor.website)
 		self.set_property("icon-name", "stock_about")
 		return
 
@@ -114,8 +111,7 @@ class ScribesAboutDialog(AboutDialog):
 		from i18n import msg0002
 		self.__status_id = self.__editor.feedback.set_modal_message(msg0002, "about")
 		response = self.run()
-		if response:
-			self.hide_dialog()
+		if response: self.hide_dialog()
 		return
 
 	def hide_dialog(self):
@@ -140,10 +136,8 @@ class ScribesAboutDialog(AboutDialog):
 		@param dialog: Reference to the ScribesAboutDialog instance.
 		@type dialog: A ScribesAboutDialog object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

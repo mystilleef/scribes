@@ -98,13 +98,9 @@ class AboutPopupMenuItem(ImageMenuItem):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		if self.__signal_id_1 and self.handler_is_connected(self.__signal_id_1):
-			self.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.__editor.textview.handler_is_connected(self.__signal_id_2):
-			self.__editor.textview.disconnect(self.__signal_id_2)
-		self.destroy()
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor.textview)
+		self.destroy()
 		del self
 		self = None
 		return False

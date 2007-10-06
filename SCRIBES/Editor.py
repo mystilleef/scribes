@@ -104,8 +104,9 @@ class Editor(GObject):
 		self.__signal_id_12 = self.connect("rename-document", self.__rename_document_cb)
 		self.__signal_id_13 = self.connect_after("created-widgets", self.__created_widgets_after_cb)
 		self.__signal_id_14 = self.connect_after("reload-document", self.__reload_document_cb)
-		from gobject import idle_add
+		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__init_attributes, manager, file_uri, encoding)
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 ########################################################################
 #
@@ -330,8 +331,12 @@ class Editor(GObject):
 		return translators
 
 	def __get_copyrights(self):
-		from infor import copyrights
+		from info import copyrights
 		return copyrights
+
+	def __get_license(self):
+		from license import license_string
+		return license_string
 
 #########################################################################
 #					Public API Properties
@@ -398,6 +403,7 @@ class Editor(GObject):
 	website = property(__get_website)
 	translators = property(__get_translators)
 	copyrights = property(__get_copyrights)
+	license = property(__get_license)
 
 ########################################################################
 #
@@ -492,7 +498,7 @@ class Editor(GObject):
 	def response(self):
 		"""
 		Improve responsiveness.
-		
+
 		Prevent GUI freezing. Use with caution.
 
 		@param self: Reference to the InstanceManager instance.
@@ -614,7 +620,7 @@ class Editor(GObject):
 	def calculate_resolution_independence(self, window, width, height):
 		from utils import calculate_resolution_independence
 		return calculate_resolution_independence(window, width, height)
-		
+
 	def generate_random_number(self, sequence):
 		from utils import generate_random_number
 		return generate_random_number(sequence)
@@ -730,6 +736,14 @@ class Editor(GObject):
 		from gc import collect
 		collect()
 		return False
+
+	def __precompile_methods(self):
+		try:
+			from psyco import bind
+			bind(self.response)
+		except ImportError:
+			pass
+		return
 
 ########################################################################
 #
@@ -873,7 +887,7 @@ class Editor(GObject):
 
 	def __response(self):
 		return self.response()
-			
+
 ########################################################################
 #
 #						Editor Attributes
@@ -895,7 +909,7 @@ class Editor(GObject):
 		"""
 		# A function to improve responsiveness.
 		#from utils import response
-		
+
 		self.__id = id(self)
 		self.__encoding = encoding
 		# An object that manages instances of editors.
@@ -960,7 +974,7 @@ class Editor(GObject):
 		from gobject import main_context_default
 		context = main_context_default()
 		self.__pending = context.pending
-		self.__iteration = context.iteration		
+		self.__iteration = context.iteration
 		# A signal emitted after crucial data attributes have been created.
 		self.emit("initialized-attributes")
 		return False
