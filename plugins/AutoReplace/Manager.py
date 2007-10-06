@@ -74,6 +74,7 @@ class AutoReplaceManager(GObject):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
+		self.__editor = editor
 		# An object that monitors editor's buffer for abbreviations.
 		from Monitor import AutoReplaceMonitor
 		self.__monitor = AutoReplaceMonitor(self, editor)
@@ -81,8 +82,7 @@ class AutoReplaceManager(GObject):
 		from Expander import AutoReplaceExpander
 		self.__expander = AutoReplaceExpander(self, editor)
 		# Path to the abbreviation database.
-		from SCRIBES.info import metadata_folder
-		self.__database_path = metadata_folder + "abbreviations.gdb"
+		self.__database_path = editor.metadata_folder + "abbreviations.gdb"
 		from gnomevfs import get_uri_from_local_path
 		self.__database_uri = get_uri_from_local_path(self.__database_path)
 		# A dictionary containing abbreviations as keys and words to be
@@ -104,8 +104,7 @@ class AutoReplaceManager(GObject):
 		@param self: Reference to the AutoReplaceManager instance.
 		@type self: An AutoReplaceManager object.
 		"""
-		if self.__is_enabled is False:
-			return
+		if self.__is_enabled is False: return
 		self.__abbreviation_dictionary.clear()
 		from shelve import open
 		from anydbm import error
@@ -141,14 +140,11 @@ class AutoReplaceManager(GObject):
 		@param manager: Reference to the AutoReplaceManager.
 		@type manager: An AutoReplaceManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
 		self.__abbreviation_dictionary.clear()
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, self.__monitor)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__monitor)
 		from gnomevfs import monitor_cancel
-		if self.__monitor_id:
-			monitor_cancel(self.__monitor_id)
-		delete_attributes(self)
+		if self.__monitor_id: monitor_cancel(self.__monitor_id)
 		del self
 		self = None
 		return

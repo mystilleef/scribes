@@ -578,6 +578,10 @@ class Editor(GObject):
 	def get_cursor_iterator(self):
 		return self.get_cursor_position()
 
+	def word_to_cursor(self):
+		from cursor import word_to_cursor
+		return word_to_cursor(self.__textbuffer)
+
 	def mark(self, iterator, alignment="right"):
 		from operator import eq
 		if eq(alignment, "right"):

@@ -118,11 +118,9 @@ class AutoReplaceMonitor(GObject):
 		@param manager: Reference to the AutoReplaceManager.
 		@type manager: An AutoReplaceManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__manager)
-		disconnect_signal(self.__signal_id_2, self.__manager)
-		disconnect_signal(self.__signal_id_3, self.__editor.textview)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor.textview)
 		del self
 		self = None
 		return
@@ -159,10 +157,8 @@ class AutoReplaceMonitor(GObject):
 		@return: True if an abbreviation is found.
 		@rtype: A Boolean object.
 		"""
-		from SCRIBES.cursor import word_to_cursor
-		word = word_to_cursor(self.__editor.textbuffer)
-		if word is None:
-			return False
+		word = self.__editor.word_to_cursor()
+		if word is None: return False
 		if word in self.__abbreviation_list:
 			from gtk import keysyms
 			if keyval == keysyms.space:

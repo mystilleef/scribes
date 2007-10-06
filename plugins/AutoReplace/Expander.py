@@ -107,11 +107,9 @@ class AutoReplaceExpander(object):
 		@type manager: An AutoReplaceManager object.
 		"""
 		self.__abbreviation_dictionary.clear()
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__manager)
-		disconnect_signal(self.__signal_id_2, self.__manager)
-		disconnect_signal(self.__signal_id_3, self.__manager)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__manager)
 		del self
 		self = None
 		return
@@ -134,8 +132,7 @@ class AutoReplaceExpander(object):
 		except KeyError:
 			return
 		delimeter_character = abbreviation[-1]
-		from SCRIBES.cursor import get_cursor_iterator
-		iterator = get_cursor_iterator(self.__editor.textbuffer)
+		iterator = self.__editor.get_cursor_iterator()
 		tmp_iterator = iterator.copy()
 		for value in range(len(abbreviation[:-1])):
 			tmp_iterator.backward_char()
