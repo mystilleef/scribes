@@ -139,7 +139,7 @@ class BookmarkTrigger(GObject):
 		except AttributeError:
 			from Manager import BookmarkManager
 			self.__manager = BookmarkManager(self.editor)
-		line = self.__editor.get_cursor_line(self.editor.textbuffer)
+		line = self.__editor.get_cursor_line()
 		if self.__manager.line_is_bookmarked(line):
 			self.__manager.remove_bookmark_on_line(line)
 			from i18n import msg0001
@@ -147,7 +147,7 @@ class BookmarkTrigger(GObject):
 			self.editor.feedback.update_status_message(message, "succeed")
 			return
 		self.__manager.bookmark_line(line)
-		self.__editor.move_view_to_cursor(self.editor.textview)
+		self.__editor.move_view_to_cursor()
 		from i18n import msg0002
 		message = msg0002 % (line+1)
 		self.editor.feedback.update_status_message(message, "succeed")
@@ -199,7 +199,7 @@ class BookmarkTrigger(GObject):
 		result = self.__manager.move_to_next_bookmark()
 		if result:
 			from i18n import msg0005
-			line = self.__editor.get_cursor_line(self.editor.textbuffer)
+			line = self.__editor.get_cursor_line()
 			message = msg0005 % (line+1)
 			self.editor.feedback.update_status_message(message, "succeed")
 		else:
@@ -229,7 +229,7 @@ class BookmarkTrigger(GObject):
 		result = self.__manager.move_to_previous_bookmark()
 		if result:
 			from i18n import msg0005
-			line = self.__editor.get_cursor_line(self.editor.textbuffer)
+			line = self.__editor.get_cursor_line()
 			message = msg0005 % (line+1)
 			self.editor.feedback.update_status_message(message, "succeed")
 		else:

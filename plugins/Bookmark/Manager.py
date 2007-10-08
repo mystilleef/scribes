@@ -186,7 +186,7 @@ class BookmarkManager(GObject):
 			if line > cursor_line:
 				iterator = self.textbuffer.get_iter_at_line(line)
 				self.textbuffer.place_cursor(iterator)
-				self.__editor.move_view_to_cursor(self.textview)
+				self.__editor.move_view_to_cursor()
 				return True
 		return False
 
@@ -206,7 +206,7 @@ class BookmarkManager(GObject):
 			if line < cursor_line:
 				iterator = self.textbuffer.get_iter_at_line(line)
 				self.textbuffer.place_cursor(iterator)
-				self.__editor.move_view_to_cursor(self.textview)
+				self.__editor.move_view_to_cursor()
 				return True
 		return False
 
@@ -220,7 +220,7 @@ class BookmarkManager(GObject):
 		line = min(self.get_bookmarked_lines())
 		iterator = self.textbuffer.get_iter_at_line(line)
 		self.textbuffer.place_cursor(iterator)
-		self.__editor.move_view_to_cursor(self.textview)
+		self.__editor.move_view_to_cursor()
 		return
 
 	def move_to_last_bookmark(self):
@@ -233,7 +233,7 @@ class BookmarkManager(GObject):
 		line = max(self.get_bookmarked_lines())
 		iterator = self.textbuffer.get_iter_at_line(line)
 		self.textbuffer.place_cursor(iterator)
-		self.__editor.move_view_to_cursor(self.textview)
+		self.__editor.move_view_to_cursor()
 		return
 
 	def __manager_mark_deleted_cb(self, textbuffer, textmark):

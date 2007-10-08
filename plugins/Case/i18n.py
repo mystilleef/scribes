@@ -18,8 +18,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
 # USA
 
-from gettext import gettext
-_ = gettext
+from gettext import gettext as _
 msg0001 = _("No selection to change case")
 msg0002 = _("Selected text is already uppercase")
 msg0003 = _("Changed selected text to uppercase")

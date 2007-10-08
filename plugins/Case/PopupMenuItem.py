@@ -72,16 +72,15 @@ class CasePopupMenuItem(ImageMenuItem):
 		"""
 		from i18n import msg0010, msg0011, msg0012
 		from i18n import msg0013
-		from SCRIBES.utils import create_menuitem
 		from gtk import Menu, Image, STOCK_SORT_DESCENDING
 		self.__image = Image()
 		self.__image.set_property("stock", STOCK_SORT_DESCENDING)
 		self.__editor = editor
 		self.__menu = Menu()
-		self.__uppercase_menuitem = create_menuitem(msg0010)
-		self.__lowercase_menuitem = create_menuitem(msg0011)
-		self.__titlecase_menuitem = create_menuitem(msg0012)
-		self.__swapcase_menuitem = create_menuitem(msg0013)
+		self.__uppercase_menuitem = editor.create_menuitem(msg0010)
+		self.__lowercase_menuitem = editor.create_menuitem(msg0011)
+		self.__titlecase_menuitem = editor.create_menuitem(msg0012)
+		self.__swapcase_menuitem = editor.create_menuitem(msg0013)
 		self.__signal_id_1 = None
 		self.__signal_id_2 = None
 		self.__signal_id_3 = None
@@ -124,13 +123,13 @@ class CasePopupMenuItem(ImageMenuItem):
 		@type: A Boolean Object.
 		"""
 		if menuitem == self.__uppercase_menuitem:
-			self.__editor.triggermanager.trigger("uppercase")
+			self.__editor.trigger("uppercase")
 		elif menuitem == self.__lowercase_menuitem:
-			self.__editor.triggermanager.trigger("lowercase")
+			self.__editor.trigger("lowercase")
 		elif menuitem == self.__titlecase_menuitem:
-			self.__editor.triggermanager.trigger("titlecase")
+			self.__editor.trigger("titlecase")
 		elif menuitem == self.__swapcase_menuitem:
-			self.__editor.triggermanager.trigger("swapcase")
+			self.__editor.trigger("swapcase")
 		return True
 
 	def __popup_map_event_cb(self, menuitem, event):
@@ -168,43 +167,22 @@ class CasePopupMenuItem(ImageMenuItem):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		if self.__signal_id_1 and self.__uppercase_menuitem.handler_is_connected(self.__signal_id_1):
-			self.__uppercase_menuitem.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.__lowercase_menuitem.handler_is_connected(self.__signal_id_2):
-			self.__lowercase_menuitem.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.__titlecase_menuitem.handler_is_connected(self.__signal_id_3):
-			self.__titlecase_menuitem.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.__swapcase_menuitem.handler_is_connected(self.__signal_id_4):
-			self.__swapcase_menuitem.disconnect(self.__signal_id_4)
-		if self.__signal_id_5 and self.__uppercase_menuitem.handler_is_connected(self.__signal_id_5):
-			self.__uppercase_menuitem.disconnect(self.__signal_id_5)
-		if self.__signal_id_6 and self.__lowercase_menuitem.handler_is_connected(self.__signal_id_6):
-			self.__lowercase_menuitem.disconnect(self.__signal_id_6)
-		if self.__signal_id_7 and self.__titlecase_menuitem.handler_is_connected(self.__signal_id_7):
-			self.__titlecase_menuitem.disconnect(self.__signal_id_7)
-		if self.__signal_id_8 and self.__swapcase_menuitem.handler_is_connected(self.__signal_id_8):
-			self.__swapcase_menuitem.disconnect(self.__signal_id_8)
-		if self.__signal_id_9 and self.__editor.textview.handler_is_connected(self.__signal_id_9):
-			self.__editor.textview.disconnect(self.__signal_id_9)
-		if self.__uppercase_menuitem:
-			self.__uppercase_menuitem.destroy()
-		if self.__lowercase_menuitem:
-			self.__lowercase_menuitem.destroy()
-		if self.__titlecase_menuitem:
-			self.__titlecase_menuitem.destroy()
-		if self.__swapcase_menuitem:
-			self.__swapcase_menuitem.destroy()
-		if self.__menu:
-			self.__menu.destroy()
-		if self.__image:
-			self.__image.destroy()
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__uppercase_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__lowercase_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__titlecase_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__swapcase_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__uppercase_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__lowercase_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__titlecase_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__swapcase_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor.textview)
+		if self.__uppercase_menuitem: self.__uppercase_menuitem.destroy()
+		if self.__lowercase_menuitem: self.__lowercase_menuitem.destroy()
+		if self.__titlecase_menuitem: self.__titlecase_menuitem.destroy()
+		if self.__swapcase_menuitem: self.__swapcase_menuitem.destroy()
+		if self.__menu: self.__menu.destroy()
+		if self.__image: self.__image.destroy()
 		self.destroy()
-		del self.__uppercase_menuitem, self.__lowercase_menuitem
-		del self.__titlecase_menuitem, self.__swapcase_menuitem
-		del self.__editor, self.__image, self.__menu
-		del self.__signal_id_9, self.__signal_id_8, self.__signal_id_7
-		del self.__signal_id_6, self.__signal_id_5, self.__signal_id_4
-		del self.__signal_id_3, self.__signal_id_2, self.__signal_id_1
 		del self
 		self = None
 		return False

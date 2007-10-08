@@ -92,22 +92,21 @@ class CaseTrigger(GObject):
 		@param self: Reference to the CaseTrigger instance.
 		@type self: A CaseTrigger object.
 		"""
-		from SCRIBES.Trigger import Trigger
 		# Trigger to convert selected text to uppercase.
-		self.__uppercase_trigger = Trigger("uppercase", "alt - u")
-		self.__editor.triggermanager.add_trigger(self.__uppercase_trigger)
+		self.__uppercase_trigger = self.__editor.create_trigger("uppercase", "alt - u")
+		self.__editor.add_trigger(self.__uppercase_trigger)
 
 		# Trigger to convert selected text to lowercase.
-		self.__lowercase_trigger = Trigger("lowercase")
-		self.__editor.triggermanager.add_trigger(self.__lowercase_trigger)
+		self.__lowercase_trigger = self.__editor.create_trigger("lowercase")
+		self.__editor.add_trigger(self.__lowercase_trigger)
 
 		# Trigger to title the case of selected text.
-		self.__titlecase_trigger = Trigger("titlecase", "alt - U")
-		self.__editor.triggermanager.add_trigger(self.__titlecase_trigger)
+		self.__titlecase_trigger = self.__editor.create_trigger("titlecase", "alt - U")
+		self.__editor.add_trigger(self.__titlecase_trigger)
 
 		# Trigger to swap the case of selected text.
-		self.__swapcase_trigger = Trigger("swapcase", "alt - L")
-		self.__editor.triggermanager.add_trigger(self.__swapcase_trigger)
+		self.__swapcase_trigger = self.__editor.create_trigger("swapcase", "alt - L")
+		self.__editor.add_trigger(self.__swapcase_trigger)
 		return
 
 	def __uppercase_trigger_cb(self, trigger):
@@ -192,24 +191,15 @@ class CaseTrigger(GObject):
 		@param trigger: Reference to the FullScreenTrigger instance.
 		@type trigger: A FullScreenTrigger object.
 		"""
-		remove_triggers = self.__editor.triggermanager.remove_triggers
+		remove_triggers = self.__editor.remove_triggers
 		remove_triggers([self.__uppercase_trigger, self.__lowercase_trigger, self.__titlecase_trigger, self.__swapcase_trigger])
-		if self.__case_processor:
-			self.__case_processor.emit("destroy")
-		if self.__signal_id_1 and self.__uppercase_trigger.handler_is_connected(self.__signal_id_1):
-			self.__uppercase_trigger.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.__lowercase_trigger.handler_is_connected(self.__signal_id_2):
-			self.__lowercase_trigger.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.__titlecase_trigger.handler_is_connected(self.__signal_id_3):
-			self.__titlecase_trigger.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.__swapcase_trigger.handler_is_connected(self.__signal_id_4):
-			self.__swapcase_trigger.disconnect(self.__signal_id_4)
-		if self.__signal_id_5 and self.handler_is_connected(self.__signal_id_5):
-			self.disconnect(self.__signal_id_5)
-		if self.__signal_id_6 and self.__editor.textview.handler_is_connected(self.__signal_id_6):
-			self.__editor.textview.disconnect(self.__signal_id_6)
-		from SCRIBES.utils import delete_attributes
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__uppercase_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__lowercase_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__titlecase_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__swapcase_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_5, self)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor.textview)
+		if self.__case_processor: self.__case_processor.emit("destroy")
 		del self
 		self = None
 		return

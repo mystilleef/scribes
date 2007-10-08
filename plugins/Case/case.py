@@ -196,8 +196,7 @@ class CaseProcessor(GObject):
 		@param processor: The CaseProcessor.
 		@type processor: A CaseProcessor object.
 		"""
-		if self.__signal_id_1 and self.handler_is_connected(self.__signal_id_1):
-			self.disconnect(self.__signal_id_1)
-		del self.__signal_id_1, self.__editor, self
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		del self
 		self = None
 		return

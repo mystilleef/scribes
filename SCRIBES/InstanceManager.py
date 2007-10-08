@@ -45,6 +45,8 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
+		from gobject import timeout_add, idle_add, PRIORITY_LOW, threads_init
+		threads_init()
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
@@ -56,7 +58,6 @@ class EditorManager(object):
 		signal(SIGHUP, self.__kernel_signals_cb)
 		signal(SIGSEGV, self.__kernel_signals_cb)
 		signal(SIGTERM, self.__kernel_signals_cb)
-		from gobject import timeout_add, idle_add, PRIORITY_LOW
 #		timeout_add(600000, self.__init_garbage_collector, priority=PRIORITY_LOW)
 		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
 		#idle_add(self.__start_psyco, priority=PRIORITY_LOW)

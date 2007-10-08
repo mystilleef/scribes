@@ -84,12 +84,11 @@ class CloseWindowTrigger(GObject):
 		@type self: A CloseWindowTrigger object.
 		"""
 		# Trigger to close a Scribes window.
-		from SCRIBES.Trigger import Trigger
-		self.__close_window_trigger = Trigger("close_window", "ctrl - w")
+		self.__close_window_trigger = self.__editor.create_trigger("close_window", "ctrl - w")
 		self.__editor.add_trigger(self.__close_window_trigger)
 
 		# Trigger to close all Scribes windows.
-		self.__close_all_windows_trigger = Trigger("close_all_windows", "ctrl - Q")
+		self.__close_all_windows_trigger = self.__editor.create_trigger("close_all_windows", "ctrl - Q")
 		self.__editor.add_trigger(self.__close_all_windows_trigger)
 		return
 
@@ -131,14 +130,9 @@ class CloseWindowTrigger(GObject):
 		"""
 		self.__editor.remove_trigger(self.__close_window_trigger)
 		self.__editor.remove_trigger(self.__close_all_windows_trigger)
-		if self.__signal_id_1 and self.__close_window_trigger.handler_is_connected(self.__signal_id_1):
-			self.__close_window_trigger.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.handler_is_connected(self.__signal_id_2):
-			self.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.__close_all_windows_trigger.handler_is_connected(self.__signal_id_3):
-			self.__close_all_windows_trigger.disconnect(self.__signal_id_3)
-		del self.__editor, self.__close_window_trigger, self.__close_all_windows_trigger
-		del self.__signal_id_2, self.__signal_id_1, self.__signal_id_3
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__close_window_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__close_all_windows_trigger)
 		del self
 		self = None
 		return
