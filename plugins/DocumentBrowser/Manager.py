@@ -101,8 +101,7 @@ class DocumentManager(GObject):
 		@param self: Reference to the DocumentManager instance.
 		@type self: A DocumentManager object.
 		"""
-		from SCRIBES.utils import create_scrollwin
-		scrollwin = create_scrollwin()
+		scrollwin = self.__editor.create_scrollwin()
 		scrollwin.add(self.__treeview)
 		self.__window.main_area.pack_start(scrollwin, True, True, 0)
 		self.__window.button_area.pack_start(self.__close_button, False, False, 0)
@@ -123,8 +122,7 @@ class DocumentManager(GObject):
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__close_button)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__treeview)
 		self.__editor.disconnect_signal(self.__signal_id_4, self)
-		if truth(self.__close_button):
-			self.__close_button.destroy()
+		if truth(self.__close_button): self.__close_button.destroy()
 		del self
 		self = None
 		return

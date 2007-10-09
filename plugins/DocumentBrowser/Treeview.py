@@ -163,14 +163,11 @@ class BrowserTreeView(TreeView):
 		@param manager: Reference to the BookmarkManager instance.
 		@type manager: A BookmarkManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__manager)
-		disconnect_signal(self.__signal_id_2, self.__manager)
-		disconnect_signal(self.__signal_id_3, self)
-		if self.__model:
-			self.__model.clear()
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
+		if self.__model: self.__model.clear()
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return
@@ -217,8 +214,7 @@ class BrowserTreeView(TreeView):
 		for uri in self.__uri_list:
 			file_type, filename, pathname, fileuri= self.__process_uri(uri)
 			self.__model.append([filename, file_type, pathname, fileuri])
-		from SCRIBES.utils import select_row
-		select_row(self)
+		self.__editor.select_row(self)
 		return
 
 	def __process_uri(self, uri):
@@ -232,17 +228,15 @@ class BrowserTreeView(TreeView):
 		@type uri: A String object.
 		"""
 		value = ("", "", "", "")
-		from SCRIBES.utils import get_language
-		language = get_language(uri)
+		language = self.__editor.language
 		if language:
 			file_type = language.get_name()
 		else:
 			file_type = "Plain Text"
 		from gnomevfs import URI, format_uri_for_display
-		from SCRIBES.info import home_folder
 		uri_object = URI(format_uri_for_display(uri))
 		filename = uri_object.short_name
-		pathname = uri_object.path.replace(home_folder, "~")
+		pathname = uri_object.path.replace(self.__editor.home_folder, "~")
 		fileuri = uri
 		return file_type, filename, pathname, fileuri
 
@@ -273,16 +267,13 @@ class BrowserTreeView(TreeView):
 	def __key_press_event_cb(self, treeview, event):
 		from operator import ne, not_
 		from gtk import keysyms
-		if ne(event.keyval, keysyms.Delete):
-			return
+		if ne(event.keyval, keysyms.Delete): return
 		selection = treeview.get_selection()
 		model, iterator = selection.get_selected()
-		if not_(iterator):
-			return
+		if not_(iterator): return
 		uri = model.get_value(iterator, 3)
 		model.remove(iterator)
-		from SCRIBES.utils import select_row
-		select_row(self)
+		self.__editor.select_row(self)
 		self.__editor.response()
 		self.__editor.instance_manager.close_files([uri])
 		self.__editor.response()

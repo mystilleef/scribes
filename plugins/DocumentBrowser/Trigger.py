@@ -82,9 +82,8 @@ class DocumentBrowserTrigger(GObject):
 		@type self: A DocumentBrowserTrigger object.
 		"""
 		# Trigger to show a document browser.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("show_document_browser", "F9")
-		self.__editor.triggermanager.add_trigger(self.__trigger)
+		self.__trigger = self.__editor.create_trigger("show_document_browser", "F9")
+		self.__editor.add_trigger(self.__trigger)
 		return
 
 	def __show_document_browser_cb(self, trigger):
@@ -115,13 +114,10 @@ class DocumentBrowserTrigger(GObject):
 		@param trigger: Reference to the DocumentBrowserTrigger instance.
 		@type trigger: A DocumentBrowserTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__trigger)
-		disconnect_signal(self.__signal_id_2, self)
-		if self.__manager:
-			self.__manager.emit("destroy")
-		delete_attributes(self)
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		if self.__manager: self.__manager.emit("destroy")
 		del self
 		self = None
 		return
