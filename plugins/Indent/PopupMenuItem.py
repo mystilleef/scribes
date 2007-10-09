@@ -66,7 +66,7 @@ class IndentPopupMenuItem(ImageMenuItem):
 		@type scribesview: A ScribesTextView object.
 		"""
 		self.scribesview = editor.textview
-		self.editor = editor
+		self.editor = self.__editor = editor
 		self.menu = None
 		self.image = None
 		self.indent_menuitem = None
@@ -88,11 +88,10 @@ class IndentPopupMenuItem(ImageMenuItem):
 		self.image = Image()
 		self.image.set_property("stock", STOCK_JUSTIFY_CENTER)
 		self.menu = Menu()
-		from SCRIBES.utils import create_menuitem
 		from i18n import msg0009, msg0010
 		from gtk import STOCK_UNINDENT, STOCK_INDENT
-		self.indent_menuitem = create_menuitem(msg0009, STOCK_INDENT)
-		self.unindent_menuitem = create_menuitem(msg0010, STOCK_UNINDENT)
+		self.indent_menuitem = self.__editor.create_menuitem(msg0009, STOCK_INDENT)
+		self.unindent_menuitem = self.__editor.create_menuitem(msg0010, STOCK_UNINDENT)
 		return
 
 	def __set_properties(self):
@@ -106,8 +105,7 @@ class IndentPopupMenuItem(ImageMenuItem):
 		self.set_submenu(self.menu)
 		self.menu.append(self.indent_menuitem)
 		self.menu.append(self.unindent_menuitem)
-		if self.editor.is_readonly:
-			self.set_property("sensitive", False)
+		if self.editor.is_readonly: self.set_property("sensitive", False)
 		return
 
 	def __popup_activate_cb(self, menuitem):
@@ -124,9 +122,9 @@ class IndentPopupMenuItem(ImageMenuItem):
 		@type: A Boolean Object.
 		"""
 		if menuitem == self.indent_menuitem:
-			self.editor.triggermanager.trigger("indent_line")
+			self.editor.trigger("indent_line")
 		if menuitem == self.unindent_menuitem:
-			self.editor.triggermanager.trigger("unindent_line")
+			self.editor.trigger("unindent_line")
 		return True
 
 	def __popup_map_event_cb(self, menuitem, event):
@@ -149,8 +147,7 @@ class IndentPopupMenuItem(ImageMenuItem):
 		@type: A Boolean Object.
 		"""
 		menuitem.set_property("sensitive", False)
-		from SCRIBES.cursor import get_cursor_line
-		cursor_line = get_cursor_line(self.editor.textbuffer)
+		cursor_line = self.__editor.get_cursor_line()
 		begin_position = self.editor.textbuffer.get_iter_at_line(cursor_line)
 		try:
 			begin_selection, end_selection = self.editor.textbuffer.get_selection_bounds()
@@ -195,26 +192,15 @@ class IndentPopupMenuItem(ImageMenuItem):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		if self.__signal_id_1 and self.indent_menuitem.handler_is_connected(self.__signal_id_1):
-			self.indent_menuitem.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.unindent_menuitem.handler_is_connected(self.__signal_id_2):
-			self.unindent_menuitem.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.unindent_menuitem.handler_is_connected(self.__signal_id_3):
-			self.unindent_menuitem.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.scribesview.handler_is_connected(self.__signal_id_4):
-			self.scribesview.disconnect(self.__signal_id_4)
-		if self.indent_menuitem:
-			self.indent_menuitem.destroy()
-		if self.unindent_menuitem:
-			self.unindent_menuitem.destroy()
-		if self.menu:
-			self.menu.destroy()
-		if self.image:
-			self.image.destroy()
+		self.__editor.disconnect_signal(self.__signal_id_1, self.indent_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.unindent_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.unindent_menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.scribesview)
+		if self.indent_menuitem: self.indent_menuitem.destroy()
+		if self.unindent_menuitem: self.unindent_menuitem.destroy()
+		if self.menu: self.menu.destroy()
+		if self.image: self.image.destroy()
 		self.destroy()
-		del self.indent_menuitem, self.unindent_menuitem, self.menu
-		del self.image, self.__signal_id_1, self.__signal_id_2
-		del self.__signal_id_3, self.__signal_id_4, self.scribesview
-		del self.editor, self
+		del self
 		self = None
 		return False

@@ -78,9 +78,8 @@ class MatchingBracketTrigger(GObject):
 		@param self: Reference to the MatchingBracketTrigger instance.
 		@type self: A MatchingBracketTrigger object.
 		"""
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("find_matching_bracket", "alt - B")
-		self.__editor.triggermanager.add_trigger(self.__trigger)
+		self.__trigger = self.__editor.create_trigger("find_matching_bracket", "alt - B")
+		self.__editor.add_trigger(self.__trigger)
 		return
 
 	def __find_matching_bracket_cb(self, trigger):
@@ -95,8 +94,7 @@ class MatchingBracketTrigger(GObject):
 		"""
 		result = self.__find_matching_bracket()
 		if result:
-			from SCRIBES.cursor import get_cursor_iterator
-			iterator = get_cursor_iterator(self.__editor.textbuffer)
+			iterator = self.__editor.get_cursor_iterator()
 			line = iterator.get_line() + 1
 			from i18n import msg0001
 			message = msg0001 % (line)
@@ -117,12 +115,10 @@ class MatchingBracketTrigger(GObject):
 		@rtype: A Boolean object.
 		"""
 		from gtksourceview import source_iter_find_matching_bracket as match
-		from SCRIBES.cursor import get_cursor_iterator
-		iterator = get_cursor_iterator(self.__editor.textbuffer)
+		iterator = self.__editor.get_cursor_iterator()
 		if match(iterator):
 			self.__editor.textbuffer.place_cursor(iterator)
-			from SCRIBES.cursor import move_view_to_cursor
-			move_view_to_cursor(self.__editor.textview)
+			self.__editor.move_view_to_cursor()
 			return True
 		return False
 
@@ -136,11 +132,9 @@ class MatchingBracketTrigger(GObject):
 		@param trigger: Reference to the AboutTrigger instance.
 		@type trigger: An AboutTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__trigger)
-		disconnect_signal(self.__signal_id_2, self)
-		delete_attributes(self)
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		del self
 		self = None
 		return

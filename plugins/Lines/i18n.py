@@ -18,8 +18,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
 # USA
 
-from gettext import gettext
-_ = gettext
+from gettext import gettext as _
 msg0001 = _("Cannot perform operation in readonly mode")
 msg0002 = _("Deleted line %d")
 msg0003 = _("Joined line %d to line %d")

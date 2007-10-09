@@ -80,8 +80,7 @@ class FindBarTrigger(GObject):
 		@type self: A FindBarTrigger object.
 		"""
 		# Trigger to show the findbar.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("show_findbar", "ctrl - f")
+		self.__trigger = self.__editor.create_trigger("show_findbar", "ctrl - f")
 		self.__editor.add_trigger(self.__trigger)
 		return
 
@@ -113,14 +112,11 @@ class FindBarTrigger(GObject):
 		@param trigger: Reference to the FindBarTrigger instance.
 		@type trigger: A FindBarTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__trigger)
-		disconnect_signal(self.__signal_id_2, self)
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		from operator import truth
-		if truth(self.__manager):
-			self.__manager.emit("delete")
-		delete_attributes(self)
+		if truth(self.__manager): self.__manager.emit("delete")
 		del self
 		self = None
 		return

@@ -168,7 +168,6 @@ class OpenDialog(object):
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__dialog)
 		self.__editor.disconnect_signal(self.__signal_id_4, self.__dialog)
 		self.__dialog.destroy()
-		self.__editor.delete_attributes(self)
 		del self
 		self = None
 		return

@@ -57,11 +57,11 @@ def unindent(sourceview):
 			end_line = end_selection.get_line()
 			if end_line - begining_line > 1000:
 				use_response = True
-				from SCRIBES.utils import response
+#				from SCRIBES.utils import response
 			sourcebuffer.begin_user_action()
 			for line in range(begining_line, end_line+1):
-				if use_response:
-					response()
+#				if use_response:
+#					response()
 				result = unindent_line(sourceview, line)
 				if result:
 					lines_unindented.append(line)

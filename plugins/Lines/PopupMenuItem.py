@@ -100,16 +100,15 @@ class LinesPopupMenuItem(ImageMenuItem):
 		self.image = Image()
 		self.image.set_property("stock", STOCK_JUSTIFY_CENTER)
 		self.menu = Menu()
-		from SCRIBES.utils import create_menuitem
 		from i18n import msg0011, msg0012, msg0013
 		from i18n import msg0014, msg0015, msg0016, msg0018
-		self.delete_line_menuitem = create_menuitem(msg0011)
-		self.join_line_menuitem = create_menuitem(msg0012)
-		self.free_line_below_menuitem = create_menuitem(msg0014)
-		self.free_line_above_menuitem = create_menuitem(msg0013)
-		self.delete_cursor_to_end_menuitem = create_menuitem(msg0015)
-		self.delete_cursor_to_begin_menuitem = create_menuitem(msg0016)
-		self.__duplicate_line_menuitem = create_menuitem(msg0018)
+		self.delete_line_menuitem = self.editor.create_menuitem(msg0011)
+		self.join_line_menuitem = self.editor.create_menuitem(msg0012)
+		self.free_line_below_menuitem = self.editor.create_menuitem(msg0014)
+		self.free_line_above_menuitem = self.editor.create_menuitem(msg0013)
+		self.delete_cursor_to_end_menuitem = self.editor.create_menuitem(msg0015)
+		self.delete_cursor_to_begin_menuitem = self.editor.create_menuitem(msg0016)
+		self.__duplicate_line_menuitem = self.editor.create_menuitem(msg0018)
 		return
 
 	def __set_properties(self):
@@ -128,8 +127,7 @@ class LinesPopupMenuItem(ImageMenuItem):
 		self.menu.append(self.free_line_above_menuitem)
 		self.menu.append(self.delete_cursor_to_end_menuitem)
 		self.menu.append(self.delete_cursor_to_begin_menuitem)
-		if self.editor.is_readonly:
-			self.set_property("sensitive", False)
+		if self.editor.is_readonly: self.set_property("sensitive", False)
 		return
 
 	def __popup_activate_cb(self, menuitem):
@@ -146,19 +144,19 @@ class LinesPopupMenuItem(ImageMenuItem):
 		@type: A Boolean Object.
 		"""
 		if menuitem == self.delete_line_menuitem:
-			self.editor.triggermanager.trigger("delete_line")
+			self.editor.trigger("delete_line")
 		elif menuitem == self.join_line_menuitem:
-			self.editor.triggermanager.trigger("join_line")
+			self.editor.trigger("join_line")
 		elif menuitem == self.free_line_below_menuitem:
-			self.editor.triggermanager.trigger("free_line_below")
+			self.editor.trigger("free_line_below")
 		elif menuitem == self.free_line_above_menuitem:
-			self.editor.triggermanager.trigger("free_line_above")
+			self.editor.trigger("free_line_above")
 		elif menuitem == self.delete_cursor_to_begin_menuitem:
-			self.editor.triggermanager.trigger("delete_cursor_to_begin")
+			self.editor.trigger("delete_cursor_to_begin")
 		elif menuitem == self.delete_cursor_to_end_menuitem:
-			self.editor.triggermanager.trigger("delete_cursor_to_end")
+			self.editor.trigger("delete_cursor_to_end")
 		elif menuitem == self.__duplicate_line_menuitem:
-			self.editor.triggermanager.trigger("duplicate_line")
+			self.editor.trigger("duplicate_line")
 		return True
 
 	def __popup_focus_in_event_cb(self, event, textview):
@@ -177,47 +175,23 @@ class LinesPopupMenuItem(ImageMenuItem):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		from SCRIBES.utils import disconnect_signal
-		disconnect_signal(self.__signal_id_8, self.__duplicate_line_menuitem)
-		if self.__signal_id_1 and self.delete_line_menuitem.handler_is_connected(self.__signal_id_1):
-			self.delete_line_menuitem.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.join_line_menuitem.handler_is_connected(self.__signal_id_2):
-			self.join_line_menuitem.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.free_line_above_menuitem.handler_is_connected(self.__signal_id_3):
-			self.free_line_above_menuitem.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.free_line_below_menuitem.handler_is_connected(self.__signal_id_4):
-			self.free_line_below_menuitem.disconnect(self.__signal_id_4)
-		if self.__signal_id_5 and self.delete_cursor_to_end_menuitem.handler_is_connected(self.__signal_id_5):
-			self.delete_cursor_to_end_menuitem.disconnect(self.__signal_id_5)
-		if self.__signal_id_6 and self.delete_cursor_to_begin_menuitem.handler_is_connected(self.__signal_id_6):
-			self.delete_cursor_to_begin_menuitem.disconnect(self.__signal_id_6)
-		if self.__signal_id_7 and self.scribesview.handler_is_connected(self.__signal_id_7):
-			self.scribesview.disconnect(self.__signal_id_7)
-		if self.delete_line_menuitem:
-			self.delete_line_menuitem.destroy()
-		if self.join_line_menuitem:
-			self.join_line_menuitem.destroy()
-		if self.free_line_above_menuitem:
-			self.free_line_above_menuitem.destroy()
-		if self.free_line_below_menuitem:
-			self.free_line_below_menuitem.destroy()
-		if self.delete_cursor_to_begin_menuitem:
-			self.delete_cursor_to_begin_menuitem.destroy()
-		if self.delete_cursor_to_end_menuitem:
-			self.delete_cursor_to_end_menuitem.destroy()
-		if self.__duplicate_line_menuitem:
-			self.__duplicate_line_menuitem.destroy()
-		if self.menu:
-			self.menu.destroy()
-		if self.image:
-			self.image.destroy()
-		del self.__signal_id_1, self.__signal_id_2, self.__signal_id_3
-		del self.__signal_id_4, self.__signal_id_5, self.__signal_id_6
-		del self.__signal_id_7, self.scribesview
-		del self.delete_line_menuitem, self.join_line_menuitem
-		del self.free_line_below_menuitem, self.free_line_above_menuitem
-		del self.delete_cursor_to_end_menuitem, self.delete_cursor_to_begin_menuitem
-		del self.__duplicate_line_menuitem, self.editor, self.menu, self.image
+		self.editor.disconnect_signal(self.__signal_id_8, self.__duplicate_line_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_1, self.delete_line_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_2, self.join_line_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_3, self.free_line_above_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_4, self.free_line_below_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_5, self.delete_cursor_to_end_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_6, self.delete_cursor_to_begin_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_7, self.scribesview)
+		if self.delete_line_menuitem: self.delete_line_menuitem.destroy()
+		if self.join_line_menuitem: self.join_line_menuitem.destroy()
+		if self.free_line_above_menuitem: self.free_line_above_menuitem.destroy()
+		if self.free_line_below_menuitem: self.free_line_below_menuitem.destroy()
+		if self.delete_cursor_to_begin_menuitem: self.delete_cursor_to_begin_menuitem.destroy()
+		if self.delete_cursor_to_end_menuitem: self.delete_cursor_to_end_menuitem.destroy()
+		if self.__duplicate_line_menuitem: self.__duplicate_line_menuitem.destroy()
+		if self.menu: self.menu.destroy()
+		if self.image: self.image.destroy()
 		del self
 		self = None
 		return False

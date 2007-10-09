@@ -227,15 +227,14 @@ class Highlighter(object):
 		@type self: A Highlighter object.
 		"""
 		self.__editor.textbuffer.get_tag_table().remove(self.__highlight_tag)
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__editor.textbuffer)
-		disconnect_signal(self.__signal_id_3, self.__editor.textbuffer)
-		disconnect_signal(self.__signal_id_4, self.__editor)
-		disconnect_signal(self.__signal_id_5, self.__editor)
-		disconnect_signal(self.__signal_id_6, self.__editor)
-		disconnect_signal(self.__signal_id_7, self.__editor)
-		disconnect_signal(self.__signal_id_8, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
 		from operator import truth
 		if truth(self.__start_mark):
 			if truth(self.__start_mark.get_deleted()):
@@ -243,7 +242,6 @@ class Highlighter(object):
 		if truth(self.__end_mark):
 			if truth(self.__end_mark.get_deleted()):
 				self.__editor.textbuffer.delete_mark(self.__end_mark)
-		delete_attributes(self)
 		self = None
 		del self
 		return
@@ -315,10 +313,8 @@ class Highlighter(object):
 		from operator import ne, is_
 		if ne(tag, self.__highlight_tag): return False
 		textbuffer = self.__editor.textbuffer
-		if is_(self.__start_mark, None):
-			self.__start_mark = textbuffer.create_mark(None, start, True)
-		if is_(self.__end_mark, None):
-			self.__end_mark = textbuffer.create_mark(None, end, False)
+		if is_(self.__start_mark, None): self.__start_mark = textbuffer.create_mark(None, start, True)
+		if is_(self.__end_mark, None): self.__end_mark = textbuffer.create_mark(None, end, False)
 		textbuffer.move_mark(self.__start_mark, start)
 		textbuffer.move_mark(self.__end_mark, end)
 		self.__buffer_is_tagged = True

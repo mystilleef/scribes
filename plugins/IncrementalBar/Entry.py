@@ -173,17 +173,14 @@ class FindEntry(Entry):
 		@param findbar: Reference to the FindBar instance.
 		@type findbar: A FindBar object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__searchmanager)
-		disconnect_signal(self.__signal_id_3, self.__searchmanager)
-		disconnect_signal(self.__signal_id_4, self.__searchmanager)
-		disconnect_signal(self.__signal_id_5, self.__searchmanager)
-		disconnect_signal(self.__signal_id_6, findbar)
-		if self.__completion:
-			self.__completion.destroy_object()
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_6, findbar)
+		if self.__completion: self.__completion.destroy_object()
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

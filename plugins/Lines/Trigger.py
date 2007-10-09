@@ -100,33 +100,32 @@ class LinesTrigger(GObject):
 		@type self: A LinesTrigger object.
 		"""
 		# Trigger to delete a line.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("delete_line", "alt - d")
-		self.__editor.triggermanager.add_trigger(self.__trigger)
+		self.__trigger = self.__editor.create_trigger("delete_line", "alt - d")
+		self.__editor.add_trigger(self.__trigger)
 
 		# Trigger to join lines.
-		self.__trigger_1 = Trigger("join_line", "alt - j")
-		self.__editor.triggermanager.add_trigger(self.__trigger_1)
+		self.__trigger_1 = self.__editor.create_trigger("join_line", "alt - j")
+		self.__editor.add_trigger(self.__trigger_1)
 
 		# Trigger to free the current line.
-		self.__trigger_2 = Trigger("free_line_above", "alt - O")
-		self.__editor.triggermanager.add_trigger(self.__trigger_2)
+		self.__trigger_2 = self.__editor.create_trigger("free_line_above", "alt - O")
+		self.__editor.add_trigger(self.__trigger_2)
 
 		# Trigger to free the next line.
-		self.__trigger_3 = Trigger("free_line_below", "alt - o")
-		self.__editor.triggermanager.add_trigger(self.__trigger_3)
+		self.__trigger_3 = self.__editor.create_trigger("free_line_below", "alt - o")
+		self.__editor.add_trigger(self.__trigger_3)
 
 		# Trigger to delete from cursor to line end.
-		self.__trigger_4 = Trigger("delete_cursor_to_end", "alt - End")
-		self.__editor.triggermanager.add_trigger(self.__trigger_4)
+		self.__trigger_4 = self.__editor.create_trigger("delete_cursor_to_end", "alt - End")
+		self.__editor.add_trigger(self.__trigger_4)
 
 		# Trigger to delete from cursor to line start.
-		self.__trigger_5 = Trigger("delete_cursor_to_begin", "alt - Home")
-		self.__editor.triggermanager.add_trigger(self.__trigger_5)
+		self.__trigger_5 = self.__editor.create_trigger("delete_cursor_to_begin", "alt - Home")
+		self.__editor.add_trigger(self.__trigger_5)
 
 		# Trigger to duplicate line or selected lines.
-		self.__trigger_6 = Trigger("duplicate_line", "ctrl - D")
-		self.__editor.triggermanager.add_trigger(self.__trigger_6)
+		self.__trigger_6 = self.__editor.create_trigger("duplicate_line", "ctrl - D")
+		self.__editor.add_trigger(self.__trigger_6)
 		return
 
 	def __delete_line_cb(self, trigger):
@@ -147,8 +146,7 @@ class LinesTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
-		from SCRIBES.cursor import get_cursor_line
-		cursor_line = get_cursor_line(self.__editor.textbuffer)
+		cursor_line = self.__editor.get_cursor_line()
 		from lines import delete_line
 		delete_line(self.__editor.textbuffer)
 		from i18n import msg0002
@@ -167,8 +165,7 @@ class LinesTrigger(GObject):
 			return
 		from lines import duplicate_line
 		duplicate_line(self.__editor.textbuffer)
-		from SCRIBES.cursor import move_view_to_cursor
-		move_view_to_cursor(self.__editor.textview)
+		self.__editor.move_view_to_cursor()
 		from i18n import msg0017
 		self.__editor.feedback.update_status_message(msg0017, "yes")
 		return
@@ -189,8 +186,7 @@ class LinesTrigger(GObject):
 			from i18n import msg0001
 			editor.feedback.update_status_message(msg0001, "fail")
 			return
-		from SCRIBES.cursor import get_cursor_line
-		cursor_line = get_cursor_line(self.__editor.textbuffer)
+		cursor_line = self.__editor.get_cursor_line()
 		from lines import join_line
 		result = join_line(self.__editor.textbuffer)
 		if result:
@@ -220,8 +216,7 @@ class LinesTrigger(GObject):
 			return
 		from lines import free_line_above
 		line_number = free_line_above(self.__editor.textbuffer)
-		from SCRIBES.cursor import move_view_to_cursor
-		move_view_to_cursor(self.__editor.textview)
+		self.__editor.move_view_to_cursor()
 		from i18n import msg0005
 		message = msg0005 % (line_number+1)
 		self.__editor.feedback.update_status_message(message, "succeed")
@@ -245,8 +240,7 @@ class LinesTrigger(GObject):
 			return
 		from lines import free_line_below
 		line_number = free_line_below(self.__editor.textbuffer)
-		from SCRIBES.cursor import move_view_to_cursor
-		move_view_to_cursor(self.__editor.textview)
+		self.__editor.move_view_to_cursor()
 		from i18n import msg0005
 		message = msg0005 % (line_number+1)
 		self.__editor.feedback.update_status_message(message, "succeed")
@@ -268,8 +262,7 @@ class LinesTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
-		from SCRIBES.cursor import get_cursor_line
-		cursor_line = get_cursor_line(self.__editor.textbuffer)
+		cursor_line = self.__editor.get_cursor_line()
 		from lines import delete_cursor_to_line_end
 		result = delete_cursor_to_line_end(self.__editor.textbuffer)
 		if result:
@@ -297,8 +290,7 @@ class LinesTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
-		from SCRIBES.cursor import get_cursor_line
-		cursor_line = get_cursor_line(self.__editor.textbuffer)
+		cursor_line = self.__editor.get_cursor_line()
 		from lines import delete_cursor_to_line_begin
 		result = delete_cursor_to_line_begin(self.__editor.textbuffer)
 		if result:
@@ -320,36 +312,22 @@ class LinesTrigger(GObject):
 		@param trigger: Reference to the LinesTrigger instance.
 		@type trigger: A LinesTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		self.__editor.triggermanager.remove_trigger(self.__trigger_1)
-		self.__editor.triggermanager.remove_trigger(self.__trigger_2)
-		self.__editor.triggermanager.remove_trigger(self.__trigger_3)
-		self.__editor.triggermanager.remove_trigger(self.__trigger_4)
-		self.__editor.triggermanager.remove_trigger(self.__trigger_5)
-		self.__editor.triggermanager.remove_trigger(self.__trigger_6)
-		if self.__signal_id_1 and self.__trigger.handler_is_connected(self.__signal_id_1):
-			self.__trigger.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.handler_is_connected(self.__signal_id_2):
-			self.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.__trigger_1.handler_is_connected(self.__signal_id_3):
-			self.__trigger_1.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.__trigger_2.handler_is_connected(self.__signal_id_4):
-			self.__trigger_2.disconnect(self.__signal_id_4)
-		if self.__signal_id_5 and self.__trigger_3.handler_is_connected(self.__signal_id_5):
-			self.__trigger_3.disconnect(self.__signal_id_5)
-		if self.__signal_id_6 and self.__trigger_4.handler_is_connected(self.__signal_id_6):
-			self.__trigger_4.disconnect(self.__signal_id_6)
-		if self.__signal_id_7 and self.__trigger_5.handler_is_connected(self.__signal_id_7):
-			self.__trigger_5.disconnect(self.__signal_id_7)
-		if self.__signal_id_8 and self.__editor.textview.handler_is_connected(self.__signal_id_8):
-			self.__editor.textview.disconnect(self.__signal_id_8)
-		from SCRIBES.utils import disconnect_signal
-		disconnect_signal(self.__signal_id_9, self.__trigger_6)
-		del self.__editor, self.__trigger, self.__trigger_1, self.__trigger_2
-		del self.__signal_id_2, self.__signal_id_1, self.__signal_id_3
-		del self.__signal_id_4, self.__trigger_3, self.__signal_id_5
-		del self.__signal_id_6, self.__trigger_4, self.__signal_id_7
-		del self.__trigger_5, self.__signal_id_8
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.remove_trigger(self.__trigger_1)
+		self.__editor.remove_trigger(self.__trigger_2)
+		self.__editor.remove_trigger(self.__trigger_3)
+		self.__editor.remove_trigger(self.__trigger_4)
+		self.__editor.remove_trigger(self.__trigger_5)
+		self.__editor.remove_trigger(self.__trigger_6)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__trigger_1)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__trigger_2)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__trigger_3)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__trigger_4)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__trigger_5)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__trigger_6)
 		del self
 		self = None
 		return

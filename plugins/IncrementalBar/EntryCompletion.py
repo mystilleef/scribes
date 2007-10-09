@@ -99,8 +99,7 @@ class FindEntryCompletion(EntryCompletion):
 		@param self: Reference to the ScribesFindEntryCompletion instance.
 		@type self: A ScribesFindEntryCompletion object.
 		"""
-		if self.__searchmanager.queries is None:
-			return
+		if self.__searchmanager.queries is None: return
 		self.__model.clear()
 		for item in self.__searchmanager.queries:
 			self.__model.append([item])
@@ -127,10 +126,8 @@ class FindEntryCompletion(EntryCompletion):
 		@param self: Reference to the FindEntryCompletion instance.
 		@type self: A FindEntryCompletion object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__searchmanager)
 		self.__model.clear()
-		delete_attributes(self)
 		del self
 		self = None
 		return

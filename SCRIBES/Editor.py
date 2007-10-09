@@ -549,6 +549,14 @@ class Editor(GObject):
 		self.__store.remove_object(name, store_id)
 		return
 
+	def show_busy_cursor(self):
+		from cursor import show_busy_textview_cursor
+		return show_busy_textview_cursor(self.__editor.textview)
+
+	def show_normal_cursor(self):
+		from cursor import show_textview_cursor
+		return show_textview_cursor(self.__editor.textview)
+
 	def get_object(self, name):
 		return self.__store.get_object(name)
 
@@ -587,6 +595,10 @@ class Editor(GObject):
 	def get_cursor_position(self):
 		from cursor import get_cursor_iterator
 		return get_cursor_iterator(self.__textbuffer)
+
+	def create_button_box(self, stock_id, string):
+		from utils import create_button
+		return create_button(stock_id, string)
 
 	def get_cursor_iterator(self):
 		return self.get_cursor_position()

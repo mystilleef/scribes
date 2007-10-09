@@ -99,10 +99,9 @@ class FindNextButton(Button):
 		@param self: Reference to the ScribesFindNextButton instance.
 		@type self: A ScribesFindNextButton object.
 		"""
-		from SCRIBES.utils import create_button
 		from i18n import msg0004
 		from gtk import STOCK_GO_FORWARD
-		hbox = create_button(STOCK_GO_FORWARD, msg0004)
+		hbox = self.__editor.create_button(STOCK_GO_FORWARD, msg0004)
 		self.add(hbox)
 		return
 
@@ -258,19 +257,17 @@ class FindNextButton(Button):
 		@param findbar: Reference to the FindBar instance.
 		@type findbar: A FindBar object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__searchmanager)
-		disconnect_signal(self.__signal_id_2, self.__searchmanager)
-		disconnect_signal(self.__signal_id_3, self.__searchmanager)
-		disconnect_signal(self.__signal_id_4, self)
-		disconnect_signal(self.__signal_id_5, self.__editor)
-		disconnect_signal(self.__signal_id_6, self.__editor)
-		disconnect_signal(self.__signal_id_7, self.__entry)
-		disconnect_signal(self.__signal_id_8, self.__word_check_button)
-		disconnect_signal(self.__signal_id_9, self.__case_check_button)
-		disconnect_signal(self.__signal_id_10, findbar)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__entry)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__word_check_button)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__case_check_button)
+		self.__editor.disconnect_signal(self.__signal_id_10, findbar)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

@@ -174,16 +174,14 @@ class FindCaseButton(CheckButton):
 		@param findbar: Reference the Findbar instance.
 		@type findbar: A Findbar object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__searchmanager)
-		disconnect_signal(self.__signal_id_3, self.__searchmanager)
-		disconnect_signal(self.__signal_id_4, self.__searchmanager)
-		disconnect_signal(self.__signal_id_5, self.__searchmanager)
-		disconnect_signal(self.__signal_id_6, findbar)
-		disconnect_signal(self.__signal_id_7, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_6, findbar)
+		self.__editor.disconnect_signal(self.__signal_id_7, self)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

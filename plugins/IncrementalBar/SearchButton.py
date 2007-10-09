@@ -222,15 +222,13 @@ class FindSearchButton(Button):
 		if truth(self.__end_pos) and not_(self.__end_pos.get_deleted()):
 			self.__editor.textbuffer.delete_mark(self.__end_pos)
 			self.__end_pos = None
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		disconnect_signal(self.__signal_id_4, self.__entry)
-		disconnect_signal(self.__signal_id_5, self.__searchmanager)
-		disconnect_signal(self.__signal_id_6, findbar)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__entry)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_6, findbar)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

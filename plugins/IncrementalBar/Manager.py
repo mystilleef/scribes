@@ -126,7 +126,7 @@ class IncrementalBar(ScribesBar):
 		@type self: A IncrementalBar object.
 		"""
 		self.__editor = editor
-		self.__editor.triggermanager.trigger("initialize_search_replace_manager")
+		self.__editor.trigger("initialize_search_replace_manager")
 		self.__search_replace_manager = self.__editor.store.get_object("SearchReplaceManager")
 		from CaseButton import FindCaseButton
 		self.__matchcase_check_button = FindCaseButton(self)
@@ -258,8 +258,7 @@ class IncrementalBar(ScribesBar):
 		@param self: Reference to the IncrementalBar instance.
 		@type self: A IncrementalBar object.
 		"""
-		if self.__bar_is_visible:
-			return
+		if self.__bar_is_visible: return
 		ScribesBar.show_bar(self)
 		return
 
@@ -270,8 +269,7 @@ class IncrementalBar(ScribesBar):
 		@param self: Reference to the IncrementalBar instance.
 		@type self: A IncrementalBar object.
 		"""
-		if self.__bar_is_visible is False:
-			return
+		if self.__bar_is_visible is False: return
 		ScribesBar.hide_bar(self)
 		return
 
@@ -288,8 +286,7 @@ class IncrementalBar(ScribesBar):
 		@param gotobar: The text editor's gotobar.
 		@type gotobar: A IncrementalBar object.
 		"""
-		if bar.get_property("name") != "scribes incremental findbar":
-			return
+		if bar.get_property("name") != "scribes incremental findbar": return
 		self.__search_replace_manager.enable_incremental_searching()
 		self.__bar_is_visible = True
 		self.__unblock_search_replace_signals()
@@ -383,8 +380,7 @@ class IncrementalBar(ScribesBar):
 		@return: True to call this function again, False otherwise.
 		@rtype: A Boolean object.
 		"""
-		if self.__show_stop_button is False:
-			return False
+		if self.__show_stop_button is False: return False
 		self.__stop_button.set_property("sensitive", True)
 		self.__stop_button.grab_focus()
 		return False
@@ -611,20 +607,18 @@ class IncrementalBar(ScribesBar):
 		@param findbar: Reference to the IncrementalBar instance.
 		@type findbar: A IncrementalBar object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__search_replace_manager)
-		disconnect_signal(self.__signal_id_2, self.__search_replace_manager)
-		disconnect_signal(self.__signal_id_3, self.__search_replace_manager)
-		disconnect_signal(self.__signal_id_4, self.__search_replace_manager)
-		disconnect_signal(self.__signal_id_5, self.__entry)
-		disconnect_signal(self.__signal_id_6, self.__entry)
-		disconnect_signal(self.__signal_id_7, self.__matchcase_check_button)
-		disconnect_signal(self.__signal_id_8, self.__matchword_check_button)
-		disconnect_signal(self.__signal_id_9, self.__editor)
-		disconnect_signal(self.__signal_id_10, self.__editor)
-		disconnect_signal(self.__signal_id_11, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__search_replace_manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__search_replace_manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__search_replace_manager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__search_replace_manager)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__entry)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__entry)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__matchcase_check_button)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__matchword_check_button)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_10, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_11, self)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

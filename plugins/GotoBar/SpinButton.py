@@ -108,11 +108,9 @@ class GotoSpinButton(SpinButton):
 		@param bar: The gotospinbutton.
 		@type bar: A GotoSpinButton object.
 		"""
-		if bar.get_property("name") != "GotoBar":
-			return
+		if bar.get_property("name") != "GotoBar": return
 		self.__signal_id_4 = self.connect("key-press-event", self.__key_press_event_cb, bar)
-		from SCRIBES.cursor import get_cursor_line, move_view_to_cursor
-		cursor_line = get_cursor_line(self.__editor.textbuffer)
+		cursor_line = self.__editor.get_cursor_line()
 		value = cursor_line + 1
 		lower = 1
 		upper =  self.__editor.textbuffer.get_line_count()
@@ -121,7 +119,7 @@ class GotoSpinButton(SpinButton):
 		page_size = 11
 		self.__adjustment.set_all(value, lower, upper, step_increment,
 								page_increment, page_size)
-		move_view_to_cursor(self.__editor.textview)
+		self.__editor.move_view_to_cursor()
 		self.grab_focus()
 		return
 
@@ -138,10 +136,8 @@ class GotoSpinButton(SpinButton):
 		@param bar: Reference to the GotoBar.
 		@type bar: A GotoBar object.
 		"""
-		if bar.get_property("name") != "GotoBar":
-			return
-		from SCRIBES.utils import disconnect_signal
-		disconnect_signal(self.__signal_id_4, self)
+		if bar.get_property("name") != "GotoBar": return
+		self.__editor.disconnect_signal(self.__signal_id_4, self)
 		return
 
 	def __value_changed_cb(self, spinbutton):
@@ -157,8 +153,7 @@ class GotoSpinButton(SpinButton):
 		line = spinbutton.get_value() - 1
 		iterator = self.__editor.textbuffer.get_iter_at_line(int(line))
 		self.__editor.textbuffer.place_cursor(iterator)
-		from SCRIBES.cursor import move_view_to_cursor
-		move_view_to_cursor(self.__editor.textview)
+		self.__editor.move_view_to_cursor()
 		from i18n import msg0005
 		message = msg0005 % (line + 1)
 		self.__editor.feedback.update_status_message(message, "succeed")
@@ -199,14 +194,12 @@ class GotoSpinButton(SpinButton):
 		@param spinbutton: Reference to the SpinButton instance.
 		@type spinbutton: A SpinButton object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self)
-		disconnect_signal(self.__signal_id_3, self)
-		disconnect_signal(self.__signal_id_4, self)
-		disconnect_signal(self.__signal_id_5, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
+		self.__editor.disconnect_signal(self.__signal_id_4, self)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

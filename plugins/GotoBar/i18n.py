@@ -18,13 +18,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
 # USA
 
-from gettext import gettext
-_ = gettext
+from gettext import gettext as _
 msg0001 = _("Move cursor to a specific line")
 msg0002 = _("Closed goto line bar")
 msg0003 = _(" of %d")
 msg0004 = _("Line number:")
 msg0005 = _("Moved cursor to line %d")
-
-
-

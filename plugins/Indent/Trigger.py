@@ -85,12 +85,11 @@ class IndentTrigger(GObject):
 		@type self: A IndentTrigger object.
 		"""
 		# Trigger to indent lines.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("indent_line", "ctrl - t")
+		self.__trigger = self.__editor.create_trigger("indent_line", "ctrl - t")
 		self.__editor.add_trigger(self.__trigger)
 
 		# Trigger to unindent lines.
-		self.__unindent_trigger = Trigger("unindent_line", "ctrl - T")
+		self.__unindent_trigger = self.__editor.create_trigger("unindent_line", "ctrl - T")
 		self.__editor.add_trigger(self.__unindent_trigger)
 		return
 
@@ -112,11 +111,10 @@ class IndentTrigger(GObject):
 			return
 		from i18n import msg0002
 		status_id = self.__editor.feedback.set_modal_message(msg0002, "run")
-		from SCRIBES.cursor import show_busy_textview_cursor, show_textview_cursor
-		show_busy_textview_cursor(self.__editor.textview)
+		self.__editor.show_busy_cursor()
 		from indent import indent
 		lines_indented = indent(self.__editor.textview)
-		show_textview_cursor(self.__editor.textview)
+		self.__editor.show_normal_cursor()
 		self.__editor.feedback.unset_modal_message(status_id, False)
 		if len(lines_indented) > 1:
 			from i18n import msg0003
@@ -145,11 +143,10 @@ class IndentTrigger(GObject):
 			return
 		from i18n import msg0002
 		status_id = self.__editor.feedback.set_modal_message(msg0002, "run")
-		from SCRIBES.cursor import show_busy_textview_cursor, show_textview_cursor
-		show_busy_textview_cursor(self.__editor.textview)
+		self.__editor.show_busy_cursor()
 		from unindent import unindent
 		lines_unindented = unindent(self.__editor.textview)
-		show_textview_cursor(self.__editor.textview)
+		self.__editor.show_normal_cursor()
 		self.__editor.feedback.unset_modal_message(status_id, False)
 		if not lines_unindented:
 			from i18n import msg0005
@@ -192,19 +189,12 @@ class IndentTrigger(GObject):
 		@param trigger: Reference to the IndentTrigger instance.
 		@type trigger: A IndentTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		self.__editor.triggermanager.remove_trigger(self.__unindent_trigger)
-		if self.__signal_id_1 and self.__trigger.handler_is_connected(self.__signal_id_1):
-			self.__trigger.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.handler_is_connected(self.__signal_id_2):
-			self.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.__unindent_trigger.handler_is_connected(self.__signal_id_3):
-			self.__unindent_trigger.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.__editor.textview.handler_is_connected(self.__signal_id_4):
-			self.__editor.textview.disconnect(self.__signal_id_4)
-		del self.__editor, self.__trigger, self.__unindent_trigger
-		del self.__signal_id_2, self.__signal_id_1, self.__signal_id_3
-		del self.__signal_id_4
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.remove_trigger(self.__unindent_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__unindent_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor.textview)
 		del self
 		self = None
 		return

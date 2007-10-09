@@ -136,8 +136,7 @@ class GotoBar(ScribesBar):
 		@param self: Reference to the GotoBar instance.
 		@type self: A GotoBar object.
 		"""
-		if self.__bar_is_visible:
-			return
+		if self.__bar_is_visible: return
 		ScribesBar.show_bar(self)
 		self.__bar_is_visible = True
 		from i18n import msg0001
@@ -151,8 +150,7 @@ class GotoBar(ScribesBar):
 		@param self: Reference to the GotoBar instance.
 		@type self: A GotoBar object.
 		"""
-		if self.__bar_is_visible is False:
-			return
+		if self.__bar_is_visible is False: return
 		ScribesBar.hide_bar(self)
 		self.__bar_is_visible = False
 		self.__editor.feedback.unset_modal_message(self.__status_id, False)
@@ -226,16 +224,11 @@ class GotoBar(ScribesBar):
 		@param bar: Reference to the GotoBar instance.
 		@type bar: A GotoBar object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		from SCRIBES.utils import delete_list
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self)
-		delete_list(self.__label)
-		if self.__spinbutton:
-			self.__spinbutton.emit("delete")
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
+		if self.__spinbutton: self.__spinbutton.emit("delete")
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return
