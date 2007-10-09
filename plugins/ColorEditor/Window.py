@@ -88,10 +88,8 @@ class ColorEditorWindow(Dialog):
 		@param manager: Reference to the ColorEditorManager.
 		@type manager: An ColorEditorManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id, self.__manager)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return
@@ -125,8 +123,7 @@ class ColorEditorWindow(Dialog):
 		self.set_property("name", "ColorEditorDialog")
 		from i18n import msg0002
 		self.set_property("title", msg0002)
-		from SCRIBES.utils import calculate_resolution_independence
-		width, height = calculate_resolution_independence(self.__editor.window, 2, 2.133333333)
+		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 2, 2.133333333)
 		self.set_property("default-width", width)
 		self.set_property("default-height", height)
 		self.set_transient_for(self.__editor.window)

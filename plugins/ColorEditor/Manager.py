@@ -63,8 +63,7 @@ class ColorEditorManager(GObject):
 		@param self: Reference to the ColorEditorManager instance.
 		@type self: A ColorEditorManager object.
 		"""
-		from thread import start_new_thread
-		start_new_thread(self.emit, ("populate",))
+		self.emit("populate")
 		self.__window.show_dialog()
 		return
 
@@ -133,8 +132,7 @@ class ColorEditorManager(GObject):
 		container.pack_start(self.__label[1], False, False, 0)
 		container.pack_start(self.__background_color_button, True, True, 0)
 		maincontainer.pack_start(container, True, True, 0)
-		from SCRIBES.utils import create_scrollwin
-		scrollwin = create_scrollwin()
+		scrollwin = self.__editor.create_scrollwin()
 		scrollwin.add(self.__treeview)
 		container = HBox(homogeneous=False, spacing=10)
 		self.__window.main_area.pack_start(container, True, True, 0)
@@ -183,14 +181,9 @@ class ColorEditorManager(GObject):
 		@param manager: Reference to the ColorEditorManager instance.
 		@type manager: A ColorEditorManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__close_button)
-		disconnect_signal(self.__signal_id_2, self)
-#		self.__label.clear()
-		#map(lambda x: x.destroy(), self.__label)
-		#map(lambda x: self.__label.remove(x), self.__label)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__close_button)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.__close_button.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

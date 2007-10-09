@@ -213,8 +213,7 @@ class ColorEditorTreeView(TreeView):
 		from operator import truth
 		if truth(self.__is_first_map):
 			if truth(self.__editor.uri):
-				from SCRIBES.utils import get_language
-				language = get_language(str(self.__editor.uri))
+				language = self.__editor.language
 				if truth(language):
 					self.__select_language(language)
 				else:
@@ -268,14 +267,12 @@ class ColorEditorTreeView(TreeView):
 		@param manager: Reference to the ColorEditorManager instance.
 		@type manager: A ColorEditorManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__manager)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		disconnect_signal(self.__signal_id_4, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__manager)
 		self.__model.clear()
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return
@@ -312,8 +309,7 @@ class ColorEditorTreeView(TreeView):
 		self.force_selection()
 		selection = self.get_selection()
 		model, iterator = selection.get_selected()
-		if iterator:
-			return iterator
+		if iterator: return iterator
 		iterator = None
 		return iterator
 

@@ -118,8 +118,7 @@ class BackgroundSyntaxButton(ColorButton):
 		@type: A Boolean Object.
 		"""
 		color = self.get_color()
-		from SCRIBES.utils import convert_color_to_spec
-		color = convert_color_to_spec(color)
+		color = self.__editor.convert_color_to_string(color)
 		language = self.__treeview.get_language()
 		tag_id = self.__treeview.get_element()
 		language_id = language.get_id()
@@ -203,12 +202,10 @@ class BackgroundSyntaxButton(ColorButton):
 		@param color_editor: Reference to the color editor.
 		@type color_editor: A ColorEditor object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__sig_id_1, self.__treeview)
-		disconnect_signal(self.__sig_id_2, self.__color_id)
-		disconnect_signal(self.__sig_id_3, color_editor)
+		self.__editor.disconnect_signal(self.__sig_id_1, self.__treeview)
+		self.__editor.disconnect_signal(self.__sig_id_2, self.__color_id)
+		self.__editor.disconnect_signal(self.__sig_id_3, color_editor)
 		self.destroy()
-		delete_attributes(self)
 		self = None
 		del self
 		return

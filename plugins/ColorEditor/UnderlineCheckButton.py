@@ -145,9 +145,8 @@ class UnderlineCheckButton(CheckButton):
 			bold = str(tag_style.bold)
 			italic = str(tag_style.italic)
 			underline = str(use_underline)
-			from SCRIBES.utils import convert_color_to_spec
-			foreground = convert_color_to_spec(tag_style.foreground)
-			background = convert_color_to_spec(tag_style.background)
+			foreground = self.__editor.convert_color_to_string(tag_style.foreground)
+			background = self.__editor.convert_color_to_string(tag_style.background)
 			gconf_entry = [foreground, "None", bold, italic, underline]
 		self.__client.set_list(gconf_key, VALUE_STRING, gconf_entry)
 		self.__client.notify(gconf_key)
@@ -215,10 +214,9 @@ class UnderlineCheckButton(CheckButton):
 		@param color_editor: Reference to the ColorEditor
 		@type color_editor: A ColorEditor object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__sig_id_1, self.__treeview)
-		disconnect_signal(self.__sig_id_2, color_editor)
-		disconnect_signal(self.__toggle_id, self)
+		self.__editor.disconnect_signal(self.__sig_id_1, self.__treeview)
+		self.__editor.disconnect_signal(self.__sig_id_2, color_editor)
+		self.__editor.disconnect_signal(self.__toggle_id, self)
 		self.destroy()
 		self = None
 		del self

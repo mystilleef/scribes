@@ -580,6 +580,10 @@ class Editor(GObject):
 		from utils import create_menuitem
 		return create_menuitem(string, stock_id)
 
+	def convert_color_to_string(self, color):
+		from utils import convert_color_to_spec
+		return convert_color_to_spec(color)
+
 	def get_cursor_position(self):
 		from cursor import get_cursor_iterator
 		return get_cursor_iterator(self.__textbuffer)

@@ -154,8 +154,7 @@ class ResetButton(Button):
 		from gconf import VALUE_STRING
 		gconf_entry = self.__client.get_list(gconf_key, VALUE_STRING)
 		self.set_property("sensitive", False)
-		if gconf_entry:
-			self.set_property("sensitive", True)
+		if gconf_entry: self.set_property("sensitive", True)
 		self.__treeview.grab_focus()
 		return
 
@@ -169,10 +168,9 @@ class ResetButton(Button):
 		@param color_editor: Reference to the ColorEditor
 		@type color_editor: A ColorEditor object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__sig_id_1, self.__treeview)
-		disconnect_signal(self.__sig_id_2, color_editor)
-		disconnect_signal(self.__sig_id_3, self)
+		self.__editor.disconnect_signal(self.__sig_id_1, self.__treeview)
+		self.__editor.disconnect_signal(self.__sig_id_2, color_editor)
+		self.__editor.disconnect_signal(self.__sig_id_3, self)
 		self.destroy()
 		self = None
 		del self

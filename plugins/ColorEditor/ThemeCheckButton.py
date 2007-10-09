@@ -147,11 +147,9 @@ class ThemeCheckButton(CheckButton):
 		@param manager: Reference to the ColorEditormanager instance.
 		@type manager: A ColorEditormanager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__manager)
-		disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

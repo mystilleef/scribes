@@ -72,8 +72,7 @@ class ColorEditorMenuItem(object):
 		self.__signal_id_2 = None
 		from gtk import STOCK_SELECT_COLOR
 		from i18n import msg0002
-		from SCRIBES.utils import create_menuitem
-		self.__menuitem = create_menuitem(msg0002, STOCK_SELECT_COLOR)
+		self.__menuitem = editor.create_menuitem(msg0002, STOCK_SELECT_COLOR)
 		return
 
 	def __add_menuitem(self):
@@ -97,12 +96,10 @@ class ColorEditorMenuItem(object):
 		@param trigger: Reference to the ColorEditorTrigger instance.
 		@type trigger: An ColorEditorTrigger object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_2, self.__menuitem)
-		disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		self.__editor.preference_menu.remove(self.__menuitem)
 		self.__menuitem.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return
@@ -120,5 +117,5 @@ class ColorEditorMenuItem(object):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		self.__editor.triggermanager.trigger("show_color_editor")
+		self.__editor.trigger("show_color_editor")
 		return False

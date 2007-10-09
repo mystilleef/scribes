@@ -67,7 +67,7 @@ class BackgroundButton(ColorButton):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__client = editor.gconf_client 
+		self.__client = editor.gconf_client
 		self.__manager = manager
 		self.__signal_id_1 = self.__signal_id_2 = None
 		return
@@ -108,8 +108,7 @@ class BackgroundButton(ColorButton):
 		self.handler_block(self.__signal_id_2)
 		bgcolor = client.get_string("/apps/scribes/bgcolor")
 		color = self.get_color()
-		from SCRIBES.utils import convert_color_to_spec
-		color = convert_color_to_spec(color)
+		color = self.__editor.convert_color_to_string(color)
 		from operator import ne
 		if ne(bgcolor, color):
 			from gtk.gdk import color_parse
@@ -131,8 +130,7 @@ class BackgroundButton(ColorButton):
 		@type: A Boolean Object.
 		"""
 		bgcolor = self.get_color()
-		from SCRIBES.utils import convert_color_to_spec
-		bgcolor = convert_color_to_spec(bgcolor)
+		bgcolor = self.__editor.convert_color_to_string(bgcolor)
 		self.__client.set_string("/apps/scribes/bgcolor", bgcolor)
 		self.__client.notify("/apps/scribes/bgcolor")
 		return True
@@ -167,11 +165,9 @@ class BackgroundButton(ColorButton):
 		@param manager: Reference to the ColorEditorManager instance.
 		@type manager: A ColorEditorManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__manager)
-		disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return
