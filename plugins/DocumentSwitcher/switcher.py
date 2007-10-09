@@ -93,9 +93,7 @@ class DocumentSwitcher(GObject):
 		return uri
 
 	def __switcher_destroy_cb(self, switcher):
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		del self
 		self = None
 		return

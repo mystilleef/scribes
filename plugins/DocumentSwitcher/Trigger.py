@@ -82,8 +82,7 @@ class DocumentSwitcherTrigger(GObject):
 		@type self: A DocumentSwitcherTrigger object.
 		"""
 		# Trigger to show the automatic replacement dialog.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("switch_document_window", "ctrl - Tab")
+		self.__trigger = self.__editor.create_trigger("switch_document_window", "ctrl - Tab")
 		self.__editor.add_trigger(self.__trigger)
 		return
 
@@ -115,12 +114,10 @@ class DocumentSwitcherTrigger(GObject):
 		@param trigger: Reference to the DocumentSwitcherTrigger instance.
 		@type trigger: A DocumentSwitcherTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		self.__trigger.disconnect(self.__signal_id_1)
-		self.disconnect(self.__signal_id_2)
-		if self.__switcher:
-			self.__switcher.emit("destroy")
-		del self.__editor, self.__switcher, self.__trigger
-		del self.__signal_id_2, self.__signal_id_1
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		if self.__switcher: self.__switcher.emit("destroy")
 		del self
+		self = None
 		return
