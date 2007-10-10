@@ -557,6 +557,10 @@ class Editor(GObject):
 		from cursor import show_textview_cursor
 		return show_textview_cursor(self.__editor.textview)
 
+	def can_read_write(self):
+		from utils import check_uri_permission
+		return check_uri_permission(self.uri)
+
 	def get_object(self, name):
 		return self.__store.get_object(name)
 

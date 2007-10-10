@@ -204,14 +204,10 @@ class PreferencesManager(GObject):
 		@param manager: Reference to the PreferencesManager instance.
 		@type manager: A PreferencesManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__close_button)
-		disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__close_button)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.__label.clear()
-		#map(lambda x: x.destroy(), self.__label)
-		#map(lambda x: self.__label.remove(x), self.__label)
 		self.__close_button.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

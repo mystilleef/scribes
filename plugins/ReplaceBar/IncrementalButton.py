@@ -126,8 +126,7 @@ class ReplaceIncrementalButton(CheckButton):
 		@param bar: One of the text editor's bars.
 		@type bar: A ScribesBar object.
 		"""
-		if bar is self.__replacebar:
-			self.__searchmanager.reset()
+		if bar is self.__replacebar: self.__searchmanager.reset()
 		return
 
 	def __checkbutton_searching_cb(self, searchmanager):
@@ -192,15 +191,14 @@ class ReplaceIncrementalButton(CheckButton):
 		@param replacebar: Reference to the ReplaceBar instance.
 		@type replacebar: A ReplaceBar object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		disconnect_signal(self.__signal_id_4, self.__searchmanager)
-		disconnect_signal(self.__signal_id_5, self.__searchmanager)
-		disconnect_signal(self.__signal_id_6, self.__searchmanager)
-		disconnect_signal(self.__signal_id_7, self.__searchmanager)
-		disconnect_signal(self.__signal_id_8, replacebar)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_8, replacebar)
 		self.destroy()
 		del self
 		self = None

@@ -80,9 +80,8 @@ class ReadOnlyTrigger(GObject):
 		@type self: A ReadOnlyTrigger object.
 		"""
 		# Trigger to save a file.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("toggle_readonly", "F3")
-		self.__editor.triggermanager.add_trigger(self.__trigger)
+		self.__trigger = self.__editor.create_trigger("toggle_readonly", "F3")
+		self.__editor.add_trigger(self.__trigger)
 		return
 
 	def __toggle_readonly_cb(self, trigger):
@@ -101,8 +100,7 @@ class ReadOnlyTrigger(GObject):
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
 		if self.__editor.is_readonly:
-			from SCRIBES.utils import check_uri_permission
-			result = check_uri_permission(self.__editor.uri)
+			result = self.__editor.can_read_write()
 			if result:
 				self.__editor.emit("disable-readonly")
 			else:
@@ -110,7 +108,7 @@ class ReadOnlyTrigger(GObject):
 				self.__editor.feedback.update_status_message(msg0002, "fail")
 		else:
 			if self.__editor.file_is_saved is False:
-				self.__editor.triggermanager.trigger("save_file")
+				self.__editor.trigger("save_file")
 			self.__editor.emit("enable-readonly")
 		return
 
@@ -124,13 +122,9 @@ class ReadOnlyTrigger(GObject):
 		@param trigger: Reference to the ReadOnlyTrigger instance.
 		@type trigger: A ReadOnlyTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		if self.__signal_id_1 and self.__trigger.handler_is_connected(self.__signal_id_1):
-			self.__trigger.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.handler_is_connected(self.__signal_id_2):
-			self.disconnect(self.__signal_id_2)
-		del self.__editor, self.__trigger
-		del self.__signal_id_2, self.__signal_id_1
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		del self
 		self = None
 		return

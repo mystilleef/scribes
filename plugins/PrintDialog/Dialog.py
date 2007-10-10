@@ -77,8 +77,7 @@ class PrintDialog(object):
 		@param self: Reference to the ScribesPrintDialog instance.
 		@type self: A ScribesPrintDialog object.
 		"""
-		from SCRIBES.utils import calculate_resolution_independence
-		width, height = calculate_resolution_independence(self.__editor.window,
+		width, height = self.__editor.calculate_resolution_independence(self.__editor.window,
 															1.6, 1.929648241)
 		self.__dialog.set_default_size(width, height)
 		self.__dialog.set_icon_name("stock_print")
@@ -129,14 +128,10 @@ class PrintDialog(object):
 		@param self: Reference to the PrintDialog instance.
 		@type self: A PrintDialog object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__dialog)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__dialog)
 		self.__dialog.destroy()
 		self.__printjob.destroy()
-		if self.__preview:
-			self.__preview.destroy()
-		delete_attributes(self.__dialog)
-		delete_attributes(self)
+		if self.__preview: self.__preview.destroy()
 		del self
 		self = None
 		return

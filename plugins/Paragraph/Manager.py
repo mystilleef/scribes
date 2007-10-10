@@ -172,7 +172,6 @@ class Manager(object):
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
 		"""
-		self.__editor.delete_attributes(self)
 		del self
 		self = None
 		return
@@ -282,8 +281,7 @@ class Manager(object):
 		"""
 		iterator = self.__buffer.get_iter_at_line(line)
 		self.__buffer.place_cursor(iterator)
-		from SCRIBES.cursor import move_view_to_cursor
-		move_view_to_cursor(self.__editor.textview)
+		self.__editor.move_view_to_cursor()
 		return
 
 ########################################################################
@@ -456,10 +454,10 @@ class Manager(object):
 	def __is_readonly(self):
 		"""
 		Check if editor is in readonly mode.
-		
+
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
-		
+
 		@return: True if editor is in readonly mode.
 		@rtype: A Boolean object.
 		"""

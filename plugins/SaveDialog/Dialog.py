@@ -131,11 +131,10 @@ class SaveDialog(object):
 		else:
 			from i18n import msg0003
 			self.__dialog.set_current_name(msg0003)
-			from SCRIBES.info import desktop_folder, home_folder
 			try:
-				self.__dialog.set_current_folder(desktop_folder)
+				self.__dialog.set_current_folder(self.__editor.desktop_folder)
 			except:
-				self.__dialog.set_current_folder(home_folder)
+				self.__dialog.set_current_folder(self.__editor.home_folder)
 		return
 
 	def destroy_(self):
@@ -155,7 +154,6 @@ class SaveDialog(object):
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__dialog)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__dialog)
 		self.__dialog.destroy()
-		self.__editor.delete_attributes(self)
 		del self
 		self = None
 		return

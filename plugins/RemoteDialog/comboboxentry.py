@@ -107,8 +107,7 @@ class ScribesComboBoxEntry(ComboBoxEntry):
 		recent_infos = self.__editor.recent_manager.get_items()
 		for recent_info in recent_infos:
 			uri = recent_info.get_uri()
-			if uri.startswith("file://"):
-				continue
+			if uri.startswith("file://"): continue
 			self.__model.append([uri])
 		return
 
@@ -135,11 +134,9 @@ class ScribesComboBoxEntry(ComboBoxEntry):
 		@param entry: Reference to the ScribesComboBoxEntry instance.
 		@type entry: A ScribesComboBoxEntry object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor.recent_manager)
-		disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor.recent_manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

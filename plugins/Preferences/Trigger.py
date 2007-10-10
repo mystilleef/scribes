@@ -81,8 +81,7 @@ class PreferencesTrigger(GObject):
 		@type self: A PreferencesTrigger object.
 		"""
 		# Trigger to show the preferences dialog.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("show_preference_dialog", "F12")
+		self.__trigger = self.__editor.create_trigger("show_preference_dialog", "F12")
 		self.__editor.add_trigger(self.__trigger)
 		return
 
@@ -114,13 +113,10 @@ class PreferencesTrigger(GObject):
 		@param trigger: Reference to the PreferencesTrigger instance.
 		@type trigger: An PreferencesTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__trigger)
-		disconnect_signal(self.__signal_id_2, self)
-		if self.__manager:
-			self.__manager.emit("destroy")
-		delete_attributes(self)
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		if self.__manager: self.__manager.emit("destroy")
 		del self
 		self = None
 		return

@@ -78,9 +78,8 @@ class NameChangeProcessor(object):
 		@type self: A NameChangeProcessor object.
 		"""
 		self.editor.emit("renamed-document", self.newuri)
-		if self.editor.is_readonly:
-			self.editor.triggermanager.trigger("toggle_readonly")
-		self.editor.triggermanager.trigger("save_file")
+		if self.editor.is_readonly: self.editor.trigger("toggle_readonly")
+		self.editor.trigger("save_file")
 		self.destroy()
 		return
 
@@ -91,8 +90,6 @@ class NameChangeProcessor(object):
 		@param self: Reference to the NameChangeProcessor instance.
 		@type self: A NameChangeProcessor object.
 		"""
-		from SCRIBES.utils import delete_attributes
-		delete_attributes(self)
 		del self
 		self = None
 		return

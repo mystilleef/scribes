@@ -400,8 +400,7 @@ class ReplaceBar(ScribesBar):
 		@return: True to call this function again, False otherwise.
 		@rtype: A Boolean object.
 		"""
-		if self.__show_stop_button is False:
-			return False
+		if self.__show_stop_button is False: return False
 		self.__stop_button.set_property("sensitive", True)
 		self.__stop_button.grab_focus()
 		return False
@@ -695,11 +694,9 @@ class ReplaceBar(ScribesBar):
 		@type: A Boolean Object.
 		"""
 		if self.__search_button in self.get_children():
-			if entry.get_text():
-				self.__search_button.activate()
+			if entry.get_text(): self.__search_button.activate()
 		else:
-			if entry.get_text():
-				self.__next_button.activate()
+			if entry.get_text(): self.__next_button.activate()
 		return True
 
 	def __replacebar_changed_cb(self, entry):
@@ -780,8 +777,7 @@ class ReplaceBar(ScribesBar):
 		@param gotobar: The text editor's gotobar.
 		@type gotobar: A ScribesFindBar object.
 		"""
-		if bar.get_property("name") != "scribes replacebar":
-			return
+		if bar.get_property("name") != "scribes replacebar": return
 		self.__bar_is_visible = True
 		self.__unblock_search_replace_signals()
 		from i18n import msg0009
@@ -802,8 +798,7 @@ class ReplaceBar(ScribesBar):
 		@param gotobar: The text editor's gotobar.
 		@type gotobar: A ScribesFindBar object.
 		"""
-		if bar.get_property("name") != "scribes replacebar":
-			return
+		if bar.get_property("name") != "scribes replacebar": return
 		self.__block_search_replace_signals()
 		self.__bar_is_visible = False
 		self.__editor.feedback.unset_modal_message(self.__status_id_1, False)
@@ -853,24 +848,22 @@ class ReplaceBar(ScribesBar):
 		@param replacebar: Reference to the ReplaceBar instance.
 		@type replacebar: A ReplaceBar object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__manager)
-		disconnect_signal(self.__signal_id_2, self.__manager)
-		disconnect_signal(self.__signal_id_3, self.__manager)
-		disconnect_signal(self.__signal_id_4, self.__manager)
-		disconnect_signal(self.__signal_id_5, self.__manager)
-		disconnect_signal(self.__signal_id_6, self.__manager)
-		disconnect_signal(self.__signal_id_7, self.__manager)
-		disconnect_signal(self.__signal_id_8, self.__entry)
-		disconnect_signal(self.__signal_id_9, self.__entry)
-		disconnect_signal(self.__signal_id_10, self.__matchword_check_button)
-		disconnect_signal(self.__signal_id_11, self.__matchword_check_button)
-		disconnect_signal(self.__signal_id_12, self.__incremental_check_button)
-		disconnect_signal(self.__signal_id_13, self.__editor)
-		disconnect_signal(self.__signal_id_14, self.__editor)
-		disconnect_signal(self.__signal_id_15, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__entry)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__entry)
+		self.__editor.disconnect_signal(self.__signal_id_10, self.__matchword_check_button)
+		self.__editor.disconnect_signal(self.__signal_id_11, self.__matchword_check_button)
+		self.__editor.disconnect_signal(self.__signal_id_12, self.__incremental_check_button)
+		self.__editor.disconnect_signal(self.__signal_id_13, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_14, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_15, self)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

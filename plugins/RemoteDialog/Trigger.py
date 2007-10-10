@@ -81,9 +81,8 @@ class RemoteDialogTrigger(GObject):
 		@type self: A RemoteDialogTrigger object.
 		"""
 		# Trigger to show the remote dialog.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("show_remote_dialog", "ctrl - l")
-		self.__editor.triggermanager.add_trigger(self.__trigger)
+		self.__trigger = self.__editor.create_trigger("show_remote_dialog", "ctrl - l")
+		self.__editor.add_trigger(self.__trigger)
 		return
 
 	def __show_remote_dialog_cb(self, trigger):
@@ -114,13 +113,10 @@ class RemoteDialogTrigger(GObject):
 		@param trigger: Reference to the OpenDialogTrigger instance.
 		@type trigger: An OpenDialogTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__trigger)
-		disconnect_signal(self.__signal_id_2, self)
-		if self.__remote_dialog:
-			self.__remote_dialog.emit("delete")
-		delete_attributes(self)
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		if self.__remote_dialog: self.__remote_dialog.emit("delete")
 		del self
 		self = None
 		return

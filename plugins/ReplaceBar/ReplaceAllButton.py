@@ -249,21 +249,19 @@ class ReplaceAllButton(Button):
 		return
 
 	def __destroy_cb(self, replacebar):
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__searchmanager)
-		disconnect_signal(self.__signal_id_4, self.__searchmanager)
-		disconnect_signal(self.__signal_id_5, self.__searchmanager)
-		disconnect_signal(self.__signal_id_6, self.__searchmanager)
-		disconnect_signal(self.__signal_id_7, self.__find_entry)
-		disconnect_signal(self.__signal_id_8, self.__match_word_button)
-		disconnect_signal(self.__signal_id_9, self.__match_case_button)
-		disconnect_signal(self.__signal_id_10, self.__replacemanager)
-		disconnect_signal(self.__signal_id_11, self.__replacemanager)
-		disconnect_signal(self.__signal_id_12, replacebar)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__find_entry)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__match_word_button)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__match_case_button)
+		self.__editor.disconnect_signal(self.__signal_id_10, self.__replacemanager)
+		self.__editor.disconnect_signal(self.__signal_id_11, self.__replacemanager)
+		self.__editor.disconnect_signal(self.__signal_id_12, replacebar)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

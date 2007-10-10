@@ -88,10 +88,8 @@ class PreferencesWindow(Dialog):
 		@param manager: Reference to the PreferencesManager.
 		@type manager: An PreferencesManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id, self.__manager)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return
@@ -125,8 +123,7 @@ class PreferencesWindow(Dialog):
 		self.set_property("name", "PreferencesDialog")
 		from i18n import msg0010
 		self.set_property("title", msg0010)
-		from SCRIBES.utils import calculate_resolution_independence
-		width, height = calculate_resolution_independence(self.__editor.window, 2.56, 2.56)
+		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 2.56, 2.56)
 		self.set_property("default-width", width)
 		self.set_transient_for(self.__editor.window)
 		return

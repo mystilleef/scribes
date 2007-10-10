@@ -94,8 +94,6 @@ class PrintJob(SourcePrintJob):
 		return
 
 	def __destroy(self):
-		from SCRIBES.utils import delete_attributes
-		delete_attributes(self)
 		del self
 		self = None
 		return

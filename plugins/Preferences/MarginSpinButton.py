@@ -170,11 +170,9 @@ class MarginSpinButton(SpinButton):
 		@param manager: Reference to the PreferencesManager instance.
 		@type manager: A PreferencesManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

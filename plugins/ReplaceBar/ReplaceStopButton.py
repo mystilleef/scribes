@@ -71,11 +71,9 @@ class ReplaceStopButton(Button):
 		return True
 
 	def __destroy_cb(self, replacebar):
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, replacebar)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, replacebar)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

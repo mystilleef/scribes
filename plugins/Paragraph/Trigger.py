@@ -88,20 +88,19 @@ class Trigger(object):
 		@type self: A Trigger object.
 		"""
 		# Trigger to select paragraph.
-		from SCRIBES.Trigger import Trigger
-		self.__select_paragraph_trigger = Trigger("select_paragraph", "alt - p")
+		self.__select_paragraph_trigger = self.__editor.create_trigger("select_paragraph", "alt - p")
 		self.__editor.add_trigger(self.__select_paragraph_trigger)
 
 		# Trigger to move cursor to next paragraph.
-		self.__next_paragraph_trigger = Trigger("next_paragraph", "alt - Down")
+		self.__next_paragraph_trigger = self.__editor.create_trigger("next_paragraph", "alt - Down")
 		self.__editor.add_trigger(self.__next_paragraph_trigger)
 
 		# Trigger to move cursor to previous paragraph.
-		self.__previous_paragraph_trigger = Trigger("previous_paragraph", "alt -Up")
+		self.__previous_paragraph_trigger = self.__editor.create_trigger("previous_paragraph", "alt -Up")
 		self.__editor.add_trigger(self.__previous_paragraph_trigger)
 
 		# Trigger to reflow paragraph.
-		self.__reflow_paragraph_trigger = Trigger("reflow_paragraph", "alt - q")
+		self.__reflow_paragraph_trigger = self.__editor.create_trigger("reflow_paragraph", "alt - q")
 		self.__editor.add_trigger(self.__reflow_paragraph_trigger)
 		return
 
@@ -184,20 +183,15 @@ class Trigger(object):
 		@param self: Reference to the Trigger instance.
 		@type self: A Trigger object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
 		triggers = [self.__reflow_paragraph_trigger, self.__previous_paragraph_trigger,
 			self.__next_paragraph_trigger, self.__select_paragraph_trigger]
-		disconnect_signal(self.__signal_id_1, self.__select_paragraph_trigger)
-		disconnect_signal(self.__signal_id_2, self.__next_paragraph_trigger)
-		disconnect_signal(self.__signal_id_3, self.__previous_paragraph_trigger)
-		disconnect_signal(self.__signal_id_4, self.__reflow_paragraph_trigger)
-		disconnect_signal(self.__signal_id_5, self.__editor.textview)
-		self.__editor.remove_trigger(self.__reflow_paragraph_trigger)
-		self.__editor.remove_trigger(self.__previous_paragraph_trigger)
-		self.__editor.remove_trigger(self.__next_paragraph_trigger)
-		self.__editor.remove_trigger(self.__select_paragraph_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__select_paragraph_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__next_paragraph_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__previous_paragraph_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__reflow_paragraph_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor.textview)
+		self.__editor.remove_triggers(triggers)
 		if self.__manager: self.__manager.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

@@ -134,7 +134,6 @@ class PopupMenuItem(ImageMenuItem):
 		self.__menu.destroy()
 		self.__image.destroy()
 		self.destroy()
-		self.__editor.delete_attributes(self)
 		del self
 		self = None
 		return False

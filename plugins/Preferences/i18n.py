@@ -18,8 +18,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
 # USA
 
-from gettext import gettext
-_ = gettext
+from gettext import gettext as _
 msg0001 = _("<b>Font</b>")
 msg0002 = _("Editor _font: ")
 msg0003 = _("<b>Tab Stops</b>")

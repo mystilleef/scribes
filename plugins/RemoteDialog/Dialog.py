@@ -169,8 +169,7 @@ class RemoteDialog(ScribesDialog):
 		@rtype: A Boolean object.
 		"""
 		text = self.__comboboxentry.child.get_text()
-		if text:
-			self.__editor.instance_manager.open_files([text.strip()])
+		if text: self.__editor.instance_manager.open_files([text.strip()])
 		return False
 
 	def __destroy_cb(self, dialog):
@@ -183,12 +182,10 @@ class RemoteDialog(ScribesDialog):
 		@param dialog: Reference to the ScribesDialog instance.
 		@type dialog: A ScribesDialog object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__comboboxentry.child)
-		disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__comboboxentry.child)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.__comboboxentry.emit("delete")
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

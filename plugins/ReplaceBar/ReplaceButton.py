@@ -104,10 +104,9 @@ class ReplaceButton(Button):
 		@param self: Reference to the ScribesReplaceButton instance.
 		@type self: A ScribesReplaceButton object.
 		"""
-		from SCRIBES.utils import create_button
 		from gtk import STOCK_FIND_AND_REPLACE
 		from i18n import msg0011
-		hbox = create_button(STOCK_FIND_AND_REPLACE, msg0011)
+		hbox = self.__editor.create_button(STOCK_FIND_AND_REPLACE, msg0011)
 		self.add(hbox)
 		return
 
@@ -255,22 +254,20 @@ class ReplaceButton(Button):
 		@param replacebar: Reference to the ReplaceButton instance.
 		@type replacebar: A ReplaceButton object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__searchmanager)
-		disconnect_signal(self.__signal_id_4, self.__searchmanager)
-		disconnect_signal(self.__signal_id_5, self.__searchmanager)
-		disconnect_signal(self.__signal_id_6, self.__searchmanager)
-		disconnect_signal(self.__signal_id_7, self.__replacemanager)
-		disconnect_signal(self.__signal_id_8, self.__replacemanager)
-		disconnect_signal(self.__signal_id_9, self.__replacemanager)
-		disconnect_signal(self.__signal_id_10, self.__find_entry)
-		disconnect_signal(self.__signal_id_11, self.__match_word_button)
-		disconnect_signal(self.__signal_id_12, self.__match_case_button)
-		disconnect_signal(self.__signal_id_13, replacebar)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__searchmanager)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__replacemanager)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__replacemanager)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__replacemanager)
+		self.__editor.disconnect_signal(self.__signal_id_10, self.__find_entry)
+		self.__editor.disconnect_signal(self.__signal_id_11, self.__match_word_button)
+		self.__editor.disconnect_signal(self.__signal_id_12, self.__match_case_button)
+		self.__editor.disconnect_signal(self.__signal_id_13, replacebar)
 		self.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

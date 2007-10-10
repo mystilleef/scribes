@@ -73,8 +73,7 @@ class RecentMenuTrigger(object):
 		@type self: A RecentMenuTrigger object.
 		"""
 		# Trigger to show the recent menu.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("show_recent_menu", "ctrl - O")
+		self.__trigger = self.__editor.create_trigger("show_recent_menu", "ctrl - O")
 		self.__editor.add_trigger(self.__trigger)
 		return
 
@@ -103,10 +102,8 @@ class RecentMenuTrigger(object):
 		@param trigger: Reference to the RecentMenuTrigger instance.
 		@type trigger: An RecentMenuTrigger object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		self.__editor.remove_trigger(self.__trigger)
-		delete_attributes(self)
 		del self
 		self = None
 		return
