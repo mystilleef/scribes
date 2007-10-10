@@ -295,18 +295,16 @@ class TemplateLanguageTreeView(object):
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		disconnect_signal(self.__signal_id_4, manager)
-		disconnect_signal(self.__signal_id_5, self.__treeview)
-		disconnect_signal(self.__signal_id_6, manager)
-		disconnect_signal(self.__signal_id_7, self.__treeview)
-		disconnect_signal(self.__signal_id_8, self.__treeview)
+		self.__editor.disconnect_signal(self.__signal_id_1, manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_4, manager)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__treeview)
+		self.__editor.disconnect_signal(self.__signal_id_6, manager)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__treeview)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__treeview)
 		self.__model.clear()
 		self.__treeview.destroy()
-		delete_attributes(self)
 		self = None
 		del self
 		return
@@ -345,8 +343,7 @@ class TemplateLanguageTreeView(object):
 		@type self: A TemplateLanguageTreeView object.
 		"""
 		self.__treeview.grab_focus()
-		from SCRIBES.utils import select_row
-		select_row(self.__treeview)
+		self.__editor.select_row(self.__treeview)
 		return
 
 	def __imported_language_cb(self, manager, language):
@@ -366,8 +363,7 @@ class TemplateLanguageTreeView(object):
 		# No error occurred. I'm just using the signal to make the
 		# template editor window sensitive.
 		manager.emit("import-error")
-		from SCRIBES.utils import select_row
-		select_row(self.__treeview)
+		self.__editor.select_row(self.__treeview)
 		self.__treeview.grab_focus()
 		return
 

@@ -86,8 +86,7 @@ class TemplateWindow(object):
 		@param self: Reference to the TemplateWindow instance.
 		@type self: A TemplateWindow object.
 		"""
-		from SCRIBES.utils import calculate_resolution_independence
-		width, height = calculate_resolution_independence(self.__editor.window, 1.6, 1.6)
+		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 1.6, 1.6)
 		self.__window.set_property("default-width", width)
 		self.__window.set_property("default-height", height)
 		from gtk import WIN_POS_CENTER_ON_PARENT, DEST_DEFAULT_ALL
@@ -177,17 +176,15 @@ class TemplateWindow(object):
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, manager)
-		disconnect_signal(self.__signal_id_3, self.__window)
-		disconnect_signal(self.__signal_id_4, self.__window)
-		disconnect_signal(self.__signal_id_5, manager)
-		disconnect_signal(self.__signal_id_6, manager)
-		disconnect_signal(self.__signal_id_7, manager)
-		disconnect_signal(self.__signal_id_8, self.__window)
+		self.__editor.disconnect_signal(self.__signal_id_1, manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__window)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__window)
+		self.__editor.disconnect_signal(self.__signal_id_5, manager)
+		self.__editor.disconnect_signal(self.__signal_id_6, manager)
+		self.__editor.disconnect_signal(self.__signal_id_7, manager)
+		self.__editor.disconnect_signal(self.__signal_id_8, self.__window)
 		self.__window.destroy()
-		delete_attributes(self)
 		self = None
 		del self
 		return

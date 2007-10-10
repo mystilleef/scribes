@@ -96,12 +96,11 @@ class ExportDialog(object):
 		from i18n import msg0005
 		xml_filter = create_filter(msg0005, "text/xml")
 		self.__dialog.add_filter(xml_filter)
-		from SCRIBES.info import home_folder, desktop_folder
 		from os import path
-		if path.exists(desktop_folder):
-			self.__dialog.set_current_folder(desktop_folder)
+		if path.exists(self.__editor.desktop_folder):
+			self.__dialog.set_current_folder(self.__editor.desktop_folder)
 		else:
-			self.__dialog.set_current_folder(home_folder)
+			self.__dialog.set_current_folder(self.__editor.home_folder)
 		return
 
 	def show(self):
@@ -148,16 +147,14 @@ class ExportDialog(object):
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, self.__dialog)
-		disconnect_signal(self.__signal_id_3, self.__dialog)
-		disconnect_signal(self.__signal_id_4, self.__dialog)
-		disconnect_signal(self.__signal_id_5, self.__button)
-		disconnect_signal(self.__signal_id_6, manager)
+		self.__editor.disconnect_signal(self.__signal_id_1, manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__dialog)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__dialog)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__dialog)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__button)
+		self.__editor.disconnect_signal(self.__signal_id_6, manager)
 		self.__button.destroy()
 		self.__dialog.destroy()
-		delete_attributes(self)
 		self = None
 		del self
 		return

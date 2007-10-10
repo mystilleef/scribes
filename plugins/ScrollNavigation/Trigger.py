@@ -19,7 +19,7 @@
 # USA
 
 """
-This module documents a class that creates a trigger to scroll the 
+This module documents a class that creates a trigger to scroll the
 view up or down or center it.
 
 @author: Lateef Alabi-Oki
@@ -78,16 +78,15 @@ class Trigger(object):
 		@type self: A Trigger object.
 		"""
 		# Trigger to scroll up.
-		from SCRIBES.Trigger import Trigger
-		self.__up_trigger = Trigger("scroll_up", "ctrl - Up")
+		self.__up_trigger = self.__editor.create_trigger("scroll_up", "ctrl - Up")
 		self.__editor.add_trigger(self.__up_trigger)
 
 		# Trigger to scroll down.
-		self.__down_trigger = Trigger("scroll_down", "ctrl - Down")
+		self.__down_trigger = self.__editor.create_trigger("scroll_down", "ctrl - Down")
 		self.__editor.add_trigger(self.__down_trigger)
 
 		# Trigger to center current line.
-		self.__middle_trigger = Trigger("center", "alt - m")
+		self.__middle_trigger = self.__editor.create_trigger("center", "alt - m")
 		self.__editor.add_trigger(self.__middle_trigger)
 		return
 
@@ -152,15 +151,13 @@ class Trigger(object):
 		@param self: Reference to the Trigger instance.
 		@type self: A Trigger object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__up_trigger)
-		disconnect_signal(self.__signal_id_2, self.__down_trigger)
-		disconnect_signal(self.__signal_id_3, self.__middle_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__up_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__down_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__middle_trigger)
 		self.__editor.remove_trigger(self.__up_trigger)
 		self.__editor.remove_trigger(self.__down_trigger)
 		self.__editor.remove_trigger(self.__middle_trigger)
 		if self.__manager: self.__manager.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return

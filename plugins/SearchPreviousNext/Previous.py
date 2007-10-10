@@ -67,7 +67,7 @@ class SearchPrevious(object):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__search_replace_manager = editor.store.get_object("SearchReplaceManager")
+		self.__search_replace_manager = editor.get_object("SearchReplaceManager")
 		self.__signal_id_1 = None
 		self.__signal_id_2 = None
 		self.__signal_id_3 = None
@@ -191,12 +191,10 @@ class SearchPrevious(object):
 		@param trigger: Trigger to activate searching.
 		@type trigger: A Trigger object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, self.__editor.textview)
-		disconnect_signal(self.__signal_id_2, self.__editor.textview)
-		disconnect_signal(self.__signal_id_3, self.__editor.textbuffer)
-		disconnect_signal(self.__signal_id_4, trigger)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__signal_id_4, trigger)
 		self = None
 		del self
 		return

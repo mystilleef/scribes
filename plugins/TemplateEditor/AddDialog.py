@@ -111,8 +111,7 @@ class AddDialog(object):
 		"""
 		scrollwin = self.__glade.get_widget("EditorDialogScrolledWindow")
 		scrollwin.add(self.__buffer)
-		from SCRIBES.utils import calculate_resolution_independence
-		width, height = calculate_resolution_independence(self.__editor.window, 2, 2.133333333)
+		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 2, 2.133333333)
 		self.__dialog.set_property("default-width", width)
 		self.__dialog.set_property("default-height", height)
 		from i18n import msg0009
@@ -207,18 +206,16 @@ class AddDialog(object):
 		@param manager: Reference to the TemplateManager.
 		@type manager: A TemplateManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, manager)
-		disconnect_signal(self.__signal_id_3, self.__dialog)
-		disconnect_signal(self.__signal_id_4, self.__save_button)
-		disconnect_signal(self.__signal_id_5, self.__cancel_button)
-		disconnect_signal(self.__signal_id_6, self.__name_entry)
-		disconnect_signal(self.__signal_id_7, self.__dialog)
+		self.__editor.disconnect_signal(self.__signal_id_1, manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__dialog)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__save_button)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__cancel_button)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__name_entry)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__dialog)
 		self.__save_button.destroy()
 		self.__cancel_button.destroy()
 		self.__dialog.destroy()
-		delete_attributes(self)
 		self = None
 		del self
 		return

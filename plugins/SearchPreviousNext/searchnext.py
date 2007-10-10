@@ -80,7 +80,7 @@ class SearchNext(object):
 		@type self: A SearchNext object.
 		"""
 		if not self.__editor.search_replace_manager.queries:
-			self.__editor.triggermanager.trigger("show_findbar")
+			self.__editor.trigger("show_findbar")
 			return
 		if self.__signal_is_blocked:
 			self.__unblock_signals()

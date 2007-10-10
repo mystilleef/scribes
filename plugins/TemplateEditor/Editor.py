@@ -211,11 +211,10 @@ class Editor(SourceView):
 		if selection:
 			self.__enclose_selection(selection)
 			return
-		from SCRIBES.cursor import get_cursor_iterator
-		iterator = get_cursor_iterator(self.__buffer)
+		iterator = self.__editor.get_cursor_iterator()
 		first_mark = self.__buffer.create_mark(None, iterator, True)
 		self.__buffer.insert_at_cursor("${placeholder}")
-		iterator = get_cursor_iterator(self.__buffer)
+		iterator = self.__editor.get_cursor_iterator()
 		last_mark = self.__buffer.create_mark(None, iterator, False)
 		iterator = self.__buffer.get_iter_at_mark(first_mark)
 		iterator.forward_chars(2)
@@ -327,15 +326,13 @@ class Editor(SourceView):
 		@param manager: Reference to the TemplateManager
 		@type manager: A TemplateManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, self.__buffer)
-		disconnect_signal(self.__signal_id_2, manager)
-		disconnect_signal(self.__signal_id_3, manager)
-		disconnect_signal(self.__signal_id_4, self)
-		disconnect_signal(self.__signal_id_5, self.__buffer)
-		disconnect_signal(self.__signal_id_6, manager)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__buffer)
+		self.__editor.disconnect_signal(self.__signal_id_2, manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, manager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__buffer)
+		self.__editor.disconnect_signal(self.__signal_id_6, manager)
 		self.destroy()
-		delete_attributes(self)
 		self = None
 		del self
 		return
@@ -351,8 +348,7 @@ class Editor(SourceView):
 		if not_(self.__placeholder_region): return
 		begin = self.__buffer.get_iter_at_mark(self.__placeholder_region[0])
 		end = self.__buffer.get_iter_at_mark(self.__placeholder_region[1])
-		from SCRIBES.cursor import get_cursor_iterator
-		iterator = get_cursor_iterator(self.__buffer)
+		iterator = self.__editor.get_cursor_iterator()
 		if iterator.in_range(begin, end): return
 		self.__clear_tags_and_marks()
 		return

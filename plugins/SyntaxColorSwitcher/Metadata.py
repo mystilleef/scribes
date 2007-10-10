@@ -58,7 +58,7 @@ def close_syntax_database(database):
 	@type database: A database Shelve object.
 	"""
 	database.close()
-	return
+	return False
 
 def update_database(file, language):
 	"""
@@ -73,7 +73,7 @@ def update_database(file, language):
 	database = open_syntax_database("w")
 	database[file] = language
 	close_syntax_database(database)
-	return
+	return False
 
 def get_syntax_language(file):
 	language = None

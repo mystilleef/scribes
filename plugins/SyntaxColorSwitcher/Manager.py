@@ -115,14 +115,12 @@ class Manager(GObject):
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor.textview)
-		disconnect_signal(self.__signal_id_2, self)
-		disconnect_signal(self.__signal_id_3, self)
-		disconnect_signal(self.__signal_id_4, self.__editor)
-		delete_attributes(self)
-		self = None
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
 		del self
+		self = None
 		return
 
 	def __popup_cb(self, textview, menu):
@@ -158,16 +156,16 @@ class Manager(GObject):
 			self.__editor.textbuffer.set_highlight(False)
 			if self.__editor.uri:
 				from Metadata import update_database
-				from thread import start_new_thread
-				start_new_thread(update_database, (self.__editor.uri, ""))
+				from gobject import idle_add
+				idle_add(update_database, self.__editor.uri, "")
 		else:
 			from Syntax import activate_syntax_highlight
 			from gobject import idle_add
 			idle_add(activate_syntax_highlight, self.__editor.textbuffer, language)
 			if self.__editor.uri:
 				from Metadata import update_database
-				from thread import start_new_thread
-				start_new_thread(update_database, (self.__editor.uri, language.get_id()))
+				from gobject import idle_add
+				idle_add(update_database, self.__editor.uri, language.get_id())
 		return
 
 	def __loaded_document_cb(self, *args):

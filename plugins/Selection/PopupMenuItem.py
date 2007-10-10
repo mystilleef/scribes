@@ -96,12 +96,11 @@ class SelectionPopupMenuItem(ImageMenuItem):
 		self.image = Image()
 		self.image.set_property("stock", STOCK_BOLD)
 		self.menu = Menu()
-		from SCRIBES.utils import create_menuitem
 		from i18n import msg0011, msg0012, msg0013
 		from i18n import msg0014
-		self.select_word_menuitem = create_menuitem(msg0011)
-		self.select_line_menuitem = create_menuitem(msg0012)
-		self.select_sentence_menuitem = create_menuitem(msg0013)
+		self.select_word_menuitem = self.editor.create_menuitem(msg0011)
+		self.select_line_menuitem = self.editor.create_menuitem(msg0012)
+		self.select_sentence_menuitem = self.editor.create_menuitem(msg0013)
 		return
 
 	def __set_properties(self):
@@ -116,8 +115,7 @@ class SelectionPopupMenuItem(ImageMenuItem):
 		self.menu.append(self.select_line_menuitem)
 		self.menu.append(self.select_word_menuitem)
 		self.menu.append(self.select_sentence_menuitem)
-		if self.editor.is_readonly:
-			self.set_property("sensitive", False)
+		if self.editor.is_readonly: self.set_property("sensitive", False)
 		return
 
 	def __popup_activate_cb(self, menuitem):
@@ -134,11 +132,11 @@ class SelectionPopupMenuItem(ImageMenuItem):
 		@type: A Boolean Object.
 		"""
 		if menuitem == self.select_word_menuitem:
-			self.editor.triggermanager.trigger("select_word")
+			self.editor.trigger("select_word")
 		elif menuitem == self.select_line_menuitem:
-			self.editor.triggermanager.trigger("select_line")
+			self.editor.trigger("select_line")
 		elif menuitem == self.select_sentence_menuitem:
-			self.editor.triggermanager.trigger("select_sentence")
+			self.editor.trigger("select_sentence")
 		return True
 
 	def __popup_word_map_event_cb(self, menuitem, event):
@@ -147,8 +145,7 @@ class SelectionPopupMenuItem(ImageMenuItem):
 		"""
 		menuitem.set_property("sensitive", False)
 		from word import inside_word, starts_word, ends_word
-		from SCRIBES.cursor import get_cursor_iterator
-		cursor_position = get_cursor_iterator(self.editor.textbuffer)
+		cursor_position = self.editor.get_cursor_iterator()
 		if inside_word(cursor_position) or starts_word(cursor_position) or ends_word(cursor_position):
 			menuitem.set_property("sensitive", True)
 		return True
@@ -169,8 +166,7 @@ class SelectionPopupMenuItem(ImageMenuItem):
 		Handles callback when the "map-event" signal is emitted.
 		"""
 		menuitem.set_property("sensitive", False)
-		from SCRIBES.cursor import get_cursor_iterator
-		cursor_position = get_cursor_iterator(self.editor.textbuffer)
+		cursor_position = self.editor.get_cursor_iterator()
 		if cursor_position.starts_sentence() or cursor_position.ends_sentence() or cursor_position.inside_sentence():
 			menuitem.set_property("sensitive", True)
 		return True
@@ -191,33 +187,19 @@ class SelectionPopupMenuItem(ImageMenuItem):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		if self.__signal_id_1 and self.select_word_menuitem.handler_is_connected(self.__signal_id_1):
-			self.select_word_menuitem.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.select_line_menuitem.handler_is_connected(self.__signal_id_2):
-			self.select_line_menuitem.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.select_sentence_menuitem.handler_is_connected(self.__signal_id_3):
-			self.select_sentence_menuitem.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.select_paragraph_menuitem.handler_is_connected(self.__signal_id_4):
-			self.select_paragraph_menuitem.disconnect(self.__signal_id_4)
-		if self.__signal_id_5 and self.select_word_menuitem.handler_is_connected(self.__signal_id_5):
-			self.select_word_menuitem.disconnect(self.__signal_id_5)
-		if self.__signal_id_6 and self.select_line_menuitem.handler_is_connected(self.__signal_id_6):
-			self.select_line_menuitem.disconnect(self.__signal_id_6)
-		if self.__signal_id_7 and self.select_sentence_menuitem.handler_is_connected(self.__signal_id_7):
-			self.select_sentence_menuitem.disconnect(self.__signal_id_7)
-		if self.__signal_id_9 and self.scribesview.handler_is_connected(self.__signal_id_9):
-			self.scribesview.disconnect(self.__signal_id_9)
-		if self.select_word_menuitem:
-			self.select_word_menuitem.destroy()
-		if self.select_sentence_menuitem:
-			self.select_sentence_menuitem.destroy()
-		if self.select_line_menuitem:
-			self.select_line_menuitem.destroy()
-		if self.image:
-			self.image.destroy()
-		if self.menu:
-			self.menu.destroy()
-		self.editor.delete_attributes(self)
+		self.editor.disconnect_signal(self.__signal_id_1, self.select_word_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_2, self.select_line_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_3, self.select_sentence_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_4, self.select_paragraph_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_5, self.select_word_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_6, self.select_line_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_7, self.select_sentence_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_9, self.scribesview)
+		if self.select_word_menuitem: self.select_word_menuitem.destroy()
+		if self.select_sentence_menuitem: self.select_sentence_menuitem.destroy()
+		if self.select_line_menuitem: self.select_line_menuitem.destroy()
+		if self.image: self.image.destroy()
+		if self.menu: self.menu.destroy()
 		del self
 		self = None
 		return False

@@ -72,9 +72,8 @@ class SearchPreviousTrigger(object):
 		@type self: A SearchPreviousTrigger object.
 		"""
 		# Trigger to search for previous text in the buffer.
-		from trigger import Trigger
-		self.__trigger = Trigger("search_previous")
-		self.__editor.triggermanager.add_trigger(self.__trigger, "control - G")
+		self.__trigger = self.__editor.create_trigger("search_previous")
+		self.__editor.add_trigger(self.__trigger, "control - G")
 		return
 
 	def __search_previous_cb(self, trigger):

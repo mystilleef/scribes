@@ -117,7 +117,6 @@ class Manager(object):
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
 		"""
-		self.__editor.delete_attributes(self)
 		del self
 		self = None
 		return

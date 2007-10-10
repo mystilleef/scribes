@@ -84,8 +84,7 @@ class TemplateEditorTrigger(GObject):
 		@type self: A TemplateEditorTrigger object.
 		"""
 		# Trigger to show the about dialog.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("show_template_editor", "alt - F12")
+		self.__trigger = self.__editor.create_trigger("show_template_editor", "alt - F12")
 		self.__editor.add_trigger(self.__trigger)
 		return
 
@@ -118,10 +117,8 @@ class TemplateEditorTrigger(GObject):
 		@type trigger: An TemplateEditorTrigger object.
 		"""
 		self.__editor.remove_trigger(self.__trigger)
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__trigger)
-		disconnect_signal(self.__signal_id_2, self)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		del self
 		self = None
 		return

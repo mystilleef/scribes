@@ -235,14 +235,12 @@ def remove_trailing_spaces_on_line(sourceview, line_number):
 	end_position = begin_position.copy()
 	end_position.forward_to_line_end()
 	transition_position.forward_to_line_end()
-	if transition_position.equal(begin_position):
-		return False
+	if transition_position.equal(begin_position): return False
 	while True:
 		transition_position.backward_char()
 		if not transition_position.get_char() in (" ", "\t"):
 			transition_position.forward_char()
 			break
-	if transition_position.equal(end_position):
-		return False
+	if transition_position.equal(end_position): return False
 	sourcebuffer.delete(transition_position, end_position)
 	return True

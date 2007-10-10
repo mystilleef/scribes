@@ -551,11 +551,11 @@ class Editor(GObject):
 
 	def show_busy_cursor(self):
 		from cursor import show_busy_textview_cursor
-		return show_busy_textview_cursor(self.__editor.textview)
+		return show_busy_textview_cursor(self.__textview)
 
 	def show_normal_cursor(self):
 		from cursor import show_textview_cursor
-		return show_textview_cursor(self.__editor.textview)
+		return show_textview_cursor(self.__textview)
 
 	def can_read_write(self):
 		from utils import check_uri_permission

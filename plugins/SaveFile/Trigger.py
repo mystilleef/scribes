@@ -80,9 +80,8 @@ class SaveFileTrigger(GObject):
 		@type self: A SaveFileTrigger object.
 		"""
 		# Trigger to save a file.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("save_file", "ctrl - s")
-		self.__editor.triggermanager.add_trigger(self.__trigger)
+		self.__trigger = self.__editor.create_trigger("save_file", "ctrl - s")
+		self.__editor.add_trigger(self.__trigger)
 		return
 
 	def __save_file_cb(self, trigger):
@@ -113,13 +112,9 @@ class SaveFileTrigger(GObject):
 		@param trigger: Reference to the SaveFileTrigger instance.
 		@type trigger: A SaveFileTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		if self.__signal_id_1 and self.__trigger.handler_is_connected(self.__signal_id_1):
-			self.__trigger.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.handler_is_connected(self.__signal_id_2):
-			self.disconnect(self.__signal_id_2)
-		del self.__editor, self.__trigger
-		del self.__signal_id_2, self.__signal_id_1
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		del self
 		self = None
 		return

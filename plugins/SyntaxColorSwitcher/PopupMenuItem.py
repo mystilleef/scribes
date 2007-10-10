@@ -63,7 +63,6 @@ class HighlightPopupMenuItem(ImageMenuItem):
 		@type editor: An Editor object.
 		"""
 		from i18n import msg0002
-		from SCRIBES.utils import create_menuitem
 		from gtk import Menu, Image, RadioMenuItem
 		self.__image = Image()
 		self.__editor = editor
@@ -189,12 +188,10 @@ class HighlightPopupMenuItem(ImageMenuItem):
 		@param self: Reference to the HighlightPopupMenuItem instance.
 		@type self: A HighlightPopupMenuItem object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor.textview)
 		self.__image.destroy()
 		self.__menu.destroy()
 		self.destroy()
-		delete_attributes(self)
 		self = None
 		del self
 		return

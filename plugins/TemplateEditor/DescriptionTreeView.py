@@ -91,8 +91,7 @@ class DescriptionTreeView(object):
 		language_list = SourceLanguagesManager().get_available_languages()
 		self.__languages = [name.get_id() for name in language_list]
 		# Path to the templates database.
-		from SCRIBES.info import metadata_folder
-		database_path = metadata_folder + "templates.gdb"
+		database_path = editor.metadata_folder + "templates.gdb"
 		from gnomevfs import get_uri_from_local_path
 		self.__database_uri = get_uri_from_local_path(database_path)
 		self.__monitor_id = None
@@ -340,24 +339,22 @@ class DescriptionTreeView(object):
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, manager)
-		disconnect_signal(self.__signal_id_3, manager)
-		disconnect_signal(self.__signal_id_4, self.__treeview)
-		disconnect_signal(self.__signal_id_5, self.__treeview)
-		disconnect_signal(self.__signal_id_6, manager)
-		disconnect_signal(self.__signal_id_7, manager)
-		disconnect_signal(self.__signal_id_8, manager)
-		disconnect_signal(self.__signal_id_9, manager)
-		disconnect_signal(self.__signal_id_10, self.__treeview)
+		self.__editor.disconnect_signal(self.__signal_id_1, manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, manager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__treeview)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__treeview)
+		self.__editor.disconnect_signal(self.__signal_id_6, manager)
+		self.__editor.disconnect_signal(self.__signal_id_7, manager)
+		self.__editor.disconnect_signal(self.__signal_id_8, manager)
+		self.__editor.disconnect_signal(self.__signal_id_9, manager)
+		self.__editor.disconnect_signal(self.__signal_id_10, self.__treeview)
 		if self.__monitor_id:
 			from gnomevfs import monitor_cancel
 			monitor_cancel(self.__monitor_id)
 		self.__treeview.destroy()
-		delete_attributes(self)
-		self = None
 		del self
+		self = None
 		return
 
 	def __language_selected_cb(self, manager, language):

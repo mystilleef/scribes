@@ -81,8 +81,7 @@ class SpellCheckTrigger(GObject):
 		@type self: A SpellCheckTrigger object.
 		"""
 		# Trigger to toggle spell checking.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("toggle_spell_checking", "F6")
+		self.__trigger = self.__editor.create_trigger("toggle_spell_checking", "F6")
 		self.__editor.add_trigger(self.__trigger)
 		return
 
@@ -121,12 +120,8 @@ class SpellCheckTrigger(GObject):
 		@type trigger: A SpellCheckTrigger object.
 		"""
 		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		if self.__signal_id_1 and self.__trigger.handler_is_connected(self.__signal_id_1):
-			self.__trigger.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.handler_is_connected(self.__signal_id_2):
-			self.disconnect(self.__signal_id_2)
-		del self.__editor, self.__trigger
-		del self.__signal_id_2, self.__signal_id_1
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		del self
 		self = None
 		return

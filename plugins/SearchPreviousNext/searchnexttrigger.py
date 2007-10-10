@@ -71,9 +71,8 @@ class SearchNextTrigger(object):
 		@type self: A SearchNextTrigger object.
 		"""
 		# Trigger that searches for text.
-		from trigger import Trigger
-		self.__trigger = Trigger("search_next")
-		self.__editor.triggermanager.add_trigger(self.__trigger, "control - g")
+		self.__trigger = self.__editor.create_trigger("search_next")
+		self.__editor.add_trigger(self.__trigger, "control - g")
 		return
 
 	def __search_next_cb(self, trigger):

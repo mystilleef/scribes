@@ -89,11 +89,10 @@ class SpacesPopupMenuItem(ImageMenuItem):
 		self.image = Image()
 		self.image.set_property("stock", STOCK_CLEAR)
 		self.menu = Menu()
-		from SCRIBES.utils import create_menuitem
 		from i18n import msg0012, msg0013, msg0014
-		self.tabs_to_spaces_menuitem = create_menuitem(msg0012)
-		self.spaces_to_tabs_menuitem = create_menuitem(msg0013)
-		self.removes_spaces_menuitem = create_menuitem(msg0014)
+		self.tabs_to_spaces_menuitem = self.editor.create_menuitem(msg0012)
+		self.spaces_to_tabs_menuitem = self.editor.create_menuitem(msg0013)
+		self.removes_spaces_menuitem = self.editor.create_menuitem(msg0014)
 		return
 
 	def __set_properties(self):
@@ -108,8 +107,7 @@ class SpacesPopupMenuItem(ImageMenuItem):
 		self.menu.append(self.spaces_to_tabs_menuitem)
 		self.menu.append(self.tabs_to_spaces_menuitem)
 		self.menu.append(self.removes_spaces_menuitem)
-		if self.editor.is_readonly:
-			self.set_property("sensitive", False)
+		if self.editor.is_readonly: self.set_property("sensitive", False)
 		return
 
 	def __popup_activate_cb(self, menuitem):
@@ -126,11 +124,11 @@ class SpacesPopupMenuItem(ImageMenuItem):
 		@type: A Boolean Object.
 		"""
 		if menuitem == self.tabs_to_spaces_menuitem:
-			self.editor.triggermanager.trigger("tabs_to_spaces")
+			self.editor.trigger("tabs_to_spaces")
 		elif menuitem == self.spaces_to_tabs_menuitem:
-			self.editor.triggermanager.trigger("spaces_to_tabs")
+			self.editor.trigger("spaces_to_tabs")
 		else:
-			self.editor.triggermanager.trigger("remove_trailing_spaces")
+			self.editor.trigger("remove_trailing_spaces")
 		return True
 
 	def __popup_focus_in_event_cb(self, event, textview):
@@ -149,29 +147,16 @@ class SpacesPopupMenuItem(ImageMenuItem):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		if self.__signal_id_1 and self.tabs_to_spaces_menuitem.handler_is_connected(self.__signal_id_1):
-			self.tabs_to_spaces_menuitem.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.spaces_to_tabs_menuitem.handler_is_connected(self.__signal_id_2):
-			self.spaces_to_tabs_menuitem.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.removes_spaces_menuitem.handler_is_connected(self.__signal_id_3):
-			self.removes_spaces_menuitem.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.scribesview.handler_is_connected(self.__signal_id_4):
-			self.scribesview.disconnect(self.__signal_id_4)
-		if self.tabs_to_spaces_menuitem:
-			self.tabs_to_spaces_menuitem.destroy()
-		if self.spaces_to_tabs_menuitem:
-			self.spaces_to_tabs_menuitem.destroy()
-		if self.removes_spaces_menuitem:
-			self.removes_spaces_menuitem.destroy()
-		if self.image:
-			self.image.destroy()
-		if self.menu:
-			self.menu.destroy()
+		self.editor.disconnect_signal(self.__signal_id_1, self.tabs_to_spaces_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_2, self.spaces_to_tabs_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_3, self.removes_spaces_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_4, self.scribesview)
+		if self.tabs_to_spaces_menuitem: self.tabs_to_spaces_menuitem.destroy()
+		if self.spaces_to_tabs_menuitem: self.spaces_to_tabs_menuitem.destroy()
+		if self.removes_spaces_menuitem: self.removes_spaces_menuitem.destroy()
+		if self.image: self.image.destroy()
+		if self.menu: self.menu.destroy()
 		self.destroy()
-		del self.__signal_id_4, self.__signal_id_3, self.__signal_id_2
-		del self.__signal_id_1, self.tabs_to_spaces_menuitem
-		del self.spaces_to_tabs_menuitem, self.removes_spaces_menuitem
-		del self.scribesview, self.editor, self.image, self.menu
 		del self
 		self = None
 		return False

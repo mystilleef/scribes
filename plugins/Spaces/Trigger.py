@@ -89,17 +89,16 @@ class SpacesTrigger(GObject):
 		@type self: A SpacesTrigger object.
 		"""
 		# Trigger to convert spaces to tabs
-		from SCRIBES.Trigger import Trigger
-		self.__spaces_trigger = Trigger("spaces_to_tabs", "alt - t")
-		self.__editor.triggermanager.add_trigger(self.__spaces_trigger)
+		self.__spaces_trigger = self.__editor.create_trigger("spaces_to_tabs", "alt - t")
+		self.__editor.add_trigger(self.__spaces_trigger)
 
 		# Trigger to convert tabs to spaces.
-		self.__tabs_trigger = Trigger("tabs_to_spaces", "alt - T")
-		self.__editor.triggermanager.add_trigger(self.__tabs_trigger)
+		self.__tabs_trigger = self.__editor.create_trigger("tabs_to_spaces", "alt - T")
+		self.__editor.add_trigger(self.__tabs_trigger)
 
 		# Trigger to remove trailing spaces.
-		self.__remove_trigger = Trigger("removes_trailing_spaces", "alt - r")
-		self.__editor.triggermanager.add_trigger(self.__remove_trigger)
+		self.__remove_trigger = self.__editor.create_trigger("removes_trailing_spaces", "alt - r")
+		self.__editor.add_trigger(self.__remove_trigger)
 		return
 
 	def __spaces_to_tabs_cb(self, trigger):
@@ -119,11 +118,10 @@ class SpacesTrigger(GObject):
 			return
 		from i18n import msg0002
 		status_id = self.__editor.feedback.set_modal_message(msg0002, "run")
-		from SCRIBES.cursor import show_busy_textview_cursor, show_textview_cursor
-		show_busy_textview_cursor(self.__editor.textview)
+		self.__editor.show_busy_cursor()
 		from spaces import convert_spaces_to_tabs
 		converted_lines = convert_spaces_to_tabs(self.__editor.textview)
-		show_textview_cursor(self.__editor.textview)
+		self.__editor.show_normal_cursor()
 		self.__editor.feedback.unset_modal_message(status_id, False)
 		if not converted_lines:
 			from i18n import msg0003
@@ -141,11 +139,11 @@ class SpacesTrigger(GObject):
 			return
 		from i18n import msg0005
 		status_id = self.__editor.feedback.set_modal_message(msg0005, "run")
-		from SCRIBES.cursor import show_busy_textview_cursor, show_textview_cursor
+		self.__editor.show_busy_cursor()
 		show_busy_textview_cursor(self.__editor.textview)
 		from spaces import convert_tabs_to_spaces
 		converted_lines = convert_tabs_to_spaces(self.__editor.textview)
-		show_textview_cursor(self.__editor.textview)
+		self.__editor.show_normal_cursor()
 		self.__editor.feedback.unset_modal_message(status_id, False)
 		if not converted_lines:
 			from i18n import msg0007
@@ -164,11 +162,10 @@ class SpacesTrigger(GObject):
 			return
 		from i18n import msg0008
 		status_id = self.__editor.feedback.set_modal_message(msg0008, "run")
-		from SCRIBES.cursor import show_busy_textview_cursor, show_textview_cursor
-		show_busy_textview_cursor(self.__editor.textview)
+		self.__editor.show_busy_cursor()
 		from spaces import remove_trailing_spaces
 		affected_lines = remove_trailing_spaces(self.__editor.textview)
-		show_textview_cursor(self.__editor.textview)
+		self.__editor.show_normal_cursor()
 		self.__editor.feedback.unset_modal_message(status_id, False)
 		if not affected_lines:
 			from i18n import msg0009
@@ -191,19 +188,11 @@ class SpacesTrigger(GObject):
 		self.__editor.triggermanager.remove_trigger(self.__spaces_trigger)
 		self.__editor.triggermanager.remove_trigger(self.__tabs_trigger)
 		self.__editor.triggermanager.remove_trigger(self.__remove_trigger)
-		if self.__signal_id_1 and self.__spaces_trigger.handler_is_connected(self.__signal_id_1):
-			self.__spaces_trigger.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.handler_is_connected(self.__signal_id_2):
-			self.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.__tabs_trigger.handler_is_connected(self.__signal_id_3):
-			self.__tabs_trigger.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.__remove_trigger.handler_is_connected(self.__signal_id_4):
-			self.__remove_trigger.disconnect(self.__signal_id_4)
-		if self.__signal_id_5 and self.__editor.textview.handler_is_connected(self.__signal_id_5):
-			self.__editor.textview.disconnect(self.__signal_id_5)
-		del self.__editor, self.__spaces_trigger, self.__tabs_trigger
-		del self.__remove_trigger, self.__signal_id_4, self.__signal_id_5
-		del self.__signal_id_2, self.__signal_id_1, self.__signal_id_3
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__spaces_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__tabs_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__remove_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor.textview)
 		del self
 		self = None
 		return

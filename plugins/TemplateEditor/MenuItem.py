@@ -71,9 +71,8 @@ class MenuItem(object):
 		self.__signal_id_1 = None
 		self.__signal_id_2 = None
 		from gtk import STOCK_PROPERTIES
-		from SCRIBES.utils import create_menuitem
 		from i18n import msg0010
-		self.__menuitem = create_menuitem(msg0010, STOCK_PROPERTIES)
+		self.__menuitem = editor.create_menuitem(msg0010, STOCK_PROPERTIES)
 		return
 
 	def __add_menuitem(self):
@@ -99,12 +98,10 @@ class MenuItem(object):
 		@param trigger: Reference to the TemplateEditorTrigger instance.
 		@type trigger: An TemplateEditorTrigger object.
 		"""
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_2, self.__menuitem)
-		disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__menuitem)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		self.__editor.preference_menu.remove(self.__menuitem)
 		self.__menuitem.destroy()
-		delete_attributes(self)
 		del self
 		self = None
 		return
@@ -122,5 +119,5 @@ class MenuItem(object):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		self.__editor.triggermanager.trigger("show_template_editor")
+		self.__editor.trigger("show_template_editor")
 		return False

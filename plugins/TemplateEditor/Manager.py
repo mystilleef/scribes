@@ -139,9 +139,7 @@ class TemplateManager(GObject):
 		@type trigger: A Trigger object.
 		"""
 		self.emit("destroy")
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, trigger)
-		delete_attributes(self)
-		self = None
+		self.__editor.disconnect_signal(self.__signal_id_1, trigger)
 		del self
+		self = None
 		return

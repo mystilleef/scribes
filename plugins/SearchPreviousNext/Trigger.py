@@ -86,11 +86,10 @@ class SearchTrigger(GObject):
 		@param self: Reference to the SearchTrigger instance.
 		@type self: A SearchTrigger object.
 		"""
-		from SCRIBES.Trigger import Trigger
-		self.__next_trigger = Trigger("search_next", "ctrl - g")
+		self.__next_trigger = self.__editor.create_trigger("search_next", "ctrl - g")
 		self.__editor.add_trigger(self.__next_trigger)
 
-		self.__previous_trigger = Trigger("search_previous", "ctrl - G")
+		self.__previous_trigger = self.__editor.create_trigger("search_previous", "ctrl - G")
 		self.__editor.add_trigger(self.__previous_trigger)
 		return
 
@@ -103,11 +102,9 @@ class SearchTrigger(GObject):
 		"""
 		self.__editor.remove_trigger(self.__next_trigger)
 		self.__editor.remove_trigger(self.__previous_trigger)
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, self.__next_trigger)
-		disconnect_signal(self.__signal_id_2, self.__previous_trigger)
-		disconnect_signal(self.__signal_id_3, self)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__next_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__previous_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
 		del self
 		self = None
 		return

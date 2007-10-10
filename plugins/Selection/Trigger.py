@@ -90,17 +90,16 @@ class SelectionTrigger(GObject):
 		@type self: A SelectionTrigger object.
 		"""
 		# Trigger to select a word.
-		from SCRIBES.Trigger import Trigger
-		self.__select_word_trigger = Trigger("select_word", "alt - w")
+		self.__select_word_trigger = self.__editor.create_trigger("select_word", "alt - w")
 		self.__editor.add_trigger(self.__select_word_trigger)
 
 		# Trigger to select a sentence.
-		self.__select_sentence_trigger = Trigger("select_sentence", "alt - s")
-		self.__editor.triggermanager.add_trigger(self.__select_sentence_trigger)
+		self.__select_sentence_trigger = self.__editor.create_trigger("select_sentence", "alt - s")
+		self.__editor.add_trigger(self.__select_sentence_trigger)
 
 		# Trigger to select a line.
-		self.__select_line_trigger = Trigger("select_line", "alt - l")
-		self.__editor.triggermanager.add_trigger(self.__select_line_trigger)
+		self.__select_line_trigger = self.__editor.create_trigger("select_line", "alt - l")
+		self.__editor.add_trigger(self.__select_line_trigger)
 		return
 
 	def __select_word_cb(self, trigger):
@@ -121,8 +120,7 @@ class SelectionTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
-		from SCRIBES.cursor import get_cursor_iterator
-		iterator = get_cursor_iterator(self.__editor.textbuffer)
+		iterator = self.__editor.get_cursor_iterator()
 		from word import select_word
 		result = select_word(self.__editor.textbuffer, iterator)
 		if result:
@@ -179,8 +177,7 @@ class SelectionTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
-		from SCRIBES.cursor import get_cursor_line
-		cursor_line = get_cursor_line(self.__editor.textbuffer)
+		cursor_line = self.__editor.get_cursor_line()
 		from lines import select_line
 		result = select_line(self.__editor.textbuffer)
 		if result:
@@ -206,20 +203,11 @@ class SelectionTrigger(GObject):
 		self.__editor.triggermanager.remove_trigger(self.__select_word_trigger)
 		self.__editor.triggermanager.remove_trigger(self.__select_sentence_trigger)
 		self.__editor.triggermanager.remove_trigger(self.__select_line_trigger)
-		if self.__signal_id_1 and self.__select_word_trigger.handler_is_connected(self.__signal_id_1):
-			self.__select_word_trigger.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.handler_is_connected(self.__signal_id_2):
-			self.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.__select_sentence_trigger.handler_is_connected(self.__signal_id_3):
-			self.__select_sentence_trigger.disconnect(self.__signal_id_3)
-		if self.__signal_id_4 and self.__select_line_trigger.handler_is_connected(self.__signal_id_4):
-			self.__select_line_trigger.disconnect(self.__signal_id_4)
-		if self.__signal_id_6 and self.__editor.textview.handler_is_connected(self.__signal_id_6):
-			self.__editor.textview.disconnect(self.__signal_id_6)
-		del self.__editor, self.__select_word_trigger
-		del self.__select_sentence_trigger, self.__select_line_trigger
-		del self.__signal_id_2, self.__signal_id_1, self.__signal_id_3
-		del self.__signal_id_4, self.__signal_id_6
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__select_word_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__select_sentence_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__select_line_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor.textview)
 		del self
 		self = None
 		return

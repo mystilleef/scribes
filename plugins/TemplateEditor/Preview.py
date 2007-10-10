@@ -152,8 +152,7 @@ class Preview(SourceView):
 		languages = manager.get_available_languages()
 		from operator import eq
 		for language in languages:
-			if eq(language.get_id(), language_id):
-				break
+			if eq(language.get_id(), language_id): break
 		from SCRIBES.syntax import activate_syntax_highlight
 		activate_syntax_highlight(self.__buffer, language)
 		return
@@ -168,13 +167,11 @@ class Preview(SourceView):
 		@param manager: Reference to the TemplateManager
 		@type manager: A TemplateManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, manager)
-		disconnect_signal(self.__signal_id_3, manager)
-		disconnect_signal(self.__signal_id_4, manager)
+		self.__editor.disconnect_signal(self.__signal_id_1, manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, manager)
+		self.__editor.disconnect_signal(self.__signal_id_4, manager)
 		self.destroy()
-		delete_attributes(self)
 		self = None
 		del self
 		return

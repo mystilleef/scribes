@@ -58,7 +58,6 @@ def select_line(textbuffer):
 	@rtype: A Boolean object.
 	"""
 	begin_position, end_position = get_line_bounds(textbuffer)
-	if begin_position.get_char() in ["\n", "\x00"]:
-		return False
+	if begin_position.get_char() in ["\n", "\x00"]: return False
 	textbuffer.select_range(begin_position, end_position)
 	return True

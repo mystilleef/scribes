@@ -80,7 +80,7 @@ class SearchPrevious(object):
 		@type self: A SearchPrevious object.
 		"""
 		if not self.__editor.search_replace_manager.queries:
-			self.__editor.triggermanager.trigger("show_findbar")
+			self.__editor.trigger("show_findbar")
 			return
 		if self.__editor.search_replace_manager.index is None:
 			from internationalization import msg0461
