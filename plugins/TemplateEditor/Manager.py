@@ -87,9 +87,9 @@ class TemplateManager(GObject):
 		from Window import TemplateWindow
 		TemplateWindow(self, editor)
 		from LinkButton import LinkButton
-		LinkButton(self)
+		LinkButton(self, editor)
 		from HelpButton import HelpButton
-		HelpButton(self)
+		HelpButton(self, editor)
 		from ImportButton import ImportButton
 		ImportButton(self, editor)
 		self.__signal_id_1 = trigger.connect("destroy", self.__destroy_cb)

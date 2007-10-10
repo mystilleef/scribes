@@ -34,7 +34,7 @@ class HelpButton(object):
 	This class defines the behavior of the help button.
 	"""
 
-	def __init__(self, manager):
+	def __init__(self, manager, editor):
 		"""
 		Initialize object.
 
@@ -44,11 +44,11 @@ class HelpButton(object):
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
 		"""
-		self.__init_attributes(manager)
+		self.__init_attributes(manager, editor)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = self.__button.connect("clicked", self.__clicked_cb)
 
-	def __init_attributes(self, manager):
+	def __init_attributes(self, manager, editor):
 		"""
 		Initialize data attributes.
 
@@ -59,6 +59,7 @@ class HelpButton(object):
 		@type manager: A TemplateManager object.
 		"""
 		self.__manager = manager
+		self.__editor = editor
 		self.__button = manager.glade.get_widget("HelpButton")
 		self.__signal_id_1 = self.__signal_id_2 = None
 		return

@@ -49,8 +49,8 @@ class Highlighter(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(manager, editor)
-		from thread import start_new_thread
-		start_new_thread(self.__precompile_methods, ())
+		from gobject import idle_add
+		idle_add(self.__precompile_methods)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = manager.connect("trigger-found", self.__trigger_found_cb)
 		self.__signal_id_3 = manager.connect("no-trigger-found", self.__no_trigger_found_cb)
@@ -78,10 +78,8 @@ class Highlighter(object):
 
 	def __destroy_cb(self, manager):
 		self.__editor.textbuffer.get_tag_table().remove(self.__highlight_tag)
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, manager)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, manager)
 		self = None
 		del self
 		return

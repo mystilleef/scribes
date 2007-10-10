@@ -557,6 +557,10 @@ class Editor(GObject):
 		from cursor import show_textview_cursor
 		return show_textview_cursor(self.__textview)
 
+	def get_word_before_cursor(self):
+		from cursor import get_word_before_cursor
+		return get_word_before_cursor(self.__textbuffer)
+
 	def can_read_write(self):
 		from utils import check_uri_permission
 		return check_uri_permission(self.uri)
@@ -618,6 +622,14 @@ class Editor(GObject):
 	def word_to_cursor(self):
 		from cursor import word_to_cursor
 		return word_to_cursor(self.__textbuffer)
+
+	def get_cursor_window_coordinates(self):
+		from cursor import get_cursor_window_coordinates
+		return get_cursor_window_coordinates(self.__textview)
+
+	def get_cursor_size(self):
+		from cursor import get_cursor_size
+		return get_cursor_size(self.__textview)
 
 	def select_row(self, treeview):
 		from utils import select_row

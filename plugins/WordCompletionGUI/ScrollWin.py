@@ -116,11 +116,10 @@ class CompletionScrollWin(ScrolledWindow):
 		@param manager: Reference to the CompletionManager instance.
 		@type manager: A CompletionManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
+		from SCRIBES.utils import disconnect_signal
 		disconnect_signal(self.__signal_id_1, manager)
 		disconnect_signal(self.__signal_id_2, manager)
 		self.destroy()
-		delete_attributes(self)
 		self = None
 		del self
 		return

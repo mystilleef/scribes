@@ -57,15 +57,16 @@ class DBusService(Object):
 	def process(self, text, id):
 		"""
 		Index text for automatic word completion.
-		
+
 		@param self: Reference to the DBusService instance.
 		@type self: A DBusService object.
-		
+
 		@return: A dictionary of words ranked by occurrence.
 		@rtype: A Dict object.
 		"""
 		return self.__indexer.process(text, id)
-		
+
 	@signal(indexer_dbus_service)
 	def finished_indexing(self, id, dictionary):
-		return 
+		return
+

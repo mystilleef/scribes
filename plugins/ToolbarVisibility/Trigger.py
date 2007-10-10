@@ -81,8 +81,7 @@ class ToggleTrigger(GObject):
 		@type self: A ToggleTrigger object.
 		"""
 		# Trigger to show or hide toolbar.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("toggle_minimal_interface", "ctrl - alt - m")
+		self.__trigger = self.__editor.create_trigger("toggle_minimal_interface", "ctrl - alt - m")
 		self.__editor.add_trigger(self.__trigger)
 		return
 
@@ -121,11 +120,9 @@ class ToggleTrigger(GObject):
 		@param trigger: Reference to the ToggleTrigger instance.
 		@type trigger: A ToggleTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__trigger)
-		disconnect_signal(self.__signal_id_2, self)
-		delete_attributes(self)
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		del self
 		self = None
 		return

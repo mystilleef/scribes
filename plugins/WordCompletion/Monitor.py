@@ -95,8 +95,7 @@ class CompletionMonitor(object):
 		@param self: Reference to the CompletionMonitor instance.
 		@type self: A CompletionMonitor object.
 		"""
-		from SCRIBES.cursor import get_word_before_cursor
-		word = get_word_before_cursor(self.__editor.textbuffer)
+		word = self.__editor.get_word_before_cursor() 
 		if word:
 			matches = self.__find_matches(word)
 			if matches:

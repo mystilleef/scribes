@@ -34,7 +34,7 @@ class LinkButton(object):
 	This class defines the behavior of the link button.
 	"""
 
-	def __init__(self, manager):
+	def __init__(self, manager, editor):
 		"""
 		Initialize object.
 
@@ -47,11 +47,11 @@ class LinkButton(object):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__init_attributes(manager)
+		self.__init_attributes(manager, editor)
 		self.__signal_id_1 = self.__button.connect("clicked", self.__clicked_cb)
 		self.__signal_id_2 = manager.connect("destroy", self.__destroy_cb)
 
-	def __init_attributes(self, manager):
+	def __init_attributes(self, manager, editor):
 		"""
 		Initialize data attributes.
 
@@ -61,6 +61,7 @@ class LinkButton(object):
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
 		"""
+		self.__editor = editor
 		self.__button = manager.glade.get_widget("DownloadButton")
 		self.__signal_id_1 = self.__signal_id_2 = None
 		return

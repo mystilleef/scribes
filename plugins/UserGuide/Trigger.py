@@ -81,9 +81,8 @@ class UserGuideTrigger(GObject):
 		@type self: A UserGuideTrigger object.
 		"""
 		# Trigger to user guide.
-		from SCRIBES.Trigger import Trigger
-		self.__trigger = Trigger("show_user_guide", "F1")
-		self.__editor.triggermanager.add_trigger(self.__trigger)
+		self.__trigger = self.__editor.create_trigger("show_user_guide", "F1")
+		self.__editor.add_trigger(self.__trigger)
 		return
 
 	def __show_user_guide_cb(self, trigger):
@@ -115,13 +114,9 @@ class UserGuideTrigger(GObject):
 		@param trigger: Reference to the UserGuideTrigger instance.
 		@type trigger: A UserGuideTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__trigger)
-		if self.__signal_id_1 and self.__trigger.handler_is_connected(self.__signal_id_1):
-			self.__trigger.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.handler_is_connected(self.__signal_id_2):
-			self.disconnect(self.__signal_id_2)
-		del self.__editor, self.__trigger
-		del self.__signal_id_2, self.__signal_id_1
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		del self
 		self = None
 		return

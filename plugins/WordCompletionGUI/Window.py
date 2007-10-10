@@ -53,7 +53,8 @@ class CompletionWindow(Window):
 		Window.__init__(self, WINDOW_POPUP)
 		self.__init_attributes(manager, editor, completion)
 		self.__set_properties()
-		self.__precompile_methods()
+		from gobject import idle_add
+		idle_add(self.__precompile_methods)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = manager.connect("show-window", self.__show_window_cb)
 		self.__signal_id_3 = manager.connect("hide-window", self.__generic_hide_cb)
@@ -159,9 +160,8 @@ class CompletionWindow(Window):
 		@type height: An Integer object.
 		"""
 		# Get the cursor's coordinate and size.
-		from SCRIBES.cursor import get_cursor_window_coordinates, get_cursor_size
-		cursor_x, cursor_y = get_cursor_window_coordinates(self.__editor.textview)
-		cursor_height = get_cursor_size(self.__editor.textview)[1]
+		cursor_x, cursor_y = self.__editor.get_cursor_window_coordinates()
+		cursor_height = self.__editor.get_cursor_size()[1]
 		# Get the text editor's textview coordinate and size.
 		from gtk import TEXT_WINDOW_TEXT
 		window = self.__editor.textview.get_window(TEXT_WINDOW_TEXT)
@@ -269,7 +269,7 @@ class CompletionWindow(Window):
 			bind(self.__unblock_signals)
 		except ImportError:
 			pass
-		return
+		return False
 
 ########################################################################
 #
@@ -347,8 +347,7 @@ class CompletionWindow(Window):
 		@type window: A CompletionWindow object.
 		"""
 		from operator import eq, contains
-		if contains(self.__keys, event.keyval):
-			self.__hide_window()
+		if contains(self.__keys, event.keyval): self.__hide_window()
 		return False
 
 	def __button_press_event_cb(self, *args):

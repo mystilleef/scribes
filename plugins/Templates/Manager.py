@@ -96,9 +96,7 @@ class TemplatesManager(GObject):
 		@param manager: Reference to the TemplatesManager instance.
 		@type manager: A TemplatesManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, self)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self = None
 		del self
 		return

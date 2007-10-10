@@ -83,12 +83,11 @@ class UndoRedoTrigger(GObject):
 		@type self: A UndoRedoTrigger object.
 		"""
 		# Trigger to undo a text operation.
-		from SCRIBES.Trigger import Trigger
-		self.__undo_trigger = Trigger("undo_action", "ctrl - z")
+		self.__undo_trigger = self.__editor.create_trigger("undo_action", "ctrl - z")
 		self.__editor.add_trigger(self.__undo_trigger)
 
 		# Trigger to redo a text operation.
-		self.__redo_trigger = Trigger("redo_action", "ctrl - Z")
+		self.__redo_trigger = self.__editor.create_trigger("redo_action", "ctrl - Z")
 		self.__editor.add_trigger(self.__redo_trigger)
 		return
 
@@ -111,8 +110,7 @@ class UndoRedoTrigger(GObject):
 			self.__editor.textbuffer.undo()
 			from i18n import msg0002
 			self.__editor.feedback.update_status_message(msg0002, "undo")
-			from SCRIBES.cursor import move_view_to_cursor
-			move_view_to_cursor(self.__editor.textview)
+			self.__editor.move_view_to_cursor()
 		else:
 			from i18n import msg0003
 			self.__editor.feedback.update_status_message(msg0003, "fail")
@@ -137,8 +135,7 @@ class UndoRedoTrigger(GObject):
 			self.__editor.textbuffer.redo()
 			from i18n import msg0004
 			self.__editor.feedback.update_status_message(msg0004, "redo")
-			from SCRIBES.cursor import move_view_to_cursor
-			move_view_to_cursor(self.__editor.textview)
+			self.__editor.move_view_to_cursor()
 		else:
 			from i18n import msg0005
 			self.__editor.feedback.update_status_message(msg0005, "fail")
@@ -154,16 +151,11 @@ class UndoRedoTrigger(GObject):
 		@param trigger: Reference to the UndoRedoTrigger instance.
 		@type trigger: A UndoRedoTrigger object.
 		"""
-		self.__editor.triggermanager.remove_trigger(self.__undo_trigger)
-		self.__editor.triggermanager.remove_trigger(self.__redo_trigger)
-		if self.__signal_id_1 and self.__undo_trigger.handler_is_connected(self.__signal_id_1):
-			self.__undo_trigger.disconnect(self.__signal_id_1)
-		if self.__signal_id_2 and self.handler_is_connected(self.__signal_id_2):
-			self.disconnect(self.__signal_id_2)
-		if self.__signal_id_3 and self.handler_is_connected(self.__signal_id_3):
-			self.__redo_trigger.disconnect(self.__signal_id_3)
-		del self.__editor, self.__undo_trigger, self.__redo_trigger
-		del self.__signal_id_2, self.__signal_id_1, self.__signal_id_3
+		self.__editor.remove_trigger(self.__undo_trigger)
+		self.__editor.remove_trigger(self.__redo_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__undo_trigger)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
 		del self
 		self = None
 		return

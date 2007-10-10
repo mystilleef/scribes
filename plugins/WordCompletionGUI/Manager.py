@@ -165,10 +165,8 @@ class CompletionManager(GObject):
 		@param manager: Reference to the CompletionManager instance.
 		@type manager: A CompletionManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, self.__editor.store)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor.store)
 		self = None
 		del self
 		return

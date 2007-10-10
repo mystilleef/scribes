@@ -209,8 +209,7 @@ class TemplateProcessor(object):
 		else:
 			iterator = self.__editor.textbuffer.get_iter_at_mark(begin_mark)
 			self.__editor.textbuffer.place_cursor(iterator)
-		from SCRIBES.cursor import move_view_to_cursor
-		move_view_to_cursor(self.__editor.textview)
+		self.__editor.move_view_to_cursor()
 		from i18n import msg0004
 		self.__editor.feedback.update_status_message(msg0004, "yes")
 		return
@@ -652,12 +651,11 @@ class TemplateProcessor(object):
 		return False
 
 	def __destroy_cb(self, manager):
-		from SCRIBES.utils import delete_attributes, disconnect_signal
 		self.__manager.emit("template-destroyed", self)
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor.textbuffer)
-		disconnect_signal(self.__signal_id_4, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__signal_id_1, manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor.textbuffer)
 		# Remove all tags associated with this template object.
 		begin_position = self.__editor.textbuffer.get_iter_at_mark(self.__start_template_mark)
 		end_position = self.__editor.textbuffer.get_iter_at_mark(self.__end_template_mark)
@@ -682,7 +680,6 @@ class TemplateProcessor(object):
 		self.__editor.feedback.unset_modal_message(self.__status_id)
 		from i18n import msg0002
 		self.__editor.feedback.update_status_message(msg0002, "yes")
-		delete_attributes(self)
 		self = None
 		del self
 		return False

@@ -160,17 +160,15 @@ class TemplateMonitor(object):
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
 		self.__language_dictionary.clear()
 		self.__general_dictionary.clear()
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, manager)
-		disconnect_signal(self.__signal_id_3, manager)
-		disconnect_signal(self.__signal_id_4, self.__editor)
-		disconnect_signal(self.__signal_id_5, self.__editor.textview)
-		disconnect_signal(self.__signal_id_6, manager)
-		disconnect_signal(self.__signal_id_7, manager)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, manager)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_6, manager)
+		self.__editor.disconnect_signal(self.__signal_id_7, manager)
 		self = None
 		del self
 		return
@@ -207,8 +205,7 @@ class TemplateMonitor(object):
 		self.__language_dictionary.clear()
 		self.__language_dictionary.update(dictionary)
 		self.__language = None
-		from SCRIBES.utils import get_language
-		source_lang = get_language(self.__editor.uri)
+		source_lang = self.__editor.language
 		if source_lang: self.__language = source_lang.get_id()
 		return
 

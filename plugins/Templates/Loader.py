@@ -73,8 +73,7 @@ class TemplateLoader(object):
 		self.__editor = editor
 		self.__manager = manager
 		# Path to the templates database.
-		from SCRIBES.info import metadata_folder
-		database_path = metadata_folder + "templates.gdb"
+		database_path = editor.metadata_folder + "templates.gdb"
 		from gnomevfs import get_uri_from_local_path
 		self.__database_uri = get_uri_from_local_path(database_path)
 		self.__monitor_id = None
@@ -109,8 +108,7 @@ class TemplateLoader(object):
 		"""
 		self.__manager.emit("loaded-language-templates", {})
 		if self.__editor.uri is None: return
-		from SCRIBES.utils import get_language
-		language = get_language(self.__editor.uri)
+		language = self.__editor.language
 		if not language: return
 		language_id = language.get_id()
 		from Metadata import open_template_database, close_template_database
@@ -144,16 +142,14 @@ class TemplateLoader(object):
 		@param manager: Reference to the TemplatesManager instance.
 		@type manager: A TemplatesManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
 		if self.__monitor_id:
 			from gnomevfs import monitor_cancel
 			monitor_cancel(self.__monitor_id)
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		delete_attributes(self)
-		self = None
+		self.__editor.disconnect_signal(self.__signal_id_1, manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
 		del self
+		self = None
 		return
 
 	def __loaded_document_cb(self, editor, uri):
@@ -190,6 +186,5 @@ class TemplateLoader(object):
 		from gnomevfs import MONITOR_EVENT_CHANGED
 		from operator import contains
 		events = [MONITOR_EVENT_CHANGED, MONITOR_EVENT_DELETED, MONITOR_EVENT_CREATED]
-		if contains(events, event_type):
-			self.__load_templates()
+		if contains(events, event_type): self.__load_templates()
 		return

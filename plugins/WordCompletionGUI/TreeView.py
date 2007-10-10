@@ -55,7 +55,8 @@ class CompletionTreeView(TreeView):
 		TreeView.__init__(self)
 		self.__init_attributes(manager, editor, completion)
 		self.__set_properties()
-		self.__precompile_methods()
+		from gobject import idle_add
+		idle_add(self.__precompile_methods)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = completion.connect("match-found", self.__match_found_cb)
 		self.__signal_id_3 = self.connect("row-activated", self.__row_activated_cb)
@@ -147,7 +148,7 @@ class CompletionTreeView(TreeView):
 		return
 
 	def __response(self):
-		self.__editor.response()
+		#self.__editor.response()
 		return False
 
 	def __insert_word_completion(self, path):
@@ -167,8 +168,7 @@ class CompletionTreeView(TreeView):
 		completion_string = model[path[0]][0].decode("utf8")
 		# Index to split completion string for insertion into the text editor's
 		# buffer. Encode to utf8 before insertion.
-		from SCRIBES.cursor import get_word_before_cursor
-		index = len(get_word_before_cursor(self.__editor.textbuffer).decode("utf8"))
+		index = len(self.__editor.get_word_before_cursor().decode("utf8"))
 		string = completion_string[index:]
 		# Split completion_string at the right index and insert into the editor's
 		# buffer.
@@ -187,7 +187,7 @@ class CompletionTreeView(TreeView):
 			bind(self.__insert_word_completion)
 		except ImportError:
 			pass
-		return
+		return False
 
 ########################################################################
 #
@@ -245,16 +245,14 @@ class CompletionTreeView(TreeView):
 		@param manager: Reference to the CompletionManager instance.
 		@type manager: A CompletionManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, self.__completion)
-		disconnect_signal(self.__signal_id_3, self)
-		disconnect_signal(self.__signal_id_4, self)
-		disconnect_signal(self.__signal_id_5, manager)
-		disconnect_signal(self.__signal_id_7, self.__editor)
-		disconnect_signal(self.__signal_id_8, self)
+		self.__editor.disconnect_signal(self.__signal_id_1, manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__completion)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
+		self.__editor.disconnect_signal(self.__signal_id_4, self)
+		self.__editor.disconnect_signal(self.__signal_id_5, manager)
+		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_8, self)
 		self.destroy()
-		delete_attributes(self)
 		self = None
 		del self
 		return

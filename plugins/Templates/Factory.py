@@ -49,8 +49,8 @@ class TemplateFactory(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(manager, editor)
-		from thread import start_new_thread
-		start_new_thread(self.__precompile_methods, ())
+		from gobject import idle_add
+		idle_add(self.__precompile_methods)
 		self.__signal_id_1 = manager.connect("trigger-activated", self.__trigger_activated_cb)
 		self.__signal_id_2 = manager.connect("next-placeholder", self.__next_placeholder_cb)
 		self.__signal_id_3 = manager.connect("previous-placeholder", self.__previous_placeholder_cb)
@@ -142,7 +142,7 @@ class TemplateFactory(object):
 			bind(self.__previous_placeholder_cb)
 		except ImportError:
 			pass
-		return
+		return False
 
 	def __destroyed_cb(self, manager):
 		"""
@@ -154,13 +154,11 @@ class TemplateFactory(object):
 		@param manager: Reference to the TemplateManager
 		@type manager: A TemplateManager object.
 		"""
-		from SCRIBES.utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, manager)
-		disconnect_signal(self.__signal_id_3, manager)
-		disconnect_signal(self.__signal_id_4, manager)
-		disconnect_signal(self.__signal_id_5, manager)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, manager)
+		self.__editor.disconnect_signal(self.__signal_id_2, manager)
+		self.__editor.disconnect_signal(self.__signal_id_3, manager)
+		self.__editor.disconnect_signal(self.__signal_id_4, manager)
+		self.__editor.disconnect_signal(self.__signal_id_5, manager)
 		self = None
 		del self
 		return
