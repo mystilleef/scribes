@@ -48,7 +48,7 @@ scribes_sysconfdir = "/usr/etc"
 scribes_data_folder = scribes_data_path + "/scribes"
 core_plugin_folder = scribes_data_folder + "/plugins"
 python_path = "/usr/lib/python2.5/site-packages"
-version = "0.3.2.9"
+version = "0.3.2.10-rev24"
 author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"Contributors:",
 			"\tHerman Polloni <hpolloni@gmail.com>",

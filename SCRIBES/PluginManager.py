@@ -145,13 +145,12 @@ class PluginManager(object):
 		"""
 		from os import listdir
 		from gobject import idle_add
-		from info import home_plugin_folder, core_plugin_folder
-		core_files = listdir(core_plugin_folder)
+		core_files = listdir(self.__editor.core_plugin_folder)
 		for filename in core_files:
-			idle_add(self.__init_module, filename, core_plugin_folder)
-		home_files = listdir(home_plugin_folder)
+			idle_add(self.__init_module, filename, self.__editor.core_plugin_folder)
+		home_files = listdir(self.__editor.home_plugin_folder)
 		for filename in home_files:
-			idle_add(self.__init_module, filename, home_plugin_folder)
+			idle_add(self.__init_module, filename, self.__editor.home_plugin_folder)
 		return False
 
 	def __unload_plugins(self):
@@ -237,16 +236,15 @@ class PluginManager(object):
 		@param self: Reference to the PluginManager instance.
 		@type self: A PluginManager object.
 		"""
-		from info import home_plugin_folder, core_plugin_folder
 		from os import makedirs, path
 		from Exceptions import PluginFolderNotFoundError
 		from operator import not_
-		filename = path.join(core_plugin_folder, "__init__.py")
+		filename = path.join(self.__editor.core_plugin_folder, "__init__.py")
 		if not_(path.exists(filename)): raise PluginFolderNotFoundError
-		filename = path.join(home_plugin_folder, "__init__.py")
+		filename = path.join(self.__editor.home_plugin_folder, "__init__.py")
 		if path.exists(filename): return
 		try:
-			makedirs(home_plugin_folder)
+			makedirs(self.__editor.home_plugin_folder)
 		except OSError:
 			pass
 		try:
@@ -263,10 +261,9 @@ class PluginManager(object):
 		@param self: Reference to the ScribesPluginManager instance.
 		@type self: A ScribesPluginManager object.
 		"""
-		from info import home_plugin_folder, core_plugin_folder
 		from sys import path
-		path.insert(0, core_plugin_folder)
-		path.insert(0, home_plugin_folder)
+		path.insert(0, self.__editor.core_plugin_folder)
+		path.insert(0, self.__editor.home_plugin_folder)
 		return
 
 	def __destroy(self):
@@ -279,10 +276,8 @@ class PluginManager(object):
 		self.__plugin_modules.clear()
 		self.__plugin_objects.clear()
 		self.__editor.unregister_object(self.__registration_id)
-		from utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		del self
 		self = None
 		return

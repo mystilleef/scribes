@@ -48,8 +48,7 @@ def starts_word(iterator):
 	"""
 	# If the iterator is at the end of a word or line then it does not start a
 	# word.
-	if iterator.ends_line() or iterator.ends_word():
-		return False
+	if iterator.ends_line() or iterator.ends_word(): return False
 	character = iterator.get_char()
 	# If the the word in front of the iterator is not alphanumeric or is not
 	# an underscore or a dash, then it does not start a word.
@@ -61,8 +60,7 @@ def starts_word(iterator):
 	# At this point there is a valid alphanumeric character in front of the
 	# iterator. So if the iterator begins a line, then it is at the start of a
 	# word.
-	if iterator.starts_line():
-		return True
+	if iterator.starts_line(): return True
 	# Move the iterator back one character to determine if there is a non-
 	# alphanumeric character before the real iterator position.
 	iterator.backward_char()
@@ -71,8 +69,7 @@ def starts_word(iterator):
 	# If there is an alphanumeric character, or an underscore, or a bash character
 	# before the iterator, then the it does not start a word. Otherwise, it
 	# does.
-	if character.isalnum() or character in ("-", "_"):
-		return False
+	if character.isalnum() or character in ("-", "_"): return False
 	return True
 
 def ends_word(iterator):
@@ -118,10 +115,8 @@ def inside_word(iterator):
 	@return: True if the iterator is inside a word, false otherwise.
 	@rtype: A Boolean object.
 	"""
-	if starts_word(iterator) or ends_word(iterator):
-		return False
-	if iterator.starts_line() or iterator.ends_line():
-		return False
+	if starts_word(iterator) or ends_word(iterator): return False
+	if iterator.starts_line() or iterator.ends_line(): return False
 	character = iterator.get_char()
 	if character.isalnum() is False:
 		if character in ("-", "_"):

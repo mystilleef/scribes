@@ -62,10 +62,9 @@ class Spinner(ToolItem):
 		"""
 		self.__editor = editor
 		self.__store_id = editor.store.add_object("Spinner", self)
-		from utils import create_image, find_file
 		from gtk.gdk import PixbufAnimation
-		self.__animation = PixbufAnimation(find_file("throbber-active.gif"))
-		self.__image = create_image("throbber-inactive.png")
+		self.__animation = PixbufAnimation(editor.find_file("throbber-active.gif"))
+		self.__image = editor.create_image("throbber-inactive.png")
 		self.__pixbuf = self.__image.get_pixbuf()
 		self.__call_count = 0
 		self.__is_spinning = False

@@ -565,6 +565,10 @@ class Editor(GObject):
 		from utils import check_uri_permission
 		return check_uri_permission(self.uri)
 
+	def find_file(self, file_path):
+		from utils import find_file
+		return find_file(file_path)
+
 	def get_object(self, name):
 		return self.__store.get_object(name)
 
@@ -641,6 +645,10 @@ class Editor(GObject):
 	def create_image(self, image_file):
 		from utils import create_image
 		return create_image(image_file)
+
+	def generate_random_number(self, sequence):
+		from utils import generate_random_number
+		return generate_random_number(sequence)
 
 	def mark(self, iterator, alignment="right"):
 		from operator import eq

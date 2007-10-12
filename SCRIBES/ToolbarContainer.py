@@ -122,7 +122,7 @@ class ScribesToolbarContainer(HBox):
 
 	def __close_document_cb(self, editor):
 		self.__destroy()
-		return 
+		return
 
 	def __show_dialog_cb(self, editor, dialog):
 		"""
@@ -241,6 +241,5 @@ class ScribesToolbarContainer(HBox):
 		@return: True to call this function again, False otherwise.
 		@rtype: A Boolean object.
 		"""
-		if self.__editor.window.is_fullscreen:
-			self.hide_all()
+		if self.__editor.window.is_fullscreen: self.hide_all()
 		return False

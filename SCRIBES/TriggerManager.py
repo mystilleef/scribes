@@ -326,14 +326,12 @@ class TriggerManager(object):
 		self.__accelerator_keyname_list.clear()
 		self.__trigger_dictionary.clear()
 		self.__accelerators.clear()
-		from utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor.window)
-		disconnect_signal(self.__signal_id_2, self.__editor)
-		disconnect_signal(self.__signal_id_3, self.__editor)
-		disconnect_signal(self.__signal_id_4, self.__editor)
-		disconnect_signal(self.__signal_id_5, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor.window)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
 		self.__editor.unregister_object(self.__registration_id)
-		delete_attributes(self)
 		del self
 		self = None
 		return
@@ -383,7 +381,7 @@ class TriggerManager(object):
 			else:
 				accelerator = ["alt"] + [keyname]
 			return self.__activate_accelerator(accelerator)
-		
+
 		# Control and Alt key are pressed.
 		if event.state & CONTROL_MASK and event.state & MOD1_MASK:
 			accelerator = ["alt", "ctrl"] + [keyname]
@@ -429,4 +427,3 @@ class TriggerManager(object):
 	def __hide_bar_cb(self, *args):
 		self.__bar_is_visible = False
 		return
-

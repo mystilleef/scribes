@@ -60,7 +60,7 @@ class ScribesToolbar(Toolbar):
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_cb)
 		editor.response()
 		self.__client.notify_add("/apps/scribes/hide_toolbar", self.__hide_toolbar_cb)
-		
+
 	def __get_visibility(self):
 		return self.__is_visible
 
@@ -183,13 +183,11 @@ class ScribesToolbar(Toolbar):
 		@type self: A Store object.
 		"""
 		# Disconnect signals.
-		from utils import disconnect_signal, delete_attributes
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.destroy()
 		# Unregister object so that editor can quit.
 		self.__editor.unregister_termination_id(self.__registration_id)
-		delete_attributes(self)
 		# Delete data attributes.
 		del self
 		self = None

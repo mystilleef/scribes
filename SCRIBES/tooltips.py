@@ -98,10 +98,8 @@ def create_tooltips():
 	@return: a tooltip object
 	@rtype: GTK Tooltips
 	"""
-
 	from gtk import Tooltips
 	tips = Tooltips()
 	tips.enable()
-
 	return tips
 

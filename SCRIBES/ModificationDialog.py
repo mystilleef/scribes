@@ -73,8 +73,7 @@ class ModificationDialog(object):
 		self.__editor = editor
 		self.__filesaver = filesaver
 		from os.path import join
-		from info import scribes_data_folder
-		glade_file = join(scribes_data_folder, "ModificationDialog.glade")
+		glade_file = join(self.__editor.scribes_data_folder, "ModificationDialog.glade")
 		from gtk.glade import XML
 		glade = XML(glade_file, "Window")
 		self.__window = glade.get_widget("Window")
@@ -102,17 +101,15 @@ class ModificationDialog(object):
 		@param self: Reference to the ModificationDialog instance.
 		@type self: A ModificationDialog object.
 		"""
-		from utils import delete_attributes, disconnect_signal
-		disconnect_signal(self.__signal_id_1, self.__ignore_button)
-		disconnect_signal(self.__signal_id_2, self.__overwrite_button)
-		disconnect_signal(self.__signal_id_3, self.__reload_button)
-		disconnect_signal(self.__signal_id_4, self.__window)
-		disconnect_signal(self.__signal_id_5, self.__window)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__ignore_button)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__overwrite_button)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__reload_button)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__window)
+		self.__editor.disconnect_signal(self.__signal_id_5, self.__window)
 		self.__ignore_button.destroy()
 		self.__overwrite_button.destroy()
 		self.__reload_button.destroy()
 		self.__window.destroy()
-		delete_attributes(self)
 		self = None
 		del self
 		return

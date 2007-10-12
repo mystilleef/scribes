@@ -92,8 +92,7 @@ class Store(GObject):
 			if (name,) in self.__object_dictionary.keys():
 				raise ValueError
 			self.__object_dictionary[(name,)] = instance
-			from utils import generate_random_number
-			store_id = generate_random_number(self.__object_id_dictionary.keys())
+			store_id = self.__editor.generate_random_number(self.__object_id_dictionary.keys())
 			self.__object_id_dictionary[store_id] = name
 			self.emit("updated", name)
 		except ValueError:
@@ -197,9 +196,8 @@ class Store(GObject):
 		"""
 		if self.__object_dictionary: return
 		# Disconnect signals.
-		from utils import disconnect_signal
-		disconnect_signal(self.__signal_id_1, self.__editor)
-		disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.__object_dictionary.clear()
 		self.__object_id_dictionary.clear()
 		# Unregister object so that editor can quit.

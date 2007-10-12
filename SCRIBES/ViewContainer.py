@@ -54,8 +54,8 @@ class ScribesViewContainer(HBox):
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_cb)
 		self.__signal_id_3 = editor.connect("show-dialog", self.__show_dialog_cb)
 		self.__signal_id_4 = editor.connect("hide-dialog", self.__hide_dialog_cb)
-		editor.response()		
-		
+		editor.response()
+
 	def __init_attributes(self, editor):
 		"""
 		Initialize the container's attributes.

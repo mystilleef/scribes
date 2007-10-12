@@ -1041,7 +1041,7 @@ class ScribesTextView(SourceView):
 			self.window.process_updates(True)
 		except:
 			pass
-#		self.__editor.response()
+		self.__editor.response()
 		return False
 
 	def __destroy(self):

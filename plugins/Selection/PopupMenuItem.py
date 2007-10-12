@@ -190,7 +190,6 @@ class SelectionPopupMenuItem(ImageMenuItem):
 		self.editor.disconnect_signal(self.__signal_id_1, self.select_word_menuitem)
 		self.editor.disconnect_signal(self.__signal_id_2, self.select_line_menuitem)
 		self.editor.disconnect_signal(self.__signal_id_3, self.select_sentence_menuitem)
-		self.editor.disconnect_signal(self.__signal_id_4, self.select_paragraph_menuitem)
 		self.editor.disconnect_signal(self.__signal_id_5, self.select_word_menuitem)
 		self.editor.disconnect_signal(self.__signal_id_6, self.select_line_menuitem)
 		self.editor.disconnect_signal(self.__signal_id_7, self.select_sentence_menuitem)

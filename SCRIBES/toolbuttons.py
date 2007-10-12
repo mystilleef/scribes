@@ -51,8 +51,6 @@ class ScribesToolButton(ToolButton):
 		self.tooltips = create_tooltips()
 		self.__set_properties()
 		self.resize_children()
-		from utils import response
-		response()
 
 	def __set_properties(self):
 		"""
@@ -112,7 +110,7 @@ class NewToolButton(ScribesToolButton):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		editor.triggermanager.trigger("new_window")
+		editor.trigger("new_window")
 		return True
 
 class OpenToolButton(MenuToolButton):
@@ -158,7 +156,7 @@ class OpenToolButton(MenuToolButton):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		editor.triggermanager.trigger("show_open_dialog")
+		editor.trigger("show_open_dialog")
 		return True
 
 class SaveToolButton(ScribesToolButton):
@@ -206,7 +204,7 @@ class SaveToolButton(ScribesToolButton):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		editor.triggermanager.trigger("show_save_dialog")
+		editor.trigger("show_save_dialog")
 		return True
 
 	def __toolbutton_loading_document_cb(self, editor, uri):
@@ -298,7 +296,7 @@ class PrintToolButton(ScribesToolButton):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		editor.triggermanager.trigger("show_print_dialog")
+		editor.trigger("show_print_dialog")
 		return True
 
 	def __toolbutton_loading_document_cb(self, editor, uri):
@@ -371,7 +369,7 @@ class UndoToolButton(ScribesToolButton):
 		editor.connect("gui-created", self.__toolbutton_gui_created_cb)
 
 	def __toolbutton_clicked_cb(self, toolbutton, editor):
-		editor.triggermanager.trigger("undo_action")
+		editor.trigger("undo_action")
 		return True
 
 	def __toolbutton_enable_readonly_cb(self, editor):
@@ -486,7 +484,7 @@ class RedoToolButton(ScribesToolButton):
 		editor.connect("gui-created", self.__toolbutton_gui_created_cb)
 
 	def __toolbutton_clicked_cb(self, toolbutton, editor):
-		editor.triggermanager.trigger("redo_action")
+		editor.trigger("redo_action")
 		return True
 
 	def __toolbutton_gui_created_cb(self, editor):
@@ -603,7 +601,7 @@ class GotoToolButton(ScribesToolButton):
 		editor.connect("load-error", self.__toolbutton_load_error_cb)
 
 	def __toolbutton_clicked_cb(self, toolbutton, editor):
-		editor.triggermanager.trigger("show_gotobar")
+		editor.trigger("show_gotobar")
 		return True
 
 	def __toolbutton_loading_document_cb(self, editor, uri):
@@ -672,7 +670,7 @@ class SearchToolButton(ScribesToolButton):
 		editor.connect("load-error", self.__toolbutton_load_error_cb)
 
 	def __toolbutton_clicked_cb(self, toolbutton, editor):
-		editor.triggermanager.trigger("show_findbar")
+		editor.trigger("show_findbar")
 		return True
 
 	def __toolbutton_loading_document_cb(self, editor, uri):
@@ -743,7 +741,7 @@ class ReplaceToolButton(ScribesToolButton):
 		editor.connect("load-error", self.__toolbutton_load_error_cb)
 
 	def __toolbutton_clicked_cb(self, toolbutton, editor):
-		editor.triggermanager.trigger("show_replacebar")
+		editor.trigger("show_replacebar")
 		return True
 
 	def __toolbutton_loading_document_cb(self, editor, uri):
@@ -839,7 +837,7 @@ class PrefToolButton(MenuToolButton):
 		editor.connect("load-error", self.__toolbutton_load_error_cb)
 
 	def __toolbutton_clicked_cb(self, toolbutton, editor):
-		editor.triggermanager.trigger("show_preference_dialog")
+		editor.trigger("show_preference_dialog")
 		return True
 
 	def __toolbutton_loading_document_cb(self, editor, uri):
@@ -905,7 +903,7 @@ class HelpToolButton(ScribesToolButton):
 		self.connect("clicked", self.__toolbutton_clicked_cb, editor)
 
 	def __toolbutton_clicked_cb(self, toolbutton, editor):
-		editor.triggermanager.trigger("show_user_guide")
+		editor.trigger("show_user_guide")
 		return True
 
 class Spinner(ToolItem):
