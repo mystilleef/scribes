@@ -74,10 +74,6 @@ class EditorManager(object):
 		from gconf import client_get_default
 		self.__client = client_get_default()
 		self.__authentication_manager_is_initialized = False
-		from gobject import main_context_default
-		context = main_context_default()
-		self.__pending = context.pending
-		self.__iteration = context.iteration
 		return
 
 ########################################################################
@@ -123,7 +119,6 @@ class EditorManager(object):
 		@param type: An Integer object.
 		"""
 		try:
-			self.response()
 			from operator import contains, not_
 			self.__registration_ids.remove(number)
 			self.__editor_instances.remove(instance)
@@ -134,7 +129,6 @@ class EditorManager(object):
 			print "Instance not found,", instance
 			print "===================================================="
 		if not_(self.__editor_instances): self.__quit()
-		self.response()
 		return
 
 	def open_window(self):
@@ -282,16 +276,6 @@ class EditorManager(object):
 		"""
 		return self.__editor_instances
 
-	def response(self):
-		"""
-		Improve responsiveness.
-
-		@param self: Reference to the InstanceManager instance.
-		@type self: An InstanceManager object.
-		"""
-		while self.__pending(): self.__iteration(False)
-		return False
-
 ########################################################################
 #
 #						Helper Methods
@@ -361,17 +345,6 @@ class EditorManager(object):
 		"""
 		from utils import init_gnome
 		init_gnome()
-		return False
-
-	def __start_psyco(self):
-		"""
-		Initialize background optimization by pysco.
-
-		@param self: Reference to the InstanceManager instance.
-		@type self: An InstanceManager object.
-		"""
-		from utils import start_psyco
-		start_psyco()
 		return False
 
 	def __init_garbage_collector(self):

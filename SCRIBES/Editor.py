@@ -93,7 +93,7 @@ class Editor(GObject):
 		"""
 		from gobject import idle_add, PRIORITY_LOW, threads_init
 		threads_init()
-		self.__gobject_init__() # default constructor using our new GType
+		GObject.__init__(self)
 		self.__signal_id_1 = self.connect("initialized-attributes", self.__initialized_attributes_cb)		self.__signal_id_2 = self.connect("created-widgets", self.__created_widgets_cb)
 		self.__signal_id_3 = self.connect_after("gui-created", self.__gui_created_after_cb)
 		self.__signal_id_4 = self.connect("checking-document", self.__checking_document_cb)
@@ -605,6 +605,9 @@ class Editor(GObject):
 		return get_cursor_iterator(self.__textbuffer)
 
 	def create_button_box(self, stock_id, string):
+		return create_button(stock_id, string)
+
+	def create_button(self, stock_id, string):
 		from utils import create_button
 		return create_button(stock_id, string)
 
