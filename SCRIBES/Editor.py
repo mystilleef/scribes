@@ -549,6 +549,15 @@ class Editor(GObject):
 		self.__store.remove_object(name, store_id)
 		return
 
+	def add_global_object(self, name, instance):
+		return self.__instance_manager.add_object(name, instance)
+
+	def remove_global_object(self, name, object_id):
+		return self.__instance_manager.remove_object(name, object_id)
+
+	def get_global_object(self, name):
+		return self.__instance_manager.get_object(name)
+
 	def show_busy_cursor(self):
 		from cursor import show_busy_textview_cursor
 		return show_busy_textview_cursor(self.__textview)

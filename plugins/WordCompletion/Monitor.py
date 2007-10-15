@@ -76,7 +76,7 @@ class CompletionMonitor(object):
 		"""
 		self.__editor = editor
 		self.__manager = manager
-		self.__dictionary = {}
+		self.__dictionary = self.__create_completion_dictionary()
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
 		self.__signal_id_7 = self.__signal_id_8 = self.__signal_id_9 = None
@@ -95,7 +95,7 @@ class CompletionMonitor(object):
 		@param self: Reference to the CompletionMonitor instance.
 		@type self: A CompletionMonitor object.
 		"""
-		word = self.__editor.get_word_before_cursor() 
+		word = self.__editor.get_word_before_cursor()
 		if word:
 			matches = self.__find_matches(word)
 			if matches:
@@ -182,6 +182,15 @@ class CompletionMonitor(object):
 		except ImportError:
 			pass
 		return False
+
+	def __create_completion_dictionary(self):
+		try:
+			from SCRIBES.Exceptions import GlobalStoreObjectDoesNotExistError
+			dictionary = self.__editor.get_global_object("WordCompletionDictionary")
+		except GlobalStoreObjectDoesNotExistError:
+			self.__editor.add_global_object("WordCompletionDictionary", {})	
+			dictionary = self.__editor.get_global_object("WordCompletionDictionary")
+		return dictionary
 
 ########################################################################
 #

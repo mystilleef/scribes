@@ -85,3 +85,8 @@ class DuplicateTriggerRemovalError(Error):
 class DuplicateTriggerAcceleratorError(Error):
 	pass
 
+class GlobalStoreObjectExistsError(Error):
+	pass
+
+class GlobalStoreObjectDoesNotExistError(Error):
+	pass

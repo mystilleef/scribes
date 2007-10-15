@@ -29,7 +29,7 @@ It allows editor instances to communicate with each other.
 @contact: mystilleef@gmail.com
 """
 #from sys import maxint
-INTERVAL = 10
+INTERVAL = 120
 close_file = lambda editor: editor.emit("close-document")
 
 class EditorManager(object):
@@ -71,6 +71,8 @@ class EditorManager(object):
 		"""
 		self.__editor_instances = []
 		self.__registration_ids = []
+		from GlobalStore import Store
+		self.__store = Store()
 		from gconf import client_get_default
 		self.__client = client_get_default()
 		self.__authentication_manager_is_initialized = False
@@ -130,6 +132,15 @@ class EditorManager(object):
 			print "===================================================="
 		if not_(self.__editor_instances): self.__quit()
 		return
+
+	def add_object(self, name, instance):
+		return self.__store.add_object(name, instance)
+		
+	def remove_object(self, name, object_id):
+		return self.__store.remove_object(name, object_id)
+
+	def get_object(self, name):
+		return self.__store.get_object(name)
 
 	def open_window(self):
 		"""

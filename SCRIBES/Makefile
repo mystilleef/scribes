@@ -249,6 +249,7 @@ scribes_PYTHON = \
 	FileSaver.py \
 	FileLoader.py \
 	fsbutton.py \
+	GlobalStore.py \
 	InstanceManager.py \
 	internationalization.py \
 	license.py \
