@@ -84,16 +84,14 @@ def get_cursor_position(textview):
 	cursor_line = get_cursor_line(textbuffer)
 	start_iterator = textbuffer.get_iter_at_line(cursor_line)
 	cursor_iterator = get_cursor_iterator(textbuffer)
-	line_text = textbuffer.get_text(start_iterator, cursor_iterator)
+	line_offset = cursor_iterator.get_line_offset()
+	line_text = textbuffer.get_slice(start_iterator, cursor_iterator, False)
 	tabs_width = textview.get_tabs_width()
-	count = 0
-	from operator import eq
-	for characters in line_text:
-		if eq(characters, "\t"):
-			count += (tabs_width - (count % tabs_width))
-		else:
-			count += 1
-	cursor_column = count
+	from operator import eq, contains
+	if contains(line_text, "\t"):
+		for characters in line_text:
+			if eq(characters, "\t"): line_offset += (tabs_width - 1)
+	cursor_column = line_offset
 	return cursor_line, cursor_column
 
 def update_cursor_position(statusbar, textview):
