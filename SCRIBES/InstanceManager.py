@@ -29,7 +29,7 @@ It allows editor instances to communicate with each other.
 @contact: mystilleef@gmail.com
 """
 #from sys import maxint
-INTERVAL = 500
+INTERVAL = 10
 close_file = lambda editor: editor.emit("close-document")
 
 class EditorManager(object):

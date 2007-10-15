@@ -68,13 +68,18 @@ def __get_boundaries(textbuffer):
 		start = get_cursor_iterator(textbuffer)
 		end = start.copy()
 	__backward_to_line_start(start)
-	end.forward_to_line_end()
+	__forward_to_line_end(end)
 	return start, end
 
 def __backward_to_line_start(iterator):
 	while True:
 		if iterator.starts_line(): return
 		iterator.backward_char()
+	return
+
+def __forward_to_line_end(iterator):
+	if iterator.ends_line(): return
+	iterator.forward_to_line_end()
 	return
 
 def get_line_bounds(textbuffer):
