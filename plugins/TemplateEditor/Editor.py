@@ -211,10 +211,11 @@ class Editor(SourceView):
 		if selection:
 			self.__enclose_selection(selection)
 			return
-		iterator = self.__editor.get_cursor_iterator()
+		from SCRIBES.cursor import get_cursor_iterator
+		iterator = get_cursor_iterator(self.__buffer)
 		first_mark = self.__buffer.create_mark(None, iterator, True)
 		self.__buffer.insert_at_cursor("${placeholder}")
-		iterator = self.__editor.get_cursor_iterator()
+		iterator = get_cursor_iterator(self.__buffer)
 		last_mark = self.__buffer.create_mark(None, iterator, False)
 		iterator = self.__buffer.get_iter_at_mark(first_mark)
 		iterator.forward_chars(2)
@@ -348,7 +349,8 @@ class Editor(SourceView):
 		if not_(self.__placeholder_region): return
 		begin = self.__buffer.get_iter_at_mark(self.__placeholder_region[0])
 		end = self.__buffer.get_iter_at_mark(self.__placeholder_region[1])
-		iterator = self.__editor.get_cursor_iterator()
+		from SCRIBES.cursor import get_cursor_iterator
+		iterator = get_cursor_iterator(self.__buffer)
 		if iterator.in_range(begin, end): return
 		self.__clear_tags_and_marks()
 		return

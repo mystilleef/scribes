@@ -753,8 +753,8 @@ class FileSaver(object):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		from gobject import idle_add
-		idle_add(self.save_file)
+		from gobject import idle_add, PRIORITY_HIGH
+		idle_add(self.save_file, priority = PRIORITY_HIGH)
 		return
 
 	def __saved_document_cb(self, editor, uri):
@@ -785,10 +785,10 @@ class FileSaver(object):
 		"""
 		if textbuffer.get_modified() is False: return False
 		self.__editor.emit("modified-document")
-		if self.__editor.uri is None: return False
+		if self.__editor.uri is None: return True
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__save_timer = timeout_add(21000, self.__save_file_timeout_cb, priority=PRIORITY_LOW)
-		return False
+		return True
 
 	def __reload_document_cb(self, *args):
 		self.__remove_save_timer()
@@ -810,8 +810,8 @@ class FileSaver(object):
 		self.__stop_monitoring_file()
 		if self.__editor.is_readonly: self.__toggle_readonly = True
 		self.__should_rename = True
-		from gobject import idle_add
-		idle_add(self.save_file)
+		from gobject import idle_add, PRIORITY_HIGH
+		idle_add(self.save_file, priority = PRIORITY_HIGH)
 		return
 
 	def __updated_cb(self, store, name):
@@ -822,7 +822,7 @@ class FileSaver(object):
 
 	def __check_encoding_manager(self):
 		if self.__encoding_manager: return False
-		self.__encoding_manager = self.__editor.store.get_object("EncodingManager")
+		self.__encoding_manager = self.__editor.get_object("EncodingManager")
 		return True
 
 	def __file_changed_cb(self, monitor_uri, info_uri, event_type):
