@@ -57,8 +57,7 @@ def get_text_on_line(textbuffer, line):
 	@type text: A String object.
 	"""
 	begin_position = textbuffer.get_iter_at_line(line)
-	if begin_position.ends_line():
-		return ""
+	if begin_position.ends_line(): return ""
 	end_position = begin_position.copy()
 	end_position.forward_to_line_end()
 	text = textbuffer.get_text(begin_position, end_position)

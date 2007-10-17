@@ -58,7 +58,7 @@ def __open(uris=None):
 	__open_via_dbus(uris)
 	from gobject import idle_add, PRIORITY_HIGH, threads_init
 	threads_init()
-	idle_add(__launch_new_editor, uris)#, priority=PRIORITY_HIGH)
+	idle_add(__launch_new_editor, uris, priority=PRIORITY_HIGH)
 	return
 
 def __open_via_dbus(uris=None):

@@ -52,7 +52,7 @@ class ReplaceBar(ScribesBar):
 		@type editor: An Editor object.
 		"""
 		ScribesBar.__init__(self, editor)
-		self.__init_attributes()
+		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__arrange_widgets()
 		self.__signal_id_1 = self.__manager.connect("replacing", self.__replacebar_replacing_cb)
@@ -135,7 +135,7 @@ class ReplaceBar(ScribesBar):
 	replace_all_button = property(__get_replace_all_button, doc="")
 	incremental_button = property(__get_incremental_check_button, doc="")
 
-	def __init_attributes(self):
+	def __init_attributes(self, editor):
 		"""
 		Initialize the replace bar object's attributes.
 
@@ -143,7 +143,7 @@ class ReplaceBar(ScribesBar):
 		@type self: A ScribesReplaceBar object.
 		"""
 		# Findbar stuff.
-		self.__editor = self.editor
+		self.__editor = self.editor = editor
 		self.__editor.triggermanager.trigger("initialize_search_replace_manager")
 		self.__search_replace_manager = self.__manager = self.editor.store.get_object("SearchReplaceManager")
 		from CaseButton import FindCaseButton

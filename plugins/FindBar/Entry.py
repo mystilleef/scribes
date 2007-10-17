@@ -71,7 +71,7 @@ class FindEntry(Entry):
 		self.__findbar = findbar
 		self.__searchmanager = findbar.search_replace_manager
 		from EntryCompletion import FindEntryCompletion
-		self.__completion = FindEntryCompletion(self.__searchmanager)
+		self.__completion = FindEntryCompletion(self.__searchmanager, self.__editor)
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
 		self.__signal_id_7 = None

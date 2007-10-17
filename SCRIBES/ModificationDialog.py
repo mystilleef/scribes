@@ -110,8 +110,8 @@ class ModificationDialog(object):
 		self.__overwrite_button.destroy()
 		self.__reload_button.destroy()
 		self.__window.destroy()
-		self = None
 		del self
+		self = None
 		return
 
 	def show(self):

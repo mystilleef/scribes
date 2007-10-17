@@ -52,6 +52,7 @@ class ReplaceStopButton(Button):
 		@type findbar: A ScribesFindBar object.
 		"""
 		self.__replacemanager = replacebar.search_replace_manager
+		self.__editor = replacebar.editor
 		return
 
 	def __stopbutton_clicked_cb(self, button):

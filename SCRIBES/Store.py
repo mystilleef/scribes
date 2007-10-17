@@ -194,7 +194,7 @@ class Store(GObject):
 		@param self: Reference to the Store instance.
 		@type self: A Store object.
 		"""
-		if self.__object_dictionary: return
+		#if self.__object_dictionary: return
 		# Disconnect signals.
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)

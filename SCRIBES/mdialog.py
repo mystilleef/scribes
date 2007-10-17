@@ -174,7 +174,7 @@ class ScribesMessageDialog(MessageDialog):
 		@type event: A gtk.Event object
 
 		@return: If false, propagate the generated event. Otherwise, block the
-				 event.
+				event.
 		@rtype: A boolean value.
 		"""
 		from gtk import keysyms
@@ -198,7 +198,7 @@ class ScribesMessageDialog(MessageDialog):
 		@type event: A gtk.Event object
 
 		@return: If false, propagate the generated event. Otherwise, block the
-				 event.
+				event.
 		@rtype: A boolean value.
 
 		"""

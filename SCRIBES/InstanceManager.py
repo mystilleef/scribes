@@ -29,7 +29,7 @@ It allows editor instances to communicate with each other.
 @contact: mystilleef@gmail.com
 """
 #from sys import maxint
-INTERVAL = 120
+INTERVAL = 10
 close_file = lambda editor: editor.emit("close-document")
 
 class EditorManager(object):
@@ -135,7 +135,7 @@ class EditorManager(object):
 
 	def add_object(self, name, instance):
 		return self.__store.add_object(name, instance)
-		
+
 	def remove_object(self, name, object_id):
 		return self.__store.remove_object(name, object_id)
 

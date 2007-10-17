@@ -66,5 +66,5 @@ class ScribesFullscreenButton(Button):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		editor.triggermanager.trigger("toggle_fullscreen")
+		editor.trigger("toggle_fullscreen")
 		return True

@@ -105,7 +105,6 @@ class CompletionTreeView(TreeView):
 		self.set_property("rules-hint", True)
 		self.set_property("hover-selection", True)
 		self.set_property("model", self.__model)
-		from gtk.gdk import color_parse
 		from gtk import STATE_SELECTED, STATE_ACTIVE
 		style = self.__editor.textview.get_style()
 		color = style.base[STATE_SELECTED]

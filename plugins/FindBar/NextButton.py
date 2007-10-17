@@ -101,7 +101,7 @@ class FindNextButton(Button):
 		"""
 		from i18n import msg0004
 		from gtk import STOCK_GO_FORWARD
-		hbox = create_button(STOCK_GO_FORWARD, msg0004)
+		hbox = self.__editor.create_button(STOCK_GO_FORWARD, msg0004)
 		self.add(hbox)
 		return
 

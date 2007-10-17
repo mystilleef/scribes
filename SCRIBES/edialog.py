@@ -136,8 +136,7 @@ class ScribesErrorDialog(MessageDialog):
 		@param self: Reference to the ScribesDialog instance.
 		@type self: A ScribesDialog object.
 		"""
-		if self.__use_signals:
-			self.__editor.emit("show-dialog", self)
+		if self.__use_signals: self.__editor.emit("show-dialog", self)
 		self.show_all()
 		self.run()
 		self.__hide_dialog()

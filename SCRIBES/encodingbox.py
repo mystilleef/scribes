@@ -160,8 +160,7 @@ class ScribesEncodingComboBox(ComboBox):
 		@return: True to draw a separator, False otherwise.
 		@rtype: A Boolean object.
 		"""
-		if model.get_value(iterator, 0) == "Separator" :
-			return True
+		if model.get_value(iterator, 0) == "Separator" : return True
 		return False
 
 	def __update_encoding_list_cb(self, client, cnxn_id, entry, data):

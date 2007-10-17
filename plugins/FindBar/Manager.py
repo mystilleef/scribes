@@ -125,7 +125,7 @@ class FindBar(ScribesBar):
 		@param self: Reference to the FindBar instance.
 		@type self: A FindBar object.
 		"""
-		self.__editor = editor
+		self.__editor = self.editor = editor
 		self.__editor.trigger("initialize_search_replace_manager")
 		self.__search_replace_manager = self.__editor.get_object("SearchReplaceManager")
 		from CaseButton import FindCaseButton

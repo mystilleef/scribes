@@ -284,8 +284,7 @@ class FileLoader(object):
 		@type self: A Loader object.
 		"""
 		self.__editor.emit("loaded-document", self.__uri)
-		if self.__readonly:
-			self.__editor.emit("enable-readonly")
+		if self.__readonly: self.__editor.emit("enable-readonly")
 		self.__destroy()
 		return
 
@@ -324,8 +323,7 @@ class FileLoader(object):
 		@type message: A String object.
 		"""
 		try:
-			if self.__handle:
-				self.__handle.cancel()
+			if self.__handle: self.__handle.cancel()
 			from internationalization import msg0477, msg0478
 			from gnomevfs import format_uri_for_display
 			title = msg0477 % (format_uri_for_display(self.__uri))

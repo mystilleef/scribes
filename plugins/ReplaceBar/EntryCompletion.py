@@ -37,7 +37,7 @@ class FindEntryCompletion(EntryCompletion):
 	the entry completion object.
 	"""
 
-	def __init__(self, searchmanager):
+	def __init__(self, searchmanager, editor):
 		"""
 		Initialize the entry completion object.
 
@@ -48,12 +48,12 @@ class FindEntryCompletion(EntryCompletion):
 		@type searchmanager: A SearchProcessor object.
 		"""
 		EntryCompletion.__init__(self)
-		self.__init_attributes(searchmanager)
+		self.__init_attributes(searchmanager, editor)
 		self.__set_properties()
 		self.__update_model()
 		self.__signal_id_1 = self.__searchmanager.connect("updated-queries", self.__completion_updated_queries_cb)
 
-	def __init_attributes(self, searchmanager):
+	def __init_attributes(self, searchmanager, editor):
 		"""
 		Initialize the entry completion's attributes.
 
@@ -64,6 +64,7 @@ class FindEntryCompletion(EntryCompletion):
 		@type searchmanager: A SearchProcessor object.
 		"""
 		self.__searchmanager = searchmanager
+		self.__editor = editor
 		self.__model = self.__create_model()
 		self.__signal_id_1 = None
 		return
