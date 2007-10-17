@@ -49,8 +49,6 @@ class CompletionIndexer(object):
 		self.__start_up_check()
 		from DBusService import DBusService
 		dbus = DBusService(self)
-		from sys import setcheckinterval
-		setcheckinterval(1000)
 		self.__init_attributes(dbus)
 		from SCRIBES.info import session_bus
 		session_bus.add_signal_receiver(self.__name_change_cb,
@@ -101,7 +99,7 @@ class CompletionIndexer(object):
 
 	def __process_text(self, text, id):
 		from operator import not_
-		if not_(text): 
+		if not_(text):
 			self.__dbus.finished_indexing(id, self.__empty_dict)
 			return False
 		completions = self.__generate_completion_list(text)
@@ -204,11 +202,6 @@ class CompletionIndexer(object):
 		from os import _exit
 		_exit(0)
 		return
-
-	def __start_psyco(self):
-		from SCRIBES.utils import start_psyco
-		start_psyco()
-		return False
 
 	def __check_instances(self):
 		"""
