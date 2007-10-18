@@ -67,11 +67,19 @@ class SaveProcessor(object):
 		@param self: Reference to the CompletionIndexer instance.
 		@type self: A CompletionIndexer object.
 		"""
+		from OutputProcessor import OutputProcessor
+		self.__processor = OutputProcessor(dbus)
 		self.__dbus = dbus
 		return
 
-	def process(self):
+	def save_file(self, editor_id, text, uri, encoding):
+		from gobject import idle_add
+		idle_add(self.__save_file, editor_id, text, uri, encoding)
 		return
+		
+	def __save_file(self, editor_id, text, uri, encoding):
+		self.__processor.process(editor_id, text, uri, encoding)
+		return False
 
 	def __precompile_methods(self):
 		try:

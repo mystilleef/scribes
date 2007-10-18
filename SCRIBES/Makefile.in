@@ -259,6 +259,7 @@ scribes_PYTHON = \
 	MainContainer.py \
 	ModificationDialog.py \
 	mdialog.py \
+	OutputProcessor.py \
 	popupsubmenu.py \
 	position_metadata.py \
 	PreferenceMenu.py \

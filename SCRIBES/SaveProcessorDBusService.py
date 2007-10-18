@@ -53,7 +53,7 @@ class DBusService(Object):
 		self.__processor = processor
 
 	@method(dbus_service)
-	def process(self):
+	def process(self, editor_id, text, uri, encoding):
 		"""
 		Index text for automatic word completion.
 
@@ -63,12 +63,16 @@ class DBusService(Object):
 		@return: A dictionary of words ranked by occurrence.
 		@rtype: A Dict object.
 		"""
-		return self.__processor.save_file()
+		return self.__processor.save_file(editor_id, text, uri, encoding, last_modification_time)
 
 	@signal(dbus_service)
 	def is_ready(self):
 		return
 
 	@signal(dbus_service)
-	def error(self):
+	def saved_file(self, editor_id, modification_time):
+		return
+
+	@signal(dbus_service)
+	def error(self, editor_id, error_message, error_code):
 		return
