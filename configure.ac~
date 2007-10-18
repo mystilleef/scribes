@@ -1,7 +1,7 @@
 #						-*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([scribes], [0.3.2.9-dev], [<mystilleef@gmail.com>])
+AC_INIT([scribes], [0.3.2.10-rev25], [<mystilleef@gmail.com>])
 GNOME_COMMON_INIT
 AC_PREREQ(2.60)
 AM_INIT_AUTOMAKE([1.8 dist-bzip2 no-dist-gzip])
@@ -19,7 +19,7 @@ dnl ================================================================
 GETTEXT_PACKAGE=scribes
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package])
-ALL_LINGUAS="de fr nl it pt_BR sv"
+ALL_LINGUAS="de fr nl it pt_BR sv zh_CN"
 AM_GLIB_GNU_GETTEXT
 
 # Checks for programs.

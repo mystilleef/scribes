@@ -58,6 +58,9 @@ scribes_PYTHON = \
 	RecentManager.py \
 	RecentMenu.py \
 	sdialog.py \
+	SaveProcessMonitor.py \
+	SaveProcessorDBusService.py \
+	ScribesSaveProcessor.py \
 	StatusContainer.py \
 	syntax.py \
 	Spinner.py \

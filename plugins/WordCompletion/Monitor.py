@@ -242,7 +242,7 @@ class CompletionMonitor(object):
 		@param manager: Reference to the CompletionManager.
 		@type manager: An CompletionManager object.
 		"""
-		self.__dictionary.clear()
+#		self.__dictionary.clear()
 		self.__dictionary.update(dictionary)
 		return
 

@@ -58,9 +58,8 @@ class EditorManager(object):
 		signal(SIGHUP, self.__kernel_signals_cb)
 		signal(SIGSEGV, self.__kernel_signals_cb)
 		signal(SIGTERM, self.__kernel_signals_cb)
-#		timeout_add(600000, self.__init_garbage_collector, priority=PRIORITY_LOW)
+		timeout_add(600000, self.__init_garbage_collector, priority=PRIORITY_LOW)
 		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
-		#idle_add(self.__start_psyco, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
 		"""
@@ -76,6 +75,8 @@ class EditorManager(object):
 		from gconf import client_get_default
 		self.__client = client_get_default()
 		self.__authentication_manager_is_initialized = False
+		from SaveProcessMonitor import SaveProcessMonitor
+		self.__save_process_monitor = SaveProcessMonitor()
 		return
 
 ########################################################################
@@ -141,6 +142,12 @@ class EditorManager(object):
 
 	def get_object(self, name):
 		return self.__store.get_object(name)
+
+	def save_processor_is_ready(self):
+		return self.__save_process_monitor.is_ready()
+
+	def get_save_processor_object(self):
+		return self.__save_process_monitor.get_processor_object()
 
 	def open_window(self):
 		"""
@@ -425,6 +432,7 @@ class EditorManager(object):
 		@type self: A EditorManager object.
 		"""
 		self.__remove_swap_area()
+		self.__save_process_monitor.destroy()
 		from os import _exit
 		_exit(0)
 		return
