@@ -43,34 +43,125 @@ class OutputProcessor(object):
 		@type self: An OutputProcessor object.
 		"""
 		self.__init_attributes(dbus)
+		self.__signal_id_1 = self.__writer.connect("saved", self.__saved_cb)
+		self.__signal_id_2 = self.__writer.connect("error", self.__error_cb)
 
 	def __init_attributes(self, dbus):
 		self.__dbus = dbus
-		self.__file_dictionary = None
-		self.__queue = []
+		self.__file_dictionary = {}
+		from collections import deque
+		self.__queue = deque([])
 		self.__is_busy = False
+		self.__swap_folder = None
+		from OutputWriter import OutputWriter
+		self.__writer = OutputWriter()
 		return
 
 	def process(self, editor_id, text, uri, encoding):
 		try:
 			if self.__is_busy: raise ValueError
 			self.__is_busy = True
-			self.__check_permissions()
-			swap_file = self.__get_swap_file(editor_id)
-			encoded_text = self.__encode_text()
-			self.__save_file(editor_id, uri, encoded_text, swap_file)
+			from Exceptions import PermissionError, SwapError
+			self.__check_permissions(uri)
+			swap_file_uri = self.__get_swap_file(editor_id)
+			encoded_text = self.__encode_text(text, encoding)
+			self.__save_file(editor_id, uri, encoded_text, swap_file_uri)
 		except ValueError:
 			self.__queue.append((editor_id, text, uri, encoding))
+		except PermissionError:
+			print "PermissionError"
+		except UnicodeEncodeError:
+			print "UnicodeEncodeError"
+		except UnicodeDecodeError:
+			print "UnicodeDecodeError"
+		except SwapError:
+			print "SwapError"
 		return
 
-	def __check_permissions(self):
+	def __check_permissions(self, uri):
+		from operator import not_, is_
+		if not_(uri.startswith("file:///")): return
+		from gnomevfs import get_local_path_from_uri
+		file_path = get_local_path_from_uri(uri)
+		from os import access, W_OK, path
+		folder_path = path.dirname(file_path)
+		from Exceptions import PermissionError
+		if is_(access(folder_path, W_OK), False):
+			raise PermissionError		elif is_(access(file_path, W_OK), False):
+			if path.exists(file_path): raise PermissionError
 		return
 
-	def __check_swap_file(self):
-		return None
+	def __get_swap_file(self, editor_id):
+		from operator import contains
+		if contains(self.__file_dictionary.keys(), editor_id): return self.__file_dictionary[editor_id]
+		swap_uri = self.__create_swap_file(self.__create_swap_folder())
+		self.__file_dictionary[editor_id] = swap_uri
+		return swap_uri
 
-	def __encode_text(self):
-		return None
+	def __create_swap_file(self, folder):
+		# Create a temporary folder.
+		from tempfile import NamedTemporaryFile
+		try:
+			# Create a randomly generated temporary file in the
+			# temporary folder created above.
+			swap_file = NamedTemporaryFile(mode="w+",
+												suffix="Scribes",
+												prefix="scribes",
+												dir=self.__swap_folder)
+			from gnomevfs import get_uri_from_local_path
+			swap_uri = get_uri_from_local_path(swap_file.name)
+		except:
+			from Exceptions import SwapError
+			raise SwapError
+		return swap_uri
 
-	def __save_file(self, editor_id, uri, encoded_text, swap_file):
+	def __create_swap_folder(self):
+		from os import path
+		if self.__swap_folder and path.exists(self.__swap_folder): return self.__swap_folder
+		from tempfile import mkdtemp
+		from info import home_folder
+		try:
+			self.__swap_folder = mkdtemp(suffix="scribes",
+										prefix=".Scribes",
+										dir=home_folder)
+		except:
+			from Exceptions import SwapError
+			raise SwapError
+		return self.__swap_folder
+
+	def __encode_text(self, text, encoding):
+		encoded_text = text.encode(encoding)
+		return encoded_text
+
+	def __save_file(self, editor_id, uri, text, swap_uri):
+		self.__writer.write_file(editor_id, uri, text, swap_uri)
+		return
+
+	def __destroy(self):
+		from utils import disconnect_signal
+		disconnect_signal(self.__signal_id_1, self.__writer)
+		disconnect_signal(self.__signal_id_2, self.__writer)
+		self.__file_dictionary.clear()
+		self.__queue.clear()
+		del self
+		self = None
+		return
+
+	def __error(self, editor_id, error_message, error_id):
+		self.__is_busy = False
+		self.__dbus.error(editor_id, error_message, error_id)
+		return
+
+	def __saved_cb(self, writer, editor_id):
+		try:
+			self.__dbus.saved_file(editor_id)
+			self.__is_busy = False
+			editor_id, text, uri, encoding = self.__queue.popleft()
+			self.process(editor_id, text, uri, encoding)
+		except IndexError, ValueError:
+			pass
+		return
+
+	def __error_cb(self, writer, editor_id, error_message, error_id):
+		self.__error(editor_id, error_message, error_id)
 		return

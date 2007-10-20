@@ -72,11 +72,11 @@ class CompletionIndexer(object):
 		"""
 		from re import UNICODE, compile
 		self.__pattern = compile(r"[^-\w]", UNICODE)
-		from dbus import Dictionary, String, Int32
+		from dbus import Dictionary, String, Int64
 		try:
 			self.__empty_dict = Dictionary({}, signature="ss")
 		except:
-			self.__empty_dict = Dictionary({}, key_type=String, value_type=Int32)
+			self.__empty_dict = Dictionary({}, key_type=String, value_type=Int64)
 		self.__dbus = dbus
 		return
 

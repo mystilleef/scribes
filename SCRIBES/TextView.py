@@ -1028,9 +1028,9 @@ class ScribesTextView(SourceView):
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
 		"""
+		self.grab_focus()
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__refresh, priority=PRIORITY_LOW)
-		self.grab_focus()
 		return False
 
 	def __refresh(self):

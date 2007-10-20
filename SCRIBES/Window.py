@@ -184,8 +184,6 @@ class ScribesWindow(Window):
 		@rtype: A Boolean object.
 		"""
 		if self.__is_first_time:
-			self.resize_children()
-			self.window.process_updates(True)
 			self.__is_first_time = False
 			self.__is_mapped = True
 		return True
@@ -229,8 +227,6 @@ class ScribesWindow(Window):
 		@return: True to prevent propagation of the signal to parent widgets.
 		@rtype: A Boolean object.
 		"""
-		self.queue_resize()
-		self.resize_children()
 		from operator import eq, contains
 		from gtk.gdk import WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN
 		from gtk.gdk import WINDOW_STATE_ICONIFIED
@@ -390,8 +386,6 @@ class ScribesWindow(Window):
 		"""
 		self.__is_fullscreen = True
 		self.fullscreen()
-		self.resize_children()
-		self.queue_resize()
 		return
 
 	def __disable_fullscreen_cb(self, editor):
@@ -406,8 +400,6 @@ class ScribesWindow(Window):
 		"""
 		self.__is_fullscreen = False
 		self.unfullscreen()
-		self.resize_children()
-		self.queue_resize()
 		return
 
 	def __show_bar_cb(self, editor, bar):
@@ -442,7 +434,6 @@ class ScribesWindow(Window):
 		@type bar: A ScribesBar object.
 		"""
 		self.__bar_is_visible = False
-		self.window.process_updates(True)
 		self.__editor.response()
 		return
 

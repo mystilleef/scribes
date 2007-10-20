@@ -100,10 +100,8 @@ class OpenDialog(object):
 		idle_add(self.__set_folder)
 		from i18n import msg0002
 		self.__status_id = self.__editor.feedback.set_modal_message(msg0002, "open")
-		self.__editor.response()
 		self.__dialog.show_all()
 		self.__dialog.run()
-		self.__editor.response()
 		return
 
 	def __hide(self):
@@ -113,15 +111,12 @@ class OpenDialog(object):
 		@param self: Reference to the FileChooserDialog instance.
 		@type self: A FileChooserDialog object.
 		"""
-		self.__editor.response()
 		self.__editor.emit("hide-dialog", self.__dialog)
 		self.__dialog.hide()
 		if self.__status_id: self.__editor.feedback.unset_modal_message(self.__status_id)
-		self.__editor.response()
 		return
 
 	def __set_folder(self):
-		self.__editor.response()
 		from gobject import GError
 		try:
 			if not self.__editor.uri: return False
@@ -132,7 +127,6 @@ class OpenDialog(object):
 		except GError:
 			self.__shortcut_folder_is_set = True
 		self.__dialog.select_uri(self.__editor.uri)
-		self.__editor.response()
 		return False
 
 	def __reset_cb(self, *args):

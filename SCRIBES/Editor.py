@@ -107,7 +107,7 @@ class Editor(GObject):
 		self.__signal_id_13 = self.connect_after("created-widgets", self.__created_widgets_after_cb)
 		self.__signal_id_14 = self.connect_after("reload-document", self.__reload_document_cb)
 		idle_add(self.__init_attributes, manager, file_uri, encoding)
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		#idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 ########################################################################
 #
@@ -233,8 +233,8 @@ class Editor(GObject):
 	def __get_status_image_frame(self):
 		return self.__status_image_frame
 
-#	def __get_response(self):
-#		return self.__response
+	def __get_response(self):
+		return self.__response
 
 	def __get_statusone(self):
 		return self.__statusone
@@ -378,7 +378,7 @@ class Editor(GObject):
 	readonly = is_readonly = property(__get_is_readonly)
 	contains_document = property(__get_contains_document)
 	gconf_client = property(__get_gconf_client)
-	#response = property(__get_response)
+	response = property(__get_response)
 	can_load_file = property(__get_can_load_file)
 	id = property(__get_id)
 	language = property(__get_language)
@@ -447,6 +447,9 @@ class Editor(GObject):
 		self.__uri = make_uri_from_shell_arg(newfile)
 		return
 
+	def get_encoding_manager(self):
+		return self.__encoding_manager
+
 	def register_termination_id(self):
 		"""
 		Register a unique identification with the text editor.
@@ -495,18 +498,6 @@ class Editor(GObject):
 
 	def unregister_object(self, object_id):
 		return self.unregister_termination_id(object_id)
-
-	def response(self):
-		"""
-		Improve responsiveness.
-
-		Prevent GUI freezing. Use with caution.
-
-		@param self: Reference to the InstanceManager instance.
-		@type self: An InstanceManager object.
-		"""
-		while self.__pending(): self.__iteration(False)
-		return False
 
 	def trigger(self, string):
 		self.__trigger_manager.trigger(string)
@@ -557,6 +548,9 @@ class Editor(GObject):
 
 	def get_global_object(self, name):
 		return self.__instance_manager.get_object(name)
+
+	def get_save_processor(self):
+		return self.__instance_manager.get_save_processor()
 
 	def show_busy_cursor(self):
 		from cursor import show_busy_textview_cursor
@@ -796,7 +790,7 @@ class Editor(GObject):
 		self.__status_image_frame.destroy()
 		self.__statuscontainer.destroy()
 		self.__window.destroy()
-		from utils import delete_attributes, disconnect_signal
+		from utils import disconnect_signal
 		disconnect_signal(self.__signal_id_1, self)
 		disconnect_signal(self.__signal_id_2, self)
 		disconnect_signal(self.__signal_id_3, self)
@@ -818,16 +812,7 @@ class Editor(GObject):
 		collect()
 		return False
 
-	def __precompile_methods(self):
-		try:
-			from psyco import bind
-			bind(self.response)
-		except ImportError:
-			pass
-		return
-
-########################################################################
-#
+#########################################################################
 #					Signal and Event Handlers
 #
 ########################################################################
@@ -883,9 +868,10 @@ class Editor(GObject):
 		self.__response()
 		# Initialize encoding manager.
 		from EncodingManager import EncodingManager
-		EncodingManager(self, self.__encoding)
+		self.__encoding_manager = EncodingManager(self, self.__encoding)
 		# Initialize the object that saves files.
-		from FileSaver import FileSaver
+		from NewFileSaver import FileSaver
+#		from FileSaver import FileSaver
 		FileSaver(self)
 		# Initialize the feedback manager.
 		from Feedback import FeedbackManager
@@ -966,12 +952,7 @@ class Editor(GObject):
 		self.__response()
 		return
 
-	def __response(self):
-		return self.response()
-
-########################################################################
-#
-#						Editor Attributes
+##########################################################################						Editor Attributes
 #
 ########################################################################
 
@@ -995,11 +976,12 @@ class Editor(GObject):
 		self.__encoding = encoding
 		# An object that manages instances of editors.
 		self.__instance_manager = manager
-		#self.__response = manager.response
+		self.__response = manager.response
 		# A file to open or none.
 		self.__file_uri = file_uri
 		# Whether or not the editor can load a file.
 		self.__can_load_file = True
+		self.__encoding_manager = None
 		# The text editor quits only after the termination queue is empty. This
 		# allows objects that need to perform cleanup or metadata operation
 		# to register a unique number in the queue. Registration should occur
@@ -1052,10 +1034,6 @@ class Editor(GObject):
 		self.__toolbarcontainer = None
 		self.__viewcontainer = None
 		self.__statuscontainer = None
-		from gobject import main_context_default
-		context = main_context_default()
-		self.__pending = context.pending
-		self.__iteration = context.iteration
 		# A signal emitted after crucial data attributes have been created.
 		self.emit("initialized-attributes")
 		return False

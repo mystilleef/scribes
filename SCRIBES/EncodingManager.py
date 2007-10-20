@@ -63,7 +63,6 @@ class EncodingManager(object):
 		self.__user_defined_encoding = encoding
 		self.__determined_encoding = None
 		self.__signal_id_1 = None
-		self.__store_id = editor.add_object("EncodingManager", self)
 		self.__termination_id = editor.register_object()
 		return
 
@@ -183,7 +182,6 @@ class EncodingManager(object):
 		@type self: A EncodingManager object.
 		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
-		self.__editor.remove_object("EncodingManager", self.__store_id)
 		self.__editor.unregister_object(self.__termination_id)
 		self = None
 		del self

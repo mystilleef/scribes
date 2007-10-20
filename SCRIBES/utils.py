@@ -306,21 +306,6 @@ def check_uri_permission(uri):
 			value = False
 	return value
 
-#from gobject import main_context_default
-#context = main_context_default()
-#pending = context.pending
-#iteration = context.iteration
-
-def response():
-	"""
-	Allow scribes GUI to be responsive when performing tasks that can
-	potentially	lock the GUI.
-	"""
-#	global pending, iteration
-#	while pending():
-#		iteration(True)
-	return False
-
 def get_file_size(uri):
 	"""
 	Get the size of a file.
@@ -491,12 +476,6 @@ def convert_color_to_spec(color):
 	string = "#" + red + green + blue
 	return string
 
-def start_psyco():
-	"""
-	Use the psyco optimization virtual machine if present.
-	"""
-	return False
-
 def select_row(treeview, column=0):
 	"""
 	Select a row in a treeview if any.
@@ -535,28 +514,18 @@ def disconnect_signal(signal_id, instance):
 	@type instance: A GObject object.
 	"""
 	try:
-		from operator import truth
-		if truth(signal_id) and truth(instance.handler_is_connected(signal_id)):
+		if signal_id and instance.handler_is_connected(signal_id):
 			instance.disconnect(signal_id)
 	except AttributeError:
 		pass
 	return
 
-def delete_attributes(instance):
-	"""
-	Delete "writable" attributes of an object.
-
-	@param instance: An object to delete.
-	@type instance: A Python object.
-	"""
-	return
 
 def delete_list(sequence):
 	"""
 	Delete a list and its content
 	"""
-	from operator import truth
-	if truth(sequence): [sequence.remove(x) for x in sequence]
+	if sequence: [sequence.remove(x) for x in sequence]
 	return
 
 def init_gnome():
@@ -572,9 +541,3 @@ def init_gnome():
 	}
 	program = program_init(name, version, properties=properties)
 	return
-
-try:
-	from psyco import bind
-	bind(response)
-except ImportError:
-	pass

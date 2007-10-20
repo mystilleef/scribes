@@ -188,7 +188,7 @@ class CompletionMonitor(object):
 			from SCRIBES.Exceptions import GlobalStoreObjectDoesNotExistError
 			dictionary = self.__editor.get_global_object("WordCompletionDictionary")
 		except GlobalStoreObjectDoesNotExistError:
-			self.__editor.add_global_object("WordCompletionDictionary", {})	
+			self.__editor.add_global_object("WordCompletionDictionary", {})
 			dictionary = self.__editor.get_global_object("WordCompletionDictionary")
 		return dictionary
 
@@ -242,7 +242,7 @@ class CompletionMonitor(object):
 		@param manager: Reference to the CompletionManager.
 		@type manager: An CompletionManager object.
 		"""
-#		self.__dictionary.clear()
+		self.__dictionary.clear()
 		self.__dictionary.update(dictionary)
 		return
 

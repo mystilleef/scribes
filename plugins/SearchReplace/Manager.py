@@ -443,11 +443,10 @@ class SearchReplaceManager(GObject):
 		begin = self.__editor.textbuffer.get_iter_at_mark(self.__start_point_mark)
 		end = self.__editor.textbuffer.get_iter_at_mark(self.__end_point_mark)
 		from gtk import TEXT_SEARCH_VISIBLE_ONLY
-		from SCRIBES.utils import response
 		for match in matches:
 			if self.__cancel_search_operation:
 				return None
-			response()
+			self.__editor.response()
 			start, stop = begin.forward_search(match, TEXT_SEARCH_VISIBLE_ONLY, end)
 			positions.append((start, stop))
 			begin = stop
@@ -728,23 +727,18 @@ class SearchReplaceManager(GObject):
 		@type manager: A SearchReplaceManager object.
 		"""
 		self.__editor.store.remove_object("SearchReplaceManager", self.__store_id)
-		from SCRIBES.utils import disconnect_signal, delete_attributes
-		from SCRIBES.utils import delete_list
-		disconnect_signal(self.__signal_id_1, self)
-		disconnect_signal(self.__signal_id_2, self)
-		disconnect_signal(self.__signal_id_3, self)
-		disconnect_signal(self.__signal_id_4, self)
-		disconnect_signal(self.__signal_id_5, self)
-		disconnect_signal(self.__signal_id_6, self)
-		disconnect_signal(self.__signal_id_7, self)
-		disconnect_signal(self.__signal_id_8, self)
-		disconnect_signal(self.__signal_id_9, self)
-		disconnect_signal(self.__signal_id_12, self)
-		disconnect_signal(self.__signal_id_11, self.__editor)
-		disconnect_signal(self.__signal_id_10, self.__editor)
-		delete_list(self.__queries)
-		delete_list(self.__position_of_matches)
-		delete_attributes(self)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
+		self.__editor.disconnect_signal(self.__signal_id_4, self)
+		self.__editor.disconnect_signal(self.__signal_id_5, self)
+		self.__editor.disconnect_signal(self.__signal_id_6, self)
+		self.__editor.disconnect_signal(self.__signal_id_7, self)
+		self.__editor.disconnect_signal(self.__signal_id_8, self)
+		self.__editor.disconnect_signal(self.__signal_id_9, self)
+		self.__editor.disconnect_signal(self.__signal_id_12, self)
+		self.__editor.disconnect_signal(self.__signal_id_11, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_10, self.__editor)
 		del self
 		self = None
 		return

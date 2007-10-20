@@ -63,16 +63,16 @@ class DBusService(Object):
 		@return: A dictionary of words ranked by occurrence.
 		@rtype: A Dict object.
 		"""
-		return self.__processor.save_file(editor_id, text, uri, encoding, last_modification_time)
+		return self.__processor.save_file(editor_id, text, uri, encoding)
 
 	@signal(dbus_service)
 	def is_ready(self):
 		return
 
 	@signal(dbus_service)
-	def saved_file(self, editor_id, modification_time):
+	def saved_file(self, editor_id):
 		return
 
 	@signal(dbus_service)
-	def error(self, editor_id, error_message, error_code):
+	def error(self, editor_id, error_message, error_id):
 		return

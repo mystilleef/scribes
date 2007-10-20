@@ -301,7 +301,7 @@ class FileLoader(object):
 		@param handle: An object pointing to a remote URI.
 		@type handle: A gnomevfs.Handle object.
 		"""
-		manager = self.__editor.get_object("EncodingManager")
+		manager = self.__editor.get_encoding_manager()
 		encoding = manager.get_encoding(self.__uri, string)
 		try:
 			unicode_string = string.decode(encoding)

@@ -50,8 +50,10 @@ scribes_PYTHON = \
 	MessageDialog.py \
 	MainContainer.py \
 	ModificationDialog.py \
+	NewFileSaver.py \
 	mdialog.py \
 	OutputProcessor.py \
+	OutputWriter.py \
 	popupsubmenu.py \
 	position_metadata.py \
 	PreferenceMenu.py \
