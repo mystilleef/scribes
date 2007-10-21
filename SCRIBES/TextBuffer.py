@@ -240,22 +240,21 @@ class ScribesTextBuffer(SourceBuffer):
 		return
 
 	def __cursor_position_cb(self, *args):
+		self.__editor.emit("cursor-moved")
+		self.__make_responsive()
+		return False
+
+	def __cursor_position_after_cb(self, *args):
+		self.__make_responsive()
+		return False
+
+	def __make_responsive(self):
 		try:
-			self.__editor.emit("cursor-moved")
 			from gobject import idle_add, source_remove
 			source_remove(self.__cursor_id)
 		except:
 			pass
 		self.__cursor_id = idle_add(self.__test_response)
-		return False
-
-	def __cursor_position_after_cb(self, *args):
-		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__cursor_after_id)
-		except:
-			pass
-		self.__cursor_after_id = idle_add(self.__test_response)
 		return False
 
 	def __test_response(self):
@@ -355,6 +354,7 @@ class ScribesTextBuffer(SourceBuffer):
 	def __precompile_methods(self):
 		try:
 			from psyco import bind
+			bind(self.__make_responsive)
 #			bind(self.__set_cursor_positon)
 #			bind(self.__update_cursor_metadata)
 #			bind(self.__activate_sytnax_colors)

@@ -57,15 +57,15 @@ am__installdirs = "$(DESTDIR)$(scribesdir)"
 scribesPYTHON_INSTALL = $(INSTALL_DATA)
 py_compile = $(top_srcdir)/py-compile
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/goldenmyst/scribes-dev-save/missing --run aclocal-1.9
+ACLOCAL = ${SHELL} /home/meek/scribes-save/missing --run aclocal-1.9
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 ALL_LINGUAS = de fr nl it pt_BR sv zh_CN
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/goldenmyst/scribes-dev-save/missing --run tar
-AUTOCONF = ${SHELL} /home/goldenmyst/scribes-dev-save/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/goldenmyst/scribes-dev-save/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/goldenmyst/scribes-dev-save/missing --run automake-1.9
+AMTAR = ${SHELL} /home/meek/scribes-save/missing --run tar
+AUTOCONF = ${SHELL} /home/meek/scribes-save/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/meek/scribes-save/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/meek/scribes-save/missing --run automake-1.9
 AWK = mawk
 CATALOGS =  de.gmo fr.gmo nl.gmo it.gmo pt_BR.gmo sv.gmo zh_CN.gmo
 CATOBJEXT = .gmo
@@ -131,10 +131,10 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
-MAINT = 
-MAINTAINER_MODE_FALSE = #
-MAINTAINER_MODE_TRUE = 
-MAKEINFO = ${SHELL} /home/goldenmyst/scribes-dev-save/missing --run makeinfo
+MAINT = #
+MAINTAINER_MODE_FALSE = 
+MAINTAINER_MODE_TRUE = #
+MAKEINFO = ${SHELL} /home/meek/scribes-save/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_OPTS = -c
@@ -192,7 +192,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = /home/goldenmyst/scribes-dev-save/install-sh
+install_sh = /home/meek/scribes-save/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -296,7 +296,7 @@ EXTRA_DIST = info.py.in
 all: all-am
 
 .SUFFIXES:
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
+$(srcdir)/Makefile.in: # $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -321,9 +321,9 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 
-$(top_srcdir)/configure:  $(am__configure_deps)
+$(top_srcdir)/configure: # $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
+$(ACLOCAL_M4): # $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 uninstall-info-am:
 install-scribesPYTHON: $(scribes_PYTHON)

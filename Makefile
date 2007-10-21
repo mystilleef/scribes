@@ -80,15 +80,15 @@ am__remove_distdir = \
 GZIP_ENV = --best
 DIST_ARCHIVES = $(distdir).tar.bz2
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/goldenmyst/scribes-dev-save/missing --run aclocal-1.9
+ACLOCAL = ${SHELL} /home/meek/scribes-save/missing --run aclocal-1.9
 ACLOCAL_AMFLAGS = -I m4
 ALL_LINGUAS = de fr nl it pt_BR sv zh_CN
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/goldenmyst/scribes-dev-save/missing --run tar
-AUTOCONF = ${SHELL} /home/goldenmyst/scribes-dev-save/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/goldenmyst/scribes-dev-save/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/goldenmyst/scribes-dev-save/missing --run automake-1.9
+AMTAR = ${SHELL} /home/meek/scribes-save/missing --run tar
+AUTOCONF = ${SHELL} /home/meek/scribes-save/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/meek/scribes-save/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/meek/scribes-save/missing --run automake-1.9
 AWK = mawk
 CATALOGS =  de.gmo fr.gmo nl.gmo it.gmo pt_BR.gmo sv.gmo zh_CN.gmo
 CATOBJEXT = .gmo
@@ -154,10 +154,10 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
-MAINT = 
-MAINTAINER_MODE_FALSE = #
-MAINTAINER_MODE_TRUE = 
-MAKEINFO = ${SHELL} /home/goldenmyst/scribes-dev-save/missing --run makeinfo
+MAINT = #
+MAINTAINER_MODE_FALSE = 
+MAINTAINER_MODE_TRUE = #
+MAKEINFO = ${SHELL} /home/meek/scribes-save/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_OPTS = -c
@@ -215,7 +215,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = /home/goldenmyst/scribes-dev-save/install-sh
+install_sh = /home/meek/scribes-save/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -274,7 +274,7 @@ all: all-recursive
 .SUFFIXES:
 am--refresh:
 	@:
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
+$(srcdir)/Makefile.in: # $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -301,9 +301,9 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	$(SHELL) ./config.status --recheck
 
-$(top_srcdir)/configure:  $(am__configure_deps)
+$(top_srcdir)/configure: # $(am__configure_deps)
 	cd $(srcdir) && $(AUTOCONF)
-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
+$(ACLOCAL_M4): # $(am__aclocal_m4_deps)
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 uninstall-info-am:
 install-startupDATA: $(startup_DATA)

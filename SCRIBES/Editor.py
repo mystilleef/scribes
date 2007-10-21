@@ -948,10 +948,6 @@ class Editor(GObject):
 		self.__can_load_file = False
 		return False
 
-	def __cursor_moved_cb(self, *args):
-		self.__response()
-		return
-
 ##########################################################################						Editor Attributes
 #
 ########################################################################
