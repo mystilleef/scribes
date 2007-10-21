@@ -610,7 +610,7 @@ class ScribesWindow(Window):
 
 	def __determine_title(self, uri):
 		from gnomevfs import URI
-		self.__title = URI(uri).short_name
+		self.__title = URI(uri).short_name.encode("utf-8")
 		return False
 
 	def __destroy(self):

@@ -355,9 +355,9 @@ class ScribesTextBuffer(SourceBuffer):
 		try:
 			from psyco import bind
 			bind(self.__make_responsive)
-#			bind(self.__set_cursor_positon)
-#			bind(self.__update_cursor_metadata)
-#			bind(self.__activate_sytnax_colors)
+			bind(self.__test_response)
+			bind(self.__cursor_position_cb)
+			bind(self.__cursor_position_after_cb)
 		except ImportError:
 			pass
 		return False
