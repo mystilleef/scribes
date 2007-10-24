@@ -440,9 +440,8 @@ class FeedbackManager(object):
 		if uri.startswith("file:///"):
 			from gnomevfs import get_local_path_from_uri
 			local_path = get_local_path_from_uri(uri)
-			from info import home_folder
-			if local_path.startswith(home_folder):
-				self.__filename = local_path.replace(home_folder, "~")
+			if local_path.startswith(self.__editor.home_folder):
+				self.__filename = local_path.replace(self.__editor.home_folder, "~")
 			else:
 				self.__filename = local_path
 		else:
@@ -725,8 +724,7 @@ class FeedbackManager(object):
 		if is_(self.__filename, None): return False
 		if not_(self.__default_message_is_set): return False
 		from gtk import STOCK_EDIT
-		if ne(self.__editor.status_image.get_stock()[0], STOCK_EDIT):
-			self.__set_icon("edit")
+		if ne(self.__editor.status_image.get_stock()[0], STOCK_EDIT): self.__set_icon("edit")
 		return False
 
 	def __gui_created_cb(self, *args):

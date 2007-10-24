@@ -97,6 +97,6 @@ class TemplatesManager(GObject):
 		@type manager: A TemplatesManager object.
 		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
-		self = None
 		del self
+		self = None
 		return

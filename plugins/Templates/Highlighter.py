@@ -80,8 +80,8 @@ class Highlighter(object):
 		self.__editor.textbuffer.get_tag_table().remove(self.__highlight_tag)
 		self.__editor.disconnect_signal(self.__signal_id_1, manager)
 		self.__editor.disconnect_signal(self.__signal_id_2, manager)
-		self = None
 		del self
+		self = None
 		return
 
 	def __trigger_found_cb(self, manager, position):

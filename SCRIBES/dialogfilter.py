@@ -17,7 +17,6 @@
 # along with Scribes; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
 """
 This module exposes functions that create filter objects for the text editor's
 open/save dialog.
@@ -27,18 +26,15 @@ open/save dialog.
 @copyright: Copyright © 2005 Lateef Alabi-Oki
 @license: GNU GPLv2 or Later
 @contact: mystilleef@gmail.com
-
 """
 
-
 def create_filter(name=u"", mime=u"", pattern=u""):
-	u"""
+	"""
 	Create a filter for the text editor's fileselector dialog.
-
 	The filter is used to filter text files based on file type and source code.
 
 	@param name: A human readable name for the text editor's fileselector
-				 filter.
+				filter.
 	@type name: A string.
 
 	@param mime: The mime type to filter.
@@ -49,23 +45,22 @@ def create_filter(name=u"", mime=u"", pattern=u""):
 
 	@return: A filter.
 	@rtype: A gtk.FileFilter object.
-
 	"""
-
 	from gtk import FileFilter
 	filefilter = FileFilter()
 	filefilter.set_name(name)
 	filefilter.add_mime_type(mime)
-
-	if pattern:
-
-		filefilter.add_pattern(pattern)
-
+	if pattern: filefilter.add_pattern(pattern)
 	return filefilter
 
 
 def create_filter_list():
+	"""
+	Filter for the open and save dialog.
 
+	@return: A list of filters.
+	@rtype: A List object.
+	"""
 	from internationalization import msg0029, msg0028, msg0027, msg0343, msg0344
 	from internationalization import msg0345, msg0346, msg0347, msg0348, msg0349
 	from internationalization import msg0350, msg0351, msg0352, msg0353
@@ -85,6 +80,4 @@ def create_filter_list():
 		create_filter(msg0353, "text/x-scheme"),
 		create_filter(msg0027, "", "*"),
 	]
-
 	return filter_list
-

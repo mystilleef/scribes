@@ -98,6 +98,7 @@ class TriggerManager(object):
 		@type trigger: A Trigger object.
 		"""
 		try:
+			self.__editor.response()
 			from Exceptions import InvalidTriggerNameError
 			from Exceptions import DuplicateTriggerNameError
 			from Exceptions import DuplicateTriggerRemovalError
@@ -106,6 +107,7 @@ class TriggerManager(object):
 			self.__validate_trigger(trigger, accelerator)
 			self.__trigger_dictionary[trigger.name] = trigger, accelerator
 			self.__update_accelerator_info()
+			self.__editor.response()
 		except InvalidTriggerNameError:
 			print "Error: %s is not a valid trigger name." % trigger.name
 		except DuplicateTriggerNameError:
@@ -129,6 +131,7 @@ class TriggerManager(object):
 		@type trigger: A Trigger object.
 		"""
 		try:
+			self.__editor.response()
 			name = trigger.name
 			trigger.destroy()
 			del trigger
@@ -137,6 +140,7 @@ class TriggerManager(object):
 			from operator import not_
 			if self.__trigger_dictionary: return
 			if self.__is_quiting: self.__destroy()
+			self.__editor.response()
 		except KeyError:
 			print "Error: Trigger named %s not found" % name
 		return

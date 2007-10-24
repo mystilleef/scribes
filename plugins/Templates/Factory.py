@@ -159,6 +159,6 @@ class TemplateFactory(object):
 		self.__editor.disconnect_signal(self.__signal_id_3, manager)
 		self.__editor.disconnect_signal(self.__signal_id_4, manager)
 		self.__editor.disconnect_signal(self.__signal_id_5, manager)
-		self = None
 		del self
+		self = None
 		return

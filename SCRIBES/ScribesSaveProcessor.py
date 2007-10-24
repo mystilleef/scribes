@@ -76,9 +76,18 @@ class SaveProcessor(object):
 		from gobject import idle_add
 		idle_add(self.__save_file, editor_id, text, uri, encoding)
 		return
-		
+
+	def update(self, editor_id):
+		from gobject import idle_add
+		idle_add(self.__update, editor_id)
+		return 
+
 	def __save_file(self, editor_id, text, uri, encoding):
 		self.__processor.process(editor_id, text, uri, encoding)
+		return False
+
+	def __update(self, editor_id):
+		self.__processor.update(editor_id)
 		return False
 
 	def __precompile_methods(self):

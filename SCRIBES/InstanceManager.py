@@ -45,8 +45,7 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
-		from gobject import timeout_add, idle_add, PRIORITY_LOW, threads_init
-		threads_init()
+		from gobject import timeout_add, idle_add, PRIORITY_LOW
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
@@ -140,10 +139,10 @@ class EditorManager(object):
 		return
 
 	def response(self):
-		if self.__response_is_busy: return False
-		self.__response_is_busy = True
+	#	if self.__response_is_busy: return False
+	#	self.__response_is_busy = True
 		while self.__pending(): self.__iteration(False)
-		self.__response_is_busy = False
+	#	self.__response_is_busy = False
 		return False
 
 	def add_object(self, name, instance):

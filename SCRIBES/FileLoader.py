@@ -306,7 +306,9 @@ class FileLoader(object):
 		try:
 			unicode_string = string.decode(encoding)
 			utf8_string = unicode_string.encode("utf8")
+			self.__editor.response()
 			self.__editor.textbuffer.set_text(utf8_string)
+			self.__editor.response()
 		except UnicodeDecodeError:
 			from internationalization import msg0487
 			self.__error(msg0487)

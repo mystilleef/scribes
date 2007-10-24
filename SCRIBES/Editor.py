@@ -91,8 +91,7 @@ class Editor(GObject):
 		@param file_uri: A file to open.
 		@param type: A String object.
 		"""
-		from gobject import idle_add, PRIORITY_LOW, threads_init
-		threads_init()
+		from gobject import idle_add, PRIORITY_LOW
 		GObject.__init__(self)
 		self.__signal_id_1 = self.connect("initialized-attributes", self.__initialized_attributes_cb)		self.__signal_id_2 = self.connect("created-widgets", self.__created_widgets_cb)
 		self.__signal_id_3 = self.connect_after("gui-created", self.__gui_created_after_cb)
@@ -808,8 +807,8 @@ class Editor(GObject):
 		self.__instance_manager.unregister_editor(self, self.__manager_registration_id)
 		del self
 		self = None
-		from gc import collect
-		collect()
+		#from gc import collect
+		#collect()
 		return False
 
 #########################################################################
@@ -827,6 +826,7 @@ class Editor(GObject):
 		self.__response()
 		from gobject import idle_add
 		idle_add(self.__create_widgets)
+		self.__response()
 		return
 
 	def __created_widgets_cb(self, editor):
@@ -853,6 +853,7 @@ class Editor(GObject):
 		if not self.__file_uri: return
 		from gobject import idle_add
 		idle_add(self.load_uri, self.__file_uri.strip())
+		self.__response()
 		return
 
 	def __start_core_services(self):
@@ -883,18 +884,24 @@ class Editor(GObject):
 		return
 
 	def __created_widgets_after_cb(self, editor):
+		self.__response()
 		from gobject import idle_add
 		idle_add(self.__arrange_widgets)
+		self.__response()
 		return
 
 	def __gui_created_after_cb(self, editor):
+		self.__response()
 		from gobject import idle_add
 		idle_add(self.__initialize_plugins)
+		self.__response()
 		return
 
 	def __initialize_plugins(self):
+		self.__response()
 		from PluginManager import PluginManager
 		PluginManager(self)
+		self.__response()
 		return False
 
 	def __checking_document_cb(self, editor, uri):

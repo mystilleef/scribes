@@ -65,6 +65,10 @@ class DBusService(Object):
 		"""
 		return self.__processor.save_file(editor_id, text, uri, encoding)
 
+	@method(dbus_service)
+	def update(self, editor_id):
+		return self.__processor.update(editor_id)
+
 	@signal(dbus_service)
 	def is_ready(self):
 		return

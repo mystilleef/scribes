@@ -660,21 +660,20 @@ class ScribesTextView(SourceView):
 		return False
 
 	def __scroll_event_cb(self, *args):
-		from gobject import idle_add, PRIORITY_LOW, source_remove
-		try:
-			source_remove(self.__scroll_id)
-		except:
-			pass
-		self.__scroll_id = idle_add(self.__test_response, priority=PRIORITY_LOW)
+		self.__make_responsive()
 		return False
 
 	def __move_cursor_cb(self, *args):
-		from gobject import idle_add, PRIORITY_LOW, source_remove
+		self.__make_responsive()
+		return False
+
+	def __make_responsive(self):
 		try:
-			source_remove(self.__move_id)
+			from gobject import idle_add, source_remove
+			source_remove(self.__cursor_id)
 		except:
 			pass
-		self.__move_id = idle_add(self.__test_response, priority=PRIORITY_LOW)
+		self.__cursor_id = idle_add(self.__test_response)
 		return False
 
 	def __test_response(self):

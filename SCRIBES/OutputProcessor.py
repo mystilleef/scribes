@@ -78,6 +78,15 @@ class OutputProcessor(object):
 			print "SwapError"
 		return
 
+	def update(self, editor_id):
+		try:
+			swap_file = self.__file_dictionary[editor_id]
+			from gnomevfs import unlink
+			unlink(swap_file)
+		except KeyError:
+			pass
+		return
+
 	def __check_permissions(self, uri):
 		from operator import not_, is_
 		if not_(uri.startswith("file:///")): return

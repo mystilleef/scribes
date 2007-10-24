@@ -63,6 +63,9 @@ class FileSaver(object):	"""
 		editor.session_bus.add_signal_receiver(self.__error_cb,
 						signal_name="error",
 						dbus_interface=save_dbus_service)
+		editor.session_bus.add_signal_receiver(self.__is_ready_cb,
+						signal_name="is_ready",
+						dbus_interface=save_dbus_service)
 
 	def __init_attributes(self, editor):
 		"""
@@ -82,7 +85,6 @@ class FileSaver(object):	"""
 		self.__can_quit = False
 		self.__is_saving = False
 		self.__save_timer = None
-		self.__do_not_save = False
 		self.__toggle_readonly = False
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
@@ -112,24 +114,13 @@ class FileSaver(object):	"""
 		from Exceptions import FileCloseError, FileCreateError, TransferError
 		from Exceptions import DoNothingError, FileModificationError
 		try:
-			self.__can_save()
 			self.__determine_action(is_closing)
 			self.__save_file()
 		except DoNothingError:			pass
 		return False
 
-	def reset_save_flag(self):
-		"""
-		Reset the "__do_not_save" flag to its default value.
 
-		@param self: Reference to the FileSaver instance.
-		@type self: A FileSaver object.
-		"""
-		self.__do_not_save = False
-		return
-
-########################################################################
-#
+#########################################################################
 #                       Helper Methods
 #
 ########################################################################
@@ -143,7 +134,6 @@ class FileSaver(object):	"""
 		"""
 		try:
 			if self.__is_saving: raise ValueError
-			self.__can_save()
 			self.__editor.emit("saving-document", self.__editor.uri)
 			processor = self.__get_save_processor()
 			processor.process(self.__editor.id, self.__editor.get_text(),
@@ -173,7 +163,6 @@ class FileSaver(object):	"""
 		@param is_closing: True if this is the last save call.
 		@type is_closing: A Boolean object.
 		"""
-		self.__can_save()
 		if self.__editor.uri: return
 		if is_closing:			# Create a new file and save it if the text editor's buffer
 			# contains a document but there is no document to save.
@@ -238,11 +227,21 @@ class FileSaver(object):	"""
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""
+		try:
+			processor = self.__get_save_processor()
+			processor.update(self.__editor.id, dbus_interface=save_dbus_service,
+				reply_handler=self.__reply_handler_cb,
+				error_handler=self.__error_handler_cb)
+		except:
+			pass
 		self.__editor.session_bus.remove_signal_receiver(self.__saved_file_cb,
 						signal_name="saved_file",
 						dbus_interface=save_dbus_service)
 		self.__editor.session_bus.remove_signal_receiver(self.__error_cb,
 						signal_name="error",
+						dbus_interface=save_dbus_service)
+		self.__editor.session_bus.remove_signal_receiver(self.__is_ready_cb,
+						signal_name="is_ready",
 						dbus_interface=save_dbus_service)
 		self.__encoding_manager.destroy()
 		self.__remove_save_timer()
@@ -270,19 +269,10 @@ class FileSaver(object):	"""
 		"""
 		try:
 			from psyco import bind
+			bind(save_file)
+			bind(self.__save_file)
 		except ImportError:
 			pass
-		return
-
-	def __can_save(self):
-		"""
-		Check whether or not to save the current file.
-
-		@param self: Reference to the FileSaver instance.
-		@type self: A FileSaver object.
-		"""
-		from Exceptions import DoNothingError
-		if self.__do_not_save: raise DoNothingError
 		return
 
 	def __check_queue(self):
@@ -292,9 +282,25 @@ class FileSaver(object):	"""
 			from gobject import idle_add
 			idle_add(self.save_file)
 		except IndexError:
-			self.__editor.emit("saved-document", self.__editor.uri)
+			self.__toggle_readonly_mode()
+			self.__emit_save_signal()
 			if self.__can_quit: self.__destroy()
 			return
+		return
+
+	def __toggle_readonly_mode(self):
+		from operator import not_
+		if not_(self.__toggle_readonly): return
+		self.__editor.trigger("toggle_readonly")
+		self.__toggle_readonly = False
+		return
+
+	def __emit_save_signal(self):
+		if self.__should_rename:
+			self.__editor.emit("renamed-document", self.__editor.uri)
+			self.__should_rename = False
+		else:
+			self.__editor.emit("saved-document", self.__editor.uri)
 		return
 
 ########################################################################
@@ -430,11 +436,13 @@ class FileSaver(object):	"""
 		@type textbuffer: A ScribesTextBuffer object.
 		"""
 		if textbuffer.get_modified() is False: return False
+		self.__editor.response()
 		self.__editor.emit("modified-document")
-		if self.__editor.uri is None: return True
+		self.__editor.response()
+		if self.__editor.uri is None: return False
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__save_timer = timeout_add(21000, self.__save_file_timeout_cb, priority=PRIORITY_LOW)
-		return True
+		return False
 
 	def __reload_document_cb(self, *args):
 		self.__remove_save_timer()
@@ -457,6 +465,10 @@ class FileSaver(object):	"""
 		self.__should_rename = True
 		from gobject import idle_add, PRIORITY_HIGH
 		idle_add(self.save_file, priority = PRIORITY_HIGH)
+		return
+
+	def __is_ready_cb(self, *args):
+		self.__processor = self.__editor.get_save_processor()
 		return
 
 	def __saved_file_cb(self, editor_id):

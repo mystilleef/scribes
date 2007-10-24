@@ -183,6 +183,7 @@ class ScribesWindow(Window):
 		@return: True to prevent propagation of the signal to parent widgets.
 		@rtype: A Boolean object.
 		"""
+		self.__editor.response()
 		if self.__is_first_time:
 			self.__is_first_time = False
 			self.__is_mapped = True
@@ -207,6 +208,7 @@ class ScribesWindow(Window):
 		# Save a document when the text editor's window loses focus.
 		if self.__editor.uri and self.__editor.file_is_saved is False and self.__editor.is_readonly is False:
 			self.__editor.trigger("save_file")
+		self.__editor.response()
 		return False
 
 	def __state_event_cb(self, window, event):
@@ -227,6 +229,7 @@ class ScribesWindow(Window):
 		@return: True to prevent propagation of the signal to parent widgets.
 		@rtype: A Boolean object.
 		"""
+		self.__editor.response()
 		from operator import eq, contains
 		from gtk.gdk import WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN
 		from gtk.gdk import WINDOW_STATE_ICONIFIED
@@ -532,7 +535,9 @@ class ScribesWindow(Window):
 		@param editor: An instance of the text editor's buffer.
 		@type editor: An Editor object.
 		"""
+		self.__editor.response()
 		self.set_title(self.__title)
+		self.__editor.response()
 		return
 
 	def __close_document_cb(self, editor):
@@ -571,12 +576,14 @@ class ScribesWindow(Window):
 		self.__uri = uri
 		self.__determine_title(self.__uri)
 		self.set_title(self.__title)
+		self.__editor.response()
 		return
 
 	def __reload_document_cb(self, *args):
 		from internationalization import msg0489
 		message = msg0489 % (self.__uri)
 		self.set_title(message)
+		self.__editor.response()
 		return
 
 ########################################################################
@@ -611,6 +618,7 @@ class ScribesWindow(Window):
 	def __determine_title(self, uri):
 		from gnomevfs import URI
 		self.__title = URI(uri).short_name.encode("utf-8")
+		self.__editor.response()
 		return False
 
 	def __destroy(self):
