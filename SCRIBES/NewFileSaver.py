@@ -149,6 +149,15 @@ class FileSaver(object):	"""
 		return False
 
 	def __get_save_processor(self):
+		"""
+		Get process responsible for saving.
+
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+
+		@return: The processor object responsible for saving.
+		@rtype: A DbusSaveObject object.
+		"""
 		if self.__processor: return self.__processor
 		self.__processor = self.__editor.get_save_processor()
 		return self.__processor
@@ -276,6 +285,12 @@ class FileSaver(object):	"""
 		return
 
 	def __check_queue(self):
+		"""
+		Check queue to see if documents needs to be saved.
+
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+		"""
 		try:
 			self.__is_saving = False
 			self.__queue.pop()
@@ -285,10 +300,15 @@ class FileSaver(object):	"""
 			self.__toggle_readonly_mode()
 			self.__emit_save_signal()
 			if self.__can_quit: self.__destroy()
-			return
 		return
 
 	def __toggle_readonly_mode(self):
+		"""
+		Toggle readonly mode if necessary.
+
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+		"""
 		from operator import not_
 		if not_(self.__toggle_readonly): return
 		self.__editor.trigger("toggle_readonly")
@@ -296,6 +316,12 @@ class FileSaver(object):	"""
 		return
 
 	def __emit_save_signal(self):
+		"""
+		Emit save or renamed signal.
+
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+		"""
 		if self.__should_rename:
 			self.__editor.emit("renamed-document", self.__editor.uri)
 			self.__should_rename = False
@@ -406,6 +432,12 @@ class FileSaver(object):	"""
 		return
 
 	def __saving_document_cb(self, *args):
+		"""
+		Handles callback when the "saving-document" signal is emitted.
+
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+		"""
 		self.__is_saving = True
 		return
 
@@ -445,6 +477,12 @@ class FileSaver(object):	"""
 		return False
 
 	def __reload_document_cb(self, *args):
+		"""
+		Handles callback when the "reload-document" signal is emitted.
+
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+		"""
 		self.__remove_save_timer()
 		return
 
@@ -468,16 +506,46 @@ class FileSaver(object):	"""
 		return
 
 	def __is_ready_cb(self, *args):
+		"""
+		Handles callback when the dbus "is_ready" signal is emitted.
+
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+		"""
 		self.__processor = self.__editor.get_save_processor()
 		return
 
 	def __saved_file_cb(self, editor_id):
+		"""
+		Handles callback when the dbus "saved_file" signal is emitted.
+
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+
+		@param editor_id: The identification number of the editor object.
+		@type editor_id: An Integer object.
+		"""
 		from operator import ne
 		if ne(self.__editor.id, editor_id): return
 		self.__check_queue()
 		return
 
 	def __error_cb(self, editor_id, error_message, error_id):
+		"""
+		Handles callback when the dbus "error" signal is emitted.
+
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+
+		@param editor_id: Id of the editor object.
+		@type editor_id: An Integer object.
+
+		@param error_message: An error message.
+		@type error_message: A String object.
+
+		@param error_id: An error id.
+		@type error_id: An Integer object.
+		"""
 		from operator import ne
 		if ne(self.__editor.id, editor_id): return
 		print error_message, error_id

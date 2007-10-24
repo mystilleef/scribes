@@ -172,7 +172,9 @@ class TriggerManager(object):
 		return
 
 	def trigger(self, trigger_name):
+		self.__editor.response()
 		self.__trigger_dictionary[trigger_name][0].activate()
+		self.__editor.response()
 		return
 
 	def get_trigger_info(self, trigger):
@@ -199,6 +201,7 @@ class TriggerManager(object):
 		@param accelerator: Internal representation of an accelerator associated with a trigger.
 		@type accelerator: A Tuple object.
 		"""
+		self.__editor.response()
 		from Exceptions import InvalidTriggerNameError
 		from Exceptions import DuplicateTriggerNameError
 		from Exceptions import DuplicateTriggerRemovalError
@@ -222,6 +225,7 @@ class TriggerManager(object):
 					del self.__trigger_dictionary[trigger_object.name]
 					trigger_object.destroy()
 				break
+		self.__editor.response()
 		return
 
 	def __format_accelerator(self, accelerator):
@@ -240,6 +244,7 @@ class TriggerManager(object):
 		@param accelerator: A keyboard shortcut associated with a trigger.
 		@type accelerator: A String object.
 		"""
+		self.__editor.response()
 		from operator import not_
 		if not_(accelerator): return None
 		accel_list = [accel.strip() for accel in accelerator.split("-")]
@@ -257,6 +262,7 @@ class TriggerManager(object):
 		accel = set(accel)
 		accel = list(accel)
 		accel.sort()
+		self.__editor.response()
 		return tuple(accel)
 
 	def __update_accelerator_info(self):
@@ -269,6 +275,7 @@ class TriggerManager(object):
 		@param self: Reference to the TriggerManager instance.
 		@type self: A TriggerManager object.
 		"""
+		self.__editor.response()
 		modifiers = ("ctrl", "shift", "alt")
 		keyname = set([])
 		accelerators = set([])
@@ -281,6 +288,7 @@ class TriggerManager(object):
 			accelerators.add(accelerator)
 		self.__accelerator_keyname_list = keyname
 		self.__accelerators = accelerators
+		self.__editor.response()
 		return
 
 	def __activate_accelerator(self, accelerator):
@@ -293,6 +301,7 @@ class TriggerManager(object):
 		@param accelerator: An accelerator associated with a trigger.
 		@type accelerator: A List object.
 		"""
+		self.__editor.response()
 		accelerator.sort()
 		accelerator = tuple(accelerator)
 		from operator import contains, not_, eq
@@ -300,6 +309,7 @@ class TriggerManager(object):
 		for trigger, accel in self.__trigger_dictionary.values():
 			if eq(accel, accelerator):
 				trigger.activate()
+				self.__editor.response()
 				break
 		return True
 
