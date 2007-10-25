@@ -267,7 +267,8 @@ class ScribesWindow(Window):
 		@param editor: An instance of the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__editor.textbuffer.handler_unblock(self.__signal_id_18)
+		#self.__editor.textbuffer.handler_unblock(self.__signal_id_18)
+		self.__editor.handler_unblock(self.__signal_id_18)
 		self.__uri = uri
 		self.set_title(self.__title)
 		self.show_all()
@@ -289,7 +290,8 @@ class ScribesWindow(Window):
 		@param editor: An instance of the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__editor.textbuffer.handler_unblock(self.__signal_id_18)
+		#self.__editor.textbuffer.handler_unblock(self.__signal_id_18)
+		self.__editor.handler_unblock(self.__signal_id_18)
 		from internationalization import msg0025
 		self.__uri = None
 		self.__title = None
@@ -300,7 +302,8 @@ class ScribesWindow(Window):
 
 	def __checking_document_cb(self, editor, uri):
 		self.__uri = uri
-		self.__editor.textbuffer.handler_block(self.__signal_id_18)
+		#self.__editor.textbuffer.handler_block(self.__signal_id_18)
+		self.__editor.handler_block(self.__signal_id_18)
 		# Set the titlebar to show the file is currently being loaded.
 		self.__determine_title(uri)
 		from internationalization import msg0335
@@ -352,7 +355,8 @@ class ScribesWindow(Window):
 		return
 
 	def __created_widgets_cb(self, editor):
-		self.__signal_id_18 = self.__editor.textbuffer.connect("changed", self.__changed_cb)
+		#self.__signal_id_18 = self.__editor.textbuffer.connect("changed", self.__changed_cb)
+		self.__signal_id_18 = self.__editor.connect("modified-document", self.__changed_cb)
 		return
 
 	def __changed_cb(self, textbuffer):
@@ -639,7 +643,8 @@ class ScribesWindow(Window):
 		self.__editor.disconnect_signal(self.__signal_id_13, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_14, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_15, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_18, self.__editor.textbuffer)
+		#self.__editor.disconnect_signal(self.__signal_id_18, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__signal_id_18, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_19, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_20, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_21, self.__editor)

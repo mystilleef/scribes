@@ -34,8 +34,7 @@ XXXX is a number between 0001 and 9999.
 @contact: mystilleef@gmail.com
 """
 
-from gettext import gettext
-_ = gettext
+from gettext import gettext as _
 
 # From module accelerators.py
 msg0003 = _("Cannot redo action")#.decode(encoding).encode("utf-8")

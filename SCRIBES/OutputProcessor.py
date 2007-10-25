@@ -47,6 +47,15 @@ class OutputProcessor(object):
 		self.__signal_id_2 = self.__writer.connect("error", self.__error_cb)
 
 	def __init_attributes(self, dbus):
+		"""
+		Initialize data attributes.
+		
+		@param self: Reference to the OutputProcessor instance.
+		@type self: An OutputProcessor object.
+		
+		@param dbus: The DBus save processor object.
+		@type dbus: A DBusObject object.
+		"""
 		self.__dbus = dbus
 		self.__file_dictionary = {}
 		from collections import deque
@@ -58,6 +67,25 @@ class OutputProcessor(object):
 		return
 
 	def process(self, editor_id, text, uri, encoding):
+		"""
+		Check permissions, create swap file, encode text and write file
+		to disk.
+		
+		@param self: Reference to the OutputProcessor instance.
+		@type self: An OutputProcessor object.
+		
+		@param editor_id: Editor object id number.
+		@type editor_id: An Integer object.
+		
+		@param text: String to write to file.
+		@type text: A String object.
+		
+		@param uri: Location to write to.
+		@type uri: A String object.
+		
+		@param encoding: Encoding of the file to write to.
+		@type encoding: A String object.
+		"""
 		try:
 			if self.__is_busy: raise ValueError
 			self.__is_busy = True
@@ -79,6 +107,15 @@ class OutputProcessor(object):
 		return
 
 	def update(self, editor_id):
+		"""
+		Update object's dictionary when an editor object is destroyed.
+		
+		@param self: Reference to the OutputProcessor instance.
+		@type self: An OutputProcessor object.
+		
+		@param editor_id: An Editor object's id.
+		@type editor_id: An Integer object.
+		"""
 		try:
 			swap_file = self.__file_dictionary[editor_id]
 			from gnomevfs import unlink
@@ -88,6 +125,15 @@ class OutputProcessor(object):
 		return
 
 	def __check_permissions(self, uri):
+		"""
+		Check permissions.
+		
+		@param self: Reference to the OutputProcessor instance.
+		@type self: An OutputProcessor object.
+		
+		@param uri: Location to write file to.
+		@type uri: A String object.
+		"""
 		from operator import not_, is_
 		if not_(uri.startswith("file:///")): return
 		from gnomevfs import get_local_path_from_uri
@@ -101,6 +147,18 @@ class OutputProcessor(object):
 		return
 
 	def __get_swap_file(self, editor_id):
+		"""
+		Create swap file if one does not exist.
+		
+		@param self: Reference to the OutputProcessor instance.
+		@type self: An OutputProcessor object.
+		
+		@param editor_id: Editor object's id.
+		@type editor_id: An Integer object.
+		
+		@return: URI to a swap file.
+		@rtype: A String object.
+		"""
 		from operator import contains
 		if contains(self.__file_dictionary.keys(), editor_id): return self.__file_dictionary[editor_id]
 		swap_uri = self.__create_swap_file(self.__create_swap_folder())
@@ -108,6 +166,18 @@ class OutputProcessor(object):
 		return swap_uri
 
 	def __create_swap_file(self, folder):
+		"""
+		Create a swap file.
+		
+		@param self: Reference to the OutputProcessor instance.
+		@type self: An OutputProcessor object.
+		
+		@param folder: Folder to create swap file in.
+		@type folder: A String object.
+		
+		@return: URI to a swap file.
+		@rtype: A String object.
+		"""
 		# Create a temporary folder.
 		from tempfile import NamedTemporaryFile
 		try:
@@ -125,6 +195,12 @@ class OutputProcessor(object):
 		return swap_uri
 
 	def __create_swap_folder(self):
+		"""
+		Create swap folder if one does not exist.
+		
+		@param self: Reference to the OutputProcessor instance.
+		@type self: An OutputProcessor object.
+		"""
 		from os import path
 		if self.__swap_folder and path.exists(self.__swap_folder): return self.__swap_folder
 		from tempfile import mkdtemp
@@ -139,14 +215,38 @@ class OutputProcessor(object):
 		return self.__swap_folder
 
 	def __encode_text(self, text, encoding):
+		"""
+		Encode string to encoding specified.
+		
+		@param self: Reference to the OutputProcessor instance.
+		@type self: An OutputProcessor object.
+		
+		@param text: Text to encode.
+		@type text: A String object.
+		
+		@param encoding: Encoding to use.
+		@type encoding: A String object.
+		
+		@return: Encoded text.
+		@rtype: A String object.
+		"""
 		encoded_text = text.encode(encoding)
 		return encoded_text
 
 	def __save_file(self, editor_id, uri, text, swap_uri):
+		"""
+		Write file to URI location.
+		"""
 		self.__writer.write_file(editor_id, uri, text, swap_uri)
 		return
 
 	def __destroy(self):
+		"""
+		Destroy object.
+		
+		@param self: Reference to the OutputProcessor instance.
+		@type self: An OutputProcessor object.
+		"""
 		from utils import disconnect_signal
 		disconnect_signal(self.__signal_id_1, self.__writer)
 		disconnect_signal(self.__signal_id_2, self.__writer)
@@ -157,11 +257,26 @@ class OutputProcessor(object):
 		return
 
 	def __error(self, editor_id, error_message, error_id):
+		"""
+		Send error message to editor via dbus.
+		"""
 		self.__is_busy = False
 		self.__dbus.error(editor_id, error_message, error_id)
 		return
 
 	def __saved_cb(self, writer, editor_id):
+		"""
+		Handles callback when a file has been successfully written.
+		
+		@param self: Reference to the OutputProcessor instance.
+		@type self: An OutputProcessor object.
+		
+		@param writer: Object that writes files to disk.
+		@type writer: An OutputWriter object.
+		
+		@param editor_id: Editor object's id.
+		@type editor_id: An Integer object.
+		"""
 		try:
 			self.__dbus.saved_file(editor_id)
 			self.__is_busy = False
@@ -172,5 +287,8 @@ class OutputProcessor(object):
 		return
 
 	def __error_cb(self, writer, editor_id, error_message, error_id):
+		"""
+		Handles callback when the Writer object fails to write to disk.
+		"""
 		self.__error(editor_id, error_message, error_id)
 		return

@@ -29,7 +29,7 @@ It allows editor instances to communicate with each other.
 @contact: mystilleef@gmail.com
 """
 #from sys import maxint
-INTERVAL = 10
+INTERVAL = 500
 close_file = lambda editor: editor.emit("close-document")
 
 class EditorManager(object):
@@ -57,7 +57,6 @@ class EditorManager(object):
 		signal(SIGHUP, self.__kernel_signals_cb)
 		signal(SIGSEGV, self.__kernel_signals_cb)
 		signal(SIGTERM, self.__kernel_signals_cb)
-		timeout_add(600000, self.__init_garbage_collector, priority=PRIORITY_LOW)
 		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
@@ -139,10 +138,10 @@ class EditorManager(object):
 		return
 
 	def response(self):
-	#	if self.__response_is_busy: return False
-	#	self.__response_is_busy = True
+		if self.__response_is_busy: return False
+		self.__response_is_busy = True
 		while self.__pending(): self.__iteration(True)
-	#	self.__response_is_busy = False
+		self.__response_is_busy = False
 		return False
 
 	def add_object(self, name, instance):

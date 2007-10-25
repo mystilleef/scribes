@@ -22,6 +22,7 @@
 This module documents a file that writes files to local and remote
 locations.
 
+@todo: Implement file info setting and getting.
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
 @copyright: Copyright © 2005 Lateef Alabi-Oki

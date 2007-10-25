@@ -110,9 +110,7 @@ class FileSaver(object):	"""
 		@param is_closing: True if this is the last call.
 		@type is_closing: A Boolean object.
 		"""
-		from Exceptions import PermissionError, SwapError, FileWriteError
-		from Exceptions import FileCloseError, FileCreateError, TransferError
-		from Exceptions import DoNothingError, FileModificationError
+		from Exceptions import DoNothingError
 		try:
 			self.__determine_action(is_closing)
 			self.__save_file()
@@ -144,8 +142,8 @@ class FileSaver(object):	"""
 		except ValueError:
 			self.__queue.append(1)
 		except AttributeError:
-			print "Can't Find save processor"
-		# Parameter for DBUS function: id, uri text, encoding, last_modification_time
+			error_message = "Can't find save processor"
+			self.__error(error_message)
 		return False
 
 	def __get_save_processor(self):
@@ -550,7 +548,8 @@ class FileSaver(object):	"""
 		"""
 		from operator import ne
 		if ne(self.__editor.id, editor_id): return
-		print error_message, error_id
+		error_message = error_message + str(error_id)
+		self.__error(error_message)
 		return
 
 	def __reply_handler_cb(self, *args):
@@ -558,5 +557,5 @@ class FileSaver(object):	"""
 
 	def __error_handler_cb(self, error):
 		print "SAVE ERROR: BEEF!"
-		print error
+		self.__error(error)
 		return
