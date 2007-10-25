@@ -282,6 +282,8 @@ class FileSaver(object):	"""
 			bind(self.__save_file)
 		except ImportError:
 			pass
+		except:
+			pass
 		return
 
 	def __check_queue(self):
@@ -468,9 +470,9 @@ class FileSaver(object):	"""
 		@type textbuffer: A ScribesTextBuffer object.
 		"""
 		if textbuffer.get_modified() is False: return False
-		self.__editor.response()
+#		self.__editor.response()
 		self.__editor.emit("modified-document")
-		self.__editor.response()
+#		self.__editor.response()
 		if self.__editor.uri is None: return False
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__save_timer = timeout_add(21000, self.__save_file_timeout_cb, priority=PRIORITY_LOW)

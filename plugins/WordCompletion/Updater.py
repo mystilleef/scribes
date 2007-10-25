@@ -52,7 +52,6 @@ class CompletionUpdater(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(manager, editor)
-		from thread import start_new_thread
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__start_indexer)
 		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
@@ -339,5 +338,7 @@ class CompletionUpdater(object):
 			bind(self.__generate_dictionary)
 			bind(self.__start_indexer)
 		except ImportError:
+			pass
+		except:
 			pass
 		return False

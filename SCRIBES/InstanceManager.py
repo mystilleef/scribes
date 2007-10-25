@@ -141,7 +141,7 @@ class EditorManager(object):
 	def response(self):
 	#	if self.__response_is_busy: return False
 	#	self.__response_is_busy = True
-		while self.__pending(): self.__iteration(False)
+		while self.__pending(): self.__iteration(True)
 	#	self.__response_is_busy = False
 		return False
 

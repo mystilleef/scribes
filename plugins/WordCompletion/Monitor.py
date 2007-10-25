@@ -181,6 +181,8 @@ class CompletionMonitor(object):
 			bind(self.__insert_text_cb)
 		except ImportError:
 			pass
+		except:
+			pass
 		return False
 
 	def __create_completion_dictionary(self):

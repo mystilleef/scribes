@@ -91,6 +91,12 @@ class SaveProcessMonitor(object):
 		return False
 
 	def __kill_save_processor(self):
+		"""
+		Kill the process that saves files.
+
+		@param self: Reference to the SaveProcessMonitor instance.
+		@type self: A SaveProcessMonitor object.
+		"""
 		from operator import is_
 		if is_(self.__get_processor_object(), None): return
 		if is_(self.__save_processor_id, None): return
@@ -100,6 +106,15 @@ class SaveProcessMonitor(object):
 		return
 
 	def __get_processor_object(self):
+		"""
+		Get dbus save process object.
+
+		@param self: Reference to the SaveProcessMonitor instance.
+		@type self: A SaveProcessMonitor object.
+
+		@return: None or a Dbus object.
+		@rtype: A DBusObject object.
+		"""
 		try:
 			from dbus import DBusException
 			from info import dbus_iface, session_bus, python_path
@@ -143,6 +158,12 @@ class SaveProcessMonitor(object):
 		return self.__get_processor_object()
 
 	def destroy(self):
+		"""
+		Destroy object.
+		
+		@param self: Reference to the SaveProcessMonitor instance.
+		@type self: A SaveProcessMonitor object.
+		"""
 		self.__session.remove_signal_receiver(self.__name_change_cb,
 						'NameOwnerChanged',
 						'org.freedesktop.DBus',

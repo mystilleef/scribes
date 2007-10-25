@@ -180,6 +180,8 @@ class CompletionIndexer(object):
 			bind(self.__filter)
 		except ImportError:
 			pass
+		except:
+			pass
 		return False
 
 	def __name_change_cb(self, *args):

@@ -177,6 +177,7 @@ class StatusTwo(ScribesStatusbar):
 		ScribesStatusbar.__init__(self, editor)
 		self.editor = editor
 		self.__id = None
+		self.__is_updating = False
 		self.set_property("width-request", 160)
 		self.set_has_resize_grip(False)
 		# Initialize the second statusbar context identification.
@@ -197,7 +198,8 @@ class StatusTwo(ScribesStatusbar):
 		"""
 		# Update the cursor position on the statusbar.
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__update_cursor_position, editor.textview, priority=PRIORITY_LOW)
+		self.__stop_idle_add()
+		self.__id = idle_add(self.__update_cursor_position, editor.textview, priority=PRIORITY_LOW)
 		editor.connect("cursor-moved", self.__statustwo_cursor_moved_cb)
 		return
 
@@ -215,9 +217,9 @@ class StatusTwo(ScribesStatusbar):
 		@type editor: An Editor object.
 		"""
 		# Update the cursor position on the statusbar.
-		from gobject import idle_add, PRIORITY_LOW
+		from gobject import idle_add, timeout_add, PRIORITY_LOW
 		self.__stop_idle_add()
-		self.__id = idle_add(self.__update_cursor_position, editor.textview, priority=PRIORITY_LOW)
+		self.__id = timeout_add(100, self.__update_cursor_position, editor.textview, priority=PRIORITY_LOW)
 		return
 
 	def __stop_idle_add(self):
@@ -230,10 +232,15 @@ class StatusTwo(ScribesStatusbar):
 
 	def __update_cursor_position(self, textview):
 		try:
+			if self.__is_updating: return False
+			self.__is_updating = True
 			from cursor import update_cursor_position
 			update_cursor_position(self, textview)
 		except AttributeError:
 			pass
+		except RuntimeError:
+			pass
+		self.__is_updating = False
 		return False
 
 	def __statustwo_enable_readonly_cb(self, editor):

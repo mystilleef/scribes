@@ -101,7 +101,7 @@ def update_cursor_position(statusbar, textview):
 	statusbar.pop(statusbar.context_id)
 	statusbar.context_id = statusbar.get_context_id(string)
 	statusbar.push(statusbar.context_id, string)
-	return
+	return False
 
 def set_textview_cursor(textview, cursor_type=None):
 	"""
@@ -275,3 +275,6 @@ try:
 	bind(move_view_to_cursor)
 except ImportError:
 	pass
+except:
+	pass
+
