@@ -213,12 +213,12 @@ class CompletionMonitor(object):
 		if length > 1:
 			self.__manager.emit("no-match-found")
 		else:
-			from gobject import idle_add, source_remove, PRIORITY_LOW
+			from gobject import idle_add, source_remove, PRIORITY_LOW, timeout_add
 			try:
 				source_remove(self.__insert_text_id)
 			except:
 				pass
-			self.__insert_text_id = idle_add(self.__check_buffer, priority=PRIORITY_LOW)
+			self.__insert_text_id = timeout_add(50, self.__check_buffer, priority=PRIORITY_LOW)
 		return False
 
 	def __generic_cb(self, *args):

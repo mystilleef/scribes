@@ -296,8 +296,8 @@ class CompletionWindow(Window):
 		self.__editor.disconnect_signal(self.__signal_id_8, self.__completion)
 		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor)
 		self.destroy()
-		self = None
 		del self
+		self = None
 		return
 
 	def __generic_hide_cb(self, *args):

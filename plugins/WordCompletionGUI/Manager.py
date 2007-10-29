@@ -167,6 +167,6 @@ class CompletionManager(GObject):
 		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor.store)
-		self = None
 		del self
+		self = None
 		return

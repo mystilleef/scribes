@@ -222,12 +222,12 @@ class TemplateMonitor(object):
 		if not_(word):
 			self.__manager.emit("no-trigger-found", (self.__bmark, self.__emark))
 			return False
-		from gobject import idle_add, source_remove
+		from gobject import idle_add, source_remove, timeout_add
 		try:
 			source_remove(self.__cursor_moved_id)
 		except:
 			pass
-		self.__cursor_moved_id = idle_add(self.__check_trigger, word)
+		self.__cursor_moved_id = timeout_add(50, self.__check_trigger, word)
 		return False
 
 	def __key_press_event_cb(self, textview, event):

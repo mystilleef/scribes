@@ -71,7 +71,7 @@ class PreferenceMenu(Menu):
 	def __destroy(self):
 		"""
 		Destroy object.
-		
+
 		@param self: Reference to the PreferenceMenu.
 		@type self: A PreferenceMenu object.
 		"""
@@ -83,7 +83,7 @@ class PreferenceMenu(Menu):
 		del self
 		self = None
 		return
-		
+
 	def __close_document_cb(self, editor):
 		self.__destroy()
 		return

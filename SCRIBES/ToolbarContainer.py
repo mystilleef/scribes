@@ -49,7 +49,6 @@ class ScribesToolbarContainer(HBox):
 		HBox.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
-		self.resize_children()
 		self.__signal_id_1 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_cb)
 		self.__signal_id_3 = editor.connect("show-bar", self.__show_bar_cb)
@@ -89,8 +88,6 @@ class ScribesToolbarContainer(HBox):
 		@param self: Reference to the ScribesToolbarContainer instance.
 		@type self: A ScribesToolbarContainer object.
 		"""
-		from gtk import RESIZE_PARENT
-		self.set_property("resize-mode", RESIZE_PARENT)
 		self.set_property("name", "ScribesToolbarContainer")
 		return
 

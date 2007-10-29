@@ -90,8 +90,8 @@ class ScribesStatusContainer(HBox):
 		@type self: A ScribesStatusContainer object.
 		"""
 		self.set_no_show_all(True)
-		from gtk import RESIZE_PARENT
-		self.set_property("resize-mode", RESIZE_PARENT)
+#		from gtk import RESIZE_PARENT
+#		self.set_property("resize-mode", RESIZE_PARENT)
 		self.set_property("name", "scribesstatuscontainer")
 		return
 

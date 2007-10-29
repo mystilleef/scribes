@@ -79,8 +79,6 @@ class ScribesViewContainer(HBox):
 		@param self: Reference to the ScribesViewContainer instance.
 		@type self: A ScribesViewContainer object.
 		"""
-		from gtk import RESIZE_PARENT
-		self.set_property("resize-mode", RESIZE_PARENT)
 		self.set_property("name", "scribesviewcontainer")
 		return
 

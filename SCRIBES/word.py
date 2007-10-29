@@ -218,3 +218,5 @@ try:
 	bind(inside_word)
 except ImportError:
 	pass
+except:
+	pass

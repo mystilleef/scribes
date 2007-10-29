@@ -34,19 +34,12 @@ class ScribesSubMenu(Menu):
 	"""
 	This class implements the submenu for the text editor's popup menu.
 	"""
-	
-	def __init__(self): 
-		""" 
+
+	def __init__(self):
+		"""
 		Initialize the menu.
-		
-		@param self: Reference to the ScribesSubMenu instance. 
-		@type self: A ScribesSubMenu object.  
+
+		@param self: Reference to the ScribesSubMenu instance.
+		@type self: A ScribesSubMenu object.
 		"""
 		Menu.__init__(self)
-		
-	  
-	
-	
-	
-	 
-   

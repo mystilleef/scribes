@@ -51,11 +51,6 @@ class ScribesStatusbar(Statusbar):
 		"""
 		Statusbar.__init__(self)
 		self.__init_attributes(editor)
-		self.set_reallocate_redraws(False)
-		self.set_redraw_on_allocate(False)
-		from gtk import RESIZE_PARENT
-		self.set_property("resize-mode", RESIZE_PARENT)
-		self.resize_children()
 		self.__signal_id_1 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_cb)
 

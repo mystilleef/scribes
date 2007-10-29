@@ -56,7 +56,7 @@ class FeedbackManager(object):
 		self.__signal_id_8 = editor.connect("enable-readonly", self.__enable_readonly_cb)
 		self.__signal_id_9 = editor.connect("disable-readonly", self.__disable_readonly_cb)
 		self.__signal_id_10 = editor.connect("not-yet-implemented", self.__not_yet_implemented_cb)
-		self.__signal_id_11 = editor.textbuffer.connect("changed", self.__changed_cb)
+		self.__signal_id_11 = editor.connect("modified-document", self.__changed_cb)
 		self.__signal_id_12 = editor.connect("gui-created", self.__gui_created_cb)
 		self.__signal_id_13 = editor.connect("reload-document", self.__reload_document_cb)
 
@@ -389,8 +389,7 @@ class FeedbackManager(object):
 		@type time: An Integer object.
 		"""
 		from operator import is_
-		if is_(time, None):
-			time = 3
+		if is_(time, None): time = 3
 		time *= 1000
 		from gobject import timeout_add
 		self.__remove_timer()
@@ -520,7 +519,7 @@ class FeedbackManager(object):
 		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_10, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_11, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__signal_id_11, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_12, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_13, self.__editor)
 		self.__icon_dictionary.clear()
@@ -661,7 +660,7 @@ class FeedbackManager(object):
 		@type uri: A String object.
 		"""
 		from operator import truth, not_
-		if truth(self.__is_busy): return
+		if self.__is_busy: return
 		if not_(self.__default_message_is_set): return
 		from internationalization import msg0085
 		message = msg0085 % self.__filename

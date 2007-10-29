@@ -108,8 +108,8 @@ class CompletionUpdater(object):
 		@param self: Reference to the CompletionUpdater instance.
 		@type self: A CompletionUpdater object.
 		"""
-		from operator import is_, truth
-		if truth(self.__editor.is_readonly): return False
+		from operator import is_
+		if self.__editor.is_readonly: return False
 		if is_(self.__indexer, None):
 			from gobject import idle_add
 			idle_add(self.__start_indexer)
@@ -218,12 +218,12 @@ class CompletionUpdater(object):
 		@param textbuffer: Reference to the text editor's buffer.
 		@type textbuffer: A ScribesTextBuffer object.
 		"""
-		from gobject import idle_add, PRIORITY_LOW
+		from gobject import timeout_add, PRIORITY_LOW
 		try:
 			source_remove(self.__index_timer)
 		except Exception:
 			pass
-		self.__index_timer = idle_add(self.__index, priority=PRIORITY_LOW)
+		self.__index_timer = timeout_add(500, self.__index, priority=PRIORITY_LOW)
 		return False
 
 	def __loaded_document_cb(self, editor, uri):

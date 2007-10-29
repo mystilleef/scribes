@@ -140,8 +140,7 @@ class AutoReplaceMonitor(GObject):
 		"""
 		from gtk import keysyms
 		if event.keyval in [keysyms.Return, keysyms.space]:
-			if self.__found_abreviation(event.keyval):
-				return True
+			if self.__found_abreviation(event.keyval): return True
 		return False
 
 	def __found_abreviation(self, keyval):

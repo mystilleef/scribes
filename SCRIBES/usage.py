@@ -33,11 +33,9 @@ This module contains code that generates the command line help manual.
 def help():
 	u"""
 	Generate the command line help manual.
-
 	"""
 	from internationalization import msg0124, msg0125, msg0126, msg0127, msg0128
 	from internationalization import msg0129, msg0130
-
 	print msg0124
 	print
 	print msg0125
@@ -50,6 +48,4 @@ def help():
 	print "\t-r, --readonly\t" + msg0130
 	print
 	print "http://scribes.sourceforge.net/"
-
 	return
-

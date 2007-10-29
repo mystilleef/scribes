@@ -103,11 +103,9 @@ def create_scrollwin():
 	from gtk import ScrolledWindow, RESIZE_PARENT, POLICY_AUTOMATIC
 	from gtk import SHADOW_IN
 	scrollwin = ScrolledWindow()
-	scrollwin.set_resize_mode(RESIZE_PARENT)
 	scrollwin.set_border_width(1)
 	scrollwin.set_policy(POLICY_AUTOMATIC, POLICY_AUTOMATIC)
 	scrollwin.set_shadow_type(SHADOW_IN)
-	scrollwin.resize_children()
 	return scrollwin
 
 def get_language(uri):
@@ -514,18 +512,9 @@ def disconnect_signal(signal_id, instance):
 	@type instance: A GObject object.
 	"""
 	try:
-		if signal_id and instance.handler_is_connected(signal_id):
-			instance.disconnect(signal_id)
+		if signal_id and instance.handler_is_connected(signal_id): instance.disconnect(signal_id)
 	except AttributeError:
 		pass
-	return
-
-
-def delete_list(sequence):
-	"""
-	Delete a list and its content
-	"""
-	if sequence: [sequence.remove(x) for x in sequence]
 	return
 
 def init_gnome():

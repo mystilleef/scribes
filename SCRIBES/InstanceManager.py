@@ -29,7 +29,7 @@ It allows editor instances to communicate with each other.
 @contact: mystilleef@gmail.com
 """
 #from sys import maxint
-INTERVAL = 500
+INTERVAL = 10
 close_file = lambda editor: editor.emit("close-document")
 
 class EditorManager(object):
@@ -45,7 +45,8 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
-		from gobject import timeout_add, idle_add, PRIORITY_LOW
+		from gobject import timeout_add, idle_add, PRIORITY_LOW, threads_init
+		threads_init()
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
@@ -138,10 +139,10 @@ class EditorManager(object):
 		return
 
 	def response(self):
-		if self.__response_is_busy: return False
-		self.__response_is_busy = True
+	#	if self.__response_is_busy: return False
+	#	self.__response_is_busy = True
 		while self.__pending(): self.__iteration(True)
-		self.__response_is_busy = False
+	#	self.__response_is_busy = False
 		return False
 
 	def add_object(self, name, instance):

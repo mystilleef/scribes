@@ -120,6 +120,6 @@ class CompletionScrollWin(ScrolledWindow):
 		disconnect_signal(self.__signal_id_1, manager)
 		disconnect_signal(self.__signal_id_2, manager)
 		self.destroy()
-		self = None
 		del self
+		self = None
 		return

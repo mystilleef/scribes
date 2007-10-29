@@ -91,7 +91,7 @@ class PluginManager(object):
 		from Exceptions import DuplicatePluginError, DoNotLoadError
 		try:
 			from operator import not_
-			if not_(filename.startswith("Plugin") and filename.endswith(".py")): return
+			if not_(filename.startswith("Plugin") and filename.endswith(".py")): return False
 			from os import path
 			filepath = path.join(plugin_folder, filename)
 			from imp import load_source

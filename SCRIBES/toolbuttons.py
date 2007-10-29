@@ -50,7 +50,6 @@ class ScribesToolButton(ToolButton):
 		from tooltips import create_tooltips
 		self.tooltips = create_tooltips()
 		self.__set_properties()
-		self.resize_children()
 
 	def __set_properties(self):
 		"""
@@ -66,8 +65,6 @@ class ScribesToolButton(ToolButton):
 		self.set_expand(False)
 		self.set_use_drag_window(False)
 		self.set_is_important(False)
-		from gtk import RESIZE_PARENT
-		self.set_property("resize-mode", RESIZE_PARENT)
 		return False
 
 class NewToolButton(ScribesToolButton):

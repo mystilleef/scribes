@@ -34,7 +34,7 @@ text editor instances.
 
 from pygtk import require
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_OBJECT
-from gobject import TYPE_STRING, SIGNAL_RUN_FIRST
+from gobject import TYPE_STRING
 require("2.0")
 
 class Editor(GObject):
@@ -91,7 +91,8 @@ class Editor(GObject):
 		@param file_uri: A file to open.
 		@param type: A String object.
 		"""
-		from gobject import idle_add, PRIORITY_LOW
+		from gobject import idle_add, threads_init
+		threads_init()
 		GObject.__init__(self)
 		self.__signal_id_1 = self.connect("initialized-attributes", self.__initialized_attributes_cb)		self.__signal_id_2 = self.connect("created-widgets", self.__created_widgets_cb)
 		self.__signal_id_3 = self.connect_after("gui-created", self.__gui_created_after_cb)

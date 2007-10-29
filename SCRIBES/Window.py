@@ -296,8 +296,7 @@ class ScribesWindow(Window):
 		self.__uri = None
 		self.__title = None
 		self.set_title(msg0025)
-		if self.__is_mapped is False:
-			self.__editor.emit("close-document-no-save")
+		if self.__is_mapped is False: self.__editor.emit("close-document-no-save")
 		return
 
 	def __checking_document_cb(self, editor, uri):
@@ -471,10 +470,12 @@ class ScribesWindow(Window):
 			self.__bar.hide_bar()
 			return True
 		if event.keyval == keysyms.Escape and self.__uri is None and editor.contains_document is False:
+			self.__editor.response()
 			editor.trigger("close_window")
 		from gtk.gdk import CONTROL_MASK, SHIFT_MASK
 		if event.state & CONTROL_MASK and event.state & SHIFT_MASK:
 			if event.keyval == keysyms.W and self.__uri is None:
+				self.__editor.response()
 				self.hide_all()
 				editor.emit("close-document-no-save")
 		return False

@@ -130,17 +130,15 @@ class ScribesErrorDialog(MessageDialog):
 		"""
 		self.editor.emit("hide-dialog", self)
 		self.hide()
-		from gobject import timeout_add
 		# Feedback to the text editor's statusbar indication the dialog window
 		# has just been closed.
 		try:
 			from internationalization import msg0187
-			timeout_add(10, self.editor.feedback.update_status_message, msg0187,
-						"info", 1)
+			self.editor.feedback.update_status_message(msg0187, "info", 1)
 		except:
 			pass
-		self = None
 		del self
+		self = None
 		return
 
 ################################################################################

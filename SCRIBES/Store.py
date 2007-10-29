@@ -149,10 +149,9 @@ class Store(GObject):
 		@rtype: A Python object.
 		"""
 		try:
-			instance = None
 			instance = self.__object_dictionary[(name,)]
 		except KeyError:
-			pass
+			return None
 		return instance
 
 	def list_objects(self):

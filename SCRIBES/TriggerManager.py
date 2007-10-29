@@ -328,6 +328,8 @@ class TriggerManager(object):
 			bind(self.__format_accelerator)
 		except ImportError:
 			pass
+		except:
+			pass
 		return False
 
 	def __destroy(self):

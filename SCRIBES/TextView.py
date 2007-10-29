@@ -134,8 +134,6 @@ class ScribesTextView(SourceView):
 		from gtk.gdk import ACTION_COPY, BUTTON1_MASK, ACTION_DEFAULT
 		self.drag_dest_set(DEST_DEFAULT_ALL, targets, ACTION_COPY)
 		self.set_property("buffer", self.__editor.textbuffer)
-		from gtk import RESIZE_PARENT
-		self.set_resize_mode(RESIZE_PARENT)
 		self.set_highlight_current_line(True)
 		self.set_show_line_numbers(True)
 		self.set_auto_indent(True)
@@ -253,6 +251,7 @@ class ScribesTextView(SourceView):
 		@return: False to propagate signals to parent widgets, True otherwise.
 		@rtype: A Boolean object.
 		"""
+		self.__editor.response()
 		from operator import contains
 		if contains(context.targets, "text/uri-list"): return True
 		return False
@@ -282,6 +281,7 @@ class ScribesTextView(SourceView):
 		@return: False to propagate signals to parent widgets, True otherwise.
 		@rtype: A Boolean object.
 		"""
+		self.__editor.response()
 		from operator import contains
 		if contains(context.targets, "text/uri-list"): return True
 		return False
@@ -318,6 +318,7 @@ class ScribesTextView(SourceView):
 		@return: False to propagate signals to parent widgets, True otherwise.
 		@rtype: A Boolean object.
 		"""
+		self.__editor.response()
 		from operator import contains, not_, ne
 		if not_(contains(context.targets, "text/uri-list")): return False
 		if ne(info, 80): return False
@@ -352,6 +353,7 @@ class ScribesTextView(SourceView):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
+		self.__editor.response()
 		selection = self.get_buffer().get_selection_bounds()
 		from operator import not_
 		if not_(selection): return False
@@ -1028,19 +1030,17 @@ class ScribesTextView(SourceView):
 		@type self: A ScribesTextView object.
 		"""
 		self.grab_focus()
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__refresh, priority=PRIORITY_LOW)
+		self.__editor.response
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__refresh, priority=PRIORITY_LOW)
 		return False
 
 	def __refresh(self):
-		self.queue_draw()
-		self.queue_resize()
-		self.resize_children()
-		try:
-			self.window.process_updates(True)
-		except:
-			pass
-		self.__editor.response()
+	#	try:
+	#		self.window.process_updates(True)
+	#	except:
+	#		pass
+#		self.__editor.response()
 		return False
 
 	def __destroy(self):

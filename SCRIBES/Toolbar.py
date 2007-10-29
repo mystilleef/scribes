@@ -54,7 +54,6 @@ class ScribesToolbar(Toolbar):
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__populate_toolbar(editor)
-		self.resize_children()
 		self.__set_toolbar_visibility()
 		self.__signal_id_1 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_cb)
@@ -88,14 +87,11 @@ class ScribesToolbar(Toolbar):
 		@param self: Reference to the ScribesToolbar instance.
 		@type self: A ScribesToolbar object.
 		"""
-		from gtk import ORIENTATION_HORIZONTAL, TOOLBAR_ICONS, RESIZE_PARENT
+		from gtk import ORIENTATION_HORIZONTAL, TOOLBAR_ICONS
 		self.set_no_show_all(True)
 		self.set_property("orientation", ORIENTATION_HORIZONTAL)
 		self.set_property("toolbar-style", TOOLBAR_ICONS)
 		self.set_property("show-arrow", True)
-		self.set_reallocate_redraws(False)
-		self.set_property("resize-mode", RESIZE_PARENT)
-		self.set_redraw_on_allocate(False)
 		return False
 
 	def __populate_toolbar(self, editor):

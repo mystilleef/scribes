@@ -102,4 +102,3 @@ def create_tooltips():
 	tips = Tooltips()
 	tips.enable()
 	return tips
-

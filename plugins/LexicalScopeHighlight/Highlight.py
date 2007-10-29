@@ -280,12 +280,12 @@ class Highlighter(object):
 		"""
 		from operator import not_
 		if not_(self.__can_highlight): return
-		from gobject import idle_add, source_remove
+		from gobject import idle_add, source_remove, timeout_add
 		try:
 			source_remove(self.__cursor_moved_id)
 		except:
 			pass
-		self.__cursor_moved_id = idle_add(self.__highlight_region)
+		self.__cursor_moved_id = timeout_add(100, self.__highlight_region)
 		return
 
 	def __apply_tag_cb(self, textbuffer, tag, start, end):

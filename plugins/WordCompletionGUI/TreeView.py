@@ -128,27 +128,12 @@ class CompletionTreeView(TreeView):
 		if ne(completion_list, self.__word_list):
 			self.__word_list = completion_list
 			self.__model.clear()
-			from gobject import idle_add
 			for word in self.__word_list:
 				self.__model.append([word])
-				self.__stop_populate_id()
-				self.__populate_model_id = idle_add(self.__response)
 			self.columns_autosize()
 		self.get_selection().select_path(0)
 		self.__manager.emit("populated-model", self)
 		return
-
-	def __stop_populate_id(self):
-		try:
-			from gobject import source_remove
-			source_remove(self.__populate_model_id)
-		except:
-			pass
-		return
-
-	def __response(self):
-		#self.__editor.response()
-		return False
 
 	def __insert_word_completion(self, path):
 		"""
@@ -252,8 +237,8 @@ class CompletionTreeView(TreeView):
 		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_8, self)
 		self.destroy()
-		self = None
 		del self
+		self = None
 		return
 
 	def __match_found_cb(self, completion, completion_list):

@@ -49,6 +49,5 @@ class DBusService(Object):
 
 	@method("net.sourceforge.Scribes")
 	def open_files(self, uris):
-		if not uris:
-			uris = None
+		if not uris: uris = None
 		return self.__manager.open_files(uris)

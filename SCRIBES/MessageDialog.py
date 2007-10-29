@@ -232,4 +232,3 @@ class ScribesMessageDialog(MessageDialog):
 	def __close_document_cb(self, editor):
 		self.__destroy()
 		return
-

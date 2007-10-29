@@ -183,8 +183,8 @@ class EncodingManager(object):
 		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.unregister_object(self.__termination_id)
-		self = None
 		del self
+		self = None
 		return
 
 ########################################################################
