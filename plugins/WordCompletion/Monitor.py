@@ -232,7 +232,7 @@ class CompletionMonitor(object):
 		@type *args: A List object.
 		"""
 		self.__manager.emit("no-match-found")
-		return
+		return False
 
 	def __update_cb(self, manager, dictionary):
 		"""

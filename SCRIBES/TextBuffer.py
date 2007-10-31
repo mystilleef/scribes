@@ -242,11 +242,11 @@ class ScribesTextBuffer(SourceBuffer):
 	def __cursor_position_cb(self, *args):
 		self.__editor.emit("cursor-moved")
 		self.__make_responsive()
-		return False
+		return True
 
 	def __cursor_position_after_cb(self, *args):
 		self.__make_responsive()
-		return False
+		return True
 
 	def __make_responsive(self):
 		try:
@@ -359,6 +359,8 @@ class ScribesTextBuffer(SourceBuffer):
 			bind(self.__cursor_position_cb)
 			bind(self.__cursor_position_after_cb)
 		except ImportError:
+			pass
+		except:
 			pass
 		return False
 

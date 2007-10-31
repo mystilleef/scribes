@@ -240,7 +240,6 @@ class BrowserTreeView(TreeView):
 		fileuri = uri
 		return file_type, filename, pathname, fileuri
 
-
 	def __row_activated_cb(self, treeview, path, column):
 		"""
 		Handles callback when the "row-activated" signal is emitted.

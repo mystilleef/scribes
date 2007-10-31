@@ -214,7 +214,7 @@ class StatusTwo(ScribesStatusbar):
 		# Update the cursor position on the statusbar.
 		from gobject import idle_add, timeout_add, PRIORITY_LOW
 		self.__stop_idle_add()
-		self.__id = timeout_add(100, self.__update_cursor_position, editor.textview, priority=PRIORITY_LOW)
+		self.__id = timeout_add(500, self.__update_cursor_position, editor.textview, priority=PRIORITY_LOW)
 		return
 
 	def __stop_idle_add(self):

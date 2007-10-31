@@ -59,6 +59,7 @@ class EditorManager(object):
 		signal(SIGSEGV, self.__kernel_signals_cb)
 		signal(SIGTERM, self.__kernel_signals_cb)
 		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
 		"""
@@ -139,10 +140,10 @@ class EditorManager(object):
 		return
 
 	def response(self):
-	#	if self.__response_is_busy: return False
-	#	self.__response_is_busy = True
-		while self.__pending(): self.__iteration(True)
-	#	self.__response_is_busy = False
+		if self.__response_is_busy: return False
+		self.__response_is_busy = True
+		while self.__pending(): self.__iteration(False)
+		self.__response_is_busy = False
 		return False
 
 	def add_object(self, name, instance):
@@ -414,6 +415,14 @@ class EditorManager(object):
 		textdomain("scribes")
 		install("scribes", locale_folder, unicode=1)
 		return
+
+	def __precompile_methods(self):
+		try:
+			from psyco import bind
+			bind(self.response)
+		except ImportError:
+			pass
+		return False
 
 	def __remove_swap_area(self):
 		"""

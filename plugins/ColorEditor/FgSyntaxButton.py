@@ -133,7 +133,7 @@ class ForegroundSyntaxButton(ColorButton):
 			bold = str(tag_style.bold)
 			italic = str(tag_style.italic)
 			underline = str(tag_style.underline)
-			background = convert_color_to_spec(tag_style.background)
+			background = self.__editor.convert_color_to_spec(tag_style.background)
 			gconf_entry = [color, "None", bold, italic, underline]
 		self.__client.set_list(gconf_key, VALUE_STRING, gconf_entry)
 		self.__client.notify(gconf_key)

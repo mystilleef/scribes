@@ -133,7 +133,7 @@ class CompletionTreeView(TreeView):
 			self.columns_autosize()
 		self.get_selection().select_path(0)
 		self.__manager.emit("populated-model", self)
-		return
+		return False
 
 	def __insert_word_completion(self, path):
 		"""
@@ -254,7 +254,12 @@ class CompletionTreeView(TreeView):
 		@param completion_list: A list of words for completion.
 		@type completion_list: A List object.
 		"""
-		self.__populate_model(completion_list)
+		try:
+			from gobject import source_remove, idle_add
+			source_remove(self.__populate_id)
+		except:
+			pass
+		self.__populate_id = idle_add(self.__populate_model, completion_list)
 		return
 
 	def __row_activated_cb(self, treeview, path, column):

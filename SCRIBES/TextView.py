@@ -1030,16 +1030,16 @@ class ScribesTextView(SourceView):
 		@type self: A ScribesTextView object.
 		"""
 		self.grab_focus()
-		self.__editor.response
+		self.__editor.response()
 #		from gobject import idle_add, PRIORITY_LOW
 #		idle_add(self.__refresh, priority=PRIORITY_LOW)
 		return False
 
 	def __refresh(self):
-	#	try:
-	#		self.window.process_updates(True)
-	#	except:
-	#		pass
+#		try:
+#			self.window.process_updates(True)
+#		except:
+#			pass
 #		self.__editor.response()
 		return False
 
