@@ -134,8 +134,7 @@ class SaveProcessMonitor(object):
 		@type self: A SaveProcessMonitor object.
 		"""
 		if self.__quiting: return
-		processor_object = self.__get_processor_object()
-		if processor_object: return
+		if self.__get_processor_object(): return
 		self.__is_ready = False
 		from gobject import idle_add
 		idle_add(self.__start_save_processor)
@@ -152,15 +151,33 @@ class SaveProcessMonitor(object):
 		return
 
 	def is_ready(self):
+		"""
+		Whether or not the save processor is ready.
+
+		@param self: Reference to the SaveProcessMonitor instance.
+		@type self: A SaveProcessMonitor object.
+
+		@return: True if processor is ready.
+		@rtype: A Boolean object.
+		"""
 		return self.__is_ready
 
 	def get_processor_object(self):
+		"""
+		Get DBus object representing the save processor.
+
+		@param self: Reference to the SaveProcessMonitor instance.
+		@type self: A SaveProcessMonitor object.
+
+		@return: DBus save processor object.
+		@rtype: A DBus object.
+		"""
 		return self.__get_processor_object()
 
 	def destroy(self):
 		"""
 		Destroy object.
-		
+
 		@param self: Reference to the SaveProcessMonitor instance.
 		@type self: A SaveProcessMonitor object.
 		"""

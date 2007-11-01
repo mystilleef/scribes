@@ -553,9 +553,21 @@ class FileSaver(object):	"""
 		return
 
 	def __reply_handler_cb(self, *args):
+		"""
+		Handles callback when a dbus response is successful.
+		
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+		"""
 		return
 
 	def __error_handler_cb(self, error):
+		"""
+		Handles callback when an dbus error occurs.
+		
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+		"""
 		print "SAVE ERROR: BEEF!"
 		self.__error(error)
 		return
