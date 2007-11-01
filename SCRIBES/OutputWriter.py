@@ -57,19 +57,16 @@ class OutputWriter(GObject):
 		self.__init_attributes()
 
 	def __init_attributes(self):
+		"""
+		Iniitailize data attributes.
+
+		@param self: Reference to the OutputWriter instance.
+		@type self: An OutputWriter object.
+		"""
 		self.__id = None
 		self.__uri = None
 		self.__swap_uri = None
-		return
-
-	def __reset_attributes(self):
-		self.__id, self.__uri, self.__swap_uri = None, None, None
-		return
-
-	def __error(self, error_message, error_id):
-		editor_id = self.__id
-		self.__reset_attributes()
-		self.emit("error", editor_id, error_message, error_id)
+		self.__file_info = None
 		return
 
 	def write_file(self, editor_id, uri, text, swap_uri):
@@ -77,6 +74,7 @@ class OutputWriter(GObject):
 		from gnomevfs.async import create
 		self.__id, self.__uri, self.__swap_uri = editor_id, uri, swap_uri
 		try:
+			self.__file_info = self.__get_file_info()
 			# Write to a temporary file.
 			create(uri=URI(swap_uri),
 					callback=self.__write_cb,
@@ -174,14 +172,83 @@ class OutputWriter(GObject):
 			from gnomevfs import XFER_PHASE_COMPLETED
 			from operator import ne
 			if ne(info.phase, XFER_PHASE_COMPLETED): return True
-		#	self.__set_file_info()
+			self.__set_file_info()
 			self.__finish_up()
 		except:
 			handle.cancel()
 			self.__error("FileTransferUpdateError", 15)		return True
 
 	def __finish_up(self):
+		"""
+		Last function call if save is successful.
+
+		Emits save signal and resets attributes.
+
+		@param self: Reference to the OutputWriter instance.
+		@type self: An OutputWriter object.
+		"""
 		editor_id = self.__id
 		self.__reset_attributes()
 		self.emit("saved", editor_id)
+		return
+
+	def __error(self, error_message, error_id):
+		"""
+		Emit error signal when an unexpected event occurs.
+
+		@param self: Reference to the OutputWriter instance.
+		@type self: An OutputWriter object.
+
+		@param error_message: An error message.
+		@type error_message: A String object.
+
+		@param error_id: A number associated with an error.
+		@type error_id: An Integer object.
+		"""
+		editor_id = self.__id
+		self.__reset_attributes()
+		self.emit("error", editor_id, error_message, error_id)
+		return
+
+	def __get_file_info(self):
+		"""
+		Get file information about the file.
+
+		@param self: Reference to the OutputWriter instance.
+		@type self: A OutputWriter object.
+
+		@return: An object containing file information.
+		@rtype: A gnomevfs.FILE_INFO object.
+		"""
+		try:
+			from operator import is_
+			if is_(self.__uri.startswith("file:///"), False): return None
+			from gnomevfs import get_file_info
+			fileinfo = get_file_info(self.__uri)
+		except:			return None		return fileinfo
+
+	def __set_file_info(self):
+		"""
+		Set correct permissions of a file after it has been saved.
+
+		@param self: Reference to the OutputWriter instance.
+		@type self: A OutputWriter object.
+		"""
+		from operator import not_
+		if not_(self.__file_info): return
+		try:
+			from gnomevfs import set_file_info, SET_FILE_INFO_PERMISSIONS
+			set_file_info(self.__uri, self.__file_info, SET_FILE_INFO_PERMISSIONS)
+		except:
+			pass
+		return
+
+	def __reset_attributes(self):
+		"""
+		Reset object attributes to None.
+
+		@param self: Reference to the OutputWriter instance.
+		@type self: A OutputWriter object.
+		"""
+		self.__id, self.__uri, self.__swap_uri, self.__file_info = None, None, None, None
 		return
