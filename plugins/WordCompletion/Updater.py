@@ -140,10 +140,13 @@ class CompletionUpdater(object):
 			from operator import not_
 			if not_(self.__indexer): return False
 			self.__is_indexing = True
-			self.__indexer.process(self.__get_text(), self.__editor.id,
+			try:
+				self.__indexer.process(self.__get_text(), self.__editor.id,
 					dbus_interface=indexer_dbus_service,
 					reply_handler=self.__reply_handler_cb,
 					error_handler=self.__error_handler_cb)
+			except:
+				self.__is_indexing = False
 		return False
 
 	def __start_indexer(self):
@@ -160,8 +163,11 @@ class CompletionUpdater(object):
 			from operator import contains
 			self.__indexer = None
 			if contains(services, indexer_dbus_service):
-				self.__indexer = session_bus.get_object(indexer_dbus_service, indexer_dbus_path)
-				from gobject import idle_add, PRIORITY_LOW
+				try:
+					self.__indexer = session_bus.get_object(indexer_dbus_service, indexer_dbus_path)
+					from gobject import idle_add, PRIORITY_LOW
+				except:
+					pass
 				try:
 					source_remove(self.__index_timer)
 				except Exception:

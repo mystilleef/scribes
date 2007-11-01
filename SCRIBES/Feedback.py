@@ -108,15 +108,11 @@ class FeedbackManager(object):
 		@rtype: A Boolean object.
 		"""
 		self.__is_busy = True
-	#	from gobject import idle_add, PRIORITY_LOW
-	#	idle_add(self.__set_message, message, priority=PRIORITY_LOW)
-	#	idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
-	#	idle_add(self.__reset, time, priority=PRIORITY_LOW)
-	#	idle_add(self.__beep, icon, priority=PRIORITY_LOW)
-		self.__set_message(message)
-		self.__set_icon(icon)
-		self.__reset(time)
-		self.__beep(icon)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set_message, message, priority=PRIORITY_LOW)
+		idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
+		idle_add(self.__reset, time, priority=PRIORITY_LOW)
+		idle_add(self.__beep, icon, priority=PRIORITY_LOW)
 		self.__default_message_is_set = False
 		return False
 
@@ -135,9 +131,9 @@ class FeedbackManager(object):
 		"""
 		message_id = self.__editor.generate_random_number(self.__message_stack)
 		self.__message_stack.append((message, icon, message_id))
-		from gobject import idle_add
-		idle_add(self.__set_message, message)
-		idle_add(self.__set_icon, icon)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set_message, message, priority=PRIORITY_LOW)
+		idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
 		self.__default_message_is_set = False
 		return message_id
 
@@ -163,8 +159,8 @@ class FeedbackManager(object):
 				found = self.__remove_message_from_stack(message_id, feedback)
 				if truth(found): break
 			if truth(reset):
-				from gobject import idle_add
-				idle_add(self.__reset_message)
+				from gobject import idle_add, PRIORITY_LOW
+				idle_add(self.__reset_message, priority=PRIORITY_LOW)
 		except RuntimeError:
 			pass
 		return False
