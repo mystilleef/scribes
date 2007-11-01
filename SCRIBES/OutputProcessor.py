@@ -49,10 +49,10 @@ class OutputProcessor(object):
 	def __init_attributes(self, dbus):
 		"""
 		Initialize data attributes.
-		
+
 		@param self: Reference to the OutputProcessor instance.
 		@type self: An OutputProcessor object.
-		
+
 		@param dbus: The DBus save processor object.
 		@type dbus: A DBusObject object.
 		"""
@@ -70,19 +70,19 @@ class OutputProcessor(object):
 		"""
 		Check permissions, create swap file, encode text and write file
 		to disk.
-		
+
 		@param self: Reference to the OutputProcessor instance.
 		@type self: An OutputProcessor object.
-		
+
 		@param editor_id: Editor object id number.
 		@type editor_id: An Integer object.
-		
+
 		@param text: String to write to file.
 		@type text: A String object.
-		
+
 		@param uri: Location to write to.
 		@type uri: A String object.
-		
+
 		@param encoding: Encoding of the file to write to.
 		@type encoding: A String object.
 		"""
@@ -109,14 +109,15 @@ class OutputProcessor(object):
 	def update(self, editor_id):
 		"""
 		Update object's dictionary when an editor object is destroyed.
-		
+
 		@param self: Reference to the OutputProcessor instance.
 		@type self: An OutputProcessor object.
-		
+
 		@param editor_id: An Editor object's id.
 		@type editor_id: An Integer object.
 		"""
 		try:
+			# Remove a particular editor's swap file.
 			swap_file = self.__file_dictionary[editor_id]
 			from gnomevfs import unlink
 			unlink(swap_file)
@@ -127,10 +128,10 @@ class OutputProcessor(object):
 	def __check_permissions(self, uri):
 		"""
 		Check permissions.
-		
+
 		@param self: Reference to the OutputProcessor instance.
 		@type self: An OutputProcessor object.
-		
+
 		@param uri: Location to write file to.
 		@type uri: A String object.
 		"""
@@ -146,16 +147,42 @@ class OutputProcessor(object):
 			if path.exists(file_path): raise PermissionError
 		return
 
+	def __encode_text(self, text, encoding):
+		"""
+		Encode string to encoding specified.
+
+		@param self: Reference to the OutputProcessor instance.
+		@type self: An OutputProcessor object.
+
+		@param text: Text to encode.
+		@type text: A String object.
+
+		@param encoding: Encoding to use.
+		@type encoding: A String object.
+
+		@return: Encoded text.
+		@rtype: A String object.
+		"""
+		encoded_text = text.encode(encoding)
+		return encoded_text
+
+	def __save_file(self, editor_id, uri, text, swap_uri):
+		"""
+		Write file to URI location.
+		"""
+		self.__writer.write_file(editor_id, uri, text, swap_uri)
+		return
+
 	def __get_swap_file(self, editor_id):
 		"""
 		Create swap file if one does not exist.
-		
+
 		@param self: Reference to the OutputProcessor instance.
 		@type self: An OutputProcessor object.
-		
+
 		@param editor_id: Editor object's id.
 		@type editor_id: An Integer object.
-		
+
 		@return: URI to a swap file.
 		@rtype: A String object.
 		"""
@@ -168,13 +195,13 @@ class OutputProcessor(object):
 	def __create_swap_file(self, folder):
 		"""
 		Create a swap file.
-		
+
 		@param self: Reference to the OutputProcessor instance.
 		@type self: An OutputProcessor object.
-		
+
 		@param folder: Folder to create swap file in.
 		@type folder: A String object.
-		
+
 		@return: URI to a swap file.
 		@rtype: A String object.
 		"""
@@ -197,7 +224,7 @@ class OutputProcessor(object):
 	def __create_swap_folder(self):
 		"""
 		Create swap folder if one does not exist.
-		
+
 		@param self: Reference to the OutputProcessor instance.
 		@type self: An OutputProcessor object.
 		"""
@@ -214,36 +241,10 @@ class OutputProcessor(object):
 			raise SwapError
 		return self.__swap_folder
 
-	def __encode_text(self, text, encoding):
-		"""
-		Encode string to encoding specified.
-		
-		@param self: Reference to the OutputProcessor instance.
-		@type self: An OutputProcessor object.
-		
-		@param text: Text to encode.
-		@type text: A String object.
-		
-		@param encoding: Encoding to use.
-		@type encoding: A String object.
-		
-		@return: Encoded text.
-		@rtype: A String object.
-		"""
-		encoded_text = text.encode(encoding)
-		return encoded_text
-
-	def __save_file(self, editor_id, uri, text, swap_uri):
-		"""
-		Write file to URI location.
-		"""
-		self.__writer.write_file(editor_id, uri, text, swap_uri)
-		return
-
 	def __destroy(self):
 		"""
 		Destroy object.
-		
+
 		@param self: Reference to the OutputProcessor instance.
 		@type self: An OutputProcessor object.
 		"""
@@ -267,13 +268,13 @@ class OutputProcessor(object):
 	def __saved_cb(self, writer, editor_id):
 		"""
 		Handles callback when a file has been successfully written.
-		
+
 		@param self: Reference to the OutputProcessor instance.
 		@type self: An OutputProcessor object.
-		
+
 		@param writer: Object that writes files to disk.
 		@type writer: An OutputWriter object.
-		
+
 		@param editor_id: Editor object's id.
 		@type editor_id: An Integer object.
 		"""
