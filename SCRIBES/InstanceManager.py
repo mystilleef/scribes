@@ -77,11 +77,16 @@ class EditorManager(object):
 		self.__authentication_manager_is_initialized = False
 		from SaveProcessMonitor import SaveProcessMonitor
 		self.__save_process_monitor = SaveProcessMonitor()
-		from gobject import main_context_default
-		context = main_context_default()
-		self.__pending = context.pending
-		self.__iteration = context.iteration
+		#from gobject import main_context_default
+		#context = main_context_default()
+		#self.__pending = context.pending
+		#self.__iteration = context.iteration
 		self.__response_is_busy = False
+		self.__count = 0
+		self.__context_count = 0
+		#print context
+		#print id(context)
+		#print dir(context)
 		return
 
 ########################################################################
@@ -141,9 +146,17 @@ class EditorManager(object):
 
 	def response(self):
 		if self.__response_is_busy: return False
+		self.__context_count = 0
 		self.__response_is_busy = True
-		while self.__pending(): self.__iteration(False)
+		from gobject import main_context_default
+		context = main_context_default()
+		self.__count += 1
+		while context.pending():
+			self.__context_count += 1
+			context.iteration(False)
+	#	while self.__pending(): self.__iteration(False)
 		self.__response_is_busy = False
+		print context, self.__count, self.__context_count
 		return False
 
 	def add_object(self, name, instance):

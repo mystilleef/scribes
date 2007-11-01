@@ -663,10 +663,12 @@ class ScribesTextView(SourceView):
 
 	def __scroll_event_cb(self, *args):
 		self.__make_responsive()
+#		self.__editor.response()
 		return False
 
 	def __move_cursor_cb(self, *args):
 		self.__make_responsive()
+#		self.__editor.response()
 		return False
 
 	def __make_responsive(self):
@@ -1030,17 +1032,17 @@ class ScribesTextView(SourceView):
 		@type self: A ScribesTextView object.
 		"""
 		self.grab_focus()
-		self.__editor.response()
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__refresh, priority=PRIORITY_LOW)
+#		self.__make_responsive()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh, priority=PRIORITY_LOW)
 		return False
 
 	def __refresh(self):
-#		try:
-#			self.window.process_updates(True)
-#		except:
-#			pass
-#		self.__editor.response()
+		try:
+			self.window.process_updates(True)
+		except:
+			pass
+		self.__editor.response()
 		return False
 
 	def __destroy(self):

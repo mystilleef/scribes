@@ -241,10 +241,12 @@ class ScribesTextBuffer(SourceBuffer):
 
 	def __cursor_position_cb(self, *args):
 		self.__editor.emit("cursor-moved")
+		#self.__editor.response()
 		self.__make_responsive()
 		return True
 
 	def __cursor_position_after_cb(self, *args):
+		#self.__editor.response()
 		self.__make_responsive()
 		return True
 

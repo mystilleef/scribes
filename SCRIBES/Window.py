@@ -627,6 +627,12 @@ class ScribesWindow(Window):
 		return False
 
 	def __destroy(self):
+		"""
+		Destroy object.
+		
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
+		"""
 		self.__editor.disconnect_signal(self.__signal_id_17, self)
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)
