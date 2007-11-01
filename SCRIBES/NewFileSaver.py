@@ -57,6 +57,7 @@ class FileSaver(object):	"""
 		self.__signal_id_9 = editor.connect("saved-document", self.__saved_document_cb)
 		self.__signal_id_10 = editor.connect_after("reload-document", self.__reload_document_cb)
 		self.__signal_id_11 = editor.connect("saving-document", self.__saving_document_cb)
+		self.__signal_id_12 = editor.connect("save-error", self.__save_error_cb)
 		editor.session_bus.add_signal_receiver(self.__saved_file_cb,
 						signal_name="saved_file",
 						dbus_interface=save_dbus_service)
@@ -81,6 +82,7 @@ class FileSaver(object):	"""
 		self.__termination_id = editor.register_object()
 		self.__encoding_manager = self.__editor.get_encoding_manager()
 		self.__processor = None
+		self.__error_flag = False
 		self.__should_rename = False
 		self.__can_quit = False
 		self.__is_saving = False
@@ -262,6 +264,8 @@ class FileSaver(object):	"""
 		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_10, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_11, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_12, self.__editor)
 		self.__editor.unregister_object(self.__termination_id)
 		del self
 		self = None
@@ -348,6 +352,7 @@ class FileSaver(object):	"""
 		self.__can_quit = True
 		self.__remove_save_timer()
 		from operator import not_
+		if self.__error_flag: return self.__destroy()
 		if not_(editor.file_is_saved):
 			from gobject import idle_add
 			idle_add(self.save_file, True)
@@ -454,7 +459,21 @@ class FileSaver(object):	"""
 		@param uri: Reference to a file.
 		@type uri: A String object.
 		"""
+		self.__error_flag = False
 		self.__remove_save_timer()
+		return
+
+	def __save_error_cb(self, *args):
+		"""
+		Handles callback when an error occurs while saving.
+
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+		"""
+		self.__is_saving = False
+		self.__error_flag = True
+		self.__remove_save_timer()
+		self.__queue.clear()
 		return
 
 	def __modified_changed_cb(self, textbuffer):
@@ -468,9 +487,7 @@ class FileSaver(object):	"""
 		@type textbuffer: A ScribesTextBuffer object.
 		"""
 		if textbuffer.get_modified() is False: return True
-#		self.__editor.response()
 		self.__editor.emit("modified-document")
-#		self.__editor.response()
 		if self.__editor.uri is None: return True
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__save_timer = timeout_add(21000, self.__save_file_timeout_cb, priority=PRIORITY_LOW)
@@ -515,6 +532,10 @@ class FileSaver(object):	"""
 		self.__processor = self.__editor.get_save_processor()
 		return
 
+	def __is_ready_cb(self, parameters):
+		
+		return value
+
 	def __saved_file_cb(self, editor_id):
 		"""
 		Handles callback when the dbus "saved_file" signal is emitted.
@@ -555,7 +576,7 @@ class FileSaver(object):	"""
 	def __reply_handler_cb(self, *args):
 		"""
 		Handles callback when a dbus response is successful.
-		
+
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""
@@ -564,7 +585,7 @@ class FileSaver(object):	"""
 	def __error_handler_cb(self, error):
 		"""
 		Handles callback when an dbus error occurs.
-		
+
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""

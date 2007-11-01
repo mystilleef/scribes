@@ -70,6 +70,7 @@ class CompletionIndexer(object):
 		@param self: Reference to the CompletionIndexer instance.
 		@type self: A CompletionIndexer object.
 		"""
+		self.__is_busy = False
 		from re import UNICODE, compile
 		self.__pattern = compile(r"[^-\w]", UNICODE)
 		from dbus import Dictionary, String, Int64
@@ -93,6 +94,8 @@ class CompletionIndexer(object):
 		@return: A dictionary of words for automatic completion.
 		@rtype: A Dict object.
 		"""
+		if self.__is_busy: return
+		self.__is_busy = True
 		from gobject import idle_add
 		idle_add(self.__process_text, text, id)
 		return
@@ -101,10 +104,12 @@ class CompletionIndexer(object):
 		from operator import not_
 		if not_(text):
 			self.__dbus.finished_indexing(id, self.__empty_dict)
+			self.__is_busy = False
 			return False
 		completions = self.__generate_completion_list(text)
 		dictionary = self.__generate_completion_dictionary(completions)
 		self.__dbus.finished_indexing(id, dictionary)
+		self.__is_busy = False
 		return False
 
 	def __generate_completion_list(self, text):

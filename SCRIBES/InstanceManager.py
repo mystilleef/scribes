@@ -136,12 +136,15 @@ class EditorManager(object):
 		return
 
 	def response(self):
-		if self.__response_is_busy: return False
-		self.__response_is_busy = True
-		from gobject import main_context_default
-		context = main_context_default()
-		while context.pending(): context.iteration(False)
-		self.__response_is_busy = False
+	#	if self.__response_is_busy: return False
+	#	self.__response_is_busy = True
+		try:
+			from gobject import main_context_default
+			context = main_context_default()
+			while context.pending(): context.iteration(False)
+		except:
+			pass
+	#	self.__response_is_busy = False
 		return False
 
 	def add_object(self, name, instance):

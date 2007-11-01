@@ -97,13 +97,13 @@ class OutputProcessor(object):
 		except ValueError:
 			self.__queue.append((editor_id, text, uri, encoding))
 		except PermissionError:
-			print "PermissionError"
+			self.__error(editor_id, "Permission Error: No permission to write file.", 1)
 		except UnicodeEncodeError:
-			print "UnicodeEncodeError"
+			self.__error(editor_id, "Encode Error: Error when encoding file.", 2)
 		except UnicodeDecodeError:
-			print "UnicodeDecodeError"
+			self.__error(editor_id, "Decode Error: Error when decoding file.", 3)
 		except SwapError:
-			print "SwapError"
+			self.__error(editor_id, "Swap Error: Error when creating swap area", 4)
 		return
 
 	def update(self, editor_id):
