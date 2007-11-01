@@ -1038,6 +1038,9 @@ class ScribesTextView(SourceView):
 		return False
 
 	def __refresh(self):
+		self.queue_draw()
+		self.queue_resize()
+		self.resize_children()
 		try:
 			self.window.process_updates(True)
 		except:
