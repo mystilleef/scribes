@@ -106,7 +106,7 @@ class ScribesMessageDialog(MessageDialog):
 		self.__use_signals = False
 		self.__editor = editor
 		# Register a unique number with the editor's termination queue
-		self.__termination_id = editor.register_termination_id()
+		self.__termination_id = editor.register_object()
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = None
 		return
@@ -171,7 +171,7 @@ class ScribesMessageDialog(MessageDialog):
 		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
 		self.destroy()
 		# Unregister object so that editor can quit.
-		self.__editor.unregister_termination_id(self.__termination_id)
+		self.__editor.unregister_object(self.__termination_id)
 		# Delete data attributes.
 		del self
 		self = None

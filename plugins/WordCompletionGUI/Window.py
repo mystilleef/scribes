@@ -141,12 +141,10 @@ class CompletionWindow(Window):
 		self.__manager.emit("is-visible", False)
 		from operator import not_, truth
 		if not_(self.__is_visible): return
-		self.__editor.response()
 		if not_(self.__signals_are_blocked):
 			self.__block_signals()
 		self.hide_all()
 		self.__is_visible = False
-		self.__editor.response()
 		return
 
 	def __position_window(self, width, height):

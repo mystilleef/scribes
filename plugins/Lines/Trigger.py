@@ -146,9 +146,11 @@ class LinesTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
+		self.__editor.instance_manager.block_response()
 		cursor_line = self.__editor.get_cursor_line()
 		from lines import delete_line
 		delete_line(self.__editor.textbuffer)
+		self.__editor.instance_manager.unblock_response()
 		from i18n import msg0002
 		message = msg0002 % (cursor_line + 1)
 		self.__editor.feedback.update_status_message(message, "succeed")
@@ -163,9 +165,11 @@ class LinesTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
+		self.__editor.instance_manager.block_response()
 		from lines import duplicate_line
 		duplicate_line(self.__editor.textbuffer)
 		self.__editor.move_view_to_cursor()
+		self.__editor.instance_manager.unblock_response()
 		from i18n import msg0017
 		self.__editor.feedback.update_status_message(msg0017, "yes")
 		return
@@ -186,9 +190,11 @@ class LinesTrigger(GObject):
 			from i18n import msg0001
 			editor.feedback.update_status_message(msg0001, "fail")
 			return
+		self.__editor.instance_manager.block_response()
 		cursor_line = self.__editor.get_cursor_line()
 		from lines import join_line
 		result = join_line(self.__editor.textbuffer)
+		self.__editor.instance_manager.unblock_response()
 		if result:
 			from i18n import msg0003
 			message = msg0003 % (cursor_line+1, cursor_line+2)
@@ -214,9 +220,11 @@ class LinesTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
+		self.__editor.instance_manager.block_response()
 		from lines import free_line_above
 		line_number = free_line_above(self.__editor.textbuffer)
 		self.__editor.move_view_to_cursor()
+		self.__editor.instance_manager.unblock_response()
 		from i18n import msg0005
 		message = msg0005 % (line_number+1)
 		self.__editor.feedback.update_status_message(message, "succeed")
@@ -238,9 +246,11 @@ class LinesTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
+		self.__editor.instance_manager.block_response()
 		from lines import free_line_below
 		line_number = free_line_below(self.__editor.textbuffer)
 		self.__editor.move_view_to_cursor()
+		self.__editor.instance_manager.unblock_response()
 		from i18n import msg0005
 		message = msg0005 % (line_number+1)
 		self.__editor.feedback.update_status_message(message, "succeed")

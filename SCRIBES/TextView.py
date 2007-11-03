@@ -667,21 +667,18 @@ class ScribesTextView(SourceView):
 		return False
 
 	def __move_cursor_cb(self, *args):
-		self.__make_responsive()
+	#	self.__make_responsive()
 #		self.__editor.response()
 		return False
 
 	def __make_responsive(self):
 		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__cursor_id)
-		except:
-			pass
-		self.__cursor_id = idle_add(self.__test_response)
-		return False
-
-	def __test_response(self):
-		self.__editor.response()
+			if self.__response_is_busy: return False
+			self.__response_is_busy = True
+			self.__editor.response()
+			self.__response_is_busy = False
+		except AttributeError:
+			self.__response_is_busy = False
 		return False
 
 	def __close_document_cb(self, editor):
@@ -1045,7 +1042,7 @@ class ScribesTextView(SourceView):
 			self.window.process_updates(True)
 		except:
 			pass
-		self.__editor.response()
+		self.__make_responsive()
 		return False
 
 	def __destroy(self):

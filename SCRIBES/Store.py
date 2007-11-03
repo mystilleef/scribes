@@ -60,8 +60,8 @@ class Store(GObject):
 		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		self.__signal_id_1 = self.__editor.connect_after("close-document", self.__close_document_cb)
-		self.__signal_id_2 = self.__editor.connect_after("close-document-no-save", self.__close_document_cb)
+		self.__signal_id_1 = self.__editor.connect("close-document", self.__close_document_cb)
+		self.__signal_id_2 = self.__editor.connect("close-document-no-save", self.__close_document_cb)
 
 	def add_object(self, name, instance):
 		"""
@@ -128,10 +128,13 @@ class Store(GObject):
 			self.emit("updated", name)
 			if self.__can_quit: self.__destroy()
 		except KeyError:
-			print "Error: Object associated with '%s' not found." % (name)
+			#print "Error: Object associated with '%s' not found." % (name)
+			pass
 		except ValueError:
-			print "Error: Invalid ID"
+			#print "Error: Invalid ID"
+			pass
 		except AttributeError:
+			#print "Error: AttributeError"
 			pass
 		return
 
@@ -182,7 +185,7 @@ class Store(GObject):
 		self.__editor = editor
 		self.__object_dictionary = {}
 		self.__object_id_dictionary = {}
-		self.__registration_id = editor.register_termination_id()
+		self.__registration_id = editor.register_object()
 		self.__can_quit = False
 		return
 
@@ -193,14 +196,12 @@ class Store(GObject):
 		@param self: Reference to the Store instance.
 		@type self: A Store object.
 		"""
-		if self.__object_dictionary: return
-		# Disconnect signals.
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.__object_dictionary.clear()
 		self.__object_id_dictionary.clear()
+		self.__editor.unregister_object(self.__registration_id)
 		# Unregister object so that editor can quit.
-		self.__editor.unregister_termination_id(self.__registration_id)
 		del self
 		self = None
 		return

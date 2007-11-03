@@ -375,7 +375,7 @@ class ScribesWindow(Window):
 		@return: True to propagate signals to parent widgets.
 		@rtype: A Boolean object.
 		"""
-		if not self.__uri: return False
+		if not self.__uri: return True
 		from operator import eq
 		if eq(self.get_title(), self.__title): self.set_title("*" + self.__title)
 		return True

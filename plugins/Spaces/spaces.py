@@ -47,14 +47,8 @@ def convert_spaces_to_tabs(sourceview):
 	begin, end = sourcebuffer.get_bounds()
 	first_line = begin.get_line()
 	last_line = end.get_line()
-	use_response = False
-	if last_line - first_line > 3000:
-		use_response = True
-		from SCRIBES.utils import response
 	sourcebuffer.begin_user_action()
 	for line in range(first_line, last_line+1):
-		if use_response:
-			response()
 		result = convert_spaces_to_tabs_on_line(sourceview, line)
 		if result:
 			converted_lines.append(line)
@@ -125,14 +119,8 @@ def convert_tabs_to_spaces(sourceview):
 	begin, end = sourcebuffer.get_bounds()
 	first_line = begin.get_line()
 	last_line = end.get_line()
-	use_response = False
-	if last_line - first_line > 3000:
-		use_response = True
-		from SCRIBES.utils import response
 	sourcebuffer.begin_user_action()
 	for line in range(first_line, last_line+1):
-		if use_response:
-			response()
 		result = convert_tabs_to_spaces_on_line(sourceview, line)
 		if result:
 			converted_lines.append(line)
@@ -201,14 +189,8 @@ def remove_trailing_spaces(sourceview):
 	begin, end = sourcebuffer.get_bounds()
 	first_line = begin.get_line()
 	last_line = end.get_line()
-	use_response = False
-	if last_line - first_line > 3000:
-		use_response = True
-		from SCRIBES.utils import response
 	sourcebuffer.begin_user_action()
 	for line in range(first_line, last_line+1):
-		if use_response:
-			response()
 		result = remove_trailing_spaces_on_line(sourceview, line)
 		if result:
 			affected_lines.append(line)

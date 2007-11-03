@@ -50,8 +50,9 @@ class EditorManager(object):
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
-		from sys import setcheckinterval
+		from sys import setcheckinterval, getrecursionlimit, setrecursionlimit
 		setcheckinterval(INTERVAL)
+		setrecursionlimit(getrecursionlimit() * 10)
 		self.__init_attributes()
 		self.__init_i18n()
 		from signal import signal, SIGHUP, SIGTERM, SIGSEGV
@@ -78,6 +79,8 @@ class EditorManager(object):
 		from SaveProcessMonitor import SaveProcessMonitor
 		self.__save_process_monitor = SaveProcessMonitor()
 		self.__response_is_busy = False
+		self.__block_response = True
+		self.__response_count = 0
 		return
 
 ########################################################################
@@ -136,16 +139,27 @@ class EditorManager(object):
 		return
 
 	def response(self):
-	#	if self.__response_is_busy: return False
-	#	self.__response_is_busy = True
+		if self.__response_is_busy or self.__block_response: return False
+		self.__response_is_busy = True
 		try:
 			from gobject import main_context_default
 			context = main_context_default()
 			while context.pending(): context.iteration(False)
 		except:
 			pass
-	#	self.__response_is_busy = False
+		self.__response_is_busy = False
 		return False
+
+	def block_response(self):
+		self.__response_count += 1
+		self.__block_response = True
+		return
+
+	def unblock_response(self):
+		self.__response_count -= 1
+		if self.__response_count: return
+		self.__block_response = False
+		return
 
 	def add_object(self, name, instance):
 		return self.__store.add_object(name, instance)
@@ -174,7 +188,8 @@ class EditorManager(object):
 			editor = list(self.__editor_instances)[0]
 			editor.trigger("new_window")
 		else:
-			self.__new_editor()
+			from gobject import idle_add
+			idle_add(self.__new_editor)
 		return False
 
 	def open_files(self, uris=None, encoding=None):
@@ -420,7 +435,7 @@ class EditorManager(object):
 	def __precompile_methods(self):
 		try:
 			from psyco import bind
-			bind(self.response)
+			#bind(self.response)
 		except ImportError:
 			pass
 		return False

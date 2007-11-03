@@ -211,8 +211,7 @@ class FileSaver(object):	"""
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""
-		from gobject import idle_add
-		idle_add(self.save_file)
+		self.save_file()
 		return False
 
 	def __remove_save_timer(self):
@@ -286,7 +285,7 @@ class FileSaver(object):	"""
 			pass
 		except:
 			pass
-		return
+		return False
 
 	def __check_queue(self):
 		"""
@@ -304,7 +303,7 @@ class FileSaver(object):	"""
 			self.__toggle_readonly_mode()
 			self.__emit_save_signal()
 			if self.__can_quit: self.__destroy()
-		return
+		return False
 
 	def __toggle_readonly_mode(self):
 		"""
@@ -432,8 +431,8 @@ class FileSaver(object):	"""
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		from gobject import idle_add, PRIORITY_HIGH
-		idle_add(self.save_file, priority = PRIORITY_HIGH)
+		from gobject import idle_add
+		idle_add(self.save_file)#, priority = PRIORITY_HIGH)
 		return
 
 	def __saving_document_cb(self, *args):
@@ -532,10 +531,6 @@ class FileSaver(object):	"""
 		self.__processor = self.__editor.get_save_processor()
 		return
 
-	def __is_ready_cb(self, parameters):
-		
-		return value
-
 	def __saved_file_cb(self, editor_id):
 		"""
 		Handles callback when the dbus "saved_file" signal is emitted.
@@ -547,9 +542,11 @@ class FileSaver(object):	"""
 		@type editor_id: An Integer object.
 		"""
 		from operator import ne
-		if ne(self.__editor.id, editor_id): return
-		self.__check_queue()
-		return
+		if ne(self.__editor.id, editor_id): return True
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__check_queue, priority=PRIORITY_LOW)
+		#self.__check_queue()
+		return True
 
 	def __error_cb(self, editor_id, error_message, error_id):
 		"""

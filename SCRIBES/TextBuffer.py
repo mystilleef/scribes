@@ -138,7 +138,9 @@ class ScribesTextBuffer(SourceBuffer):
 		self.set_modified(False)
 		self.end_not_undoable_action()
 		self.__undoable_action = False
-		self.__set_cursor_positon()
+		from gobject import idle_add
+		idle_add(self.__set_cursor_positon)
+		#self.__set_cursor_positon()
 		return
 
 	def __saved_document_cb(self, editor, uri):
@@ -240,27 +242,22 @@ class ScribesTextBuffer(SourceBuffer):
 		return
 
 	def __cursor_position_cb(self, *args):
-		self.__editor.emit("cursor-moved")
-		#self.__editor.response()
 		self.__make_responsive()
+		self.__editor.emit("cursor-moved")
 		return True
 
 	def __cursor_position_after_cb(self, *args):
-		#self.__editor.response()
 		self.__make_responsive()
 		return True
 
 	def __make_responsive(self):
 		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__cursor_id)
-		except:
-			pass
-		self.__cursor_id = idle_add(self.__test_response)
-		return False
-
-	def __test_response(self):
-		self.__editor.response()
+			if self.__response_is_busy: return False
+			self.__response_is_busy = True
+			self.__editor.response()
+			self.__response_is_busy = False
+		except AttributeError:
+			self.__response_is_busy = False
 		return False
 
 ########################################################################

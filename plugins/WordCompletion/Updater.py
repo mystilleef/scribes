@@ -53,7 +53,7 @@ class CompletionUpdater(object):
 		"""
 		self.__init_attributes(manager, editor)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__start_indexer)
+		idle_add(self.__start_indexer, priority=PRIORITY_LOW)
 		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		self.__signal_id_1 = self.__editor.connect("loaded-document", self.__loaded_document_cb)
 		self.__signal_id_2 = self.__editor.textbuffer.connect_after("changed", self.__changed_cb)
@@ -174,8 +174,11 @@ class CompletionUpdater(object):
 					pass
 				self.__index_timer = idle_add(self.__index, priority=PRIORITY_LOW)
 			else:
-				from gobject import spawn_async
-				spawn_async([self.__python_executable, self.__indexer_executable, python_path], working_directory=self.__indexer_cwd)
+				try:
+					from gobject import spawn_async
+					spawn_async([self.__python_executable, self.__indexer_executable, python_path], working_directory=self.__indexer_cwd)
+				except:
+					pass
 		except DBusException:
 			pass
 		return False
@@ -299,9 +302,14 @@ class CompletionUpdater(object):
 	def __finished_indexing_cb(self, editor_id, dictionary):
 		from operator import ne
 		if ne(editor_id, self.__editor.id): return
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__update_dictionary, dictionary, priority=PRIORITY_LOW)
+		return
+
+	def __update_dictionary(self, dictionary):
 		self.__manager.emit("update", dict(dictionary))
 		self.__is_indexing = False
-		return
+		return False
 
 	def __destroy_cb(self, manager):
 		"""

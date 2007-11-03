@@ -155,7 +155,7 @@ class PluginManager(object):
 
 	def __unload_plugins(self):
 		from gobject import idle_add
-		for plugin_info in self.__plugin_objects:
+		for plugin_info in self.__plugin_objects.copy():
 			idle_add(self.__unload_plugin, plugin_info)
 		return False
 
