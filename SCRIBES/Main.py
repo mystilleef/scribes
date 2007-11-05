@@ -135,8 +135,6 @@ def __mainloop():
 	"""
 	__fork_scribes()
 	from info import mainloop
-	from gobject import threads_init
-	threads_init()
 	mainloop.run()
 	return
 

@@ -1030,18 +1030,18 @@ class ScribesTextView(SourceView):
 		"""
 		self.grab_focus()
 #		self.__make_responsive()
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__refresh, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__refresh, priority=PRIORITY_LOW)
 		return False
 
 	def __refresh(self):
-		self.queue_draw()
-		self.queue_resize()
-		self.resize_children()
-		try:
-			self.window.process_updates(True)
-		except:
-			pass
+#		self.queue_draw()
+#		self.queue_resize()
+#		self.resize_children()
+#		try:
+#			self.window.process_updates(True)
+#		except:
+#			pass
 		self.__make_responsive()
 		return False
 

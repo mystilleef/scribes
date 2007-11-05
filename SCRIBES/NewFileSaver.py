@@ -46,6 +46,8 @@ class FileSaver(object):	"""
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(editor)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods)
 		self.__signal_id_1 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_no_save_cb)
 		self.__signal_id_3 = editor.connect("save-document", self.__save_document_cb)
@@ -115,7 +117,8 @@ class FileSaver(object):	"""
 		from Exceptions import DoNothingError
 		try:
 			self.__determine_action(is_closing)
-			self.__save_file()
+			from gobject import idle_add
+			idle_add(self.__save_file)
 		except DoNothingError:			pass
 		return False
 
@@ -211,7 +214,8 @@ class FileSaver(object):	"""
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""
-		self.save_file()
+		from gobject import idle_add
+		idle_add(self.save_file)
 		return False
 
 	def __remove_save_timer(self):
@@ -541,11 +545,11 @@ class FileSaver(object):	"""
 		@param editor_id: The identification number of the editor object.
 		@type editor_id: An Integer object.
 		"""
+		self.__editor.response()
 		from operator import ne
 		if ne(self.__editor.id, editor_id): return True
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__check_queue, priority=PRIORITY_LOW)
-		#self.__check_queue()
 		return True
 
 	def __error_cb(self, editor_id, error_message, error_id):

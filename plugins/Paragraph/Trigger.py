@@ -168,12 +168,14 @@ class Trigger(object):
 		@param trigger: An object to show the document browser.
 		@type trigger: A Trigger object.
 		"""
+		self.__editor.instance_manager.block_response()
 		try:
 			self.__manager.reflow_paragraph()
 		except AttributeError:
 			from Manager import Manager
 			self.__manager = Manager(self.__editor)
 			self.__manager.reflow_paragraph()
+		self.__editor.instance_manager.unblock_response()
 		return
 
 	def __destroy(self):

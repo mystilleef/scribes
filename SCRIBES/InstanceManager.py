@@ -45,14 +45,13 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
-		from gobject import timeout_add, idle_add, PRIORITY_LOW, threads_init
-		threads_init()
+		from gobject import timeout_add, idle_add, PRIORITY_LOW
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
 		from sys import setcheckinterval, getrecursionlimit, setrecursionlimit
 		setcheckinterval(INTERVAL)
-		setrecursionlimit(getrecursionlimit() * 10)
+		setrecursionlimit(getrecursionlimit() * 100)
 		self.__init_attributes()
 		self.__init_i18n()
 		from signal import signal, SIGHUP, SIGTERM, SIGSEGV
