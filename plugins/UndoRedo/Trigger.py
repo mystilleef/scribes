@@ -106,6 +106,7 @@ class UndoRedoTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
+		self.__editor.block_response()
 		if self.__editor.textbuffer.can_undo():
 			self.__editor.textbuffer.undo()
 			from i18n import msg0002
@@ -114,6 +115,7 @@ class UndoRedoTrigger(GObject):
 		else:
 			from i18n import msg0003
 			self.__editor.feedback.update_status_message(msg0003, "fail")
+		self.__editor.unblock_response()
 		return
 
 	def __redo_cb(self, trigger):
@@ -131,6 +133,7 @@ class UndoRedoTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
+		self.__editor.block_response()
 		if self.__editor.textbuffer.can_redo():
 			self.__editor.textbuffer.redo()
 			from i18n import msg0004
@@ -139,6 +142,7 @@ class UndoRedoTrigger(GObject):
 		else:
 			from i18n import msg0005
 			self.__editor.feedback.update_status_message(msg0005, "fail")
+		self.__editor.unblock_response()
 		return
 
 	def __destroy_cb(self, trigger):

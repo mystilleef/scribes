@@ -76,6 +76,7 @@ class CompletionMonitor(object):
 		"""
 		self.__editor = editor
 		self.__manager = manager
+		self.__is_updating_dictionary = False
 		self.__dictionary = self.__create_completion_dictionary()
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
@@ -244,8 +245,11 @@ class CompletionMonitor(object):
 		@param manager: Reference to the CompletionManager.
 		@type manager: An CompletionManager object.
 		"""
+		if self.__is_updating_dictionary: return
+		self.__is_updating_dictionary = True
 		self.__dictionary.clear()
 		self.__dictionary.update(dictionary)
+		self.__is_updating_dictionary = False
 		return
 
 	def __destroy_cb(self, manager):

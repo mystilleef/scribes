@@ -34,7 +34,7 @@ text editor instances.
 
 from pygtk import require
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_OBJECT
-from gobject import TYPE_STRING
+from gobject import TYPE_STRING, SIGNAL_RUN_FIRST
 require("2.0")
 
 class Editor(GObject):
@@ -53,9 +53,9 @@ class Editor(GObject):
 		"load-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"enable-readonly": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"disable-readonly": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"saving-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"saved-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"save-document": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"saving-document": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING,)),
+		"saved-document": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING,)),
+		"save-document": (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
 		"save-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"gui-created": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
@@ -491,6 +491,12 @@ class Editor(GObject):
 			from gobject import timeout_add
 			timeout_add(100, self.__destroy)
 		return
+
+	def block_response(self):
+		return self.__instance_manager.block_response()
+
+	def unblock_response(self):
+		return self.__instance_manager.unblock_response()
 
 	def register_object(self):
 		return self.register_termination_id()

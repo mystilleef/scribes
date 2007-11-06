@@ -301,10 +301,10 @@ class CompletionUpdater(object):
 
 	def __finished_indexing_cb(self, editor_id, dictionary):
 		from operator import ne
-		if ne(editor_id, self.__editor.id): return
+		if ne(editor_id, self.__editor.id): return True
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__update_dictionary, dictionary, priority=PRIORITY_LOW)
-		return
+		return True
 
 	def __update_dictionary(self, dictionary):
 		self.__manager.emit("update", dict(dictionary))

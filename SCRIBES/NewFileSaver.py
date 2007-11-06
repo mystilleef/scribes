@@ -571,6 +571,7 @@ class FileSaver(object):	"""
 		from operator import ne
 		if ne(self.__editor.id, editor_id): return
 		error_message = error_message + str(error_id)
+		print error_message
 		self.__error(error_message)
 		return
 

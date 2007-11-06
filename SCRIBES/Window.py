@@ -355,7 +355,7 @@ class ScribesWindow(Window):
 
 	def __created_widgets_cb(self, editor):
 		#self.__signal_id_18 = self.__editor.textbuffer.connect("changed", self.__changed_cb)
-		self.__signal_id_18 = self.__editor.connect("modified-document", self.__changed_cb)
+		self.__signal_id_18 = self.__editor.connect_after("modified-document", self.__changed_cb)
 		return
 
 	def __changed_cb(self, textbuffer):

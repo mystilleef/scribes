@@ -139,14 +139,14 @@ class EditorManager(object):
 
 	def response(self):
 		if self.__response_is_busy or self.__block_response: return False
-		self.__response_is_busy = True
+		#self.__response_is_busy = True
 		try:
 			from gobject import main_context_default
 			context = main_context_default()
 			while context.pending(): context.iteration(False)
 		except:
 			pass
-		self.__response_is_busy = False
+		#self.__response_is_busy = False
 		return False
 
 	def block_response(self):
@@ -264,9 +264,9 @@ class EditorManager(object):
 		window_is_maximized = editor.window.is_maximized
 		editor.window.hide()
 		if not_(window_is_maximized): editor.window.move(xcoordinate, ycoordinate)
+		editor.window.deiconify()
 		editor.window.window.show()
 		editor.window.show_all()
-		editor.window.deiconify()
 		return False
 
 	def get_uris(self):

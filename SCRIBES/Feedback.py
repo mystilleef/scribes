@@ -52,11 +52,11 @@ class FeedbackManager(object):
 		self.__signal_id_4 = editor.connect("loaded-document", self.__loaded_document_cb)
 		self.__signal_id_5 = editor.connect("load-error", self.__load_error_cb)
 		self.__signal_id_6 = editor.connect("renamed-document", self.__renamed_document_cb)
-		self.__signal_id_7 = editor.connect("saved-document", self.__saved_document_cb)
+		self.__signal_id_7 = editor.connect_after("saved-document", self.__saved_document_cb)
 		self.__signal_id_8 = editor.connect("enable-readonly", self.__enable_readonly_cb)
 		self.__signal_id_9 = editor.connect("disable-readonly", self.__disable_readonly_cb)
 		self.__signal_id_10 = editor.connect("not-yet-implemented", self.__not_yet_implemented_cb)
-		self.__signal_id_11 = editor.connect("modified-document", self.__changed_cb)
+		self.__signal_id_11 = editor.connect_after("modified-document", self.__changed_cb)
 		self.__signal_id_12 = editor.connect("gui-created", self.__gui_created_cb)
 		self.__signal_id_13 = editor.connect("reload-document", self.__reload_document_cb)
 

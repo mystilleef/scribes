@@ -39,8 +39,7 @@ def main(argv=None):
 	@param argv: Command line arguments.
 	@type argv:	A List object.
 	"""
-	from operator import truth
-	if truth(argv):
+	if argv:
 		uris = __get_uris(argv)
 		__open(uris)
 	else:
@@ -56,8 +55,7 @@ def __open(uris=None):
 	@type uris: A List object.
 	"""
 	__open_via_dbus(uris)
-	from gobject import idle_add, PRIORITY_HIGH, threads_init
-	threads_init()
+	from gobject import idle_add, PRIORITY_HIGH
 	idle_add(__launch_new_editor, uris, priority=PRIORITY_HIGH)
 	return
 
@@ -74,7 +72,7 @@ def __open_via_dbus(uris=None):
 	@type uris: A List object.
 	"""
 	dbus_service = __get_dbus_service()
-	from operator import truth, not_
+	from operator import not_
 	if not_(dbus_service): return
 	if not_(uris): uris = ""
 	dbus_service.open_files(uris, dbus_interface=scribes_dbus_service)
@@ -95,8 +93,7 @@ def __launch_new_editor(uris=None):
 	@rtype: A Boolean object.
 	"""
 	from InstanceManager import EditorManager
-	manager = EditorManager()
-	manager.open_files(uris)
+	EditorManager().open_files(uris)
 	return False
 
 def __get_dbus_service():

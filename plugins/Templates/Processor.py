@@ -55,19 +55,19 @@ class TemplateProcessor(object):
 		self.__init_attributes(manager, editor, template)
 		from utils import insert_string
 		editor.textbuffer.begin_user_action()
-		editor.instance_manager.block_response()
+		editor.block_response()
 		insert_string(editor.textbuffer, template)
-		editor.instance_manager.unblock_response()
+		editor.unblock_response()
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		if self.__special_placeholders: self.__expand_special_placeholders()
 		from gobject import timeout_add, idle_add
 		if self.__placeholders:
-			editor.instance_manager.block_response()
+			editor.block_response()
 			self.__mark_and_tag_placeholders()
 			editor.textbuffer.end_user_action()
 			self.__determine_last_placeholder()
 			self.__select_first_placeholder()
-			editor.instance_manager.unblock_response()
+			editor.unblock_response()
 			self.__signal_id_2 = editor.connect("cursor-moved", self.__cursor_moved_cb)
 			self.__signal_id_3 = editor.textbuffer.connect("insert-text", self.__insert_text_cb)
 			self.__signal_id_4 = editor.textbuffer.connect_after("insert-text",

@@ -657,8 +657,8 @@ class ScribesTextView(SourceView):
 		return False
 
 	def __paste_clipboard_after_cb(self, textview):
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
+		#from gobject import idle_add
+		#idle_add(self.__refresh_view)
 		return False
 
 	def __scroll_event_cb(self, *args):

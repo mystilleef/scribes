@@ -172,6 +172,7 @@ class BracketManager(object):
 		@param close_keyval: A value representing the closing character.
 		@type close_keyval: An Integer object.
 		"""
+		self.__editor.block_response()
 		textbuffer = self.__editor.textbuffer
 		from gtk.gdk import keyval_to_unicode
 		utf8_open_character = unichr(keyval_to_unicode(open_keyval)).encode("utf-8")
@@ -188,6 +189,7 @@ class BracketManager(object):
 		self.__monitor_list.append((close_keyval, (begin_mark, end_mark)))
 		from i18n import msg0001
 		self.__editor.feedback.update_status_message(msg0001, "succeed")
+		self.__editor.unblock_response()
 		return
 
 	def __enclose_selection(self, keyval):
@@ -253,6 +255,7 @@ class BracketManager(object):
 		@param close_keyval: An integer representing a close pair character.
 		@type close_keyval: An Integer object.
 		"""
+		self.__editor.block_response()
 		textbuffer = self.__editor.textbuffer
 		from gtk.gdk import keyval_to_unicode
 		utf8_open_character = unichr(keyval_to_unicode(open_keyval)).encode("utf-8")
@@ -266,6 +269,7 @@ class BracketManager(object):
 		textbuffer.end_user_action()
 		from i18n import msg0002
 		self.__editor.feedback.update_status_message(msg0002, "succeed")
+		self.__editor.unblock_response()
 		return
 
 	def __move_cursor_out_of_bracket_region(self):
@@ -323,7 +327,9 @@ class BracketManager(object):
 		if ne(begin.get_char(), character): return False
 		begin.backward_char()
 		textbuffer.begin_user_action()
+		self.__editor.block_response()
 		textbuffer.delete(begin, end)
+		self.__editor.unblock_response()
 		textbuffer.end_user_action()
 		from i18n import msg0003
 		self.__editor.feedback.update_status_message(msg0003, "succeed")
@@ -356,7 +362,9 @@ class BracketManager(object):
 		end_iterator = self.__editor.get_cursor_position()
 		start_iterator = end_iterator.copy()
 		start_iterator.backward_char()
+		self.__editor.block_response()
 		self.__editor.textbuffer.delete(start_iterator, end_iterator)
+		self.__editor.unblock_response()
 		return
 
 	def __can_insert_apostrophe(self):
@@ -391,7 +399,9 @@ class BracketManager(object):
 		from gtk import keysyms
 		from gtk.gdk import keyval_to_unicode
 		utf8_apostrophe_character = unichr(keyval_to_unicode(keysyms.apostrophe)).encode("utf-8")
+		self.__editor.block_response()
 		self.__editor.textbuffer.insert_at_cursor(utf8_apostrophe_character)
+		self.__editor.unblock_response()
 		return
 
 	def __check_mimetype(self):
