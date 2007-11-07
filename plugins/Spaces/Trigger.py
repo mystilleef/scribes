@@ -116,6 +116,7 @@ class SpacesTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
+		self.__editor.block_response()
 		from i18n import msg0002
 		status_id = self.__editor.feedback.set_modal_message(msg0002, "run")
 		self.__editor.show_busy_cursor()
@@ -129,6 +130,7 @@ class SpacesTrigger(GObject):
 		else:
 			from i18n import msg0004
 			self.__editor.feedback.update_status_message(msg0004, "succeed")
+		self.__editor.unblock_response()
 		return
 
 	def __tabs_to_spaces_cb(self, trigger):
@@ -137,6 +139,7 @@ class SpacesTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
+		self.__editor.block_response()
 		from i18n import msg0005
 		status_id = self.__editor.feedback.set_modal_message(msg0005, "run")
 		self.__editor.show_busy_cursor()
@@ -151,6 +154,7 @@ class SpacesTrigger(GObject):
 		else:
 			from i18n import msg0006
 			self.__editor.feedback.update_status_message(msg0006, "succeed")
+		self.__editor.unblock_response()
 		return
 
 	def __remove_trailing_spaces_cb(self, trigger):
@@ -160,6 +164,7 @@ class SpacesTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
+		self.__editor.block_response()
 		from i18n import msg0008
 		status_id = self.__editor.feedback.set_modal_message(msg0008, "run")
 		self.__editor.show_busy_cursor()
@@ -173,6 +178,7 @@ class SpacesTrigger(GObject):
 		else:
 			from i18n import msg0010
 			self.__editor.feedback.update_status_message(msg0010, "succeed")
+		self.__editor.unblock_response()
 		return
 
 	def __destroy_cb(self, trigger):

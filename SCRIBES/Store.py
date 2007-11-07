@@ -118,10 +118,10 @@ class Store(GObject):
 		"""
 		try:
 			if not stored_id in self.__object_id_dictionary.keys():
-				print "Stored ID error", name
+				#print "Stored ID error", name
 				raise ValueError
 			if name != self.__object_id_dictionary[stored_id]:
-				print "Store Name Error: ", name
+				#print "Store Name Error: ", name
 				raise ValueError
 			del self.__object_dictionary[(name,)]
 			del self.__object_id_dictionary[stored_id]

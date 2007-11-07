@@ -131,8 +131,8 @@ class CompletionTreeView(TreeView):
 			for word in self.__word_list:
 				self.__model.append([word])
 			self.columns_autosize()
-		self.get_selection().select_path(0)
 		self.__manager.emit("populated-model", self)
+		self.get_selection().select_path(0)
 		return False
 
 	def __insert_word_completion(self, path):

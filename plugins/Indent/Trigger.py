@@ -109,6 +109,7 @@ class IndentTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
+		self.__editor.block_response()
 		from i18n import msg0002
 		status_id = self.__editor.feedback.set_modal_message(msg0002, "run")
 		self.__editor.show_busy_cursor()
@@ -124,6 +125,7 @@ class IndentTrigger(GObject):
 			value = lines_indented[0] + 1
 			message = msg0004 % (value)
 			self.__editor.feedback.update_status_message(message, "succeed")
+		self.__editor.unblock_response()
 		return
 
 	def __unindent_cb(self, trigger):
@@ -141,6 +143,7 @@ class IndentTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
+		self.__editor.block_response()
 		from i18n import msg0002
 		status_id = self.__editor.feedback.set_modal_message(msg0002, "run")
 		self.__editor.show_busy_cursor()
@@ -159,6 +162,7 @@ class IndentTrigger(GObject):
 			value = lines_unindented[0] + 1
 			message = msg0007 % (value)
 			self.__editor.feedback.update_status_message(message, "succeed")
+		self.__editor.unblock_response()
 		return
 
 	def __popup_cb(self, textview, menu):

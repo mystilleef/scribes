@@ -192,8 +192,8 @@ class HighlightPopupMenuItem(ImageMenuItem):
 		self.__image.destroy()
 		self.__menu.destroy()
 		self.destroy()
-		self = None
 		del self
+		self = None
 		return
 
 	def __activate_cb(self, menuitem):

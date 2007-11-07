@@ -57,8 +57,7 @@ def get_style(style_elements):
 	style = SourceTagStyle()
 	from gtk.gdk import color_parse
 	style.foreground = color_parse(style_elements[0].get_string())
-	if style_elements[1].get_string() != "None":
-		style.background = color_parse(style_elements[1].get_string())
+	if style_elements[1].get_string() != "None": style.background = color_parse(style_elements[1].get_string())
 	style.bold = convert_string_to_boolean(style_elements[2].get_string())
 	style.italic = convert_string_to_boolean(style_elements[3].get_string())
 	style.underline = convert_string_to_boolean(style_elements[4].get_string())

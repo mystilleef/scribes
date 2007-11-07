@@ -58,7 +58,7 @@ class EditorManager(object):
 		signal(SIGHUP, self.__kernel_signals_cb)
 		signal(SIGSEGV, self.__kernel_signals_cb)
 		signal(SIGTERM, self.__kernel_signals_cb)
-		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
+	#	idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
 		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):

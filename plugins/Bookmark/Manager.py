@@ -61,7 +61,7 @@ class BookmarkManager(GObject):
 		self.__init_attributes(editor)
 		self.__store_id = self.editor.add_object("BookmarkManager", self)
 		self.__signal_id_1 = self.connect("destroy", self.__manager_destroy_cb)
-		self.__signal_id_2 = self.editor.connect("saved-document", self.__manager_saved_document_cb)
+		self.__signal_id_2 = self.editor.connect_after("saved-document", self.__manager_saved_document_cb)
 		self.__signal_id_3 = self.textbuffer.connect("mark-deleted", self.__manager_mark_deleted_cb)
 
 	def __init_attributes(self, editor):

@@ -219,7 +219,7 @@ class CompletionMonitor(object):
 				source_remove(self.__insert_text_id)
 			except:
 				pass
-			self.__insert_text_id = timeout_add(50, self.__check_buffer, priority=PRIORITY_LOW)
+			self.__insert_text_id = timeout_add(100, self.__check_buffer, priority=PRIORITY_LOW)
 		return False
 
 	def __generic_cb(self, *args):

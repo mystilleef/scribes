@@ -93,6 +93,7 @@ class CompletionUpdater(object):
 		self.__is_indexing = False
 		self.__signal_id_1 = self.__signal_id_2 = None
 		self.__signal_id_3 = self.__signal_id_4 = None
+		self.__queue = []
 		return
 
 ########################################################################
@@ -108,15 +109,19 @@ class CompletionUpdater(object):
 		@param self: Reference to the CompletionUpdater instance.
 		@type self: A CompletionUpdater object.
 		"""
-		from operator import is_
-		if self.__editor.is_readonly: return False
-		if is_(self.__indexer, None):
-			from gobject import idle_add
-			idle_add(self.__start_indexer)
+		try:
+			from operator import is_
+			if self.__is_indexing: self.__update_queue()
+			if self.__editor.is_readonly: return False
+			if is_(self.__indexer, None):
+				from gobject import idle_add
+				idle_add(self.__start_indexer)
+				return False
+			self.__remove_timer()
+			from gobject import timeout_add, PRIORITY_LOW
+			self.__timer = timeout_add(500, self.__generate_dictionary, priority=PRIORITY_LOW)
+		except ValueError:
 			return False
-		self.__remove_timer()
-		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer = timeout_add(500, self.__generate_dictionary, priority=PRIORITY_LOW)
 		return False
 
 	def __generate_dictionary(self):
@@ -129,14 +134,14 @@ class CompletionUpdater(object):
 		@param self: Reference to the CompletionUpdater instance.
 		@type self: A CompletionUpdater object.
 		"""
-		if self.__is_indexing:
-			from gobject import idle_add, PRIORITY_LOW
-			try:
-				source_remove(self.__index_timer)
-			except Exception:
-				pass
-			self.__index_timer = idle_add(self.__index, priority=PRIORITY_LOW)
-		else:
+		try:
+			if self.__is_indexing: self.__update_queue()
+				#from gobject import idle_add, PRIORITY_LOW
+				#try:
+				#	source_remove(self.__index_timer)
+				#except Exception:
+				#	pass
+				#self.__index_timer = idle_add(self.__index, priority=PRIORITY_LOW)
 			from operator import not_
 			if not_(self.__indexer): return False
 			self.__is_indexing = True
@@ -147,6 +152,8 @@ class CompletionUpdater(object):
 					error_handler=self.__error_handler_cb)
 			except:
 				self.__is_indexing = False
+		except ValueError:
+			return False
 		return False
 
 	def __start_indexer(self):
@@ -193,7 +200,9 @@ class CompletionUpdater(object):
 		@return: text to index.
 		@rtype: A String object.
 		"""
+		self.__editor.block_response()
 		get_text = lambda editor: editor.get_text()
+		self.__editor.unblock_response()
 		all_text = map(get_text, self.__editor.get_editor_instances())
 		return " ".join(all_text)
 
@@ -209,6 +218,11 @@ class CompletionUpdater(object):
 			source_remove(self.__timer)
 		except:
 			pass
+		return
+
+	def __update_queue(self):
+		if self.__queue: raise ValueError
+		self.__queue.append(1)
 		return
 
 ########################################################################
@@ -308,6 +322,16 @@ class CompletionUpdater(object):
 
 	def __update_dictionary(self, dictionary):
 		self.__manager.emit("update", dict(dictionary))
+		if self.__queue:
+			try:
+				self.__queue.clear()
+				self.__indexer.process(self.__get_text(), self.__editor.id,
+					dbus_interface=indexer_dbus_service,
+					reply_handler=self.__reply_handler_cb,
+					error_handler=self.__error_handler_cb)
+			except:
+				self.__is_indexing = False
+			return False
 		self.__is_indexing = False
 		return False
 
@@ -349,6 +373,7 @@ class CompletionUpdater(object):
 		try:
 			from psyco import bind
 			bind(self.__index)
+			bind(self.__update_queue)
 			bind(self.__generate_dictionary)
 			bind(self.__start_indexer)
 		except ImportError:
