@@ -280,12 +280,12 @@ class Highlighter(object):
 		"""
 		from operator import not_
 		if not_(self.__can_highlight): return
-		from gobject import idle_add, source_remove, timeout_add
+		from gobject import idle_add, source_remove, timeout_add, PRIORITY_LOW
 		try:
 			source_remove(self.__cursor_moved_id)
 		except:
 			pass
-		self.__cursor_moved_id = timeout_add(100, self.__highlight_region)
+		self.__cursor_moved_id = timeout_add(100, self.__highlight_region, priority=PRIORITY_LOW)
 		return
 
 	def __apply_tag_cb(self, textbuffer, tag, start, end):
@@ -411,10 +411,10 @@ class Highlighter(object):
 		textbuffer.remove_tag(self.__highlight_tag, begin, end)
 		color = self.__client.get_string("/apps/scribes/scope_highlight_color")
 		self.__highlight_tag.set_property("background", color)
-		from gobject import idle_add, source_remove
+		from gobject import idle_add, source_remove, PRIORITY_LOW
 		try:
 			source_remove(self.__highlight_id)
 		except:
 			pass
-		self.__highlight_id = idle_add(self.__highlight_region)
+		self.__highlight_id = idle_add(self.__highlight_region, priority=PRIORITY_LOW)
 		return

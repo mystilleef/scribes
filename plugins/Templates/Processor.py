@@ -563,13 +563,16 @@ class TemplateProcessor(object):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
+		self.__editor.block_response()
 		from operator import ne, contains
 		if ne(self.__index, self.__last_index):
 			# Ignore every other index other than the last one.
+			self.__editor.unblock_response()
 			return False
 		begin_mark, end_mark, value = self.__placeholder_dictionary[self.__index]
 		if contains(self.__mirror_dictionary.keys(), (begin_mark, end_mark)):
 			# Ignore mirrors.
+			self.__editor.unblock_response()
 			return False
 		# Exit template mode when the user types over the last placeholder.
 		if begin_mark and end_mark and value:
@@ -581,6 +584,7 @@ class TemplateProcessor(object):
 			iterator = self.__editor.textbuffer.get_iter_at_mark(begin_mark)
 			if iterator.equal(iterator):
 				self.__destroy_cb(self.__manager)
+		self.__editor.unblock_response()
 		return False
 
 	def __get_modified_placeholder(self):
@@ -646,14 +650,17 @@ class TemplateProcessor(object):
 		from operator import not_
 		if not_(placeholder): return False
 		# Tag placeholder that is being modified.
+		self.__editor.block_response()
 		begin_position = self.__editor.textbuffer.get_iter_at_mark(placeholder[0])
 		end_position = self.__editor.textbuffer.get_iter_at_mark(placeholder[1])
 		self.__editor.textbuffer.apply_tag(self.__modification_highlight_tag,
 											begin_position, end_position)
 		self.__update_index(placeholder[0], placeholder[1])
+		self.__editor.unblock_response()
 		return False
 
 	def __destroy_cb(self, manager):
+		self.__editor.block_response()
 		self.__manager.emit("template-destroyed", self)
 		self.__editor.disconnect_signal(self.__signal_id_1, manager)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
@@ -683,6 +690,7 @@ class TemplateProcessor(object):
 		self.__editor.feedback.unset_modal_message(self.__status_id)
 		from i18n import msg0002
 		self.__editor.feedback.update_status_message(msg0002, "yes")
+		self.__editor.unblock_response()
 		self = None
 		del self
 		return False

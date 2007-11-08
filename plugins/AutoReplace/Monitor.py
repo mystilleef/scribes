@@ -156,7 +156,9 @@ class AutoReplaceMonitor(GObject):
 		@return: True if an abbreviation is found.
 		@rtype: A Boolean object.
 		"""
+		self.__editor.block_response()
 		word = self.__editor.word_to_cursor()
+		self.__editor.unblock_response()
 		if word is None: return False
 		if word in self.__abbreviation_list:
 			from gtk import keysyms

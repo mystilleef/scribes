@@ -49,8 +49,8 @@ class Highlighter(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(manager, editor)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = manager.connect("trigger-found", self.__trigger_found_cb)
 		self.__signal_id_3 = manager.connect("no-trigger-found", self.__no_trigger_found_cb)

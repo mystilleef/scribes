@@ -138,7 +138,8 @@ class EditorManager(object):
 		return
 
 	def response(self):
-		if self.__response_is_busy or self.__block_response: return False
+		if self.__block_response: return False
+		#if self.__response_is_busy or self.__block_response: return False
 		#self.__response_is_busy = True
 		try:
 			from gobject import main_context_default

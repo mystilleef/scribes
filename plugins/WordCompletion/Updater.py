@@ -93,7 +93,8 @@ class CompletionUpdater(object):
 		self.__is_indexing = False
 		self.__signal_id_1 = self.__signal_id_2 = None
 		self.__signal_id_3 = self.__signal_id_4 = None
-		self.__queue = []
+		from collections import deque
+		self.__queue = deque([])
 		return
 
 ########################################################################
@@ -114,12 +115,12 @@ class CompletionUpdater(object):
 			if self.__is_indexing: self.__update_queue()
 			if self.__editor.is_readonly: return False
 			if is_(self.__indexer, None):
-				from gobject import idle_add
-				idle_add(self.__start_indexer)
+				from gobject import idle_add, PRIORITY_LOW
+				idle_add(self.__start_indexer, priority=PRIORITY_LOW)
 				return False
 			self.__remove_timer()
 			from gobject import timeout_add, PRIORITY_LOW
-			self.__timer = timeout_add(500, self.__generate_dictionary, priority=PRIORITY_LOW)
+			self.__timer = timeout_add(750, self.__generate_dictionary, priority=PRIORITY_LOW)
 		except ValueError:
 			return False
 		return False
@@ -145,13 +146,8 @@ class CompletionUpdater(object):
 			from operator import not_
 			if not_(self.__indexer): return False
 			self.__is_indexing = True
-			try:
-				self.__indexer.process(self.__get_text(), self.__editor.id,
-					dbus_interface=indexer_dbus_service,
-					reply_handler=self.__reply_handler_cb,
-					error_handler=self.__error_handler_cb)
-			except:
-				self.__is_indexing = False
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.__send_text, priority=PRIORITY_LOW)
 		except ValueError:
 			return False
 		return False
@@ -188,6 +184,8 @@ class CompletionUpdater(object):
 					pass
 		except DBusException:
 			pass
+		except:
+			pass
 		return False
 
 	def __get_text(self):
@@ -202,8 +200,8 @@ class CompletionUpdater(object):
 		"""
 		self.__editor.block_response()
 		get_text = lambda editor: editor.get_text()
-		self.__editor.unblock_response()
 		all_text = map(get_text, self.__editor.get_editor_instances())
+		self.__editor.unblock_response()
 		return " ".join(all_text)
 
 	def __remove_timer(self):
@@ -246,7 +244,7 @@ class CompletionUpdater(object):
 			source_remove(self.__index_timer)
 		except Exception:
 			pass
-		self.__index_timer = timeout_add(500, self.__index, priority=PRIORITY_LOW)
+		self.__index_timer = timeout_add(750, self.__index, priority=PRIORITY_LOW)
 		return False
 
 	def __loaded_document_cb(self, editor, uri):
@@ -277,8 +275,8 @@ class CompletionUpdater(object):
 		@param *args: Useless arguments.
 		@type *args: A List object.
 		"""
-		from gobject import idle_add
-		idle_add(self.__start_indexer)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__start_indexer, priority=PRIORITY_LOW)
 		return
 
 	def __reply_handler_cb(self, *args):
@@ -322,17 +320,28 @@ class CompletionUpdater(object):
 
 	def __update_dictionary(self, dictionary):
 		self.__manager.emit("update", dict(dictionary))
-		if self.__queue:
-			try:
-				self.__queue.clear()
-				self.__indexer.process(self.__get_text(), self.__editor.id,
-					dbus_interface=indexer_dbus_service,
-					reply_handler=self.__reply_handler_cb,
-					error_handler=self.__error_handler_cb)
-			except:
-				self.__is_indexing = False
-			return False
-		self.__is_indexing = False
+		try:
+			self.__queue.pop()
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.__send_text, priority=PRIORITY_LOW)
+		except IndexError:
+			self.__is_indexing = False
+		return False
+
+	def __send_text(self):
+		"""
+		Send string to word completion indexer for processing.
+		
+		@param self: Reference to the CompletionUpdater instance.
+		@type self: A CompletionUpdater object.
+		"""
+		try:
+			self.__indexer.process(self.__get_text(), self.__editor.id,
+				dbus_interface=indexer_dbus_service,
+				reply_handler=self.__reply_handler_cb,
+				error_handler=self.__error_handler_cb)
+		except:
+			self.__is_indexing = False
 		return False
 
 	def __destroy_cb(self, manager):
@@ -375,7 +384,9 @@ class CompletionUpdater(object):
 			bind(self.__index)
 			bind(self.__update_queue)
 			bind(self.__generate_dictionary)
+			bind(self.__update_dictionary)
 			bind(self.__start_indexer)
+			bind(self.__get_text)
 		except ImportError:
 			pass
 		except:
