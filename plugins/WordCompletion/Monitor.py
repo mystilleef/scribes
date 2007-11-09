@@ -96,7 +96,12 @@ class CompletionMonitor(object):
 		@param self: Reference to the CompletionMonitor instance.
 		@type self: A CompletionMonitor object.
 		"""
-		word = self.__editor.get_word_before_cursor()
+		try:
+		#	self.__editor.block_response()
+			word = self.__editor.get_word_before_cursor()
+		#	self.__editor.unblock_response()
+		except:
+			word = None
 		if word:
 			matches = self.__find_matches(word)
 			if matches:
@@ -154,23 +159,17 @@ class CompletionMonitor(object):
 		@rtype: A Integer object.
 		"""
 		from operator import gt, lt, eq
-		if lt(len(x[0]), len(y[0])):
-			return -1
-		if gt(len(x[0]), len(y[0])):
-			return 1
+		if lt(len(x[0]), len(y[0])): return -1
+		if gt(len(x[0]), len(y[0])): return 1
 		if eq(len(x[0]), len(y[0])):
-			if lt(x[1], y[1]):
-				return 1
-			if gt(x[1], y[1]):
-				return -1
+			if lt(x[1], y[1]): return 1
+			if gt(x[1], y[1]): return -1
 		return 0
 
 	def __sort_matches_occurrence_only(self, x, y):
 		from operator import gt, lt
-		if lt(x[1], y[1]):
-			return 1
-		if gt(x[1], y[1]):
-			return -1
+		if lt(x[1], y[1]): return 1
+		if gt(x[1], y[1]): return -1
 		return 0
 
 	def __precompile_methods(self):

@@ -91,6 +91,7 @@ class TemplateFactory(object):
 		@type template: A TemplateManager object.
 		"""
 		from Processor import TemplateProcessor
+		self.__editor.block_response()
 		self.__templates.append(TemplateProcessor(manager, self.__editor, template))
 		return
 
@@ -131,6 +132,7 @@ class TemplateFactory(object):
 			self.__templates.remove(processor)
 		except:
 			pass
+		self.__editor.unblock_response()
 		return
 
 	def __precompile_methods(self):

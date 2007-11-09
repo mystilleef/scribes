@@ -120,7 +120,7 @@ class CompletionUpdater(object):
 				return False
 			self.__remove_timer()
 			from gobject import timeout_add, PRIORITY_LOW
-			self.__timer = timeout_add(750, self.__generate_dictionary, priority=PRIORITY_LOW)
+			self.__timer = timeout_add(500, self.__generate_dictionary, priority=PRIORITY_LOW)
 		except ValueError:
 			return False
 		return False
@@ -219,6 +219,14 @@ class CompletionUpdater(object):
 		return
 
 	def __update_queue(self):
+		"""
+		Update the queue.
+		
+		If queue is empty, there's no need to index.
+		
+		@param self: Reference to the CompletionUpdater instance.
+		@type self: A CompletionUpdater object.
+		"""
 		if self.__queue: raise ValueError
 		self.__queue.append(1)
 		return
@@ -289,8 +297,6 @@ class CompletionUpdater(object):
 		@param dictionary: Word completion dictionary.
 		@type dictionary: A Dict object.
 		"""
-		#self.__manager.emit("update", dict(dictionary))
-		#self.__is_indexing = False
 		return
 
 	def __error_handler_cb(self, error):
@@ -304,10 +310,6 @@ class CompletionUpdater(object):
 		@param error: An error message.
 		@type error: A String object.
 		"""
-#		print "INDEXER ERROR: Failed to index text"
-#		print "========================================================"
-#		print error
-#		print "========================================================"
 		self.__is_indexing = False
 		return
 
@@ -319,6 +321,15 @@ class CompletionUpdater(object):
 		return True
 
 	def __update_dictionary(self, dictionary):
+		"""
+		Update the word completion dictionary.
+		
+		@param self: Reference to the CompletionUpdater instance.
+		@type self: A CompletionUpdater object.
+		
+		@param dictionary: Dictionary of words.
+		@type dictionary: A Dictionary object.
+		"""
 		self.__manager.emit("update", dict(dictionary))
 		try:
 			self.__queue.pop()
@@ -379,6 +390,12 @@ class CompletionUpdater(object):
 		return
 
 	def __precompile_methods(self):
+		"""
+		Use psyco to precompile methods for performance.
+		
+		@param self: Reference to the CompletionUpdater instance.
+		@type self: A CompletionUpdater object.
+		"""
 		try:
 			from psyco import bind
 			bind(self.__index)
