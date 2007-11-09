@@ -68,6 +68,9 @@ class CompletionUpdater(object):
 		editor.session_bus.add_signal_receiver(self.__finished_indexing_cb,
 						signal_name="finished_indexing",
 						dbus_interface=indexer_dbus_service)
+		editor.session_bus.add_signal_receiver(self.__busy_cb,
+						signal_name="busy",
+						dbus_interface=indexer_dbus_service)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -221,9 +224,9 @@ class CompletionUpdater(object):
 	def __update_queue(self):
 		"""
 		Update the queue.
-		
+
 		If queue is empty, there's no need to index.
-		
+
 		@param self: Reference to the CompletionUpdater instance.
 		@type self: A CompletionUpdater object.
 		"""
@@ -297,6 +300,8 @@ class CompletionUpdater(object):
 		@param dictionary: Word completion dictionary.
 		@type dictionary: A Dict object.
 		"""
+		# This is a test method. No, not really. #Fatter, fatter, father.
+		# This is a test method. No, not really, Fatter, fatter, father
 		return
 
 	def __error_handler_cb(self, error):
@@ -320,13 +325,21 @@ class CompletionUpdater(object):
 		idle_add(self.__update_dictionary, dictionary, priority=PRIORITY_LOW)
 		return True
 
+	def __busy_cb(self, editor_id):
+		from operator import ne
+		print "Busy signal fired"
+		if ne(editor_id, self.__editor.id): return True
+		self.__queue.clear()
+		self.__is_indexing = False
+		return True
+
 	def __update_dictionary(self, dictionary):
 		"""
 		Update the word completion dictionary.
-		
+
 		@param self: Reference to the CompletionUpdater instance.
 		@type self: A CompletionUpdater object.
-		
+
 		@param dictionary: Dictionary of words.
 		@type dictionary: A Dictionary object.
 		"""
@@ -342,7 +355,7 @@ class CompletionUpdater(object):
 	def __send_text(self):
 		"""
 		Send string to word completion indexer for processing.
-		
+
 		@param self: Reference to the CompletionUpdater instance.
 		@type self: A CompletionUpdater object.
 		"""
@@ -374,6 +387,9 @@ class CompletionUpdater(object):
 		self.__editor.session_bus.remove_signal_receiver(self.__finished_indexing_cb,
 						signal_name="finished_indexing",
 						dbus_interface=indexer_dbus_service)
+		self.__editor.session_bus.remove_signal_receiver(self.__busy_cb,
+						signal_name="busy",
+						dbus_interface=indexer_dbus_service)
 		self.__indexer = None
 		self.__remove_timer()
 		try:
@@ -392,7 +408,7 @@ class CompletionUpdater(object):
 	def __precompile_methods(self):
 		"""
 		Use psyco to precompile methods for performance.
-		
+
 		@param self: Reference to the CompletionUpdater instance.
 		@type self: A CompletionUpdater object.
 		"""
@@ -400,6 +416,7 @@ class CompletionUpdater(object):
 			from psyco import bind
 			bind(self.__index)
 			bind(self.__update_queue)
+			bind(self.__send_text)
 			bind(self.__generate_dictionary)
 			bind(self.__update_dictionary)
 			bind(self.__start_indexer)

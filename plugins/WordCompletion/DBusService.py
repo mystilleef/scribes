@@ -70,3 +70,6 @@ class DBusService(Object):
 	def finished_indexing(self, id, dictionary):
 		return
 
+	@signal(indexer_dbus_service)		
+	def busy(self, id):
+		return 

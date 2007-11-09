@@ -71,6 +71,8 @@ class CompletionIndexer(object):
 		@type self: A CompletionIndexer object.
 		"""
 		self.__is_busy = False
+		from collections import deque
+		self.__queue = deque([])
 		from re import UNICODE, compile
 		self.__pattern = compile(r"[^-\w]", UNICODE)
 		from dbus import Dictionary, String, Int64
@@ -94,10 +96,14 @@ class CompletionIndexer(object):
 		@return: A dictionary of words for automatic completion.
 		@rtype: A Dict object.
 		"""
-		if self.__is_busy: return
-		self.__is_busy = True
-		from gobject import idle_add
-		idle_add(self.__process_text, text, id)
+		try:
+			if self.__is_busy: raise ValueError
+			self.__is_busy = True
+			from gobject import idle_add
+			idle_add(self.__process_text, text, id)
+		except ValueError:
+			print "Indexer.py Indexer is currently busy."
+			self.__dbus.busy(id)
 		return
 
 	def __process_text(self, text, id):
@@ -177,6 +183,10 @@ class CompletionIndexer(object):
 		if truth(string.startswith("---")) or truth(string.startswith("___")): return False
 		return True
 
+	def __update_queue(self, id, text):
+		self.__queue.append((id, text))
+		return
+
 	def __precompile_methods(self):
 		try:
 			from psyco import bind
@@ -233,3 +243,6 @@ if __name__ == "__main__":
 	CompletionIndexer()
 	from gobject import MainLoop
 	MainLoop().run()
+
+# Print this is a test print this is  a test print
+# Print
