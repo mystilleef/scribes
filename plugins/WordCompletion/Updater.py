@@ -115,7 +115,7 @@ class CompletionUpdater(object):
 		"""
 		try:
 			from operator import is_
-			if self.__is_indexing: self.__update_queue()
+			if self.__is_indexing: return False #self.__update_queue()
 			if self.__editor.is_readonly: return False
 			if is_(self.__indexer, None):
 				from gobject import idle_add, PRIORITY_LOW
@@ -139,13 +139,7 @@ class CompletionUpdater(object):
 		@type self: A CompletionUpdater object.
 		"""
 		try:
-			if self.__is_indexing: self.__update_queue()
-				#from gobject import idle_add, PRIORITY_LOW
-				#try:
-				#	source_remove(self.__index_timer)
-				#except Exception:
-				#	pass
-				#self.__index_timer = idle_add(self.__index, priority=PRIORITY_LOW)
+			if self.__is_indexing: return False #self.__update_queue()
 			from operator import not_
 			if not_(self.__indexer): return False
 			self.__is_indexing = True
@@ -201,10 +195,10 @@ class CompletionUpdater(object):
 		@return: text to index.
 		@rtype: A String object.
 		"""
-		self.__editor.block_response()
+		#self.__editor.block_response()
 		get_text = lambda editor: editor.get_text()
 		all_text = map(get_text, self.__editor.get_editor_instances())
-		self.__editor.unblock_response()
+		#self.__editor.unblock_response()
 		return " ".join(all_text)
 
 	def __remove_timer(self):
@@ -300,8 +294,6 @@ class CompletionUpdater(object):
 		@param dictionary: Word completion dictionary.
 		@type dictionary: A Dict object.
 		"""
-		# This is a test method. No, not really. #Fatter, fatter, father.
-		# This is a test method. No, not really, Fatter, fatter, father
 		return
 
 	def __error_handler_cb(self, error):

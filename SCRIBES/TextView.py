@@ -1042,7 +1042,7 @@ class ScribesTextView(SourceView):
 #			self.window.process_updates(True)
 #		except:
 #			pass
-		self.__make_responsive()
+#		self.__make_responsive()
 		return False
 
 	def __destroy(self):

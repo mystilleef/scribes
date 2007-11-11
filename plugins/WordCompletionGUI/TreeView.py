@@ -64,6 +64,7 @@ class CompletionTreeView(TreeView):
 		self.__signal_id_5 = manager.connect("is-visible", self.__is_visible_cb)
 		self.__signal_id_7 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_8 = self.connect("cursor-changed", self.__cursor_changed_cb)
+		self.__signal_id_9 = completion.connect("no-match-found", self.__no_match_found_cb)
 		self.__block_textview()
 
 	def __init_attributes(self, manager, editor, completion):
@@ -90,7 +91,8 @@ class CompletionTreeView(TreeView):
 		self.__column = self.__create_column()
 		self.__is_blocked = False
 		self.__is_visible = False
-		self.__word_list = []
+		from collections import deque
+		self.__word_list = deque([])
 		return
 
 	def __set_properties(self):
@@ -236,6 +238,7 @@ class CompletionTreeView(TreeView):
 		self.__editor.disconnect_signal(self.__signal_id_5, manager)
 		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_8, self)
+		self.__editor.disconnect_signal(self.__signal_id_9, self.__completion)
 		self.destroy()
 		del self
 		self = None
@@ -259,7 +262,16 @@ class CompletionTreeView(TreeView):
 			source_remove(self.__populate_id)
 		except:
 			pass
-		self.__populate_id = idle_add(self.__populate_model, completion_list)
+		from collections import deque
+		self.__populate_id = idle_add(self.__populate_model, deque(completion_list))
+		return
+
+	def __no_match_found_cb(self, *args):
+		try:
+			from gobject import source_remove
+			source_remove(self.__populate_id)
+		except:
+			pass
 		return
 
 	def __row_activated_cb(self, treeview, path, column):

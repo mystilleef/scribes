@@ -60,6 +60,7 @@ class CompletionMonitor(object):
 		self.__signal_id_7 = editor.textview.connect_after("undo", self.__generic_cb)
 		self.__signal_id_8 = editor.textview.connect_after("redo", self.__generic_cb)
 		self.__signal_id_9 = editor.textview.connect_after("paste-clipboard", self.__generic_cb)
+		self.__signal_id_10 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -76,7 +77,6 @@ class CompletionMonitor(object):
 		"""
 		self.__editor = editor
 		self.__manager = manager
-		self.__is_updating_dictionary = False
 		self.__dictionary = self.__create_completion_dictionary()
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
@@ -210,15 +210,17 @@ class CompletionMonitor(object):
 		@param textbuffer: The text editor's buffer
 		@type textbuffer: A ScribesTextBuffer object.
 		"""
-		if length > 1:
-			self.__manager.emit("no-match-found")
-		else:
+		try:
+			from operator import gt
+			if gt(length, 1): raise ValueError
 			from gobject import idle_add, source_remove, PRIORITY_LOW, timeout_add
 			try:
 				source_remove(self.__insert_text_id)
 			except:
 				pass
-			self.__insert_text_id = timeout_add(100, self.__check_buffer, priority=PRIORITY_LOW)
+			self.__insert_text_id = timeout_add(300, self.__check_buffer, priority=PRIORITY_LOW)
+		except ValueError:
+			self.__manager.emit("no-match-found")
 		return False
 
 	def __generic_cb(self, *args):
@@ -244,12 +246,25 @@ class CompletionMonitor(object):
 		@param manager: Reference to the CompletionManager.
 		@type manager: An CompletionManager object.
 		"""
-		if self.__is_updating_dictionary: return
-		self.__is_updating_dictionary = True
 		self.__dictionary.clear()
 		self.__dictionary.update(dictionary)
-		self.__is_updating_dictionary = False
 		return
+
+	def __key_press_event_cb(self, textview, event):
+		"""
+		Handles callback when the "key-press-event" is emitted.
+
+		@param self: Reference to the CompletionMonitor instance.
+		@type self: A CompletionMonitor object.
+
+		@param textview: The text editor's buffer container.
+		@type textview: A textview object.
+		"""
+		from operator import eq, contains
+		from gtk import keysyms
+		hide_keys = (keysyms.BackSpace, keysyms.space, keysyms.Tab, keysyms.Escape)
+		if contains(hide_keys, event.keyval): self.__manager.emit("no-match-found")
+		return False
 
 	def __destroy_cb(self, manager):
 		"""
@@ -270,6 +285,7 @@ class CompletionMonitor(object):
 		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor.textview)
 		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor.textview)
 		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__signal_id_10, self.__editor.textview)
 		del self
 		self = None
 		return

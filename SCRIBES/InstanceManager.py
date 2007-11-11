@@ -138,15 +138,15 @@ class EditorManager(object):
 		return
 
 	def response(self):
-		if self.__block_response: return False
+		#if self.__block_response: return False
 		#if self.__response_is_busy or self.__block_response: return False
 		#self.__response_is_busy = True
-		try:
-			from gobject import main_context_default
-			context = main_context_default()
-			while context.pending(): context.iteration(False)
-		except:
-			pass
+		#try:
+		#	from gobject import main_context_default
+		#	context = main_context_default()
+		#	while context.pending(): context.iteration(False)
+		#except:
+		#	pass
 		#self.__response_is_busy = False
 		return False
 
@@ -435,7 +435,13 @@ class EditorManager(object):
 	def __precompile_methods(self):
 		try:
 			from psyco import bind
-			#bind(self.response)
+			bind(self.get_editor_instances)
+			bind(self.open_files)
+			bind(self.close_files)
+			bind(self.get_uris)
+			bind(self.focus_file)
+			bind(self.register_editor)
+			bind(self.unregister_editor)
 		except ImportError:
 			pass
 		return False

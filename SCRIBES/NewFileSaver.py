@@ -545,7 +545,6 @@ class FileSaver(object):	"""
 		@param editor_id: The identification number of the editor object.
 		@type editor_id: An Integer object.
 		"""
-		self.__editor.response()
 		from operator import ne
 		if ne(self.__editor.id, editor_id): return True
 		from gobject import idle_add, PRIORITY_LOW
@@ -592,5 +591,6 @@ class FileSaver(object):	"""
 		@type self: A FileSaver object.
 		"""
 		print "SAVE ERROR: BEEF!"
+		print error
 		self.__error(error)
 		return
