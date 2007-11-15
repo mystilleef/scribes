@@ -29,7 +29,7 @@ for the text editor.
 @contact: mystilleef@gmail.com
 """
 
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_PYOBJECT
+from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_PYOBJECT, TYPE_OBJECT
 
 class CompletionManager(GObject):
 	"""
@@ -42,6 +42,10 @@ class CompletionManager(GObject):
 		"update": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"match-found": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"no-match-found": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
+		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"populated-model": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
+		"is-visible": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
@@ -57,6 +61,7 @@ class CompletionManager(GObject):
 		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
+		self.__arrange_widgets()
 		self.__signal_id_1 = self.connect("destroy", self.__destroy_cb)
 
 	def __init_attributes(self, editor):
@@ -70,14 +75,30 @@ class CompletionManager(GObject):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__store_id = editor.add_object("WordCompletionManager", self)
 		from Monitor import CompletionMonitor
 		self.__monitor = CompletionMonitor(self, editor)
 		from Updater import CompletionUpdater
 		self.__updater = CompletionUpdater(self, editor)
+		from Window import CompletionWindow
+		self.__window = CompletionWindow(self, editor)
+		from TreeView import CompletionTreeView
+		self.__textview = CompletionTreeView(self, editor)
+		from ScrollWin import CompletionScrollWin
+		self.__scrollwin = CompletionScrollWin(self)
 		self.__signal_id_1 = None
 		return
 
+	def __arrange_widgets(self):
+		"""
+		Arrange widgets in the word completion window.
+
+		@param self: Reference to the CompletionManager instance.
+		@type self: A CompletionManager object.
+		"""
+		self.__scrollwin.add(self.__textview)
+		self.__window.add(self.__scrollwin)
+		return
+		
 	def __destroy_cb(self, manager):
 		"""
 		Handles callback when the "destroy" signal is emitted.
@@ -88,7 +109,6 @@ class CompletionManager(GObject):
 		@param manager: Reference to the CompletionManager.
 		@type manager: An CompletionManager object.
 		"""
-		self.__editor.remove_object("WordCompletionManager", self.__store_id)
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		del self
 		self = None

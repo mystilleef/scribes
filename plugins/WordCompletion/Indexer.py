@@ -99,10 +99,13 @@ class CompletionIndexer(object):
 		try:
 			if self.__is_busy: raise ValueError
 			self.__is_busy = True
-			from gobject import idle_add
-			idle_add(self.__process_text, text, id)
+			from gobject import timeout_add, source_remove
+			try:
+				source_remove(self.__timer)
+			except:
+				pass
+			self.__timer = timeout_add(1000, self.__process_text, text, id)
 		except ValueError:
-			print "Indexer.py Indexer is currently busy."
 			self.__dbus.busy(id)
 		return
 
@@ -243,6 +246,3 @@ if __name__ == "__main__":
 	CompletionIndexer()
 	from gobject import MainLoop
 	MainLoop().run()
-
-# Print this is a test print this is  a test print
-# Print

@@ -145,6 +145,7 @@ class FileSaver(object):	"""
 				reply_handler=self.__reply_handler_cb,
 				error_handler=self.__error_handler_cb)
 		except ValueError:
+			print "Deffering save process"
 			self.__queue.append(1)
 		except AttributeError:
 			error_message = "Can't find save processor"
@@ -301,6 +302,7 @@ class FileSaver(object):	"""
 		try:
 			self.__is_saving = False
 			self.__queue.pop()
+			print "OMG! SAVING AGAIN"
 			from gobject import idle_add
 			idle_add(self.save_file)
 		except IndexError:

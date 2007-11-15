@@ -61,6 +61,7 @@ class CompletionMonitor(object):
 		self.__signal_id_8 = editor.textview.connect_after("redo", self.__generic_cb)
 		self.__signal_id_9 = editor.textview.connect_after("paste-clipboard", self.__generic_cb)
 		self.__signal_id_10 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
+		self.__signal_id_11 = manager.connect("is-visible", self.__is_visible_cb)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -77,6 +78,7 @@ class CompletionMonitor(object):
 		"""
 		self.__editor = editor
 		self.__manager = manager
+		self.__completion_window_is_visible = False
 		self.__dictionary = self.__create_completion_dictionary()
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
@@ -97,18 +99,16 @@ class CompletionMonitor(object):
 		@type self: A CompletionMonitor object.
 		"""
 		try:
-		#	self.__editor.block_response()
 			word = self.__editor.get_word_before_cursor()
-		#	self.__editor.unblock_response()
-		except:
-			word = None
-		if word:
-			matches = self.__find_matches(word)
-			if matches:
-				self.__manager.emit("match-found", matches)
+			if word:
+				matches = self.__find_matches(word)
+				if matches:
+					self.__manager.emit("match-found", matches)
+				else:
+					self.__manager.emit("no-match-found")
 			else:
 				self.__manager.emit("no-match-found")
-		else:
+		except:
 			self.__manager.emit("no-match-found")
 		return False
 
@@ -129,10 +129,11 @@ class CompletionMonitor(object):
 		@return: A list of words that start with word.
 		@rtype: A List object.
 		"""
-		from operator import not_, truth, ne
-		if not_(self.__dictionary): return None
-		match_list = [list(items) for items in self.__dictionary.items() \
-				if truth(items[0].startswith(word)) and ne(items[0], word)]
+		from operator import not_, ne
+		dictionary = self.__dictionary.get_dictionary()
+		if not_(dictionary): return None
+		match_list = [list(items) for items in dictionary.items() \
+				if items[0].startswith(word) and ne(items[0], word)]
 		if not_(match_list): return None
 		match_list.sort(self.__sort_matches_occurrence_only)
 		matches = [items[0] for items in match_list]
@@ -186,13 +187,24 @@ class CompletionMonitor(object):
 		return False
 
 	def __create_completion_dictionary(self):
+		"""
+		Create a completion dictionary.
+
+		@param self: Reference to the CompletionMonitor instance.
+		@type self: A CompletionMonitor object.
+		"""
 		try:
 			from SCRIBES.Exceptions import GlobalStoreObjectDoesNotExistError
 			dictionary = self.__editor.get_global_object("WordCompletionDictionary")
 		except GlobalStoreObjectDoesNotExistError:
-			self.__editor.add_global_object("WordCompletionDictionary", {})
+			from CompletionDictionary import CompletionDictionary
+			self.__editor.add_global_object("WordCompletionDictionary", CompletionDictionary())
 			dictionary = self.__editor.get_global_object("WordCompletionDictionary")
 		return dictionary
+
+	def __update_dictionary(self, dictionary):
+		self.__dictionary.update(dictionary)
+		return False
 
 ########################################################################
 #
@@ -212,13 +224,16 @@ class CompletionMonitor(object):
 		"""
 		try:
 			from operator import gt
-			if gt(length, 1): raise ValueError
+			if gt(length, 3): raise ValueError
 			from gobject import idle_add, source_remove, PRIORITY_LOW, timeout_add
 			try:
 				source_remove(self.__insert_text_id)
 			except:
 				pass
-			self.__insert_text_id = timeout_add(300, self.__check_buffer, priority=PRIORITY_LOW)
+			if self.__completion_window_is_visible:
+				self.__insert_text_id = idle_add(self.__check_buffer, priority=PRIORITY_LOW)
+			else:
+				self.__insert_text_id = timeout_add(500, self.__check_buffer, priority=PRIORITY_LOW)
 		except ValueError:
 			self.__manager.emit("no-match-found")
 		return False
@@ -234,6 +249,11 @@ class CompletionMonitor(object):
 		@type *args: A List object.
 		"""
 		self.__manager.emit("no-match-found")
+		from gobject import source_remove
+		try:
+			source_remove(self.__insert_text_id)
+		except:
+			pass
 		return False
 
 	def __update_cb(self, manager, dictionary):
@@ -246,8 +266,12 @@ class CompletionMonitor(object):
 		@param manager: Reference to the CompletionManager.
 		@type manager: An CompletionManager object.
 		"""
-		self.__dictionary.clear()
-		self.__dictionary.update(dictionary)
+		try:
+			from gobject import timeout_add, PRIORITY_LOW, source_remove
+			source_remove(self.__dictionary_timer)
+		except:
+			pass
+		self.__dictionary_timer = timeout_add(1000, self.__update_dictionary, dictionary, priority=PRIORITY_LOW)
 		return
 
 	def __key_press_event_cb(self, textview, event):
@@ -264,6 +288,10 @@ class CompletionMonitor(object):
 		from gtk import keysyms
 		hide_keys = (keysyms.BackSpace, keysyms.space, keysyms.Tab, keysyms.Escape)
 		if contains(hide_keys, event.keyval): self.__manager.emit("no-match-found")
+		return False
+
+	def __is_visible_cb(self, manager, visibility):
+		self.__completion_window_is_visible = visibility
 		return False
 
 	def __destroy_cb(self, manager):

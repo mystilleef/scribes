@@ -52,9 +52,9 @@ class CompletionUpdater(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(manager, editor)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__start_indexer, priority=PRIORITY_LOW)
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW, timeout_add
+		timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
+		timeout_add(500, self.__precompile_methods, priority=PRIORITY_LOW)
 		self.__signal_id_1 = self.__editor.connect("loaded-document", self.__loaded_document_cb)
 		self.__signal_id_2 = self.__editor.textbuffer.connect_after("changed", self.__changed_cb)
 		self.__signal_id_3 = self.__manager.connect("destroy", self.__destroy_cb)
@@ -118,12 +118,12 @@ class CompletionUpdater(object):
 			if self.__is_indexing: return False #self.__update_queue()
 			if self.__editor.is_readonly: return False
 			if is_(self.__indexer, None):
-				from gobject import idle_add, PRIORITY_LOW
-				idle_add(self.__start_indexer, priority=PRIORITY_LOW)
+				from gobject import idle_add, PRIORITY_LOW, timeout_add
+				timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
 				return False
 			self.__remove_timer()
 			from gobject import timeout_add, PRIORITY_LOW
-			self.__timer = timeout_add(500, self.__generate_dictionary, priority=PRIORITY_LOW)
+			self.__timer = timeout_add(1000, self.__generate_dictionary, priority=PRIORITY_LOW)
 		except ValueError:
 			return False
 		return False
@@ -143,8 +143,7 @@ class CompletionUpdater(object):
 			from operator import not_
 			if not_(self.__indexer): return False
 			self.__is_indexing = True
-			from gobject import idle_add, PRIORITY_LOW
-			idle_add(self.__send_text, priority=PRIORITY_LOW)
+			self.__send_text()
 		except ValueError:
 			return False
 		return False
@@ -280,8 +279,8 @@ class CompletionUpdater(object):
 		@param *args: Useless arguments.
 		@type *args: A List object.
 		"""
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__start_indexer, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW, timeout_add
+		timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
 		return
 
 	def __reply_handler_cb(self, *args):
@@ -319,7 +318,6 @@ class CompletionUpdater(object):
 
 	def __busy_cb(self, editor_id):
 		from operator import ne
-		print "Busy signal fired"
 		if ne(editor_id, self.__editor.id): return True
 		self.__queue.clear()
 		self.__is_indexing = False
@@ -338,8 +336,7 @@ class CompletionUpdater(object):
 		self.__manager.emit("update", dict(dictionary))
 		try:
 			self.__queue.pop()
-			from gobject import idle_add, PRIORITY_LOW
-			idle_add(self.__send_text, priority=PRIORITY_LOW)
+			self.__send_text()
 		except IndexError:
 			self.__is_indexing = False
 		return False
@@ -359,6 +356,12 @@ class CompletionUpdater(object):
 		except:
 			self.__is_indexing = False
 		return False
+
+########################################################################
+#
+#						Destroy Method
+#
+########################################################################
 
 	def __destroy_cb(self, manager):
 		"""
@@ -396,6 +399,12 @@ class CompletionUpdater(object):
 		del self
 		self = None
 		return
+
+########################################################################
+#
+#					Optimize Methods with Psyco
+#
+########################################################################
 
 	def __precompile_methods(self):
 		"""

@@ -94,13 +94,11 @@ class OpenDialog(object):
 		@param self: Reference to the OpenDialog instance.
 		@type self: A OpenDialog object.
 		"""
-		self.__editor.response()
 		self.__editor.emit("show-dialog", self.__dialog)
-		from gobject import idle_add
-		idle_add(self.__set_folder)
 		from i18n import msg0002
 		self.__status_id = self.__editor.feedback.set_modal_message(msg0002, "open")
 		self.__dialog.show_all()
+		self.__set_folder()
 		self.__dialog.run()
 		return
 

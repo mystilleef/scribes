@@ -36,7 +36,7 @@ class CompletionWindow(Window):
 	This class creates the window object for word completion.
 	"""
 
-	def __init__(self, manager, editor, completion):
+	def __init__(self, manager, editor):
 		"""
 		Initialize object.
 
@@ -51,7 +51,7 @@ class CompletionWindow(Window):
 		"""
 		from gtk import WINDOW_POPUP
 		Window.__init__(self, WINDOW_POPUP)
-		self.__init_attributes(manager, editor, completion)
+		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		from gobject import idle_add
 		idle_add(self.__precompile_methods)
@@ -61,11 +61,11 @@ class CompletionWindow(Window):
 		self.__signal_id_5 = editor.window.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_6 = editor.textview.connect("focus-out-event", self.__generic_hide_cb)
 		self.__signal_id_7 = editor.textbuffer.connect("delete-range", self.__generic_hide_cb)
-		self.__signal_id_8 = completion.connect("no-match-found", self.__generic_hide_cb)
+		self.__signal_id_8 = manager.connect("no-match-found", self.__generic_hide_cb)
 		self.__signal_id_9 = editor.textview.connect("button-press-event", self.__button_press_event_cb)
 		self.__block_signals()
 
-	def __init_attributes(self, manager, editor, completion):
+	def __init_attributes(self, manager, editor):
 		"""
 		Initialize data attributes.
 
@@ -83,8 +83,7 @@ class CompletionWindow(Window):
 		"""
 		self.__editor = editor
 		self.__manager = manager
-		self.__completion = completion
-		self.__manager.is_visible = self.__is_visible = False
+		self.__is_visible = False
 		self.__signals_are_blocked = True
 		# Pressing any of these keys will hide the word completion
 		# window.
@@ -122,10 +121,9 @@ class CompletionWindow(Window):
 		"""
 		self.__manager.emit("is-visible", True)
 		from operator import truth
-		if truth(self.__is_visible): return
+		if self.__is_visible: return
 #		self.__editor.response()
-		if truth(self.__signals_are_blocked):
-			self.__unblock_signals()
+		if self.__signals_are_blocked: self.__unblock_signals()
 		self.show_all()
 		self.__is_visible = True
 #		self.__editor.response()
@@ -141,8 +139,7 @@ class CompletionWindow(Window):
 		self.__manager.emit("is-visible", False)
 		from operator import not_, truth
 		if not_(self.__is_visible): return
-		if not_(self.__signals_are_blocked):
-			self.__block_signals()
+		if not_(self.__signals_are_blocked): self.__block_signals()
 		self.hide_all()
 		self.__is_visible = False
 		return
@@ -235,7 +232,7 @@ class CompletionWindow(Window):
 		self.__editor.window.handler_block(self.__signal_id_5)
 		self.__editor.textview.handler_block(self.__signal_id_6)
 		self.__editor.textbuffer.handler_block(self.__signal_id_7)
-		self.__completion.handler_block(self.__signal_id_8)
+		self.__manager.handler_block(self.__signal_id_8)
 		self.__signals_are_blocked = True
 		return
 
@@ -251,7 +248,7 @@ class CompletionWindow(Window):
 		self.__editor.window.handler_unblock(self.__signal_id_5)
 		self.__editor.textview.handler_unblock(self.__signal_id_6)
 		self.__editor.textbuffer.handler_unblock(self.__signal_id_7)
-		self.__completion.handler_unblock(self.__signal_id_8)
+		self.__manager.handler_unblock(self.__signal_id_8)
 		self.__signals_are_blocked = False
 		return
 
@@ -266,6 +263,8 @@ class CompletionWindow(Window):
 			bind(self.__block_signals)
 			bind(self.__unblock_signals)
 		except ImportError:
+			pass
+		except:
 			pass
 		return False
 
@@ -291,7 +290,7 @@ class CompletionWindow(Window):
 		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_8, self.__completion)
+		self.__editor.disconnect_signal(self.__signal_id_8, manager)
 		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor)
 		self.destroy()
 		del self
@@ -309,7 +308,7 @@ class CompletionWindow(Window):
 		@type args: A List object.
 		"""
 		self.__hide_window()
-		return
+		return False
 
 	def __show_window_cb(self, manager, view):
 		"""

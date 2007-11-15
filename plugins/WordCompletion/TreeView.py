@@ -36,7 +36,7 @@ class CompletionTreeView(TreeView):
 	This class implements the treeview for the word completion window.
 	"""
 
-	def __init__(self, manager, editor, completion):
+	def __init__(self, manager, editor):
 		"""
 		Initialize object.
 
@@ -53,21 +53,21 @@ class CompletionTreeView(TreeView):
 		@type completion: A WordCompletionManager object.
 		"""
 		TreeView.__init__(self)
-		self.__init_attributes(manager, editor, completion)
+		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		from gobject import idle_add
 		idle_add(self.__precompile_methods)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = completion.connect("match-found", self.__match_found_cb)
+		self.__signal_id_2 = manager.connect("match-found", self.__match_found_cb)
 		self.__signal_id_3 = self.connect("row-activated", self.__row_activated_cb)
 		self.__signal_id_4 = self.connect("button-press-event", self.__button_press_event)
 		self.__signal_id_5 = manager.connect("is-visible", self.__is_visible_cb)
 		self.__signal_id_7 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_8 = self.connect("cursor-changed", self.__cursor_changed_cb)
-		self.__signal_id_9 = completion.connect("no-match-found", self.__no_match_found_cb)
+		self.__signal_id_9 = manager.connect("no-match-found", self.__no_match_found_cb)
 		self.__block_textview()
 
-	def __init_attributes(self, manager, editor, completion):
+	def __init_attributes(self, manager, editor):
 		"""
 		Initialize data attributes.
 
@@ -85,7 +85,6 @@ class CompletionTreeView(TreeView):
 		"""
 		self.__editor = editor
 		self.__manager = manager
-		self.__completion = completion
 		self.__model = self.__create_model()
 		self.__renderer = self.__create_renderer()
 		self.__column = self.__create_column()
@@ -161,6 +160,7 @@ class CompletionTreeView(TreeView):
 		self.__editor.textbuffer.begin_user_action()
 		self.__editor.textbuffer.insert_at_cursor(string)
 		self.__editor.textbuffer.end_user_action()
+		self.__manager.emit("no-match-found")
 		# Feedback to the status bar indicating word completion occurred.
 		from i18n import msg0001
 		self.__editor.feedback.update_status_message(msg0001, "succeed")
@@ -232,13 +232,13 @@ class CompletionTreeView(TreeView):
 		@type manager: A CompletionManager object.
 		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__completion)
+		self.__editor.disconnect_signal(self.__signal_id_2, manager)
 		self.__editor.disconnect_signal(self.__signal_id_3, self)
 		self.__editor.disconnect_signal(self.__signal_id_4, self)
 		self.__editor.disconnect_signal(self.__signal_id_5, manager)
 		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_8, self)
-		self.__editor.disconnect_signal(self.__signal_id_9, self.__completion)
+		self.__editor.disconnect_signal(self.__signal_id_9, manager)
 		self.destroy()
 		del self
 		self = None
@@ -365,6 +365,7 @@ class CompletionTreeView(TreeView):
 			# Insert the selected item into the editor's buffer when the enter key
 			# event is detected.
 			self.row_activated(path, self.get_column(0))
+			self.__manager.emit("no-match-found")
 		elif eq(event.keyval, keysyms.Up):
 			# If the up key is pressed check to see if the first row is selected.
 			# If it is, select the last row. Otherwise, get the path to the row

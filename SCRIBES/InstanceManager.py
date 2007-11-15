@@ -28,6 +28,9 @@ It allows editor instances to communicate with each other.
 @license: GNU GPLv2 or Later
 @contact: mystilleef@gmail.com
 """
+
+from pygtk import require
+require("2.0")
 #from sys import maxint
 INTERVAL = 10
 close_file = lambda editor: editor.emit("close-document")
@@ -58,7 +61,7 @@ class EditorManager(object):
 		signal(SIGHUP, self.__kernel_signals_cb)
 		signal(SIGSEGV, self.__kernel_signals_cb)
 		signal(SIGTERM, self.__kernel_signals_cb)
-	#	idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
+		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
 		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
@@ -183,8 +186,7 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
-		from operator import truth
-		if truth(self.__editor_instances):
+		if self.__editor_instances:
 			editor = list(self.__editor_instances)[0]
 			editor.trigger("new_window")
 		else:
@@ -202,8 +204,8 @@ class EditorManager(object):
 		@param uris: A list of files to open.
 		@type uris: A list object.
 		"""
-		from operator import not_, contains, truth
-		if truth(uris):
+		from operator import not_, contains
+		if uris:
 			has_uri = lambda x: contains(self.get_uris(), x)
 			has_not_uri = lambda x: not_(contains(self.get_uris(), x))
 			open_file = lambda x: self.__open_file(x, encoding)
@@ -265,9 +267,9 @@ class EditorManager(object):
 		window_is_maximized = editor.window.is_maximized
 		editor.window.hide()
 		if not_(window_is_maximized): editor.window.move(xcoordinate, ycoordinate)
-		editor.window.deiconify()
 		editor.window.window.show()
 		editor.window.show_all()
+		editor.window.deiconify()
 		return False
 
 	def get_uris(self):
@@ -338,11 +340,11 @@ class EditorManager(object):
 		@param uri: A file to open.
 		@type uri: A String object.
 		"""
-		from operator import not_, truth
+		from operator import not_
 		if not_(uri): return False
 		instances = self.__editor_instances
 		empty_windows = [x for x in instances if x.can_load_file]
-		if truth(empty_windows):
+		if empty_windows:
 			# Always load files in empty editor windows first.
 			editor = empty_windows[0]
 			editor.load_uri(uri, encoding)
@@ -361,7 +363,7 @@ class EditorManager(object):
 		@param uri: A file to close.
 		@type uri: A String object.
 		"""
-		from operator import truth, not_, eq
+		from operator import not_, eq
 		from itertools import ifilter
 		same = lambda editor: eq(editor.uri, uri)
 		for document in ifilter(same, self.__editor_instances):
