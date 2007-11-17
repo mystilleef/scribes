@@ -59,7 +59,6 @@ class ScribesTextBuffer(SourceBuffer):
 		self.__signal_id_9 = editor.connect("renamed-document", self.__renamed_document_cb)
 		self.__signal_id_10 = self.connect("notify::cursor-position", self.__cursor_position_cb)
 		self.__signal_id_11 = editor.connect("reload-document", self.__reload_document_cb)
-		self.__signal_id_12 = self.connect_after("notify::cursor-position", self.__cursor_position_after_cb)
 
 	def __init_attributes(self, editor):
 		"""
@@ -138,9 +137,7 @@ class ScribesTextBuffer(SourceBuffer):
 		self.set_modified(False)
 		self.end_not_undoable_action()
 		self.__undoable_action = False
-		from gobject import idle_add
-		idle_add(self.__set_cursor_positon)
-		#self.__set_cursor_positon()
+		self.__set_cursor_positon()
 		return
 
 	def __saved_document_cb(self, editor, uri):
@@ -242,25 +239,8 @@ class ScribesTextBuffer(SourceBuffer):
 		return
 
 	def __cursor_position_cb(self, *args):
-	#	self.__editor.response()
-		#self.__make_responsive()
 		self.__editor.emit("cursor-moved")
 		return True
-
-	def __cursor_position_after_cb(self, *args):
-	#	self.__editor.response()
-		#self.__make_responsive()
-		return True
-
-	def __make_responsive(self):
-	#	try:
-	#		if self.__response_is_busy: return False
-	#		self.__response_is_busy = True
-	#		self.__editor.response()
-	#		self.__response_is_busy = False
-	#	except AttributeError:
-	#		self.__response_is_busy = False
-		return False
 
 ########################################################################
 #
@@ -326,7 +306,6 @@ class ScribesTextBuffer(SourceBuffer):
 		@param self: Reference to the Loader object.
 		@type self: A Loader object.
 		"""
-		self.__editor.response()
 		try:
 			from cursor_metadata import get_cursor_position_from_database
 			position = get_cursor_position_from_database(self.__uri)
@@ -338,7 +317,6 @@ class ScribesTextBuffer(SourceBuffer):
 		from operator import gt
 		if gt(cursor_line, number_of_lines):
 			self.place_cursor(start_iterator)
-			self.__editor.response()
 			return False
 		iterator = self.get_iter_at_line(cursor_line - 1)
 		line_index = iterator.get_bytes_in_line()
@@ -349,16 +327,12 @@ class ScribesTextBuffer(SourceBuffer):
 		self.place_cursor(iterator)
 		from cursor import move_view_to_cursor
 		move_view_to_cursor(self.__editor.textview)
-		self.__editor.response()
 		return False
 
 	def __precompile_methods(self):
 		try:
 			from psyco import bind
-			bind(self.__make_responsive)
-			bind(self.__test_response)
 			bind(self.__cursor_position_cb)
-			bind(self.__cursor_position_after_cb)
 		except ImportError:
 			pass
 		except:
@@ -376,8 +350,6 @@ class ScribesTextBuffer(SourceBuffer):
 		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_10, self)
-		self.__editor.disconnect_signal(self.__signal_id_11, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_12, self)
 		self.__editor.unregister_object(self.__termination_id)
 		del self
 		self = None

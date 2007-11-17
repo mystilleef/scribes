@@ -108,7 +108,6 @@ class PluginManager(object):
 		except DoNotLoadError:
 			print "Not loading: ", (filename)
 			self.__plugin_modules.add(module)
-		self.__editor.response()
 		return False
 
 	def __load_plugin(self, PluginClass):

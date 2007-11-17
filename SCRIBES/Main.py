@@ -55,7 +55,8 @@ def __open(uris=None):
 	@type uris: A List object.
 	"""
 	__open_via_dbus(uris)
-	from gobject import idle_add, PRIORITY_HIGH
+	from gobject import idle_add, PRIORITY_HIGH, threads_init
+	threads_init()
 	idle_add(__launch_new_editor, uris, priority=PRIORITY_HIGH)
 	return
 
@@ -94,6 +95,8 @@ def __launch_new_editor(uris=None):
 	"""
 	from InstanceManager import EditorManager
 	EditorManager().open_files(uris)
+	#from cProfile import run
+	#run("EditorManager().open_files(uris)", "scribes_profile.txt")
 	return False
 
 def __get_dbus_service():

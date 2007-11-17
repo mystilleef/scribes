@@ -786,7 +786,6 @@ class Editor(GObject):
 		self.__statuscontainer.pack_start(self.__statusthree, False, True, 0)
 		self.__maincontainer.resize_children()
 		self.emit("gui-created")
-		self.__response()
 		return False
 
 	def __destroy(self):
@@ -829,10 +828,7 @@ class Editor(GObject):
 		@param self: Reference to this editor instance.
 		@type self: An Editor object.
 		"""
-		self.__response()
-		from gobject import idle_add
-		idle_add(self.__create_widgets)
-		self.__response()
+		self.__create_widgets()
 		return
 
 	def __created_widgets_cb(self, editor):
@@ -850,16 +846,11 @@ class Editor(GObject):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__response()
 		self.__manager_registration_id = self.__instance_manager.register_editor(self)
-		#start_new_thread(self.__start_core_services, ())
 		self.__start_core_services()
-		#from gobject import timeout_add, PRIORITY_HIGH
-		#timeout_add(3, self.__arrange_widgets, priority=PRIORITY_HIGH)
 		if not self.__file_uri: return
 		from gobject import idle_add
 		idle_add(self.load_uri, self.__file_uri.strip())
-		self.__response()
 		return
 
 	def __start_core_services(self):
@@ -872,7 +863,6 @@ class Editor(GObject):
 		@param self: Reference to the Editor instance.
 		@type self: A Editor object.
 		"""
-		self.__response()
 		# Initialize encoding manager.
 		from EncodingManager import EncodingManager
 		self.__encoding_manager = EncodingManager(self, self.__encoding)
@@ -886,28 +876,19 @@ class Editor(GObject):
 		# Initialize the trigger manager.
 		from TriggerManager import TriggerManager
 		self.__trigger_manager = TriggerManager(self)
-		self.__response()
 		return
 
 	def __created_widgets_after_cb(self, editor):
-		self.__response()
-		from gobject import idle_add
-		idle_add(self.__arrange_widgets)
-		self.__response()
+		self.__arrange_widgets()
 		return
 
 	def __gui_created_after_cb(self, editor):
-		self.__response()
-		from gobject import idle_add
-		idle_add(self.__initialize_plugins)
-		self.__response()
+		self.__initialize_plugins()
 		return
 
 	def __initialize_plugins(self):
-		self.__response()
 		from PluginManager import PluginManager
 		PluginManager(self)
-		self.__response()
 		return False
 
 	def __checking_document_cb(self, editor, uri):

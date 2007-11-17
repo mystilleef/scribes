@@ -293,3 +293,4 @@ class OutputProcessor(object):
 		"""
 		self.__error(editor_id, error_message, error_id)
 		return
+

@@ -128,3 +128,5 @@ def activate_syntax_highlight(textbuffer, language=None):
 	except:
 		pass
 	return False
+	
+#This is a test file. It really is.

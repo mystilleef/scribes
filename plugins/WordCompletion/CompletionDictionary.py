@@ -67,10 +67,24 @@ class CompletionDictionary(object):
 		"""
 		if self.__is_updating: return
 		self.__is_updating = True
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__update, dictionary, priority=PRIORITY_LOW)
+		return
+
+	def __update(self, dictionary):
+		"""
+		Update completion dictionary
+
+		@param self: Reference to the CompletionDictionary instance.
+		@type self: A CompletionDictionary object.
+
+		@param dictionary: Dictionary of words
+		@type dictionary: A Dictionary object.
+		"""
 		self.__dictionary.clear()
 		self.__dictionary.update(dictionary)
 		self.__is_updating = False
-		return
+		return False
 
 	def get_dictionary(self):
 		return self.__dictionary

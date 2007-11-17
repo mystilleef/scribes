@@ -81,8 +81,6 @@ class EditorManager(object):
 		from SaveProcessMonitor import SaveProcessMonitor
 		self.__save_process_monitor = SaveProcessMonitor()
 		self.__response_is_busy = False
-		self.__block_response = True
-		self.__response_count = 0
 		return
 
 ########################################################################
@@ -141,27 +139,12 @@ class EditorManager(object):
 		return
 
 	def response(self):
-		#if self.__block_response: return False
-		#if self.__response_is_busy or self.__block_response: return False
-		#self.__response_is_busy = True
-		#try:
-		#	from gobject import main_context_default
-		#	context = main_context_default()
-		#	while context.pending(): context.iteration(False)
-		#except:
-		#	pass
-		#self.__response_is_busy = False
 		return False
 
 	def block_response(self):
-		self.__response_count += 1
-		self.__block_response = True
 		return
 
 	def unblock_response(self):
-		self.__response_count -= 1
-		if self.__response_count: return
-		self.__block_response = False
 		return
 
 	def add_object(self, name, instance):
@@ -190,8 +173,7 @@ class EditorManager(object):
 			editor = list(self.__editor_instances)[0]
 			editor.trigger("new_window")
 		else:
-			from gobject import idle_add
-			idle_add(self.__new_editor)
+			self.__new_editor()
 		return False
 
 	def open_files(self, uris=None, encoding=None):
@@ -214,8 +196,7 @@ class EditorManager(object):
 			# Open new file if it's not already open.
 			map(open_file, filter(has_not_uri, uris))
 		else:
-			from gobject import idle_add
-			idle_add(self.open_window)
+			self.open_window()
 		return False
 
 	def close_files(self, uris):
@@ -230,9 +211,8 @@ class EditorManager(object):
 		"""
 		from operator import not_
 		if not_(uris): return False
-		from gobject import idle_add
 		for uri in uris:
-			idle_add(self.__close_file, uri)
+			self.__close_file(uri)
 		return False
 
 	def close_all_windows(self):
@@ -242,9 +222,8 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
-		from gobject import idle_add
 		for instance in self.__editor_instances:
-			idle_add(close_file, instance)
+			close_file(instance)
 		return False
 
 	def focus_file(self, uri):
@@ -350,7 +329,8 @@ class EditorManager(object):
 			editor.load_uri(uri, encoding)
 		else:
 			from gobject import idle_add
-			idle_add(self.__new_editor, uri, encoding)
+			#idle_add(self.__new_editor, uri, encoding)
+			self.__new_editor(uri, encoding)
 		return False
 
 	def __close_file(self, uri):
@@ -464,8 +444,8 @@ class EditorManager(object):
 		return
 
 	def __kernel_signals_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.close_all_windows)
+		#from gobject import idle_add
+		self.close_all_windows()
 		return
 
 	def __quit(self):

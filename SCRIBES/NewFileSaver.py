@@ -46,8 +46,8 @@ class FileSaver(object):	"""
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(editor)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		self.__signal_id_1 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_no_save_cb)
 		self.__signal_id_3 = editor.connect("save-document", self.__save_document_cb)
@@ -89,6 +89,7 @@ class FileSaver(object):	"""
 		self.__can_quit = False
 		self.__is_saving = False
 		self.__save_timer = None
+		self.__queue_flag = False
 		self.__toggle_readonly = False
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
@@ -117,11 +118,9 @@ class FileSaver(object):	"""
 		from Exceptions import DoNothingError
 		try:
 			self.__determine_action(is_closing)
-			from gobject import idle_add
-			idle_add(self.__save_file)
+			self.__save_file()
 		except DoNothingError:			pass
 		return False
-
 
 #########################################################################
 #                       Helper Methods
@@ -137,7 +136,8 @@ class FileSaver(object):	"""
 		"""
 		try:
 			if self.__is_saving: raise ValueError
-			self.__editor.emit("saving-document", self.__editor.uri)
+			from operator import not_
+			if not_(self.__queue_flag): self.__editor.emit("saving-document", self.__editor.uri)
 			processor = self.__get_save_processor()
 			processor.process(self.__editor.id, self.__editor.get_text(),
 				self.__editor.uri, self.__encoding_manager.get_encoding(),
@@ -146,6 +146,7 @@ class FileSaver(object):	"""
 				error_handler=self.__error_handler_cb)
 		except ValueError:
 			print "Deffering save process"
+			self.__queue_flag = True
 			self.__queue.append(1)
 		except AttributeError:
 			error_message = "Can't find save processor"
@@ -215,8 +216,7 @@ class FileSaver(object):	"""
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""
-		from gobject import idle_add
-		idle_add(self.save_file)
+		self.save_file()
 		return False
 
 	def __remove_save_timer(self):
@@ -306,6 +306,7 @@ class FileSaver(object):	"""
 			from gobject import idle_add
 			idle_add(self.save_file)
 		except IndexError:
+			self.__queue_flag = False
 			self.__toggle_readonly_mode()
 			self.__emit_save_signal()
 			if self.__can_quit: self.__destroy()
@@ -359,8 +360,7 @@ class FileSaver(object):	"""
 		from operator import not_
 		if self.__error_flag: return self.__destroy()
 		if not_(editor.file_is_saved):
-			from gobject import idle_add
-			idle_add(self.save_file, True)
+			self.save_file(True)
 		else:
 			self.__destroy()
 		return
@@ -437,8 +437,7 @@ class FileSaver(object):	"""
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		from gobject import idle_add
-		idle_add(self.save_file)#, priority = PRIORITY_HIGH)
+		self.save_file()
 		return
 
 	def __saving_document_cb(self, *args):
@@ -477,6 +476,7 @@ class FileSaver(object):	"""
 		"""
 		self.__is_saving = False
 		self.__error_flag = True
+		self.__queue_flag = False
 		self.__remove_save_timer()
 		self.__queue.clear()
 		return
@@ -523,8 +523,7 @@ class FileSaver(object):	"""
 		"""
 		if self.__editor.is_readonly: self.__toggle_readonly = True
 		self.__should_rename = True
-		from gobject import idle_add, PRIORITY_HIGH
-		idle_add(self.save_file, priority = PRIORITY_HIGH)
+		self.save_file()
 		return
 
 	def __is_ready_cb(self, *args):

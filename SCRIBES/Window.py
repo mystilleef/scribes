@@ -67,7 +67,6 @@ class ScribesWindow(Window):
 		self.__signal_id_21 = self.__editor.connect("checking-document", self.__checking_document_cb)
 		self.__signal_id_22 = self.__editor.connect("buffer-created", self.__created_widgets_cb)
 		self.__signal_id_23 = self.__editor.connect("reload-document", self.__reload_document_cb)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		"""
@@ -183,7 +182,6 @@ class ScribesWindow(Window):
 		@return: True to prevent propagation of the signal to parent widgets.
 		@rtype: A Boolean object.
 		"""
-		self.__editor.response()
 		if self.__is_first_time:
 			self.__is_first_time = False
 			self.__is_mapped = True
@@ -208,7 +206,6 @@ class ScribesWindow(Window):
 		# Save a document when the text editor's window loses focus.
 		if self.__editor.uri and self.__editor.file_is_saved is False and self.__editor.is_readonly is False:
 			self.__editor.trigger("save_file")
-		self.__editor.response()
 		return False
 
 	def __state_event_cb(self, window, event):
@@ -229,7 +226,6 @@ class ScribesWindow(Window):
 		@return: True to prevent propagation of the signal to parent widgets.
 		@rtype: A Boolean object.
 		"""
-		self.__editor.response()
 		from operator import eq, contains
 		from gtk.gdk import WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN
 		from gtk.gdk import WINDOW_STATE_ICONIFIED
@@ -423,7 +419,6 @@ class ScribesWindow(Window):
 		"""
 		self.__bar = bar
 		self.__bar_is_visible = True
-		self.__editor.response()
 		return
 
 	def __hide_bar_cb(self, editor, bar):
@@ -440,7 +435,6 @@ class ScribesWindow(Window):
 		@type bar: A ScribesBar object.
 		"""
 		self.__bar_is_visible = False
-		self.__editor.response()
 		return
 
 	def __key_press_event_cb(self, window, event):
@@ -470,12 +464,10 @@ class ScribesWindow(Window):
 			self.__bar.hide_bar()
 			return True
 		if event.keyval == keysyms.Escape and self.__uri is None and editor.contains_document is False:
-			self.__editor.response()
 			editor.trigger("close_window")
 		from gtk.gdk import CONTROL_MASK, SHIFT_MASK
 		if event.state & CONTROL_MASK and event.state & SHIFT_MASK:
 			if event.keyval == keysyms.W and self.__uri is None:
-				self.__editor.response()
 				self.hide_all()
 				editor.emit("close-document-no-save")
 		return False
@@ -498,7 +490,6 @@ class ScribesWindow(Window):
 		"""
 		self.__position_window()
 		self.show_all()
-		self.__editor.response()
 		return False
 
 	def __position_window(self):
@@ -526,7 +517,6 @@ class ScribesWindow(Window):
 				self.resize(width, height)
 		except TypeError:
 			pass
-		self.__editor.response()
 		return False
 
 	def __saved_document_cb(self, editor, uri):
@@ -540,9 +530,7 @@ class ScribesWindow(Window):
 		@param editor: An instance of the text editor's buffer.
 		@type editor: An Editor object.
 		"""
-		self.__editor.response()
 		self.set_title(self.__title)
-		self.__editor.response()
 		return
 
 	def __close_document_cb(self, editor):
@@ -559,17 +547,15 @@ class ScribesWindow(Window):
 		@param editor: An instance of the text editor's buffer.
 		@type editor: An Editor object.
 		"""
-		self.__editor.response()
 		self.__editor.disconnect_signal(self.__signal_id_17, self)
 		# Get the text editor's window size and position.
 		xcoordinate, ycoordinate = self.get_position()
 		width, height = self.get_size()
 		is_maximized = self.__is_maximized
 		# Update the metadata database with the size and position of the window.
-		from gobject import timeout_add
-		timeout_add(10, self.__update_position_metadata, is_maximized, xcoordinate, ycoordinate, width, height)
+		from gobject import idle_add
+		idle_add(self.__update_position_metadata, is_maximized, xcoordinate, ycoordinate, width, height)
 		self.hide_all()
-		self.__editor.response()
 		return
 
 	def __close_document_no_save_cb(self, editor):
@@ -581,14 +567,12 @@ class ScribesWindow(Window):
 		self.__uri = uri
 		self.__determine_title(self.__uri)
 		self.set_title(self.__title)
-		self.__editor.response()
 		return
 
 	def __reload_document_cb(self, *args):
 		from internationalization import msg0489
 		message = msg0489 % (self.__uri)
 		self.set_title(message)
-		self.__editor.response()
 		return
 
 ########################################################################
@@ -623,7 +607,6 @@ class ScribesWindow(Window):
 	def __determine_title(self, uri):
 		from gnomevfs import URI
 		self.__title = URI(uri).short_name.encode("utf-8")
-		self.__editor.response()
 		return False
 
 	def __destroy(self):

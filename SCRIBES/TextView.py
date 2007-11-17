@@ -65,7 +65,6 @@ class ScribesTextView(SourceView):
 		self.__signal_id_7 = self.connect("copy-clipboard", self.__copy_clipboard_cb)
 		self.__signal_id_8 = self.connect("cut-clipboard", self.__cut_clipboard_cb)
 		self.__signal_id_9 = self.connect("paste-clipboard", self.__paste_clipboard_cb)
-		self.__signal_id_10 = self.connect_after("paste-clipboard", self.__paste_clipboard_after_cb)
 		self.__signal_id_11 = self.connect("button-press-event", self.__button_press_event_cb)
 		self.__signal_id_12 = editor.connect("checking-document", self.__checking_document_cb)
 		self.__signal_id_13 = editor.connect("loaded-document", self.__loaded_document_cb)
@@ -78,8 +77,6 @@ class ScribesTextView(SourceView):
 		self.__signal_id_20 = editor.connect("hide-bar", self.__hide_bar_cb)
 		self.__signal_id_21 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_22 = editor.connect("close-document-no-save", self.__close_document_cb)
-		self.__signal_id_23 = self.connect("scroll-event", self.__scroll_event_cb)
-		self.__signal_id_24 = self.connect("move-cursor", self.__move_cursor_cb)
 		self.__signal_id_25 = editor.connect("reload-document", self.__reload_document_cb)
 		# GConf notification monitors.
 		self.__client.notify_add("/apps/scribes/font", self.__font_changed_cb)
@@ -251,7 +248,6 @@ class ScribesTextView(SourceView):
 		@return: False to propagate signals to parent widgets, True otherwise.
 		@rtype: A Boolean object.
 		"""
-		self.__editor.response()
 		from operator import contains
 		if contains(context.targets, "text/uri-list"): return True
 		return False
@@ -281,7 +277,6 @@ class ScribesTextView(SourceView):
 		@return: False to propagate signals to parent widgets, True otherwise.
 		@rtype: A Boolean object.
 		"""
-		self.__editor.response()
 		from operator import contains
 		if contains(context.targets, "text/uri-list"): return True
 		return False
@@ -318,7 +313,6 @@ class ScribesTextView(SourceView):
 		@return: False to propagate signals to parent widgets, True otherwise.
 		@rtype: A Boolean object.
 		"""
-		self.__editor.response()
 		from operator import contains, not_, ne
 		if not_(contains(context.targets, "text/uri-list")): return False
 		if ne(info, 80): return False
@@ -353,7 +347,6 @@ class ScribesTextView(SourceView):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		self.__editor.response()
 		selection = self.get_buffer().get_selection_bounds()
 		from operator import not_
 		if not_(selection): return False
@@ -372,8 +365,6 @@ class ScribesTextView(SourceView):
 		@param editor: An instance of the text editor.
 		@type editor: An Editor object.
 		"""
-		self.handler_block(self.__signal_id_23)
-		self.handler_block(self.__signal_id_24)
 		self.set_property("editable", False)
 		self.set_property("highlight-current-line", False)
 		self.set_property("cursor-visible", False)
@@ -393,8 +384,6 @@ class ScribesTextView(SourceView):
 		@param editor: An instance of the text editor.
 		@type editor: An Editor object.
 		"""
-		self.handler_unblock(self.__signal_id_23)
-		self.handler_unblock(self.__signal_id_24)
 		self.set_property("sensitive", True)
 		self.set_property("highlight-current-line", True)
 		self.set_property("cursor-visible", True)
@@ -418,8 +407,6 @@ class ScribesTextView(SourceView):
 		@param editor: An instance of the text editor.
 		@type editor: An Editor object.
 		"""
-		self.handler_unblock(self.__signal_id_23)
-		self.handler_unblock(self.__signal_id_24)
 		self.set_property("sensitive", True)
 		self.set_property("cursor-visible", True)
 		self.set_property("highlight-current-line", True)
@@ -623,7 +610,6 @@ class ScribesTextView(SourceView):
 
 		# Get selection bounds
 		selection = textbuffer.get_selection_bounds()
-		self.__refresh_view()
 		# Depending on whether or not text is selected and copied, send appropriate
 		# feedback back to the user via the statusbar.
 		if selection:
@@ -656,29 +642,7 @@ class ScribesTextView(SourceView):
 			feedback.update_status_message(msg0094, "fail")
 		return False
 
-	def __paste_clipboard_after_cb(self, textview):
-		#from gobject import idle_add
-		#idle_add(self.__refresh_view)
-		return False
-
-	def __scroll_event_cb(self, *args):
-		self.__make_responsive()
-#		self.__editor.response()
-		return False
-
-	def __move_cursor_cb(self, *args):
-	#	self.__make_responsive()
-#		self.__editor.response()
-		return False
-
 	def __make_responsive(self):
-		try:
-			if self.__response_is_busy: return False
-			self.__response_is_busy = True
-			self.__editor.response()
-			self.__response_is_busy = False
-		except AttributeError:
-			self.__response_is_busy = False
 		return False
 
 	def __close_document_cb(self, editor):
@@ -1062,7 +1026,6 @@ class ScribesTextView(SourceView):
 		self.__editor.disconnect_signal(self.__signal_id_7, self)
 		self.__editor.disconnect_signal(self.__signal_id_8, self)
 		self.__editor.disconnect_signal(self.__signal_id_9, self)
-		self.__editor.disconnect_signal(self.__signal_id_10, self)
 		self.__editor.disconnect_signal(self.__signal_id_11, self)
 		self.__editor.disconnect_signal(self.__signal_id_12, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_13, self.__editor)
@@ -1075,8 +1038,6 @@ class ScribesTextView(SourceView):
 		self.__editor.disconnect_signal(self.__signal_id_20, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_21, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_22, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_23, self)
-		self.__editor.disconnect_signal(self.__signal_id_24, self)
 		self.__editor.disconnect_signal(self.__signal_id_25, self.__editor)
 		# Unregister object so that editor can quit.
 		self.__editor.unregister_object(self.__registration_id)
