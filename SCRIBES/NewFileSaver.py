@@ -47,7 +47,7 @@ class FileSaver(object):	"""
 		"""
 		self.__init_attributes(editor)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		#idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		self.__signal_id_1 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_no_save_cb)
 		self.__signal_id_3 = editor.connect("save-document", self.__save_document_cb)
@@ -491,9 +491,9 @@ class FileSaver(object):	"""
 		@param textbuffer: Reference to the text editor's buffer.
 		@type textbuffer: A ScribesTextBuffer object.
 		"""
-		if textbuffer.get_modified() is False: return True
+		if textbuffer.get_modified() is False: return False
 		self.__editor.emit("modified-document")
-		if self.__editor.uri is None: return True
+		if self.__editor.uri is None: return False
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__save_timer = timeout_add(21000, self.__save_file_timeout_cb, priority=PRIORITY_LOW)
 		return True
@@ -570,8 +570,7 @@ class FileSaver(object):	"""
 		"""
 		from operator import ne
 		if ne(self.__editor.id, editor_id): return
-		error_message = error_message + str(error_id)
-		print error_message
+		error_message = error_message + " " + str(error_id)
 		self.__error(error_message)
 		return
 
@@ -592,6 +591,5 @@ class FileSaver(object):	"""
 		@type self: A FileSaver object.
 		"""
 		print "SAVE ERROR: BEEF!"
-		print error
 		self.__error(error)
 		return

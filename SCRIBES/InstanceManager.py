@@ -32,7 +32,7 @@ It allows editor instances to communicate with each other.
 from pygtk import require
 require("2.0")
 #from sys import maxint
-INTERVAL = 10
+INTERVAL = 120
 close_file = lambda editor: editor.emit("close-document")
 
 class EditorManager(object):
@@ -71,8 +71,9 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
-		self.__editor_instances = []
-		self.__registration_ids = []
+		from collections import deque
+		self.__editor_instances = deque([])
+		self.__registration_ids = deque([])
 		from GlobalStore import Store
 		self.__store = Store()
 		from gconf import client_get_default
@@ -127,8 +128,8 @@ class EditorManager(object):
 		"""
 		try:
 			from operator import contains, not_
-			self.__registration_ids.remove(number)
 			self.__editor_instances.remove(instance)
+			self.__registration_ids.remove(number)
 		except ValueError:
 			print "===================================================="
 			print "Scribes Error:"
@@ -170,7 +171,7 @@ class EditorManager(object):
 		@type self: An EditorManager object.
 		"""
 		if self.__editor_instances:
-			editor = list(self.__editor_instances)[0]
+			editor = self.__editor_instances[0]
 			editor.trigger("new_window")
 		else:
 			self.__new_editor()

@@ -490,6 +490,8 @@ class ScribesWindow(Window):
 		"""
 		self.__position_window()
 		self.show_all()
+		from gtk.gdk import notify_startup_complete
+		notify_startup_complete()
 		return False
 
 	def __position_window(self):

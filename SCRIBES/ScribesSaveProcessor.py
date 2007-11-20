@@ -34,7 +34,7 @@ class SaveProcessor(object):
 	"""
 	The class is the external process that saves files.
 	"""
-	
+
 	def __init__(self):
 		"""
 		Initialize object.
@@ -80,7 +80,7 @@ class SaveProcessor(object):
 		"""
 		from gobject import idle_add
 		idle_add(self.__update, editor_id)
-		return 
+		return
 
 	def __save_file(self, editor_id, text, uri, encoding):
 		"""
@@ -123,6 +123,10 @@ if __name__ == "__main__":
 	from sys import argv, path
 	python_path = argv[1]
 	path.insert(0, python_path)
+	from gobject import threads_init
+	threads_init()
+	from gtk.gdk import threads_init
+	threads_init()
 	SaveProcessor()
-	from gobject import MainLoop
-	MainLoop().run()
+	from gtk import main
+	main()

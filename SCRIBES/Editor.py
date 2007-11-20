@@ -33,8 +33,8 @@ text editor instances.
 """
 
 from pygtk import require
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_OBJECT
-from gobject import TYPE_STRING, SIGNAL_RUN_FIRST
+from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_OBJECT, TYPE_PYOBJECT
+from gobject import SIGNAL_RUN_FIRST
 require("2.0")
 
 class Editor(GObject):
@@ -46,21 +46,21 @@ class Editor(GObject):
 	"""
 
 	__gsignals__ = {
-		"checking-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"loading-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"loaded-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"checking-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"loading-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"loaded-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"reload-document": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"load-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"load-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"enable-readonly": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"disable-readonly": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"saving-document": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING,)),
-		"saved-document": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING,)),
+		"saving-document": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"saved-document": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-document": (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
-		"save-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"save-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"gui-created": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
 		"hide-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
-		"renamed-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"renamed-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"modified-document": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"close-document": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"close-document-no-save": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
@@ -74,7 +74,7 @@ class Editor(GObject):
 		"cursor-moved": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"initialized-trigger-manager": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"initialized-attributes": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"rename-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"rename-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"buffer-created": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 

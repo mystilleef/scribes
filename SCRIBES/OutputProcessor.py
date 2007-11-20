@@ -90,10 +90,11 @@ class OutputProcessor(object):
 			if self.__is_busy: raise ValueError
 			self.__is_busy = True
 			from Exceptions import PermissionError, SwapError
-			self.__check_permissions(uri)
-			swap_file_uri = self.__get_swap_file(editor_id)
-			encoded_text = self.__encode_text(text, encoding)
-			self.__save_file(editor_id, uri, encoded_text, swap_file_uri)
+			self.__begin_saving(editor_id, text, uri, encoding)
+			#self.__check_permissions(uri)
+			#wap_file_uri = self.__get_swap_file(editor_id)
+			#encoded_text = self.__encode_text(text, encoding)
+			#self.__save_file(editor_id, uri, encoded_text, swap_file_uri)
 		except ValueError:
 			self.__queue.append((editor_id, text, uri, encoding))
 		except PermissionError:
@@ -171,6 +172,26 @@ class OutputProcessor(object):
 		Write file to URI location.
 		"""
 		self.__writer.write_file(editor_id, uri, text, swap_uri)
+		return
+
+	def __begin_saving(self, editor_id, text, uri, encoding):
+		self.__check_permissions(uri)
+		swap_file_uri = self.__get_swap_file(editor_id)
+		encoded_text = self.__encode_text(text, encoding)
+		self.__save_file(editor_id, uri, encoded_text, swap_file_uri)
+		return
+
+	def __send_result(self, editor_id, error_message=None, error_id=None, error=False):
+		try:
+			if error:
+				self.__dbus.error(editor_id, error_message, error_id)
+			else:
+				self.__dbus.saved_file(editor_id)
+			editor_id, text, uri, encoding = self.__queue.popleft()
+			self.__begin_saving(editor_id, text, uri, encoding)
+			#self.process(editor_id, text, uri, encoding)
+		except IndexError, ValueError:
+			self.__is_busy = False
 		return
 
 	def __get_swap_file(self, editor_id):
@@ -261,8 +282,7 @@ class OutputProcessor(object):
 		"""
 		Send error message to editor via dbus.
 		"""
-		self.__is_busy = False
-		self.__dbus.error(editor_id, error_message, error_id)
+		self.__send_result(editor_id, error_message, error_id, True)
 		return
 
 	def __saved_cb(self, writer, editor_id):
@@ -278,13 +298,7 @@ class OutputProcessor(object):
 		@param editor_id: Editor object's id.
 		@type editor_id: An Integer object.
 		"""
-		try:
-			self.__dbus.saved_file(editor_id)
-			self.__is_busy = False
-			editor_id, text, uri, encoding = self.__queue.popleft()
-			self.process(editor_id, text, uri, encoding)
-		except IndexError, ValueError:
-			pass
+		self.__send_result(editor_id)
 		return
 
 	def __error_cb(self, writer, editor_id, error_message, error_id):
@@ -293,4 +307,3 @@ class OutputProcessor(object):
 		"""
 		self.__error(editor_id, error_message, error_id)
 		return
-

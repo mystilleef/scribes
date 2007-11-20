@@ -224,7 +224,7 @@ class CompletionMonitor(object):
 		"""
 		try:
 			from operator import gt
-			if gt(length, 3): raise ValueError
+			if gt(length, 1): raise ValueError
 			from gobject import idle_add, source_remove, PRIORITY_LOW, timeout_add
 			try:
 				source_remove(self.__insert_text_id)

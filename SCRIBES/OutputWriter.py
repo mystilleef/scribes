@@ -31,7 +31,7 @@ locations.
 """
 
 PRIORITY = 10
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_STRING, TYPE_INT, TYPE_NONE
+from gobject import GObject, SIGNAL_RUN_LAST, TYPE_PYOBJECT, TYPE_NONE
 
 class OutputWriter(GObject):
 	"""
@@ -40,8 +40,8 @@ class OutputWriter(GObject):
 	"""
 
 	__gsignals__ = {
-		"saved": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_INT,)),
-		"error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_INT, TYPE_STRING, TYPE_INT)),
+		"saved": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT)),
 	}
 
 	def __init__(self):
@@ -72,6 +72,7 @@ class OutputWriter(GObject):
 	def write_file(self, editor_id, uri, text, swap_uri):
 		from gnomevfs import OPEN_WRITE, URI
 		from gnomevfs.async import create
+		self.__reset_attributes()
 		self.__id, self.__uri, self.__swap_uri = editor_id, uri, swap_uri
 		try:
 			self.__file_info = self.__get_file_info()
@@ -168,6 +169,7 @@ class OutputWriter(GObject):
 		@type self: A FileSaver object.
 		"""
 		try:
+			#raise Exception
 			if info.vfs_status: raise Exception
 			from gnomevfs import XFER_PHASE_COMPLETED
 			from operator import ne
@@ -188,7 +190,6 @@ class OutputWriter(GObject):
 		@type self: An OutputWriter object.
 		"""
 		editor_id = self.__id
-		self.__reset_attributes()
 		self.emit("saved", editor_id)
 		return
 
@@ -206,7 +207,6 @@ class OutputWriter(GObject):
 		@type error_id: An Integer object.
 		"""
 		editor_id = self.__id
-		self.__reset_attributes()
 		self.emit("error", editor_id, error_message, error_id)
 		return
 
@@ -252,3 +252,4 @@ class OutputWriter(GObject):
 		"""
 		self.__id, self.__uri, self.__swap_uri, self.__file_info = None, None, None, None
 		return
+

@@ -42,9 +42,9 @@ class CompletionManager(GObject):
 		"update": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"match-found": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"no-match-found": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
+		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"populated-model": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
+		"populated-model": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"is-visible": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
