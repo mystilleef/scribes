@@ -137,13 +137,8 @@ class FileSaver(object):	"""
 		try:
 			if self.__is_saving: raise ValueError
 			from operator import not_
-			if not_(self.__queue_flag): self.__editor.emit("saving-document", self.__editor.uri)
-			processor = self.__get_save_processor()
-			processor.process(self.__editor.id, self.__editor.get_text(),
-				self.__editor.uri, self.__encoding_manager.get_encoding(),
-				dbus_interface=save_dbus_service,
-				reply_handler=self.__reply_handler_cb,
-				error_handler=self.__error_handler_cb)
+			self.__editor.emit("saving-document", self.__editor.uri)
+			self.__begin_saving()
 		except ValueError:
 			print "Deffering save process"
 			self.__queue_flag = True
@@ -151,6 +146,21 @@ class FileSaver(object):	"""
 		except AttributeError:
 			error_message = "Can't find save processor"
 			self.__error(error_message)
+		return False
+		
+	def __begin_saving(self):
+		"""
+		Send text in buffer to saving process.
+		
+		@param self: Reference to the FileSaver instance.
+		@type self: A FileSaver object.
+		"""
+		processor = self.__get_save_processor()
+		processor.process(self.__editor.id, self.__editor.get_text(),
+				self.__editor.uri, self.__encoding_manager.get_encoding(),
+				dbus_interface=save_dbus_service,
+				reply_handler=self.__reply_handler_cb,
+				error_handler=self.__error_handler_cb)
 		return False
 
 	def __get_save_processor(self):
@@ -300,13 +310,11 @@ class FileSaver(object):	"""
 		@type self: A FileSaver object.
 		"""
 		try:
-			self.__is_saving = False
 			self.__queue.pop()
-			print "OMG! SAVING AGAIN"
 			from gobject import idle_add
-			idle_add(self.save_file)
+			idle_add(self.__begin_saving)
 		except IndexError:
-			self.__queue_flag = False
+			self.__is_saving = False
 			self.__toggle_readonly_mode()
 			self.__emit_save_signal()
 			if self.__can_quit: self.__destroy()

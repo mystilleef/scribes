@@ -70,9 +70,9 @@ class OutputWriter(GObject):
 		return
 
 	def write_file(self, editor_id, uri, text, swap_uri):
+		self.__reset_attributes()
 		from gnomevfs import OPEN_WRITE, URI
 		from gnomevfs.async import create
-		self.__reset_attributes()
 		self.__id, self.__uri, self.__swap_uri = editor_id, uri, swap_uri
 		try:
 			self.__file_info = self.__get_file_info()
@@ -169,7 +169,6 @@ class OutputWriter(GObject):
 		@type self: A FileSaver object.
 		"""
 		try:
-			#raise Exception
 			if info.vfs_status: raise Exception
 			from gnomevfs import XFER_PHASE_COMPLETED
 			from operator import ne
@@ -252,4 +251,3 @@ class OutputWriter(GObject):
 		"""
 		self.__id, self.__uri, self.__swap_uri, self.__file_info = None, None, None, None
 		return
-

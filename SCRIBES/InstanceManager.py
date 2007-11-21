@@ -52,9 +52,9 @@ class EditorManager(object):
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
-		from sys import setcheckinterval, getrecursionlimit, setrecursionlimit
-		setcheckinterval(INTERVAL)
-		setrecursionlimit(getrecursionlimit() * 100)
+		#from sys import setcheckinterval, getrecursionlimit, setrecursionlimit
+		#setcheckinterval(INTERVAL)
+		#setrecursionlimit(getrecursionlimit() * 100)
 		self.__init_attributes()
 		self.__init_i18n()
 		from signal import signal, SIGHUP, SIGTERM, SIGSEGV
