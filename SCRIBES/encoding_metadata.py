@@ -95,6 +95,6 @@ def update_encoding_in_database(uri, data):
 	@type data: A String object
 	"""
 	database = open_encoding_database("w")
-	database[uri] = data
+	database[str(uri)] = data
 	close_encoding_database(database)
 	return

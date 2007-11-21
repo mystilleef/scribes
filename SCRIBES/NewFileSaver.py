@@ -47,7 +47,7 @@ class FileSaver(object):	"""
 		"""
 		self.__init_attributes(editor)
 		from gobject import idle_add, PRIORITY_LOW
-		#idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		self.__signal_id_1 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_no_save_cb)
 		self.__signal_id_3 = editor.connect("save-document", self.__save_document_cb)

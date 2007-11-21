@@ -281,7 +281,7 @@ class ScribesTextBuffer(SourceBuffer):
 			cursor_line = get_cursor_line(self)
 			cursor_index = get_cursor_index(self)
 			cursor_position = cursor_line, cursor_index
-			update_cursor_position_in_database(uri, cursor_position)
+			update_cursor_position_in_database(str(uri), cursor_position)
 		self.__destroy()
 		return False
 

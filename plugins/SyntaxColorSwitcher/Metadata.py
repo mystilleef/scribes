@@ -71,7 +71,7 @@ def update_database(file, language):
 	@type value: A String object.
 	"""
 	database = open_syntax_database("w")
-	database[file] = language
+	database[str(file)] = language
 	close_syntax_database(database)
 	return False
 

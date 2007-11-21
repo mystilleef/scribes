@@ -599,10 +599,10 @@ class ScribesWindow(Window):
 		if self.__uri:
 			if is_maximized:
 				window_position = (True, None, None, None, None)
-				update_window_position_in_database(self.__uri, window_position)
+				update_window_position_in_database(str(self.__uri), window_position)
 			else:
 				window_position = (False, width, height, xcoordinate, ycoordinate)
-				update_window_position_in_database(self.__uri, window_position)
+				update_window_position_in_database(str(self.__uri), window_position)
 		self.__destroy()
 		return False
 

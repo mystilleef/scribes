@@ -71,7 +71,7 @@ def add_template_to_database(key, value):
 	@type value: A String object.
 	"""
 	database = open_template_database("w")
-	database[key] = value
+	database[str(key)] = value
 	close_template_database(database)
 	return
 
@@ -83,6 +83,6 @@ def remove_template_from_database(key):
 	@type key: A String object.
 	"""
 	database = open_template_database("w")
-	del database[key]
+	del database[str(key)]
 	close_template_database(database)
 	return
