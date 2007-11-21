@@ -243,6 +243,8 @@ if __name__ == "__main__":
 	from sys import argv, path
 	python_path = argv[1]
 	path.insert(0, python_path)
+	from gtk.gdk import threads_init
+	threads_init()
 	CompletionIndexer()
 	from gtk import main
 	main()

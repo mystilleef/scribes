@@ -32,7 +32,7 @@ It allows editor instances to communicate with each other.
 from pygtk import require
 require("2.0")
 #from sys import maxint
-INTERVAL = 500
+INTERVAL = 10
 close_file = lambda editor: editor.emit("close-document")
 
 class EditorManager(object):
@@ -52,9 +52,9 @@ class EditorManager(object):
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
-		#from sys import setcheckinterval, getrecursionlimit, setrecursionlimit
-		#setcheckinterval(INTERVAL)
-		#setrecursionlimit(getrecursionlimit() * 100)
+		from sys import setcheckinterval, getrecursionlimit, setrecursionlimit
+		setcheckinterval(INTERVAL)
+		setrecursionlimit(getrecursionlimit() * 100)
 		self.__init_attributes()
 		self.__init_i18n()
 		from signal import signal, SIGHUP, SIGTERM, SIGSEGV

@@ -53,10 +53,10 @@ class Editor(GObject):
 		"load-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"enable-readonly": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"disable-readonly": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"saving-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"saved-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"save-document": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"save-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"saving-document": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"saved-document": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"save-document": (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
+		"save-error": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"gui-created": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
 		"hide-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
@@ -689,8 +689,8 @@ class Editor(GObject):
 		return
 
 	def delete_attributes(self, object_ref):
-		from utils import delete_attributes
-		delete_attributes(object_ref)
+		#from utils import delete_attributes
+		#delete_attributes(object_ref)
 		return
 
 	def create_menuitem(self, string, stock_id=None):
