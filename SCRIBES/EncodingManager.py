@@ -168,10 +168,10 @@ class EncodingManager(object):
 		determined_encoding = contains(default_encodings, self.__determined_encoding)
 		if truth(self.__user_defined_encoding):# and not_(user_defined):
 			from encoding_metadata import update_encoding_in_database
-			update_encoding_in_database(self.__editor.uri, self.__user_defined_encoding)
+			update_encoding_in_database(str(self.__editor.uri), self.__user_defined_encoding)
 		elif truth(self.__determined_encoding) and not_(determined_encoding):
 			from encoding_metadata import update_encoding_in_database
-			update_encoding_in_database(self.__editor.uri, self.__determined_encoding)
+			update_encoding_in_database(str(self.__editor.uri), self.__determined_encoding)
 		return False
 
 	def __destroy(self):

@@ -31,7 +31,6 @@ It allows editor instances to communicate with each other.
 
 from pygtk import require
 require("2.0")
-#from sys import maxint
 INTERVAL = 10
 close_file = lambda editor: editor.emit("close-document")
 
@@ -174,7 +173,8 @@ class EditorManager(object):
 			editor = self.__editor_instances[0]
 			editor.trigger("new_window")
 		else:
-			self.__new_editor()
+			from gobject import idle_add
+			idle_add(self.__new_editor)
 		return False
 
 	def open_files(self, uris=None, encoding=None):
@@ -197,7 +197,8 @@ class EditorManager(object):
 			# Open new file if it's not already open.
 			map(open_file, filter(has_not_uri, uris))
 		else:
-			self.open_window()
+			from gobject import idle_add
+			idle_add(self.open_window)
 		return False
 
 	def close_files(self, uris):
@@ -212,8 +213,9 @@ class EditorManager(object):
 		"""
 		from operator import not_
 		if not_(uris): return False
+		from gobject import idle_add
 		for uri in uris:
-			self.__close_file(uri)
+			idle_add(self.__close_file, uri)
 		return False
 
 	def close_all_windows(self):
@@ -223,8 +225,9 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
+		from gobject import idle_add
 		for instance in self.__editor_instances:
-			close_file(instance)
+			idle_add(close_file, instance)
 		return False
 
 	def focus_file(self, uri):
@@ -330,8 +333,7 @@ class EditorManager(object):
 			editor.load_uri(uri, encoding)
 		else:
 			from gobject import idle_add
-			#idle_add(self.__new_editor, uri, encoding)
-			self.__new_editor(uri, encoding)
+			idle_add(self.__new_editor, uri, encoding)
 		return False
 
 	def __close_file(self, uri):
@@ -347,8 +349,9 @@ class EditorManager(object):
 		from operator import not_, eq
 		from itertools import ifilter
 		same = lambda editor: eq(editor.uri, uri)
+		from gobject import idle_add
 		for document in ifilter(same, self.__editor_instances):
-			close_file(document)
+			idle_add(close_file, document)
 		return False
 
 	def __new_editor(self, uri=None, encoding=None):

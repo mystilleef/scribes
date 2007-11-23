@@ -56,9 +56,11 @@ def __open(uris=None):
 	"""
 	__open_via_dbus(uris)
 	from gobject import idle_add, PRIORITY_HIGH, threads_init
-	#threads_init()
-	from gtk.gdk import threads_init
-	threads_init()
+#	threads_init()
+#	from dbus.glib import threads_init
+#	threads_init()
+#	from gtk.gdk import threads_init
+#	threads_init()
 	idle_add(__launch_new_editor, uris, priority=PRIORITY_HIGH)
 	return
 
@@ -134,8 +136,7 @@ def __mainloop():
 	Initialize the GObject mainloop.
 	"""
 	__fork_scribes()
-	from gtk import main, add_log_handlers
-	add_log_handlers()
+	from gtk import main
 	main()
 #	from gobject import MainLoop
 #	MainLoop().run()

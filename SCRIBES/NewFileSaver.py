@@ -147,11 +147,11 @@ class FileSaver(object):	"""
 			error_message = "Can't find save processor"
 			self.__error(error_message)
 		return False
-		
+
 	def __begin_saving(self):
 		"""
 		Send text in buffer to saving process.
-		
+
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""
@@ -318,6 +318,8 @@ class FileSaver(object):	"""
 			self.__toggle_readonly_mode()
 			self.__emit_save_signal()
 			if self.__can_quit: self.__destroy()
+			from gtk.gdk import flush
+			flush()
 		return False
 
 	def __toggle_readonly_mode(self):
@@ -499,9 +501,9 @@ class FileSaver(object):	"""
 		@param textbuffer: Reference to the text editor's buffer.
 		@type textbuffer: A ScribesTextBuffer object.
 		"""
-		if textbuffer.get_modified() is False: return False
+		if textbuffer.get_modified() is False: return True
 		self.__editor.emit("modified-document")
-		if self.__editor.uri is None: return False
+		if self.__editor.uri is None: return True
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__save_timer = timeout_add(21000, self.__save_file_timeout_cb, priority=PRIORITY_LOW)
 		return True

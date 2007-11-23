@@ -152,7 +152,7 @@ class ScribesTextBuffer(SourceBuffer):
 		@type editor: An Editor object.
 		"""
 		self.set_modified(False)
-		return
+		return False
 
 	def __enable_readonly_cb(self, editor):
 		"""
@@ -227,9 +227,10 @@ class ScribesTextBuffer(SourceBuffer):
 		@type editor: An Editor object.
 		"""
 		self.__uri = uri
-		self.__activate_sytnax_colors()
 		self.set_modified(False)
 		self.set_check_brackets(True)
+		from gobject import idle_add
+		idle_add(self.__activate_sytnax_colors)
 		return
 
 	def __reload_document_cb(self, *args):
@@ -240,7 +241,7 @@ class ScribesTextBuffer(SourceBuffer):
 
 	def __cursor_position_cb(self, *args):
 		self.__editor.emit("cursor-moved")
-		return True
+		return False
 
 ########################################################################
 #
@@ -317,6 +318,7 @@ class ScribesTextBuffer(SourceBuffer):
 		from operator import gt
 		if gt(cursor_line, number_of_lines):
 			self.place_cursor(start_iterator)
+			self.__editor.textview.grab_focus()
 			return False
 		iterator = self.get_iter_at_line(cursor_line - 1)
 		line_index = iterator.get_bytes_in_line()
@@ -327,6 +329,7 @@ class ScribesTextBuffer(SourceBuffer):
 		self.place_cursor(iterator)
 		from cursor import move_view_to_cursor
 		move_view_to_cursor(self.__editor.textview)
+		self.__editor.textview.grab_focus()
 		return False
 
 	def __precompile_methods(self):

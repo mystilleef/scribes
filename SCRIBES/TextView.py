@@ -369,8 +369,8 @@ class ScribesTextView(SourceView):
 		self.set_property("highlight-current-line", False)
 		self.set_property("cursor-visible", False)
 		self.set_property("sensitive", False)
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
+#		from gobject import idle_add
+#		idle_add(self.__refresh_view)
 		return
 
 	def __loaded_document_cb(self, editor, uri):
@@ -429,8 +429,8 @@ class ScribesTextView(SourceView):
 		self.set_property("highlight-current-line", False)
 		self.set_property("cursor-visible", False)
 		self.set_property("show-line-numbers", False)
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
+#		from gobject import idle_add
+#		idle_add(self.__refresh_view)
 		return
 
 	def __disable_readonly_cb(self, editor):
@@ -448,8 +448,8 @@ class ScribesTextView(SourceView):
 		self.set_property("highlight-current-line", True)
 		self.set_property("cursor-visible", True)
 		self.set_property("show-line-numbers", True)
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
+#		from gobject import idle_add
+#		idle_add(self.__refresh_view)
 		return
 
 	def __renamed_document_cb(self, editor, uri):
@@ -467,8 +467,8 @@ class ScribesTextView(SourceView):
 		self.set_property("highlight-current-line", True)
 		self.set_property("cursor-visible", True)
 		self.set_property("show-line-numbers", True)
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
+#		from gobject import idle_add
+#		idle_add(self.__refresh_view)
 		return
 
 	def __show_bar_cb(self, editor, bar):
@@ -489,7 +489,6 @@ class ScribesTextView(SourceView):
 		self.set_property("editable", False)
 		self.set_property("cursor-visible", False)
 		self.set_property("accepts-tab", False)
-		self.__editor.response()
 		return
 
 	def __hide_bar_cb(self, editor, bar):
@@ -509,8 +508,8 @@ class ScribesTextView(SourceView):
 		self.set_property("editable", True)
 		self.set_property("cursor-visible", True)
 		self.set_property("accepts-tab", True)
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
+#		from gobject import idle_add
+#		idle_add(self.__refresh_view)
 		return
 
 	def __focus_in_event_cb(self, textview, event):
@@ -531,8 +530,9 @@ class ScribesTextView(SourceView):
 		@type: A Boolean Object.
 		"""
 		if self.__bar_is_visible is False:
-			from gobject import idle_add
-			idle_add(self.__refresh_view)
+			self.grab_focus()
+			#from gobject import idle_add
+			#idle_add(self.__refresh_view)
 		return False
 
 	def __button_press_event_cb(self, textview, event):
@@ -580,8 +580,9 @@ class ScribesTextView(SourceView):
 		return False
 
 	def __hide_dialog_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
+		self.grab_focus()
+		#from gobject import idle_add
+		#idle_add(self.__refresh_view)
 		return
 
 	def __copy_clipboard_cb(self, textview):
@@ -686,8 +687,6 @@ class ScribesTextView(SourceView):
 		from pango import FontDescription
 		new_font = FontDescription(entry.value.to_string())
 		self.modify_font(new_font)
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
 		return
 
 	def __tab_width_cb(self, client, cnxn_id, entry, data):
@@ -710,8 +709,6 @@ class ScribesTextView(SourceView):
 		@type data: Any type object.
 		"""
 		self.set_tabs_width(int(entry.value.to_string()))
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
 		return
 
 	def __text_wrapping_cb(self, client, cnxn_id, entry, data):
@@ -738,8 +735,6 @@ class ScribesTextView(SourceView):
 			self.set_wrap_mode(WRAP_WORD)
 		else:
 			self.set_wrap_mode(WRAP_NONE)
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
 		return
 
 	def __margin_position_cb(self, client, cnxn_id, entry, data):
@@ -763,8 +758,6 @@ class ScribesTextView(SourceView):
 		@type data: Any type object.
 		"""
 		self.set_margin(int(entry.value.to_string()))
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
 		return
 
 	def __show_margin_cb(self, client, cnxn_id, entry, data):
@@ -788,8 +781,6 @@ class ScribesTextView(SourceView):
 		@type data: Any type object.
 		"""
 		self.set_show_margin(entry.value.get_bool())
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
 		return
 
 	def __spell_check_cb(self, client, cnxn_id, entry, data):
@@ -823,8 +814,6 @@ class ScribesTextView(SourceView):
 				pass
 		else:
 			self.__spell_checker.detach()
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
 		return
 
 	def __themes_cb(self, client, cnxn_id, entry, data):
@@ -872,8 +861,6 @@ class ScribesTextView(SourceView):
 			from gtk import STATE_NORMAL
 			self.modify_base(STATE_NORMAL, background_color)
 			self.modify_text(STATE_NORMAL, foreground_color)
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
 		return
 
 	def __foreground_cb(self, client, cnxn_id, entry, data):
@@ -928,8 +915,6 @@ class ScribesTextView(SourceView):
 		background_color = color_parse(color)
 		from gtk import STATE_NORMAL
 		self.modify_base(STATE_NORMAL, background_color)
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
 		return
 
 	def __use_tabs_cb(self, client, cnxn_id, entry, data):
@@ -953,8 +938,6 @@ class ScribesTextView(SourceView):
 		"""
 		use_tabs = client.get_bool("/apps/scribes/use_tabs")
 		self.set_insert_spaces_instead_of_tabs(not use_tabs)
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
 		return
 
 	def __syntax_cb(self, client, cnxn_id, entry, data):
@@ -981,8 +964,6 @@ class ScribesTextView(SourceView):
 		language = None
 		if self.__editor.uri: language = get_language(self.__editor.uri)
 		activate_syntax_highlight(self.get_buffer(), language)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__refresh, priority=PRIORITY_LOW)
 		return
 
 	def __refresh_view(self):
