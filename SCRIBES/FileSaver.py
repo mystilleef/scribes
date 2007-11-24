@@ -857,3 +857,10 @@ class FileSaver(object):
 	def __renamed_document_cb(self, *args):
 		self.__start_monitoring_file()
 		return
+
+	def __this_is_a_test_function(self, editor):
+		"""
+		This is a test function.
+		"""
+		return False
+

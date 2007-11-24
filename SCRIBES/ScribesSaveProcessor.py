@@ -26,7 +26,8 @@
 @license: GNU GPLv2 or Later
 @contact: mystilleef@gmail.com
 """
-
+INTERVAL = 500
+RECURSIONLIMITMULTIPLIER = 1000
 dbus_service = "org.sourceforge.ScribesSaveProcessor"
 dbus_path = "/org/sourceforge/ScribesSaveProcessor"
 
@@ -120,15 +121,12 @@ class SaveProcessor(object):
 		return
 
 if __name__ == "__main__":
+	from sys import setcheckinterval, getrecursionlimit, setrecursionlimit
+	setcheckinterval(INTERVAL)
+	setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
 	from sys import argv, path
 	python_path = argv[1]
 	path.insert(0, python_path)
-	from gobject import threads_init
-	threads_init()
-	from dbus.glib import threads_init
-	threads_init()
-	from gtk.gdk import threads_init
-	threads_init()
 	SaveProcessor()
-	from gtk import main
-	main()
+	from gobject import MainLoop
+	MainLoop().run()

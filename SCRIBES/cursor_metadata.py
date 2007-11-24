@@ -28,9 +28,7 @@ the cursor of each URI opened by the text editor.
 @copyright: Copyright © 2005 Lateef Alabi-Oki
 @license: GNU GPLv2 or Later
 @contact: mystilleef@gmail.com
-
 """
-
 
 def open_cursor_database(flag="c"):
 	"""
@@ -38,17 +36,12 @@ def open_cursor_database(flag="c"):
 
 	@return: A database object representing the cursor database.
 	@rtype: A handle to the database object.
-
 	"""
-
 	from info import metadata_folder
 	from os import path
-
 	if not path.exists(metadata_folder):
-
 	 	from os import makedirs
 		makedirs(metadata_folder)
-
 	database_file = metadata_folder + "cursor.gdb"
 	from shelve import open
 	from anydbm import error
@@ -58,18 +51,14 @@ def open_cursor_database(flag="c"):
 		database = open(database_file, flag="n", writeback=False)
 	return database
 
-
 def close_cursor_database(database):
 	"""
 	Close the cursor database.
 
 	@param database: The handle of the cursor database object.
 	@type database: A database Shelve object.
-
 	"""
-
 	database.close()
-
 	return
 
 
@@ -80,21 +69,14 @@ def get_cursor_position_from_database(uri):
 	@param uri: A universal resource identifier representing, or pointing to, a
 		file.
 	@type uri: A String object.
-
 	"""
-
 	database = open_cursor_database("r")
-
 	try:
-
 		cursor_position = database[uri]
 		close_cursor_database(database)
-
 	except:
-
 		cursor_position = None
 		close_cursor_database(database)
-
 	return cursor_position
 
 
@@ -117,10 +99,8 @@ def update_cursor_position_in_database(uri, data):
 	@type data: A Tuple object.
 
 	"""
-
 	database = open_cursor_database("w")
-	database[uri] = data
+	database[str(uri)] = data
 	close_cursor_database(database)
-
 	return
 

@@ -55,12 +55,7 @@ def __open(uris=None):
 	@type uris: A List object.
 	"""
 	__open_via_dbus(uris)
-	from gobject import idle_add, PRIORITY_HIGH, threads_init
-#	threads_init()
-#	from dbus.glib import threads_init
-#	threads_init()
-#	from gtk.gdk import threads_init
-#	threads_init()
+	from gobject import idle_add, PRIORITY_HIGH
 	idle_add(__launch_new_editor, uris, priority=PRIORITY_HIGH)
 	return
 
@@ -136,10 +131,10 @@ def __mainloop():
 	Initialize the GObject mainloop.
 	"""
 	__fork_scribes()
-	from gtk import main
-	main()
-#	from gobject import MainLoop
-#	MainLoop().run()
+#	from gtk import main
+#	main()
+	from gobject import MainLoop
+	MainLoop().run()
 	return
 
 def __fork_scribes():
@@ -166,7 +161,12 @@ def __can_fork():
 	from gconf import client_get_default
 	client = client_get_default()
 	fork_scribes = True
-	from operator import truth
-	if truth(client.get("/apps/scribes/fork_scribes")):
+	if client.get("/apps/scribes/fork_scribes"):
 		fork_scribes = client.get_bool("/apps/scribes/fork_scribes")
 	return fork_scribes
+
+try:
+	from psyco import bind
+	bind(__mainloop)
+except:
+	pass

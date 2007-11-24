@@ -95,6 +95,6 @@ def update_window_position_in_database(uri, data):
 	@type data: A Tuple object.
 	"""
 	database = open_position_database("w")
-	database[uri] = data
+	database[str(uri)] = data
 	close_position_database(database)
 	return

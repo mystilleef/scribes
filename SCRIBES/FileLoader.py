@@ -108,10 +108,6 @@ class FileLoader(object):
 		try:
 			if self.__uri.startswith("file:///"): return
 			self.__editor.init_authentication_manager()
-#			print "Opening remote file"
-#			from gnome.ui import authentication_manager_init
-#			authentication_manager_init()
-#			print "Initialized authentication manager"
 			FILE_INFO_ACCESS_RIGHTS = 1 << 4
 			from gnomevfs import AccessDeniedError, NotFoundError
 			from gnomevfs import get_file_info, FILE_INFO_DEFAULT

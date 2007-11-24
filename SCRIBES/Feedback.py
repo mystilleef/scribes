@@ -154,11 +154,10 @@ class FeedbackManager(object):
 		@rtype: A Boolean object.
 		"""
 		try:
-			from operator import truth
 			for feedback in self.__message_stack:
 				found = self.__remove_message_from_stack(message_id, feedback)
-				if truth(found): break
-			if truth(reset):
+				if found: break
+			if reset:
 				from gobject import idle_add, PRIORITY_LOW
 				idle_add(self.__reset_message, priority=PRIORITY_LOW)
 		except RuntimeError:
@@ -300,8 +299,8 @@ class FeedbackManager(object):
 		@param self: Reference to the FeedbackManager instance.
 		@type self: A FeedbackManager object.
 		"""
-		from operator import truth, not_, is_
-		if truth(self.__message_stack) and not_(self.__editor.is_readonly):
+		from operator import not_, is_
+		if self.__message_stack and not_(self.__editor.is_readonly):
 			self.__set_message_from_stack()
 		elif is_(self.__filename, None):
 			self.__remove_message()
@@ -320,9 +319,8 @@ class FeedbackManager(object):
 		@param self: Reference to the FeedbackManager instance.
 		@type self: A FeedbackManager object.
 		"""
-		from operator import truth
 		from internationalization import msg0044, msg0045
-		if truth(self.__editor.is_readonly):
+		if self.__editor.is_readonly:
 			message = msg0044 % self.__filename
 			self.__set_message(message)
 		else:
@@ -337,10 +335,9 @@ class FeedbackManager(object):
 		@param self: Reference to the FeedbackManager instance.
 		@type self: A FeedbackManager object.
 		"""
-		from operator import truth
-		if truth(self.__editor.is_readonly):
+		if self.__editor.is_readonly:
 			self.__set_icon("readonly")
-		elif truth(self.__editor.file_is_saved):
+		elif self.__editor.file_is_saved:
 			self.__set_icon("new")
 		else:
 			self.__set_icon("edit")
@@ -550,7 +547,7 @@ class FeedbackManager(object):
 		@type editor: An Editor object.
 		"""
 		self.__destroy()
-		return
+		return False
 
 	def __checking_document_cb(self, editor, uri):
 		"""
@@ -570,7 +567,7 @@ class FeedbackManager(object):
 		self.start_busy_cursor()
 		from internationalization import msg0032
 		self.__message_id = self.set_modal_message(msg0032, "run")
-		return
+		return False
 
 	def __loaded_document_cb(self, editor, uri):
 		"""
@@ -594,7 +591,7 @@ class FeedbackManager(object):
 		self.update_status_message(message, "open")
 		self.stop_spinner()
 		self.stop_busy_cursor()
-		return
+		return False
 
 	def __load_error_cb(self, editor, uri):
 		"""
@@ -616,7 +613,7 @@ class FeedbackManager(object):
 		self.stop_spinner()
 		self.stop_busy_cursor()
 		self.unset_modal_message(self.__message_id)
-		return
+		return False
 
 	def __renamed_document_cb(self, editor, uri):
 		"""
@@ -638,13 +635,13 @@ class FeedbackManager(object):
 		from internationalization import msg0085
 		message = msg0085 % self.__filename
 		self.update_status_message(message, "save", 5)
-		return
+		return False
 
 	def __reload_document_cb(self, *args):
 		from internationalization import msg0489
 		message = msg0489 % self.__filename
 		self.update_status_message(message, "run", 15)
-		return
+		return False
 
 	def __saved_document_cb(self, editor, uri):
 		"""
@@ -659,13 +656,13 @@ class FeedbackManager(object):
 		@param uri: A string representing a file.
 		@type uri: A String object.
 		"""
-		from operator import truth, not_
-		if self.__is_busy: return
-		if not_(self.__default_message_is_set): return
+		from operator import not_
+		if self.__is_busy: return False
+		if not_(self.__default_message_is_set): return False
 		from internationalization import msg0085
 		message = msg0085 % self.__filename
 		self.update_status_message(message, "save", 5)
-		return
+		return False
 
 	def __enable_readonly_cb(self, editor):
 		"""
@@ -679,7 +676,7 @@ class FeedbackManager(object):
 		"""
 		from internationalization import msg0322
 		self.update_status_message(msg0322, "suceed")
-		return
+		return False
 
 	def __disable_readonly_cb(self, editor):
 		"""
@@ -693,7 +690,7 @@ class FeedbackManager(object):
 		"""
 		from internationalization import msg0324
 		self.update_status_message(msg0324, "suceed")
-		return
+		return False
 
 	def __not_yet_implemented_cb(self, editor):
 		"""
@@ -707,7 +704,7 @@ class FeedbackManager(object):
 		"""
 		message = "Not yet implemented"
 		self.update_status_message(message, "warning")
-		return
+		return False
 
 	def __changed_cb(self, *args):
 		"""
@@ -729,4 +726,4 @@ class FeedbackManager(object):
 	def __gui_created_cb(self, *args):
 		self.__remove_message()
 		self.__remove_icon()
-		return
+		return False

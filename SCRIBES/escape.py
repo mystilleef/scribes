@@ -52,7 +52,7 @@ def generate_escape_key_dictionary():
 
 
 def escape_string(string):
-	u"""
+	"""
 	Replace characters in a string that are difficult to parse with valid ones.
 
 	@param string: An arbitrary string.
@@ -60,22 +60,16 @@ def escape_string(string):
 
 	@return: A string that has been escaped.
 	@rtype: A string object.
-
 	"""
-
 	dictionary = generate_escape_key_dictionary()
-
 	for escape_characters in dictionary.keys():
-
-		escaped_string = \
-string.replace(dictionary[escape_characters], escape_characters)
+		escaped_string = string.replace(dictionary[escape_characters], escape_characters)
 		string = escaped_string
-
 	return escaped_string
 
 
 def unescape_string(string):
-	u"""
+	"""
 	Replace escaped characters in a string with normal characters.
 
 	@param string: An arbitrary string.
@@ -83,16 +77,10 @@ def unescape_string(string):
 
 	@return: A string that has been escaped.
 	@rtype: A string object.
-
 	"""
-
 	dictionary = generate_escape_key_dictionary()
-
 	for escape_characters in dictionary.keys():
-
-		unescaped_string = \
-string.replace(escape_characters, dictionary[escape_characters])
+		unescaped_string = string.replace(escape_characters, dictionary[escape_characters])
 		string = unescaped_string
-
 	return unescaped_string
 

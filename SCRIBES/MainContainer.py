@@ -80,8 +80,6 @@ class ScribesMainContainer(VBox):
 		@param self: Reference to the ScribesMainContainer instance.
 		@type self: A ScribesMainContainer object.
 		"""
-		from gtk import RESIZE_PARENT
-		self.set_property("resize-mode", RESIZE_PARENT)
 		self.set_property("parent", self.__editor.window)
 		self.set_property("name", "scribesmaincontainer")
 		return

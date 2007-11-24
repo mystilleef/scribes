@@ -173,8 +173,7 @@ def move_view_to_cursor(textview):
 
 def word_to_cursor(textbuffer):
 	cursor_position = get_cursor_iterator(textbuffer)
-	if cursor_position.starts_line():
-		return None
+	if cursor_position.starts_line(): return None
 	line = get_cursor_line(textbuffer)
 	begin_position = textbuffer.get_iter_at_line(line)
 	text = textbuffer.get_text(begin_position, cursor_position)
@@ -187,8 +186,7 @@ def word_to_cursor(textbuffer):
 
 def get_template_trigger(textbuffer):
 	cursor_position = get_cursor_iterator(textbuffer)
-	if cursor_position.starts_line():
-		return None
+	if cursor_position.starts_line(): return None
 	iterator = cursor_position.copy()
 	iterator.backward_char()
 	do_forward_char = True
@@ -199,10 +197,8 @@ def get_template_trigger(textbuffer):
 			do_forward_char = False
 			break
 		iterator.backward_char()
-	if found_alphanumeric_characters is False:
-		return None
-	if do_forward_char:
-		iterator.forward_char()
+	if found_alphanumeric_characters is False: return None
+	if do_forward_char: iterator.forward_char()
 	trigger = textbuffer.get_text(iterator, cursor_position)
 	return trigger
 
@@ -216,8 +212,7 @@ def get_word_to_cursor(textbuffer):
 
 def get_word_before_cursor(textbuffer):
 	word = get_word_to_cursor(textbuffer)
-	if word and len(word) > 2:
-		return word
+	if word and len(word) > 2: return word
 	return None
 
 def get_cursor_window_coordinates(textview):

@@ -165,7 +165,6 @@ class ScribesDialog(Dialog):
 		@return: If false, propagate the generated event. Otherwise, block the
 				 event.
 		@rtype: A boolean value.
-
 		"""
 		from gtk import RESPONSE_CLOSE
 		dialog.response(RESPONSE_CLOSE)

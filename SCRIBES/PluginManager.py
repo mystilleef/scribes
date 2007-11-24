@@ -261,8 +261,9 @@ class PluginManager(object):
 		@type self: A ScribesPluginManager object.
 		"""
 		from sys import path
-		path.insert(0, self.__editor.core_plugin_folder)
-		path.insert(0, self.__editor.home_plugin_folder)
+		from operator import contains, not_
+		if not_(contains(path, self.__editor.core_plugin_folder)): path.insert(0, self.__editor.core_plugin_folder)
+		if not_(contains(path, self.__editor.home_plugin_folder)): path.insert(0, self.__editor.home_plugin_folder)
 		return
 
 	def __destroy(self):

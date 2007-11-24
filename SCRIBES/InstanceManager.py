@@ -31,7 +31,8 @@ It allows editor instances to communicate with each other.
 
 from pygtk import require
 require("2.0")
-INTERVAL = 10
+INTERVAL = -1
+RECURSIONLIMITMULTIPLIER = 10000
 close_file = lambda editor: editor.emit("close-document")
 
 class EditorManager(object):
@@ -47,21 +48,19 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
+		self.__set_vm_properties()
 		from gobject import timeout_add, idle_add, PRIORITY_LOW
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
-		from sys import setcheckinterval, getrecursionlimit, setrecursionlimit
-		setcheckinterval(INTERVAL)
-		setrecursionlimit(getrecursionlimit() * 100)
 		self.__init_attributes()
 		self.__init_i18n()
 		from signal import signal, SIGHUP, SIGTERM, SIGSEGV
 		signal(SIGHUP, self.__kernel_signals_cb)
 		signal(SIGSEGV, self.__kernel_signals_cb)
 		signal(SIGTERM, self.__kernel_signals_cb)
-		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		#idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
+		#idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
 		"""
@@ -81,6 +80,20 @@ class EditorManager(object):
 		from SaveProcessMonitor import SaveProcessMonitor
 		self.__save_process_monitor = SaveProcessMonitor()
 		self.__response_is_busy = False
+		return
+
+	def __set_vm_properties(self):
+		"""
+		Set virtual machine's (Python) system properties.
+
+		@param self: Reference to the EditorManager instance.
+		@type self: An EditorManager object.
+		"""
+		from sys import setcheckinterval, getrecursionlimit, setrecursionlimit, setdlopenflags
+		from dl import RTLD_LAZY
+		setcheckinterval(INTERVAL)
+		setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
+		setdlopenflags(RTLD_LAZY)
 		return
 
 ########################################################################

@@ -28,7 +28,7 @@ open/save dialog.
 @contact: mystilleef@gmail.com
 """
 
-def create_filter(name=u"", mime=u"", pattern=u""):
+def create_filter(name="", mime="", pattern=""):
 	"""
 	Create a filter for the text editor's fileselector dialog.
 	The filter is used to filter text files based on file type and source code.

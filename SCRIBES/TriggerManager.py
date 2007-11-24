@@ -47,14 +47,14 @@ class TriggerManager(object):
 		@type window: A gtk.Window object.
 		"""
 		self.__init_attributes(editor)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods)
 		self.__signal_id_1 = self.__window.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_2 = self.__editor.connect("show-bar", self.__show_bar_cb)
 		self.__signal_id_3 = self.__editor.connect("hide-bar", self.__hide_bar_cb)
 		self.__signal_id_4 = self.__editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_5 = self.__editor.connect("close-document-no-save", self.__close_document_no_save_cb)
 		self.__editor.emit("initialized-trigger-manager")
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor):
 		"""

@@ -54,7 +54,7 @@ class ScribesWindow(Window):
 		self.__signal_id_7 = self.__editor.connect("load-error", self.__load_error_cb)
 		self.__signal_id_8 = self.__editor.connect("enable-readonly", self.__enable_readonly_cb)
 		self.__signal_id_9 = self.__editor.connect("disable-readonly", self.__disable_readonly_cb)
-		self.__signal_id_10 = self.__editor.connect("saved-document", self.__saved_document_cb)
+		self.__signal_id_10 = self.__editor.connect_after("saved-document", self.__saved_document_cb)
 		self.__signal_id_11 = self.__editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_12 = self.__editor.connect("enable-fullscreen", self.__enable_fullscreen_cb)
 		self.__signal_id_13 = self.__editor.connect("disable-fullscreen", self.__disable_fullscreen_cb)
@@ -88,6 +88,7 @@ class ScribesWindow(Window):
 		self.__is_mapped = False
 		# True if the window is maximized.
 		self.__is_maximized = False
+		self.__window_position_timer = None
 		self.__uri = None
 		self.__positioned = False
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
@@ -533,7 +534,7 @@ class ScribesWindow(Window):
 		@type editor: An Editor object.
 		"""
 		self.set_title(self.__title)
-		return
+		return False
 
 	def __close_document_cb(self, editor):
 		"""
@@ -558,24 +559,24 @@ class ScribesWindow(Window):
 		from gobject import idle_add
 		idle_add(self.__update_position_metadata, is_maximized, xcoordinate, ycoordinate, width, height)
 		self.hide_all()
-		return
+		return False
 
 	def __close_document_no_save_cb(self, editor):
 		self.__editor.disconnect_signal(self.__signal_id_17, self)
 		self.__destroy()
-		return
+		return False
 
 	def __renamed_document_cb(self, editor, uri):
 		self.__uri = uri
 		self.__determine_title(self.__uri)
 		self.set_title(self.__title)
-		return
+		return False
 
 	def __reload_document_cb(self, *args):
 		from internationalization import msg0489
 		message = msg0489 % (self.__uri)
 		self.set_title(message)
-		return
+		return False
 
 ########################################################################
 #
@@ -595,6 +596,7 @@ class ScribesWindow(Window):
 			to, a text document.
 		@type uri: A String object.
 		"""
+		self.__stop_window_position_timer()
 		from position_metadata import update_window_position_in_database
 		if self.__uri:
 			if is_maximized:
@@ -606,6 +608,14 @@ class ScribesWindow(Window):
 		self.__destroy()
 		return False
 
+	def __stop_window_position_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__window_position_timer)
+		except:
+			pass
+		return
+
 	def __determine_title(self, uri):
 		from gnomevfs import URI
 		self.__title = URI(uri).short_name.encode("utf-8")
@@ -614,7 +624,7 @@ class ScribesWindow(Window):
 	def __destroy(self):
 		"""
 		Destroy object.
-		
+
 		@param self: Reference to the Window instance.
 		@type self: A Window object.
 		"""

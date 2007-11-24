@@ -64,10 +64,8 @@ class ScribesMessageDialog(MessageDialog):
 		"""
 		if parent_window:
 			self.set_transient_for(parent_window)
-			if parent_window.get_property("name") in ["Text Editor Window"]:
-				self.__use_signals = True
-		if title_message:
-			self.format_secondary_markup(title_message)
+			if parent_window.get_property("name") in ["Text Editor Window"]: self.__use_signals = True
+		if title_message: self.format_secondary_markup(title_message)
 		self.set_markup(message)
 		self.__show_dialog()
 		return

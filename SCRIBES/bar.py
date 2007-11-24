@@ -49,7 +49,7 @@ class ScribesBar(Table):
 		"""
 		Table.__init__(self)
 		self.__init_attributes(editor)
-		self.__set_properties()
+		#self.__set_properties()
 		self.connect("key-press-event", self.__key_press_event_cb)
 
 	def __init_attributes(self, editor):

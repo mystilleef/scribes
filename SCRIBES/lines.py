@@ -76,8 +76,7 @@ def select_line(textbuffer):
 	@rtype: A Boolean object.
 	"""
 	begin_position, end_position = get_line_bounds(textbuffer)
-	if begin_position.get_char() in ["\n", "\x00"]:
-		return False
+	if begin_position.get_char() in ["\n", "\x00"]: return False
 	textbuffer.select_range(begin_position, end_position)
 	return True
 
@@ -200,10 +199,8 @@ def join_line(textbuffer):
 			textbuffer.delete_mark(mark)
 		textbuffer.end_user_action()
 	except TypeError:
-		if mark is None:
-			return False
-		if mark.get_deleted() is False:
-			textbuffer.delete_mark(mark)
+		if mark is None: return False
+		if mark.get_deleted() is False: textbuffer.delete_mark(mark)
 		return False
 	return True
 
@@ -219,16 +216,14 @@ def free_line_above(textbuffer):
 	"""
 	string = None
 	spaces = get_beginning_spaces(textbuffer)
-	if spaces:
-		string = "".join(spaces)
+	if spaces: string = "".join(spaces)
 	begin_position, end_position = get_line_bounds(textbuffer)
 	textbuffer.begin_user_action()
 	textbuffer.insert(begin_position, "\n")
 	begin_position, end_position = get_line_bounds(textbuffer)
 	begin_position.backward_line()
 	textbuffer.place_cursor(begin_position)
-	if string:
-		textbuffer.insert(begin_position, string)
+	if string: textbuffer.insert(begin_position, string)
 	textbuffer.end_user_action()
 	from cursor import get_cursor_line
 	return get_cursor_line(textbuffer)
@@ -245,8 +240,7 @@ def free_line_below(textbuffer):
 	"""
 	string = None
 	spaces = get_beginning_spaces(textbuffer)
-	if spaces:
-		string = "".join(spaces)
+	if spaces: string = "".join(spaces)
 	begin_position, end_position = get_line_bounds(textbuffer)
 	textbuffer.begin_user_action()
 	if begin_position.get_char() in ["\n", "\x00"]:
@@ -258,8 +252,7 @@ def free_line_below(textbuffer):
 	begin_position, end_position = get_line_bounds(textbuffer)
 	begin_position.forward_line()
 	textbuffer.place_cursor(begin_position)
-	if string:
-		textbuffer.insert(begin_position, string)
+	if string: textbuffer.insert(begin_position, string)
 	textbuffer.end_user_action()
 	from cursor import get_cursor_line
 	return get_cursor_line(textbuffer)
@@ -277,8 +270,7 @@ def get_beginning_spaces(textbuffer):
 	@rtype: A List object.
 	"""
 	begin_position, end_position = get_line_bounds(textbuffer)
-	if begin_position.get_char() in ["\n", "\x00"]:
-		return None
+	if begin_position.get_char() in ["\n", "\x00"]: return None
 	spaces = []
 	transition_position = begin_position.copy()
 	while transition_position.get_char() in [" ", "\t"]:
@@ -288,12 +280,10 @@ def get_beginning_spaces(textbuffer):
 
 def delete_cursor_to_line_end(textbuffer):
 	begin_position, end_position = get_line_bounds(textbuffer)
-	if begin_position.get_char() in ["\n", "\x00"]:
-		return False
+	if begin_position.get_char() in ["\n", "\x00"]: return False
 	from cursor import get_cursor_iterator
 	cursor_position = get_cursor_iterator(textbuffer)
-	if cursor_position.get_char() in ["\n", "\x00"]:
-		return False
+	if cursor_position.get_char() in ["\n", "\x00"]: return False
 	textbuffer.begin_user_action()
 	textbuffer.delete(cursor_position, end_position)
 	textbuffer.end_user_action()

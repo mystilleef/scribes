@@ -371,7 +371,7 @@ class ScribesTextView(SourceView):
 		self.set_property("sensitive", False)
 #		from gobject import idle_add
 #		idle_add(self.__refresh_view)
-		return
+		return False
 
 	def __loaded_document_cb(self, editor, uri):
 		"""
@@ -390,11 +390,11 @@ class ScribesTextView(SourceView):
 		self.set_property("editable", True)
 		from gobject import idle_add
 		idle_add(self.__refresh_view)
-		return
+		return False
 
 	def __reload_document_cb(self, *args):
 		self.set_property("editable", False)
-		return
+		return False
 
 	def __load_error_cb(self, editor, uri):
 		"""
@@ -413,7 +413,7 @@ class ScribesTextView(SourceView):
 		self.set_property("editable", True)
 		from cursor import move_view_to_cursor
 		move_view_to_cursor(self)
-		return
+		return False
 
 	def __enable_readonly_cb(self, editor):
 		"""
@@ -431,7 +431,7 @@ class ScribesTextView(SourceView):
 		self.set_property("show-line-numbers", False)
 #		from gobject import idle_add
 #		idle_add(self.__refresh_view)
-		return
+		return False
 
 	def __disable_readonly_cb(self, editor):
 		"""
@@ -448,9 +448,9 @@ class ScribesTextView(SourceView):
 		self.set_property("highlight-current-line", True)
 		self.set_property("cursor-visible", True)
 		self.set_property("show-line-numbers", True)
-#		from gobject import idle_add
-#		idle_add(self.__refresh_view)
-		return
+		from gobject import idle_add
+		idle_add(self.__refresh_view)
+		return False
 
 	def __renamed_document_cb(self, editor, uri):
 		"""
@@ -467,9 +467,9 @@ class ScribesTextView(SourceView):
 		self.set_property("highlight-current-line", True)
 		self.set_property("cursor-visible", True)
 		self.set_property("show-line-numbers", True)
-#		from gobject import idle_add
-#		idle_add(self.__refresh_view)
-		return
+		from gobject import idle_add
+		idle_add(self.__refresh_view)
+		return False
 
 	def __show_bar_cb(self, editor, bar):
 		"""
@@ -489,7 +489,7 @@ class ScribesTextView(SourceView):
 		self.set_property("editable", False)
 		self.set_property("cursor-visible", False)
 		self.set_property("accepts-tab", False)
-		return
+		return False
 
 	def __hide_bar_cb(self, editor, bar):
 		"""
@@ -508,9 +508,9 @@ class ScribesTextView(SourceView):
 		self.set_property("editable", True)
 		self.set_property("cursor-visible", True)
 		self.set_property("accepts-tab", True)
-#		from gobject import idle_add
-#		idle_add(self.__refresh_view)
-		return
+		from gobject import idle_add
+		idle_add(self.__refresh_view)
+		return False
 
 	def __focus_in_event_cb(self, textview, event):
 		"""

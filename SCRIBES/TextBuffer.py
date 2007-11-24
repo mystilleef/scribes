@@ -79,6 +79,7 @@ class ScribesTextBuffer(SourceBuffer):
 		# Register a unique number with the editor's termination queue
 		self.__termination_id = editor.register_object()
 		self.__undoable_action = False
+		self.__cursor_update_timer = None
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
 		self.__signal_id_7 = self.__signal_id_8 = self.__signal_id_9 = None
@@ -97,7 +98,7 @@ class ScribesTextBuffer(SourceBuffer):
 		self.set_max_undo_levels(0)
 		self.set_text("")
 		self.set_modified(False)
-		return
+		return False
 
 ################################################################################
 #
@@ -121,7 +122,7 @@ class ScribesTextBuffer(SourceBuffer):
 		self.__undoable_action = True
 		from gobject import idle_add
 		idle_add(self.__activate_sytnax_colors)
-		return
+		return False
 
 	def __loaded_document_cb(self, editor, uri):
 		"""
@@ -138,7 +139,7 @@ class ScribesTextBuffer(SourceBuffer):
 		self.end_not_undoable_action()
 		self.__undoable_action = False
 		self.__set_cursor_positon()
-		return
+		return False
 
 	def __saved_document_cb(self, editor, uri):
 		"""
@@ -165,7 +166,7 @@ class ScribesTextBuffer(SourceBuffer):
 		@type editor: An Editor object.
 		"""
 		self.set_check_brackets(False)
-		return
+		return False
 
 	def __disable_readonly_cb(self, editor):
 		"""
@@ -179,7 +180,7 @@ class ScribesTextBuffer(SourceBuffer):
 		@type editor: An Editor object.
 		"""
 		self.set_check_brackets(True)
-		return
+		return False
 
 	def __load_error_cb(self, editor, uri):
 		"""
@@ -196,7 +197,7 @@ class ScribesTextBuffer(SourceBuffer):
 		self.__uri = None
 		if self.__undoable_action: self.end_not_undoable_action()
 		self.__set_properties()
-		return
+		return False
 
 	def __close_document_cb(self, editor):
 		"""
@@ -210,11 +211,11 @@ class ScribesTextBuffer(SourceBuffer):
 		"""
 		from gobject import idle_add
 		idle_add(self.__update_cursor_metadata, self.__uri)
-		return
+		return False
 
 	def __close_document_no_save_cb(self, editor):
 		self.__destroy()
-		return
+		return False
 
 	def __renamed_document_cb(self, editor, uri):
 		"""
@@ -231,16 +232,19 @@ class ScribesTextBuffer(SourceBuffer):
 		self.set_check_brackets(True)
 		from gobject import idle_add
 		idle_add(self.__activate_sytnax_colors)
-		return
+		return False
 
 	def __reload_document_cb(self, *args):
 		self.set_modified(False)
 		self.set_text("")
 		self.set_modified(False)
-		return
+		return False
 
 	def __cursor_position_cb(self, *args):
 		self.__editor.emit("cursor-moved")
+		self.__stop_update_cursor_timer()
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__cursor_update_timer = timeout_add(500, self.__update_cursor_position, priority=PRIORITY_LOW)
 		return False
 
 ########################################################################
@@ -264,6 +268,25 @@ class ScribesTextBuffer(SourceBuffer):
 		activate_syntax_highlight(self, self.__editor.language)
 		return False
 
+	def __stop_update_cursor_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__cursor_update_timer)
+		except:
+			pass
+		return
+
+	def __update_cursor_position(self):
+		from operator import not_
+		if not_(self.__uri): return False
+		from cursor_metadata import update_cursor_position_in_database
+		from cursor import get_cursor_line, get_cursor_index
+		cursor_line = get_cursor_line(self)
+		cursor_index = get_cursor_index(self)
+		cursor_position = cursor_line, cursor_index
+		update_cursor_position_in_database(str(self.__uri), cursor_position)
+		return False
+
 	def __update_cursor_metadata(self, uri):
 		"""
 		Update the cursor database with information about the cursor position in
@@ -276,13 +299,8 @@ class ScribesTextBuffer(SourceBuffer):
 			to, a text document.
 		@type uri: A String object.
 		"""
-		if self.__uri:
-			from cursor_metadata import update_cursor_position_in_database
-			from cursor import get_cursor_line, get_cursor_index
-			cursor_line = get_cursor_line(self)
-			cursor_index = get_cursor_index(self)
-			cursor_position = cursor_line, cursor_index
-			update_cursor_position_in_database(str(uri), cursor_position)
+		self.__stop_update_cursor_timer()
+		self.__update_cursor_position()
 		self.__destroy()
 		return False
 

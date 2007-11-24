@@ -32,10 +32,8 @@ text editor instances.
 @contact: mystilleef@gmail.com
 """
 
-from pygtk import require
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_OBJECT, TYPE_PYOBJECT
 from gobject import SIGNAL_RUN_FIRST
-require("2.0")
 
 class Editor(GObject):
 	"""
@@ -91,7 +89,6 @@ class Editor(GObject):
 		@param file_uri: A file to open.
 		@param type: A String object.
 		"""
-		from gobject import idle_add, PRIORITY_HIGH
 		GObject.__init__(self)
 		self.__signal_id_1 = self.connect("initialized-attributes", self.__initialized_attributes_cb)		self.__signal_id_2 = self.connect("created-widgets", self.__created_widgets_cb)
 		self.__signal_id_3 = self.connect_after("gui-created", self.__gui_created_after_cb)
@@ -105,6 +102,7 @@ class Editor(GObject):
 		self.__signal_id_12 = self.connect("rename-document", self.__rename_document_cb)
 		self.__signal_id_13 = self.connect_after("created-widgets", self.__created_widgets_after_cb)
 		self.__signal_id_14 = self.connect_after("reload-document", self.__reload_document_cb)
+		from gobject import idle_add, PRIORITY_HIGH
 		idle_add(self.__init_attributes, manager, file_uri, encoding, priority=PRIORITY_HIGH)
 		#idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 

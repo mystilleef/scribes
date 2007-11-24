@@ -204,8 +204,7 @@ def select_word(textbuffer, iterator):
 	"""
 	result = None
 	result = get_word_boundary(iterator)
-	if result:
-		textbuffer.select_range(result[0], result[1])
+	if result: textbuffer.select_range(result[0], result[1])
 	return result
 
 try:

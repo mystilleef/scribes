@@ -46,8 +46,6 @@ class FileSaver(object):	"""
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(editor)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		self.__signal_id_1 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_no_save_cb)
 		self.__signal_id_3 = editor.connect("save-document", self.__save_document_cb)
@@ -69,6 +67,8 @@ class FileSaver(object):	"""
 		editor.session_bus.add_signal_receiver(self.__is_ready_cb,
 						signal_name="is_ready",
 						dbus_interface=save_dbus_service)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor):
 		"""
@@ -318,8 +318,6 @@ class FileSaver(object):	"""
 			self.__toggle_readonly_mode()
 			self.__emit_save_signal()
 			if self.__can_quit: self.__destroy()
-			from gtk.gdk import flush
-			flush()
 		return False
 
 	def __toggle_readonly_mode(self):
@@ -447,7 +445,8 @@ class FileSaver(object):	"""
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.save_file()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.save_file, priority=PRIORITY_LOW)
 		return
 
 	def __saving_document_cb(self, *args):
@@ -533,7 +532,8 @@ class FileSaver(object):	"""
 		"""
 		if self.__editor.is_readonly: self.__toggle_readonly = True
 		self.__should_rename = True
-		self.save_file()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.save_file, priority=PRIORITY_LOW)
 		return
 
 	def __is_ready_cb(self, *args):
