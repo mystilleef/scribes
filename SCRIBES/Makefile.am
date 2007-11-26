@@ -40,6 +40,7 @@ scribes_PYTHON = \
 	Feedback.py \
 	FileSaver.py \
 	FileLoader.py \
+	FileModificationMonitor.py \
 	fsbutton.py \
 	GlobalStore.py \
 	InstanceManager.py \

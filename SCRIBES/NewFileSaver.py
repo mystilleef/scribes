@@ -473,7 +473,7 @@ class FileSaver(object):	"""
 		@type uri: A String object.
 		"""
 		self.__error_flag = False
-		self.__remove_save_timer()
+		#self.__remove_save_timer()
 		return
 
 	def __save_error_cb(self, *args):

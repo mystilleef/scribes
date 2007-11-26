@@ -140,10 +140,8 @@ class ModificationDialog(object):
 		@param self: Reference to the ModificationDialog instance.
 		@type self: A ModificationDialog object.
 		"""
-		self.__editor.response()
 		self.__editor.emit("hide-dialog", self.__window)
 		self.__window.hide()
-		self.__editor.response()
 		return
 
 	def __ignore_clicked_cb(self, *args):
@@ -153,7 +151,6 @@ class ModificationDialog(object):
 		@param self: Reference to the ModificationDialog instance.
 		@type self: A ModificationDialog object.
 		"""
-		self.__filesaver.reset_save_flag()
 		self.__hide()
 		return True
 
@@ -164,7 +161,6 @@ class ModificationDialog(object):
 		@param self: Reference to the ModificationDialog instance.
 		@type self: A ModificationDialog object.
 		"""
-		self.__filesaver.reset_save_flag()
 		self.__editor.trigger("save_file")
 		self.__hide()
 		return True
@@ -176,7 +172,6 @@ class ModificationDialog(object):
 		@param self: Reference to the ModificationDialog instance.
 		@type self: A ModificationDialog object.
 		"""
-		self.__filesaver.reset_save_flag()
 		self.__editor.emit("reload-document")
 		self.__hide()
 		return True

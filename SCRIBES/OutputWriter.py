@@ -70,6 +70,9 @@ class OutputWriter(GObject):
 		return
 
 	def write_file(self, editor_id, uri, text, swap_uri):
+		"""
+		Asyncronously write file to disk
+		"""
 		self.__reset_attributes()
 		from gnomevfs import OPEN_WRITE, URI
 		from gnomevfs.async import create
@@ -188,8 +191,7 @@ class OutputWriter(GObject):
 		@param self: Reference to the OutputWriter instance.
 		@type self: An OutputWriter object.
 		"""
-		editor_id = self.__id
-		self.emit("saved", editor_id)
+		self.emit("saved", self.__id)
 		return
 
 	def __error(self, error_message, error_id):
@@ -205,8 +207,7 @@ class OutputWriter(GObject):
 		@param error_id: A number associated with an error.
 		@type error_id: An Integer object.
 		"""
-		editor_id = self.__id
-		self.emit("error", editor_id, error_message, error_id)
+		self.emit("error", self.__id, error_message, error_id)
 		return
 
 	def __get_file_info(self):
