@@ -31,7 +31,7 @@ This module contains code that generates the command line help manual.
 
 
 def help():
-	u"""
+	"""
 	Generate the command line help manual.
 	"""
 	from internationalization import msg0124, msg0125, msg0126, msg0127, msg0128

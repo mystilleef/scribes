@@ -354,6 +354,7 @@ class ScribesTextBuffer(SourceBuffer):
 		try:
 			from psyco import bind
 			bind(self.__cursor_position_cb)
+			bind(self.__stop_update_cursor_timer)
 		except ImportError:
 			pass
 		except:

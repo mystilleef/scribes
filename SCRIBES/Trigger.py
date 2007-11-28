@@ -66,6 +66,7 @@ class Trigger(GObject):
 			if this trigger should be removed or destroyed.
 		@type removable: A Boolean object.
 		"""
+		self.__precompile_methods()
 		GObject.__init__(self)
 		self.__init_attributes(name, accelerator, description, error, removable)
 
@@ -160,3 +161,12 @@ class Trigger(GObject):
 		del self.__name, self.__description, self.__accelerator, self
 		self = None
 		return
+
+	def __precompile_methods(self):
+		try:
+			from psyco import bind
+			bind(self.__get_name)
+			bind(self.__get_accelerator)
+		except ImportError:
+			pass
+		return False

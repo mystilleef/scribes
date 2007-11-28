@@ -29,8 +29,6 @@ It allows editor instances to communicate with each other.
 @contact: mystilleef@gmail.com
 """
 
-from pygtk import require
-require("2.0")
 INTERVAL = -1
 RECURSIONLIMITMULTIPLIER = 10000
 close_file = lambda editor: editor.emit("close-document")
@@ -49,7 +47,7 @@ class EditorManager(object):
 		@type self: An EditorManager object.
 		"""
 		self.__set_vm_properties()
-		from gobject import timeout_add, idle_add, PRIORITY_LOW
+		from gobject import idle_add, PRIORITY_LOW
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
@@ -60,7 +58,7 @@ class EditorManager(object):
 		signal(SIGSEGV, self.__kernel_signals_cb)
 		signal(SIGTERM, self.__kernel_signals_cb)
 		#idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
-		#idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
 		"""
@@ -90,10 +88,10 @@ class EditorManager(object):
 		@type self: An EditorManager object.
 		"""
 		from sys import setcheckinterval, getrecursionlimit, setrecursionlimit, setdlopenflags
-		from dl import RTLD_LAZY
+		from dl import RTLD_LAZY, RTLD_GLOBAL
 		setcheckinterval(INTERVAL)
 		setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
-		setdlopenflags(RTLD_LAZY)
+		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 		return
 
 ########################################################################
@@ -188,6 +186,8 @@ class EditorManager(object):
 		else:
 			from gobject import idle_add
 			idle_add(self.__new_editor)
+			#from cProfile import run
+			#run("__new_editor()")
 		return False
 
 	def open_files(self, uris=None, encoding=None):
@@ -474,6 +474,5 @@ class EditorManager(object):
 		"""
 		self.__remove_swap_area()
 		self.__save_process_monitor.destroy()
-		from os import _exit
-		_exit(0)
+		raise SystemExit
 		return

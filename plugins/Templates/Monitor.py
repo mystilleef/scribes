@@ -50,6 +50,7 @@ class TemplateMonitor(object):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
+		self.__precompile_methods()
 		self.__init_attributes(manager, editor)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = manager.connect("loaded-general-templates", self.__loaded_general_templates_cb)
@@ -81,6 +82,17 @@ class TemplateMonitor(object):
 		self.__bmark = self.__editor.textbuffer.create_mark(None, iterator, True)
 		self.__emark = self.__editor.textbuffer.create_mark(None, iterator, True)
 		return
+
+	def __precompile_methods(self):
+		try:
+			from psyco import bind
+			bind(self.__key_press_event_cb)
+			bind(self.__cursor_moved_cb)
+			bind(self.__get_template)
+			bind(self.__check_trigger)
+		except ImportError:
+			pass
+		return False
 
 	def __get_template(self, word):
 		"""

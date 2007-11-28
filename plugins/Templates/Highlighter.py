@@ -129,7 +129,7 @@ class Highlighter(object):
 		self.__editor.textbuffer.get_tag_table().add(tag)
 		tag.set_property("background", "gray")
 		tag.set_property("foreground", "black")
-		from pango import WEIGHT_HEAVY, STYLE_ITALIC
-#		tag.set_property("weight", WEIGHT_HEAVY)
+		from pango import WEIGHT_HEAVY
+		tag.set_property("weight", WEIGHT_HEAVY)
 #		tag.set_property("style", STYLE_ITALIC)
 		return tag

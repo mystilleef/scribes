@@ -102,9 +102,9 @@ class Editor(GObject):
 		self.__signal_id_12 = self.connect("rename-document", self.__rename_document_cb)
 		self.__signal_id_13 = self.connect_after("created-widgets", self.__created_widgets_after_cb)
 		self.__signal_id_14 = self.connect_after("reload-document", self.__reload_document_cb)
-		from gobject import idle_add, PRIORITY_HIGH
+		from gobject import idle_add, PRIORITY_HIGH, PRIORITY_LOW
 		idle_add(self.__init_attributes, manager, file_uri, encoding, priority=PRIORITY_HIGH)
-		#idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 ########################################################################
 #
@@ -1026,4 +1026,17 @@ class Editor(GObject):
 		self.__statuscontainer = None
 		# A signal emitted after crucial data attributes have been created.
 		self.emit("initialized-attributes")
+		return False
+
+	def __precompile_methods(self):
+		try:
+			from psyco import bind
+			bind(self.__get_textbuffer)
+			bind(self.__get_textview)
+			bind(self.__get_core_plugin_folder)
+			bind(self.__get_is_readonly)
+			bind(self.__get_uri)
+			bind(self.get_cursor_position)
+		except ImportError:
+			pass
 		return False

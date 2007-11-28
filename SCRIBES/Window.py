@@ -42,6 +42,7 @@ class ScribesWindow(Window):
 		@param self: Reference to the text editor's window instance.
 		@type self: A ScribesWindow object.
 		"""
+		self.__precompile_methods()
 		Window.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -619,6 +620,14 @@ class ScribesWindow(Window):
 	def __determine_title(self, uri):
 		from gnomevfs import URI
 		self.__title = URI(uri).short_name.encode("utf-8")
+		return False
+
+	def __precompile_methods(self):
+		try:
+			from psyco import bind
+			bind(self.__key_press_event_cb)
+		except ImportError:
+			pass
 		return False
 
 	def __destroy(self):

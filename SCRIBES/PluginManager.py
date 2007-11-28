@@ -45,6 +45,7 @@ class PluginManager(object):
 		@type editor: A editor object.
 		"""
 		try:
+			self.__precompile_methods()
 			from Exceptions import PluginFolderNotFoundError
 			self.__init_attributes(editor)
 			self.__check_plugin_folders()
@@ -53,6 +54,8 @@ class PluginManager(object):
 			self.__registration_id = self.__editor.register_object()
 			self.__signal_id_1 = editor.connect("close-document", self.__quit_cb)
 			self.__signal_id_2 = editor.connect("close-document-no-save", self.__quit_cb)
+			#from gobject import idle_add, PRIORITY_LOW
+			#idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		except PluginFolderNotFoundError:
 			print "Error: No plugin folder found"
 
@@ -281,6 +284,15 @@ class PluginManager(object):
 		del self
 		self = None
 		return
+
+	def __precompile_methods(self):
+		try:
+			from psyco import bind
+			bind(self.__init_module)
+			bind(self.__load_plugin)
+		except:
+			pass
+		return False
 
 	def __quit_cb(self, *args):
 		"""

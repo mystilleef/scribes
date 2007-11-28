@@ -29,7 +29,9 @@ This module initializes the text editor's server.
 """
 
 # The Python library path is generated at build time.
-from sys import argv, path
+from dl import RTLD_LAZY, RTLD_GLOBAL
+from sys import argv, path, setdlopenflags
+setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 python_path = "/usr/lib/python2.5/site-packages"
 path.insert(0, python_path)
 from SCRIBES.Main import main

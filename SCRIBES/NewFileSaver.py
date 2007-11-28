@@ -226,7 +226,8 @@ class FileSaver(object):	"""
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""
-		self.save_file()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.save_file, priority=PRIORITY_LOW)
 		return False
 
 	def __remove_save_timer(self):
@@ -250,6 +251,7 @@ class FileSaver(object):	"""
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""
+		self.__remove_save_timer()
 		try:
 			processor = self.__get_save_processor()
 			processor.update(self.__editor.id, dbus_interface=save_dbus_service,
@@ -267,7 +269,6 @@ class FileSaver(object):	"""
 						signal_name="is_ready",
 						dbus_interface=save_dbus_service)
 		self.__encoding_manager.destroy()
-		self.__remove_save_timer()
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
@@ -294,7 +295,7 @@ class FileSaver(object):	"""
 		"""
 		try:
 			from psyco import bind
-			bind(save_file)
+			bind(self.save_file)
 			bind(self.__save_file)
 		except ImportError:
 			pass
@@ -368,7 +369,8 @@ class FileSaver(object):	"""
 		from operator import not_
 		if self.__error_flag: return self.__destroy()
 		if not_(editor.file_is_saved):
-			self.save_file(True)
+			from gobject import idle_add
+			idle_add(self.save_file, True)
 		else:
 			self.__destroy()
 		return
@@ -473,7 +475,7 @@ class FileSaver(object):	"""
 		@type uri: A String object.
 		"""
 		self.__error_flag = False
-		#self.__remove_save_timer()
+		self.__remove_save_timer()
 		return
 
 	def __save_error_cb(self, *args):
@@ -500,12 +502,12 @@ class FileSaver(object):	"""
 		@param textbuffer: Reference to the text editor's buffer.
 		@type textbuffer: A ScribesTextBuffer object.
 		"""
-		if textbuffer.get_modified() is False: return True
+		if textbuffer.get_modified() is False: return False
 		self.__editor.emit("modified-document")
-		if self.__editor.uri is None: return True
+		if self.__editor.uri is None: return False
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__save_timer = timeout_add(21000, self.__save_file_timeout_cb, priority=PRIORITY_LOW)
-		return True
+		return False
 
 	def __reload_document_cb(self, *args):
 		"""
