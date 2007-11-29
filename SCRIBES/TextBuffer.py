@@ -97,7 +97,7 @@ class ScribesTextBuffer(SourceBuffer):
 		self.set_check_brackets(False)
 		self.set_max_undo_levels(0)
 		self.set_text("")
-		self.set_modified(False)
+		if self.get_modified(): self.set_modified(False)
 		return False
 
 ################################################################################
@@ -135,7 +135,7 @@ class ScribesTextBuffer(SourceBuffer):
 		@param editor: An instance of the text editor.
 		@type editor: An Editor object.
 		"""
-		self.set_modified(False)
+		if self.get_modified(): self.set_modified(False)
 		self.end_not_undoable_action()
 		self.__undoable_action = False
 		self.__set_cursor_positon()
@@ -152,7 +152,7 @@ class ScribesTextBuffer(SourceBuffer):
 		@param editor: An instance of the text editor's.
 		@type editor: An Editor object.
 		"""
-		self.set_modified(False)
+		if self.get_modified(): self.set_modified(False)
 		return False
 
 	def __enable_readonly_cb(self, editor):
@@ -228,16 +228,16 @@ class ScribesTextBuffer(SourceBuffer):
 		@type editor: An Editor object.
 		"""
 		self.__uri = uri
-		self.set_modified(False)
+		if self.get_modified(): self.set_modified(False)
 		self.set_check_brackets(True)
 		from gobject import idle_add
 		idle_add(self.__activate_sytnax_colors)
 		return False
 
 	def __reload_document_cb(self, *args):
-		self.set_modified(False)
+		if self.get_modified(): self.set_modified(False)
 		self.set_text("")
-		self.set_modified(False)
+		if self.get_modified(): self.set_modified(False)
 		return False
 
 	def __cursor_position_cb(self, *args):
