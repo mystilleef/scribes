@@ -30,11 +30,29 @@ This module initializes the text editor's server.
 
 # The Python library path is generated at build time.
 from dl import RTLD_LAZY, RTLD_GLOBAL
-from sys import argv, path, setdlopenflags
+from sys import argv, path, setdlopenflags, settrace
 setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 python_path = "@python_path@"
 path.insert(0, python_path)
 from SCRIBES.Main import main
 
+def traceit(frame, event, arg):
+	from operator import eq
+	if eq(event, "line"):
+		try:		
+			lineno = frame.f_lineno
+			filename = frame.f_globals["__file__"]
+			if (filename.endswith(".pyc") or
+				filename.endswith(".pyo")):
+				filename = filename[:-1]
+			name = frame.f_globals["__name__"]
+			from linecache import getline
+			line = getline(filename, lineno)
+			print "%s:%s: %s" % (name, lineno, line.rstrip())
+		except KeyError:
+			print "Keyerror"
+	return traceit
+
 if __name__ == "__main__":
+	#settrace(traceit)
 	main(argv[1:])
