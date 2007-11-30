@@ -171,6 +171,9 @@ class CompletionTreeView(TreeView):
 			from psyco import bind
 			bind(self.__populate_model)
 			bind(self.__insert_word_completion)
+			bind(self.__key_press_event_cb)
+			bind(self.__match_found_cb)
+			bind(self.__no_match_found_cb)
 		except ImportError:
 			pass
 		return False

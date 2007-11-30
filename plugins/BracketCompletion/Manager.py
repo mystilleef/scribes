@@ -437,6 +437,8 @@ class BracketManager(object):
 		"""
 		try:
 			from psyco import bind
+			bind(self.__key_press_event_cb)
+			bind(self.__cursor_moved_cb)
 			bind(self.__insert_pair_characters)
 			bind(self.__insert_closing_pair_character)
 			bind(self.__insert_enclosed_selection)

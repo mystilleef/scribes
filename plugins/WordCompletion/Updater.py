@@ -54,7 +54,7 @@ class CompletionUpdater(object):
 		self.__init_attributes(manager, editor)
 		from gobject import idle_add, PRIORITY_LOW, timeout_add
 		timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
-		timeout_add(500, self.__precompile_methods, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		self.__signal_id_1 = self.__editor.connect("loaded-document", self.__loaded_document_cb)
 		self.__signal_id_2 = self.__editor.textbuffer.connect_after("changed", self.__changed_cb)
 		self.__signal_id_3 = self.__manager.connect("destroy", self.__destroy_cb)
@@ -415,6 +415,7 @@ class CompletionUpdater(object):
 		"""
 		try:
 			from psyco import bind
+			bind(self.__changed_cb)
 			bind(self.__index)
 			bind(self.__update_queue)
 			bind(self.__send_text)

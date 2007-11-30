@@ -28,6 +28,8 @@ word completion.
 @license: GNU GPLv2 or Later
 @contact: mystilleef@gmail.com
 """
+from dbus.mainloop.glib import DBusGMainLoop
+DBusGMainLoop(set_as_default=True)
 INTERVAL = 500
 RECURSIONLIMITMULTIPLIER = 1000
 indexer_dbus_service = "org.sourceforge.ScribesIndexer"

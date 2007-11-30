@@ -37,22 +37,26 @@ path.insert(0, python_path)
 from SCRIBES.Main import main
 
 def traceit(frame, event, arg):
-	from operator import eq
-	if eq(event, "line"):
-		try:		
-			lineno = frame.f_lineno
-			filename = frame.f_globals["__file__"]
-			if (filename.endswith(".pyc") or
-				filename.endswith(".pyo")):
-				filename = filename[:-1]
-			name = frame.f_globals["__name__"]
-			from linecache import getline
-			line = getline(filename, lineno)
-			print "%s:%s: %s" % (name, lineno, line.rstrip())
-		except KeyError:
-			print "Keyerror"
+	from operator import ne
+	if ne(event, "line"): return traceit
+	try:		
+		lineno = frame.f_lineno
+		filename = frame.f_globals["__file__"]
+		if filename.endswith(".pyc") or filename.endswith(".pyo"):
+			filename = filename[:-1]
+		
+		name = frame.f_globals["__name__"]
+		if name.startswith("sre_") or name.startswith("posixpath") or name.startswith("gettext") \
+			or name.startswith("locale") or name.startswith("re") or name.startswith("encoding") \
+			or name.startswith("opcode") or name.startswith("token") or name.startswith("tokenize") \
+			or name.startswith("UserDict") or name.startswith("problem_report"): return traceit
+		from linecache import getline
+		line = getline(filename, lineno)
+		print "%s:%s: %s" % (name, lineno, line.rstrip())
+	except KeyError:
+		print "Keyerror"
 	return traceit
 
 if __name__ == "__main__":
-	#settrace(traceit)
+#	settrace(traceit)
 	main(argv[1:])

@@ -42,6 +42,7 @@ class CompletionDictionary(object):
 		@param self: Reference to the CompletionDictionary instance.
 		@type self: A CompletionDictionary object.
 		"""
+		self.__precompile_methods()
 		self.__init_attributes()
 
 	def __init_attributes(self):
@@ -88,3 +89,14 @@ class CompletionDictionary(object):
 
 	def get_dictionary(self):
 		return self.__dictionary
+
+
+	def __precompile_methods(self):
+		try:
+			from psyco import bind
+			bind(self.__update)
+			bind(self.update)
+			bind(self.get_dictionary)
+		except ImportError:
+			pass
+		return False

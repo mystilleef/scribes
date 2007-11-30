@@ -52,7 +52,7 @@ class EditorManager(object):
 		from DBusService import DBusService
 		DBusService(self)
 		self.__init_attributes()
-		self.__init_i18n()
+		#self.__init_i18n()
 		from signal import signal, SIGHUP, SIGTERM, SIGSEGV
 		signal(SIGHUP, self.__kernel_signals_cb)
 		signal(SIGSEGV, self.__kernel_signals_cb)

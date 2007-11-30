@@ -180,6 +180,7 @@ class CompletionMonitor(object):
 			bind(self.__find_matches)
 			bind(self.__sort_matches_occurrence_only)
 			bind(self.__insert_text_cb)
+			bind(self.__key_press_event_cb)
 		except ImportError:
 			pass
 		except:

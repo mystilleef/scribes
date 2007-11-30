@@ -217,7 +217,7 @@ class FileSaver(object):	"""
 		self.__editor.show_error_message(message, title, self.__editor.window)
 		self.__editor.emit("save-error", str(self.__editor.uri))
 		self.__editor.feedback.unset_modal_message(message_id)
-		return
+		return False
 
 	def __save_file_timeout_cb(self):
 		"""
@@ -373,7 +373,7 @@ class FileSaver(object):	"""
 			idle_add(self.save_file, True)
 		else:
 			self.__destroy()
-		return
+		return True
 
 	def __close_document_no_save_cb(self, editor):
 		"""
@@ -387,7 +387,7 @@ class FileSaver(object):	"""
 		"""
 		self.__remove_save_timer()
 		self.__destroy()
-		return
+		return True
 
 	def __checking_document_cb(self, editor, uri):
 		"""
@@ -403,7 +403,7 @@ class FileSaver(object):	"""
 		@type uri: A String object.
 		"""
 		editor.textbuffer.handler_block(self.__signal_id_7)
-		return
+		return True
 
 	def __loaded_document_cb(self, editor, uri):
 		"""
@@ -419,7 +419,7 @@ class FileSaver(object):	"""
 		@type uri: A String object.
 		"""
 		editor.textbuffer.handler_unblock(self.__signal_id_7)
-		return
+		return True
 
 	def __load_error_cb(self, editor, uri):
 		"""
@@ -435,7 +435,7 @@ class FileSaver(object):	"""
 		@type uri: A String object.
 		"""
 		editor.textbuffer.handler_unblock(self.__signal_id_7)
-		return
+		return True
 
 	def __save_document_cb(self, editor):
 		"""
@@ -449,7 +449,7 @@ class FileSaver(object):	"""
 		"""
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.save_file, priority=PRIORITY_LOW)
-		return
+		return True
 
 	def __saving_document_cb(self, *args):
 		"""
@@ -459,7 +459,7 @@ class FileSaver(object):	"""
 		@type self: A FileSaver object.
 		"""
 		self.__is_saving = True
-		return
+		return True
 
 	def __saved_document_cb(self, editor, uri):
 		"""
@@ -476,7 +476,7 @@ class FileSaver(object):	"""
 		"""
 		self.__error_flag = False
 		self.__remove_save_timer()
-		return
+		return True
 
 	def __save_error_cb(self, *args):
 		"""
@@ -490,7 +490,7 @@ class FileSaver(object):	"""
 		self.__queue_flag = False
 		self.__remove_save_timer()
 		self.__queue.clear()
-		return
+		return True
 
 	def __modified_changed_cb(self, textbuffer):
 		"""
@@ -517,7 +517,7 @@ class FileSaver(object):	"""
 		@type self: A FileSaver object.
 		"""
 		self.__remove_save_timer()
-		return
+		return False
 
 	def __rename_document_cb(self, editor, uri):
 		"""
@@ -536,7 +536,7 @@ class FileSaver(object):	"""
 		self.__should_rename = True
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.save_file, priority=PRIORITY_LOW)
-		return
+		return False
 
 	def __is_ready_cb(self, *args):
 		"""
@@ -546,7 +546,7 @@ class FileSaver(object):	"""
 		@type self: A FileSaver object.
 		"""
 		self.__processor = self.__editor.get_save_processor()
-		return
+		return False
 
 	def __saved_file_cb(self, editor_id):
 		"""
@@ -559,10 +559,10 @@ class FileSaver(object):	"""
 		@type editor_id: An Integer object.
 		"""
 		from operator import ne
-		if ne(self.__editor.id, editor_id): return True
+		if ne(self.__editor.id, editor_id): return False
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__check_queue, priority=PRIORITY_LOW)
-		return True
+		return False
 
 	def __error_cb(self, editor_id, error_message, error_id):
 		"""
@@ -581,10 +581,12 @@ class FileSaver(object):	"""
 		@type error_id: An Integer object.
 		"""
 		from operator import ne
-		if ne(self.__editor.id, editor_id): return
+		if ne(self.__editor.id, editor_id): return False
 		error_message = error_message + " " + str(error_id)
-		self.__error(error_message)
-		return
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__error, error_message, priority=PRIORITY_LOW)
+#		self.__error(error_message)
+		return False
 
 	def __reply_handler_cb(self, *args):
 		"""
@@ -593,7 +595,7 @@ class FileSaver(object):	"""
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""
-		return
+		return None
 
 	def __error_handler_cb(self, error):
 		"""
@@ -602,6 +604,9 @@ class FileSaver(object):	"""
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__error, error, priority=PRIORITY_LOW)
 		print "SAVE ERROR: BEEF!"
-		self.__error(error)
-		return
+#		self.__error(error)
+		return None
+		

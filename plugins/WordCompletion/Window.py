@@ -49,6 +49,7 @@ class CompletionWindow(Window):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
+		self.__precompile_methods()
 		from gtk import WINDOW_POPUP
 		Window.__init__(self, WINDOW_POPUP)
 		self.__init_attributes(manager, editor)
@@ -355,4 +356,14 @@ class CompletionWindow(Window):
 		@type self: A ScribesTextView object.
 		"""
 		self.__hide_window()
+		return False
+
+	def __precompile_methods(self):
+		try:
+			from psyco import bind
+			bind(self.__key_press_event_cb)
+			bind(self.__show_window_cb)
+			bind(self.__generic_hide_cb)
+		except ImportError:
+			pass
 		return False

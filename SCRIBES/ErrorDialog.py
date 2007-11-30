@@ -145,9 +145,7 @@ class ScribesErrorDialog(MessageDialog):
 		if self.__use_signals: self.__editor.emit("show-dialog", self)
 		self.show_all()
 		self.run()
-		print "YES"
 		self.__hide_dialog()
-		print "YES"
 		return
 
 	def __hide_dialog(self):
@@ -159,6 +157,8 @@ class ScribesErrorDialog(MessageDialog):
 		"""
 		if self.__use_signals: self.__editor.emit("hide-dialog", self)
 		self.hide_all()
+		from gtk import RESPONSE_CLOSE
+		self.response(RESPONSE_CLOSE)
 		self.__use_signals = False
 		return
 

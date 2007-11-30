@@ -146,19 +146,19 @@ class PluginManager(object):
 		@type self: A PluginManager object.
 		"""
 		from os import listdir
-		from gobject import idle_add
+		from gobject import idle_add, PRIORITY_LOW
 		core_files = listdir(self.__editor.core_plugin_folder)
 		for filename in core_files:
-			idle_add(self.__init_module, filename, self.__editor.core_plugin_folder)
+			idle_add(self.__init_module, filename, self.__editor.core_plugin_folder, priority=PRIORITY_LOW)
 		home_files = listdir(self.__editor.home_plugin_folder)
 		for filename in home_files:
-			idle_add(self.__init_module, filename, self.__editor.home_plugin_folder)
+			idle_add(self.__init_module, filename, self.__editor.home_plugin_folder, priority=PRIORITY_LOW)
 		return False
 
 	def __unload_plugins(self):
-		from gobject import idle_add
+		from gobject import idle_add, PRIORITY_LOW
 		for plugin_info in self.__plugin_objects.copy():
-			idle_add(self.__unload_plugin, plugin_info)
+			idle_add(self.__unload_plugin, plugin_info, priority=PRIORITY_LOW)
 		return False
 
 	def __get_module_info(self, module):

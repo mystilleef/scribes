@@ -242,9 +242,9 @@ class ScribesTextBuffer(SourceBuffer):
 
 	def __cursor_position_cb(self, *args):
 		self.__editor.emit("cursor-moved")
-#		self.__stop_update_cursor_timer()
-#		from gobject import timeout_add, PRIORITY_LOW
-#		self.__cursor_update_timer = timeout_add(500, self.__update_cursor_position, priority=PRIORITY_LOW)
+		self.__stop_update_cursor_timer()
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__cursor_update_timer = timeout_add(500, self.__update_cursor_position, priority=PRIORITY_LOW)
 		return False
 
 ########################################################################

@@ -18,6 +18,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
 # USA
 
+save_dbus_service = "org.sourceforge.ScribesSaveProcessor"
+
 class FileModificationMonitor(object):
 	"""
 	This class creates an object that checks if a file opened by Scribes
@@ -38,10 +40,14 @@ class FileModificationMonitor(object):
 		self.__signal_id_1 = editor.connect("rename-document", self.__rename_document_cb)
 		self.__signal_id_2 = editor.connect("renamed-document", self.__renamed_document_cb)
 		self.__signal_id_3 = editor.connect("loaded-document", self.__renamed_document_cb)
-		self.__signal_id_5 = editor.connect("saved-document", self.__saved_document_cb)
-		self.__signal_id_6 = editor.connect("save-error", self.__saved_document_cb)
-		self.__signal_id_7 = editor.connect("close-document", self.__close_document_cb)
-		self.__signal_id_8 = editor.connect("close-document-no-save", self.__close_document_cb)
+		self.__signal_id_4 = editor.connect("close-document", self.__close_document_cb)
+		self.__signal_id_5 = editor.connect("close-document-no-save", self.__close_document_cb)		
+		editor.session_bus.add_signal_receiver(self.__saved_document_cb,
+						signal_name="saved_file",
+						dbus_interface=save_dbus_service)
+		editor.session_bus.add_signal_receiver(self.__saved_document_cb,
+						signal_name="error",
+						dbus_interface=save_dbus_service)
 
 	def __init_attributes(self, editor):
 		"""
@@ -58,8 +64,7 @@ class FileModificationMonitor(object):
 		self.__last_modification_time = None
 		self.__monitor_id = None
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
-		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
-		self.__signal_id_7 = self.__signal_id_8 = None
+		self.__signal_id_4 = self.__signal_id_5 = None
 		return
 
 	def __start_monitoring_file(self):
@@ -83,6 +88,7 @@ class FileModificationMonitor(object):
 		@param self: Reference to the FileModificationMonitor instance.
 		@type self: A FileModificationMonitor object.
 		"""
+		self.__last_modification_time = None
 		from gnomevfs import monitor_cancel
 		from operator import not_
 		if not_(self.__monitor_id): return
@@ -131,13 +137,19 @@ class FileModificationMonitor(object):
 		"""
 		self.__stop_monitoring_file()
 		if self.__modification_dialog: self.__modification_dialog.destroy()
+		self.__editor.session_bus.remove_signal_receiver(
+						self.__saved_document_cb,
+						signal_name="saved_file",
+						dbus_interface=save_dbus_service)
+		self.__editor.session_bus.remove_signal_receiver(
+						self.__saved_document_cb,
+						signal_name="error",
+						dbus_interface=save_dbus_service)
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
 		del self
 		self = None
 		return
