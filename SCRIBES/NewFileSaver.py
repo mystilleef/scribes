@@ -369,8 +369,8 @@ class FileSaver(object):	"""
 		from operator import not_
 		if self.__error_flag: return self.__destroy()
 		if not_(editor.file_is_saved):
-			from gobject import idle_add
-			idle_add(self.save_file, True)
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.save_file, True, priority=PRIORITY_LOW)
 		else:
 			self.__destroy()
 		return True

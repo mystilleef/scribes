@@ -810,8 +810,8 @@ class Editor(GObject):
 		self.__instance_manager.unregister_editor(self, self.__manager_registration_id)
 		del self
 		self = None
-		#from gc import collect
-		#collect()
+		from gc import collect
+		collect()
 		return False
 
 #########################################################################

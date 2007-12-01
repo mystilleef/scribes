@@ -136,3 +136,5 @@ class CloseWindowTrigger(GObject):
 		del self
 		self = None
 		return
+		
+		

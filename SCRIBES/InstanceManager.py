@@ -30,7 +30,7 @@ It allows editor instances to communicate with each other.
 """
 
 INTERVAL = -1
-RECURSIONLIMITMULTIPLIER = 10000
+RECURSIONLIMITMULTIPLIER = 100
 close_file = lambda editor: editor.emit("close-document")
 
 class EditorManager(object):
@@ -53,10 +53,10 @@ class EditorManager(object):
 		DBusService(self)
 		self.__init_attributes()
 		#self.__init_i18n()
-		from signal import signal, SIGHUP, SIGTERM, SIGSEGV
-		signal(SIGHUP, self.__kernel_signals_cb)
-		signal(SIGSEGV, self.__kernel_signals_cb)
-		signal(SIGTERM, self.__kernel_signals_cb)
+#		from signal import signal, SIGHUP, SIGTERM, SIGSEGV
+#		signal(SIGHUP, self.__kernel_signals_cb)
+#		signal(SIGSEGV, self.__kernel_signals_cb)
+#		signal(SIGTERM, self.__kernel_signals_cb)
 		#idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
 		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
@@ -90,7 +90,7 @@ class EditorManager(object):
 		from sys import setcheckinterval, getrecursionlimit, setrecursionlimit, setdlopenflags
 		from dl import RTLD_LAZY, RTLD_GLOBAL
 		setcheckinterval(INTERVAL)
-		setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
+		#setrecursionlimit()
 		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 		return
 

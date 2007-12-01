@@ -228,10 +228,8 @@ def get_cursor_window_coordinates(textview):
 	"""
 	# Get the cursor's iterator.
 	cursor_iterator = get_cursor_iterator(textview.get_buffer())
-
 	# Get the cursor's buffer coordinates.
 	rectangle = textview.get_iter_location(cursor_iterator)
-
 	# Get the cursor's window coordinates.
 	from gtk import TEXT_WINDOW_TEXT
 	position = textview.buffer_to_window_coords(TEXT_WINDOW_TEXT, rectangle.x,
@@ -249,7 +247,6 @@ def get_cursor_size(textview):
 	"""
 	# Get the cursor's iterator.
 	cursor_iterator = get_cursor_iterator(textview.get_buffer())
-
 	# Get the cursor's size via its buffer coordinates.
 	rectangle = textview.get_iter_location(cursor_iterator)
 	cursor_width = rectangle.width

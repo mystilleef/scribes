@@ -208,6 +208,8 @@ class ScribesWindow(Window):
 		# Save a document when the text editor's window loses focus.
 		if self.__editor.uri and self.__editor.file_is_saved is False and self.__editor.is_readonly is False:
 			self.__editor.trigger("save_file")
+		from gtk.gdk import flush
+		flush()
 		return False
 
 	def __state_event_cb(self, window, event):
