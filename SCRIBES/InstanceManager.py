@@ -30,7 +30,7 @@ It allows editor instances to communicate with each other.
 """
 
 INTERVAL = -1
-RECURSIONLIMITMULTIPLIER = 100
+RECURSIONLIMITMULTIPLIER = 1000000
 close_file = lambda editor: editor.emit("close-document")
 
 class EditorManager(object):
@@ -90,7 +90,7 @@ class EditorManager(object):
 		from sys import setcheckinterval, getrecursionlimit, setrecursionlimit, setdlopenflags
 		from dl import RTLD_LAZY, RTLD_GLOBAL
 		setcheckinterval(INTERVAL)
-		#setrecursionlimit()
+		setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
 		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 		return
 

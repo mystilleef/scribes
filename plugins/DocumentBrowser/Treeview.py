@@ -193,7 +193,6 @@ class BrowserTreeView(TreeView):
 			return	False
 		from gobject import idle_add
 		idle_add(self.__populate_model, uris)
-		#self.__populate_model(uris)
 		self.__manager.emit("show-browser")
 		return False
 
@@ -207,8 +206,7 @@ class BrowserTreeView(TreeView):
 		uris.sort()
 		self.__uri_list.sort()
 		from operator import eq
-		if eq(uris, self.__uri_list):
-			return
+		if eq(uris, self.__uri_list): return
 		self.__uri_list = uris
 		self.__model.clear()
 		for uri in self.__uri_list:
@@ -256,24 +254,20 @@ class BrowserTreeView(TreeView):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		self.__editor.response()
 		iterator = self.__model.get_iter(path)
 		uri = self.__model.get_value(iterator, 3)
 		self.__editor.instance_manager.focus_file(uri)
-		self.__editor.response()
 		return True
 
 	def __key_press_event_cb(self, treeview, event):
 		from operator import ne, not_
 		from gtk import keysyms
-		if ne(event.keyval, keysyms.Delete): return
+		if ne(event.keyval, keysyms.Delete): return False
 		selection = treeview.get_selection()
 		model, iterator = selection.get_selected()
-		if not_(iterator): return
+		if not_(iterator): return False
 		uri = model.get_value(iterator, 3)
 		model.remove(iterator)
 		self.__editor.select_row(self)
-		self.__editor.response()
 		self.__editor.instance_manager.close_files([uri])
-		self.__editor.response()
-		return
+		return False

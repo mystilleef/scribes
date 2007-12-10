@@ -37,11 +37,10 @@ class OpenDialog(object):
 		"""
 		self.__init_attributes(editor)
 		self.__set_properties()
-		self.__signal_id_1 = editor.connect("loaded-document", self.__reset_cb)
-		self.__signal_id_2 = editor.connect("renamed-document", self.__reset_cb)
-		self.__signal_id_3 = self.__dialog.connect("delete-event", self.__delete_event_cb)
-		self.__signal_id_4 = self.__dialog.connect("response", self.__response_cb)
-
+		self.__signal_id_1 = self.__dialog.connect("close", self.__delete_event_cb)
+		self.__signal_id_2 = self.__dialog.connect("response", self.__response_cb)
+		self.__signal_id_3 = self.__dialog.connect_after("map-event", self.__map_event_cb)
+		
 	def __init_attributes(self, editor):
 		"""
 		Initialize the dialog attributes.
@@ -65,7 +64,6 @@ class OpenDialog(object):
 		self.__status_id = None
 		self.__shortcut_folder_is_set = False
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
-		self.__signal_id_4 = self.__signal_id_5 = None
 		return
 
 	def __set_properties(self):
@@ -97,8 +95,6 @@ class OpenDialog(object):
 		self.__editor.emit("show-dialog", self.__dialog)
 		from i18n import msg0002
 		self.__status_id = self.__editor.feedback.set_modal_message(msg0002, "open")
-		self.__dialog.show_all()
-		self.__set_folder()
 		self.__dialog.run()
 		return
 
@@ -115,31 +111,26 @@ class OpenDialog(object):
 		return
 
 	def __set_folder(self):
-		from gobject import GError
-		try:
-			if not self.__editor.uri: return False
-			if self.__shortcut_folder_is_set is False:
-				from gnomevfs import URI
-				self.__dialog.add_shortcut_folder_uri(str(URI(self.__editor.uri).parent))
-				self.__shortcut_folder_is_set = True
-		except GError:
-			self.__shortcut_folder_is_set = True
+		from operator import not_
+		if not_(self.__editor.uri): return False
+		self.__dialog.set_uri(self.__editor.uri)
 		self.__dialog.select_uri(self.__editor.uri)
 		return False
-
-	def __reset_cb(self, *args):
-		self.__shortcut_folder_is_set = False
-		return
 
 	def __response_cb(self, dialog, response_id):
 		self.__hide()
 		from operator import ne
 		from gtk import RESPONSE_OK
-		if ne(response_id, RESPONSE_OK): return
+		if ne(response_id, RESPONSE_OK): return True
 		# Load selected uri(s) into the text editor's buffer.
 		uri_list = self.__dialog.get_uris()
 		self.__editor.open_files(uri_list)
-		return False
+		return True
+
+	def __map_event_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__set_folder)
+		return True
 
 	def destroy_(self):
 		self.__destroy()
@@ -158,12 +149,17 @@ class OpenDialog(object):
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__dialog)
-		self.__editor.disconnect_signal(self.__signal_id_4, self.__dialog)
 		self.__dialog.destroy()
 		del self
 		self = None
 		return
 
 	def __delete_event_cb(self, *args):
+		"""
+		Handles callback when the "close" signal is emitted.
+		
+		@param self: Reference to the OpenDialog instance.
+		@type self: An OpenDialog object.
+		"""
 		self.__hide()
 		return False

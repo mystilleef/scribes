@@ -58,5 +58,5 @@ def traceit(frame, event, arg):
 	return traceit
 
 if __name__ == "__main__":
-#	settrace(traceit)
+	#settrace(traceit)
 	main(argv[1:])

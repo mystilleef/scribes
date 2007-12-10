@@ -208,6 +208,12 @@ class ScribesWindow(Window):
 		# Save a document when the text editor's window loses focus.
 		if self.__editor.uri and self.__editor.file_is_saved is False and self.__editor.is_readonly is False:
 			self.__editor.trigger("save_file")
+		xcoordinate, ycoordinate = self.get_position()
+		width, height = self.get_size()
+		is_maximized = self.__is_maximized
+		# Update the metadata database with the size and position of the window.
+		from gobject import idle_add
+		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height)
 		from gtk.gdk import flush
 		flush()
 		return False
@@ -376,8 +382,7 @@ class ScribesWindow(Window):
 		@rtype: A Boolean object.
 		"""
 		if not self.__uri: return True
-		from operator import eq
-		if eq(self.get_title(), self.__title): self.set_title("*" + self.__title)
+		self.set_title("*" + self.__title)
 		return True
 
 	def __enable_fullscreen_cb(self, editor):
@@ -609,6 +614,18 @@ class ScribesWindow(Window):
 				window_position = (False, width, height, xcoordinate, ycoordinate)
 				update_window_position_in_database(str(self.__uri), window_position)
 		self.__destroy()
+		return False
+
+	def __update_position(self, is_maximized, xcoordinate, ycoordinate, width, height):
+		from operator import not_
+		if not_(self.__uri): return False
+		from position_metadata import update_window_position_in_database	
+		if is_maximized:
+			window_position = (True, None, None, None, None)
+			update_window_position_in_database(str(self.__uri), window_position)
+		else:
+			window_position = (False, width, height, xcoordinate, ycoordinate)
+			update_window_position_in_database(str(self.__uri), window_position)
 		return False
 
 	def __stop_window_position_timer(self):

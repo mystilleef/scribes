@@ -139,7 +139,7 @@ class StatusOne(ScribesStatusbar):
 		"""
 		self.context_id = context_id
 		self.text = text
-		return True
+		return False
 
 	def __statusone_text_pushed_cb(self, statusbar, context_id, text):
 		"""
@@ -160,7 +160,7 @@ class StatusOne(ScribesStatusbar):
 		"""
 		self.context_id = context_id
 		self.text = text
-		return True
+		return False
 
 class StatusTwo(ScribesStatusbar):
 	"""
@@ -329,7 +329,7 @@ class StatusThree(ScribesStatusbar):
 		self.pop(self.context_id)
 		self.context_id = self.get_context_id(mode)
 		self.push(self.context_id, mode)
-		return True
+		return False
 
 	def __statusthree_enable_readonly_cb(self, editor):
 		"""

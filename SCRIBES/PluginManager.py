@@ -309,3 +309,5 @@ class PluginManager(object):
 		from gobject import idle_add
 		idle_add(self.__unload_plugins)
 		return
+
+# This is a test line. This is a test line. This is a test line.

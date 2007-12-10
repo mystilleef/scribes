@@ -61,12 +61,10 @@ class BrowserWindow(Dialog):
 		@param self: Reference to the BrowserWindow instance.
 		@type self: A BrowserWindow object.
 		"""
-		self.__editor.response()
 		self.__editor.emit("show-dialog", self)
 		from i18n import msg0001
 		self.__status_id = self.__editor.feedback.set_modal_message(msg0001, "open")
 		Dialog.show_dialog(self)
-		self.__editor.response()
 		return
 
 	def hide_dialog(self):
@@ -76,11 +74,9 @@ class BrowserWindow(Dialog):
 		@param self: Reference to the BrowserWindow instance.
 		@type self: A BrowserWindow object.
 		"""
-		self.__editor.response()
 		self.__editor.emit("hide-dialog", self)
 		self.__editor.feedback.unset_modal_message(self.__status_id)
 		Dialog.hide_dialog(self)
-		self.__editor.response()
 		return
 
 	def __window_destroy_cb(self, manager):

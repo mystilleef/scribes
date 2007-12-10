@@ -57,6 +57,7 @@ def __open(uris=None):
 	@type uris: A List object.
 	"""
 	__open_via_dbus(uris)
+	#__init_threads()
 	from gobject import idle_add, PRIORITY_HIGH
 	idle_add(__launch_new_editor, uris, priority=PRIORITY_HIGH)
 	return
@@ -98,6 +99,18 @@ def __launch_new_editor(uris=None):
 	EditorManager().open_files(uris)
 	return False
 
+def __init_threads():
+	"""
+	Initialize GObject, DBus and GTK/GDK threads.
+	"""
+	from gobject import threads_init
+	threads_init()
+	from dbus.glib import threads_init
+	threads_init()
+	from gtk.gdk import threads_init
+	threads_init()
+	return 
+
 def __get_dbus_service():
 	"""
 	Get a D-Bus object representing a running Scribes process.
@@ -133,8 +146,8 @@ def __mainloop():
 	Initialize the GObject mainloop.
 	"""
 	__fork_scribes()
-	from gobject import MainLoop
-	MainLoop().run()
+	from gtk import main
+	main()
 	return
 
 def __fork_scribes():
@@ -161,8 +174,7 @@ def __can_fork():
 	from gconf import client_get_default
 	client = client_get_default()
 	fork_scribes = True
-	if client.get("/apps/scribes/fork_scribes"):
-		fork_scribes = client.get_bool("/apps/scribes/fork_scribes")
+	if client.get("/apps/scribes/fork_scribes"): fork_scribes = client.get_bool("/apps/scribes/fork_scribes")
 	return fork_scribes
 
 try:

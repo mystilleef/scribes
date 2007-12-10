@@ -609,4 +609,3 @@ class FileSaver(object):	"""
 		print "SAVE ERROR: BEEF!"
 #		self.__error(error)
 		return None
-		

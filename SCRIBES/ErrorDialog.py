@@ -88,8 +88,8 @@ class ScribesErrorDialog(MessageDialog):
 		MessageDialog.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
-		self.__signal_id_1 = self.connect("key-press-event", self.__key_press_event_cb)
-		self.__signal_id_2 = self.connect("delete-event", self.__delete_event_cb)
+		self.__signal_id_1 = self.connect("response", self.__response_cb)
+		self.__signal_id_2 = self.connect("close", self.__delete_event_cb)
 		self.__signal_id_3 = self.__editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_4 = self.__editor.connect("close-document-no-save", self.__close_document_cb)
 
@@ -143,9 +143,7 @@ class ScribesErrorDialog(MessageDialog):
 		@type self: A ScribesDialog object.
 		"""
 		if self.__use_signals: self.__editor.emit("show-dialog", self)
-		self.show_all()
 		self.run()
-		self.__hide_dialog()
 		return
 
 	def __hide_dialog(self):
@@ -156,9 +154,7 @@ class ScribesErrorDialog(MessageDialog):
 		@type self: A ScribesErrorDialog object.
 		"""
 		if self.__use_signals: self.__editor.emit("hide-dialog", self)
-		self.hide_all()
-		from gtk import RESPONSE_CLOSE
-		self.response(RESPONSE_CLOSE)
+		self.hide()
 		self.__use_signals = False
 		return
 
@@ -187,7 +183,7 @@ class ScribesErrorDialog(MessageDialog):
 #
 ################################################################################
 
-	def __key_press_event_cb(self, dialog, event):
+	def __response_cb(self, *args):
 		"""
 		Handles callback when keys on the keyboard are pressed.
 
@@ -204,14 +200,10 @@ class ScribesErrorDialog(MessageDialog):
 				event.
 		@rtype: A boolean value.
 		"""
-		from gtk import keysyms
-		# Close the text editor's about dialog when the escape key is pressed.
-		if event.keyval == keysyms.Escape:
-			from gtk import RESPONSE_CLOSE
-			dialog.response(RESPONSE_CLOSE)
+		self.__hide_dialog()
 		return False
 
-	def __delete_event_cb(self, dialog, event):
+	def __delete_event_cb(self, *args):
 		"""
 		Handles callback when keys on the keyboard are pressed.
 
@@ -229,9 +221,8 @@ class ScribesErrorDialog(MessageDialog):
 		@rtype: A boolean value.
 
 		"""
-		from gtk import RESPONSE_CLOSE
-		dialog.response(RESPONSE_CLOSE)
-		return True
+		self.__hide_dialog()
+		return False
 
 	def __close_document_cb(self, editor):
 		self.__destroy()

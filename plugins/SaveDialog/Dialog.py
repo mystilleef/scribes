@@ -37,7 +37,7 @@ class SaveDialog(object):
 		"""
 		self.__init_attributes(editor)
 		self.__set_dialog_properties()
-		self.__signal_id_1 = self.__dialog.connect("delete-event", self.__delete_event_cb)
+		self.__signal_id_1 = self.__dialog.connect("close", self.__delete_event_cb)
 		self.__signal_id_2 = self.__dialog.connect("response", self.__response_cb)
 
 	def __init_attributes(self, editor):
@@ -89,13 +89,10 @@ class SaveDialog(object):
 		@param self: Reference to the SaveDialog instance.
 		@type self: A SaveDialog object.
 		"""
-		self.__editor.response()
 		self.__editor.emit("show-dialog", self.__dialog)
 		from i18n import msg0002
 		self.__status_id = self.__editor.feedback.set_modal_message(msg0002, "saveas")
 		self.__set_current_folder_and_name()
-		self.__editor.response()
-		self.__dialog.show_all()
 		self.__dialog.run()
 		return
 
@@ -166,7 +163,7 @@ class SaveDialog(object):
 		self.__hide()
 		from operator import ne
 		from gtk import RESPONSE_OK
-		if ne(response_id, RESPONSE_OK): return
+		if ne(response_id, RESPONSE_OK): return True
 		newuri = self.__dialog.get_uri()
 		self.__editor.emit("rename-document", newuri)
-		return
+		return True

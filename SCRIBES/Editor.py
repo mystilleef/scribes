@@ -56,8 +56,8 @@ class Editor(GObject):
 		"save-document": (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
 		"save-error": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"gui-created": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"show-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"hide-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"show-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
+		"hide-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
 		"renamed-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"modified-document": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"close-document": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
@@ -865,8 +865,8 @@ class Editor(GObject):
 		from EncodingManager import EncodingManager
 		self.__encoding_manager = EncodingManager(self, self.__encoding)
 		# Initialize file modification monitor
-		from FileModificationMonitor import FileModificationMonitor
-		FileModificationMonitor(self)
+#		from FileModificationMonitor import FileModificationMonitor
+#		FileModificationMonitor(self)
 		# Initialize the object that saves files.
 		from NewFileSaver import FileSaver
 #		from FileSaver import FileSaver

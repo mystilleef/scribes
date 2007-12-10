@@ -48,7 +48,6 @@ def calculate_resolution_independence(window, width, height):
 	@return: The width and height to set the window objects to.
 	@rtype: A Tuple object containing the suggested width and height to set
 		windows to.
-
 	"""
 	screen = window.get_screen()
 	number = screen.get_number()
@@ -268,8 +267,7 @@ def generate_random_number(sequence):
 				if number == item:
 					exit = False
 					break
-		if exit:
-			break
+		if exit: break
 	return number
 
 def check_uri_permission(uri):
@@ -300,8 +298,7 @@ def check_uri_permission(uri):
 		writable_scheme = ["ssh", "sftp", "smb", "dav", "davs", "ftp"]
 		from gnomevfs import get_uri_scheme
 		scheme = get_uri_scheme(uri)
-		if not scheme in writable_scheme:
-			value = False
+		if not scheme in writable_scheme: value = False
 	return value
 
 def get_file_size(uri):
@@ -374,9 +371,7 @@ def calculate_completion_window_position(editor, width, height):
 
 	@param height: The height of the text editor's completion window.
 	@type height: An integer object.
-
 	"""
-
 	# The flag is true when the position of the word completion window needs to
 	# adjusted accross the y-axis.
 	editor.y_coordinate_flag = False
@@ -514,7 +509,7 @@ def disconnect_signal(signal_id, instance):
 	try:
 		if signal_id and instance.handler_is_connected(signal_id): instance.disconnect(signal_id)
 	except AttributeError:
-		pass
+		print "Disconnect Signal error: ", instance
 	return
 
 def init_gnome():
@@ -530,3 +525,11 @@ def init_gnome():
 	}
 	program = program_init(name, version, properties=properties)
 	return
+
+try:
+	from psyco import bind
+	bind(generate_random_number)
+	bind(calculate_completion_window_position)
+	bind(disconnect_signal)
+except ImportError:
+	pass

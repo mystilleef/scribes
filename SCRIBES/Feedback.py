@@ -75,6 +75,7 @@ class FeedbackManager(object):
 		self.__icon_dictionary = self.__create_feedback_icons()
 		self.__spinner = editor.store.get_object("Spinner")
 		self.__message_stack = []
+		self.__error_strings = ("fail", "no", "error", "warning")
 		self.__message_id = None
 		self.__filename = None
 		self.__reset_timer = None
@@ -418,7 +419,7 @@ class FeedbackManager(object):
 		@type icon: A String object.
 		"""
 		from operator import contains
-		if contains(("fail", "no", "error", "warning"), icon):
+		if contains(self.__error_strings, icon):
 			from gtk.gdk import beep
 			beep()
 		return False

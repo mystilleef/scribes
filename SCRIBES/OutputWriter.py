@@ -141,6 +141,7 @@ class OutputWriter(GObject):
 		from gnomevfs.async import xfer
 		XFER_TARGET_DEFAULT_PERMS = 1 << 12
 		try:
+			#raise Exception
 			xfer(source_uri_list=[URI(self.__swap_uri)],
 					target_uri_list=[URI(self.__uri)],
 					xfer_options=XFER_TARGET_DEFAULT_PERMS,
