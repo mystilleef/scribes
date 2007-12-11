@@ -63,6 +63,7 @@ class ScribesWindow(Window):
 		self.__signal_id_15 = self.__editor.connect("hide-bar", self.__hide_bar_cb)
 		self.__signal_id_16 = self.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_17 = self.connect_after("focus-out-event", self.__focus_out_event_cb)
+		self.__signal_id_24 = self.connect_after("focus-in-event", self.__focus_in_event_cb)
 		self.__signal_id_19 = self.__editor.connect("renamed-document", self.__renamed_document_cb)
 		self.__signal_id_20 = self.__editor.connect("close-document-no-save", self.__close_document_no_save_cb)
 		self.__signal_id_21 = self.__editor.connect("checking-document", self.__checking_document_cb)
@@ -214,8 +215,17 @@ class ScribesWindow(Window):
 		# Update the metadata database with the size and position of the window.
 		from gobject import idle_add
 		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height)
-		from gtk.gdk import flush
-		flush()
+#		from gtk.gdk import flush
+#		flush()
+		return False
+		
+	def __focus_in_event_cb(self, *args):
+		xcoordinate, ycoordinate = self.get_position()
+		width, height = self.get_size()
+		is_maximized = self.__is_maximized
+		# Update the metadata database with the size and position of the window.
+		from gobject import idle_add
+		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height)
 		return False
 
 	def __state_event_cb(self, window, event):
@@ -515,11 +525,15 @@ class ScribesWindow(Window):
 		@type self: A ScribesWindow object.
 		"""
 		try:
-			if not self.__uri: return False
+			if self.__uri:
+				uri = self.__uri
+			else:
+				uri = '<EMPTY>'
 			# Get window position from the position database, if possible.
 			from position_metadata import get_window_position_from_database
 			maximize, width, height, xcoordinate, ycoordinate = \
-				get_window_position_from_database(self.__uri)
+				get_window_position_from_database(uri)# or \
+				#get_window_position_from_database(empty_uri)
 			if maximize:
 				self.maximize()
 			else:
@@ -605,27 +619,22 @@ class ScribesWindow(Window):
 		@type uri: A String object.
 		"""
 		self.__stop_window_position_timer()
-		from position_metadata import update_window_position_in_database
-		if self.__uri:
-			if is_maximized:
-				window_position = (True, None, None, None, None)
-				update_window_position_in_database(str(self.__uri), window_position)
-			else:
-				window_position = (False, width, height, xcoordinate, ycoordinate)
-				update_window_position_in_database(str(self.__uri), window_position)
+		self.__update_position(is_maximized, xcoordinate, ycoordinate, width, height)
 		self.__destroy()
 		return False
 
 	def __update_position(self, is_maximized, xcoordinate, ycoordinate, width, height):
-		from operator import not_
-		if not_(self.__uri): return False
-		from position_metadata import update_window_position_in_database	
+		if self.__uri:
+			uri = self.__uri
+		else:
+			uri = '<EMPTY>'
+		from position_metadata import update_window_position_in_database
 		if is_maximized:
 			window_position = (True, None, None, None, None)
-			update_window_position_in_database(str(self.__uri), window_position)
+			update_window_position_in_database(str(uri), window_position)
 		else:
 			window_position = (False, width, height, xcoordinate, ycoordinate)
-			update_window_position_in_database(str(self.__uri), window_position)
+			update_window_position_in_database(str(uri), window_position)
 		return False
 
 	def __stop_window_position_timer(self):
@@ -680,6 +689,7 @@ class ScribesWindow(Window):
 		self.__editor.disconnect_signal(self.__signal_id_21, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_22, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_23, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_24, self.__editor)
 		self.__editor.unregister_object(self.__termination_id)
 		del self
 		self = None

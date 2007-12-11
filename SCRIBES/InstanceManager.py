@@ -52,12 +52,12 @@ class EditorManager(object):
 		from DBusService import DBusService
 		DBusService(self)
 		self.__init_attributes()
-		#self.__init_i18n()
+		self.__init_i18n()
 #		from signal import signal, SIGHUP, SIGTERM, SIGSEGV
 #		signal(SIGHUP, self.__kernel_signals_cb)
 #		signal(SIGSEGV, self.__kernel_signals_cb)
 #		signal(SIGTERM, self.__kernel_signals_cb)
-		#idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
+		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
 		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
@@ -186,8 +186,6 @@ class EditorManager(object):
 		else:
 			from gobject import idle_add
 			idle_add(self.__new_editor)
-			#from cProfile import run
-			#run("__new_editor()")
 		return False
 
 	def open_files(self, uris=None, encoding=None):

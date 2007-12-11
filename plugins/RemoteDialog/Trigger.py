@@ -120,3 +120,4 @@ class RemoteDialogTrigger(GObject):
 		del self
 		self = None
 		return
+

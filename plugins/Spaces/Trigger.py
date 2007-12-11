@@ -97,7 +97,7 @@ class SpacesTrigger(GObject):
 		self.__editor.add_trigger(self.__tabs_trigger)
 
 		# Trigger to remove trailing spaces.
-		self.__remove_trigger = self.__editor.create_trigger("removes_trailing_spaces", "alt - r")
+		self.__remove_trigger = self.__editor.create_trigger("removes_trailing_space", "alt - r")
 		self.__editor.add_trigger(self.__remove_trigger)
 		return
 

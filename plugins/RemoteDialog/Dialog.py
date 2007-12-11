@@ -17,10 +17,10 @@
 # along with Scribes; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from SCRIBES.dialog import ScribesDialog
+from gtk import Dialog
 from gobject import SIGNAL_RUN_LAST, TYPE_NONE
 
-class RemoteDialog(ScribesDialog):
+class RemoteDialog(Dialog):
 	"""
 	This class creates a dialog used to open files at remote locations.
 	"""
@@ -39,12 +39,14 @@ class RemoteDialog(ScribesDialog):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		ScribesDialog.__init__(self, editor)
+		Dialog.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__arrange_widgets()
 		self.__signal_id_1 = self.__comboboxentry.child.connect("activate", self.__remote_activate_cb)
 		self.__signal_id_2 = self.connect("delete", self.__destroy_cb)
+		self.__signal_id_3 = self.connect("close", self.__close_cb)
+		self.__signal_id_4 = self.connect("response", self.__response_cb)
 
 	def __init_attributes(self, editor):
 		"""
@@ -64,6 +66,7 @@ class RemoteDialog(ScribesDialog):
 		from SCRIBES.utils import create_encoding_box
 		self.__encoding_box  = create_encoding_box(ScribesEncodingComboBox(editor))
 		self.__signal_id_1 = self.__signal_id_2 = None
+		self.__status_id = None
 		return
 
 	def __set_properties(self):
@@ -78,6 +81,14 @@ class RemoteDialog(ScribesDialog):
 		self.set_property("role", "scribes_remote_dialog")
 		self.set_property("icon-name", "stock_open")
 		self.set_property("name", "RemoteDialog")
+		self.set_property("has-separator", False)
+		self.set_property("skip-pager-hint", True)
+		self.set_property("skip-taskbar-hint", True)
+		self.set_property("urgency-hint", False)
+		self.set_property("modal", True)
+		from gtk import WIN_POS_CENTER_ON_PARENT
+		self.set_property("window-position", WIN_POS_CENTER_ON_PARENT)
+		self.set_property("resizable", True)
 		from gtk import STOCK_OPEN, STOCK_CANCEL, RESPONSE_OK, RESPONSE_CANCEL
 		self.add_button(STOCK_CANCEL, RESPONSE_CANCEL)
 		self.add_button(STOCK_OPEN, RESPONSE_OK)
@@ -86,6 +97,10 @@ class RemoteDialog(ScribesDialog):
 		self.vbox.set_spacing(10)
 		self.vbox.set_homogeneous(False)
 		self.action_area.set_homogeneous(False)
+		try:
+			self.set_transient_for(self.__editor.window)
+		except:
+			pass
 		return
 
 	def __arrange_widgets(self):
@@ -108,18 +123,16 @@ class RemoteDialog(ScribesDialog):
 		@type self: A RemoteDialog object.
 		"""
 		self.__editor.emit("show-dialog", self)
-		self.show_all()
 		from i18n import msg0002
-		status_id = self.__editor.feedback.set_modal_message(msg0002, "open")
-		response = self.run()
+		self.__status_id = self.__editor.feedback.set_modal_message(msg0002, "open")
+		self.show_all()
+		self.run()
+		return
+
+	def __hide_dialog(self):
 		self.__editor.emit("hide-dialog", self)
-		from gobject import timeout_add
-		timeout_add(1, self.__editor.feedback.unset_modal_message, status_id)
-		self.hide_dialog()
-		from gtk import RESPONSE_OK
-		if response == RESPONSE_OK:
-			from gobject import timeout_add
-			timeout_add(1, self.__process_text_entry)
+		self.__editor.feedback.unset_modal_message(self.__status_id)
+		self.hide()
 		return
 
 	def __create_labels(self):
@@ -172,6 +185,19 @@ class RemoteDialog(ScribesDialog):
 		if text: self.__editor.instance_manager.open_files([text.strip()])
 		return False
 
+	def __response_cb(self, dialog, response_id):
+		self.__hide_dialog()
+		from operator import eq, ne
+		from gtk import RESPONSE_OK
+		if ne(response_id, RESPONSE_OK): return False
+		from gobject import idle_add
+		idle_add(self.__process_text_entry)
+		return False
+
+	def __close_cb(self, *args):
+		self.__hide_dialog()
+		return False
+
 	def __destroy_cb(self, dialog):
 		"""
 		Handles callback when the "delete" signal is emitted.
@@ -184,6 +210,8 @@ class RemoteDialog(ScribesDialog):
 		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__comboboxentry.child)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__signal_id_3, self)
+		self.__editor.disconnect_signal(self.__signal_id_4, self)
 		self.__comboboxentry.emit("delete")
 		self.destroy()
 		del self

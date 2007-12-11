@@ -132,4 +132,3 @@ if __name__ == "__main__":
 	SaveProcessor()
 	from gobject import MainLoop
 	MainLoop().run()
-
