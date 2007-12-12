@@ -29,6 +29,8 @@ gtk.TextBuffer.
 @contact: mystilleef@gmail.com
 """
 
+newlines = ["\n", "\x00", "\r\n", "\x0D\x0A", "\r"]
+
 def duplicate_line(textbuffer):
 	"""
 	Duplicate line or selected lines.
@@ -144,90 +146,44 @@ def select_line(textbuffer):
 	return True
 
 def delete_line(textbuffer):
-	"""
-	Delete a the cursor line in a gtk.TextBuffer.
+	textbuffer.begin_user_action()
+	try:
+		begin_position, end_position = get_line_bounds(textbuffer)
+		start_position = begin_position.copy()
+		begin_position, end_position = __get_end_line_position(begin_position)
+		textbuffer.delete(start_position, end_position)
+	except TypeError:
+		try:
+			__delete_last_line(textbuffer)
+		except TypeError:
+			pass
+	textbuffer.end_user_action()
+	return
 
-	@param textbuffer: The text buffer to operate on.
-	@type textbuffer: A gtk.TextBuffer object.
-	"""
+def __delete_last_line(textbuffer):
 	begin_position, end_position = get_line_bounds(textbuffer)
 	if begin_position.ends_line():
-		# Delete empty line.
-		delete_empty_line(textbuffer)
-		return
-	if begin_position.ends_line() and end_position.ends_line():
-		# Delete empty second to last line.
-		delete_empty_line(textbuffer)
-		return
-	if begin_position.get_char() in ["\x00"] and end_position.get_char() in ["\x00"]:
-		# Delete empty last line.
-		delete_empty_last_line(textbuffer)
-		return
-	if begin_position.get_char() and end_position.get_char() in ["\x00"]:
-		# Delete last line with text on it.
-		delete_last_line(textbuffer)
-		return
-	# Delete normal lines.
-	end_position.forward_char()
-	textbuffer.begin_user_action()
-	textbuffer.delete(begin_position, end_position)
-	textbuffer.end_user_action()
-	return
-
-def delete_empty_line(textbuffer):
-	"""
-	Delete an empty cursor line.
-
-	@param textbuffer: The text buffer to operate on.
-	@type textbuffer: A gtk.TextBuffer object.
-	"""
-	from SCRIBES.cursor import get_cursor_line
-	cursor_line = get_cursor_line(textbuffer)
-	begin_position = textbuffer.get_iter_at_line(cursor_line)
-	end_position = begin_position.copy()
-	end_position.forward_char()
-	textbuffer.begin_user_action()
-	textbuffer.delete(begin_position, end_position)
-	textbuffer.end_user_action()
-	return
-
-def delete_empty_last_line(textbuffer):
-	"""
-	Delete an empty last cursor line.
-
-	@param textbuffer: The text buffer to operate on.
-	@type textbuffer: A gtk.TextBuffer object.
-	"""
-	begin_position, end_position = get_line_bounds(textbuffer)
-	result = begin_position.backward_line()
-	if result:
-		if begin_position.get_char() in ["\n"]:
-			end_position = begin_position.copy()
-			end_position.forward_char()
-		else:
-			end_position = begin_position.copy()
-			end_position.forward_to_line_end()
-			end_position.forward_char()
-			begin_position.forward_to_line_end()
-		textbuffer.begin_user_action()
+		begin_position.backward_line()
+		begin_position, end_position = __get_end_line_position(begin_position)
 		textbuffer.delete(begin_position, end_position)
-		textbuffer.end_user_action()
-	return result
-
-def delete_last_line(textbuffer):
-	"""
-	Delete the last cursor line if it contains text.
-
-	@param textbuffer: The text buffer to operate on.
-	@type textbuffer: A gtk.TextBuffer object.
-	"""
-	begin_position, end_position = get_line_bounds(textbuffer)
-	end_position.forward_char()
-	textbuffer.begin_user_action()
-	textbuffer.delete(begin_position, end_position)
-	delete_empty_last_line(textbuffer)
-	textbuffer.end_user_action()
+	else:
+		textbuffer.delete(begin_position, end_position)
+		from SCRIBES.cursor import get_cursor_iterator
+		iterator = get_cursor_iterator(textbuffer)
+		iterator.backward_line()
+		start_position, end_position = __get_end_line_position(iterator)
+		textbuffer.delete(start_position, end_position)
 	return
+
+def __get_end_line_position(iterator):
+	from gtk import TEXT_SEARCH_VISIBLE_ONLY, TEXT_SEARCH_TEXT_ONLY
+	for endline in newlines:
+		try:
+			begin_position, end_position = iterator.forward_search(endline, TEXT_SEARCH_TEXT_ONLY)
+			return begin_position, end_position
+		except TypeError:
+			continue
+	return None
 
 def join_line(textbuffer):
 	"""
