@@ -865,8 +865,8 @@ class Editor(GObject):
 		from EncodingManager import EncodingManager
 		self.__encoding_manager = EncodingManager(self, self.__encoding)
 		# Initialize file modification monitor
-#		from FileModificationMonitor import FileModificationMonitor
-#		FileModificationMonitor(self)
+		from FileModificationMonitor import FileModificationMonitor
+		FileModificationMonitor(self)
 		# Initialize the object that saves files.
 		from NewFileSaver import FileSaver
 #		from FileSaver import FileSaver

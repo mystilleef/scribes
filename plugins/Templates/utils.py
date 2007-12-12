@@ -40,7 +40,7 @@ def replace_special_placeholder(placeholder):
 		return "[%s-%s-%s] %s:%s:%s" % (thetime[0], pad_zero(thetime[1]), pad_zero(thetime[2]), pad_zero(thetime[3]), pad_zero(thetime[4]), pad_zero(thetime[5]))
 	if placeholder == "${author}":
 		return get_author_name()
-    	
+
 def remove_trailing_spaces_on_line(sourceview, line_number):
 	"""
 	Convert beginning tab characters to space characters on a line.
