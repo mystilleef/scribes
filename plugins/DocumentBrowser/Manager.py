@@ -103,8 +103,8 @@ class DocumentManager(GObject):
 		"""
 		scrollwin = self.__editor.create_scrollwin()
 		scrollwin.add(self.__treeview)
-		self.__window.main_area.pack_start(scrollwin, True, True, 0)
-		self.__window.button_area.pack_start(self.__close_button, False, False, 0)
+		self.__window.vbox.pack_start(scrollwin, True, True, 0)
+		self.__window.action_area.pack_start(self.__close_button, False, False, 0)
 		return
 
 	def __destroy_cb(self, manager):

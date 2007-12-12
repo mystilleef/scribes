@@ -29,7 +29,7 @@ browser.
 @contact: mystilleef@gmail.com
 """
 
-from SCRIBES.sdialog import Dialog
+from gtk import Dialog
 
 class BrowserWindow(Dialog):
 	"""
@@ -53,6 +53,8 @@ class BrowserWindow(Dialog):
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__signal_id = self.__manager.connect("destroy", self.__window_destroy_cb)
+		self.__signal_id_1 = self.connect("close", self.__close_cb)
+		self.__signal_id_2 = self.connect("response", self.__close_cb)
 
 	def show_dialog(self):
 		"""
@@ -64,7 +66,8 @@ class BrowserWindow(Dialog):
 		self.__editor.emit("show-dialog", self)
 		from i18n import msg0001
 		self.__status_id = self.__editor.feedback.set_modal_message(msg0001, "open")
-		Dialog.show_dialog(self)
+		self.show_all()
+		self.run()
 		return
 
 	def hide_dialog(self):
@@ -76,8 +79,12 @@ class BrowserWindow(Dialog):
 		"""
 		self.__editor.emit("hide-dialog", self)
 		self.__editor.feedback.unset_modal_message(self.__status_id)
-		Dialog.hide_dialog(self)
+		self.hide()
 		return
+
+	def __close_cb(self, *args):
+		self.hide_dialog()
+		return False
 
 	def __window_destroy_cb(self, manager):
 		"""
@@ -90,6 +97,8 @@ class BrowserWindow(Dialog):
 		@type manager: An BookmarkManager object.
 		"""
 		self.__editor.disconnect_signal(self.__signal_id, self.__manager)
+		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.destroy()
 		del self
 		self = None
@@ -110,7 +119,7 @@ class BrowserWindow(Dialog):
 		"""
 		self.__manager = manager
 		self.__editor = editor
-		self.__signal_id = None
+		self.__signal_id = self.__signal_id_1 = self.__signal_id_2 = None
 		self.__status_id = None
 		return
 
@@ -128,5 +137,13 @@ class BrowserWindow(Dialog):
 		self.set_property("default-width", width)
 		self.set_property("default-height", height)
 		self.set_transient_for(self.__editor.window)
+		self.set_property("has-separator", False)
+		self.set_property("skip-pager-hint", True)
+		self.set_property("skip-taskbar-hint", True)
+		self.set_property("urgency-hint", False)
+		self.set_property("modal", True)
+		from gtk import WIN_POS_CENTER_ON_PARENT
+		self.set_property("window-position", WIN_POS_CENTER_ON_PARENT)
+		self.set_property("resizable", True)		
 		self.set_keep_above(True)
 		return
