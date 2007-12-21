@@ -37,10 +37,10 @@ class OpenDialog(object):
 		"""
 		self.__init_attributes(editor)
 		self.__set_properties()
-		self.__signal_id_1 = self.__dialog.connect("close", self.__delete_event_cb)
-		self.__signal_id_2 = self.__dialog.connect("response", self.__response_cb)
+		#self.__signal_id_1 = self.__dialog.connect_after("current-folder-changed", self.__current_folder_changed_cb)
+		self.__signal_id_2 = self.__dialog.connect_after("response", self.__response_cb)
 		self.__signal_id_3 = self.__dialog.connect_after("map-event", self.__map_event_cb)
-		
+
 	def __init_attributes(self, editor):
 		"""
 		Initialize the dialog attributes.
@@ -83,6 +83,7 @@ class OpenDialog(object):
 		from SCRIBES.dialogfilter import create_filter_list
 		for filter in create_filter_list():
 			self.__dialog.add_filter(filter)
+		#self.__set_folder()
 		return
 
 	def show_dialog(self):
@@ -95,7 +96,9 @@ class OpenDialog(object):
 		self.__editor.emit("show-dialog", self.__dialog)
 		from i18n import msg0002
 		self.__status_id = self.__editor.feedback.set_modal_message(msg0002, "open")
+		self.__dialog.show_all()
 		self.__dialog.run()
+		self.__hide()
 		return
 
 	def __hide(self):
@@ -111,26 +114,28 @@ class OpenDialog(object):
 		return
 
 	def __set_folder(self):
-		from operator import not_
+		from operator import not_, ne
 		if not_(self.__editor.uri): return False
-		self.__dialog.set_uri(self.__editor.uri)
-		self.__dialog.select_uri(self.__editor.uri)
+		from gnomevfs import URI, get_local_path_from_uri
+		folder_uri = str(URI(self.__editor.uri).parent)
+		if ne(folder_uri, self.__dialog.get_current_folder_uri()):
+			self.__dialog.set_current_folder_uri(str(URI(self.__editor.uri).parent))
+		#self.__dialog.set_uri(self.__editor.uri)
 		return False
 
 	def __response_cb(self, dialog, response_id):
-		self.__hide()
 		from operator import ne
 		from gtk import RESPONSE_OK
-		if ne(response_id, RESPONSE_OK): return True
+		if ne(response_id, RESPONSE_OK): return False
 		# Load selected uri(s) into the text editor's buffer.
 		uri_list = self.__dialog.get_uris()
 		self.__editor.open_files(uri_list)
-		return True
+		return False
 
 	def __map_event_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__set_folder)
-		return True
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__set_folder, priority=PRIORITY_LOW)
+		return False
 
 	def destroy_(self):
 		self.__destroy()
@@ -146,7 +151,7 @@ class OpenDialog(object):
 		@param dialog: Reference to the OpenDialog instance.
 		@type dialog: An OpenDialog object.
 		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		#self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__dialog)
 		self.__dialog.destroy()
@@ -154,10 +159,10 @@ class OpenDialog(object):
 		self = None
 		return
 
-	def __delete_event_cb(self, *args):
+	def __close_cb(self, *args):
 		"""
 		Handles callback when the "close" signal is emitted.
-		
+
 		@param self: Reference to the OpenDialog instance.
 		@type self: An OpenDialog object.
 		"""

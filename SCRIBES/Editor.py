@@ -33,7 +33,7 @@ text editor instances.
 """
 
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_OBJECT, TYPE_PYOBJECT
-from gobject import SIGNAL_RUN_FIRST
+from gobject import SIGNAL_RUN_FIRST, SIGNAL_ACTION, SIGNAL_RUN_CLEANUP, SIGNAL_NO_RECURSE
 
 class Editor(GObject):
 	"""
@@ -44,36 +44,36 @@ class Editor(GObject):
 	"""
 
 	__gsignals__ = {
-		"checking-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"loading-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"loaded-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"reload-document": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"load-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"enable-readonly": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"disable-readonly": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"saving-document": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"saved-document": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"save-document": (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
-		"save-error": (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"checking-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"loading-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"loaded-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"reload-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"load-error": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"enable-readonly": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"disable-readonly": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"saving-document": (SIGNAL_ACTION|SIGNAL_RUN_FIRST|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"saved-document": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"save-document": (SIGNAL_ACTION|SIGNAL_RUN_FIRST|SIGNAL_NO_RECURSE, TYPE_NONE, ()),
+		"save-error": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"gui-created": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"show-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
-		"hide-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
-		"renamed-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"modified-document": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"close-document": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"close-document-no-save": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"created-widgets": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"enable-fullscreen": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"disable-fullscreen": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"not-yet-implemented": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"show-bar": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
-		"hide-bar": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
-		"updated-template-database": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"cursor-moved": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"initialized-trigger-manager": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"initialized-attributes": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"rename-document": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"buffer-created": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"show-dialog": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_OBJECT,)),
+		"hide-dialog": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_OBJECT,)),
+		"renamed-document": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"modified-document": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, ()),
+		"close-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"close-document-no-save": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"created-widgets": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"enable-fullscreen": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"disable-fullscreen": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"not-yet-implemented": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"show-bar": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_OBJECT,)),
+		"hide-bar": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_OBJECT,)),
+		"updated-template-database": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, ()),
+		"cursor-moved": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, ()),
+		"initialized-trigger-manager": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"initialized-attributes": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"rename-document": (SIGNAL_ACTION|SIGNAL_RUN_FIRST|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"buffer-created": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, manager, file_uri=None, encoding=None):

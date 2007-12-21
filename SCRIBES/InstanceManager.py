@@ -29,8 +29,6 @@ It allows editor instances to communicate with each other.
 @contact: mystilleef@gmail.com
 """
 
-INTERVAL = -1
-RECURSIONLIMITMULTIPLIER = 1000000
 close_file = lambda editor: editor.emit("close-document")
 
 class EditorManager(object):
@@ -46,7 +44,6 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
-		self.__set_vm_properties()
 		from gobject import idle_add, PRIORITY_LOW
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
@@ -57,7 +54,7 @@ class EditorManager(object):
 #		signal(SIGHUP, self.__kernel_signals_cb)
 #		signal(SIGSEGV, self.__kernel_signals_cb)
 #		signal(SIGTERM, self.__kernel_signals_cb)
-		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
+#		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
 		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):

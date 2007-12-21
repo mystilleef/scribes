@@ -14,7 +14,7 @@ hostname = goldenmyst-desktop
 uname -m = i686
 uname -r = 2.6.22-14-generic
 uname -s = Linux
-uname -v = #1 SMP Sun Oct 14 23:05:12 GMT 2007
+uname -v = #1 SMP Tue Dec 18 08:02:57 UTC 2007
 
 /usr/bin/uname -p = unknown
 /bin/uname -X     = unknown

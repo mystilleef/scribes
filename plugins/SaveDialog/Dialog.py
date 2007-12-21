@@ -37,8 +37,9 @@ class SaveDialog(object):
 		"""
 		self.__init_attributes(editor)
 		self.__set_dialog_properties()
-		self.__signal_id_1 = self.__dialog.connect("close", self.__delete_event_cb)
-		self.__signal_id_2 = self.__dialog.connect("response", self.__response_cb)
+		#self.__signal_id_1 = self.__dialog.connect("close", self.__close_cb)
+		self.__signal_id_2 = self.__dialog.connect_after("response", self.__response_cb)
+		self.__signal_id_3 = self.__dialog.connect_after("map-event", self.__map_event_cb)
 
 	def __init_attributes(self, editor):
 		"""
@@ -80,6 +81,7 @@ class SaveDialog(object):
 		from SCRIBES.dialogfilter import create_filter_list
 		for filter in create_filter_list():
 			self.__dialog.add_filter(filter)
+	#	self.__set_current_folder_and_name()
 		return
 
 	def show_dialog(self):
@@ -92,8 +94,9 @@ class SaveDialog(object):
 		self.__editor.emit("show-dialog", self.__dialog)
 		from i18n import msg0002
 		self.__status_id = self.__editor.feedback.set_modal_message(msg0002, "saveas")
-		self.__set_current_folder_and_name()
+		self.__dialog.show_all()
 		self.__dialog.run()
+		self.__hide()
 		return
 
 	def __hide(self):
@@ -103,8 +106,10 @@ class SaveDialog(object):
 		@param self: Reference to the FileChooserDialog instance.
 		@type self: A FileChooserDialog object.
 		"""
+		
 		self.__editor.emit("hide-dialog", self.__dialog)
 		self.__dialog.hide()
+		#self.__dialog.unrealize()
 		if self.__status_id: self.__editor.feedback.unset_modal_message(self.__status_id)
 		return
 
@@ -122,9 +127,13 @@ class SaveDialog(object):
 		@type self: A SaveDialog object.
 		"""
 		if self.__editor.uri:
-			from gnomevfs import URI
-			self.__dialog.set_current_folder_uri(str(URI(self.__editor.uri).parent))
-			self.__dialog.set_current_name(str(URI(self.__editor.uri).short_name))
+			from gnomevfs import URI, get_local_path_from_uri
+			folder_uri = str(URI(self.__editor.uri).parent)
+			current_name = str(URI(self.__editor.uri).short_name)
+			from operator import ne
+			if ne(folder_uri, self.__dialog.get_current_folder_uri()):
+				self.__dialog.set_current_folder_uri(folder_uri)
+			self.__dialog.set_current_name(current_name)
 		else:
 			from i18n import msg0003
 			self.__dialog.set_current_name(msg0003)
@@ -132,7 +141,7 @@ class SaveDialog(object):
 				self.__dialog.set_current_folder(self.__editor.desktop_folder)
 			except:
 				self.__dialog.set_current_folder(self.__editor.home_folder)
-		return
+		return False
 
 	def destroy_(self):
 		self.__destroy_cb(self)
@@ -148,22 +157,30 @@ class SaveDialog(object):
 		@param dialog: Reference to the SaveDialog instance.
 		@type dialog: A SaveDialog object.
 		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__dialog)
+		#self.__editor.disconnect_signal(self.__signal_id_1, self.__dialog)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__dialog)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__dialog)
 		self.__dialog.destroy()
 		del self
 		self = None
 		return
 
-	def __delete_event_cb(self, *args):
+	def __close_cb(self, *args):
 		self.__hide()
-		return
+		return False
 
 	def __response_cb(self, dialog, response_id):
-		self.__hide()
 		from operator import ne
 		from gtk import RESPONSE_OK
-		if ne(response_id, RESPONSE_OK): return True
+		if ne(response_id, RESPONSE_OK): return False
 		newuri = self.__dialog.get_uri()
 		self.__editor.emit("rename-document", newuri)
-		return True
+		return False
+
+	def __map_event_cb(self, *args):
+		"""
+		Handles callback when the "map-event" signal is emit
+		"""
+	#	from gobject import idle_add, PRIORITY_LOW
+	#	idle_add(self.__set_current_folder_and_name, priority=PRIORITY_LOW)
+		return False

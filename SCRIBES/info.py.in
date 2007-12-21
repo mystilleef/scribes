@@ -29,11 +29,7 @@ General information about Scribes.
 
 from os import environ
 from dbus import SessionBus, Interface, glib
-from gobject import MainLoop
-mainloop = MainLoop()
-from dbus.mainloop.glib import DBusGMainLoop
-dbus_loop = DBusGMainLoop(set_as_default=True)
-session_bus = SessionBus(mainloop=dbus_loop)
+session_bus = SessionBus()
 dbus_proxy_obj = session_bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus')
 dbus_iface = Interface(dbus_proxy_obj, 'org.freedesktop.DBus')
 home_folder = environ["HOME"]

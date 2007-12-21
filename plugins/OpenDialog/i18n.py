@@ -21,3 +21,4 @@
 from gettext import gettext as _
 msg0001 = _("Open Document")
 msg0002 = _("Select file for loading")
+

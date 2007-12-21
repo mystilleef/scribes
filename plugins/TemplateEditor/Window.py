@@ -89,10 +89,10 @@ class TemplateWindow(object):
 		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 1.6, 1.6)
 		self.__window.set_property("default-width", width)
 		self.__window.set_property("default-height", height)
-		from gtk import WIN_POS_CENTER_ON_PARENT, DEST_DEFAULT_ALL
-		self.__window.set_property("window-position", WIN_POS_CENTER_ON_PARENT)
+		from gtk import WIN_POS_CENTER, DEST_DEFAULT_ALL
+		self.__window.set_property("window-position", WIN_POS_CENTER)
 		self.__window.set_property("destroy-with-parent", True)
-		self.__window.set_transient_for(self.__editor.window)
+		#self.__window.set_transient_for(self.__editor.window)
 		targets = [("text/uri-list", 0, 111)]
 		from gtk.gdk import ACTION_COPY
 		self.__window.drag_dest_set(DEST_DEFAULT_ALL, targets, ACTION_COPY)
@@ -105,11 +105,9 @@ class TemplateWindow(object):
 		@param self: Reference to the TemplateWindow instance.
 		@type self: A TemplateWindow object.
 		"""
-		self.__editor.response()
 		self.__window.show_all()
 		self.__is_visible = True
 		self.__window.present()
-		self.__editor.response()
 		return
 
 	def __hide_window(self):
@@ -119,11 +117,9 @@ class TemplateWindow(object):
 		@param self: Reference to the TemplateWindow instance.
 		@type self: A TemplateWindow object.
 		"""
-		self.__editor.response()
 		self.__window.hide()
 		self.__is_visible = False
 		self.__manager.emit("hide")
-		self.__editor.response()
 		return
 
 	def __import_template(self, xml_template_file):
@@ -245,10 +241,8 @@ class TemplateWindow(object):
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
 		"""
-		self.__editor.response()
 		self.__editor.feedback.start_busy_cursor()
 		self.__window.set_property("sensitive", False)
-		self.__editor.response()
 		return
 
 	def __import_error_cb(self, manager):
@@ -261,16 +255,12 @@ class TemplateWindow(object):
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
 		"""
-		self.__editor.response()
 		self.__editor.feedback.stop_busy_cursor()
 		self.__window.set_property("sensitive", True)
-		self.__editor.response()
 		return
 
 	def __sensitive_cb(self, manager, sensitive):
-		self.__editor.response()
 		self.__window.set_property("sensitive", sensitive)
-		self.__editor.response()
 		return
 
 	def __drag_data_received_cb(self, window, context, x, y, selection_data, info, time):

@@ -57,7 +57,7 @@ def __open(uris=None):
 	@type uris: A List object.
 	"""
 	__open_via_dbus(uris)
-	#__init_threads()
+	__init_threads()
 	from gobject import idle_add, PRIORITY_HIGH
 	idle_add(__launch_new_editor, uris, priority=PRIORITY_HIGH)
 	return
@@ -109,7 +109,7 @@ def __init_threads():
 	threads_init()
 	from gtk.gdk import threads_init
 	threads_init()
-	return 
+	return
 
 def __get_dbus_service():
 	"""

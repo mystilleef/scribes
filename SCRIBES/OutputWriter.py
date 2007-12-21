@@ -31,7 +31,8 @@ locations.
 """
 
 PRIORITY = 10
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_PYOBJECT, TYPE_NONE
+from gobject import GObject, SIGNAL_RUN_CLEANUP, TYPE_PYOBJECT, TYPE_NONE
+from gobject import SIGNAL_NO_RECURSE, SIGNAL_ACTION
 
 class OutputWriter(GObject):
 	"""
@@ -40,8 +41,8 @@ class OutputWriter(GObject):
 	"""
 
 	__gsignals__ = {
-		"saved": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT)),
+		"saved": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"error": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT)),
 	}
 
 	def __init__(self):
