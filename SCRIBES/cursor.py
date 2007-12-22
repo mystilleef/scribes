@@ -42,6 +42,10 @@ def get_cursor_iterator(textbuffer):
 	cursor_iterator = textbuffer.get_iter_at_mark(cursor_mark)
 	return cursor_iterator
 
+def print_test_function():
+	value = None
+	return value
+
 def get_cursor_line(textbuffer):
 	"""
 	Return the line the cursor is on.
