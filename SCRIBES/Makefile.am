@@ -9,13 +9,17 @@ edit = sed \
 # dnl Generate "info.py" from "info.py.in."
 python_files = info.py
 python_in_files = $(python_files).in
+scribesdir = $(pythondir)/SCRIBES
 
 $(python_files): Makefile $(python_in_files)
 	rm -f $(python_files) $(python_files).tmp
 	$(edit) $(python_in_files) > $(python_files).tmp
 	mv $(python_files).tmp $(python_files)
-
-scribesdir = $(pythondir)/SCRIBES
+	if [ -d scribesdir ]; then \
+		echo "removing " scribesdir ;\
+		rm -rf scribesdir ;\
+		echo "removed " scribesdir ;\
+	fi
 
 scribes_PYTHON = \
 	info.py \

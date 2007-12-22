@@ -99,7 +99,7 @@ CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
 DATADIRNAME = share
-DEFS = -DPACKAGE_NAME=\"scribes\" -DPACKAGE_TARNAME=\"scribes\" -DPACKAGE_VERSION=\"0.3.2.10-dev12\" -DPACKAGE_STRING=\"scribes\ 0.3.2.10-dev12\" -DPACKAGE_BUGREPORT=\"\<mystilleef@gmail.com\>\" -DPACKAGE=\"scribes\" -DVERSION=\"0.3.2.10-dev12\" -DGETTEXT_PACKAGE=\"scribes\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LOCALE_H=1 -DHAVE_LC_MESSAGES=1 -DHAVE_BIND_TEXTDOMAIN_CODESET=1 -DHAVE_GETTEXT=1 -DHAVE_DCGETTEXT=1 -DENABLE_NLS=1
+DEFS = -DPACKAGE_NAME=\"scribes\" -DPACKAGE_TARNAME=\"scribes\" -DPACKAGE_VERSION=\"0.3.3-dev1\" -DPACKAGE_STRING=\"scribes\ 0.3.3-dev1\" -DPACKAGE_BUGREPORT=\"\<mystilleef@gmail.com\>\" -DPACKAGE=\"scribes\" -DVERSION=\"0.3.3-dev1\" -DGETTEXT_PACKAGE=\"scribes\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LOCALE_H=1 -DHAVE_LC_MESSAGES=1 -DHAVE_BIND_TEXTDOMAIN_CODESET=1 -DHAVE_GETTEXT=1 -DHAVE_DCGETTEXT=1 -DENABLE_NLS=1
 DEPDIR = .deps
 DOC_USER_FORMATS = 
 ECHO_C = 
@@ -166,9 +166,9 @@ OMF_DIR = ${datadir}/omf
 PACKAGE = scribes
 PACKAGE_BUGREPORT = <mystilleef@gmail.com>
 PACKAGE_NAME = scribes
-PACKAGE_STRING = scribes 0.3.2.10-dev12
+PACKAGE_STRING = scribes 0.3.3-dev1
 PACKAGE_TARNAME = scribes
-PACKAGE_VERSION = 0.3.2.10-dev12
+PACKAGE_VERSION = 0.3.3-dev1
 PATH_SEPARATOR = :
 PKG_CONFIG = /usr/bin/pkg-config
 POFILES =  de.po fr.po nl.po it.po pt_BR.po sv.po zh_CN.po
@@ -185,7 +185,7 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = 
 USE_NLS = yes
-VERSION = 0.3.2.10-dev12
+VERSION = 0.3.3-dev1
 XGETTEXT = /usr/bin/xgettext
 YELP = /usr/bin/yelp
 ac_ct_CC = gcc
@@ -708,6 +708,11 @@ install-data-hook:
 	echo "Start byte compiling plugins..."
 	python -OO compile.py
 	echo "Finished byte compiling plugins"
+	if [ -d $(DESTDIR)$(datadir)/scribes/plugins ]; then \
+		echo "removing " $(DESTDIR)$(datadir)/scribes/plugins ;\
+		rm -rf $(DESTDIR)$(datadir)/scribes/plugins ;\
+		echo "removed " $(DESTDIR)$(datadir)/scribes/plugins ;\
+	fi
 	cp -R plugins $(DESTDIR)$(datadir)/scribes
 	chmod 755 $(DESTDIR)$(startupdir)/$(startup_script)
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

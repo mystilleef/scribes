@@ -45,5 +45,10 @@ install-data-hook:
 	echo "Start byte compiling plugins..."
 	python -OO compile.py
 	echo "Finished byte compiling plugins"
+	if [ -d $(DESTDIR)$(datadir)/scribes/plugins ]; then \
+		echo "removing " $(DESTDIR)$(datadir)/scribes/plugins ;\
+		rm -rf $(DESTDIR)$(datadir)/scribes/plugins ;\
+		echo "removed " $(DESTDIR)$(datadir)/scribes/plugins ;\
+	fi
 	cp -R plugins $(DESTDIR)$(datadir)/scribes
 	chmod 755 $(DESTDIR)$(startupdir)/$(startup_script)
