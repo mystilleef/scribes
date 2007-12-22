@@ -91,10 +91,6 @@ class OutputProcessor(object):
 			self.__is_busy = True
 			from Exceptions import PermissionError, SwapError
 			self.__begin_saving(editor_id, text, uri, encoding)
-			#self.__check_permissions(uri)
-			#wap_file_uri = self.__get_swap_file(editor_id)
-			#encoded_text = self.__encode_text(text, encoding)
-			#self.__save_file(editor_id, uri, encoded_text, swap_file_uri)
 		except ValueError:
 			self.__queue.append((editor_id, text, uri, encoding))
 		except PermissionError:

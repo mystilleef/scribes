@@ -28,8 +28,8 @@
 """
 from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop(set_as_default=True)
-INTERVAL = 500
-RECURSIONLIMITMULTIPLIER = 1000
+INTERVAL = 1000
+RECURSIONLIMITMULTIPLIER = 1000000
 dbus_service = "org.sourceforge.ScribesSaveProcessor"
 dbus_path = "/org/sourceforge/ScribesSaveProcessor"
 
@@ -122,10 +122,20 @@ class SaveProcessor(object):
 		_exit(0)
 		return
 
-if __name__ == "__main__":
-	from sys import setcheckinterval, getrecursionlimit, setrecursionlimit
+def __set_vm_properties():
+	"""
+	Set virtual machine's (Python) system properties.
+	"""
+	from sys import setcheckinterval, getrecursionlimit, setrecursionlimit, setdlopenflags
+	from dl import RTLD_LAZY, RTLD_GLOBAL
+	global INTERVAL, RECURSIONLIMITMULTIPLIER
 	setcheckinterval(INTERVAL)
 	setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
+	setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
+	return
+
+if __name__ == "__main__":
+	__set_vm_properties()
 	from sys import argv, path
 	python_path = argv[1]
 	path.insert(0, python_path)
