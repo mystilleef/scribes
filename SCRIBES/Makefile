@@ -481,10 +481,10 @@ $(python_files): Makefile $(python_in_files)
 	rm -f $(python_files) $(python_files).tmp
 	$(edit) $(python_in_files) > $(python_files).tmp
 	mv $(python_files).tmp $(python_files)
-	if [ -d scribesdir ]; then \
-		echo "removing " scribesdir ;\
-		rm -rf scribesdir ;\
-		echo "removed " scribesdir ;\
+	if [ -d $(scribesdir) ]; then \
+		echo "removing " $(scribesdir) ;\
+		rm -rf $(scribesdir) ;\
+		echo "removed " $(scribesdir) ;\
 	fi
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
