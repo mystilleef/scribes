@@ -36,7 +36,7 @@ libdir = ${exec_prefix}/lib
 DATADIRNAME = share
 itlocaledir = $(prefix)/$(DATADIRNAME)/locale
 subdir = po
-install_sh = /home/goldenmyst/scribes-dev-save/install-sh
+install_sh = /home/goldenmyst/scribes-dev/install-sh
 # Automake >= 1.8 provides mkdir -p --.
 # Until it can be supposed, use the safe fallback:
 mkdir_p = $(install_sh) -d
