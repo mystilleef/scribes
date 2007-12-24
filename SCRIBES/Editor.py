@@ -610,6 +610,9 @@ class Editor(GObject):
 		from utils import convert_color_to_spec
 		return convert_color_to_spec(color)
 
+	def convert_color_to_spec(self, style):
+		return self.convert_color_to_string(style)
+
 	def get_cursor_position(self):
 		from cursor import get_cursor_iterator
 		return get_cursor_iterator(self.__textbuffer)

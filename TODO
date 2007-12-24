@@ -7,6 +7,7 @@ Version 0.3.5
 Version 0.3.4 (Next Version)
 =============
 	- New Configuration System (Deprecate GConf)
+	- When deleting a line copy it to clipboard like in vim
 	- Per document statistics and properties dialog that shows useful
 information about a document (name, full path, size, type, language, etc)
 
