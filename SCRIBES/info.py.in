@@ -60,6 +60,7 @@ author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"\tShawn Bright <nephish@gmail.com>",
 			"\tPeter Magnusson <peter.magnusson@crippledcanary.se>",
 			"\tJakub Sadowinski <paypal@unihex.com>",
+			"\tRockallite Wulf <rockalite@users.sourceforge.net>",
 		]
 documenters = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 artists = ["Alexandre Moore <alexandre.moore@gmail.com>", "Panos Laganakos <panos.laganakos@gmail.com>"]
