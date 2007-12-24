@@ -250,9 +250,7 @@ class SearchReplaceManager(GObject):
 					textbuffer.delete_mark(item[0])
 				if item[1].get_deleted() is False:
 					textbuffer.delete_mark(item[1])
-		from SCRIBES.utils import response
 		for position in self.__position_of_matches:
-			response()
 			mark_begin = textbuffer.create_mark(None, position[0], True)
 			mark_end = textbuffer.create_mark(None, position[1], False)
 			position_marks.append((mark_begin, mark_end))
@@ -264,7 +262,6 @@ class SearchReplaceManager(GObject):
 		from SCRIBES.cursor import move_view_to_cursor
 		textbuffer.begin_user_action()
 		for position in position_marks:
-			response()
 			if self.__cancel_replace_operation:
 				delete_marks()
 				return
@@ -446,7 +443,6 @@ class SearchReplaceManager(GObject):
 		for match in matches:
 			if self.__cancel_search_operation:
 				return None
-			self.__editor.response()
 			start, stop = begin.forward_search(match, TEXT_SEARCH_VISIBLE_ONLY, end)
 			positions.append((start, stop))
 			begin = stop

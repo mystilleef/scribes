@@ -19,7 +19,7 @@
 
 GETTEXT_PACKAGE = scribes
 PACKAGE = scribes
-VERSION = 0.3.3-dev1
+VERSION = 0.3.3-dev2
 
 SHELL = /bin/sh
 
