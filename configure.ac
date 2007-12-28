@@ -1,7 +1,7 @@
 #						-*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([scribes], [0.3.3-dev2], [<mystilleef@gmail.com>])
+AC_INIT([scribes], [0.3.3.1], [<mystilleef@gmail.com>])
 GNOME_COMMON_INIT
 AC_PREREQ(2.60)
 AM_INIT_AUTOMAKE([1.8 dist-bzip2 no-dist-gzip])
@@ -29,7 +29,7 @@ AC_PATH_PROG([YELP], [yelp])
 GNOME_DOC_INIT
 AM_GCONF_SOURCE_2
 
-AM_PATH_PYTHON([2.4])
+AM_PATH_PYTHON([2.5])
 AC_LANG([C])
 AC_RUN_IFELSE([AC_LANG_PROGRAM([[#include <stdlib.h>]],[[int result = system("python depcheck.py"); if (result != 0) exit(EXIT_FAILURE);]])], [], [AC_MSG_ERROR([Error: Dependency check failed])])
 

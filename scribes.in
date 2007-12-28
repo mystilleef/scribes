@@ -37,11 +37,14 @@ def __set_vm_properties():
 	Set virtual machine's (Python) system properties.
 	"""
 	from sys import setcheckinterval, getrecursionlimit, setrecursionlimit, setdlopenflags
-	from dl import RTLD_LAZY, RTLD_GLOBAL
+	try:
+		from dl import RTLD_LAZY, RTLD_GLOBAL
+		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
+	except ImportError:
+		pass
 	global INTERVAL, RECURSIONLIMITMULTIPLIER
 	setcheckinterval(INTERVAL)
 	setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
-	setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 	return
 
 from sys import argv, path, settrace
@@ -53,12 +56,12 @@ from SCRIBES.Main import main
 def traceit(frame, event, arg):
 	from operator import ne
 	if ne(event, "line"): return traceit
-	try:		
+	try:
 		lineno = frame.f_lineno
 		filename = frame.f_globals["__file__"]
 		if filename.endswith(".pyc") or filename.endswith(".pyo"):
 			filename = filename[:-1]
-		
+
 		name = frame.f_globals["__name__"]
 		if name.startswith("sre_") or name.startswith("posixpath") or name.startswith("gettext") \
 			or name.startswith("locale") or name.startswith("re") or name.startswith("encoding") \
@@ -70,7 +73,7 @@ def traceit(frame, event, arg):
 	except KeyError:
 		print "Keyerror"
 	return traceit
-	
+
 if __name__ == "__main__":
 	#settrace(traceit)
 	main(argv[1:])
