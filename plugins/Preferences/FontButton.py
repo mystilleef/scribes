@@ -47,9 +47,11 @@ class PreferencesFontButton(FontButton):
 		FontButton.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__client.notify_add("/apps/scribes/font", self.__font_changed_cb)
 		self.__signal_id_1 = self.connect("font-set", self.__font_set_cb)
 		self.__signal_id_2 = self.__manager.connect("destroy", self.__destroy_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id = monitor_add(self.__database_uri, MONITOR_FILE,
+					self.__font_changed_cb)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -60,7 +62,13 @@ class PreferencesFontButton(FontButton):
 		"""
 		self.__editor = editor
 		self.__manager = manager
-		self.__client = editor.gconf_client
+		self.__monitor_id = None
+		# Path to the font database.
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		database_path = join(preference_folder, "Font.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__database_uri = get_uri_from_local_path(database_path)
 		self.__signal_id_1 = self.__signal_id_2 = None
 		return
 
@@ -71,17 +79,14 @@ class PreferencesFontButton(FontButton):
 		@param self: Reference to the PreferencesFontButton instance.
 		@type self: A PreferencesFontButton object.
 		"""
-		font_name = "Monospace 12"
-		value = self.__client.get("/apps/scribes/font")
-		from operator import truth
-		if truth(value):
-			font_name = self.__client.get_string("/apps/scribes/font")
+		from FontMetadata import get_value
+		font_name = get_value()
 		self.set_font_name(font_name)
 		from SCRIBES.tooltips import font_button_tip
 		self.__editor.tip.set_tip(self, font_button_tip)
 		return
 
-	def __font_changed_cb(self, client, cnxn_id, entry, data):
+	def __font_changed_cb(self, *args):
 		"""
 		Handles callback when font changes.
 
@@ -100,9 +105,11 @@ class PreferencesFontButton(FontButton):
 		@param data: Optional data
 		@type data: Any type object.
 		"""
-		font_name = entry.value.to_string()
-		if font_name != self.get_font_name():
-			self.set_font_name(font_name)
+		from FontMetadata import get_value
+		font_name = get_value()
+		from operator import eq
+		if eq(font_name, self.get_font_name()): return
+		self.set_font_name(font_name)
 		return
 
 	def __font_set_cb(self, button):
@@ -119,8 +126,8 @@ class PreferencesFontButton(FontButton):
 		@type: A Boolean Object.
 		"""
 		font_name = self.get_font_name()
-		self.__client.set_string("/apps/scribes/font", font_name)
-		self.__client.notify("/apps/scribes/font")
+		from FontMetadata import set_value
+		set_value(font_name)
 		from i18n import msg0011
 		message = msg0011 % font_name
 		self.__editor.feedback.update_status_message(message, "succeed", 5)
@@ -139,6 +146,8 @@ class PreferencesFontButton(FontButton):
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id: monitor_cancel(self.__monitor_id)
 		del self
 		self = None
 		return

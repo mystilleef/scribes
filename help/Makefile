@@ -72,15 +72,15 @@ CONFIG_CLEAN_FILES =
 SOURCES =
 DIST_SOURCES =
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/goldenmyst/scribes-dev/missing --run aclocal-1.9
+ACLOCAL = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run aclocal-1.9
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 ALL_LINGUAS = de fr nl it pt_BR sv zh_CN
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/goldenmyst/scribes-dev/missing --run tar
-AUTOCONF = ${SHELL} /home/goldenmyst/scribes-dev/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/goldenmyst/scribes-dev/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/goldenmyst/scribes-dev/missing --run automake-1.9
+AMTAR = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run tar
+AUTOCONF = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run automake-1.9
 AWK = mawk
 CATALOGS =  de.gmo fr.gmo nl.gmo it.gmo pt_BR.gmo sv.gmo zh_CN.gmo
 CATOBJEXT = .gmo
@@ -91,7 +91,7 @@ CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
 DATADIRNAME = share
-DEFS = -DPACKAGE_NAME=\"scribes\" -DPACKAGE_TARNAME=\"scribes\" -DPACKAGE_VERSION=\"0.3.3.1\" -DPACKAGE_STRING=\"scribes\ 0.3.3.1\" -DPACKAGE_BUGREPORT=\"\<mystilleef@gmail.com\>\" -DPACKAGE=\"scribes\" -DVERSION=\"0.3.3.1\" -DGETTEXT_PACKAGE=\"scribes\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LOCALE_H=1 -DHAVE_LC_MESSAGES=1 -DHAVE_BIND_TEXTDOMAIN_CODESET=1 -DHAVE_GETTEXT=1 -DHAVE_DCGETTEXT=1 -DENABLE_NLS=1
+DEFS = -DPACKAGE_NAME=\"scribes\" -DPACKAGE_TARNAME=\"scribes\" -DPACKAGE_VERSION=\"0.3.4-dev1\" -DPACKAGE_STRING=\"scribes\ 0.3.4-dev1\" -DPACKAGE_BUGREPORT=\"\<mystilleef@gmail.com\>\" -DPACKAGE=\"scribes\" -DVERSION=\"0.3.4-dev1\" -DGETTEXT_PACKAGE=\"scribes\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LOCALE_H=1 -DHAVE_LC_MESSAGES=1 -DHAVE_BIND_TEXTDOMAIN_CODESET=1 -DHAVE_GETTEXT=1 -DHAVE_DCGETTEXT=1 -DENABLE_NLS=1
 DEPDIR = .deps
 DOC_USER_FORMATS = 
 ECHO_C = 
@@ -149,7 +149,7 @@ LTLIBOBJS =
 MAINT = 
 MAINTAINER_MODE_FALSE = #
 MAINTAINER_MODE_TRUE = 
-MAKEINFO = ${SHELL} /home/goldenmyst/scribes-dev/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_OPTS = -c
@@ -158,9 +158,9 @@ OMF_DIR = ${datadir}/omf
 PACKAGE = scribes
 PACKAGE_BUGREPORT = <mystilleef@gmail.com>
 PACKAGE_NAME = scribes
-PACKAGE_STRING = scribes 0.3.3.1
+PACKAGE_STRING = scribes 0.3.4-dev1
 PACKAGE_TARNAME = scribes
-PACKAGE_VERSION = 0.3.3.1
+PACKAGE_VERSION = 0.3.4-dev1
 PATH_SEPARATOR = :
 PKG_CONFIG = /usr/bin/pkg-config
 POFILES =  de.po fr.po nl.po it.po pt_BR.po sv.po zh_CN.po
@@ -177,7 +177,7 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = 
 USE_NLS = yes
-VERSION = 0.3.3.1
+VERSION = 0.3.4-dev1
 XGETTEXT = /usr/bin/xgettext
 YELP = /usr/bin/yelp
 ac_ct_CC = gcc
@@ -207,7 +207,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = /home/goldenmyst/scribes-dev/install-sh
+install_sh = /home/goldenmyst/scribes-new-config/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -233,7 +233,7 @@ _DOC_REAL_LINGUAS = $(if $(filter environment,$(origin LINGUAS)),		\
 	$(filter $(LINGUAS),$(DOC_LINGUAS)),					\
 	$(DOC_LINGUAS))
 
-_DOC_ABS_SRCDIR = /home/goldenmyst/scribes-dev/help
+_DOC_ABS_SRCDIR = /home/goldenmyst/scribes-new-config/help
 _ENABLE_SK = true
 
 ################################################################################

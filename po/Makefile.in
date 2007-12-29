@@ -19,7 +19,7 @@
 
 GETTEXT_PACKAGE = scribes
 PACKAGE = scribes
-VERSION = 0.3.3.1
+VERSION = 0.3.4-dev1
 
 SHELL = /bin/sh
 
@@ -36,7 +36,7 @@ libdir = ${exec_prefix}/lib
 DATADIRNAME = share
 itlocaledir = $(prefix)/$(DATADIRNAME)/locale
 subdir = po
-install_sh = /home/goldenmyst/scribes-dev/install-sh
+install_sh = /home/goldenmyst/scribes-new-config/install-sh
 # Automake >= 1.8 provides mkdir -p --.
 # Until it can be supposed, use the safe fallback:
 mkdir_p = $(install_sh) -d

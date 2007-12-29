@@ -706,6 +706,18 @@ class Editor(GObject):
 		from utils import generate_random_number
 		return generate_random_number(sequence)
 
+	def set_message(self, message, icon, time):
+		return
+
+	def unset_message(self, message_id):
+		return
+
+	def start_spinner(self):
+		return
+
+	def stop_spinner(self):
+		return
+
 ########################################################################
 
 	def __create_widgets(self):

@@ -79,7 +79,9 @@ class ScribesTextView(SourceView):
 		self.__signal_id_22 = editor.connect("close-document-no-save", self.__close_document_cb)
 		self.__signal_id_25 = editor.connect("reload-document", self.__reload_document_cb)
 		# GConf notification monitors.
-		self.__client.notify_add("/apps/scribes/font", self.__font_changed_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id_1 = monitor_add(self.__font_database_uri, MONITOR_FILE,
+								self.__font_changed_cb)
 		self.__client.notify_add("/apps/scribes/tab", self.__tab_width_cb)
 		self.__client.notify_add("/apps/scribes/text_wrapping", self.__text_wrapping_cb)
 		self.__client.notify_add("/apps/scribes/margin", self.__show_margin_cb)
@@ -109,6 +111,13 @@ class ScribesTextView(SourceView):
 		self.__bar = None
 		self.__scroll_id = None
 		self.__move_id = None
+		self.__monitor_id_1 = None
+		# Path to the font database.
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		font_database_path = join(preference_folder, "Font.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__font_database_uri = get_uri_from_local_path(font_database_path)
 		return
 
 	def __set_properties(self):
@@ -160,11 +169,10 @@ class ScribesTextView(SourceView):
 		if self.__client.get("/apps/scribes/use_tabs"):
 			use_tabs = self.__client.get_bool("/apps/scribes/use_tabs")
 		self.set_insert_spaces_instead_of_tabs(not use_tabs)
-		gconf_font = "Monospace 12"
-		if self.__client.get("/apps/scribes/font"):
-			gconf_font = self.__client.get_string("/apps/scribes/font")
+		from FontMetadata import get_value
+		font_name = get_value()
 		from pango import FontDescription
-		font = FontDescription(gconf_font)
+		font = FontDescription(font_name)
 		self.modify_font(font)
 		wrap_mode_bool = True
 		if self.__client.get("/apps/scribes/text_wrapping"):
@@ -665,27 +673,16 @@ class ScribesTextView(SourceView):
 #
 ################################################################################
 
-	def __font_changed_cb(self, client, cnxn_id, entry, data):
+	def __font_changed_cb(self, *args):
 		"""
 		Handles callback when the font of the text editor changes.
 
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
-
-		@param client: A client used to query the GConf daemon and database
-		@type client: A gconf.Client object.
-
-		@param cnxn_id: The identification number for the GConf client.
-		@type cnxn_id: An Integer object.
-
-		@param entry: An entry from the GConf database.
-		@type entry: A gconf.Entry object.
-
-		@param data: Optional data
-		@type data: Any type object.
 		"""
 		from pango import FontDescription
-		new_font = FontDescription(entry.value.to_string())
+		from FontMetadata import get_value
+		new_font = FontDescription(get_value())
 		self.modify_font(new_font)
 		return
 
@@ -1020,6 +1017,8 @@ class ScribesTextView(SourceView):
 		self.__editor.disconnect_signal(self.__signal_id_21, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_22, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_25, self.__editor)
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
 		# Unregister object so that editor can quit.
 		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.
