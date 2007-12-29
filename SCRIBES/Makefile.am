@@ -85,6 +85,7 @@ scribes_PYTHON = \
 	Trigger.py \
 	TriggerManager.py \
 	txtutils.py \
+	UseTabsMetadata.py \
 	usage.py \
 	utils.py \
 	ViewContainer.py \

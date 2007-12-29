@@ -83,6 +83,8 @@ class ScribesTextView(SourceView):
 		self.__monitor_id_1 = monitor_add(self.__font_database_uri, MONITOR_FILE, self.__font_changed_cb)
 		self.__monitor_id_2 = monitor_add(self.__tab_width_database_uri, MONITOR_FILE,
 								self.__tab_width_cb)
+		self.__monitor_id_3 = monitor_add(self.__use_tabs_database_uri, MONITOR_FILE,
+								self.__use_tabs_cb)
 		self.__client.notify_add("/apps/scribes/text_wrapping", self.__text_wrapping_cb)
 		self.__client.notify_add("/apps/scribes/margin", self.__show_margin_cb)
 		self.__client.notify_add("/apps/scribes/margin_position", self.__margin_position_cb)
@@ -90,7 +92,6 @@ class ScribesTextView(SourceView):
 		self.__client.notify_add("/apps/scribes/use_theme_colors", self.__themes_cb)
 		self.__client.notify_add("/apps/scribes/fgcolor", self.__foreground_cb)
 		self.__client.notify_add("/apps/scribes/bgcolor", self.__background_cb)
-		self.__client.notify_add("/apps/scribes/use_tabs", self.__use_tabs_cb)
 		self.__client.notify_add("/apps/scribes/SyntaxHighlight", self.__syntax_cb)
 
 	def __init_attributes(self, editor):
@@ -119,8 +120,9 @@ class ScribesTextView(SourceView):
 		from gnomevfs import get_uri_from_local_path
 		self.__font_database_uri = get_uri_from_local_path(font_database_path)
 		tab_width_database_path = join(preference_folder, "TabWidth.gdb")
-		from gnomevfs import get_uri_from_local_path
 		self.__tab_width_database_uri = get_uri_from_local_path(tab_width_database_path)
+		use_tabs_database_path = join(preference_folder, "UseTabs.gdb")
+		self.__use_tabs_database_uri = get_uri_from_local_path(use_tabs_database_path)
 		return
 
 	def __set_properties(self):
@@ -167,9 +169,8 @@ class ScribesTextView(SourceView):
 		from TabWidthMetadata import get_value
 		tab_width = get_value()
 		self.set_tabs_width(tab_width)
-		use_tabs = True
-		if self.__client.get("/apps/scribes/use_tabs"):
-			use_tabs = self.__client.get_bool("/apps/scribes/use_tabs")
+		from UseTabsMetadata import get_value
+		use_tabs = get_value()
 		self.set_insert_spaces_instead_of_tabs(not use_tabs)
 		from FontMetadata import get_value
 		font_name = get_value()
@@ -906,26 +907,15 @@ class ScribesTextView(SourceView):
 		self.modify_base(STATE_NORMAL, background_color)
 		return
 
-	def __use_tabs_cb(self, client, cnxn_id, entry, data):
+	def __use_tabs_cb(self, *args):
 		"""
 		Handles callback #FIXME: yeap
 
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
-
-		@param client: A client used to query the GConf daemon and database
-		@type client: A gconf.Client object.
-
-		@param cnxn_id: The identification number for the GConf client.
-		@type cnxn_id: An Integer object.
-
-		@param entry: An entry from the GConf database.
-		@type entry: A gconf.Entry object.
-
-		@param data: Optional data
-		@type data: Any type object.
 		"""
-		use_tabs = client.get_bool("/apps/scribes/use_tabs")
+		from UseTabsMetadata import get_value
+		use_tabs = get_value()
 		self.set_insert_spaces_instead_of_tabs(not use_tabs)
 		return
 
@@ -1012,6 +1002,7 @@ class ScribesTextView(SourceView):
 		from gnomevfs import monitor_cancel
 		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
 		if self.__monitor_id_2: monitor_cancel(self.__monitor_id_2)
+		if self.__monitor_id_3: monitor_cancel(self.__monitor_id_3)
 		# Unregister object so that editor can quit.
 		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.

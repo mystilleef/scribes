@@ -51,9 +51,11 @@ class TabCheckButton(CheckButton):
 		CheckButton.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__client.notify_add("/apps/scribes/use_tabs", self.__use_tabs_cb)
 		self.__signal_id_1 = self.connect("toggled", self.__toggled_cb)
 		self.__signal_id_2 = self.__manager.connect("destroy", self.__destroy_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id = monitor_add(self.__database_uri, MONITOR_FILE,
+					self.__use_tabs_cb)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -67,7 +69,11 @@ class TabCheckButton(CheckButton):
 		"""
 		self.__editor = editor
 		self.__manager = manager
-		self.__client = editor.gconf_client
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		database_path = join(preference_folder, "UseTabs.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__database_uri = get_uri_from_local_path(database_path)
 		self.__signal_id_1 = self.__signal_id_2 = None
 		return
 
@@ -78,11 +84,8 @@ class TabCheckButton(CheckButton):
 		@param self: Reference to the TabCheckButton instance.
 		@type self: A TabCheckButton object.
 		"""
-		use_tabs = True
-		value = self.__client.get("/apps/scribes/use_tabs")
-		from operator import truth
-		if truth(value):
-			use_tabs = self.__client.get_bool("/apps/scribes/use_tabs")
+		from UseTabsMetadata import get_value
+		use_tabs = get_value()
 		self.set_active(not use_tabs)
 		from i18n import msg0013
 		self.set_label(msg0013)
@@ -91,18 +94,15 @@ class TabCheckButton(CheckButton):
 		self.__editor.tip.set_tip(self, tab_check_button_tip)
 		return
 
-	def __use_tabs_cb(self, client, cnxn_id, entry, data):
+	def __use_tabs_cb(self, *args):
 		"""
 		Handles callback when indentation type changes.
 
 		@param self: Reference to the TabCheckButton instance.
 		@type self: A TabCheckButton object.
 		"""
-		use_tabs = True
-		value = self.__client.get("/apps/scribes/use_tabs")
-		from operator import truth
-		if truth(value):
-			use_tabs = self.__client.get_bool("/apps/scribes/use_tabs")
+		from UseTabsMetadata import get_value
+		use_tabs = get_value()
 		if use_tabs:
 			if self.get_active():
 				self.set_active(False)
@@ -129,13 +129,11 @@ class TabCheckButton(CheckButton):
 		@type: A Boolean Object.
 		"""
 		use_spaces = self.get_active()
+		from UseTabsMetadata import set_value
 		if use_spaces:
-			if self.__client.get_bool("/apps/scribes/use_tabs"):
-				self.__client.set_bool("/apps/scribes/use_tabs", False)
+			set_value(False)
 		else:
-			if self.__client.get_bool("/apps/scribes/use_tabs") is False:
-				self.__client.set_bool("/apps/scribes/use_tabs", True)
-		self.__client.notify("/apps/scribes/use_tabs")
+			set_value(True)
 		return True
 
 	def __destroy_cb(self, manager):
@@ -151,6 +149,8 @@ class TabCheckButton(CheckButton):
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id: monitor_cancel(self.__monitor_id)
 		del self
 		self = None
 		return
