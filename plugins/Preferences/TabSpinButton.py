@@ -51,9 +51,11 @@ class TabSpinButton(SpinButton):
 		SpinButton.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__client.notify_add("/apps/scribes/tab", self.__tab_size_changed_cb)
 		self.__signal_id_1 = self.connect("value-changed", self.__value_changed_cb)
 		self.__signal_id_2 = self.__manager.connect("destroy", self.__destroy_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id = monitor_add(self.__database_uri, MONITOR_FILE,
+					self.__tab_size_changed_cb)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -67,7 +69,13 @@ class TabSpinButton(SpinButton):
 		"""
 		self.__editor = editor
 		self.__manager = manager
-		self.__client = editor.gconf_client
+		self.__monitor_id = None
+		# Path to the font database.
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		database_path = join(preference_folder, "TabWidth.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__database_uri = get_uri_from_local_path(database_path)
 		self.__signal_id_1 = self.__signal_id_2 = None
 		return
 
@@ -78,11 +86,6 @@ class TabSpinButton(SpinButton):
 		@param self: Reference to the TabSpinButton instance.
 		@type self: A TabSpinButton object.
 		"""
-		tab_size = 4
-		value = self.__client.get("/apps/scribes/tab")
-		from operator import truth
-		if truth(value):
-			tab_size = self.__client.get_int("/apps/scribes/tab")
 		self.set_max_length(3)
 		self.set_width_chars(3)
 		self.set_digits(0)
@@ -92,25 +95,25 @@ class TabSpinButton(SpinButton):
 		self.set_update_policy(UPDATE_ALWAYS)
 		self.set_numeric(True)
 		self.set_snap_to_ticks(True)
+		from TabWidthMetadata import get_value
+		tab_size = get_value()
 		self.set_value(tab_size)
 		from SCRIBES.tooltips import tab_spin_button_tip
 		self.__editor.tip.set_tip(self, tab_spin_button_tip)
 		return
 
-	def __tab_size_changed_cb(self, client, cnxn_id, entry, data):
+	def __tab_size_changed_cb(self, *args):
 		"""
 		Handles callback when tab size changes.
 
 		@param self: Reference to the TabSpinButton instance.
 		@type self: A TabSpinButton object.
 		"""
-		tab_size = 4
-		value = self.__client.get("/apps/scribes/tab")
-		from operator import truth
-		if truth(value):
-			tab_size = self.__client.get_int("/apps/scribes/tab")
-		if int(tab_size) != int(self.get_value()):
-			self.set_value(int(tab_size))
+		from TabWidthMetadata import get_value
+		tab_size = get_value()
+		from operator import eq
+		if eq(tab_size, self.get_value()): return
+		self.set_value(int(tab_size))
 		return
 
 	def __value_changed_cb(self, button):
@@ -127,9 +130,8 @@ class TabSpinButton(SpinButton):
 		@type: A Boolean Object.
 		"""
 		tab_size = int(self.get_value())
-		if self.__client.get_int("/apps/scribes/tab") != tab_size:
-			self.__client.set_int("/apps/scribes/tab", tab_size)
-			self.__client.notify("/apps/scribes/tab")
+		from TabWidthMetadata import set_value
+		set_value(tab_size)
 		from i18n import msg0012
 		message = msg0012 % tab_size
 		self.__editor.feedback.update_status_message(message, "succeed", 5)
@@ -148,6 +150,8 @@ class TabSpinButton(SpinButton):
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id: monitor_cancel(self.__monitor_id)
 		del self
 		self = None
 		return

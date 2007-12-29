@@ -279,6 +279,7 @@ scribes_PYTHON = \
 	Spinner.py \
 	StatusBar.py \
 	Store.py \
+	TabWidthMetadata.py \
 	TextBuffer.py \
 	TextView.py \
 	Toolbar.py \

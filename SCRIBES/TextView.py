@@ -80,9 +80,9 @@ class ScribesTextView(SourceView):
 		self.__signal_id_25 = editor.connect("reload-document", self.__reload_document_cb)
 		# GConf notification monitors.
 		from gnomevfs import monitor_add, MONITOR_FILE
-		self.__monitor_id_1 = monitor_add(self.__font_database_uri, MONITOR_FILE,
-								self.__font_changed_cb)
-		self.__client.notify_add("/apps/scribes/tab", self.__tab_width_cb)
+		self.__monitor_id_1 = monitor_add(self.__font_database_uri, MONITOR_FILE, self.__font_changed_cb)
+		self.__monitor_id_2 = monitor_add(self.__tab_width_database_uri, MONITOR_FILE,
+								self.__tab_width_cb)
 		self.__client.notify_add("/apps/scribes/text_wrapping", self.__text_wrapping_cb)
 		self.__client.notify_add("/apps/scribes/margin", self.__show_margin_cb)
 		self.__client.notify_add("/apps/scribes/margin_position", self.__margin_position_cb)
@@ -111,13 +111,16 @@ class ScribesTextView(SourceView):
 		self.__bar = None
 		self.__scroll_id = None
 		self.__move_id = None
-		self.__monitor_id_1 = None
+		self.__monitor_id_1 =  self.__monitor_id_2 = None
 		# Path to the font database.
 		from os.path import join
 		preference_folder = join(editor.metadata_folder, "Preferences")
 		font_database_path = join(preference_folder, "Font.gdb")
 		from gnomevfs import get_uri_from_local_path
 		self.__font_database_uri = get_uri_from_local_path(font_database_path)
+		tab_width_database_path = join(preference_folder, "TabWidth.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__tab_width_database_uri = get_uri_from_local_path(tab_width_database_path)
 		return
 
 	def __set_properties(self):
@@ -161,9 +164,8 @@ class ScribesTextView(SourceView):
 		if self.__client.get("/apps/scribes/margin"):
 			show_margin = self.__client.get_bool("/apps/scribes/margin")
 		self.set_show_margin(show_margin)
-		tab_width = 4
-		if self.__client.get("/apps/scribes/tab"):
-			tab_width = self.__client.get_int("/apps/scribes/tab")
+		from TabWidthMetadata import get_value
+		tab_width = get_value()
 		self.set_tabs_width(tab_width)
 		use_tabs = True
 		if self.__client.get("/apps/scribes/use_tabs"):
@@ -686,26 +688,16 @@ class ScribesTextView(SourceView):
 		self.modify_font(new_font)
 		return
 
-	def __tab_width_cb(self, client, cnxn_id, entry, data):
+	def __tab_width_cb(self, *args):
 		"""
 		Handles callback when the tab width of the text editor changes.
 
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
 
-		@param client: A client used to query the GConf daemon and database
-		@type client: A gconf.Client object.
-
-		@param cnxn_id: The identification number for the GConf client.
-		@type cnxn_id: An Integer object.
-
-		@param entry: An entry from the GConf database.
-		@type entry: A gconf.Entry object.
-
-		@param data: Optional data
-		@type data: Any type object.
 		"""
-		self.set_tabs_width(int(entry.value.to_string()))
+		from TabWidthMetadata import get_value
+		self.set_tabs_width(get_value())
 		return
 
 	def __text_wrapping_cb(self, client, cnxn_id, entry, data):
@@ -1019,6 +1011,7 @@ class ScribesTextView(SourceView):
 		self.__editor.disconnect_signal(self.__signal_id_25, self.__editor)
 		from gnomevfs import monitor_cancel
 		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
+		if self.__monitor_id_2: monitor_cancel(self.__monitor_id_2)
 		# Unregister object so that editor can quit.
 		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.
