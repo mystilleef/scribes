@@ -51,10 +51,13 @@ class MarginSpinButton(SpinButton):
 		SpinButton.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__client.notify_add("/apps/scribes/margin_position", self.__margin_changed_cb)
-		self.__client.notify_add("/apps/scribes/margin", self.__margin_cb)
 		self.__signal_id_1 = self.connect("value-changed", self.__value_changed_cb)
 		self.__signal_id_2 = self.__manager.connect("destroy", self.__destroy_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id_1 = monitor_add(self.__database_uri, MONITOR_FILE,
+					self.__margin_changed_cb)
+		self.__monitor_id_2 = monitor_add(self.__display_database_uri, MONITOR_FILE,
+					self.__margin_cb)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -68,8 +71,14 @@ class MarginSpinButton(SpinButton):
 		"""
 		self.__editor = editor
 		self.__manager = manager
-		self.__client = editor.gconf_client
 		self.__signal_id_1 = self.__signal_id_2 = None
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		database_path = join(preference_folder, "MarginPosition.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__database_uri = get_uri_from_local_path(database_path)
+		display_database_path = join(preference_folder, "DisplayRightMargin.gdb")
+		self.__display_database_uri = get_uri_from_local_path(display_database_path)
 		return
 
 	def __set_properties(self):
@@ -79,16 +88,10 @@ class MarginSpinButton(SpinButton):
 		@param self: Reference to the MarginSpinButton instance.
 		@type self: A MarginSpinButton object.
 		"""
-		margin_position = 72
-		value = self.__client.get("/apps/scribes/margin_position")
-		from operator import truth
-		if truth(value):
-			margin_position = self.__client.get_int("/apps/scribes/margin_position")
-		show_margin = False
-		value = self.__client.get("/apps/scribes/margin")
-		from operator import truth
-		if truth(value):
-			show_margin = self.__client.get_bool("/apps/scribes/margin")
+		from MarginPositionMetadata import get_value
+		margin_position = get_value()
+		from DisplayRightMarginMetadata import get_value
+		show_margin = get_value()
 		self.set_property("sensitive", show_margin)
 		self.set_max_length(3)
 		self.set_width_chars(3)
@@ -104,34 +107,28 @@ class MarginSpinButton(SpinButton):
 		self.__editor.tip.set_tip(self, margin_spin_button_tip)
 		return
 
-	def __margin_changed_cb(self, client, cnxn_id, entry, data):
+	def __margin_changed_cb(self, *args):
 		"""
 		Handles callback when tab size changes.
 
 		@param self: Reference to the MarginSpinButton instance.
 		@type self: A MarginSpinButton object.
 		"""
-		margin_position = 72
-		value = self.__client.get("/apps/scribes/margin_position")
-		from operator import truth
-		if truth(value):
-			margin_position = self.__client.get_int("/apps/scribes/margin_position")
+		from MarginPositionMetadata import get_value
+		margin_position = get_value()
 		if int(margin_position) != int(self.get_value()):
 			self.set_value(int(margin_position))
 		return
 
-	def __margin_cb(self, client, cnxn_id, entry, data):
+	def __margin_cb(self, *args):
 		"""
 		Handles callback when tab size changes.
 
 		@param self: Reference to the MarginSpinButton instance.
 		@type self: A MarginSpinButton object.
 		"""
-		show_margin = False
-		value = self.__client.get("/apps/scribes/margin")
-		from operator import truth
-		if truth(value):
-			show_margin = self.__client.get_bool("/apps/scribes/margin")
+		from DisplayRightMarginMetadata import get_value
+		show_margin = get_value()
 		if show_margin is False:
 			self.set_property("sensitive", False)
 		else:
@@ -152,9 +149,8 @@ class MarginSpinButton(SpinButton):
 		@type: A Boolean Object.
 		"""
 		margin_position = int(self.get_value())
-		if self.__client.get_int("/apps/scribes/margin_position") != margin_position:
-			self.__client.set_int("/apps/scribes/margin_position", margin_position)
-			self.__client.notify("/apps/scribes/margin_position")
+		from MarginPositionMetadata import set_value
+		set_value(margin_position)
 		from i18n import msg0025
 		message = msg0025 % margin_position
 		self.__editor.feedback.update_status_message(message, "succeed", 5)
@@ -173,6 +169,9 @@ class MarginSpinButton(SpinButton):
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
+		if self.__monitor_id_2: monitor_cancel(self.__monitor_id_2)
 		del self
 		self = None
 		return

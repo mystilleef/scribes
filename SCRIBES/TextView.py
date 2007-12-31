@@ -85,10 +85,14 @@ class ScribesTextView(SourceView):
 								self.__tab_width_cb)
 		self.__monitor_id_3 = monitor_add(self.__use_tabs_database_uri, MONITOR_FILE,
 								self.__use_tabs_cb)
-		self.__client.notify_add("/apps/scribes/text_wrapping", self.__text_wrapping_cb)
-		self.__client.notify_add("/apps/scribes/margin", self.__show_margin_cb)
-		self.__client.notify_add("/apps/scribes/margin_position", self.__margin_position_cb)
-		self.__client.notify_add("/apps/scribes/spell_check", self.__spell_check_cb)
+		self.__monitor_id_4 = monitor_add(self.__text_wrapping_database_uri,
+								MONITOR_FILE, self.__text_wrapping_cb)
+		self.__monitor_id_5 = monitor_add(self.__show_margin_database_uri,
+								MONITOR_FILE, self.__show_margin_cb)
+		self.__monitor_id_6 = monitor_add(self.__margin_position_database_uri,
+								MONITOR_FILE, self.__margin_position_cb)
+		self.__monitor_id_7 = monitor_add(self.__spell_check_database_uri,
+								MONITOR_FILE, self.__spell_check_cb)
 		self.__client.notify_add("/apps/scribes/use_theme_colors", self.__themes_cb)
 		self.__client.notify_add("/apps/scribes/fgcolor", self.__foreground_cb)
 		self.__client.notify_add("/apps/scribes/bgcolor", self.__background_cb)
@@ -123,6 +127,14 @@ class ScribesTextView(SourceView):
 		self.__tab_width_database_uri = get_uri_from_local_path(tab_width_database_path)
 		use_tabs_database_path = join(preference_folder, "UseTabs.gdb")
 		self.__use_tabs_database_uri = get_uri_from_local_path(use_tabs_database_path)
+		text_wrapping_database_path = join(preference_folder, "TextWrapping.gdb")
+		self.__text_wrapping_database_uri = get_uri_from_local_path(text_wrapping_database_path)
+		show_margin_database_path = join(preference_folder, "DisplayRightMargin.gdb")
+		self.__show_margin_database_uri = get_uri_from_local_path(show_margin_database_path)
+		margin_position_database_path = join(preference_folder, "MarginPosition.gdb")
+		self.__margin_position_database_uri = get_uri_from_local_path(margin_position_database_path)
+		spell_check_database_path = join(preference_folder, "SpellCheck.gdb")
+		self.__spell_check_database_uri = get_uri_from_local_path(spell_check_database_path)
 		return
 
 	def __set_properties(self):
@@ -148,23 +160,21 @@ class ScribesTextView(SourceView):
 		self.set_highlight_current_line(True)
 		self.set_show_line_numbers(True)
 		self.set_auto_indent(True)
-		if self.__client.get("/apps/scribes/spell_check"):
-			spell_check = self.__client.get_bool("/apps/scribes/spell_check")
-			if spell_check:
-				try:
-					from gobject import GError
-					from gtkspell import Spell
-					from locale import getdefaultlocale
-					self.__spell_checker = Spell(self, getdefaultlocale()[0])
-				except GError:
-					pass
-		margin_position = 72
-		if self.__client.get("/apps/scribes/margin_position"):
-			margin_position = self.__client.get_int("/apps/scribes/margin_position")
+		from SpellCheckMetadata import get_value
+		spell_check = get_value()
+		if spell_check:
+			try:
+				from gobject import GError
+				from gtkspell import Spell
+				from locale import getdefaultlocale
+				self.__spell_checker = Spell(self, getdefaultlocale()[0])
+			except GError:
+				pass
+		from MarginPositionMetadata import get_value
+		margin_position = get_value()
 		self.set_margin(margin_position)
-		show_margin = False
-		if self.__client.get("/apps/scribes/margin"):
-			show_margin = self.__client.get_bool("/apps/scribes/margin")
+		from DisplayRightMarginMetadata import get_value
+		show_margin = get_value()
 		self.set_show_margin(show_margin)
 		from TabWidthMetadata import get_value
 		tab_width = get_value()
@@ -177,13 +187,12 @@ class ScribesTextView(SourceView):
 		from pango import FontDescription
 		font = FontDescription(font_name)
 		self.modify_font(font)
-		wrap_mode_bool = True
-		if self.__client.get("/apps/scribes/text_wrapping"):
-			wrap_mode_bool = self.__client.get_bool("/apps/scribes/text_wrapping")
 		use_theme_colors = True
 		if self.__client.get("/apps/scribes/use_theme_colors"):
 			use_theme_colors = self.__client.get_bool("/apps/scribes/use_theme_colors")
 		from gtk import WRAP_WORD, WRAP_NONE
+		from TextWrappingMetadata import get_value
+		wrap_mode_bool = get_value()
 		if wrap_mode_bool:
 			self.set_wrap_mode(WRAP_WORD)
 		else:
@@ -542,8 +551,8 @@ class ScribesTextView(SourceView):
 		"""
 		if self.__bar_is_visible is False:
 			self.grab_focus()
-			#from gobject import idle_add
-			#idle_add(self.__refresh_view)
+			from gobject import idle_add
+			idle_add(self.__refresh_view)
 		return False
 
 	def __button_press_event_cb(self, textview, event):
@@ -592,8 +601,8 @@ class ScribesTextView(SourceView):
 
 	def __hide_dialog_cb(self, *args):
 		self.grab_focus()
-		#from gobject import idle_add
-		#idle_add(self.__refresh_view)
+		from gobject import idle_add
+		idle_add(self.__refresh_view)
 		return
 
 	def __copy_clipboard_cb(self, textview):
@@ -695,39 +704,27 @@ class ScribesTextView(SourceView):
 
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
-
 		"""
 		from TabWidthMetadata import get_value
 		self.set_tabs_width(get_value())
 		return
 
-	def __text_wrapping_cb(self, client, cnxn_id, entry, data):
+	def __text_wrapping_cb(self, *args):
 		"""
 		Handles callback when the text wrapping mode of the text editor changes.
 
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
-
-		@param client: A client used to query the GConf daemon and database
-		@type client: A gconf.Client object.
-
-		@param cnxn_id: The identification number for the GConf client.
-		@type cnxn_id: An Integer object.
-
-		@param entry: An entry from the GConf database.
-		@type entry: A gconf.Entry object.
-
-		@param data: Optional data
-		@type data: Any type object.
 		"""
 		from gtk import WRAP_NONE, WRAP_WORD
-		if entry.value.get_bool():
+		from TextWrappingMetadata import get_value
+		if get_value():
 			self.set_wrap_mode(WRAP_WORD)
 		else:
 			self.set_wrap_mode(WRAP_NONE)
 		return
 
-	def __margin_position_cb(self, client, cnxn_id, entry, data):
+	def __margin_position_cb(self, *args):
 		"""
 		Handles callback when the right margin position of the text editor
 		changes.
@@ -747,10 +744,11 @@ class ScribesTextView(SourceView):
 		@param data: Optional data
 		@type data: Any type object.
 		"""
-		self.set_margin(int(entry.value.to_string()))
+		from MarginPositionMetadata import get_value
+		self.set_margin(int(get_value()))
 		return
 
-	def __show_margin_cb(self, client, cnxn_id, entry, data):
+	def __show_margin_cb(self, *args):
 		"""
 		Handles callback when the right margin of the text editor is hidden or
 		displayed.
@@ -770,10 +768,11 @@ class ScribesTextView(SourceView):
 		@param data: Optional data
 		@type data: Any type object.
 		"""
-		self.set_show_margin(entry.value.get_bool())
+		from DisplayRightMarginMetadata import get_value
+		self.set_show_margin(get_value())
 		return
 
-	def __spell_check_cb(self, client, cnxn_id, entry, data):
+	def __spell_check_cb(self, *args):
 		"""
 		Handles callback when spell checking is toggled on or off in the text
 		editor.
@@ -792,9 +791,9 @@ class ScribesTextView(SourceView):
 
 		@param data: Optional data
 		@type data: Any type object.
-
 		"""
-		if entry.value.get_bool():
+		from SpellCheckMetadata import get_value
+		if get_value():
 			from gobject import GError
 			try:
 				from gtkspell import Spell
@@ -954,18 +953,18 @@ class ScribesTextView(SourceView):
 		"""
 		self.grab_focus()
 #		self.__make_responsive()
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__refresh, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh, priority=PRIORITY_LOW)
 		return False
 
 	def __refresh(self):
-#		self.queue_draw()
-#		self.queue_resize()
-#		self.resize_children()
-#		try:
-#			self.window.process_updates(True)
-#		except:
-#			pass
+		self.queue_draw()
+		self.queue_resize()
+		self.resize_children()
+		try:
+			self.window.process_updates(True)
+		except:
+			pass
 #		self.__make_responsive()
 		return False
 
@@ -1003,6 +1002,10 @@ class ScribesTextView(SourceView):
 		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
 		if self.__monitor_id_2: monitor_cancel(self.__monitor_id_2)
 		if self.__monitor_id_3: monitor_cancel(self.__monitor_id_3)
+		if self.__monitor_id_4: monitor_cancel(self.__monitor_id_4)
+		if self.__monitor_id_5: monitor_cancel(self.__monitor_id_5)
+		if self.__monitor_id_6: monitor_cancel(self.__monitor_id_6)
+		if self.__monitor_id_7: monitor_cancel(self.__monitor_id_7)
 		# Unregister object so that editor can quit.
 		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.

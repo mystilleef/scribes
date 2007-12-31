@@ -146,8 +146,10 @@ def __mainloop():
 	Initialize the GObject mainloop.
 	"""
 	__fork_scribes()
-	from gtk import main
-	main()
+	from utils import init_gnome
+	init_gnome()
+	from gobject import MainLoop
+	MainLoop().run()
 	return
 
 def __fork_scribes():

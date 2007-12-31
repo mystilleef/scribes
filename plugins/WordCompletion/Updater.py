@@ -122,9 +122,9 @@ class CompletionUpdater(object):
 				timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
 				return False
 			self.__remove_timer()
-			from gobject import idle_add, PRIORITY_LOW
-			#self.__timer = timeout_add(1000, self.__generate_dictionary, priority=PRIORITY_LOW)
-			self.__timer = idle_add(self.__generate_dictionary, priority=PRIORITY_LOW)
+			from gobject import idle_add, PRIORITY_LOW, timeout_add
+			self.__timer = timeout_add(1000, self.__generate_dictionary, priority=PRIORITY_LOW)
+			#self.__timer = idle_add(self.__generate_dictionary, priority=PRIORITY_LOW)
 		except ValueError:
 			return False
 		return False

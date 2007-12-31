@@ -51,9 +51,11 @@ class TextWrapCheckButton(CheckButton):
 		CheckButton.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__client.notify_add("/apps/scribes/text_wrapping", self.__wrap_text_cb)
 		self.__signal_id_1 = self.connect("toggled", self.__toggled_cb)
 		self.__signal_id_2 = self.__manager.connect("destroy", self.__destroy_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id = monitor_add(self.__database_uri, MONITOR_FILE,
+					self.__wrap_text_cb)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -69,6 +71,12 @@ class TextWrapCheckButton(CheckButton):
 		self.__manager = manager
 		self.__client = editor.gconf_client
 		self.__signal_id_1 = self.__signal_id_2 = None
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		database_path = join(preference_folder, "TextWrapping.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__database_uri = get_uri_from_local_path(database_path)
+		self.__monitor_id = None
 		return
 
 	def __set_properties(self):
@@ -78,11 +86,8 @@ class TextWrapCheckButton(CheckButton):
 		@param self: Reference to the TextWrapCheckButton instance.
 		@type self: A TextWrapCheckButton object.
 		"""
-		wrap_text = False
-		value = self.__client.get("/apps/scribes/text_wrapping")
-		from operator import truth
-		if truth(value):
-			wrap_text = self.__client.get_bool("/apps/scribes/text_wrapping")
+		from TextWrappingMetadata import get_value
+		wrap_text = get_value()
 		self.set_active(wrap_text)
 		from i18n import msg0016
 		self.set_label(msg0016)
@@ -91,19 +96,16 @@ class TextWrapCheckButton(CheckButton):
 		self.__editor.tip.set_tip(self, tw_check_button_tip)
 		return
 
-	def __wrap_text_cb(self, client, cnxn_id, entry, data):
+	def __wrap_text_cb(self, *args):
 		"""
 		Handles callback when text wrapping properties change.
 
 		@param self: Reference to the TextWrapCheckButton instance.
 		@type self: A TextWrapCheckButton object.
 		"""
-		wrap_text = False
-		value = self.__client.get("/apps/scribes/text_wrapping")
-		from operator import truth
-		if truth(value):
-			wrap_text = self.__client.get_bool("/apps/scribes/text_wrapping")
-		if truth(wrap_text):
+		from TextWrappingMetadata import get_value
+		wrap_text = get_value()
+		if wrap_text:
 			if self.get_active() is False:
 				self.set_active(True)
 			from i18n import msg0017
@@ -129,13 +131,11 @@ class TextWrapCheckButton(CheckButton):
 		@type: A Boolean Object.
 		"""
 		wrap_text = self.get_active()
+		from TextWrappingMetadata import set_value
 		if wrap_text:
-			if self.__client.get_bool("/apps/scribes/text_wrapping") is False:
-				self.__client.set_bool("/apps/scribes/text_wrapping", True)
+			set_value(True)
 		else:
-			if self.__client.get_bool("/apps/scribes/text_wrapping"):
-				self.__client.set_bool("/apps/scribes/text_wrapping", False)
-		self.__client.notify("/apps/scribes/text_wrapping")
+			set_value(False)
 		return True
 
 	def __destroy_cb(self, manager):
@@ -151,6 +151,8 @@ class TextWrapCheckButton(CheckButton):
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id: monitor_cancel(self.__monitor_id)
 		del self
 		self = None
 		return

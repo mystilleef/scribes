@@ -51,9 +51,11 @@ class SpellCheckButton(CheckButton):
 		CheckButton.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__client.notify_add("/apps/scribes/spell_check", self.__check_spelling_cb)
 		self.__signal_id_1 = self.connect("toggled", self.__toggled_cb)
 		self.__signal_id_2 = self.__manager.connect("destroy", self.__destroy_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id = monitor_add(self.__database_uri, MONITOR_FILE,
+					self.__check_spelling_cb)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -67,8 +69,12 @@ class SpellCheckButton(CheckButton):
 		"""
 		self.__editor = editor
 		self.__manager = manager
-		self.__client = editor.gconf_client
 		self.__signal_id_1 = self.__signal_id_2 = None
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		database_path = join(preference_folder, "SpellCheck.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__database_uri = get_uri_from_local_path(database_path)
 		return
 
 	def __set_properties(self):
@@ -78,11 +84,8 @@ class SpellCheckButton(CheckButton):
 		@param self: Reference to the SpellCheckButton instance.
 		@type self: A SpellCheckButton object.
 		"""
-		check_spelling = False
-		value = self.__client.get("/apps/scribes/spell_check")
-		from operator import truth
-		if truth(value):
-			check_spelling = self.__client.get_bool("/apps/scribes/spell_check")
+		from SpellCheckMetadata import get_value
+		check_spelling = get_value()
 		self.set_active(check_spelling)
 		from i18n import msg0022
 		self.set_label(msg0022)
@@ -91,18 +94,15 @@ class SpellCheckButton(CheckButton):
 		self.__editor.tip.set_tip(self, spell_check_button_tip)
 		return
 
-	def __check_spelling_cb(self, client, cnxn_id, entry, data):
+	def __check_spelling_cb(self, *args):
 		"""
 		Handles callback when spell checking  properties change.
 
 		@param self: Reference to the SpellCheckButton instance.
 		@type self: A SpellCheckButton object.
 		"""
-		check_spelling = False
-		value = self.__client.get("/apps/scribes/spell_check")
-		from operator import truth
-		if truth(value):
-			check_spelling = self.__client.get_bool("/apps/scribes/spell_check")
+		from SpellCheckMetadata import get_value
+		check_spelling = get_value()
 		if check_spelling:
 			if self.get_active() is False:
 				self.set_active(True)
@@ -129,13 +129,11 @@ class SpellCheckButton(CheckButton):
 		@type: A Boolean Object.
 		"""
 		check_spelling = self.get_active()
+		from SpellCheckMetadata import set_value
 		if check_spelling:
-			if self.__client.get_bool("/apps/scribes/spell_check") is False:
-				self.__client.set_bool("/apps/scribes/spell_check", True)
+			set_value(True)
 		else:
-			if self.__client.get_bool("/apps/scribes/spell_check"):
-				self.__client.set_bool("/apps/scribes/spell_check", False)
-		self.__client.notify("/apps/scribes/spell_check")
+			set_value(False)
 		return True
 
 	def __destroy_cb(self, manager):
@@ -151,6 +149,8 @@ class SpellCheckButton(CheckButton):
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id: monitor_cancel(self.__monitor_id)
 		del self
 		self = None
 		return

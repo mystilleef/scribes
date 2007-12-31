@@ -95,18 +95,15 @@ class SpellCheckTrigger(GObject):
 		@param trigger: An object to show the document browser.
 		@type trigger: A Trigger object.
 		"""
-		from gconf import client_get_default
-		client = client_get_default()
-		value = client.get_bool("/apps/scribes/spell_check")
-		if value:
-			client.set_bool("/apps/scribes/spell_check", False)
+		from SpellCheckMetadata import get_value, set_value
+		if get_value():
+			set_value(False)
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "warning")
 		else:
-			client.set_bool("/apps/scribes/spell_check", True)
+			set_value(True)
 			from i18n import msg0002
 			self.__editor.feedback.update_status_message(msg0002, "succeed")
-		client.notify("/apps/scribes/spell_check")
 		return
 
 	def __destroy_cb(self, trigger):

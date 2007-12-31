@@ -31,6 +31,7 @@ scribes_PYTHON = \
 	dialog.py \
 	dialogfilter.py \
 	DBusService.py \
+	DisplayRightMarginMetadata.py \
 	edialog.py \
 	Editor.py \
 	EncodingManager.py \
@@ -55,6 +56,7 @@ scribes_PYTHON = \
 	Main.py \
 	MessageDialog.py \
 	MainContainer.py \
+	MarginPositionMetadata.py \
 	ModificationDialog.py \
 	NewFileSaver.py \
 	mdialog.py \
@@ -72,12 +74,14 @@ scribes_PYTHON = \
 	ScribesSaveProcessor.py \
 	StatusContainer.py \
 	syntax.py \
+	SpellCheckMetadata.py \
 	Spinner.py \
 	StatusBar.py \
 	Store.py \
 	TabWidthMetadata.py \
 	TextBuffer.py \
 	TextView.py \
+	TextWrappingMetadata.py \
 	Toolbar.py \
 	ToolbarContainer.py \
 	toolbuttons.py \
