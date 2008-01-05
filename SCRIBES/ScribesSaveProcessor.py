@@ -26,6 +26,7 @@
 @license: GNU GPLv2 or Later
 @contact: mystilleef@gmail.com
 """
+
 from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop(set_as_default=True)
 INTERVAL = 1000
@@ -126,12 +127,16 @@ def __set_vm_properties():
 	"""
 	Set virtual machine's (Python) system properties.
 	"""
-	from sys import setcheckinterval, getrecursionlimit, setrecursionlimit, setdlopenflags
-	from dl import RTLD_LAZY, RTLD_GLOBAL
+	from sys import setcheckinterval, getrecursionlimit
+	from sys import setrecursionlimit, setdlopenflags
+	try:
+		from dl import RTLD_LAZY, RTLD_GLOBAL
+		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
+	except ImportError:
+		pass
 	global INTERVAL, RECURSIONLIMITMULTIPLIER
 	setcheckinterval(INTERVAL)
 	setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
-	setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 	return
 
 if __name__ == "__main__":

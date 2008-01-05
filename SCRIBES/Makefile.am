@@ -24,6 +24,7 @@ $(python_files): Makefile $(python_in_files)
 scribes_PYTHON = \
 	info.py \
 	__init__.py \
+	BackgroundColorMetadata.py \
 	bar.py \
 	commandline.py \
 	cursor.py \
@@ -47,6 +48,7 @@ scribes_PYTHON = \
 	FileLoader.py \
 	FileModificationMonitor.py \
 	FontMetadata.py \
+	ForegroundColorMetadata.py \
 	fsbutton.py \
 	GlobalStore.py \
 	InstanceManager.py \
@@ -90,6 +92,7 @@ scribes_PYTHON = \
 	TriggerManager.py \
 	txtutils.py \
 	UseTabsMetadata.py \
+	UseThemeMetadata.py \
 	usage.py \
 	utils.py \
 	ViewContainer.py \

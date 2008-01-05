@@ -117,15 +117,14 @@ def activate_syntax_highlight(textbuffer, language=None):
 	"""
 	textbuffer.set_highlight(True)
 	try:
-		if language:
-			syntax_key = "/apps/scribes/SyntaxHighlight/" + language.get_id()
-			from gconf import client_get_default
-			client = client_get_default()
-			if client.dir_exists(syntax_key):
-				entries = client.all_entries(syntax_key)
-				if entries:
-					language = set_language_style(language, entries, syntax_key)
-			textbuffer.set_language(language)
+		if not language: return False
+		syntax_key = "/apps/scribes/SyntaxHighlight/" + language.get_id()
+		from gconf import client_get_default
+		client = client_get_default()
+		if client.dir_exists(syntax_key):
+			entries = client.all_entries(syntax_key)
+			if entries: language = set_language_style(language, entries, syntax_key)
+		textbuffer.set_language(language)
 	except:
 		print "Syntax Error Exceptions"
 	return False

@@ -93,10 +93,14 @@ class ScribesTextView(SourceView):
 								MONITOR_FILE, self.__margin_position_cb)
 		self.__monitor_id_7 = monitor_add(self.__spell_check_database_uri,
 								MONITOR_FILE, self.__spell_check_cb)
-		self.__client.notify_add("/apps/scribes/use_theme_colors", self.__themes_cb)
-		self.__client.notify_add("/apps/scribes/fgcolor", self.__foreground_cb)
-		self.__client.notify_add("/apps/scribes/bgcolor", self.__background_cb)
-		self.__client.notify_add("/apps/scribes/SyntaxHighlight", self.__syntax_cb)
+		self.__monitor_id_8 = monitor_add(self.__use_theme_database_uri,
+								MONITOR_FILE, self.__themes_cb)
+		self.__monitor_id_9 = monitor_add(self.__fg_color_database_uri,
+								MONITOR_FILE, self.__foreground_cb)
+		self.__monitor_id_10 = monitor_add(self.__bg_color_database_uri,
+								MONITOR_FILE, self.__background_cb)
+		self.__monitor_id_11 = monitor_add(self.__syntax_database_uri,
+								MONITOR_FILE, self.__syntax_cb)
 
 	def __init_attributes(self, editor):
 		"""
@@ -120,6 +124,7 @@ class ScribesTextView(SourceView):
 		# Path to the font database.
 		from os.path import join
 		preference_folder = join(editor.metadata_folder, "Preferences")
+		syntax_folder = join(editor.metadata_folder, "SyntaxColors")
 		font_database_path = join(preference_folder, "Font.gdb")
 		from gnomevfs import get_uri_from_local_path
 		self.__font_database_uri = get_uri_from_local_path(font_database_path)
@@ -135,6 +140,14 @@ class ScribesTextView(SourceView):
 		self.__margin_position_database_uri = get_uri_from_local_path(margin_position_database_path)
 		spell_check_database_path = join(preference_folder, "SpellCheck.gdb")
 		self.__spell_check_database_uri = get_uri_from_local_path(spell_check_database_path)
+		use_theme_database_path = join(preference_folder, "UseTheme.gdb")
+		self.__use_theme_database_uri = get_uri_from_local_path(use_theme_database_path)
+		fg_color_database_path = join(preference_folder, "ForegroundColor.gdb")
+		self.__fg_color_database_uri = get_uri_from_local_path(fg_color_database_path)
+		bg_color_database_path = join(preference_folder, "BackgroundColor.gdb")
+		self.__bg_color_database_uri = get_uri_from_local_path(bg_color_database_path)
+		syntax_database_path = join(syntax_folder, "SyntaxColors.gdb")
+		self.__syntax_database_uri = get_uri_from_local_path(syntax_database_path)
 		return
 
 	def __set_properties(self):
@@ -187,9 +200,6 @@ class ScribesTextView(SourceView):
 		from pango import FontDescription
 		font = FontDescription(font_name)
 		self.modify_font(font)
-		use_theme_colors = True
-		if self.__client.get("/apps/scribes/use_theme_colors"):
-			use_theme_colors = self.__client.get_bool("/apps/scribes/use_theme_colors")
 		from gtk import WRAP_WORD, WRAP_NONE
 		from TextWrappingMetadata import get_value
 		wrap_mode_bool = get_value()
@@ -197,23 +207,16 @@ class ScribesTextView(SourceView):
 			self.set_wrap_mode(WRAP_WORD)
 		else:
 			self.set_wrap_mode(WRAP_NONE)
+		from UseThemeMetadata import get_value
+		use_theme_colors = get_value()
 		if use_theme_colors is False:
-			# Use foreground and background colors specified by the user stored
-			# in GConf, the GNOME configuration database.
-			from gconf import VALUE_STRING
-			fgcolor = "#000000"
-			bgcolor = "#ffffff"
-			if self.__client.get("/apps/scribes/fgcolor"):
-				fgcolor = self.__client.get_string("/apps/scribes/fgcolor")
-			if self.__client.get("/apps/scribes/bgcolor"):
-				bgcolor = self.__client.get_string("/apps/scribes/bgcolor")
-			try:
-				from gtk.gdk import color_parse
-				foreground_color = color_parse(fgcolor)
-				background_color = color_parse(bgcolor)
-			except TypeError:
-				foreground_color = color_parse("#000000")
-				background_color = color_parse("#ffffff")
+			from ForegroundColorMetadata import get_value
+			fgcolor = get_value()
+			from BackgroundColorMetadata import get_value
+			bgcolor = get_value()
+			from gtk.gdk import color_parse
+			foreground_color = color_parse(fgcolor)
+			background_color = color_parse(bgcolor)
 			from gtk import STATE_NORMAL
 			self.modify_base(STATE_NORMAL, background_color)
 			self.modify_text(STATE_NORMAL, foreground_color)
@@ -239,8 +242,8 @@ class ScribesTextView(SourceView):
 			screen.
 		@type event: A gtk.Event object.
 		"""
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return False
 
 	def __drag_motion_cb(self, textview, context, x, y, time):
@@ -389,8 +392,8 @@ class ScribesTextView(SourceView):
 		self.set_property("highlight-current-line", False)
 		self.set_property("cursor-visible", False)
 		self.set_property("sensitive", False)
-#		from gobject import idle_add
-#		idle_add(self.__refresh_view)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return False
 
 	def __loaded_document_cb(self, editor, uri):
@@ -528,8 +531,8 @@ class ScribesTextView(SourceView):
 		self.set_property("editable", True)
 		self.set_property("cursor-visible", True)
 		self.set_property("accepts-tab", True)
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return False
 
 	def __focus_in_event_cb(self, textview, event):
@@ -551,8 +554,8 @@ class ScribesTextView(SourceView):
 		"""
 		if self.__bar_is_visible is False:
 			self.grab_focus()
-			from gobject import idle_add
-			idle_add(self.__refresh_view)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return False
 
 	def __button_press_event_cb(self, textview, event):
@@ -574,6 +577,8 @@ class ScribesTextView(SourceView):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		if self.__bar_is_visible:
 			self.__bar.hide_bar()
 			return True
@@ -601,8 +606,8 @@ class ScribesTextView(SourceView):
 
 	def __hide_dialog_cb(self, *args):
 		self.grab_focus()
-		from gobject import idle_add
-		idle_add(self.__refresh_view)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
 	def __copy_clipboard_cb(self, textview):
@@ -619,6 +624,8 @@ class ScribesTextView(SourceView):
 		else:
 			from internationalization import msg0090
 			feedback.update_status_message(msg0090, "fail")
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return False
 
 	def __cut_clipboard_cb(self, textview):
@@ -639,6 +646,8 @@ class ScribesTextView(SourceView):
 		else:
 			from internationalization import msg0092
 			feedback.update_status_message(msg0092, "fail")
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return False
 
 	def __paste_clipboard_cb(self, textview):
@@ -661,6 +670,8 @@ class ScribesTextView(SourceView):
 		else:
 			from internationalization import msg0094
 			feedback.update_status_message(msg0094, "fail")
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return False
 
 	def __make_responsive(self):
@@ -696,6 +707,8 @@ class ScribesTextView(SourceView):
 		from FontMetadata import get_value
 		new_font = FontDescription(get_value())
 		self.modify_font(new_font)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
 	def __tab_width_cb(self, *args):
@@ -707,6 +720,8 @@ class ScribesTextView(SourceView):
 		"""
 		from TabWidthMetadata import get_value
 		self.set_tabs_width(get_value())
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
 	def __text_wrapping_cb(self, *args):
@@ -722,6 +737,8 @@ class ScribesTextView(SourceView):
 			self.set_wrap_mode(WRAP_WORD)
 		else:
 			self.set_wrap_mode(WRAP_NONE)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
 	def __margin_position_cb(self, *args):
@@ -731,21 +748,11 @@ class ScribesTextView(SourceView):
 
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
-
-		@param client: A client used to query the GConf daemon and database
-		@type client: A gconf.Client object.
-
-		@param cnxn_id: The identification number for the GConf client.
-		@type cnxn_id: An Integer object.
-
-		@param entry: An entry from the GConf database.
-		@type entry: A gconf.Entry object.
-
-		@param data: Optional data
-		@type data: Any type object.
 		"""
 		from MarginPositionMetadata import get_value
 		self.set_margin(int(get_value()))
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
 	def __show_margin_cb(self, *args):
@@ -755,21 +762,11 @@ class ScribesTextView(SourceView):
 
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
-
-		@param client: A client used to query the GConf daemon and database
-		@type client: A gconf.Client object.
-
-		@param cnxn_id: The identification number for the GConf client.
-		@type cnxn_id: An Integer object.
-
-		@param entry: An entry from the GConf database.
-		@type entry: A gconf.Entry object.
-
-		@param data: Optional data
-		@type data: Any type object.
 		"""
 		from DisplayRightMarginMetadata import get_value
 		self.set_show_margin(get_value())
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
 	def __spell_check_cb(self, *args):
@@ -779,18 +776,6 @@ class ScribesTextView(SourceView):
 
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
-
-		@param client: A client used to query the GConf daemon and database
-		@type client: A gconf.Client object.
-
-		@param cnxn_id: The identification number for the GConf client.
-		@type cnxn_id: An Integer object.
-
-		@param entry: An entry from the GConf database.
-		@type entry: A gconf.Entry object.
-
-		@param data: Optional data
-		@type data: Any type object.
 		"""
 		from SpellCheckMetadata import get_value
 		if get_value():
@@ -803,107 +788,75 @@ class ScribesTextView(SourceView):
 				pass
 		else:
 			self.__spell_checker.detach()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
-	def __themes_cb(self, client, cnxn_id, entry, data):
+	def __themes_cb(self, *args):
 		"""
 		Handles callback when of the text editor's view theme changes.
 
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
-
-		@param client: A client used to query the GConf daemon and database
-		@type client: A gconf.Client object.
-
-		@param cnxn_id: The identification number for the GConf client.
-		@type cnxn_id: An Integer object.
-
-		@param entry: An entry from the GConf database.
-		@type entry: A gconf.Entry object.
-
-		@param data: Optional data
-		@type data: Any type object.
 		"""
 		# Set the foreground and background color of the text editor's buffer.
-		if entry.value.get_bool():
+		from UseThemeMetadata import get_value
+		if get_value():
 			# Use foreground and background colors specified by the GTK+ theme.
 			from gtk import RcStyle
 			style = RcStyle()
 			self.modify_style(style)
 			#  Reset font to value in GConf
-			value = client.get_string("/apps/scribes/font")
+			from FontMetadata import get_value
+			value = get_value()
 			from pango import FontDescription
 			font = FontDescription(value)
 			self.modify_font(font)
 		else:
-			try:
-				# Use foreground and background colors specified by the
-				# user stored in GConf, the GNOME configuration database.
-				color = client.get_string("/apps/scribes/fgcolor")
-				from gtk.gdk import color_parse
-				foreground_color = color_parse(color)
-				color = client.get_string("/apps/scribes/bgcolor")
-				background_color = color_parse(color)
-			except TypeError:
-				foreground_color = color_parse("#000000")
-				background_color = color_parse("#ffffff")
+			# Use foreground and background colors specified by the
+			# user stored in GConf, the GNOME configuration database.
+			from gtk.gdk import color_parse
+			from ForegroundColorMetadata import get_value
+			foreground_color = color_parse(get_value())
+			from BackgroundColorMetadata import get_value
+			background_color = color_parse(get_value())
 			from gtk import STATE_NORMAL
 			self.modify_base(STATE_NORMAL, background_color)
 			self.modify_text(STATE_NORMAL, foreground_color)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
-	def __foreground_cb(self, client, cnxn_id, entry, data):
+	def __foreground_cb(self, *args):
 		"""
 		Handles callback when the color text within the text editor changes.
 
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
-
-		@param client: A client used to query the GConf daemon and database
-		@type client: A gconf.Client object.
-
-		@param cnxn_id: The identification number for the GConf client.
-		@type cnxn_id: An Integer object.
-
-		@param entry: An entry from the GConf database.
-		@type entry: A gconf.Entry object.
-
-		@param data: Optional data
-		@type data: Any type object.
 		"""
-		color = client.get_string("/apps/scribes/fgcolor")
 		from gtk.gdk import color_parse
-		foreground_color = color_parse(color)
+		from ForegroundColorMetadata import get_value
+		foreground_color = color_parse(get_value())
 		from gtk import STATE_NORMAL
 		self.modify_text(STATE_NORMAL, foreground_color)
 		from gobject import idle_add
 		idle_add(self.__refresh_view)
 		return
 
-	def __background_cb(self, client, cnxn_id, entry, data):
+	def __background_cb(self, *args):
 		"""
 		Handles callback when the background color of the text editor changes.
 
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
-
-		@param client: A client used to query the GConf daemon and database
-		@type client: A gconf.Client object.
-
-		@param cnxn_id: The identification number for the GConf client.
-		@type cnxn_id: An Integer object.
-
-		@param entry: An entry from the GConf database.
-		@type entry: A gconf.Entry object.
-
-		@param data: Optional data
-		@type data: Any type object.
 		"""
-		color = client.get_string("/apps/scribes/bgcolor")
 		from gtk.gdk import color_parse
-		background_color = color_parse(color)
+		from BackgroundColorMetadata import get_value
+		background_color = color_parse(get_value())
 		from gtk import STATE_NORMAL
 		self.modify_base(STATE_NORMAL, background_color)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
 	def __use_tabs_cb(self, *args):
@@ -916,32 +869,23 @@ class ScribesTextView(SourceView):
 		from UseTabsMetadata import get_value
 		use_tabs = get_value()
 		self.set_insert_spaces_instead_of_tabs(not use_tabs)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
-	def __syntax_cb(self, client, cnxn_id, entry, data):
+	def __syntax_cb(self, *args):
 		"""
 		Handles callback #FIXME: yeap
 
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
-
-		@param client: A client used to query the GConf daemon and database
-		@type client: A gconf.Client object.
-
-		@param cnxn_id: The identification number for the GConf client.
-		@type cnxn_id: An Integer object.
-
-		@param entry: An entry from the GConf database.
-		@type entry: A gconf.Entry object.
-
-		@param data: Optional data
-		@type data: Any type object.
 		"""
 		from syntax import activate_syntax_highlight
 		from utils import get_language
-		language = None
-		if self.__editor.uri: language = get_language(self.__editor.uri)
-		activate_syntax_highlight(self.get_buffer(), language)
+		if not self.__editor.language: return
+		activate_syntax_highlight(self.get_property("buffer"), self.__editor.language)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
 	def __refresh_view(self):
@@ -1006,6 +950,10 @@ class ScribesTextView(SourceView):
 		if self.__monitor_id_5: monitor_cancel(self.__monitor_id_5)
 		if self.__monitor_id_6: monitor_cancel(self.__monitor_id_6)
 		if self.__monitor_id_7: monitor_cancel(self.__monitor_id_7)
+		if self.__monitor_id_8: monitor_cancel(self.__monitor_id_8)
+		if self.__monitor_id_9: monitor_cancel(self.__monitor_id_9)
+		if self.__monitor_id_10: monitor_cancel(self.__monitor_id_10)
+		if self.__monitor_id_11: monitor_cancel(self.__monitor_id_11)
 		# Unregister object so that editor can quit.
 		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.
