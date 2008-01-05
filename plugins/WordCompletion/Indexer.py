@@ -242,10 +242,24 @@ class CompletionIndexer(object):
 		_exit(0)
 		return True
 
-if __name__ == "__main__":
-	from sys import setcheckinterval, getrecursionlimit, setrecursionlimit
+def __set_vm_properties():
+	"""
+	Set virtual machine's (Python) system properties.
+	"""
+	from sys import setcheckinterval, getrecursionlimit
+	from sys import setrecursionlimit, setdlopenflags
+	try:
+		from dl import RTLD_LAZY, RTLD_GLOBAL
+		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
+	except ImportError:
+		pass
+	global INTERVAL, RECURSIONLIMITMULTIPLIER
 	setcheckinterval(INTERVAL)
 	setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
+	return
+
+if __name__ == "__main__":
+	__set_vm_properties()
 	from sys import argv, path
 	python_path = argv[1]
 	path.insert(0, python_path)
