@@ -279,6 +279,7 @@ scribes_PYTHON = \
 	SaveProcessorDBusService.py \
 	ScribesSaveProcessor.py \
 	StatusContainer.py \
+	SyntaxColorsMetadata.py \
 	syntax.py \
 	SpellCheckMetadata.py \
 	Spinner.py \

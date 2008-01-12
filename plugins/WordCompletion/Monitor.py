@@ -204,6 +204,8 @@ class CompletionMonitor(object):
 		return dictionary
 
 	def __update_dictionary(self, dictionary):
+		from operator import eq
+		if eq(self.__dictionary.get_dictionary(), dictionary): return False
 		self.__dictionary.update(dictionary)
 		return False
 

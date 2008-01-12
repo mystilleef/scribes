@@ -51,10 +51,13 @@ class ForegroundButton(ColorButton):
 		ColorButton.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__client.notify_add("/apps/scribes/fgcolor", self.__fgcolor_cb)
-		self.__client.notify_add("/apps/scribes/use_theme_colors", self.__use_theme_colors_cb)
 		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = self.connect("color-set", self.__color_set_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id_1 = monitor_add(self.__theme_database_uri, MONITOR_FILE,
+					self.__use_theme_colors_cb)
+		self.__monitor_id_2 = monitor_add(self.__fg_database_uri, MONITOR_FILE,
+					self.__fgcolor_cb)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -67,9 +70,15 @@ class ForegroundButton(ColorButton):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__client = editor.gconf_client
 		self.__manager = manager
 		self.__signal_id_1 = self.__signal_id_2 = None
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		theme_database_path = join(preference_folder, "UseTheme.gdb")
+		fg_database_path = join(preference_folder, "ForegroundColor.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__theme_database_uri = get_uri_from_local_path(theme_database_path)
+		self.__fg_database_uri = get_uri_from_local_path(fg_database_path)
 		return
 
 	def __set_properties(self):
@@ -79,11 +88,8 @@ class ForegroundButton(ColorButton):
 		@param self: Reference to the ForegroundButton instance.
 		@type self: A ForegroundButton object.
 		"""
-		fgcolor = "#000000"
-		value = self.__client.get("/apps/scribes/fgcolor")
-		from operator import truth
-		if truth(value):
-			fgcolor = self.__client.get_string("/apps/scribes/fgcolor")
+		from ForegroundColorMetadata import get_value
+		fgcolor = get_value()
 		from gtk.gdk import color_parse
 		fgcolor = color_parse(fgcolor)
 		self.set_color(fgcolor)
@@ -91,29 +97,26 @@ class ForegroundButton(ColorButton):
 		self.set_title(msg0006)
 		from SCRIBES.tooltips import foreground_button_tip
 		self.__editor.tip.set_tip(self, foreground_button_tip)
-		use_theme_colors = True
-		value = self.__client.get("/apps/scribes/use_theme_colors")
-		if truth(value):
-			use_theme_colors = self.__client.get_bool("/apps/scribes/use_theme_colors")
+		from UseThemeMetadata import get_value
+		use_theme_colors = get_value()
 		self.set_property("sensitive", not use_theme_colors)
 		return
 
-	def __fgcolor_cb(self, client, cnxn_id, entry, data):
+	def __fgcolor_cb(self, *args):
 		"""
 		Handles callback when foreground color changes.
 
 		@param self: Reference to the ForegroundButton instance.
 		@type self: A ForegroundButton object.
 		"""
-		self.handler_block(self.__signal_id_2)
-		fgcolor = client.get_string("/apps/scribes/fgcolor")
 		color = self.get_color()
 		color = self.__editor.convert_color_to_string(color)
-		from operator import ne
-		if ne(fgcolor, color):
-			from gtk.gdk import color_parse
-			self.set_color(color_parse(fgcolor))
-		self.handler_unblock(self.__signal_id_2)
+		from operator import eq
+		from ForegroundColorMetadata import get_value
+		fgcolor = get_value()
+		if eq(fgcolor, color): return
+		from gtk.gdk import color_parse
+		self.set_color(color_parse(fgcolor))
 		return
 
 	def __color_set_cb(self, button):
@@ -131,24 +134,22 @@ class ForegroundButton(ColorButton):
 		"""
 		fgcolor = self.get_color()
 		fgcolor = self.__editor.convert_color_to_string(fgcolor)
-		self.__client.set_string("/apps/scribes/fgcolor", fgcolor)
-		self.__client.notify("/apps/scribes/fgcolor")
+		from ForegroundColorMetadata import set_value
+		set_value(fgcolor)
 		return True
 
-	def __use_theme_colors_cb(self, client, cnxn_id, entry, data):
+	def __use_theme_colors_cb(self, *args):
 		"""
 		Handles callback when foreground color changes.
 
 		@param self: Reference to the ForegroundButton instance.
 		@type self: A ForegroundButton object.
 		"""
-		use_theme_colors = True
-		value = self.__client.get("/apps/scribes/use_theme_colors")
-		from operator import truth, not_
-		if truth(value):
-			use_theme_colors = self.__client.get_bool("/apps/scribes/use_theme_colors")
-		if truth(use_theme_colors):
-			if truth(self.get_property("sensitive")):
+		from UseThemeMetadata import get_value
+		use_theme_colors = get_value()
+		from operator import not_
+		if use_theme_colors:
+			if self.get_property("sensitive"):
 				self.set_property("sensitive", False)
 		else:
 			if not_(self.get_property("sensitive")):
@@ -168,6 +169,9 @@ class ForegroundButton(ColorButton):
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
+		if self.__monitor_id_2: monitor_cancel(self.__monitor_id_2)
 		del self
 		self = None
 		return

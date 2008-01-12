@@ -136,7 +136,6 @@ class ColorEditorTreeView(TreeView):
 		Populate a row in the treeview with a language name and
 		elements associated with the language.
 		"""
-		self.__editor.response()
 		parent_iter = self.__model.append(None)
 		self.__model.set(parent_iter, 0, language.get_name())
 		self.__model.set(parent_iter, 1, language.get_id())
@@ -150,7 +149,6 @@ class ColorEditorTreeView(TreeView):
 		"""
 		Populate sub-rows of a language with associated elements.
 		"""
-		self.__editor.response()
 		child_iter = self.__model.append(parent_iter)
 		self.__model.set(child_iter, 0, tag.get_property("name"))
 		self.__model.set(child_iter, 1, tag.get_id())

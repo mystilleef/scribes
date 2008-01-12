@@ -27,22 +27,6 @@ Provide syntax highlighting for gtksourceview.Buffer objects.
 @contact: mystilleef@gmail.com
 """
 
-def convert_string_to_boolean(string):
-	"""
-	Convert a string representing True or False into their boolean equivalents.
-
-	@param string: A string representing True or False
-	@type string: A String object.
-
-	@return: True or False
-	@rtype: A Boolean object.
-	"""
-	if string == "True":
-		value = True
-	else:
-		value = False
-	return value
-
 def get_style(style_elements):
 	"""
 	Get a style to be used for syntax highlighting.
@@ -55,16 +39,16 @@ def get_style(style_elements):
 	"""
 	from gtksourceview import SourceTagStyle
 	style = SourceTagStyle()
+	fgcolor, bgcolor, bold, italic, underline  = style_elements
 	from gtk.gdk import color_parse
-	style.foreground = color_parse(style_elements[0].get_string())
-	if style_elements[1].get_string() != "None":
-		style.background = color_parse(style_elements[1].get_string())
-	style.bold = convert_string_to_boolean(style_elements[2].get_string())
-	style.italic = convert_string_to_boolean(style_elements[3].get_string())
-	style.underline = convert_string_to_boolean(style_elements[4].get_string())
+	if fgcolor:	style.foreground = color_parse(fgcolor)
+	if bgcolor: style.background = color_parse(bgcolor)
+	if bold: style.bold = bold
+	if italic: style.italic = italic
+	if underline: style.underline = underline
 	return style
 
-def set_language_style(language, entries, syntax_key):
+def set_language_style(language, syntax_properties):
 	"""
 	Use syntax highlight color found in GConf.
 
@@ -76,27 +60,15 @@ def set_language_style(language, entries, syntax_key):
 	@param language: An object representing the language for a source code.
 	@type language: A gtksourceview.SourceLanguage object.
 
-	@param entries: Entries found for a particular language in the GConf database.
-	@type entries: A gconf.Entry object.
-
-	@param syntax_key: A GConf key.
-	@param syntax_key: A String object.
+	@param syntax_properties: Entries found for a particular language in the GConf database.
+	@type syntax_properties: A gconf.Entry object.
 
 	@return: An object representing the language for a source code file.
 	@rtype: A gtksourceview.SourceLanguage object.
 	"""
-	try:
-		# Syntax color keys in GConf
-		key_list = [item.key.replace(syntax_key + "/", "") for item in entries]
-		# Syntax color attributes for keys in GConf
-		value_list = [item.value.get_list() for item in entries]
-		count = 0
-		for key in key_list:
-			style = get_style(value_list[count])
-			language.set_tag_style(key, style)
-			count += 1
-	except:
-		return None
+	for dictionary in syntax_properties:
+		style = get_style(dictionary.values()[0])
+		language.set_tag_style(dictionary.keys()[0], style)
 	return language
 
 def activate_syntax_highlight(textbuffer, language=None):
@@ -118,13 +90,10 @@ def activate_syntax_highlight(textbuffer, language=None):
 	textbuffer.set_highlight(True)
 	try:
 		if not language: return False
-		syntax_key = "/apps/scribes/SyntaxHighlight/" + language.get_id()
-		from gconf import client_get_default
-		client = client_get_default()
-		if client.dir_exists(syntax_key):
-			entries = client.all_entries(syntax_key)
-			if entries: language = set_language_style(language, entries, syntax_key)
+		from SyntaxColorsMetadata import get_value
+		syntax_properties = get_value(language.get_id())
+		if not syntax_properties: raise ValueError
+		textbuffer.set_language(set_language_style(language, syntax_properties))
+	except ValueError:
 		textbuffer.set_language(language)
-	except:
-		print "Syntax Error Exceptions"
 	return False

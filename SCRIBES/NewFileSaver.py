@@ -28,6 +28,8 @@ This module documents a class that saves files.
 @contact: mystilleef@gmail.com
 """
 
+# Save file 7 seconds after modification.
+SAVE_TIMER = 7000  # units in milliseconds (1000th of a second)
 save_dbus_service = "org.sourceforge.ScribesSaveProcessor"
 
 class FileSaver(object):	"""
@@ -506,7 +508,7 @@ class FileSaver(object):	"""
 		self.__editor.emit("modified-document")
 		if self.__editor.uri is None: return False
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__save_timer = timeout_add(21000, self.__save_file_timeout_cb, priority=PRIORITY_LOW)
+		self.__save_timer = timeout_add(SAVE_TIMER, self.__save_file_timeout_cb, priority=PRIORITY_LOW)
 		return False
 
 	def __reload_document_cb(self, *args):

@@ -55,10 +55,10 @@ class CompletionUpdater(object):
 		from gobject import idle_add, PRIORITY_LOW, timeout_add
 		timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
 		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
-		self.__signal_id_1 = self.__editor.connect("loaded-document", self.__loaded_document_cb)
+		self.__signal_id_1 = self.__editor.connect_after("loaded-document", self.__loaded_document_cb)
 		self.__signal_id_2 = self.__editor.textbuffer.connect_after("changed", self.__changed_cb)
 		self.__signal_id_3 = self.__manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_4 = self.__editor.connect("renamed-document", self.__loaded_document_cb)
+		self.__signal_id_4 = self.__editor.connect_after("renamed-document", self.__loaded_document_cb)
 		editor.session_bus.add_signal_receiver(self.__name_change_cb,
 						'NameOwnerChanged',
 						'org.freedesktop.DBus',
@@ -123,7 +123,7 @@ class CompletionUpdater(object):
 				return False
 			self.__remove_timer()
 			from gobject import idle_add, PRIORITY_LOW, timeout_add
-			self.__timer = timeout_add(1000, self.__generate_dictionary, priority=PRIORITY_LOW)
+			self.__timer = timeout_add(500, self.__generate_dictionary, priority=PRIORITY_LOW)
 			#self.__timer = idle_add(self.__generate_dictionary, priority=PRIORITY_LOW)
 		except ValueError:
 			return False
@@ -244,12 +244,13 @@ class CompletionUpdater(object):
 		@param textbuffer: Reference to the text editor's buffer.
 		@type textbuffer: A ScribesTextBuffer object.
 		"""
-		from gobject import timeout_add, PRIORITY_LOW
+		from gobject import timeout_add, idle_add, PRIORITY_LOW
 		try:
 			source_remove(self.__index_timer)
 		except Exception:
 			pass
-		self.__index_timer = timeout_add(1000, self.__index, priority=PRIORITY_LOW)
+		self.__index_timer = timeout_add(500, self.__index, priority=PRIORITY_LOW)
+		#self.__index_timer = idle_add(self.__index, priority=PRIORITY_LOW)
 		return False
 
 	def __loaded_document_cb(self, editor, uri):

@@ -51,9 +51,11 @@ class ThemeCheckButton(CheckButton):
 		CheckButton.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__client.notify_add("/apps/scribes/use_theme_colors", self.__use_theme_colors_cb)
 		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = self.connect("toggled", self.__toggled_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id = monitor_add(self.__database_uri, MONITOR_FILE,
+					self.__use_theme_colors_cb)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -66,9 +68,12 @@ class ThemeCheckButton(CheckButton):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		from gconf import client_get_default
-		self.__client = client_get_default()
 		self.__manager = manager
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		database_path = join(preference_folder, "UseTheme.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__database_uri = get_uri_from_local_path(database_path)
 		self.__signal_id_1 = self.__signal_id_2 = None
 		return
 
@@ -79,11 +84,8 @@ class ThemeCheckButton(CheckButton):
 		@param self: Reference to the ThemeCheckButton instance.
 		@type self: A ThemeCheckButton object.
 		"""
-		use_theme_colors = True
-		value = self.__client.get("/apps/scribes/use_theme_colors")
-		from operator import truth
-		if truth(value):
-			use_theme_colors = self.__client.get_bool("/apps/scribes/use_theme_colors")
+		from UseThemeMetadata import get_value
+		use_theme_colors = get_value()
 		self.set_active(use_theme_colors)
 		from i18n import msg0003
 		self.set_label(msg0003)
@@ -92,27 +94,23 @@ class ThemeCheckButton(CheckButton):
 		self.__editor.tip.set_tip(self, theme_check_button_tip)
 		return
 
-	def __use_theme_colors_cb(self, client, cnxn_id, entry, data):
+	def __use_theme_colors_cb(self, *args):
 		"""
 		Handles callback when text wrapping properties change.
 
 		@param self: Reference to the ThemeCheckButton instance.
 		@type self: A ThemeCheckButton object.
 		"""
-		self.handler_block(self.__signal_id_2)
-		use_theme_colors = client.get_bool("/apps/scribes/use_theme_colors")
-		from operator import truth, not_
-		if truth(use_theme_colors):
-			if not_(self.get_active()):
-				self.set_active(True)
+		from operator import not_
+		from UseThemeMetadata import get_value
+		if get_value():
+			if not_(self.get_active()): self.set_active(True)
 			from i18n import msg0004
 			self.__editor.feedback.update_status_message(msg0004, "succeed", 5)
 		else:
-			if truth(self.get_active()):
-				self.set_active(False)
+			if self.get_active(): self.set_active(False)
 			from i18n import msg0005
 			self.__editor.feedback.update_status_message(msg0005, "succeed", 5)
-		self.handler_unblock(self.__signal_id_2)
 		return
 
 	def __toggled_cb(self, button):
@@ -129,12 +127,11 @@ class ThemeCheckButton(CheckButton):
 		@type: A Boolean Object.
 		"""
 		use_theme_colors = self.get_active()
-		from operator import truth
-		if truth(use_theme_colors):
-			self.__client.set_bool("/apps/scribes/use_theme_colors", True)
+		from UseThemeMetadata import set_value
+		if use_theme_colors:
+			set_value(True)
 		else:
-			self.__client.set_bool("/apps/scribes/use_theme_colors", False)
-		self.__client.notify("/apps/scribes/use_theme_colors")
+			set_value(False)
 		return True
 
 	def __destroy_cb(self, manager):
@@ -150,6 +147,8 @@ class ThemeCheckButton(CheckButton):
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id: monitor_cancel(self.__monitor_id)
 		del self
 		self = None
 		return

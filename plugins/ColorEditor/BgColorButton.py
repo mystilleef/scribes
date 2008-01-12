@@ -51,10 +51,13 @@ class BackgroundButton(ColorButton):
 		ColorButton.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__client.notify_add("/apps/scribes/bgcolor", self.__bgcolor_cb)
-		self.__client.notify_add("/apps/scribes/use_theme_colors", self.__use_theme_colors_cb)
 		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = self.connect("color-set", self.__color_set_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id_1 = monitor_add(self.__theme_database_uri, MONITOR_FILE,
+					self.__use_theme_colors_cb)
+		self.__monitor_id_2 = monitor_add(self.__bg_database_uri, MONITOR_FILE,
+					self.__bgcolor_cb)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -67,8 +70,14 @@ class BackgroundButton(ColorButton):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__client = editor.gconf_client
 		self.__manager = manager
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		theme_database_path = join(preference_folder, "UseTheme.gdb")
+		bg_database_path = join(preference_folder, "BackgroundColor.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__theme_database_uri = get_uri_from_local_path(theme_database_path)
+		self.__bg_database_uri = get_uri_from_local_path(bg_database_path)
 		self.__signal_id_1 = self.__signal_id_2 = None
 		return
 
@@ -79,11 +88,8 @@ class BackgroundButton(ColorButton):
 		@param self: Reference to the BackgroundButton instance.
 		@type self: A BackgroundButton object.
 		"""
-		bgcolor = "#ffffff"
-		value = self.__client.get("/apps/scribes/bgcolor")
-		from operator import truth
-		if truth(value):
-			bgcolor = self.__client.get_string("/apps/scribes/bgcolor")
+		from BackgroundColorMetadata import get_value
+		bgcolor = get_value()
 		from gtk.gdk import color_parse
 		bgcolor = color_parse(bgcolor)
 		self.set_color(bgcolor)
@@ -91,29 +97,26 @@ class BackgroundButton(ColorButton):
 		self.set_title(msg0011)
 		from SCRIBES.tooltips import background_button_tip
 		self.__editor.tip.set_tip(self, background_button_tip)
-		use_theme_colors = True
-		value = self.__client.get("/apps/scribes/use_theme_colors")
-		if truth(value):
-			use_theme_colors = self.__client.get_bool("/apps/scribes/use_theme_colors")
+		from UseThemeMetadata import get_value
+		use_theme_colors = get_value()
 		self.set_property("sensitive", not use_theme_colors)
 		return
 
-	def __bgcolor_cb(self, client, cnxn_id, entry, data):
+	def __bgcolor_cb(self, *args):
 		"""
 		Handles callback when foreground color changes.
 
 		@param self: Reference to the BackgroundButton instance.
 		@type self: A BackgroundButton object.
 		"""
-		self.handler_block(self.__signal_id_2)
-		bgcolor = client.get_string("/apps/scribes/bgcolor")
 		color = self.get_color()
 		color = self.__editor.convert_color_to_string(color)
-		from operator import ne
-		if ne(bgcolor, color):
-			from gtk.gdk import color_parse
-			self.set_color(color_parse(bgcolor))
-		self.handler_unblock(self.__signal_id_2)
+		from operator import eq
+		from BackgroundColorMetadata import get_value
+		bgcolor = get_value()
+		if eq(bgcolor, color): return
+		from gtk.gdk import color_parse
+		self.set_color(color_parse(bgcolor))
 		return
 
 	def __color_set_cb(self, button):
@@ -122,35 +125,27 @@ class BackgroundButton(ColorButton):
 
 		@param self: Reference to the BackgroundButton instance.
 		@type self: A BackgroundButton object.
-
-		@param button: Reference to the BackgroundButton.
-		@type button: A BackgroundButton object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
 		"""
 		bgcolor = self.get_color()
 		bgcolor = self.__editor.convert_color_to_string(bgcolor)
-		self.__client.set_string("/apps/scribes/bgcolor", bgcolor)
-		self.__client.notify("/apps/scribes/bgcolor")
+		from BackgroundColorMetadata import set_value
+		set_value(bgcolor)
 		return True
 
-	def __use_theme_colors_cb(self, client, cnxn_id, entry, data):
+	def __use_theme_colors_cb(self, *args):
 		"""
 		Handles callback when foreground color changes.
 
 		@param self: Reference to the BackgroundButton instance.
 		@type self: A BackgroundButton object.
 		"""
-		use_theme_colors = True
-		value = self.__client.get("/apps/scribes/use_theme_colors")
-		from operator import truth, not_
-		if truth(value):
-			use_theme_colors = self.__client.get_bool("/apps/scribes/use_theme_colors")
-		if truth(use_theme_colors):
-			if truth(self.get_property("sensitive")):
+		from UseThemeMetadata import get_value
+		use_theme_colors = get_value()
+		if use_theme_colors:
+			if self.get_property("sensitive"):
 				self.set_property("sensitive", False)
 		else:
+			from operator import not_
 			if not_(self.get_property("sensitive")):
 				self.set_property("sensitive", True)
 		return
@@ -168,6 +163,9 @@ class BackgroundButton(ColorButton):
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
+		if self.__monitor_id_2: monitor_cancel(self.__monitor_id_2)
 		del self
 		self = None
 		return

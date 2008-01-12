@@ -52,9 +52,11 @@ class BackgroundSyntaxButton(ColorButton):
 		self.__init_attributes(editor, color_editor)
 		self.__set_properties()
 		self.__sig_id_1 = self.__treeview.connect("cursor-changed", self.__button_cursor_changed)
-		self.__client.notify_add("/apps/scribes/SyntaxHighlight", self.__syntax_cb)
-		self.__sig_id_2 = self.__color_id = self.connect("color-set", self.__color_set_cb)
+		self.__sig_id_2 = self.connect("color-set", self.__color_set_cb)
 		self.__sig_id_3 = color_editor.connect("destroy", self.__destroy_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id = monitor_add(self.__syntax_database_uri, MONITOR_FILE,
+					self.__syntax_cb)
 
 	def __init_attributes(self, editor, color_editor):
 		"""
@@ -68,11 +70,14 @@ class BackgroundSyntaxButton(ColorButton):
 		"""
 		self.__editor = editor
 		self.__treeview = color_editor.treeview
-		self.__client = editor.gconf_client
 		self.__default_color = "grey"
-		self.__gconf_syntax_folder = "/apps/scribes/SyntaxHighlight/"
-		self.__color_id = self.__sig_id_1 = self.__sig_id_2 = None
+		self.__sig_id_1 = self.__sig_id_2 = None
 		self.__sig_id_3 = None
+		from os.path import join
+		syntax_folder = join(editor.metadata_folder, "SyntaxColors")
+		syntax_database_path = join(syntax_folder, "SyntaxColors.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__syntax_database_uri = get_uri_from_local_path(syntax_database_path)
 		return
 
 	def __set_properties(self):
@@ -92,16 +97,14 @@ class BackgroundSyntaxButton(ColorButton):
 		self.set_property("sensitive", False)
 		return
 
-	def __syntax_cb(self, client, cnxn_id, entry, data):
+	def __syntax_cb(self, *args):
 		"""
 		Handles callback when background color changes.
 
 		@param self: Reference to the BackgroundSyntaxButton instance.
 		@type self: A BackgroundSyntaxButton object.
 		"""
-		self.handler_block(self.__color_id)
 		self.__set_color()
-		self.handler_unblock(self.__color_id)
 		return
 
 	def __color_set_cb(self, button):
@@ -122,21 +125,9 @@ class BackgroundSyntaxButton(ColorButton):
 		language = self.__treeview.get_language()
 		tag_id = self.__treeview.get_element()
 		language_id = language.get_id()
-		gconf_key = self.__gconf_syntax_folder + language_id + "/" + tag_id
-		from gconf import VALUE_STRING
-		gconf_entry = self.__client.get_list(gconf_key, VALUE_STRING)
-		if gconf_entry:
-			del gconf_entry[1]
-			gconf_entry.insert(1, color)
-		else:
-			tag_style = language.get_tag_style(tag_id)
-			bold = str(tag_style.bold)
-			italic = str(tag_style.italic)
-			underline = str(tag_style.underline)
-			foreground = convert_color_to_spec(tag_style.foreground)
-			gconf_entry = [foreground, color, bold, italic, underline]
-		self.__client.set_list(gconf_key, VALUE_STRING, gconf_entry)
-		self.__client.notify(gconf_key)
+		from operator import eq
+		if eq(color, self.__get_color(language_id, tag_id)): return True
+		self.__update_database(language_id, tag_id, color)
 		self.__treeview.grab_focus()
 		return True
 
@@ -153,14 +144,12 @@ class BackgroundSyntaxButton(ColorButton):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		self.handler_block(self.__color_id)
 		if treeview.is_parent():
 			self.set_property("sensitive", False)
 			self.__set_color()
 		else:
 			self.set_property("sensitive", True)
 			self.__set_color()
-		self.handler_unblock(self.__color_id)
 		return False
 
 	def __set_color(self):
@@ -170,6 +159,7 @@ class BackgroundSyntaxButton(ColorButton):
 		@param self: Reference to the BackgroundSyntaxButton instance.
 		@type self: A BackgroundSyntaxButton object.
 		"""
+		self.handler_block(self.__sig_id_2)
 		from gtk.gdk import color_parse
 		if self.__treeview.is_parent():
 			color = color_parse(self.__default_color)
@@ -177,19 +167,48 @@ class BackgroundSyntaxButton(ColorButton):
 		else:
 			language = self.__treeview.get_language()
 			tag_id = self.__treeview.get_element()
-			tag_style = language.get_tag_style(tag_id)
 			language_id = language.get_id()
-			gconf_key = self.__gconf_syntax_folder + language_id + "/" + tag_id
-			from gconf import VALUE_STRING
-			value = self.__client.get_list(gconf_key, VALUE_STRING)
-			if value:
-				if value[1] != "None":
-					color = color_parse(value[1])
-				else:
-					color = color_parse(self.__default_color)
+			color = self.__get_color(language_id, tag_id)
+			if color:
+				color = color_parse(color)
 			else:
 				color = color_parse(self.__default_color)
 		self.set_color(color)
+		self.handler_unblock(self.__sig_id_2)
+		return
+
+	def __get_color(self, language, keyword):
+		color = None
+		keyword_list = self.__get_keyword_styles(language, keyword)
+		if not keyword_list: return color
+		color = keyword_list[1]
+		return color
+
+	def __get_keyword_styles(self, language, keyword):
+		try:
+			keyword_list = None
+			from SyntaxColorsMetadata import get_value
+			keywords = get_value(language)
+			from operator import eq
+			get_keyword_dict = lambda dictionary: eq(keyword, dictionary.keys()[0])
+			keyword_list = filter(get_keyword_dict, keywords)
+			if not keyword_list: return None
+			value = keyword_list[0][keyword]
+		except TypeError, IndexError:
+			return keyword_list
+		return value
+
+	def __get_default_background_color(self, language, keyword):
+		return self.__default_color
+
+	def __update_database(self, language, keyword, color):
+		keyword_list = self.__get_keyword_styles(language, keyword)
+		if keyword_list:
+			keyword_list = [keyword_list[0], color, keyword_list[2], keyword_list[3], keyword_list[4]]
+		else:
+			keyword_list = [None, color, None, None, None]
+		from SyntaxColorsMetadata import set_value
+		set_value(language, keyword, keyword_list)
 		return
 
 	def __destroy_cb(self, color_editor):
@@ -203,9 +222,11 @@ class BackgroundSyntaxButton(ColorButton):
 		@type color_editor: A ColorEditor object.
 		"""
 		self.__editor.disconnect_signal(self.__sig_id_1, self.__treeview)
-		self.__editor.disconnect_signal(self.__sig_id_2, self.__color_id)
+		self.__editor.disconnect_signal(self.__sig_id_2, self)
 		self.__editor.disconnect_signal(self.__sig_id_3, color_editor)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id: monitor_cancel(self.__monitor_id)
 		self = None
 		del self
 		return

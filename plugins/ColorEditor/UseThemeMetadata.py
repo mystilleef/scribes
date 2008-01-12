@@ -19,7 +19,7 @@
 # USA
 
 """
-This module documents functions to store and get the foreground
+This module documents functions to store and get the use theme
 property from the database.
 
 @author: Lateef Alabi-Oki
@@ -31,7 +31,7 @@ property from the database.
 
 def open_database(flag="c"):
 	"""
-	Open the foreground database.
+	Open the  use theme database.
 
 	@return: A database object representing the use theme database.
 	@rtype: A database Shelve object.
@@ -42,7 +42,7 @@ def open_database(flag="c"):
 	if not exists(preference_folder):
 		from os import makedirs
 		makedirs(preference_folder)
-	database_file = join(preference_folder, "ForegroundColor.gdb")
+	database_file = join(preference_folder, "UseTheme.gdb")
 	from shelve import open
 	from anydbm import error
 	try:
@@ -53,15 +53,15 @@ def open_database(flag="c"):
 
 def get_value():
 	"""
-	Get foreground properties from database.
+	Get use theme properties from database.
 
-	@return: Color in hexidecimal or string notation
-	@rtype: A String object.
+	@return: A  True/False property
+	@rtype: A Boolean object.
 	"""
 	try:
-		value = "#000000"
+		value = True
 		database = open_database("r")
-		value = database["color"]
+		value = database["use_theme"]
 		database.close()
 	except:
 		database.close()
@@ -69,12 +69,12 @@ def get_value():
 
 def set_value(value):
 	"""
-	Set foreground  property in database.
+	Set use theme property in database.
 
-	@param value: Color in hexidecimal notation
-	@type value: A String object.
+	@param value: A True/False property
+	@type value: A Boolean object.
 	"""
 	database = open_database("w")
-	database["color"] = value
+	database["use_theme"] = value
 	database.close()
 	return
