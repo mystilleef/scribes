@@ -54,7 +54,7 @@ class Manager(GObject):
 		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		self.__signal_id_1 = self.__editor.textview.connect_after("populate-popup", self.__popup_cb)
+		self.__signal_id_1 = editor.textview.connect_after("populate-popup", self.__popup_cb)
 		self.__signal_id_2 = self.connect("destroy", self.__destroy_cb)
 		self.__signal_id_3 = self.connect("syntax-update", self.__syntax_update_cb)
 		self.__signal_id_4 = self.__editor.connect("loaded-document", self.__loaded_document_cb)
