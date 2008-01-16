@@ -102,10 +102,23 @@ def set_value(language_id, keyword, styles):
 	database.close()
 	return
 
-def remove_value(language_id):
+def remove_value(language_id, keyword=None):
 	try:
 		database = open_database("w")
-		del database[language_id]
+		if keyword:
+			syntax_property = database[language_id]
+			dictionary_object = None
+			for dictionary in syntax_property:
+				if dictionary.has_key(keyword):
+					dictionary_object = dictionary
+					break
+			if dictionary_object: syntax_property.remove(dictionary_object)
+			if syntax_property:
+				database[language_id] = syntax_property
+			else:
+				del database[language_id]
+		else:
+			del database[language_id]
 		database.close()
 	except:
 		database.close()

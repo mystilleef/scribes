@@ -27,7 +27,7 @@ Provide syntax highlighting for gtksourceview.Buffer objects.
 @contact: mystilleef@gmail.com
 """
 
-def get_style(style_elements):
+def get_style(style_elements, language, keyword):
 	"""
 	Get a style to be used for syntax highlighting.
 
@@ -41,11 +41,23 @@ def get_style(style_elements):
 	style = SourceTagStyle()
 	fgcolor, bgcolor, bold, italic, underline  = style_elements
 	from gtk.gdk import color_parse
-	if fgcolor:	style.foreground = color_parse(fgcolor)
+	if fgcolor:
+		style.foreground = color_parse(fgcolor)
+	else:
+		style.foreground = language.get_tag_style(keyword).foreground
 	if bgcolor: style.background = color_parse(bgcolor)
-	if bold: style.bold = bold
-	if italic: style.italic = italic
-	if underline: style.underline = underline
+	if bold is None:
+		style.bold = language.get_tag_style(keyword).bold
+	else:
+		style.bold = bold
+	if italic is None:
+		style.italic = language.get_tag_style(keyword).italic
+	else:
+		style.italic = italic
+	if underline is None:
+		style.underline = language.get_tag_style(keyword).underline
+	else:
+		style.underline = underline
 	return style
 
 def set_language_style(language, syntax_properties):
@@ -67,7 +79,7 @@ def set_language_style(language, syntax_properties):
 	@rtype: A gtksourceview.SourceLanguage object.
 	"""
 	for dictionary in syntax_properties:
-		style = get_style(dictionary.values()[0])
+		style = get_style(dictionary.values()[0], language, dictionary.keys()[0])
 		language.set_tag_style(dictionary.keys()[0], style)
 	return language
 

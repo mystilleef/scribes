@@ -71,6 +71,7 @@ class ForegroundSyntaxButton(ColorButton):
 		self.__editor = editor
 		self.__treeview = color_editor.treeview
 		self.__default_color = "grey"
+		self.__fgcolor = None
 		self.__color_id = None
 		self.__sig_id_1 = self.__sig_id_2 = self.__sig_id_3 = None
 		from os.path import join

@@ -52,9 +52,11 @@ class ResetButton(Button):
 		self.__init_attributes(editor, color_editor)
 		self.__set_properties()
 		self.__sig_id_1 = self.__treeview.connect("cursor-changed", self.__button_cursor_changed)
-		self.__client.notify_add("/apps/scribes/SyntaxHighlight", self.__syntax_cb)
 		self.__sig_id_2 = color_editor.connect("destroy", self.__destroy_cb)
 		self.__sig_id_3 = self.connect("clicked", self.__clicked_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id = monitor_add(self.__syntax_database_uri, MONITOR_FILE,
+					self.__syntax_cb)
 
 	def __init_attributes(self, editor, color_editor):
 		"""
@@ -68,9 +70,12 @@ class ResetButton(Button):
 		"""
 		self.__editor = editor
 		self.__treeview = color_editor.treeview
-		self.__client = editor.gconf_client
-		self.__gconf_syntax_folder = "/apps/scribes/SyntaxHighlight/"
 		self.__sig_id_1 = self.__sig_id_2 = self.__sig_id_3 = None
+		from os.path import join
+		syntax_folder = join(editor.metadata_folder, "SyntaxColors")
+		syntax_database_path = join(syntax_folder, "SyntaxColors.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__syntax_database_uri = get_uri_from_local_path(syntax_database_path)
 		return
 
 	def __set_properties(self):
@@ -90,7 +95,7 @@ class ResetButton(Button):
 		self.set_property("sensitive", False)
 		return
 
-	def __syntax_cb(self, client, cnxn_id, entry, data):
+	def __syntax_cb(self, *args):
 		"""
 		Handles callback when background color changes.
 
@@ -113,13 +118,19 @@ class ResetButton(Button):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
+		self.__remove_settings()
+		return True
+
+	def __remove_settings(self):
 		language = self.__treeview.get_language()
 		tag_id = self.__treeview.get_element()
 		language_id = language.get_id()
-		gconf_key = self.__gconf_syntax_folder + language_id + "/" + tag_id
-		self.__client.unset(gconf_key)
-		self.__client.notify(gconf_key)
-		return True
+		from SyntaxColorsMetadata import remove_value
+		if self.__treeview.is_parent():
+			remove_value(language_id)
+		else:
+			remove_value(language_id, tag_id)
+		return
 
 	def __button_cursor_changed(self, treeview):
 		"""
@@ -134,10 +145,7 @@ class ResetButton(Button):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		if treeview.is_parent():
-			self.set_property("sensitive", False)
-		else:
-			self.__determine_sensitivity()
+		self.__determine_sensitivity()
 		return False
 
 	def __determine_sensitivity(self):
@@ -150,11 +158,17 @@ class ResetButton(Button):
 		language = self.__treeview.get_language()
 		tag_id = self.__treeview.get_element()
 		language_id = language.get_id()
-		gconf_key = self.__gconf_syntax_folder + language_id + "/" + tag_id
-		from gconf import VALUE_STRING
-		gconf_entry = self.__client.get_list(gconf_key, VALUE_STRING)
+		from SyntaxColorsMetadata import get_value
+		syntax_properties = get_value(language_id)
 		self.set_property("sensitive", False)
-		if gconf_entry: self.set_property("sensitive", True)
+		if self.__treeview.is_parent():
+			if syntax_properties: self.set_property("sensitive", True)
+		else:
+			if not syntax_properties: return
+			for dictionary in syntax_properties:
+				if dictionary.has_key(tag_id):
+					self.set_property("sensitive", True)
+					break
 		self.__treeview.grab_focus()
 		return
 
@@ -172,6 +186,8 @@ class ResetButton(Button):
 		self.__editor.disconnect_signal(self.__sig_id_2, color_editor)
 		self.__editor.disconnect_signal(self.__sig_id_3, self)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id: monitor_cancel(self.__monitor_id)
 		self = None
 		del self
 		return
