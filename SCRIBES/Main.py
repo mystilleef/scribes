@@ -173,11 +173,8 @@ def __can_fork():
 	@param return: True to detach Scribes from the shell terminal.
 	@param type: A Boolean object.
 	"""
-	from gconf import client_get_default
-	client = client_get_default()
-	fork_scribes = True
-	if client.get("/apps/scribes/fork_scribes"): fork_scribes = client.get_bool("/apps/scribes/fork_scribes")
-	return fork_scribes
+	from ForkScribesMetadata import get_value
+	return get_value()
 
 try:
 	from psyco import bind

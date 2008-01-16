@@ -69,8 +69,6 @@ class FindCaseButton(CheckButton):
 		"""
 		self.__editor = findbar.editor
 		self.__searchmanager = findbar.search_replace_manager
-		from gconf import client_get_default
-		self.__client = client_get_default()
 		self.__signal_id_1 = self.__signal_id_2 = None
 		self.__signal_id_3 = self.__signal_id_4 = None
 		self.__signal_id_5 = self.__signal_id_6 = None
@@ -89,8 +87,8 @@ class FindCaseButton(CheckButton):
 		"""
 		self.__searchmanager.reset()
 		value = self.get_property("active")
-		self.__client.set_bool("/apps/scribes/match_case", value)
-		self.__client.notify("/apps/scribes/match_case")
+		from MatchCaseMetadata import set_value
+		set_value(value)
 		return True
 
 	def __casebutton_show_bar_cb(self, editor, bar):
@@ -107,7 +105,8 @@ class FindCaseButton(CheckButton):
 		@type bar: A ScribesBar object.
 		"""
 		self.set_property("sensitive", True)
-		value = self.__client.get_bool("/apps/scribes/match_case")
+		from MatchCaseMetadata import get_value
+		value = get_value()
 		if not self.get_property("active") is value:
 			self.set_property("active", value)
 		return

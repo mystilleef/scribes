@@ -153,6 +153,7 @@ MAKEINFO = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_OPTS = -c
+MSGMERGE = /usr/bin/msgmerge
 OBJEXT = o
 OMF_DIR = ${datadir}/omf
 PACKAGE = scribes

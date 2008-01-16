@@ -56,8 +56,9 @@ class ScribesStatusContainer(HBox):
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_cb)
 		self.__signal_id_3 = editor.connect("enable-fullscreen", self.__enable_fullscreen_cb)
 		self.__signal_id_4 = editor.connect("disable-fullscreen", self.__disable_fullscreen_cb)
-		editor.response()
-		self.__client.notify_add("/apps/scribes/hide_status_area", self.__hide_status_area_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id_1 = monitor_add(self.__database_uri, MONITOR_FILE,
+					self.__hide_status_area_cb)
 
 	def __get_visibility(self):
 		return self.__is_visible
@@ -75,11 +76,15 @@ class ScribesStatusContainer(HBox):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__client = editor.gconf_client
 		self.__is_visible = False
 		self.__registration_id = editor.register_object()
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = None
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		database_path = join(preference_folder, "MinimalMode.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__database_uri = get_uri_from_local_path(database_path)
 		return
 
 	def __set_properties(self):
@@ -102,9 +107,8 @@ class ScribesStatusContainer(HBox):
 		@param self: Reference to the Toolbar instance.
 		@type self: A Toolbar object.
 		"""
-		hide_status_area = False
-		if self.__client.get("/apps/scribes/hide_status_area"):
-			hide_status_area = self.__client.get_bool("/apps/scribes/hide_status_area")
+		from MinimalModeMetadata import get_value
+		hide_status_area = get_value()
 		if hide_status_area:
 			self.set_no_show_all(True)
 			self.__is_visible = False
@@ -128,6 +132,8 @@ class ScribesStatusContainer(HBox):
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
 		# Unregister object so that editor can quit.
 		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.

@@ -569,6 +569,9 @@ s,@INTLTOOL_SCHEMAS_RULE@,|#_!!_#|%.schemas:   %.schemas.in   $(INTLTOOL_MERGE) 
 s,@INTLTOOL_THEME_RULE@,|#_!!_#|%.theme:     %.theme.in     $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@|#_!!_#|,g
 s,@INTLTOOL_SERVICE_RULE@,|#_!!_#|%.service: %.service.in   $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@|#_!!_#|,g
 s,@INTLTOOL_POLICY_RULE@,|#_!!_#|%.policy:    %.policy.in    $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@|#_!!_#|,g
+s,@XGETTEXT@,|#_!!_#|/usr/bin/xgettext,g
+s,@MSGMERGE@,|#_!!_#|/usr/bin/msgmerge,g
+s,@MSGFMT@,|#_!!_#|/usr/bin/msgfmt,g
 s,@INTLTOOL_EXTRACT@,|#_!!_#|$(top_builddir)/intltool-extract,g
 s,@INTLTOOL_MERGE@,|#_!!_#|$(top_builddir)/intltool-merge,g
 s,@INTLTOOL_UPDATE@,|#_!!_#|$(top_builddir)/intltool-update,g
@@ -582,12 +585,12 @@ s,@ac_ct_CC@,|#_!!_#|gcc,g
 s,@EXEEXT@,|#_!!_#|,g
 s,@OBJEXT@,|#_!!_#|o,g
 s,@DEPDIR@,|#_!!_#|.deps,g
-s,@am__include@,|#_!!_#|include,g
-s,@am__quote@,|#_!!_#|,g
-s,@AMDEP_TRUE@,|#_!!_#|,g
 CEOF
 cat >"$tmp/subs-2.sed" <<\CEOF
 /@[a-zA-Z_][a-zA-Z_0-9]*@/!b end
+s,@am__include@,|#_!!_#|include,g
+s,@am__quote@,|#_!!_#|,g
+s,@AMDEP_TRUE@,|#_!!_#|,g
 s,@AMDEP_FALSE@,|#_!!_#|#,g
 s,@AMDEPBACKSLASH@,|#_!!_#|\\,g
 s,@CCDEPMODE@,|#_!!_#|depmode=none,g
@@ -607,10 +610,8 @@ s,@host_cpu@,|#_!!_#|i686,g
 s,@host_vendor@,|#_!!_#|pc,g
 s,@host_os@,|#_!!_#|linux-gnu,g
 s,@USE_NLS@,|#_!!_#|yes,g
-s,@MSGFMT@,|#_!!_#|/usr/bin/msgfmt,g
 s,@MSGFMT_OPTS@,|#_!!_#|-c,g
 s,@GMSGFMT@,|#_!!_#|/usr/bin/msgfmt,g
-s,@XGETTEXT@,|#_!!_#|/usr/bin/xgettext,g
 s,@CATALOGS@,|#_!!_#| de.gmo fr.gmo nl.gmo it.gmo pt_BR.gmo sv.gmo zh_CN.gmo,g
 s,@CATOBJEXT@,|#_!!_#|.gmo,g
 s,@GMOFILES@,|#_!!_#| de.gmo fr.gmo nl.gmo it.gmo pt_BR.gmo sv.gmo zh_CN.gmo,g

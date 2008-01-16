@@ -132,7 +132,6 @@ class ScribesToolbarContainer(HBox):
 		@type editor: An Editor object.
 		"""
 		self.set_property("sensitive", False)
-		self.__editor.response()
 		return
 
 	def __hide_dialog_cb(self, editor, dialog):
@@ -146,7 +145,6 @@ class ScribesToolbarContainer(HBox):
 		@type editor: An Editor object.
 		"""
 		self.set_property("sensitive", True)
-		self.__editor.response()
 		return
 
 	def __show_bar_cb(self, editor, bar):

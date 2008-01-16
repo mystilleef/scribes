@@ -60,7 +60,9 @@ class Highlighter(object):
 		self.__signal_id_6 = editor.connect("enable-readonly", self.__generic_highlight_off_cb)
 		self.__signal_id_7 = editor.connect("disable-readonly", self.__generic_highlight_on_cb)
 		self.__signal_id_8 = editor.connect("load-error", self.__generic_highlight_on_cb)
-		self.__client.notify_add("/apps/scribes/scope_highlight_color", self.__highlight_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id_1 = monitor_add(self.__database_uri, MONITOR_FILE,
+					self.__highlight_cb)
 
 	def __init_attributes(self, editor):
 		"""
@@ -73,7 +75,6 @@ class Highlighter(object):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__client = editor.gconf_client
 		self.__can_highlight = True
 		self.__buffer_is_tagged = False
 		self.__highlight_tag = self.__create_highlight_tag()
@@ -84,6 +85,11 @@ class Highlighter(object):
 		self.__start_characters = ("(", "[", "<", "{")
 		self.__end_characters = (")", "]", ">", "}")
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "PluginPreferences")
+		database_path = join(preference_folder, "LexicalScopeHighlight.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__database_uri = get_uri_from_local_path(database_path)
 		return
 
 ########################################################################
@@ -212,11 +218,9 @@ class Highlighter(object):
 		"""
 		from gtk import TextTag
 		tag = TextTag("lexical_scope_tag")
-		color = "#cfcfcf"
-		if self.__client.get("/apps/scribes/scope_highlight_color"):
-			color = self.__client.get_string("/apps/scribes/scope_highlight_color")
 		self.__editor.textbuffer.get_tag_table().add(tag)
-		tag.set_property("background", color)
+		from LexicalScopeHighlightMetadata import get_value
+		tag.set_property("background", get_value())
 		return tag
 
 	def __destroy(self):
@@ -242,6 +246,8 @@ class Highlighter(object):
 		if truth(self.__end_mark):
 			if truth(self.__end_mark.get_deleted()):
 				self.__editor.textbuffer.delete_mark(self.__end_mark)
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
 		self = None
 		del self
 		return
@@ -409,7 +415,8 @@ class Highlighter(object):
 		textbuffer = self.__editor.textbuffer
 		begin, end = textbuffer.get_bounds()
 		textbuffer.remove_tag(self.__highlight_tag, begin, end)
-		color = self.__client.get_string("/apps/scribes/scope_highlight_color")
+		from LexicalScopeHighlightMetadata import get_value
+		color = get_value()
 		self.__highlight_tag.set_property("background", color)
 		from gobject import idle_add, source_remove, PRIORITY_LOW
 		try:

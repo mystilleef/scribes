@@ -45,8 +45,9 @@ class ScribesEncodingComboBox(ComboBox):
 		self.connect("changed", self.__combobox_cb)
 		# Notify the combobox when the encoding list in the GConf database is
 		# updated.
-		self.client.notify_add("/apps/scribes/encodings",
-							self.__update_encoding_list_cb, self)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id_1 = monitor_add(self.__database_uri, MONITOR_FILE,
+					self.__update_encoding_list_cb)
 
 	def __init_attributes(self, editor):
 		"""
@@ -60,9 +61,13 @@ class ScribesEncodingComboBox(ComboBox):
 		"""
 		self.editor = editor
 		self.model = self.__create_liststore()
-		self.client = editor.gconf_client
 		from utils import generate_encodings
 		self.encodings = generate_encodings()
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		database_path = join(preference_folder, "Encoding.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__database_uri = get_uri_from_local_path(database_path)
 		return
 
 	def __create_liststore(self):
@@ -107,9 +112,8 @@ class ScribesEncodingComboBox(ComboBox):
 		self.model.append([msg0292])
 		self.model.append(["Separator"])
 		self.model.append([msg0159])
-		from gconf import VALUE_STRING
-		encoding_list = self.client.get_list("/apps/scribes/encodings",
-											VALUE_STRING)
+		from EncodingMetadata import get_value
+		encoding_list = get_value()
 		for encoding in encoding_list:
 			encoding = self.__create_encoding_for_display(encoding)
 			if encoding is None:
@@ -163,7 +167,7 @@ class ScribesEncodingComboBox(ComboBox):
 		if model.get_value(iterator, 0) == "Separator" : return True
 		return False
 
-	def __update_encoding_list_cb(self, client, cnxn_id, entry, data):
+	def __update_encoding_list_cb(self, *args):
 		"""
 		Update the combobox when encodings are added or removed to its list.
 
@@ -195,7 +199,7 @@ class ScribesEncodingComboBox(ComboBox):
 			encodings
 		@type combobox: A gtk.ComboBox object
 		"""
-		manager = self.editor.get_object("EncodingManager")
+		manager = self.editor.get_encoding_manager()
 		from gobject import timeout_add
 		from internationalization import msg0158, msg0159, msg0292
 		if self.get_active_text() == msg0159:

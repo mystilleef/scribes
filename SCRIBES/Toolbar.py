@@ -57,7 +57,9 @@ class ScribesToolbar(Toolbar):
 		self.__set_toolbar_visibility()
 		self.__signal_id_1 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_cb)
-		self.__client.notify_add("/apps/scribes/hide_toolbar", self.__hide_toolbar_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id_1 = monitor_add(self.__database_uri, MONITOR_FILE,
+					self.__hide_toolbar_cb)
 
 	def __get_visibility(self):
 		return self.__is_visible
@@ -72,11 +74,15 @@ class ScribesToolbar(Toolbar):
 		@type self: A Toolbar object.
 		"""
 		self.__editor = editor
-		self.__client = editor.gconf_client
 		# Initialize gconf, the gnome configuration system
 		self.__is_visible = False
 		self.__registration_id = editor.register_object()
 		self.__signal_id_1 = self.__signal_id_2 = None
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		database_path = join(preference_folder, "MinimalMode.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__database_uri = get_uri_from_local_path(database_path)
 		return
 
 	def __set_properties(self):
@@ -181,6 +187,8 @@ class ScribesToolbar(Toolbar):
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.destroy()
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
 		# Unregister object so that editor can quit.
 		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.
@@ -209,9 +217,8 @@ class ScribesToolbar(Toolbar):
 		@type self: A Toolbar object.
 		"""
 		self.set_no_show_all(False)
-		hide_toolbar = False
-		if self.__client.get("/apps/scribes/hide_toolbar"):
-			hide_toolbar = self.__client.get_bool("/apps/scribes/hide_toolbar")
+		from MinimalModeMetadata import get_value
+		hide_toolbar = get_value()
 		if hide_toolbar:
 			self.__is_visible = False
 			self.hide_all()
@@ -221,6 +228,6 @@ class ScribesToolbar(Toolbar):
 		self.set_no_show_all(True)
 		return
 
-	def __hide_toolbar_cb(self, client, cnxn_id, entry, data):
+	def __hide_toolbar_cb(self, *args):
 		self.__set_toolbar_visibility()
 		return

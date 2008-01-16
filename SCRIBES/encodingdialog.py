@@ -67,7 +67,6 @@ class ScribesEncodingDialog(ScribesDialog):
 		@type parent_window: A gtk.Window object.
 		"""
 		self.editor = editor
-		self.client = editor.gconf_client
 		from utils import generate_encodings
 		self.encodings = generate_encodings()
 		self.model = self.__create_encoding_model()
@@ -140,9 +139,8 @@ class ScribesEncodingDialog(ScribesDialog):
 		@param self: Reference to the ScribesEncodingDialog instance.
 		@type self: A ScribesEncodingDialog object.
 		"""
-		from gconf import VALUE_STRING
-		encoding_list = self.client.get_list("/apps/scribes/encodings",
-											VALUE_STRING)
+		from EncodingMetadata import get_value
+		encoding_list = get_value()
 		for encoding in self.encodings:
 			if encoding[0] in encoding_list:
 				select = True
@@ -228,9 +226,8 @@ class ScribesEncodingDialog(ScribesDialog):
 		@param path: A row in treeview
 		@type path: A gtk.Path object.
 		"""
-		from gconf import VALUE_STRING
-		encoding_list = self.client.get_list("/apps/scribes/encodings",
-											VALUE_STRING)
+		from EncodingMetadata import get_value, set_value
+		encoding_list = get_value()
 		# Toggle the check button in the select column
 		self.model[path][0] = not self.model[path][0]
 		# If the check button is toggled on, add the character encoding on that
@@ -239,15 +236,12 @@ class ScribesEncodingDialog(ScribesDialog):
 		if self.model[path][0]:
 			# Add liststore to gconf database
 			encoding_list.append(self.model[path][1])
-			self.client.set_list("/apps/scribes/encodings", VALUE_STRING,
-								encoding_list)
+			set_value(encoding_list)
 		else:
 			# Remove liststore from gconf database
 			if self.model[path][1] in encoding_list:
 				encoding_list.remove(self.model[path][1])
-				self.client.set_list("/apps/scribes/encodings", VALUE_STRING,
-									encoding_list)
-		self.client.notify("/apps/scribes/encodings")
+				set_value(encoding_list)
 		return True
 
 	def __view_map_event_cb(self, view, event):

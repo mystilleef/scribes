@@ -49,7 +49,6 @@ def open_encoding_database(flag="c"):
 		database = open(database_file, flag="n", writeback=False)
 	return database
 
-
 def close_encoding_database(database):
 	"""
 	Close the encoding database.

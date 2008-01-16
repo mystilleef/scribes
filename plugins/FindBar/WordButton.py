@@ -69,8 +69,6 @@ class FindWordButton(CheckButton):
 		"""
 		self.__editor = findbar.editor
 		self.__searchmanager = findbar.search_replace_manager
-		from gconf import client_get_default
-		self.__client = client_get_default()
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
 		return
@@ -87,8 +85,8 @@ class FindWordButton(CheckButton):
 		"""
 		self.__searchmanager.reset()
 		value = self.get_property("active")
-		self.__client.set_bool("/apps/scribes/match_word", value)
-		self.__client.notify("/apps/scribes/match_word")
+		from MatchWordMetadata import set_value
+		set_value(value)
 		return True
 
 	def __wordbutton_show_bar_cb(self, editor, bar):
@@ -105,9 +103,9 @@ class FindWordButton(CheckButton):
 		@type bar: A ScribesBar object.
 		"""
 		self.set_property("sensitive", True)
-		value = self.__client.get_bool("/apps/scribes/match_word")
-		if not self.get_property("active") is value:
-			self.set_property("active", value)
+		from MatchWordMetadata import get_value
+		value = get_value()
+		if not self.get_property("active") is value: self.set_property("active", value)
 		return
 
 	def __wordbutton_searching_cb(self, searchmanager):

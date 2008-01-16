@@ -76,8 +76,11 @@ class SearchReplaceManager(GObject):
 		self.__signal_id_10 = editor.connect("hide-bar", self.__search_hide_bar_cb)
 		self.__signal_id_11 = editor.connect("show-bar", self.__search_show_bar_cb)
 		self.__signal_id_12 = self.connect("destroy", self.__destroy_cb)
-		self.__gconf_client.notify_add("/apps/scribes/match_case", self.__search_client_cb)
-		self.__gconf_client.notify_add("/apps/scribes/match_word", self.__search_client_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id_1 = monitor_add(self.__case_database_uri, MONITOR_FILE,
+					self.__search_client_cb)
+		self.__monitor_id_2 = monitor_add(self.__word_database_uri, MONITOR_FILE,
+					self.__search_client_cb)
 
 	def __init_attributes(self, editor):
 		"""
@@ -104,10 +107,10 @@ class SearchReplaceManager(GObject):
 		self.__enable_regular_expression = False
 		self.__enable_incremental_search = False
 		self.__reset_flag = True
-		from gconf import client_get_default
-		self.__gconf_client = client_get_default()
-		self.__match_case = self.__gconf_client.get_bool("/apps/scribes/match_case")
-		self.__match_word = self.__gconf_client.get_bool("/apps/scribes/match_word")
+		from MatchCaseMetadata import get_value
+		self.__match_case = get_value()
+		from MatchWordMetadata import get_value
+		self.__match_word = get_value()
 		self.__is_initialized = True
 		self.__bar_is_visible = False
 		self.__status_id = None
@@ -116,6 +119,13 @@ class SearchReplaceManager(GObject):
 		self.__signal_id_7 = self.__signal_id_8 = self.__signal_id_9 = None
 		self.__signal_id_10 = self.__signal_id_11 = self.__signal_id_12 = None
 		self.__store_id = None
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "PluginPreferences")
+		case_database_path = join(preference_folder, "MatchCase.gdb")
+		word_database_path = join(preference_folder, "MatchWord.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__case_database_uri = get_uri_from_local_path(case_database_path)
+		self.__word_database_uri = get_uri_from_local_path(word_database_path)
 		return
 
 	def __get_index(self):
@@ -671,15 +681,17 @@ class SearchReplaceManager(GObject):
 		self.__editor.feedback.update_status_message(msg0009, "succeed", 10)
 		return
 
-	def __search_client_cb(self, client, cnxn_id, entry, data):
+	def __search_client_cb(self, *args):
 		"""
 		Handles callback when the GConf database is modified.
 
 		@param self: Reference to the SearchReplaceManager instance.
 		@type self: A SearchReplaceManager object.
 		"""
-		self.__match_case = client.get_bool("/apps/scribes/match_case")
-		self.__match_word = client.get_bool("/apps/scribes/match_word")
+		from MatchCaseMetadata import get_value
+		self.__match_case = get_value()
+		from MatchWordMetadata import get_value
+		self.__match_word = get_value()
 		return
 
 ########################################################################
@@ -735,6 +747,9 @@ class SearchReplaceManager(GObject):
 		self.__editor.disconnect_signal(self.__signal_id_12, self)
 		self.__editor.disconnect_signal(self.__signal_id_11, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_10, self.__editor)
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
+		if self.__monitor_id_2: monitor_cancel(self.__monitor_id_2)
 		del self
 		self = None
 		return

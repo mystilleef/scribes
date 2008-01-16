@@ -42,6 +42,7 @@ scribes_PYTHON = \
 	encodingdialog.py \
 	error.py \
 	escape.py \
+	EncodingMetadata.py \
 	Exceptions.py \
 	Feedback.py \
 	FileSaver.py \
@@ -49,6 +50,7 @@ scribes_PYTHON = \
 	FileModificationMonitor.py \
 	FontMetadata.py \
 	ForegroundColorMetadata.py \
+	ForkScribesMetadata.py \
 	fsbutton.py \
 	GlobalStore.py \
 	InstanceManager.py \
@@ -59,6 +61,7 @@ scribes_PYTHON = \
 	MessageDialog.py \
 	MainContainer.py \
 	MarginPositionMetadata.py \
+	MinimalModeMetadata.py \
 	ModificationDialog.py \
 	NewFileSaver.py \
 	mdialog.py \

@@ -95,19 +95,12 @@ class ToggleTrigger(GObject):
 		@param trigger: An object to show the document browser.
 		@type trigger: A Trigger object.
 		"""
-		from gconf import client_get_default
-		client = client_get_default()
-		from operator import contains
-		if contains((self.__editor.toolbar.is_visible, self.__editor.statuscontainer.is_visible), True):
-			# Hide the toolbar and status area.
-			client.set_bool("/apps/scribes/hide_toolbar", True)
-			client.set_bool("/apps/scribes/hide_status_area", True)
+		from MinimalModeMetadata import get_value, set_value
+		minimal_mode = get_value()
+		if minimal_mode:
+			set_value(False)
 		else:
-			# Hide the toolbar and status area.
-			client.set_bool("/apps/scribes/hide_toolbar", False)
-			client.set_bool("/apps/scribes/hide_status_area", False)
-		client.notify("/apps/scribes/hide_status_area")
-		client.notify("/apps/scribes/hide_toolbar")
+			set_value(True)
 		return
 
 	def __destroy_cb(self, trigger):
