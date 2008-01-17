@@ -68,6 +68,11 @@ class ToggleTrigger(GObject):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
+		from Manager import Manager
+		self.__manager = Manager(self.__editor)
+		self.__manager.toggle_minimal_interface()
+		self.__manager = None
+		
 		self.__trigger = None
 		self.__signal_id_2 = None
 		self.__signal_id_1 = None
@@ -95,12 +100,18 @@ class ToggleTrigger(GObject):
 		@param trigger: An object to show the document browser.
 		@type trigger: A Trigger object.
 		"""
-		from MinimalModeMetadata import get_value, set_value
-		minimal_mode = get_value()
-		if minimal_mode:
-			set_value(False)
-		else:
-			set_value(True)
+		try:
+			self.__manager.toggle_minimal_interface()
+		except AttributeError:
+			from Manager import Manager
+			self.__manager = Manager(self.__editor)
+			self.__manager.toggle_minimal_interface()
+#		from MinimalModeMetadata import get_value, set_value
+#		minimal_mode = get_value()
+#		if minimal_mode:
+#			set_value(False)
+#		else:
+#			set_value(True)
 		return
 
 	def __destroy_cb(self, trigger):
@@ -113,6 +124,7 @@ class ToggleTrigger(GObject):
 		@param trigger: Reference to the ToggleTrigger instance.
 		@type trigger: A ToggleTrigger object.
 		"""
+		if self.__manager: self.__manager.destroy()
 		self.__editor.remove_trigger(self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)
