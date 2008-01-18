@@ -30,7 +30,7 @@ This module documents a class that manages the minimal view mode.
 
 class Manager(object):
 	"""
-	Creates object that manages the minimal view mode.
+	Creates object that manages minimal view mode.
 	"""
 
 	def __init__(self, editor):
@@ -44,52 +44,117 @@ class Manager(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(editor)
-		self.__sig_id_1 = editor.window.connect("motion-notify-event",
-								self.__motion_notify_event_cb)
-		self.__monitor_mouse()
+		self.__sig_id_1 = editor.window.connect("motion-notify-event", self.__motion_notify_event_cb)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__monitor_mouse, priority=PRIORITY_LOW)
+#		self.__monitor_mouse()
 
 	def __init_attributes(self, editor):
+		"""
+		Initialize data attributes.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+
+		@param editor: Reference to the text editor.
+		@type editor: An Editor object.
+		"""
 		self.__editor = editor
-		self.__timer = 1
+		self.__timer = self.__sig_id_1 = None
 		return
 
 	def __monitor_mouse(self):
+		"""
+		Enable or disable mouse monitoring.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
 		self.__disable_mouse_monitor()
 		from MinimalModeMetadata import get_value
 		if get_value(): self.__enable_mouse_monitor()
-		return
+		return False
 
 	def __motion_notify_event_cb(self, window, event):
+		"""
+		Handles callback when the "motion-notify-event" is called.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+
+		@param window: The text editor window.
+		@type window: A gtk.Window object.
+
+		@param event: A gobject event.
+		@type event: An gtk.Event object.
+		"""
 		window.window.get_pointer()
 		self.__show_full_view()
-		from gobject import source_remove, timeout_add
-		source_remove(self.__timer)
-		self.__timer = timeout_add(1500, self.__hide_full_view)
+		try:
+			from gobject import source_remove, timeout_add, PRIORITY_LOW
+			source_remove(self.__timer)
+		except TypeError:
+			pass
+		self.__timer = timeout_add(2500, self.__hide_full_view, priority=PRIORITY_LOW)
 		return False
 
 	def __show_full_view(self):
+		"""
+		Show full view.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
 		self.__editor.toolbar.set_no_show_all(False)
+		self.__editor.statuscontainer.set_no_show_all(False)
 		self.__editor.toolbarcontainer.show_all()
-		self.__editor.statuscontainer.show()
+		self.__editor.statuscontainer.show_all()
+		self.__editor.statuscontainer.set_no_show_all(True)
 		self.__editor.toolbar.set_no_show_all(True)
 		return False
 
 	def __hide_full_view(self):
+		"""
+		Hide full view.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
 		self.__editor.toolbar.set_no_show_all(False)
-		self.__editor.toolbarcontainer.hide()
+		self.__editor.statuscontainer.set_no_show_all(False)
+		self.__editor.toolbarcontainer.hide_all()
 		self.__editor.statuscontainer.hide()
+		self.__editor.statuscontainer.set_no_show_all(True)
 		self.__editor.toolbar.set_no_show_all(True)
 		return False
 
 	def __disable_mouse_monitor(self):
+		"""
+		Don't monitor cursor movement.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
 		self.__editor.window.handler_block(self.__sig_id_1)
 		return
 
 	def __enable_mouse_monitor(self):
+		"""
+		Monitor cursor movement.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
 		self.__editor.window.handler_unblock(self.__sig_id_1)
 		return
 
 	def toggle_minimal_interface(self):
+		"""
+		Toggle minimal interface.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
 		from MinimalModeMetadata import get_value, set_value
 		minimal_mode = get_value()
 		if minimal_mode:
@@ -101,5 +166,13 @@ class Manager(object):
 		return
 
 	def destroy(self):
-		print "Destroying manager"
+		"""
+		Destroy manager object.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
+		self.__editor.disconnect_signal(self.__sig_id_1, self.__editor.window)
+		del self
+		self = None
 		return

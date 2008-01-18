@@ -210,7 +210,8 @@ class Editor(GObject):
 		return self.__uri
 
 	def __get_encoding(self):
-		return self.get_object("EncodingManager").get_encoding()
+		if self.__encoding_manager: return self.__encoding_manager.get_encoding()
+		return None
 
 	def __get_file_is_saved(self):
 		return self.__file_is_saved
@@ -880,8 +881,8 @@ class Editor(GObject):
 		from EncodingManager import EncodingManager
 		self.__encoding_manager = EncodingManager(self, self.__encoding)
 		# Initialize file modification monitor
-		from FileModificationMonitor import FileModificationMonitor
-		FileModificationMonitor(self)
+#		from FileModificationMonitor import FileModificationMonitor
+#		FileModificationMonitor(self)
 		# Initialize the object that saves files.
 		from NewFileSaver import FileSaver
 #		from FileSaver import FileSaver

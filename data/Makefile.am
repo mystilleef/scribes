@@ -68,5 +68,3 @@ EXTRA_DIST = \
 CLEANFILES = \
 	$(Desktop_DATA) \
 	$(schemas_DATA)
-
-This is a test file. This is a test file. This is a test
