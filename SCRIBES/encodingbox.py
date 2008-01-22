@@ -43,8 +43,6 @@ class ScribesEncodingComboBox(ComboBox):
 		self.__populate_liststore()
 		self.set_row_separator_func(self.__separator_function)
 		self.connect("changed", self.__combobox_cb)
-		# Notify the combobox when the encoding list in the GConf database is
-		# updated.
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monitor_id_1 = monitor_add(self.__database_uri, MONITOR_FILE,
 					self.__update_encoding_list_cb)

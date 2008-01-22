@@ -33,7 +33,7 @@ class FileLoader(object):
 	buffer.
 	"""
 
-	def __init__(self, editor, uri, readonly=False):
+	def __init__(self, editor, uri, encoding="utf-8", readonly=False):
 		"""
 		Initialize object.
 
@@ -54,7 +54,7 @@ class FileLoader(object):
 			from Exceptions import PermissionError
 			from Exceptions import AccessDeniedError, FileInfoError
 			from Exceptions import NotFoundError
-			self.__init_attributes(editor, uri, readonly)
+			self.__init_attributes(editor, uri, encoding, readonly)
 			self.__get_file_info()
 			self.__verify_permissions()
 			self.__load_uri()
@@ -74,7 +74,7 @@ class FileLoader(object):
 			from internationalization import msg0483
 			self.__error(msg0483)
 
-	def __init_attributes(self, editor, uri, readonly):
+	def __init_attributes(self, editor, uri, encoding, readonly):
 		"""
 		Initialize data attributes.
 
@@ -90,6 +90,7 @@ class FileLoader(object):
 		@param readonly: Toggle readonly.
 		@type readonly: A Boolean object.
 		"""
+		self.__encoding = encoding
 		self.__editor = editor
 		self.__uri = uri
 		self.__readonly = readonly
@@ -279,7 +280,7 @@ class FileLoader(object):
 		@param self: Reference to the Loader instance.
 		@type self: A Loader object.
 		"""
-		self.__editor.emit("loaded-document", self.__uri)
+		self.__editor.emit("loaded-document", self.__uri, self.__encoding)
 		if self.__readonly: self.__editor.emit("enable-readonly")
 		self.__destroy()
 		return
@@ -297,23 +298,46 @@ class FileLoader(object):
 		@param handle: An object pointing to a remote URI.
 		@type handle: A gnomevfs.Handle object.
 		"""
-		manager = self.__editor.get_encoding_manager()
-		encoding = manager.get_encoding(self.__uri, string)
 		try:
-			unicode_string = string.decode(encoding)
-			utf8_string = unicode_string.encode("utf8")
-			self.__editor.response()
-			self.__editor.block_response()
+			self.__encoding = self.__determine_encoding()
+			encoding_list = self.__editor.encoding_guess_list
+			if encoding_list:
+				encoding_list.insert(0, self.__encoding)
+				success = False
+				for encoding in encoding_list:
+					try:
+						unicode_string = string.decode(encoding)
+						success = True
+						break
+					except UnicodeDecodeError:
+						continue
+				if success is False: raise ValueError
+			else:
+				try:
+					unicode_string = string.decode(self.__encoding)
+				except TypeError:
+					unicode_string = string.decode("utf-8")
+			utf8_string = unicode_string.encode("utf-8")
 			self.__editor.textbuffer.set_text(utf8_string)
-			self.__editor.unblock_response()
-			self.__editor.response()
 		except UnicodeDecodeError:
+			from internationalization import msg0487
+			self.__error(msg0487)
+		except ValueError:
 			from internationalization import msg0487
 			self.__error(msg0487)
 		except UnicodeEncodeError:
 			from internationalization import msg0488
 			self.__error(msg0488)
 		return
+
+	def __determine_encoding(self):
+		if self.__encoding: return self.__encoding
+		from EncodedFilesMetadata import get_value
+		encoding_from_file = get_value(self.__uri)
+		if encoding_from_file is None and self.__encoding is None: return "utf-8"
+		if encoding_from_file: return encoding_from_file
+		if self.__encoding is None: return "utf-8"
+		return "utf-8"
 
 	def __error(self, message):
 		"""

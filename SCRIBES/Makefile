@@ -247,7 +247,11 @@ scribes_PYTHON = \
 	encodingdialog.py \
 	error.py \
 	escape.py \
+	EncodedFilesMetadata.py \
+	EncodingComboBox.py \
 	EncodingMetadata.py \
+	EncodingListMetadata.py \
+	EncodingGuessListMetadata.py \
 	Exceptions.py \
 	Feedback.py \
 	FileSaver.py \

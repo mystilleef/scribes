@@ -124,7 +124,7 @@ class ScribesTextBuffer(SourceBuffer):
 		idle_add(self.__activate_sytnax_colors)
 		return False
 
-	def __loaded_document_cb(self, editor, uri):
+	def __loaded_document_cb(self, *args):
 		"""
 		Handles callback when the text editor has finished loading documents
 		into the text editor's buffer.
@@ -141,7 +141,7 @@ class ScribesTextBuffer(SourceBuffer):
 		self.__set_cursor_positon()
 		return False
 
-	def __saved_document_cb(self, editor, uri):
+	def __saved_document_cb(self, *args):
 		"""
 		Handles callback when the text editor's buffer has finished saving the
 		contents of the text editor's buffer.
@@ -217,7 +217,7 @@ class ScribesTextBuffer(SourceBuffer):
 		self.__destroy()
 		return False
 
-	def __renamed_document_cb(self, editor, uri):
+	def __renamed_document_cb(self, editor, uri, *args):
 		"""
 		Handles callback when the name of the document is renamed.
 

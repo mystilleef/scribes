@@ -58,9 +58,10 @@ class SaveDialog(object):
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, domain="scribes")
 		self.__dialog = self.__glade.get_widget("SaveDialog")
-		from SCRIBES.encodingbox import ScribesEncodingComboBox
+		from SCRIBES.EncodingComboBox import EncodingComboBox
 		from SCRIBES.utils import create_encoding_box
-		self.__encoding_box  = create_encoding_box(ScribesEncodingComboBox(editor))
+		self.__box = EncodingComboBox(editor)
+		self.__encoding_box  = create_encoding_box(self.__box)
 		self.__status_id = None
 		return
 
@@ -157,6 +158,7 @@ class SaveDialog(object):
 		@param dialog: Reference to the SaveDialog instance.
 		@type dialog: A SaveDialog object.
 		"""
+		self.__box.destroy()
 		#self.__editor.disconnect_signal(self.__signal_id_1, self.__dialog)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__dialog)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__dialog)
@@ -174,7 +176,7 @@ class SaveDialog(object):
 		from gtk import RESPONSE_OK
 		if ne(response_id, RESPONSE_OK): return False
 		newuri = self.__dialog.get_uri()
-		self.__editor.emit("rename-document", newuri)
+		self.__editor.emit("rename-document", newuri, self.__box.encoding)
 		return False
 
 	def __map_event_cb(self, *args):

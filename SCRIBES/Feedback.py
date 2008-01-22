@@ -570,7 +570,7 @@ class FeedbackManager(object):
 		self.__message_id = self.set_modal_message(msg0032, "run")
 		return False
 
-	def __loaded_document_cb(self, editor, uri):
+	def __loaded_document_cb(self, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 
@@ -616,7 +616,7 @@ class FeedbackManager(object):
 		self.unset_modal_message(self.__message_id)
 		return False
 
-	def __renamed_document_cb(self, editor, uri):
+	def __renamed_document_cb(self, editor, uri, *args):
 		"""
 		Handles callback when the "renamed-document" signal is emitted.
 
@@ -644,7 +644,7 @@ class FeedbackManager(object):
 		self.update_status_message(message, "run", 15)
 		return False
 
-	def __saved_document_cb(self, editor, uri):
+	def __saved_document_cb(self, *args):
 		"""
 		Handles callback when the "saved-document" signal is emitted.
 

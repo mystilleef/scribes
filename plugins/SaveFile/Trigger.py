@@ -99,7 +99,7 @@ class SaveFileTrigger(GObject):
 			from i18n import msg0001
 			self.__editor.feedback.update_status_message(msg0001, "fail")
 			return
-		self.__editor.emit("save-document")
+		self.__editor.emit("save-document", self.__editor.encoding)
 		return
 
 	def __destroy_cb(self, trigger):

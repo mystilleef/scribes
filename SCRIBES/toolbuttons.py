@@ -220,7 +220,7 @@ class SaveToolButton(ScribesToolButton):
 		self.set_property("sensitive", False)
 		return
 
-	def __toolbutton_loaded_document_cb(self, editor, uri):
+	def __toolbutton_loaded_document_cb(self, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 
@@ -312,7 +312,7 @@ class PrintToolButton(ScribesToolButton):
 		self.set_property("sensitive", False)
 		return
 
-	def __toolbutton_loaded_document_cb(self, editor, uri):
+	def __toolbutton_loaded_document_cb(self, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 
@@ -614,7 +614,7 @@ class GotoToolButton(ScribesToolButton):
 		self.set_property("sensitive", False)
 		return
 
-	def __toolbutton_loaded_document_cb(self, editor, uri):
+	def __toolbutton_loaded_document_cb(self, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 
@@ -683,7 +683,7 @@ class SearchToolButton(ScribesToolButton):
 		self.set_property("sensitive", False)
 		return
 
-	def __toolbutton_loaded_document_cb(self, editor, uri):
+	def __toolbutton_loaded_document_cb(self, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 
@@ -780,7 +780,7 @@ class ReplaceToolButton(ScribesToolButton):
 		self.set_property("sensitive", True)
 		return
 
-	def __toolbutton_loaded_document_cb(self, editor, uri):
+	def __toolbutton_loaded_document_cb(self, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 
@@ -850,7 +850,7 @@ class PrefToolButton(MenuToolButton):
 		self.set_property("sensitive", False)
 		return
 
-	def __toolbutton_loaded_document_cb(self, editor, uri):
+	def __toolbutton_loaded_document_cb(self, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 

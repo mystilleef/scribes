@@ -152,7 +152,7 @@ class TemplateLoader(object):
 		self = None
 		return
 
-	def __loaded_document_cb(self, editor, uri):
+	def __loaded_document_cb(self, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 

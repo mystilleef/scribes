@@ -321,7 +321,7 @@ class BookmarkTrigger(GObject):
 			self.__browser.show_dialog()
 		return
 
-	def __trigger_loaded_document_cb(self, editor, uri):
+	def __trigger_loaded_document_cb(self, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 

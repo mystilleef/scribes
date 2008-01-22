@@ -35,7 +35,7 @@ class EncodingManager(object):
 	the text editor.
 	"""
 
-	def __init__(self, editor, encoding=None):
+	def __init__(self, editor):
 		"""
 		Initialize object.
 
@@ -45,11 +45,13 @@ class EncodingManager(object):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__init_attributes(editor, encoding)
+		self.__init_attributes(editor)
 		#self.__signal_id_1 = editor.connect("close-document-no-save", self.__close_document_no_save_cb)
 		self.__signal_id_1 = editor.connect("loaded-document", self.__loaded_document_cb)
+		self.__signal_id_2 = editor.connect("saved-document", self.__saved_document_cb)
+		self.__signal_id_3 = editor.connect("renamed-document", self.__renamed_document_cb)
 
-	def __init_attributes(self, editor, encoding):
+	def __init_attributes(self, editor):
 		"""
 		Initialize data attributes.
 
@@ -60,71 +62,11 @@ class EncodingManager(object):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__user_defined_encoding = encoding
-		self.__determined_encoding = None
-		self.__signal_id_1 = None
+		self.__encoding = None
+		self.__default_encoding = "utf-8"
+		self.__utf8_encodings = ["utf-8", "utf8", "UTF8", "UTF-8", "Utf-8"]
+		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__termination_id = editor.register_object()
-		return
-
-########################################################################
-#
-#						Public Methods
-#
-########################################################################
-
-	def get_encoding(self, uri=None, string=None):
-		"""
-		Get the encoding for the file.
-
-		@param self: Reference to the EncodingManager instance.
-		@type self: An EncodingManager object.
-
-		@param uri: Reference to a file.
-		@type uri: A String object.
-
-		@param string: A string of characters
-		@type string: A String object.
-
-		@return: Return the encoding of the file.
-		@rtype: A String object.
-		"""
-		from operator import truth
-		if truth(self.__user_defined_encoding):
-			encoding = self.__user_defined_encoding
-		elif truth(uri):
-			encoding = self.__get_encoding_from_database(uri)
-			if truth(encoding):
-				self.__determined_encoding = encoding
-			else:
-				encoding = "utf-8"
-		elif truth(self.__determined_encoding):
-			encoding = self.__determined_encoding
-		else:
-			encoding = "utf-8"
-		return encoding
-
-	def set_encoding(self, encoding):
-		"""
-		Set the encoding of the file.
-
-		@param self: Reference to the EncodingManager instance.
-		@type self: A EncodingManager object.
-
-		@param encoding: The encoding to set the file to.
-		@type encoding: A String object.
-		"""
-		self.__user_defined_encoding = self.__determined_encoding = encoding
-		return
-
-	def destroy(self):
-		"""
-		Destroy instance of this class.
-
-		@param self: Reference to the EncodingManager instance.
-		@type self: An EncodingManager object.
-		"""
-		self.__set_encoding_in_database()
-		self.__destroy()
 		return
 
 ########################################################################
@@ -133,46 +75,47 @@ class EncodingManager(object):
 #
 ########################################################################
 
-	def __get_encoding_from_database(self, uri):
-		"""
-		See if encoding data has been stored in the encoding database
-		and get it if possible.
+	def __get_encoding(self):
+		if self.__encoding: return self.__encoding
+		return self.__default_encoding
 
-		@param self: Reference to the EncodingManager instance.
-		@type self: A EncodingManager object.
+	def __get_guess_list(self):
+		from EncodingGuessListMetadata import get_value
+		return get_value()
 
-		@param uri: Reference to a file stored in the database.
-		@type uri: A String object.
-
-		@param encoding: Get encoding from database.
-		@type encoding: A String object.
-		"""
-		# Get encoding stored in database, if any.
-		from encoding_metadata import get_encoding_from_database
-		encoding  = get_encoding_from_database(uri)
-		return encoding
-
-	def __set_encoding_in_database(self):
-		"""
-		Set encoding database.
-
-		Only encodings other than UTF-8 are stored in the database.
-
-		@param self: Reference to the EncodingManager instance.
-		@type self: An EncodingManager object.
-		"""
-		from operator import not_, contains, truth
-		if not_(self.__editor.uri): return False
-		default_encodings = ("utf8", "utf-8", "UTF-8", "UTF8", "Utf8", "Utf-8")
-		user_defined = contains(default_encodings, self.__user_defined_encoding)
-		determined_encoding = contains(default_encodings, self.__determined_encoding)
-		if truth(self.__user_defined_encoding):# and not_(user_defined):
-			from encoding_metadata import update_encoding_in_database
-			update_encoding_in_database(str(self.__editor.uri), self.__user_defined_encoding)
-		elif truth(self.__determined_encoding) and not_(determined_encoding):
-			from encoding_metadata import update_encoding_in_database
-			update_encoding_in_database(str(self.__editor.uri), self.__determined_encoding)
+	def __set_guess_list(self, encoding):
+		if encoding in [None, "utf-8"]: return False
+		from EncodingGuessListMetadata import get_value, set_value
+		encoding_list = get_value()
+		if encoding_list:
+			if encoding in encoding_list: return False
+			encoding_list.append(encoding)
+			set_value(encoding_list)
+		else:
+			set_value([encoding])
 		return False
+
+	def __get_encoding_list(self):
+		from EncodingMetadata import get_value
+		return get_value()
+
+	def __set_encoding_list(self, new_encoding_list):
+		from EncodingMetadata import set_value
+		set_value(new_encoding_list)
+		return
+
+	def __map_encoding_to_file(self, uri, encoding):
+		from EncodedFilesMetadata import remove_value, set_value
+		if encoding == "utf-8":
+			remove_value(uri)
+		else:
+			set_value(uri, encoding)
+		return False
+
+	def __format_encoding(self, encoding):
+		# Remove white spaces. Convert to lower case.
+		if encoding in self.__utf8_encodings: return self.__default_encoding
+		return encoding.strip().lower()
 
 	def __destroy(self):
 		"""
@@ -182,9 +125,31 @@ class EncodingManager(object):
 		@type self: A EncodingManager object.
 		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
 		self.__editor.unregister_object(self.__termination_id)
 		del self
 		self = None
+		return
+
+########################################################################
+#
+#						Public API
+#
+########################################################################
+
+	encoding = property(__get_encoding)
+	encoding_list = property(__get_encoding_list, __set_encoding_list)
+	encoding_guess_list = property(__get_guess_list)
+
+	def destroy(self):
+		"""
+		Destroy instance of this class.
+
+		@param self: Reference to the EncodingManager instance.
+		@type self: An EncodingManager object.
+		"""
+		self.__destroy()
 		return
 
 ########################################################################
@@ -206,13 +171,41 @@ class EncodingManager(object):
 		self.__destroy()
 		return
 
-	def __loaded_document_cb(self, *args):
+	def __loaded_document_cb(self, editor, uri, encoding):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 
 		@param self: Reference to the EncodingManager instance.
 		@type self: An EncodingManager object.
 		"""
-		from gobject import idle_add
-		idle_add(self.__set_encoding_in_database)
+		if encoding is None: return
+		encoding = self.__format_encoding(encoding)
+		if encoding in self.__default_encoding: return
+		self.__encoding = encoding
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set_guess_list, encoding, priority=PRIORITY_LOW)
+		from EncodingGuessListMetadata import get_value
+		print get_value()
+		return
+
+	def __saved_document_cb(self, editor, uri, encoding):
+		"""
+		Handles callback when the "saved-document" signal is emitted.
+
+		@param self: Reference to the EncodingManager instance.
+		@type self: A EncodingManager object.
+		"""
+		if encoding is None: return
+		encoding = self.__format_encoding(encoding)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__map_encoding_to_file, uri, encoding, priority=PRIORITY_LOW)
+		if encoding in [self.__default_encoding, self.__encoding]: return
+		self.__encoding = encoding
+		return
+
+	def __renamed_document_cb(self, editor, uri, encoding):
+		self.__encoding = "utf-8" if encoding is None else self.__format_encoding(encoding)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__map_encoding_to_file, uri, self.__encoding, priority=PRIORITY_LOW)
+		idle_add(self.__set_guess_list, self.__encoding, priority=PRIORITY_LOW)
 		return

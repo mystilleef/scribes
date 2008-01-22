@@ -46,19 +46,19 @@ class Editor(GObject):
 	__gsignals__ = {
 		"checking-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"loading-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"loaded-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"loaded-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
 		"reload-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"load-error": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"enable-readonly": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"disable-readonly": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"saving-document": (SIGNAL_ACTION|SIGNAL_RUN_FIRST|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"saved-document": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"save-document": (SIGNAL_ACTION|SIGNAL_RUN_FIRST|SIGNAL_NO_RECURSE, TYPE_NONE, ()),
+		"saved-document": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
+		"save-document": (SIGNAL_ACTION|SIGNAL_RUN_FIRST|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-error": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"gui-created": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-dialog": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_OBJECT,)),
 		"hide-dialog": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_OBJECT,)),
-		"renamed-document": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"renamed-document": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
 		"modified-document": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, ()),
 		"close-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"close-document-no-save": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
@@ -72,7 +72,7 @@ class Editor(GObject):
 		"cursor-moved": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, ()),
 		"initialized-trigger-manager": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"initialized-attributes": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"rename-document": (SIGNAL_ACTION|SIGNAL_RUN_FIRST|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"rename-document": (SIGNAL_ACTION|SIGNAL_RUN_FIRST|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
 		"buffer-created": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
@@ -102,6 +102,7 @@ class Editor(GObject):
 		self.__signal_id_12 = self.connect("rename-document", self.__rename_document_cb)
 		self.__signal_id_13 = self.connect_after("created-widgets", self.__created_widgets_after_cb)
 		self.__signal_id_14 = self.connect_after("reload-document", self.__reload_document_cb)
+		self.connect_after("loaded-document", self.__loaded_document_after_cb)
 		from gobject import idle_add, PRIORITY_HIGH, PRIORITY_LOW
 		idle_add(self.__init_attributes, manager, file_uri, encoding, priority=PRIORITY_HIGH)
 		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
@@ -210,8 +211,13 @@ class Editor(GObject):
 		return self.__uri
 
 	def __get_encoding(self):
-		if self.__encoding_manager: return self.__encoding_manager.get_encoding()
-		return None
+		return self.__encoding_manager.encoding
+		
+	def __get_encoding_list(self):
+		return self.__encoding_manager.encoding_list
+
+	def __get_encoding_guess_list(self):
+		return self.__encoding_manager.encoding_guess_list
 
 	def __get_file_is_saved(self):
 		return self.__file_is_saved
@@ -372,6 +378,8 @@ class Editor(GObject):
 	feedback = property(__get_feedback)
 	uri = property(__get_uri)
 	encoding = property(__get_encoding)
+	encoding_list = property(__get_encoding_list)
+	encoding_guess_list = property(__get_encoding_guess_list)
 	file_is_saved = property(__get_file_is_saved)
 	readonly = is_readonly = property(__get_is_readonly)
 	contains_document = property(__get_contains_document)
@@ -410,13 +418,11 @@ class Editor(GObject):
 #
 ########################################################################
 
-	def load_uri(self, uri, encoding=None):
-		manager = self.get_object("EncodingManager")
-		if encoding: manager.set_encoding(encoding)
+	def load_uri(self, uri, encoding="utf-8"):
 		from FileLoader import FileLoader
-		FileLoader(self, uri)
+		FileLoader(self, uri, encoding)
 		return False
-
+		
 	def create_new_file(self):
 		from info import desktop_folder
 		from os.path import exists
@@ -579,8 +585,8 @@ class Editor(GObject):
 	def get_object(self, name):
 		return self.__store.get_object(name)
 
-	def open_files(self, uris):
-		return self.__instance_manager.open_files(uris)
+	def open_files(self, uris, encoding="utf-8"):
+		return self.__instance_manager.open_files(uris, encoding)
 
 	def close_files(self, uris):
 		return self.__instance_manager.close_files(uris)
@@ -864,7 +870,7 @@ class Editor(GObject):
 		self.__start_core_services()
 		if not self.__file_uri: return
 		from gobject import idle_add
-		idle_add(self.load_uri, self.__file_uri.strip())
+		idle_add(self.load_uri, self.__file_uri.strip(), self.__encoding)
 		return
 
 	def __start_core_services(self):
@@ -879,7 +885,7 @@ class Editor(GObject):
 		"""
 		# Initialize encoding manager.
 		from EncodingManager import EncodingManager
-		self.__encoding_manager = EncodingManager(self, self.__encoding)
+		self.__encoding_manager = EncodingManager(self)
 		# Initialize file modification monitor
 #		from FileModificationMonitor import FileModificationMonitor
 #		FileModificationMonitor(self)
@@ -914,9 +920,15 @@ class Editor(GObject):
 		self.__uri = uri
 		return
 
-	def __loaded_document_cb(self, editor, uri):
+	def __loaded_document_cb(self, *args):
 		self.__can_load_file = False
 		self.__contains_document = True
+		return
+
+	def __loaded_document_after_cb(self, *args):
+		self.__can_load_file = False
+		self.__contains_document = True
+	#	print "Encoding is: ", self.encoding
 		return
 
 	def __load_error_cb(self, editor, uri):
@@ -924,11 +936,12 @@ class Editor(GObject):
 		self.__uri = None
 		return
 
-	def __saved_document_cb(self, editor, uri):
+	def __saved_document_cb(self, *args):
 		self.__file_is_saved = True
+	#	print "Encoding is: ", self.encoding
 		return
 
-	def __renamed_document_cb(self, editor, uri):
+	def __renamed_document_cb(self, editor, uri, *args):
 		self.__file_is_saved = True
 		self.__uri = uri
 		self.__can_load_file = False
@@ -942,7 +955,7 @@ class Editor(GObject):
 		self.load_uri(self.__uri)
 		return
 
-	def __rename_document_cb(self, editor, uri):
+	def __rename_document_cb(self, editor, uri, encoding):
 		self.__uri = uri
 		return
 

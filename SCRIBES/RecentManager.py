@@ -137,7 +137,7 @@ class RecentManager(object):
 		self = None
 		return
 
-	def __recent_loaded_document_cb(self, editor, uri):
+	def __recent_loaded_document_cb(self, editor, uri, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 
@@ -150,7 +150,7 @@ class RecentManager(object):
 		self.__manager.add_full(uri, self.__create_recent_data(uri))
 		return
 
-	def __recent_renamed_document_cb(self, editor, uri):
+	def __recent_renamed_document_cb(self, editor, uri, *args):
 		"""
 		Handles callback when the "renamed-document" signal is emitted.
 

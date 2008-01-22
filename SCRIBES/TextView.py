@@ -341,7 +341,7 @@ class ScribesTextView(SourceView):
 		if ne(info, 80): return False
 		# Load file
 		uri_list = list(selection_data.get_uris())
-		self.__editor.instance_manager.open_files(uri_list)
+		self.__editor.instance_manager.open_files(uri_list, None)
 		context.finish(True, False, timestamp)
 		return True
 
@@ -396,7 +396,7 @@ class ScribesTextView(SourceView):
 		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return False
 
-	def __loaded_document_cb(self, editor, uri):
+	def __loaded_document_cb(self, *args):
 		"""
 		Handles callback when the text editor has finished loading a document
 		into the text editor's buffer.
@@ -475,7 +475,7 @@ class ScribesTextView(SourceView):
 		idle_add(self.__refresh_view)
 		return False
 
-	def __renamed_document_cb(self, editor, uri):
+	def __renamed_document_cb(self, editor, uri, *args):
 		"""
 		Handles callback when the name of the document is renamed.
 

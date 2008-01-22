@@ -393,7 +393,7 @@ class Highlighter(object):
 #
 ########################################################################
 
-	def __highlight_cb(self, client, cnxn_id, entry, data):
+	def __highlight_cb(self, *args):
 		"""
 		Handles callback #FIXME: yeap
 

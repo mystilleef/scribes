@@ -41,7 +41,7 @@ class FileModificationMonitor(object):
 		self.__signal_id_2 = editor.connect("renamed-document", self.__renamed_document_cb)
 		self.__signal_id_3 = editor.connect("loaded-document", self.__renamed_document_cb)
 		self.__signal_id_4 = editor.connect("close-document", self.__close_document_cb)
-		self.__signal_id_5 = editor.connect("close-document-no-save", self.__close_document_cb)		
+		self.__signal_id_5 = editor.connect("close-document-no-save", self.__close_document_cb)
 		editor.session_bus.add_signal_receiver(self.__saved_document_cb,
 						signal_name="saved_file",
 						dbus_interface=save_dbus_service)

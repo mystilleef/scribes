@@ -185,7 +185,7 @@ class EditorManager(object):
 			idle_add(self.__new_editor)
 		return False
 
-	def open_files(self, uris=None, encoding=None):
+	def open_files(self, uris=None, encoding="utf-8"):
 		"""
 		Open new files if they are not already open.
 
@@ -321,7 +321,7 @@ class EditorManager(object):
 #
 ########################################################################
 
-	def __open_file(self, uri, encoding=None):
+	def __open_file(self, uri, encoding="utf-8"):
 		"""
 		Open a file in an editor window.
 

@@ -131,7 +131,7 @@ class RecentMenu(RecentChooserMenu):
 		@type recent_chooser: A RecentMenu object.
 		"""
 		uri = self.get_current_uri()
-		self.__editor.instance_manager.open_files([uri])
+		self.__editor.open_files([uri], None)
 		return True
 
 	def __close_document_cb(self, editor):

@@ -107,7 +107,7 @@ class FileSaver(object):	"""
 #
 ########################################################################
 
-	def save_file(self, is_closing=False):
+	def save_file(self, encoding="utf8", is_closing=False):
 		"""
 		Save content of text editor's buffer to a file.
 
@@ -120,7 +120,7 @@ class FileSaver(object):	"""
 		from Exceptions import DoNothingError
 		try:
 			self.__determine_action(is_closing)
-			self.__save_file()
+			self.__save_file(encoding)
 		except DoNothingError:			pass
 		return False
 
@@ -129,7 +129,7 @@ class FileSaver(object):	"""
 #
 ########################################################################
 
-	def __save_file(self):
+	def __save_file(self, encoding):
 		"""
 		Save document to a temporary file.
 
@@ -138,6 +138,7 @@ class FileSaver(object):	"""
 		"""
 		try:
 			if self.__is_saving: raise ValueError
+			self.__encoding = "utf-8" if encoding is None else encoding
 			from operator import not_
 			self.__editor.emit("saving-document", self.__editor.uri)
 			self.__begin_saving()
@@ -159,7 +160,7 @@ class FileSaver(object):	"""
 		"""
 		processor = self.__get_save_processor()
 		processor.process(self.__editor.id, self.__editor.get_text(),
-				self.__editor.uri, self.__encoding_manager.get_encoding(),
+				self.__editor.uri, self.__encoding,
 				dbus_interface=save_dbus_service,
 				reply_handler=self.__reply_handler_cb,
 				error_handler=self.__error_handler_cb)
@@ -229,7 +230,7 @@ class FileSaver(object):	"""
 		@type self: A FileSaver object.
 		"""
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.save_file, priority=PRIORITY_LOW)
+		idle_add(self.save_file, self.__editor.encoding, False, priority=PRIORITY_LOW)
 		return False
 
 	def __remove_save_timer(self):
@@ -344,10 +345,10 @@ class FileSaver(object):	"""
 		@type self: A FileSaver object.
 		"""
 		if self.__should_rename:
-			self.__editor.emit("renamed-document", self.__editor.uri)
+			self.__editor.emit("renamed-document", self.__editor.uri, self.__encoding)
 			self.__should_rename = False
 		else:
-			self.__editor.emit("saved-document", self.__editor.uri)
+			self.__editor.emit("saved-document", self.__editor.uri, self.__encoding)
 		return
 
 ########################################################################
@@ -356,7 +357,7 @@ class FileSaver(object):	"""
 #
 ########################################################################
 
-	def __close_document_cb(self, editor):
+	def __close_document_cb(self, *args):
 		"""
 		Handles callback when the "close-document" signal is emitted.
 
@@ -370,14 +371,14 @@ class FileSaver(object):	"""
 		self.__remove_save_timer()
 		from operator import not_
 		if self.__error_flag: return self.__destroy()
-		if not_(editor.file_is_saved):
+		if not_(self.__editor.file_is_saved):
 			from gobject import idle_add, PRIORITY_LOW
-			idle_add(self.save_file, True, priority=PRIORITY_LOW)
+			idle_add(self.save_file, self.__editor.encoding, True, priority=PRIORITY_LOW)
 		else:
 			self.__destroy()
 		return True
 
-	def __close_document_no_save_cb(self, editor):
+	def __close_document_no_save_cb(self, *args):
 		"""
 		Handles callback when the "close-document-no-save" signal is emitted.
 
@@ -391,7 +392,7 @@ class FileSaver(object):	"""
 		self.__destroy()
 		return True
 
-	def __checking_document_cb(self, editor, uri):
+	def __checking_document_cb(self, *args):
 		"""
 		Handles callback when the "checking-document" signal is emitted.
 
@@ -404,10 +405,10 @@ class FileSaver(object):	"""
 		@param uri: Reference to a file.
 		@type uri: A String object.
 		"""
-		editor.textbuffer.handler_block(self.__signal_id_7)
+		self.__editor.textbuffer.handler_block(self.__signal_id_7)
 		return True
 
-	def __loaded_document_cb(self, editor, uri):
+	def __loaded_document_cb(self, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 
@@ -420,7 +421,7 @@ class FileSaver(object):	"""
 		@param uri: Reference to a file.
 		@type uri: A String object.
 		"""
-		editor.textbuffer.handler_unblock(self.__signal_id_7)
+		self.__editor.textbuffer.handler_unblock(self.__signal_id_7)
 		return True
 
 	def __load_error_cb(self, editor, uri):
@@ -439,7 +440,7 @@ class FileSaver(object):	"""
 		editor.textbuffer.handler_unblock(self.__signal_id_7)
 		return True
 
-	def __save_document_cb(self, editor):
+	def __save_document_cb(self, editor, encoding):
 		"""
 		Handles callback when the "save-document" signal is emitted.
 
@@ -450,7 +451,7 @@ class FileSaver(object):	"""
 		@type editor: An Editor object.
 		"""
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.save_file, priority=PRIORITY_LOW)
+		idle_add(self.save_file, encoding, False, priority=PRIORITY_LOW)
 		return True
 
 	def __saving_document_cb(self, *args):
@@ -463,7 +464,7 @@ class FileSaver(object):	"""
 		self.__is_saving = True
 		return True
 
-	def __saved_document_cb(self, editor, uri):
+	def __saved_document_cb(self, *args):
 		"""
 		Handles callback when the "saved-document" signal is emitted.
 
@@ -521,7 +522,7 @@ class FileSaver(object):	"""
 		self.__remove_save_timer()
 		return False
 
-	def __rename_document_cb(self, editor, uri):
+	def __rename_document_cb(self, editor, uri, encoding):
 		"""
 		Handles callback when the "rename-document" signal is emitted.
 
@@ -537,7 +538,7 @@ class FileSaver(object):	"""
 		if self.__editor.is_readonly: self.__toggle_readonly = True
 		self.__should_rename = True
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.save_file, priority=PRIORITY_LOW)
+		idle_add(self.save_file, encoding, False, priority=PRIORITY_LOW)
 		return False
 
 	def __is_ready_cb(self, *args):

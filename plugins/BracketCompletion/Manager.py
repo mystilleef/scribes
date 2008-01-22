@@ -550,7 +550,7 @@ class BracketManager(object):
 			self.__stop_monitoring()
 		return False
 
-	def __loaded_document_cb(self, editor, uri):
+	def __loaded_document_cb(self, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 

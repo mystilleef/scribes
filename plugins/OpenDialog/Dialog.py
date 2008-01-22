@@ -58,9 +58,10 @@ class OpenDialog(object):
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, domain="scribes")
 		self.__dialog = self.__glade.get_widget("OpenDialog")
-		from SCRIBES.encodingbox import ScribesEncodingComboBox
+		from SCRIBES.EncodingComboBox import EncodingComboBox
 		from SCRIBES.utils import create_encoding_box
-		self.__encoding_box  = create_encoding_box(ScribesEncodingComboBox(editor))
+		self.__box = EncodingComboBox(editor)
+		self.__encoding_box  = create_encoding_box(self.__box)
 		self.__status_id = None
 		self.__shortcut_folder_is_set = False
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
@@ -129,7 +130,7 @@ class OpenDialog(object):
 		if ne(response_id, RESPONSE_OK): return False
 		# Load selected uri(s) into the text editor's buffer.
 		uri_list = self.__dialog.get_uris()
-		self.__editor.open_files(uri_list)
+		self.__editor.open_files(uri_list, self.__box.encoding)
 		return False
 
 	def __map_event_cb(self, *args):

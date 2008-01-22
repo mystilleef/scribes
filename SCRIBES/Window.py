@@ -273,7 +273,7 @@ class ScribesWindow(Window):
 		self.set_title(msg0335 % self.__title)
 		return
 
-	def __loaded_document_cb(self, editor, uri):
+	def __loaded_document_cb(self, editor, uri, *args):
 		"""
 		Handles callback when the text editor has finished loading a document.
 
@@ -544,7 +544,7 @@ class ScribesWindow(Window):
 			pass
 		return False
 
-	def __saved_document_cb(self, editor, uri):
+	def __saved_document_cb(self, *args):
 		"""
 		Handles callback when the contents of the text editor's buffer have
 		been saved.
@@ -588,7 +588,7 @@ class ScribesWindow(Window):
 		self.__destroy()
 		return False
 
-	def __renamed_document_cb(self, editor, uri):
+	def __renamed_document_cb(self, editor, uri, *args):
 		self.__uri = uri
 		self.__determine_title(self.__uri)
 		self.set_title(self.__title)

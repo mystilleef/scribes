@@ -253,7 +253,7 @@ class CompletionUpdater(object):
 		#self.__index_timer = idle_add(self.__index, priority=PRIORITY_LOW)
 		return False
 
-	def __loaded_document_cb(self, editor, uri):
+	def __loaded_document_cb(self, *args):
 		"""
 		Handles callback when the "loaded-document" signal is emitted.
 
