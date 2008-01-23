@@ -252,6 +252,7 @@ scribes_PYTHON = \
 	EncodingMetadata.py \
 	EncodingListMetadata.py \
 	EncodingGuessListMetadata.py \
+	EncodingSelectionWindow.py \
 	Exceptions.py \
 	Feedback.py \
 	FileSaver.py \

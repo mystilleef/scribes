@@ -15,6 +15,7 @@ scribesdir = $(datadir)/scribes
 scribes_DATA = \
 	bookmarks.png \
 	ModificationDialog.glade \
+	EncodingSelectionWindow.glade \
 	throbber-active.gif \
 	throbber-inactive.png
 
@@ -63,6 +64,7 @@ EXTRA_DIST = \
 	scribes.desktop.in \
 	scribes.schemas.in \
 	ModificationDialog.glade \
+	EncodingSelectionWindow.glade \
 	scribes.png
 
 CLEANFILES = \

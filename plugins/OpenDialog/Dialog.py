@@ -80,7 +80,7 @@ class OpenDialog(object):
 		self.__dialog.set_extra_widget(self.__encoding_box)
 		self.__dialog.set_default_response(RESPONSE_OK)
 		self.__dialog.set_transient_for(self.__editor.window)
-		self.__dialog.set_keep_above(True)
+		#self.__dialog.set_keep_above(True)
 		from SCRIBES.dialogfilter import create_filter_list
 		for filter in create_filter_list():
 			self.__dialog.add_filter(filter)
@@ -156,6 +156,7 @@ class OpenDialog(object):
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__dialog)
 		self.__dialog.destroy()
+		if self.__box: self.__box.destroy_()
 		del self
 		self = None
 		return

@@ -62,9 +62,10 @@ class RemoteDialog(Dialog):
 		self.__label = self.__create_labels()
 		from comboboxentry import ScribesComboBoxEntry
 		self.__comboboxentry = ScribesComboBoxEntry(editor)
-		from SCRIBES.encodingbox import ScribesEncodingComboBox
+		from SCRIBES.EncodingComboBox import EncodingComboBox
 		from SCRIBES.utils import create_encoding_box
-		self.__encoding_box  = create_encoding_box(ScribesEncodingComboBox(editor))
+		self.__box = EncodingComboBox(editor)
+		self.__encoding_box  = create_encoding_box(self.__box)
 		self.__signal_id_1 = self.__signal_id_2 = None
 		self.__status_id = None
 		return
@@ -182,7 +183,7 @@ class RemoteDialog(Dialog):
 		@rtype: A Boolean object.
 		"""
 		text = self.__comboboxentry.child.get_text()
-		if text: self.__editor.instance_manager.open_files([text.strip()])
+		if text: self.__editor.open_files([text.strip()], self.__box.encoding)
 		return False
 
 	def __response_cb(self, dialog, response_id):
@@ -213,6 +214,7 @@ class RemoteDialog(Dialog):
 		self.__editor.disconnect_signal(self.__signal_id_3, self)
 		self.__editor.disconnect_signal(self.__signal_id_4, self)
 		self.__comboboxentry.emit("delete")
+		if self.__box: self.__box.destroy_()
 		self.destroy()
 		del self
 		self = None

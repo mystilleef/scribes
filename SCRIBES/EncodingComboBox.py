@@ -56,11 +56,11 @@ class EncodingComboBox(ComboBox):
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__arrange_widgets()
-		self.__populate_model()
 		self.__sig_id_1 = self.connect("changed", self.__changed_cb)
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monitor_id_1 = monitor_add(self.__database_uri, MONITOR_FILE,
 					self.__update_encoding_list_cb)
+		self.__populate_model()
 
 	def __init_attributes(self, editor):
 		"""
@@ -76,6 +76,7 @@ class EncodingComboBox(ComboBox):
 		self.__sig_id_1 = self.__monitor_id_1 = None
 		self.__model = self.__create_model()
 		self.__encoding = None
+		self.__window = None
 		from utils import generate_encodings
 		self.__encodings = generate_encodings()
 		from os.path import join
@@ -100,10 +101,12 @@ class EncodingComboBox(ComboBox):
 
 	encoding = property(__get_encoding)
 
-	def destroy(self):
+	def destroy_(self):
 		self.__editor.disconnect_signal(self.__sig_id_1, self)
 		from gnomevfs import monitor_cancel
 		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
+		if self.__window: self.__window.destroy()
+		self.destroy()
 		del self
 		self = None
 		return
@@ -117,6 +120,7 @@ class EncodingComboBox(ComboBox):
 		@param self: Reference to the EncodingComboBox instance.
 		@type self: A EncodingComboBox object.
 		"""
+		self.handler_block(self.__sig_id_1)
 		self.__model.clear()
 		from internationalization import msg0159, msg0158, msg0292
 		self.__model.append([msg0292])
@@ -131,6 +135,7 @@ class EncodingComboBox(ComboBox):
 		self.__model.append(["Separator"])
 		self.__model.append([msg0158])
 		self.set_active(0)
+		self.handler_unblock(self.__sig_id_1)
 		return False
 
 	def __create_encoding_for_display(self, encoding):
@@ -211,12 +216,24 @@ class EncodingComboBox(ComboBox):
 			break
 		return encoding
 
+	def __show_encoding_selection_window(self):
+		try:
+			self.__window.show()
+		except AttributeError:
+			from EncodingSelectionWindow import EncodingSelectionWindow
+			self.__window = EncodingSelectionWindow(self.__editor)
+			self.__window.show()
+		return
+
 	def __changed_cb(self, *args):
 		from internationalization import msg0158, msg0159, msg0292
 		if self.get_active_text() == msg0159:
 			self.__encoding = "utf-8"
 		elif self.get_active_text() == msg0158:
-			print "not implemented yet"
+			self.__show_encoding_selection_window()
+			self.handler_block(self.__sig_id_1)
+			self.set_active(0)
+			self.handler_unblock(self.__sig_id_1)
 		elif self.get_active_text() == msg0292:
 			self.__encoding = None
 		else:
@@ -231,5 +248,5 @@ class EncodingComboBox(ComboBox):
 		@type self: An EncodingComboBox object.
 		"""
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__populate_liststore, priority=PRIORITY_LOW)
+		idle_add(self.__populate_model, priority=PRIORITY_LOW)
 		return
