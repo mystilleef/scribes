@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.1 on Wed Jan 23 17:57:19 2008 -->
+<!--Generated with glade3 3.4.1 on Thu Jan 24 13:30:07 2008 -->
 <glade-interface>
-  <widget class="GtkWindow" id="EncodingErrorWindow">
+  <widget class="GtkWindow" id="Window">
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
     <property name="border_width">12</property>
     <property name="title" translatable="yes">Error</property>
@@ -21,15 +21,37 @@
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
         <property name="spacing">11</property>
         <child>
-          <widget class="GtkLabel" id="EncodingErrorWindowFileTitle">
+          <widget class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-            <property name="xalign">0</property>
-            <property name="label" translatable="yes">&lt;b&gt;File:&lt;/b&gt; /dev/null </property>
-            <property name="use_markup">True</property>
-            <property name="wrap">True</property>
-            <property name="selectable">True</property>
-            <property name="single_line_mode">True</property>
+            <property name="spacing">10</property>
+            <child>
+              <widget class="GtkLabel" id="label2">
+                <property name="visible">True</property>
+                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">&lt;b&gt;File:&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="TitleLabel">
+                <property name="visible">True</property>
+                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">/dev/null</property>
+                <property name="selectable">True</property>
+                <property name="ellipsize">PANGO_ELLIPSIZE_END</property>
+                <property name="single_line_mode">True</property>
+              </widget>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="expand">False</property>
@@ -43,7 +65,10 @@
             <property name="xalign">0</property>
             <property name="label" translatable="yes">The encoding of this file could not be automatically detected. If you are sure this file is a text file, please open the file with the correct encoding.</property>
             <property name="use_markup">True</property>
+            <property name="justify">GTK_JUSTIFY_FILL</property>
             <property name="wrap">True</property>
+            <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+            <property name="selectable">True</property>
           </widget>
           <packing>
             <property name="expand">False</property>
@@ -52,9 +77,11 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="hbox1">
+          <widget class="GtkHBox" id="HBox">
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+            <property name="tooltip" translatable="yes">Select character encoding</property>
+            <property name="spacing">10</property>
             <child>
               <widget class="GtkLabel" id="label1">
                 <property name="visible">True</property>
@@ -71,13 +98,7 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkComboBox" id="ComboBox">
-                <property name="visible">True</property>
-                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-              </widget>
-              <packing>
-                <property name="position">1</property>
-              </packing>
+              <placeholder/>
             </child>
           </widget>
           <packing>
@@ -96,6 +117,10 @@
               <widget class="GtkButton" id="CloseButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="is_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="label" translatable="yes">gtk-close</property>
@@ -109,6 +134,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="tooltip" translatable="yes">Open file with selected encoding</property>
                 <property name="label" translatable="yes">gtk-open</property>
                 <property name="use_stock">True</property>
                 <property name="response_id">0</property>

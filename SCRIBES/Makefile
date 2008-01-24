@@ -249,6 +249,7 @@ scribes_PYTHON = \
 	escape.py \
 	EncodedFilesMetadata.py \
 	EncodingComboBox.py \
+	EncodingErrorWindow.py \
 	EncodingMetadata.py \
 	EncodingListMetadata.py \
 	EncodingGuessListMetadata.py \

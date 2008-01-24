@@ -51,7 +51,7 @@ class FileSaver(object):	"""
 		self.__signal_id_1 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_no_save_cb)
 		self.__signal_id_3 = editor.connect("save-document", self.__save_document_cb)
-		self.__signal_id_4 = editor.connect("loading-document", self.__checking_document_cb)
+		self.__signal_id_4 = editor.connect("checking-document", self.__checking_document_cb)
 		self.__signal_id_5 = editor.connect_after("loaded-document", self.__loaded_document_cb)
 		self.__signal_id_6 = editor.connect_after("load-error", self.__load_error_cb)
 		self.__signal_id_7 = editor.textbuffer.connect("modified-changed", self.__modified_changed_cb)

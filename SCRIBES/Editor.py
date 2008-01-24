@@ -212,7 +212,7 @@ class Editor(GObject):
 
 	def __get_encoding(self):
 		return self.__encoding_manager.encoding
-		
+
 	def __get_encoding_list(self):
 		return self.__encoding_manager.encoding_list
 
@@ -422,7 +422,7 @@ class Editor(GObject):
 		from FileLoader import FileLoader
 		FileLoader(self, uri, encoding)
 		return False
-		
+
 	def create_new_file(self):
 		from info import desktop_folder
 		from os.path import exists
@@ -725,6 +725,10 @@ class Editor(GObject):
 	def stop_spinner(self):
 		return
 
+	def show_encoding_error(self, title, uri):
+		self.__encoding_error_dialog.show_message(title, uri)
+		return
+
 ########################################################################
 
 	def __create_widgets(self):
@@ -928,7 +932,7 @@ class Editor(GObject):
 	def __loaded_document_after_cb(self, *args):
 		self.__can_load_file = False
 		self.__contains_document = True
-	#	print "Encoding is: ", self.encoding
+		print "Encoding is: ", self.encoding
 		return
 
 	def __load_error_cb(self, editor, uri):
@@ -938,7 +942,7 @@ class Editor(GObject):
 
 	def __saved_document_cb(self, *args):
 		self.__file_is_saved = True
-	#	print "Encoding is: ", self.encoding
+		print "Encoding is: ", self.encoding
 		return
 
 	def __renamed_document_cb(self, editor, uri, *args):
@@ -1020,6 +1024,8 @@ class Editor(GObject):
 		# Global message dialog.
 		from MessageDialog import ScribesMessageDialog
 		self.__message_dialog = ScribesMessageDialog(self)
+		from EncodingErrorWindow import EncodingErrorWindow
+		self.__encoding_error_dialog = EncodingErrorWindow(self)
 		# Reference to the preference menu on the toolbar.
 		from PreferenceMenu import PreferenceMenu
 		self.__preference_menu = PreferenceMenu(self)

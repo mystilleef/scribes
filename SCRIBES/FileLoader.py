@@ -96,6 +96,7 @@ class FileLoader(object):
 		self.__readonly = readonly
 		self.__handle = None
 		self.__temp_buffer = ""
+		self.__error_flag = False
 		self.__writable_vfs_schemes = ["ssh", "sftp", "smb", "dav", "davs", "ftp"]
 		return
 
@@ -299,6 +300,7 @@ class FileLoader(object):
 		@type handle: A gnomevfs.Handle object.
 		"""
 		try:
+			#raise ValueError
 			self.__encoding = self.__determine_encoding()
 			encoding_list = self.__editor.encoding_guess_list
 			if encoding_list:
@@ -308,6 +310,7 @@ class FileLoader(object):
 					try:
 						unicode_string = string.decode(encoding)
 						success = True
+						self.__encoding = encoding
 						break
 					except UnicodeDecodeError:
 						continue
@@ -321,10 +324,10 @@ class FileLoader(object):
 			self.__editor.textbuffer.set_text(utf8_string)
 		except UnicodeDecodeError:
 			from internationalization import msg0487
-			self.__error(msg0487)
+			self.__error(msg0487, True)
 		except ValueError:
 			from internationalization import msg0487
-			self.__error(msg0487)
+			self.__error(msg0487, True)
 		except UnicodeEncodeError:
 			from internationalization import msg0488
 			self.__error(msg0488)
@@ -339,7 +342,7 @@ class FileLoader(object):
 		if self.__encoding is None: return "utf-8"
 		return "utf-8"
 
-	def __error(self, message):
+	def __error(self, message, encoding_error=False):
 		"""
 		Show an error message
 
@@ -347,12 +350,17 @@ class FileLoader(object):
 		@type message: A String object.
 		"""
 		try:
+			if self.__error_flag: return
+			self.__error_flag = True
 			if self.__handle: self.__handle.cancel()
 			from internationalization import msg0477, msg0478
 			from gnomevfs import format_uri_for_display
 			title = msg0477 % (format_uri_for_display(self.__uri))
 			message_id = self.__editor.feedback.set_modal_message(msg0478, "error")
-			self.__editor.show_error_message(message, title, self.__editor.window)
+			if encoding_error:
+				self.__editor.show_encoding_error(title, self.__uri)
+			else:
+				self.__editor.show_error_message(message, title, self.__editor.window)
 			self.__editor.emit("load-error", self.__uri)
 			self.__editor.feedback.unset_modal_message(message_id)
 			self.__destroy()
