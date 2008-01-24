@@ -16,6 +16,7 @@ scribes_DATA = \
 	bookmarks.png \
 	ModificationDialog.glade \
 	EncodingSelectionWindow.glade \
+	EncodingErrorWindow.glade \
 	throbber-active.gif \
 	throbber-inactive.png
 
@@ -65,6 +66,7 @@ EXTRA_DIST = \
 	scribes.schemas.in \
 	ModificationDialog.glade \
 	EncodingSelectionWindow.glade \
+	EncodingErrorWindow.glade \
 	scribes.png
 
 CLEANFILES = \
