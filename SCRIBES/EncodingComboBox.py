@@ -87,10 +87,22 @@ class EncodingComboBox(ComboBox):
 		return
 
 	def __set_properties(self):
+		"""
+		Set properties.
+		
+		@param self: Reference to the EncodingComboBox instance.
+		@type self: An EncodingComboBox object.
+		"""
 		self.set_row_separator_func(self.__separator_function)
 		return
 
 	def __get_encoding(self):
+		"""
+		Get selected encoding.
+		
+		@param self: Reference to the EncodingComboBox instance.
+		@type self: An EncodingComboBox object.
+		"""
 		return self.__encoding
 
 ########################################################################
@@ -102,6 +114,12 @@ class EncodingComboBox(ComboBox):
 	encoding = property(__get_encoding)
 
 	def destroy_(self):
+		"""
+		Destroy combobox.
+		
+		@param self: Reference to the EncodingComboBox instance.
+		@type self: An EncodingComboBox object.
+		"""
 		self.__editor.disconnect_signal(self.__sig_id_1, self)
 		from gnomevfs import monitor_cancel
 		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
@@ -162,6 +180,12 @@ class EncodingComboBox(ComboBox):
 		return message
 
 	def __arrange_widgets(self):
+		"""
+		Arrange combobox with appropriate widgets.
+		
+		@param self: Reference to the EncodingComboBox instance.
+		@type self: An EncodingComboBox object.
+		"""
 		self.set_model(self.__model)
 		from gtk import CellRendererText
 		cell = CellRendererText()
@@ -170,6 +194,12 @@ class EncodingComboBox(ComboBox):
 		return
 
 	def __create_model(self):
+		"""
+		Create model for the combobox.
+		
+		@param self: Reference to the EncodingComboBox instance.
+		@type self: An EncodingComboBox object.
+		"""
 		from gtk import ListStore
 		from gobject import TYPE_STRING
 		model = ListStore(TYPE_STRING)
@@ -217,6 +247,12 @@ class EncodingComboBox(ComboBox):
 		return encoding
 
 	def __show_encoding_selection_window(self):
+		"""
+		Show encoding selection window.
+		
+		@param self: Reference to the EncodingSelectionWindow instance.
+		@type self: An EncodingSelectionWindow object.
+		"""
 		try:
 			self.__window.show()
 		except AttributeError:
@@ -226,6 +262,12 @@ class EncodingComboBox(ComboBox):
 		return
 
 	def __changed_cb(self, *args):
+		"""
+		Handles callback when "changed" signal is emitted.
+		
+		@param self: Reference to the EncodingComboBox instance.
+		@type self: An EncodingComboBox object.
+		"""
 		from internationalization import msg0158, msg0159, msg0292
 		if self.get_active_text() == msg0159:
 			self.__encoding = "utf-8"

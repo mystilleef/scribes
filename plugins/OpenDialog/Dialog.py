@@ -134,8 +134,8 @@ class OpenDialog(object):
 		return False
 
 	def __map_event_cb(self, *args):
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__set_folder, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set_folder, priority=PRIORITY_LOW)
 		return False
 
 	def destroy_(self):

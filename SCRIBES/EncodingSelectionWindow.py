@@ -79,18 +79,35 @@ class EncodingSelectionWindow(object):
 		self.__encodings = generate_encodings()
 		from gtk import CellRendererToggle
 		self.__renderer = CellRendererToggle()
-
 		return
 
 	def show(self):
+		"""
+		Show window.
+
+		@param self: Reference to the EncodingSelectionWindow instance.
+		@type self: An EncodingSelectionWindow object.
+		"""
 		self.__window.show_all()
 		return
 
 	def hide(self):
+		"""
+		Hide window.
+
+		@param self: Reference to the EncodingSelectionWindow instance.
+		@type self: An EncodingSelectionWindow object.
+		"""
 		self.__window.hide()
 		return
 
 	def destroy(self):
+		"""
+		Destroy object.
+
+		@param self: Reference to the EncodingSelectionWindow instance.
+		@type self: An EncodingSelectionWindow object.
+		"""
 		self.__editor.disconnect_signal(self.__sig_id_1, self.__treeview)
 		self.__editor.disconnect_signal(self.__sig_id_2, self.__window)
 		self.__editor.disconnect_signal(self.__sig_id_3, self.__window)
@@ -237,14 +254,38 @@ class EncodingSelectionWindow(object):
 		return True
 
 	def __map_event_cb(self, *args):
+		"""
+		Handles callback when "map-event" is emitted.
+
+		@param self: Reference to the EncodingSelectionWindow instance.
+		@type self: An EncodingSelectionWindow object.
+		"""
 		self.__treeview.grab_focus()
 		return True
 
 	def __delete_event_cb(self, *args):
+		"""
+		Handles callback when "delete-event" is emitted.
+
+		@param self: Reference to the EncodingSelectionWindow instance.
+		@type self: An EncodingSelectionWindow object.
+		"""
 		self.hide()
 		return True
 
 	def __key_press_event_cb(self, window, event):
+		"""
+		Handles callback when the "key-press-event" is emitted.
+
+		@param self: Reference to the EncodingSelectionWindow instance.
+		@type self: An EncodingSelectionWindow object.
+
+		@param window: The encoding selection window.
+		@type window: A gtk.Window object.
+
+		@param event: An event.
+		@type event: A gtk.Event object.
+		"""
 		# Hide window when escape key is pressed.
 		from gtk import keysyms
 		from operator import eq

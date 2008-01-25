@@ -57,7 +57,7 @@ def __open(uris=None):
 	@type uris: A List object.
 	"""
 	__open_via_dbus(uris)
-	#__init_threads()
+	__init_threads()
 	from gobject import idle_add, PRIORITY_HIGH
 	idle_add(__launch_new_editor, uris, priority=PRIORITY_HIGH)
 	return

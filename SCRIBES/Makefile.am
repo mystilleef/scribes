@@ -34,14 +34,11 @@ scribes_PYTHON = \
 	DBusService.py \
 	DisplayRightMarginMetadata.py \
 	edialog.py \
+	error.py \
+	escape.py \
 	Editor.py \
 	EncodingManager.py \
 	ErrorDialog.py \
-	encoding_metadata.py \
-	encodingbox.py \
-	encodingdialog.py \
-	error.py \
-	escape.py \
 	EncodedFilesMetadata.py \
 	EncodingComboBox.py \
 	EncodingErrorWindow.py \

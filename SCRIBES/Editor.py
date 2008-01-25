@@ -910,8 +910,10 @@ class Editor(GObject):
 		return
 
 	def __gui_created_after_cb(self, editor):
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__initialize_plugins, priority=PRIORITY_LOW)
+	#	from gobject import idle_add, PRIORITY_LOW
+	#	idle_add(self.__initialize_plugins, priority=PRIORITY_LOW)
+		from thread import start_new_thread
+		start_new_thread(self.__initialize_plugins, ())
 		return
 
 	def __initialize_plugins(self):
@@ -932,7 +934,7 @@ class Editor(GObject):
 	def __loaded_document_after_cb(self, *args):
 		self.__can_load_file = False
 		self.__contains_document = True
-		print "Encoding is: ", self.encoding
+	#	print "Encoding is: ", self.encoding
 		return
 
 	def __load_error_cb(self, editor, uri):
@@ -942,7 +944,7 @@ class Editor(GObject):
 
 	def __saved_document_cb(self, *args):
 		self.__file_is_saved = True
-		print "Encoding is: ", self.encoding
+	#	print "Encoding is: ", self.encoding
 		return
 
 	def __renamed_document_cb(self, editor, uri, *args):
