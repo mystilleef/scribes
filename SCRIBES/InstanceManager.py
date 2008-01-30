@@ -44,7 +44,7 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
-		from gobject import idle_add, PRIORITY_LOW
+#		from gobject import idle_add, PRIORITY_LOW
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
@@ -55,7 +55,7 @@ class EditorManager(object):
 #		signal(SIGSEGV, self.__kernel_signals_cb)
 #		signal(SIGTERM, self.__kernel_signals_cb)
 #		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+#		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
 		"""
@@ -338,6 +338,8 @@ class EditorManager(object):
 		if empty_windows:
 			# Always load files in empty editor windows first.
 			editor = empty_windows[0]
+##			from thread import start_new_thread
+	#		start_new_thread(editor.load_uri, (uri, encoding))
 			editor.load_uri(uri, encoding)
 		else:
 			from gobject import idle_add
@@ -373,7 +375,9 @@ class EditorManager(object):
 		@type uri: A String object.
 		"""
 		from Editor import Editor
-		Editor(self, uri, encoding)
+		from thread import start_new_thread
+		start_new_thread(Editor, (self, uri, encoding))
+		#Editor(self, uri, encoding)
 		return False
 
 	def __init_gnome_libs(self):

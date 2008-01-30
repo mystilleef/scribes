@@ -74,6 +74,7 @@ class Editor(GObject):
 		"initialized-attributes": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"rename-document": (SIGNAL_ACTION|SIGNAL_RUN_FIRST|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
 		"buffer-created": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"started-core-services": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, manager, file_uri=None, encoding=None):
@@ -102,10 +103,11 @@ class Editor(GObject):
 		self.__signal_id_12 = self.connect("rename-document", self.__rename_document_cb)
 		self.__signal_id_13 = self.connect_after("created-widgets", self.__created_widgets_after_cb)
 		self.__signal_id_14 = self.connect_after("reload-document", self.__reload_document_cb)
+		self.__signal_id_15 = self.connect("started-core-services", self.__started_core_services_cb)
 		self.connect_after("loaded-document", self.__loaded_document_after_cb)
 		from gobject import idle_add, PRIORITY_HIGH, PRIORITY_LOW
 		idle_add(self.__init_attributes, manager, file_uri, encoding, priority=PRIORITY_HIGH)
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+	#	idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 ########################################################################
 #
@@ -419,8 +421,11 @@ class Editor(GObject):
 ########################################################################
 
 	def load_uri(self, uri, encoding="utf-8"):
+		self.__can_load_file = False
 		from FileLoader import FileLoader
-		FileLoader(self, uri, encoding)
+		from thread import start_new_thread
+		start_new_thread(FileLoader, (self, uri, encoding))
+		#FileLoader(self, uri, encoding)
 		return False
 
 	def create_new_file(self):
@@ -852,7 +857,9 @@ class Editor(GObject):
 		@param self: Reference to this editor instance.
 		@type self: An Editor object.
 		"""
-		self.__create_widgets()
+		from thread import start_new_thread
+		start_new_thread(self.__create_widgets, ())
+		#self.__create_widgets()
 		return
 
 	def __created_widgets_cb(self, editor):
@@ -871,10 +878,9 @@ class Editor(GObject):
 		@type editor: An Editor object.
 		"""
 		self.__manager_registration_id = self.__instance_manager.register_editor(self)
-		self.__start_core_services()
-		if not self.__file_uri: return
-		from gobject import idle_add
-		idle_add(self.load_uri, self.__file_uri.strip(), self.__encoding)
+		from thread import start_new_thread
+		start_new_thread(self.__start_core_services, ())
+		#self.__start_core_services()
 		return
 
 	def __start_core_services(self):
@@ -890,35 +896,52 @@ class Editor(GObject):
 		# Initialize encoding manager.
 		from EncodingManager import EncodingManager
 		self.__encoding_manager = EncodingManager(self)
+		from thread import start_new_thread
 		# Initialize file modification monitor
-#		from FileModificationMonitor import FileModificationMonitor
-#		FileModificationMonitor(self)
+		from FileModificationMonitor import FileModificationMonitor
+		start_new_thread(FileModificationMonitor, (self,))
+		#FileModificationMonitor(self)
 		# Initialize the object that saves files.
-		from NewFileSaver import FileSaver
-#		from FileSaver import FileSaver
-		FileSaver(self)
 		# Initialize the feedback manager.
 		from Feedback import FeedbackManager
 		self.__feedback = FeedbackManager(self)
 		# Initialize the trigger manager.
 		from TriggerManager import TriggerManager
 		self.__trigger_manager = TriggerManager(self)
+		from NewFileSaver import FileSaver
+#		from FileSaver import FileSaver
+		FileSaver(self)
+		#FileSaver(self)
+		self.emit("started-core-services")
 		return
 
 	def __created_widgets_after_cb(self, editor):
-		self.__arrange_widgets()
+		from thread import start_new_thread
+		start_new_thread(self.__arrange_widgets, ())
+		#self.__arrange_widgets()
 		return
 
 	def __gui_created_after_cb(self, editor):
 	#	from gobject import idle_add, PRIORITY_LOW
 	#	idle_add(self.__initialize_plugins, priority=PRIORITY_LOW)
-		from thread import start_new_thread
-		start_new_thread(self.__initialize_plugins, ())
 		return
 
+	def __started_core_services_cb(self, *args):
+		try:
+			# Load file if any.
+			if not self.__file_uri: raise ValueError
+			self.load_uri(self.__file_uri.strip(), self.__encoding)
+		except ValueError:
+			pass
+		finally:
+			# Initialize plugins
+			self.__initialize_plugins()
+		return False
+
 	def __initialize_plugins(self):
+		from thread import start_new_thread
 		from PluginManager import PluginManager
-		PluginManager(self)
+		start_new_thread(PluginManager, (self,))
 		return False
 
 	def __checking_document_cb(self, editor, uri):

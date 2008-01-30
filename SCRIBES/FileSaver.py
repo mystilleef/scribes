@@ -92,6 +92,8 @@ class FileSaver(object):
 		self.__signal_id_7 = self.__signal_id_8 = self.__signal_id_9 = None
 		self.__signal_id_10 = self.__monitor_id = self.__signal_id_11 = None
 		self.__signal_id_12 = None
+		self.__signal_id_4 = None
+
 		return
 
 ########################################################################

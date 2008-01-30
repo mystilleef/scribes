@@ -42,7 +42,7 @@ class ScribesWindow(Window):
 		@param self: Reference to the text editor's window instance.
 		@type self: A ScribesWindow object.
 		"""
-		self.__precompile_methods()
+#		self.__precompile_methods()
 		Window.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()

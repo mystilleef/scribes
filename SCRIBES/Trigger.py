@@ -66,7 +66,7 @@ class Trigger(GObject):
 			if this trigger should be removed or destroyed.
 		@type removable: A Boolean object.
 		"""
-		self.__precompile_methods()
+#		self.__precompile_methods()
 		GObject.__init__(self)
 		self.__init_attributes(name, accelerator, description, error, removable)
 

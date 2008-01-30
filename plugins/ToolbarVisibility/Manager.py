@@ -47,7 +47,6 @@ class Manager(object):
 		self.__sig_id_1 = editor.window.connect("motion-notify-event", self.__motion_notify_event_cb)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__monitor_mouse, priority=PRIORITY_LOW)
-#		self.__monitor_mouse()
 
 	def __init_attributes(self, editor):
 		"""
@@ -107,6 +106,7 @@ class Manager(object):
 		"""
 		self.__editor.toolbar.set_no_show_all(False)
 		self.__editor.statuscontainer.set_no_show_all(False)
+		self.__editor.toolbar.show_all()
 		self.__editor.toolbarcontainer.show_all()
 		self.__editor.statuscontainer.show_all()
 		self.__editor.statuscontainer.set_no_show_all(True)
@@ -122,7 +122,8 @@ class Manager(object):
 		"""
 		self.__editor.toolbar.set_no_show_all(False)
 		self.__editor.statuscontainer.set_no_show_all(False)
-		self.__editor.toolbarcontainer.hide_all()
+		self.__editor.toolbar.hide()
+		self.__editor.toolbarcontainer.hide()
 		self.__editor.statuscontainer.hide()
 		self.__editor.statuscontainer.set_no_show_all(True)
 		self.__editor.toolbar.set_no_show_all(True)

@@ -526,10 +526,10 @@ def init_gnome():
 	program = program_init(name, version, properties=properties)
 	return
 
-try:
-	from psyco import bind
-	bind(generate_random_number)
-	bind(calculate_completion_window_position)
-	bind(disconnect_signal)
-except ImportError:
-	pass
+#try:
+#	from psyco import bind
+#	bind(generate_random_number)
+#	bind(calculate_completion_window_position)
+#	bind(disconnect_signal)
+#except ImportError:
+#	pass

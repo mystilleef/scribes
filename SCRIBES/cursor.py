@@ -42,10 +42,6 @@ def get_cursor_iterator(textbuffer):
 	cursor_iterator = textbuffer.get_iter_at_mark(cursor_mark)
 	return cursor_iterator
 
-def print_test_function():
-	value = None
-	return value
-
 def get_cursor_line(textbuffer):
 	"""
 	Return the line the cursor is on.
@@ -257,20 +253,20 @@ def get_cursor_size(textview):
 	cursor_height = rectangle.height
 	return cursor_width, cursor_height
 
-try:
-	from psyco import bind
-	bind(get_cursor_iterator)
-	bind(update_cursor_position)
-	bind(get_cursor_size)
-	bind(get_word_before_cursor)
-	bind(get_word_to_cursor)
-	bind(get_template_trigger)
-	bind(get_cursor_line)
-	bind(get_cursor_index)
-	bind(get_cursor_window_coordinates)
-	bind(move_view_to_cursor)
-except ImportError:
-	pass
-except:
-	pass
+#try:
+#	from psyco import bind
+#	bind(get_cursor_iterator)
+#	bind(update_cursor_position)
+#	bind(get_cursor_size)
+#	bind(get_word_before_cursor)
+#	bind(get_word_to_cursor)
+#	bind(get_template_trigger)
+#	bind(get_cursor_line)
+#	bind(get_cursor_index)
+#	bind(get_cursor_window_coordinates)
+#	bind(move_view_to_cursor)
+#except ImportError:
+#	pass
+#except:
+#	pass
 

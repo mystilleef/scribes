@@ -34,8 +34,6 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = @build@
-host_triplet = @host@
 subdir = data
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -54,15 +52,12 @@ am__vpath_adj = case $$p in \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(Desktopdir)" "$(DESTDIR)$(icondir)" \
-	"$(DESTDIR)$(pixmapsdir)" "$(DESTDIR)$(schemasdir)" \
-	"$(DESTDIR)$(scribesdir)"
+	"$(DESTDIR)$(pixmapsdir)" "$(DESTDIR)$(scribesdir)"
 DesktopDATA_INSTALL = $(INSTALL_DATA)
 iconDATA_INSTALL = $(INSTALL_DATA)
 pixmapsDATA_INSTALL = $(INSTALL_DATA)
-schemasDATA_INSTALL = $(INSTALL_DATA)
 scribesDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(Desktop_DATA) $(icon_DATA) $(pixmaps_DATA) $(schemas_DATA) \
-	$(scribes_DATA)
+DATA = $(Desktop_DATA) $(icon_DATA) $(pixmaps_DATA) $(scribes_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
@@ -93,11 +88,6 @@ EGREP = @EGREP@
 ENABLE_SK_FALSE = @ENABLE_SK_FALSE@
 ENABLE_SK_TRUE = @ENABLE_SK_TRUE@
 EXEEXT = @EXEEXT@
-GCONFTOOL = @GCONFTOOL@
-GCONF_SCHEMAS_INSTALL_FALSE = @GCONF_SCHEMAS_INSTALL_FALSE@
-GCONF_SCHEMAS_INSTALL_TRUE = @GCONF_SCHEMAS_INSTALL_TRUE@
-GCONF_SCHEMA_CONFIG_SOURCE = @GCONF_SCHEMA_CONFIG_SOURCE@
-GCONF_SCHEMA_FILE_DIR = @GCONF_SCHEMA_FILE_DIR@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
@@ -182,21 +172,13 @@ am__quote = @am__quote@
 am__tar = @am__tar@
 am__untar = @am__untar@
 bindir = @bindir@
-build = @build@
 build_alias = @build_alias@
-build_cpu = @build_cpu@
-build_os = @build_os@
-build_vendor = @build_vendor@
 datadir = @datadir@
 datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
-host = @host@
 host_alias = @host_alias@
-host_cpu = @host_cpu@
-host_os = @host_os@
-host_vendor = @host_vendor@
 htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
@@ -254,25 +236,18 @@ Desktopdir = $(datadir)/applications
 Desktop_files = scribes.desktop
 Desktop_in_files = scribes.desktop.in
 Desktop_DATA = $(Desktop_in_files:.desktop.in=.desktop)
-
-# Process Scribes GConf schema file.
-schemasdir = $(GCONF_SCHEMA_FILE_DIR)
-schemas_in_files = scribes.schemas
-schemas_DATA = $(schemas_in_files)
 EXTRA_DIST = \
 	bookmarks.png \
 	throbber-inactive.png \
 	throbber-active.gif \
 	scribes.desktop.in \
-	scribes.schemas.in \
 	ModificationDialog.glade \
 	EncodingSelectionWindow.glade \
 	EncodingErrorWindow.glade \
 	scribes.png
 
 CLEANFILES = \
-	$(Desktop_DATA) \
-	$(schemas_DATA)
+	$(Desktop_DATA)
 
 all: all-am
 
@@ -358,23 +333,6 @@ uninstall-pixmapsDATA:
 	  echo " rm -f '$(DESTDIR)$(pixmapsdir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(pixmapsdir)/$$f"; \
 	done
-install-schemasDATA: $(schemas_DATA)
-	@$(NORMAL_INSTALL)
-	test -z "$(schemasdir)" || $(mkdir_p) "$(DESTDIR)$(schemasdir)"
-	@list='$(schemas_DATA)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f=$(am__strip_dir) \
-	  echo " $(schemasDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(schemasdir)/$$f'"; \
-	  $(schemasDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(schemasdir)/$$f"; \
-	done
-
-uninstall-schemasDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(schemas_DATA)'; for p in $$list; do \
-	  f=$(am__strip_dir) \
-	  echo " rm -f '$(DESTDIR)$(schemasdir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(schemasdir)/$$f"; \
-	done
 install-scribesDATA: $(scribes_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(scribesdir)" || $(mkdir_p) "$(DESTDIR)$(scribesdir)"
@@ -430,7 +388,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(Desktopdir)" "$(DESTDIR)$(icondir)" "$(DESTDIR)$(pixmapsdir)" "$(DESTDIR)$(schemasdir)" "$(DESTDIR)$(scribesdir)"; do \
+	for dir in "$(DESTDIR)$(Desktopdir)" "$(DESTDIR)$(icondir)" "$(DESTDIR)$(pixmapsdir)" "$(DESTDIR)$(scribesdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -476,9 +434,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-DesktopDATA install-data-local \
-	install-iconDATA install-pixmapsDATA install-schemasDATA \
-	install-scribesDATA
+install-data-am: install-DesktopDATA install-iconDATA \
+	install-pixmapsDATA install-scribesDATA
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 
@@ -507,21 +464,19 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-DesktopDATA uninstall-iconDATA \
-	uninstall-info-am uninstall-pixmapsDATA uninstall-schemasDATA \
-	uninstall-scribesDATA
+	uninstall-info-am uninstall-pixmapsDATA uninstall-scribesDATA
 
 .PHONY: all all-am check check-am clean clean-generic distclean \
 	distclean-generic distdir dvi dvi-am html html-am info info-am \
 	install install-DesktopDATA install-am install-data \
-	install-data-am install-data-hook install-data-local \
-	install-exec install-exec-am install-iconDATA install-info \
-	install-info-am install-man install-pixmapsDATA \
-	install-schemasDATA install-scribesDATA install-strip \
+	install-data-am install-data-hook install-exec install-exec-am \
+	install-iconDATA install-info install-info-am install-man \
+	install-pixmapsDATA install-scribesDATA install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am uninstall uninstall-DesktopDATA uninstall-am \
 	uninstall-iconDATA uninstall-info-am uninstall-pixmapsDATA \
-	uninstall-schemasDATA uninstall-scribesDATA
+	uninstall-scribesDATA
 
 install-data-hook:
 		@-if test -z "$(DESTDIR)"; then \
@@ -532,15 +487,6 @@ install-data-hook:
 				echo "***   $(gtk_update_icon_cache)"; \
 		fi
 @INTLTOOL_DESKTOP_RULE@
-@INTLTOOL_SCHEMAS_RULE@
-
-@GCONF_SCHEMAS_INSTALL_TRUE@install-data-local:
-@GCONF_SCHEMAS_INSTALL_TRUE@	if test -z "$(DESTDIR)" ; then \
-@GCONF_SCHEMAS_INSTALL_TRUE@		for p in $(schemas_DATA) ; do \
-@GCONF_SCHEMAS_INSTALL_TRUE@			GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$$p ; \
-@GCONF_SCHEMAS_INSTALL_TRUE@		done \
-@GCONF_SCHEMAS_INSTALL_TRUE@	fi
-@GCONF_SCHEMAS_INSTALL_FALSE@install-data-local:
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

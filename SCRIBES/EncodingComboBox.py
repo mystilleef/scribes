@@ -60,7 +60,9 @@ class EncodingComboBox(ComboBox):
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monitor_id_1 = monitor_add(self.__database_uri, MONITOR_FILE,
 					self.__update_encoding_list_cb)
-		self.__populate_model()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__populate_model, priority=PRIORITY_LOW)
+		#self.__populate_model()
 
 	def __init_attributes(self, editor):
 		"""
@@ -89,7 +91,7 @@ class EncodingComboBox(ComboBox):
 	def __set_properties(self):
 		"""
 		Set properties.
-		
+
 		@param self: Reference to the EncodingComboBox instance.
 		@type self: An EncodingComboBox object.
 		"""
@@ -99,7 +101,7 @@ class EncodingComboBox(ComboBox):
 	def __get_encoding(self):
 		"""
 		Get selected encoding.
-		
+
 		@param self: Reference to the EncodingComboBox instance.
 		@type self: An EncodingComboBox object.
 		"""
@@ -116,7 +118,7 @@ class EncodingComboBox(ComboBox):
 	def destroy_(self):
 		"""
 		Destroy combobox.
-		
+
 		@param self: Reference to the EncodingComboBox instance.
 		@type self: An EncodingComboBox object.
 		"""
@@ -182,7 +184,7 @@ class EncodingComboBox(ComboBox):
 	def __arrange_widgets(self):
 		"""
 		Arrange combobox with appropriate widgets.
-		
+
 		@param self: Reference to the EncodingComboBox instance.
 		@type self: An EncodingComboBox object.
 		"""
@@ -196,7 +198,7 @@ class EncodingComboBox(ComboBox):
 	def __create_model(self):
 		"""
 		Create model for the combobox.
-		
+
 		@param self: Reference to the EncodingComboBox instance.
 		@type self: An EncodingComboBox object.
 		"""
@@ -249,7 +251,7 @@ class EncodingComboBox(ComboBox):
 	def __show_encoding_selection_window(self):
 		"""
 		Show encoding selection window.
-		
+
 		@param self: Reference to the EncodingSelectionWindow instance.
 		@type self: An EncodingSelectionWindow object.
 		"""
@@ -264,7 +266,7 @@ class EncodingComboBox(ComboBox):
 	def __changed_cb(self, *args):
 		"""
 		Handles callback when "changed" signal is emitted.
-		
+
 		@param self: Reference to the EncodingComboBox instance.
 		@type self: An EncodingComboBox object.
 		"""

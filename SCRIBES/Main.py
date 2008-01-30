@@ -148,8 +148,10 @@ def __mainloop():
 	__fork_scribes()
 	from utils import init_gnome
 	init_gnome()
-	from gobject import MainLoop
-	MainLoop().run()
+#	from gobject import MainLoop
+#	MainLoop().run()
+	from gtk import main
+	main()
 	return
 
 def __fork_scribes():
@@ -176,8 +178,8 @@ def __can_fork():
 	from ForkScribesMetadata import get_value
 	return get_value()
 
-try:
-	from psyco import bind
-	bind(__mainloop)
-except:
-	pass
+#try:
+#	from psyco import bind
+#	bind(__mainloop)
+#except:
+#	pass

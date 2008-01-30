@@ -787,7 +787,10 @@ class ScribesTextView(SourceView):
 			except GError:
 				pass
 		else:
-			self.__spell_checker.detach()
+			try:
+				self.__spell_checker.detach()
+			except AttributeError:
+				pass # For some reason self.__spell_checker is None
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return

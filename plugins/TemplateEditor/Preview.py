@@ -73,7 +73,6 @@ class Preview(SourceView):
 		self.__manager = manager
 		self.__editor = editor
 		self.__buffer = self.get_property("buffer")
-		self.__client = editor.gconf_client
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		return
 
@@ -93,41 +92,37 @@ class Preview(SourceView):
 		self.set_property("cursor-visible", False)
 		self.set_property("editable", False)
 		self.set_property("sensitive", False)
-		tab_width = 4
-		if self.__client.get("/apps/scribes/tab"):
-			tab_width = self.__client.get_int("/apps/scribes/tab")
+		from SCRIBES.MarginPositionMetadata import get_value
+		margin_position = get_value()
+		self.set_margin(margin_position)
+		from SCRIBES.DisplayRightMarginMetadata import get_value
+		show_margin = get_value()
+		self.set_show_margin(show_margin)
+		from SCRIBES.TabWidthMetadata import get_value
+		tab_width = get_value()
 		self.set_tabs_width(tab_width)
-		use_tabs = True
-		if self.__client.get("/apps/scribes/use_tabs"):
-			use_tabs = self.__client.get_bool("/apps/scribes/use_tabs")
+		from SCRIBES.UseTabsMetadata import get_value
+		use_tabs = get_value()
 		self.set_insert_spaces_instead_of_tabs(not use_tabs)
-		gconf_font = "Monospace 12"
-		if self.__client.get("/apps/scribes/font"):
-			gconf_font = self.__client.get_string("/apps/scribes/font")
+		from SCRIBES.FontMetadata import get_value
+		font_name = get_value()
 		from pango import FontDescription
-		font = FontDescription(gconf_font)
+		font = FontDescription(font_name)
 		self.modify_font(font)
-		wrap_mode_bool = True
-		if self.__client.get("/apps/scribes/text_wrapping"):
-			wrap_mode_bool = self.__client.get_bool("/apps/scribes/text_wrapping")
-		use_theme_colors = True
-		if self.__client.get("/apps/scribes/use_theme_colors"):
-			use_theme_colors = self.__client.get_bool("/apps/scribes/use_theme_colors")
 		from gtk import WRAP_WORD, WRAP_NONE
+		from SCRIBES.TextWrappingMetadata import get_value
+		wrap_mode_bool = get_value()
 		if wrap_mode_bool:
 			self.set_wrap_mode(WRAP_WORD)
 		else:
 			self.set_wrap_mode(WRAP_NONE)
+		from SCRIBES.UseThemeMetadata import get_value
+		use_theme_colors = get_value()
 		if use_theme_colors is False:
-			# Use foreground and background colors specified by the user stored
-			# in GConf, the GNOME configuration database.
-			from gconf import VALUE_STRING
-			fgcolor = "#000000"
-			bgcolor = "#ffffff"
-			if self.__client.get("/apps/scribes/fgcolor"):
-				fgcolor = self.__client.get_string("/apps/scribes/fgcolor")
-			if self.__client.get("/apps/scribes/bgcolor"):
-				bgcolor = self.__client.get_string("/apps/scribes/bgcolor")
+			from SCRIBES.ForegroundColorMetadata import get_value
+			fgcolor = get_value()
+			from SCRIBES.BackgroundColorMetadata import get_value
+			bgcolor = get_value()
 			from gtk.gdk import color_parse
 			foreground_color = color_parse(fgcolor)
 			background_color = color_parse(bgcolor)

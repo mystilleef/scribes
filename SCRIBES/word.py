@@ -207,15 +207,15 @@ def select_word(textbuffer, iterator):
 	if result: textbuffer.select_range(result[0], result[1])
 	return result
 
-try:
-	from psyco import bind
-	bind(ends_word)
-	bind(get_word)
-	bind(get_word_boundary)
-	bind(select_word)
-	bind(starts_word)
-	bind(inside_word)
-except ImportError:
-	pass
-except:
-	pass
+#try:
+#	from psyco import bind
+#	bind(ends_word)
+#	bind(get_word)
+#	bind(get_word_boundary)
+#	bind(select_word)
+#	bind(starts_word)
+#	bind(inside_word)
+#except ImportError:
+#	pass
+#except:
+#	pass

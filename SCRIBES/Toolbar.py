@@ -221,13 +221,14 @@ class ScribesToolbar(Toolbar):
 		hide_toolbar = get_value()
 		if hide_toolbar:
 			self.__is_visible = False
-			self.hide_all()
+			self.hide()
 		else:
 			self.__is_visible = True
 			self.show_all()
 		self.set_no_show_all(True)
-		return
+		return False
 
 	def __hide_toolbar_cb(self, *args):
-		self.__set_toolbar_visibility()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set_toolbar_visibility, priority=PRIORITY_LOW)
 		return

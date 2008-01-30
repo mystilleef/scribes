@@ -45,7 +45,7 @@ class PluginManager(object):
 		@type editor: A editor object.
 		"""
 		try:
-			self.__precompile_methods()
+#			self.__precompile_methods()
 			from Exceptions import PluginFolderNotFoundError
 			self.__init_attributes(editor)
 			self.__check_plugin_folders()
@@ -93,8 +93,7 @@ class PluginManager(object):
 		from Exceptions import PluginModuleValidationError
 		from Exceptions import DuplicatePluginError, DoNotLoadError
 		try:
-			from operator import not_
-			if not_(filename.startswith("Plugin") and filename.endswith(".py")): return False
+			if not (filename.startswith("Plugin") and filename.endswith(".py")): return False
 			from os import path
 			filepath = path.join(plugin_folder, filename)
 			from imp import load_source
@@ -159,9 +158,17 @@ class PluginManager(object):
 		return False
 
 	def __unload_plugins(self):
+		"""
+		Unload all plugins.
+		
+		@param self: Reference to the PluginManager instance.
+		@type self: A PluginManager object.
+		"""
 		from gobject import idle_add, PRIORITY_LOW
+		from thread import start_new_thread
 		for plugin_info in self.__plugin_objects.copy():
-			idle_add(self.__unload_plugin, plugin_info, priority=PRIORITY_LOW)
+			start_new_thread(self.__unload_plugin, (plugin_info,))
+			#idle_add(self.__unload_plugin, plugin_info, priority=PRIORITY_LOW)
 		return False
 
 	def __get_module_info(self, module):
@@ -178,10 +185,9 @@ class PluginManager(object):
 		@rtype: A Tuple object.
 		"""
 		try:
-			from operator import not_
-			if not_(hasattr(module, "autoload")):
+			if not hasattr(module, "autoload"):
 				raise Exception
-			if not_(getattr(module, "autoload")):
+			if not getattr(module, "autoload"):
 				raise ValueError
 			if hasattr(module, "version") is False:
 				raise Exception
@@ -312,5 +318,3 @@ class PluginManager(object):
 		from gobject import idle_add
 		idle_add(self.__unload_plugins)
 		return
-
-# This is a test line. This is a test line. This is a test line.

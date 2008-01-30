@@ -57,7 +57,6 @@ class ScribesToolbarContainer(HBox):
 		self.__signal_id_6 = editor.connect("hide-dialog", self.__hide_dialog_cb)
 		self.__signal_id_7 = editor.connect("enable-fullscreen", self.__enable_fullscreen_cb)
 		self.__signal_id_8 = editor.connect("disable-fullscreen", self.__disable_fullscreen_cb)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		"""

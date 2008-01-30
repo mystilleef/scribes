@@ -1,6 +1,6 @@
-m4trace:/usr/share/aclocal/glib-gettext.m4:413: -1- AC_DEFUN([AM_GLIB_GNU_GETTEXT], [GLIB_GNU_GETTEXT($@)])
-m4trace:/usr/share/aclocal/glib-gettext.m4:413: -1- AC_DEFUN([AM_GLIB_DEFINE_LOCALEDIR], [GLIB_DEFINE_LOCALEDIR($@)])
-m4trace:/usr/share/aclocal/glib-gettext.m4:423: -1- AC_DEFUN([GLIB_RUN_PROG], [cat >conftest.foo <<_ACEOF
+m4trace:/usr/share/aclocal/glib-gettext.m4:412: -1- AC_DEFUN([AM_GLIB_GNU_GETTEXT], [GLIB_GNU_GETTEXT($@)])
+m4trace:/usr/share/aclocal/glib-gettext.m4:412: -1- AC_DEFUN([AM_GLIB_DEFINE_LOCALEDIR], [GLIB_DEFINE_LOCALEDIR($@)])
+m4trace:/usr/share/aclocal/glib-gettext.m4:422: -1- AC_DEFUN([GLIB_RUN_PROG], [cat >conftest.foo <<_ACEOF
 $2
 _ACEOF
 if AC_RUN_LOG([$1 conftest.foo]); then
@@ -852,6 +852,20 @@ AC_SUBST(INTLTOOL_THEME_RULE)
 AC_SUBST(INTLTOOL_SERVICE_RULE)
 AC_SUBST(INTLTOOL_POLICY_RULE)
 
+# Check the gettext tools to make sure they are GNU
+AC_PATH_PROG(XGETTEXT, xgettext)
+AC_PATH_PROG(MSGMERGE, msgmerge)
+AC_PATH_PROG(MSGFMT, msgfmt)
+if test -z "$XGETTEXT" -o -z "$MSGMERGE" -o -z "$MSGFMT"; then
+    AC_MSG_ERROR([GNU gettext tools not found; required for intltool])
+fi
+xgversion="`$XGETTEXT --version|grep '(GNU ' 2> /dev/null`"
+mmversion="`$MSGMERGE --version|grep '(GNU ' 2> /dev/null`"
+mfversion="`$MSGFMT --version|grep '(GNU ' 2> /dev/null`"
+if test -z "$xgversion" -o -z "$mmversion" -o -z "$mfversion"; then
+    AC_MSG_ERROR([GNU gettext tools not found; required for intltool])
+fi
+
 # Use the tools built into the package, not the ones that are installed.
 AC_SUBST(INTLTOOL_EXTRACT, '$(top_builddir)/intltool-extract')
 AC_SUBST(INTLTOOL_MERGE, '$(top_builddir)/intltool-merge')
@@ -940,7 +954,7 @@ prefix="$prefix" exec_prefix="$exec_prefix" INTLTOOL_LIBDIR="$libdir"
 INTLTOOL_EXTRACT='${INTLTOOL_EXTRACT}'])
 
 ])
-m4trace:m4/intltool.m4:185: -1- AC_DEFUN([IT_PO_SUBDIR], [AC_PREREQ([2.53])dnl We use ac_top_srcdir inside AC_CONFIG_COMMANDS.
+m4trace:m4/intltool.m4:199: -1- AC_DEFUN([IT_PO_SUBDIR], [AC_PREREQ([2.53])dnl We use ac_top_srcdir inside AC_CONFIG_COMMANDS.
 dnl
 dnl The following CONFIG_COMMANDS should be exetuted at the very end
 dnl of config.status.
@@ -968,8 +982,8 @@ AC_CONFIG_COMMANDS_PRE([
   ])
 ])dnl
 ])
-m4trace:m4/intltool.m4:217: -1- AU_DEFUN([AC_PROG_INTLTOOL], [m4_if($#, 0, [IT_PROG_INTLTOOL], [IT_PROG_INTLTOOL($@)])])
-m4trace:m4/intltool.m4:217: -1- AC_DEFUN([AC_PROG_INTLTOOL], [AC_DIAGNOSE([obsolete], [The macro `AC_PROG_INTLTOOL' is obsolete.
+m4trace:m4/intltool.m4:231: -1- AU_DEFUN([AC_PROG_INTLTOOL], [m4_if($#, 0, [IT_PROG_INTLTOOL], [IT_PROG_INTLTOOL($@)])])
+m4trace:m4/intltool.m4:231: -1- AC_DEFUN([AC_PROG_INTLTOOL], [AC_DIAGNOSE([obsolete], [The macro `AC_PROG_INTLTOOL' is obsolete.
 You should run autoupdate.])dnl
 m4_if($#, 0, [IT_PROG_INTLTOOL], [IT_PROG_INTLTOOL($@)])])
 m4trace:configure.ac:4: -1- m4_pattern_forbid([^_?A[CHUM]_])
@@ -1119,6 +1133,9 @@ m4trace:configure.ac:13: -1- m4_pattern_allow([^INTLTOOL_SCHEMAS_RULE$])
 m4trace:configure.ac:13: -1- m4_pattern_allow([^INTLTOOL_THEME_RULE$])
 m4trace:configure.ac:13: -1- m4_pattern_allow([^INTLTOOL_SERVICE_RULE$])
 m4trace:configure.ac:13: -1- m4_pattern_allow([^INTLTOOL_POLICY_RULE$])
+m4trace:configure.ac:13: -1- m4_pattern_allow([^XGETTEXT$])
+m4trace:configure.ac:13: -1- m4_pattern_allow([^MSGMERGE$])
+m4trace:configure.ac:13: -1- m4_pattern_allow([^MSGFMT$])
 m4trace:configure.ac:13: -1- m4_pattern_allow([^INTLTOOL_EXTRACT$])
 m4trace:configure.ac:13: -1- m4_pattern_allow([^INTLTOOL_MERGE$])
 m4trace:configure.ac:13: -1- m4_pattern_allow([^INTLTOOL_UPDATE$])
@@ -1173,18 +1190,10 @@ You should run autoupdate.], [../../lib/autoconf/general.m4:2414: AC_TRY_LINK is
 ../../lib/autoconf/general.m4:1898: AC_CACHE_VAL is expanded from...
 ../../lib/autoconf/general.m4:1911: AC_CACHE_CHECK is expanded from...
 /usr/share/aclocal/glib-gettext.m4:48: GLIB_LC_MESSAGES is expanded from...
-/usr/share/aclocal/glib-gettext.m4:313: GLIB_GNU_GETTEXT is expanded from...
-/usr/share/aclocal/glib-gettext.m4:413: AM_GLIB_GNU_GETTEXT is expanded from...
+/usr/share/aclocal/glib-gettext.m4:312: GLIB_GNU_GETTEXT is expanded from...
+/usr/share/aclocal/glib-gettext.m4:412: AM_GLIB_GNU_GETTEXT is expanded from...
 configure.ac:23: the top level])
 m4trace:configure.ac:23: -1- m4_pattern_allow([^HAVE_LC_MESSAGES$])
-m4trace:configure.ac:23: -1- m4_pattern_allow([^build$])
-m4trace:configure.ac:23: -1- m4_pattern_allow([^build_cpu$])
-m4trace:configure.ac:23: -1- m4_pattern_allow([^build_vendor$])
-m4trace:configure.ac:23: -1- m4_pattern_allow([^build_os$])
-m4trace:configure.ac:23: -1- m4_pattern_allow([^host$])
-m4trace:configure.ac:23: -1- m4_pattern_allow([^host_cpu$])
-m4trace:configure.ac:23: -1- m4_pattern_allow([^host_vendor$])
-m4trace:configure.ac:23: -1- m4_pattern_allow([^host_os$])
 m4trace:configure.ac:23: -1- m4_pattern_allow([^USE_NLS$])
 m4trace:configure.ac:23: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
 You should run autoupdate.], [../../lib/autoconf/general.m4:2414: AC_TRY_LINK is expanded from...
@@ -1194,8 +1203,8 @@ You should run autoupdate.], [../../lib/autoconf/general.m4:2414: AC_TRY_LINK is
 ../../lib/m4sugar/m4sh.m4:516: AS_IF is expanded from...
 ../../lib/autoconf/headers.m4:87: AC_CHECK_HEADER is expanded from...
 /usr/share/aclocal/glib-gettext.m4:102: GLIB_WITH_NLS is expanded from...
-/usr/share/aclocal/glib-gettext.m4:313: GLIB_GNU_GETTEXT is expanded from...
-/usr/share/aclocal/glib-gettext.m4:413: AM_GLIB_GNU_GETTEXT is expanded from...
+/usr/share/aclocal/glib-gettext.m4:312: GLIB_GNU_GETTEXT is expanded from...
+/usr/share/aclocal/glib-gettext.m4:412: AM_GLIB_GNU_GETTEXT is expanded from...
 configure.ac:23: the top level])
 m4trace:configure.ac:23: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
 You should run autoupdate.], [../../lib/autoconf/general.m4:2414: AC_TRY_LINK is expanded from...
@@ -1205,8 +1214,8 @@ You should run autoupdate.], [../../lib/autoconf/general.m4:2414: AC_TRY_LINK is
 ../../lib/m4sugar/m4sh.m4:516: AS_IF is expanded from...
 ../../lib/autoconf/headers.m4:87: AC_CHECK_HEADER is expanded from...
 /usr/share/aclocal/glib-gettext.m4:102: GLIB_WITH_NLS is expanded from...
-/usr/share/aclocal/glib-gettext.m4:313: GLIB_GNU_GETTEXT is expanded from...
-/usr/share/aclocal/glib-gettext.m4:413: AM_GLIB_GNU_GETTEXT is expanded from...
+/usr/share/aclocal/glib-gettext.m4:312: GLIB_GNU_GETTEXT is expanded from...
+/usr/share/aclocal/glib-gettext.m4:412: AM_GLIB_GNU_GETTEXT is expanded from...
 configure.ac:23: the top level])
 m4trace:configure.ac:23: -1- m4_pattern_allow([^HAVE_GETTEXT$])
 m4trace:configure.ac:23: -1- m4_pattern_allow([^MSGFMT$])
@@ -1229,15 +1238,15 @@ You should run autoupdate.], [../../lib/autoconf/general.m4:2414: AC_TRY_LINK is
 ../../lib/m4sugar/m4sh.m4:516: AS_IF is expanded from...
 ../../lib/autoconf/headers.m4:87: AC_CHECK_HEADER is expanded from...
 /usr/share/aclocal/glib-gettext.m4:102: GLIB_WITH_NLS is expanded from...
-/usr/share/aclocal/glib-gettext.m4:313: GLIB_GNU_GETTEXT is expanded from...
-/usr/share/aclocal/glib-gettext.m4:413: AM_GLIB_GNU_GETTEXT is expanded from...
+/usr/share/aclocal/glib-gettext.m4:312: GLIB_GNU_GETTEXT is expanded from...
+/usr/share/aclocal/glib-gettext.m4:412: AM_GLIB_GNU_GETTEXT is expanded from...
 configure.ac:23: the top level])
 m4trace:configure.ac:23: -1- m4_pattern_allow([^ENABLE_NLS$])
 m4trace:configure.ac:23: -1- _m4_warn([obsolete], [The macro `AC_OUTPUT_COMMANDS' is obsolete.
 You should run autoupdate.], [../../lib/autoconf/status.m4:848: AC_OUTPUT_COMMANDS is expanded from...
 /usr/share/aclocal/glib-gettext.m4:102: GLIB_WITH_NLS is expanded from...
-/usr/share/aclocal/glib-gettext.m4:313: GLIB_GNU_GETTEXT is expanded from...
-/usr/share/aclocal/glib-gettext.m4:413: AM_GLIB_GNU_GETTEXT is expanded from...
+/usr/share/aclocal/glib-gettext.m4:312: GLIB_GNU_GETTEXT is expanded from...
+/usr/share/aclocal/glib-gettext.m4:412: AM_GLIB_GNU_GETTEXT is expanded from...
 configure.ac:23: the top level])
 m4trace:configure.ac:23: -1- m4_pattern_allow([^CATALOGS$])
 m4trace:configure.ac:23: -1- m4_pattern_allow([^CATOBJEXT$])
@@ -1251,7 +1260,6 @@ m4trace:configure.ac:23: -1- m4_pattern_allow([^POFILES$])
 m4trace:configure.ac:23: -1- m4_pattern_allow([^POSUB$])
 m4trace:configure.ac:23: -1- m4_pattern_allow([^MKINSTALLDIRS$])
 m4trace:configure.ac:26: -1- m4_pattern_allow([^SED$])
-m4trace:configure.ac:27: -1- m4_pattern_allow([^GCONFTOOL$])
 m4trace:configure.ac:28: -1- m4_pattern_allow([^YELP$])
 m4trace:configure.ac:29: -1- GNOME_DOC_INIT
 m4trace:configure.ac:29: -1- PKG_CHECK_EXISTS([gnome-doc-utils >= $gdu_cv_version_required], [gdu_cv_have_gdu=yes], [gdu_cv_have_gdu=no])
@@ -1291,10 +1299,10 @@ m4trace:configure.ac:29: -1- m4_pattern_allow([^ENABLE_SK_FALSE$])
 m4trace:configure.ac:29: -1- AM_CONDITIONAL([HAVE_GNOME_DOC_UTILS], [test "$gdu_cv_have_gdu" = "yes"])
 m4trace:configure.ac:29: -1- m4_pattern_allow([^HAVE_GNOME_DOC_UTILS_TRUE$])
 m4trace:configure.ac:29: -1- m4_pattern_allow([^HAVE_GNOME_DOC_UTILS_FALSE$])
-m4trace:configure.ac:32: -1- AM_PATH_PYTHON([2.4])
-m4trace:configure.ac:32: -1- AM_PYTHON_CHECK_VERSION([$PYTHON], [2.4], [AC_MSG_RESULT(yes)], [AC_MSG_ERROR(too old)])
+m4trace:configure.ac:32: -1- AM_PATH_PYTHON([2.5])
+m4trace:configure.ac:32: -1- AM_PYTHON_CHECK_VERSION([$PYTHON], [2.5], [AC_MSG_RESULT(yes)], [AC_MSG_ERROR(too old)])
 m4trace:configure.ac:32: -1- AM_RUN_LOG([$PYTHON -c "$prog"])
-m4trace:configure.ac:32: -1- AM_PYTHON_CHECK_VERSION([$am_cv_pathless_PYTHON], [2.4], [break])
+m4trace:configure.ac:32: -1- AM_PYTHON_CHECK_VERSION([$am_cv_pathless_PYTHON], [2.5], [break])
 m4trace:configure.ac:32: -1- AM_RUN_LOG([$am_cv_pathless_PYTHON -c "$prog"])
 m4trace:configure.ac:32: -1- m4_pattern_allow([^PYTHON$])
 m4trace:configure.ac:32: -1- m4_pattern_allow([^PYTHON_VERSION$])

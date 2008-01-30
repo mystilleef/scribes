@@ -49,12 +49,10 @@ class ScribesViewContainer(HBox):
 		HBox.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
-		self.resize_children()
 		self.__signal_id_1 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_cb)
 		self.__signal_id_3 = editor.connect("show-dialog", self.__show_dialog_cb)
 		self.__signal_id_4 = editor.connect("hide-dialog", self.__hide_dialog_cb)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		"""

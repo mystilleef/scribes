@@ -41,34 +41,15 @@ Desktop_in_files = scribes.desktop.in
 Desktop_DATA = $(Desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
-# Process Scribes GConf schema file.
-schemasdir = $(GCONF_SCHEMA_FILE_DIR)
-schemas_in_files = scribes.schemas
-schemas_DATA = $(schemas_in_files)
-@INTLTOOL_SCHEMAS_RULE@
-
-if GCONF_SCHEMAS_INSTALL
-install-data-local:
-	if test -z "$(DESTDIR)" ; then \
-		for p in $(schemas_DATA) ; do \
-			GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$$p ; \
-		done \
-	fi
-else
-install-data-local:
-endif
-
 EXTRA_DIST = \
 	bookmarks.png \
 	throbber-inactive.png \
 	throbber-active.gif \
 	scribes.desktop.in \
-	scribes.schemas.in \
 	ModificationDialog.glade \
 	EncodingSelectionWindow.glade \
 	EncodingErrorWindow.glade \
 	scribes.png
 
 CLEANFILES = \
-	$(Desktop_DATA) \
-	$(schemas_DATA)
+	$(Desktop_DATA)
