@@ -857,9 +857,9 @@ class Editor(GObject):
 		@param self: Reference to this editor instance.
 		@type self: An Editor object.
 		"""
-		from thread import start_new_thread
-		start_new_thread(self.__create_widgets, ())
-		#self.__create_widgets()
+		#from thread import start_new_thread
+		#start_new_thread(self.__create_widgets, ())
+		self.__create_widgets()
 		return
 
 	def __created_widgets_cb(self, editor):
@@ -916,9 +916,9 @@ class Editor(GObject):
 		return
 
 	def __created_widgets_after_cb(self, editor):
-		from thread import start_new_thread
-		start_new_thread(self.__arrange_widgets, ())
-		#self.__arrange_widgets()
+	#	from thread import start_new_thread
+	#	start_new_thread(self.__arrange_widgets, ())
+		self.__arrange_widgets()
 		return
 
 	def __gui_created_after_cb(self, editor):
@@ -929,13 +929,16 @@ class Editor(GObject):
 	def __started_core_services_cb(self, *args):
 		try:
 			# Load file if any.
+			from gobject import idle_add
 			if not self.__file_uri: raise ValueError
-			self.load_uri(self.__file_uri.strip(), self.__encoding)
+			idle_add(self.load_uri, self.__file_uri.strip(), self.__encoding)			
+#			self.load_uri(self.__file_uri.strip(), self.__encoding)
 		except ValueError:
 			pass
 		finally:
 			# Initialize plugins
-			self.__initialize_plugins()
+			idle_add(self.__initialize_plugins)			
+			#self.__initialize_plugins()
 		return False
 
 	def __initialize_plugins(self):

@@ -340,7 +340,9 @@ class EditorManager(object):
 			editor = empty_windows[0]
 ##			from thread import start_new_thread
 	#		start_new_thread(editor.load_uri, (uri, encoding))
-			editor.load_uri(uri, encoding)
+			from gobject import idle_add
+			idle_add(editor.load_uri, uri, encoding)
+		#	editor.load_uri(uri, encoding)
 		else:
 			from gobject import idle_add
 			idle_add(self.__new_editor, uri, encoding)

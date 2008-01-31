@@ -33,6 +33,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+build_triplet = i686-pc-linux-gnu
+host_triplet = i686-pc-linux-gnu
 subdir = SCRIBES
 DIST_COMMON = $(scribes_PYTHON) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
@@ -55,15 +57,15 @@ am__installdirs = "$(DESTDIR)$(scribesdir)"
 scribesPYTHON_INSTALL = $(INSTALL_DATA)
 py_compile = $(top_srcdir)/py-compile
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run aclocal-1.9
+ACLOCAL = ${SHELL} /home/meek/scribes-new-config/missing --run aclocal-1.9
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 ALL_LINGUAS = de fr nl it pt_BR sv zh_CN
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run tar
-AUTOCONF = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run automake-1.9
+AMTAR = ${SHELL} /home/meek/scribes-new-config/missing --run tar
+AUTOCONF = ${SHELL} /home/meek/scribes-new-config/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/meek/scribes-new-config/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/meek/scribes-new-config/missing --run automake-1.9
 AWK = mawk
 CATALOGS =  de.gmo fr.gmo nl.gmo it.gmo pt_BR.gmo sv.gmo zh_CN.gmo
 CATOBJEXT = .gmo
@@ -127,7 +129,7 @@ LTLIBOBJS =
 MAINT = 
 MAINTAINER_MODE_FALSE = #
 MAINTAINER_MODE_TRUE = 
-MAKEINFO = ${SHELL} /home/goldenmyst/scribes-new-config/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/meek/scribes-new-config/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_OPTS = -c
@@ -168,17 +170,25 @@ am__quote =
 am__tar = ${AMTAR} chof - "$$tardir"
 am__untar = ${AMTAR} xf -
 bindir = ${exec_prefix}/bin
+build = i686-pc-linux-gnu
 build_alias = 
+build_cpu = i686
+build_os = linux-gnu
+build_vendor = pc
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
+host = i686-pc-linux-gnu
 host_alias = 
+host_cpu = i686
+host_os = linux-gnu
+host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = /home/goldenmyst/scribes-new-config/install-sh
+install_sh = /home/meek/scribes-new-config/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -469,26 +479,4 @@ ps-am:
 
 uninstall-am: uninstall-info-am uninstall-scribesPYTHON
 
-.PHONY: all all-am check check-am clean clean-generic distclean \
-	distclean-generic distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-exec \
-	install-exec-am install-info install-info-am install-man \
-	install-scribesPYTHON install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-info-am \
-	uninstall-scribesPYTHON
-
-
-$(python_files): Makefile $(python_in_files)
-	rm -f $(python_files) $(python_files).tmp
-	$(edit) $(python_in_files) > $(python_files).tmp
-	mv $(python_files).tmp $(python_files)
-	if [ -d $(scribesdir) ]; then \
-		echo "removing " $(scribesdir) ;\
-		rm -rf $(scribesdir) ;\
-		echo "removed " $(scribesdir) ;\
-	fi
-# Tell versions [3.59,3.63) of GNU make to not export all variables.
-# Otherwise a system limit (for SysV at least) may be exceeded.
-.NOEXPORT:
+.PHONY: all all-am check check-am clean clean-generic dist                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
