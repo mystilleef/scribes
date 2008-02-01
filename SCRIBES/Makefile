@@ -133,7 +133,6 @@ MAKEINFO = ${SHELL} /home/meek/scribes-new-config/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_OPTS = -c
-MSGMERGE = /usr/bin/msgmerge
 OBJEXT = o
 OMF_DIR = ${datadir}/omf
 PACKAGE = scribes
@@ -479,4 +478,26 @@ ps-am:
 
 uninstall-am: uninstall-info-am uninstall-scribesPYTHON
 
-.PHONY: all all-am check check-am clean clean-generic dist                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+.PHONY: all all-am check check-am clean clean-generic distclean \
+	distclean-generic distdir dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-info-am install-man \
+	install-scribesPYTHON install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
+	pdf-am ps ps-am uninstall uninstall-am uninstall-info-am \
+	uninstall-scribesPYTHON
+
+
+$(python_files): Makefile $(python_in_files)
+	rm -f $(python_files) $(python_files).tmp
+	$(edit) $(python_in_files) > $(python_files).tmp
+	mv $(python_files).tmp $(python_files)
+	if [ -d $(scribesdir) ]; then \
+		echo "removing " $(scribesdir) ;\
+		rm -rf $(scribesdir) ;\
+		echo "removed " $(scribesdir) ;\
+	fi
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

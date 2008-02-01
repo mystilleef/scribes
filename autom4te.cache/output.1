@@ -697,9 +697,6 @@ INTLTOOL_SCHEMAS_RULE
 INTLTOOL_THEME_RULE
 INTLTOOL_SERVICE_RULE
 INTLTOOL_POLICY_RULE
-XGETTEXT
-MSGMERGE
-MSGFMT
 INTLTOOL_EXTRACT
 INTLTOOL_MERGE
 INTLTOOL_UPDATE
@@ -735,8 +732,10 @@ host_cpu
 host_vendor
 host_os
 USE_NLS
+MSGFMT
 MSGFMT_OPTS
 GMSGFMT
+XGETTEXT
 CATALOGS
 CATOBJEXT
 GMOFILES
@@ -3476,141 +3475,6 @@ INTLTOOL_SOUNDLIST_RULE='%.soundlist: %.soundlist.in $(INTLTOOL_MERGE) $(wildcar
 
 
 
-
-# Check the gettext tools to make sure they are GNU
-# Extract the first word of "xgettext", so it can be a program name with args.
-set dummy xgettext; ac_word=$2
-{ echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_XGETTEXT+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $XGETTEXT in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_XGETTEXT="$XGETTEXT" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_XGETTEXT="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-XGETTEXT=$ac_cv_path_XGETTEXT
-if test -n "$XGETTEXT"; then
-  { echo "$as_me:$LINENO: result: $XGETTEXT" >&5
-echo "${ECHO_T}$XGETTEXT" >&6; }
-else
-  { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-fi
-
-
-# Extract the first word of "msgmerge", so it can be a program name with args.
-set dummy msgmerge; ac_word=$2
-{ echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_MSGMERGE+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $MSGMERGE in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_MSGMERGE="$MSGMERGE" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_MSGMERGE="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-MSGMERGE=$ac_cv_path_MSGMERGE
-if test -n "$MSGMERGE"; then
-  { echo "$as_me:$LINENO: result: $MSGMERGE" >&5
-echo "${ECHO_T}$MSGMERGE" >&6; }
-else
-  { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-fi
-
-
-# Extract the first word of "msgfmt", so it can be a program name with args.
-set dummy msgfmt; ac_word=$2
-{ echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_MSGFMT+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $MSGFMT in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_MSGFMT="$MSGFMT" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_MSGFMT="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-MSGFMT=$ac_cv_path_MSGFMT
-if test -n "$MSGFMT"; then
-  { echo "$as_me:$LINENO: result: $MSGFMT" >&5
-echo "${ECHO_T}$MSGFMT" >&6; }
-else
-  { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-fi
-
-
-if test -z "$XGETTEXT" -o -z "$MSGMERGE" -o -z "$MSGFMT"; then
-    { { echo "$as_me:$LINENO: error: GNU gettext tools not found; required for intltool" >&5
-echo "$as_me: error: GNU gettext tools not found; required for intltool" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-xgversion="`$XGETTEXT --version|grep '(GNU ' 2> /dev/null`"
-mmversion="`$MSGMERGE --version|grep '(GNU ' 2> /dev/null`"
-mfversion="`$MSGFMT --version|grep '(GNU ' 2> /dev/null`"
-if test -z "$xgversion" -o -z "$mmversion" -o -z "$mfversion"; then
-    { { echo "$as_me:$LINENO: error: GNU gettext tools not found; required for intltool" >&5
-echo "$as_me: error: GNU gettext tools not found; required for intltool" >&2;}
-   { (exit 1); exit 1; }; }
-fi
 
 # Use the tools built into the package, not the ones that are installed.
 INTLTOOL_EXTRACT='$(top_builddir)/intltool-extract'
@@ -7406,9 +7270,6 @@ INTLTOOL_SCHEMAS_RULE!$INTLTOOL_SCHEMAS_RULE$ac_delim
 INTLTOOL_THEME_RULE!$INTLTOOL_THEME_RULE$ac_delim
 INTLTOOL_SERVICE_RULE!$INTLTOOL_SERVICE_RULE$ac_delim
 INTLTOOL_POLICY_RULE!$INTLTOOL_POLICY_RULE$ac_delim
-XGETTEXT!$XGETTEXT$ac_delim
-MSGMERGE!$MSGMERGE$ac_delim
-MSGFMT!$MSGFMT$ac_delim
 INTLTOOL_EXTRACT!$INTLTOOL_EXTRACT$ac_delim
 INTLTOOL_MERGE!$INTLTOOL_MERGE$ac_delim
 INTLTOOL_UPDATE!$INTLTOOL_UPDATE$ac_delim
@@ -7422,6 +7283,9 @@ ac_ct_CC!$ac_ct_CC$ac_delim
 EXEEXT!$EXEEXT$ac_delim
 OBJEXT!$OBJEXT$ac_delim
 DEPDIR!$DEPDIR$ac_delim
+am__include!$am__include$ac_delim
+am__quote!$am__quote$ac_delim
+AMDEP_TRUE!$AMDEP_TRUE$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -7463,9 +7327,6 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
-am__include!$am__include$ac_delim
-am__quote!$am__quote$ac_delim
-AMDEP_TRUE!$AMDEP_TRUE$ac_delim
 AMDEP_FALSE!$AMDEP_FALSE$ac_delim
 AMDEPBACKSLASH!$AMDEPBACKSLASH$ac_delim
 CCDEPMODE!$CCDEPMODE$ac_delim
@@ -7485,8 +7346,10 @@ host_cpu!$host_cpu$ac_delim
 host_vendor!$host_vendor$ac_delim
 host_os!$host_os$ac_delim
 USE_NLS!$USE_NLS$ac_delim
+MSGFMT!$MSGFMT$ac_delim
 MSGFMT_OPTS!$MSGFMT_OPTS$ac_delim
 GMSGFMT!$GMSGFMT$ac_delim
+XGETTEXT!$XGETTEXT$ac_delim
 CATALOGS!$CATALOGS$ac_delim
 CATOBJEXT!$CATOBJEXT$ac_delim
 GMOFILES!$GMOFILES$ac_delim
@@ -7520,7 +7383,7 @@ LIB@&t@OBJS!$LIB@&t@OBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 55; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 54; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

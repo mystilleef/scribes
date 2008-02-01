@@ -104,7 +104,7 @@ class Editor(GObject):
 		self.__signal_id_13 = self.connect_after("created-widgets", self.__created_widgets_after_cb)
 		self.__signal_id_14 = self.connect_after("reload-document", self.__reload_document_cb)
 		self.__signal_id_15 = self.connect("started-core-services", self.__started_core_services_cb)
-		self.connect_after("loaded-document", self.__loaded_document_after_cb)
+#		self.connect_after("loaded-document", self.__loaded_document_after_cb)
 		from gobject import idle_add, PRIORITY_HIGH, PRIORITY_LOW
 		idle_add(self.__init_attributes, manager, file_uri, encoding, priority=PRIORITY_HIGH)
 	#	idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
@@ -878,9 +878,9 @@ class Editor(GObject):
 		@type editor: An Editor object.
 		"""
 		self.__manager_registration_id = self.__instance_manager.register_editor(self)
-		from thread import start_new_thread
-		start_new_thread(self.__start_core_services, ())
-		#self.__start_core_services()
+		#from thread import start_new_thread
+		#start_new_thread(self.__start_core_services, ())
+		self.__start_core_services()
 		return
 
 	def __start_core_services(self):
@@ -931,14 +931,14 @@ class Editor(GObject):
 			# Load file if any.
 			from gobject import idle_add
 			if not self.__file_uri: raise ValueError
-			idle_add(self.load_uri, self.__file_uri.strip(), self.__encoding)			
-#			self.load_uri(self.__file_uri.strip(), self.__encoding)
+#			idle_add(self.load_uri, self.__file_uri.strip(), self.__encoding)
+			self.load_uri(self.__file_uri.strip(), self.__encoding)
 		except ValueError:
 			pass
 		finally:
 			# Initialize plugins
-			idle_add(self.__initialize_plugins)			
-			#self.__initialize_plugins()
+#			idle_add(self.__initialize_plugins)
+			self.__initialize_plugins()
 		return False
 
 	def __initialize_plugins(self):
