@@ -107,8 +107,8 @@ def __init_threads():
 	threads_init()
 #	from dbus.glib import threads_init
 #	threads_init()
-	from gtk.gdk import threads_init
-	threads_init()
+#	from gtk.gdk import threads_init
+#	threads_init()
 	return
 
 def __get_dbus_service():
