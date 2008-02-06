@@ -78,10 +78,10 @@ class EncodingManager(object):
 	def __get_encoding(self):
 		"""
 		Return the encoding of a the document.
-		
+
 		@param self: Reference to the EncodingManager instance.
 		@type self: An EncodingManager object.
-		
+
 		@return: Encoding of the file.
 		@rtype: A String object.
 		"""
@@ -91,7 +91,7 @@ class EncodingManager(object):
 	def __get_guess_list(self):
 		"""
 		Get a list of encodings that have been used to open a file.
-		
+
 		@param self: Reference to the EncodingManager instance.
 		@type self: An EncodingManager object.
 		"""
@@ -102,10 +102,10 @@ class EncodingManager(object):
 		"""
 		Update the database with a list of encodings that have been used
 		to successfully open a file.
-		
+
 		@param self: Reference to the EncodingManager instance.
 		@type self: An EncodingManager object.
-		
+
 		@param encoding: Encoding for a file.
 		@type encoding: A String object.
 		"""
@@ -124,7 +124,7 @@ class EncodingManager(object):
 		"""
 		Get list of encodings available in the open/save/remote dialog
 		from the database.
-		
+
 		@param self: Reference to the EncodingManager instance.
 		@type self: An EncodingManager object.
 		"""
@@ -133,12 +133,12 @@ class EncodingManager(object):
 
 	def __set_encoding_list(self, new_encoding_list):
 		"""
-		Update the database with list of selected encodings in the 
+		Update the database with list of selected encodings in the
 		open/save/remote dialogs.
-		
+
 		@param self: Reference to the EncodingManager instance.
 		@type self: An EncodingManager object.
-		
+
 		@param new_encoding_list: A list of encodings
 		@type new_encoding_list: A List object.
 		"""
@@ -149,13 +149,13 @@ class EncodingManager(object):
 	def __map_encoding_to_file(self, uri, encoding):
 		"""
 		Update the encoding of a file in a database.
-		
-		Database is never updated with "utf-8" encoding. The editor 
+
+		Database is never updated with "utf-8" encoding. The editor
 		assumes files are "utf-8" by default.
-		
+
 		@param uri: Reference to a file.
 		@type uri: A String object.
-		
+
 		@param encoding: Encoding of a file.
 		@type encoding: A String object.
 		"""
@@ -169,13 +169,13 @@ class EncodingManager(object):
 	def __format_encoding(self, encoding):
 		"""
 		Remove white space and convert to lower case.
-		
+
 		@param self: Reference to the EncodingManager instance.
 		@type self: An EncodingManager object.
-		
+
 		@param encoding: Encoding of a file.
 		@type encoding: A String object.
-		
+
 		@return: formatted encoding
 		@rtype: A String object.
 		"""
@@ -248,8 +248,10 @@ class EncodingManager(object):
 		encoding = self.__format_encoding(encoding)
 		if encoding in self.__default_encoding: return
 		self.__encoding = encoding
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__set_guess_list, encoding, priority=PRIORITY_LOW)
+		#from gobject import idle_add, PRIORITY_LOW
+		#idle_add(self.__set_guess_list, encoding, priority=PRIORITY_LOW)
+		from thread import start_new_thread
+		start_new_thread(self.__set_guess_list, (encoding,))
 		return
 
 	def __saved_document_cb(self, editor, uri, encoding):
@@ -261,8 +263,10 @@ class EncodingManager(object):
 		"""
 		if encoding is None: return
 		encoding = self.__format_encoding(encoding)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__map_encoding_to_file, uri, encoding, priority=PRIORITY_LOW)
+		#from gobject import idle_add, PRIORITY_LOW
+		#idle_add(self.__map_encoding_to_file, uri, encoding, priority=PRIORITY_LOW)
+		from thread import start_new_thread
+		start_new_thread(self.__map_encoding_to_file, (uri, encoding))
 		if encoding in [self.__default_encoding, self.__encoding]: return
 		self.__encoding = encoding
 		return
@@ -270,21 +274,24 @@ class EncodingManager(object):
 	def __renamed_document_cb(self, editor, uri, encoding):
 		"""
 		Handles callback whent he "renamed-document" signal is emitted.
-		
+
 		@param self: Reference to the EncodingManager instance.
 		@type self: An EncodingManager object.
-		
+
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
-		
+
 		@param uri: Reference to file.
 		@type uri: A String object.
-		
+
 		@param encoding: Encoding of file.
 		@type encoding: A String object.
 		"""
 		self.__encoding = "utf-8" if encoding is None else self.__format_encoding(encoding)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__map_encoding_to_file, uri, self.__encoding, priority=PRIORITY_LOW)
-		idle_add(self.__set_guess_list, self.__encoding, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__map_encoding_to_file, uri, self.__encoding, priority=PRIORITY_LOW)
+#		idle_add(self.__set_guess_list, self.__encoding, priority=PRIORITY_LOW)
+		from thread import start_new_thread
+		start_new_thread(self.__map_encoding_to_file, (uri, self.__encoding))
+		start_new_thread(self.__set_guess_list, (self.__encoding,))
 		return

@@ -265,7 +265,9 @@ class ScribesTextBuffer(SourceBuffer):
 		"""
 		# Activate syntax highlight for the language.
 		from syntax import activate_syntax_highlight
-		activate_syntax_highlight(self, self.__editor.language)
+		#activate_syntax_highlight(self, self.__editor.language)
+		from thread import start_new_thread
+		start_new_thread(activate_syntax_highlight, (self, self.__editor.language))
 		return False
 
 	def __stop_update_cursor_timer(self):
@@ -284,7 +286,9 @@ class ScribesTextBuffer(SourceBuffer):
 		cursor_line = get_cursor_line(self)
 		cursor_index = get_cursor_index(self)
 		cursor_position = cursor_line, cursor_index
-		update_cursor_position_in_database(str(self.__uri), cursor_position)
+		#update_cursor_position_in_database(str(self.__uri), cursor_position)
+		from thread import start_new_thread
+		start_new_thread(update_cursor_position_in_database, (str(self.__uri), cursor_position))
 		return False
 
 	def __update_cursor_metadata(self, uri):

@@ -69,6 +69,8 @@ class Trigger(GObject):
 #		self.__precompile_methods()
 		GObject.__init__(self)
 		self.__init_attributes(name, accelerator, description, error, removable)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, name, accelerator, description, error, removable):
 		"""

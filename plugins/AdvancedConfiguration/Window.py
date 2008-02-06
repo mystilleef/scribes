@@ -57,6 +57,15 @@ class Window(object):
 	def __init_attributes(self, editor, manager):
 		"""
 		Initialize object attributes.
+
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
+
+		@param editor: Reference to the text editor.
+		@type editor: An Editor object.
+
+		@param manager: Object that manages all components.
+		@type manager: A Manager object.
 		"""
 		self.__editor = editor
 		self.__manager = manager
@@ -66,18 +75,42 @@ class Window(object):
 		return
 
 	def __set_properties(self):
-#		self.__window.set_transient_for_window(self.__editor)
-		return 
+		"""
+		Set properties.
+
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
+		"""
+		self.__window.set_transient_for(self.__editor.window)
+		return
 
 	def __show(self):
+		"""
+		Show window.
+
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
+		"""
 		self.__window.show_all()
 		return
 
 	def __hide(self):
+		"""
+		Hide window.
+
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
+		"""
 		self.__window.hide()
 		return
 
 	def __destroy(self):
+		"""
+		Destroy window.
+
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
+		"""
 		self.__editor.disconnect_signal(self.__sig_id1, self.__manager)
 		self.__editor.disconnect_signal(self.__sig_id2, self.__manager)
 		self.__editor.disconnect_signal(self.__sig_id3, self.__window)
@@ -88,6 +121,12 @@ class Window(object):
 		return
 
 	def __show_window_cb(self, *args):
+		"""
+		Handles callback when the "show-window" callback is emitted.
+
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
+		"""
 		self.__show()
 		return False
 
@@ -101,10 +140,22 @@ class Window(object):
 		return True
 
 	def __delete_event_cb(self, *args):
+		"""
+		Handles callback when the "delete-event" signal is emitted.
+
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
+		"""
 		self.__hide()
 		return True
 
 	def __destroy_cb(self, *args):
+		"""
+		Handles callback when the "destroy" signal is emitted.
+
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
+		"""
 		self.__hide()
 		self.__destroy()
 		return

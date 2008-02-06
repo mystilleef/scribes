@@ -378,3 +378,4 @@ class FileLoader(object):
 		del self
 		self = None
 		return
+

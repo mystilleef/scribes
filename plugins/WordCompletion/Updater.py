@@ -54,7 +54,7 @@ class CompletionUpdater(object):
 		self.__init_attributes(manager, editor)
 		from gobject import idle_add, PRIORITY_LOW, timeout_add
 		timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		#idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		self.__signal_id_1 = self.__editor.connect_after("loaded-document", self.__loaded_document_cb)
 		self.__signal_id_2 = self.__editor.textbuffer.connect_after("changed", self.__changed_cb)
 		self.__signal_id_3 = self.__manager.connect("destroy", self.__destroy_cb)
@@ -144,7 +144,9 @@ class CompletionUpdater(object):
 			from operator import not_
 			if not_(self.__indexer): return False
 			self.__is_indexing = True
-			self.__send_text()
+			from thread import start_new_thread
+			start_new_thread(self.__send_text, ())
+			#self.__send_text()
 		except ValueError:
 			return False
 		return False
@@ -314,8 +316,10 @@ class CompletionUpdater(object):
 	def __finished_indexing_cb(self, editor_id, dictionary):
 		from operator import ne
 		if ne(editor_id, self.__editor.id): return True
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__update_dictionary, dictionary, priority=PRIORITY_LOW)
+		from thread import start_new_thread
+		start_new_thread(self.__update_dictionary, (dictionary,))
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__update_dictionary, dictionary, priority=PRIORITY_LOW)
 		return True
 
 	def __busy_cb(self, editor_id):

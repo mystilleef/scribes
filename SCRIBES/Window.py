@@ -213,19 +213,21 @@ class ScribesWindow(Window):
 		width, height = self.get_size()
 		is_maximized = self.__is_maximized
 		# Update the metadata database with the size and position of the window.
-		from gobject import idle_add
-		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height)
+		#from gobject import idle_add
+		#idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height)
+		from thread import start_new_thread
+		start_new_thread(self.__update_position, (is_maximized, xcoordinate, ycoordinate, width, height))
 #		from gtk.gdk import flush
 #		flush()
 		return False
-		
+
 	def __focus_in_event_cb(self, *args):
 		xcoordinate, ycoordinate = self.get_position()
 		width, height = self.get_size()
 		is_maximized = self.__is_maximized
 		# Update the metadata database with the size and position of the window.
-		from gobject import idle_add
-		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height)
+		from thread import start_new_thread
+		start_new_thread(self.__update_position, (is_maximized, xcoordinate, ycoordinate, width, height))
 		return False
 
 	def __state_event_cb(self, window, event):
@@ -270,7 +272,9 @@ class ScribesWindow(Window):
 		# Set the titlebar to show the file is currently being loaded.
 		self.__determine_title(uri)
 		from internationalization import msg0335
-		self.set_title(msg0335 % self.__title)
+		from thread import start_new_thread
+		start_new_thread(self.set_title, (msg0335 % self.__title,))
+		#self.set_title(msg0335 % self.__title)
 		return
 
 	def __loaded_document_cb(self, editor, uri, *args):
@@ -286,7 +290,9 @@ class ScribesWindow(Window):
 		#self.__editor.textbuffer.handler_unblock(self.__signal_id_18)
 		self.__editor.handler_unblock(self.__signal_id_18)
 		self.__uri = uri
-		self.set_title(self.__title)
+		from thread import start_new_thread
+		start_new_thread(self.set_title, (self.__title,))
+		#self.set_title(self.__title)
 		self.show_all()
 		self.present()
 		return
@@ -311,7 +317,9 @@ class ScribesWindow(Window):
 		from internationalization import msg0025
 		self.__uri = None
 		self.__title = None
-		self.set_title(msg0025)
+		from thread import start_new_thread
+		start_new_thread(self.set_title, (msg0025,))
+		#self.set_title(msg0025)
 		if self.__is_mapped is False: self.__editor.emit("close-document-no-save")
 		return
 
@@ -322,7 +330,9 @@ class ScribesWindow(Window):
 		# Set the titlebar to show the file is currently being loaded.
 		self.__determine_title(uri)
 		from internationalization import msg0335
-		self.set_title(msg0335 % self.__title)
+		from thread import start_new_thread
+		start_new_thread(self.set_title, (msg0335 % self.__title,))
+		#self.set_title(msg0335 % self.__title)
 		self.__position_window()
 		return
 
@@ -392,7 +402,9 @@ class ScribesWindow(Window):
 		@rtype: A Boolean object.
 		"""
 		if not self.__uri: return True
-		self.set_title("*" + self.__title)
+		from thread import start_new_thread
+		start_new_thread(self.set_title, ("*" + self.__title,))
+		#self.set_title("*" + self.__title)
 		return True
 
 	def __enable_fullscreen_cb(self, editor):
@@ -555,7 +567,9 @@ class ScribesWindow(Window):
 		@param editor: An instance of the text editor's buffer.
 		@type editor: An Editor object.
 		"""
-		self.set_title(self.__title)
+		#self.set_title(self.__title)
+		from thread import start_new_thread
+		start_new_thread(self.set_title, (self.__title,))
 		return False
 
 	def __close_document_cb(self, editor):
@@ -578,8 +592,10 @@ class ScribesWindow(Window):
 		width, height = self.get_size()
 		is_maximized = self.__is_maximized
 		# Update the metadata database with the size and position of the window.
-		from gobject import idle_add
-		idle_add(self.__update_position_metadata, is_maximized, xcoordinate, ycoordinate, width, height)
+		from thread import start_new_thread
+		start_new_thread(self.__update_position_metadata, (is_maximized, xcoordinate, ycoordinate, width, height))
+		#from gobject import idle_add
+		#idle_add(self.__update_position_metadata, is_maximized, xcoordinate, ycoordinate, width, height)
 		self.hide_all()
 		return False
 
@@ -591,13 +607,17 @@ class ScribesWindow(Window):
 	def __renamed_document_cb(self, editor, uri, *args):
 		self.__uri = uri
 		self.__determine_title(self.__uri)
-		self.set_title(self.__title)
+		#self.set_title(self.__title)
+		from thread import start_new_thread
+		start_new_thread(self.set_title, (self.__title,))
 		return False
 
 	def __reload_document_cb(self, *args):
 		from internationalization import msg0489
 		message = msg0489 % (self.__uri)
-		self.set_title(message)
+		#self.set_title(message)
+		from thread import start_new_thread
+		start_new_thread(self.set_title, (message,))
 		return False
 
 ########################################################################

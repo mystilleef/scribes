@@ -44,7 +44,7 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
-#		from gobject import idle_add, PRIORITY_LOW
+		from gobject import idle_add, PRIORITY_LOW
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
@@ -55,7 +55,7 @@ class EditorManager(object):
 #		signal(SIGSEGV, self.__kernel_signals_cb)
 #		signal(SIGTERM, self.__kernel_signals_cb)
 #		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
-#		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
 		"""

@@ -50,11 +50,13 @@ class ColorEditorTreeView(TreeView):
 		TreeView.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__populate_model()
 		self.__signal_id_1 = self.__manager.connect("populate", self.__populate_cb)
 		self.__signal_id_2 = self.__editor.connect("loaded-document", self.__reset_flag)
 		self.__signal_id_3 = self.__editor.connect("renamed-document", self.__reset_flag)
 		self.__signal_id_4 = self.__manager.connect("destroy", self.__destroy_cb)
+		from thread import start_new_thread
+		start_new_thread(self.__populate_model, ())
+		#self.__populate_model()
 		try:
 			from psyco import bind
 			bind(self.__populate_model)

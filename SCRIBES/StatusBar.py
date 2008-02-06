@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
 # USA
 
 """
@@ -231,7 +231,9 @@ class StatusTwo(ScribesStatusbar):
 			if self.__is_updating: return False
 			self.__is_updating = True
 			from cursor import update_cursor_position
-			update_cursor_position(self, textview)
+			from thread import start_new_thread
+			start_new_thread(update_cursor_position, (self, textview))
+			#update_cursor_position(self, textview)
 		except AttributeError:
 			pass
 		except RuntimeError:

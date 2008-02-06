@@ -105,8 +105,8 @@ def __init_threads():
 	"""
 	from gobject import threads_init
 	threads_init()
-	from dbus.glib import threads_init
-	threads_init()
+#	from dbus.glib import threads_init
+#	threads_init()
 	from gtk.gdk import threads_init
 	threads_init()
 	return
@@ -178,8 +178,8 @@ def __can_fork():
 	from ForkScribesMetadata import get_value
 	return get_value()
 
-#try:
-#	from psyco import bind
-#	bind(__mainloop)
-#except:
-#	pass
+try:
+	from psyco import bind
+	bind(__mainloop)
+except:
+	pass

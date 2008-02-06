@@ -54,8 +54,8 @@ class PluginManager(object):
 			self.__registration_id = self.__editor.register_object()
 			self.__signal_id_1 = editor.connect("close-document", self.__quit_cb)
 			self.__signal_id_2 = editor.connect("close-document-no-save", self.__quit_cb)
-			#from gobject import idle_add, PRIORITY_LOW
-			#idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		except PluginFolderNotFoundError:
 			print "Error: No plugin folder found"
 
@@ -160,7 +160,7 @@ class PluginManager(object):
 	def __unload_plugins(self):
 		"""
 		Unload all plugins.
-		
+
 		@param self: Reference to the PluginManager instance.
 		@type self: A PluginManager object.
 		"""

@@ -41,11 +41,7 @@ class Manager(GObject):
 	__gsignals__ = {
 		"show-window": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"destroy": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
-#		"loading-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-#		"loaded-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
-#		"reload-document": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
-#		"load-error": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		}
+	}
 
 	def __init__(self, editor):
 		"""
@@ -61,6 +57,11 @@ class Manager(GObject):
 		self.__init_attributes(editor)
 		from Window import Window
 		Window(editor, self)
+		from thread import start_new_thread
+		from ForkScribesCheckButton import CheckButton
+		start_new_thread(CheckButton, (editor, self))
+		from BracketSelectionColorButton import ColorButton
+		start_new_thread(ColorButton, (editor, self))
 
 	def __init_attributes(self, editor):
 		"""

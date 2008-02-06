@@ -107,7 +107,7 @@ class Editor(GObject):
 #		self.connect_after("loaded-document", self.__loaded_document_after_cb)
 		from gobject import idle_add, PRIORITY_HIGH, PRIORITY_LOW
 		idle_add(self.__init_attributes, manager, file_uri, encoding, priority=PRIORITY_HIGH)
-	#	idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 ########################################################################
 #
@@ -899,8 +899,8 @@ class Editor(GObject):
 		from thread import start_new_thread
 		# Initialize file modification monitor
 		from FileModificationMonitor import FileModificationMonitor
-		start_new_thread(FileModificationMonitor, (self,))
-		#FileModificationMonitor(self)
+		#start_new_thread(FileModificationMonitor, (self,))
+		FileModificationMonitor(self)
 		# Initialize the object that saves files.
 		# Initialize the feedback manager.
 		from Feedback import FeedbackManager
@@ -929,16 +929,16 @@ class Editor(GObject):
 	def __started_core_services_cb(self, *args):
 		try:
 			# Load file if any.
-			from gobject import idle_add
+			from gobject import idle_add, PRIORITY_LOW
 			if not self.__file_uri: raise ValueError
-#			idle_add(self.load_uri, self.__file_uri.strip(), self.__encoding)
-			self.load_uri(self.__file_uri.strip(), self.__encoding)
+			idle_add(self.load_uri, self.__file_uri.strip(), self.__encoding)
+#			self.load_uri(self.__file_uri.strip(), self.__encoding)
 		except ValueError:
 			pass
 		finally:
 			# Initialize plugins
-#			idle_add(self.__initialize_plugins)
-			self.__initialize_plugins()
+			idle_add(self.__initialize_plugins, priority=PRIORITY_LOW)
+#			self.__initialize_plugins()
 		return False
 
 	def __initialize_plugins(self):

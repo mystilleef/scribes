@@ -31,7 +31,7 @@ advanced configuration window.
 
 class Trigger(object):
 	"""
-	This class creates an object that shows the text editor's 
+	This class creates an object that shows the text editor's
 	advanced configuration window.
 	"""
 
@@ -64,7 +64,7 @@ class Trigger(object):
 		self.__trigger = None
 		self.__signal_id_1 = None
 		from MenuItem import MenuItem
-		MenuItem(editor)
+		self.__menuitem = MenuItem(editor)
 		return
 
 	def __create_trigger(self):
@@ -107,7 +107,7 @@ class Trigger(object):
 		self.__editor.remove_trigger(self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		if self.__manager: self.__manager.destroy()
-		print "Deleting"
+		if self.__menuitem: self.__menuitem.destroy()
 		del self
 		self = None
 		return
