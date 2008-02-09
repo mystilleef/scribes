@@ -65,8 +65,8 @@ class MenuItem(object):
 		self.__editor = editor
 		self.__signal_id_1 = None
 		from gtk import STOCK_PROPERTIES
-		from i18n import msg0001
-		self.__menuitem = editor.create_menuitem(msg0001, STOCK_PROPERTIES)
+		from i18n import msg0006
+		self.__menuitem = editor.create_menuitem(msg0006, STOCK_PROPERTIES)
 		return
 
 	def __add_menuitem(self):

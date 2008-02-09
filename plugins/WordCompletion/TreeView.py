@@ -55,8 +55,6 @@ class CompletionTreeView(TreeView):
 		TreeView.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		from gobject import idle_add
-		idle_add(self.__precompile_methods)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = manager.connect("match-found", self.__match_found_cb)
 		self.__signal_id_3 = self.connect("row-activated", self.__row_activated_cb)
@@ -66,6 +64,8 @@ class CompletionTreeView(TreeView):
 		self.__signal_id_8 = self.connect("cursor-changed", self.__cursor_changed_cb)
 		self.__signal_id_9 = manager.connect("no-match-found", self.__no_match_found_cb)
 		self.__block_textview()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -125,8 +125,7 @@ class CompletionTreeView(TreeView):
 		@param self: Reference to the CompletionTreeView instance.
 		@type self: A CompletionTreeView object.
 		"""
-		from operator import ne
-		if ne(completion_list, self.__word_list):
+		if completion_list != self.__word_list:
 			self.__word_list = completion_list
 			self.__model.clear()
 			for word in self.__word_list:
@@ -261,12 +260,12 @@ class CompletionTreeView(TreeView):
 		@type completion_list: A List object.
 		"""
 		#try:
-		#	from gobject import source_remove, idle_add
+		#	from gobject import source_remove, idle_add, PRIORITY_LOW
 		#	source_remove(self.__populate_id)
 		#except:
 		#	pass
 		from collections import deque
-		#self.__populate_id = idle_add(self.__populate_model, deque(completion_list))
+		#self.__populate_id = idle_add(self.__populate_model, deque(completion_list), priority=PRIORITY_LOW)
 		from thread import start_new_thread
 		start_new_thread(self.__populate_model, (deque(completion_list),))
 		return
@@ -353,36 +352,35 @@ class CompletionTreeView(TreeView):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		from operator import not_, eq, truth
-		if not_(self.__is_visible): return False
+		if not self.__is_visible: return False
 		# Get the selected item on the completion window.
 		selection = self.get_selection()
 		# Get the model and iterator of the selected item.
 		model, iterator = selection.get_selected()
 		# If for whatever reason the selection is lost, select the first row
 		# automactically when the up or down arrow key is pressed.
-		if not_(iterator):
+		if not iterator:
 			selection.select_path((0,))
 			model, iterator = selection.get_selected()
 		path = model.get_path(iterator)
 		from gtk import keysyms
-		if eq(event.keyval, keysyms.Return):
+		if event.keyval == keysyms.Return:
 			# Insert the selected item into the editor's buffer when the enter key
 			# event is detected.
 			self.row_activated(path, self.get_column(0))
 			self.__manager.emit("no-match-found")
-		elif eq(event.keyval, keysyms.Up):
+		elif event.keyval == keysyms.Up:
 			# If the up key is pressed check to see if the first row is selected.
 			# If it is, select the last row. Otherwise, get the path to the row
 			# above and select it.
-			if not_(path[0]):
+			if not path[0]:
 				number_of_rows = len(model)
 				selection.select_path(number_of_rows-1)
 				self.scroll_to_cell(number_of_rows-1)
 			else:
 				selection.select_path((path[0]-1,))
 				self.scroll_to_cell((path[0]-1,))
-		elif eq(event.keyval, keysyms.Down):
+		elif event.keyval == keysyms.Down:
 			# Get the iterator of the next row.
 			next_iterator = model.iter_next(iterator)
 			# If the next row exists, select it, if not select the first row.
@@ -410,7 +408,6 @@ class CompletionTreeView(TreeView):
 		@param is_visible: Whether or not the word completion window is visible.
 		@type is_visible: A Boolean object.
 		"""
-		from operator import truth
 		if is_visible:
 			self.__is_visible = True
 			self.columns_autosize()
@@ -428,8 +425,7 @@ class CompletionTreeView(TreeView):
 		@param self: Reference to the CompletionTreeView instance.
 		@type self: A CompletionTreeView object.
 		"""
-		from operator import not_
-		if not_(self.__is_blocked): return
+		if not self.__is_blocked: return
 		self.__editor.textview.handler_unblock(self.__signal_id_7)
 		self.__is_blocked = False
 		return
@@ -444,8 +440,7 @@ class CompletionTreeView(TreeView):
 		@param self: Reference to the CompletionTreeView instance.
 		@type self: A CompletionTreeView object.
 		"""
-		from operator import truth
-		if truth(self.__is_blocked): return
+		if self.__is_blocked: return
 		self.__editor.textview.handler_block(self.__signal_id_7)
 		self.__is_blocked = True
 		return

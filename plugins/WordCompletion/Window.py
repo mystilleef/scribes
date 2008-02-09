@@ -49,13 +49,10 @@ class CompletionWindow(Window):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__precompile_methods()
 		from gtk import WINDOW_POPUP
 		Window.__init__(self, WINDOW_POPUP)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		from gobject import idle_add
-		idle_add(self.__precompile_methods)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = manager.connect("show-window", self.__show_window_cb)
 		self.__signal_id_3 = manager.connect("hide-window", self.__generic_hide_cb)
@@ -65,6 +62,8 @@ class CompletionWindow(Window):
 		self.__signal_id_8 = manager.connect("no-match-found", self.__generic_hide_cb)
 		self.__signal_id_9 = editor.textview.connect("button-press-event", self.__button_press_event_cb)
 		self.__block_signals()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -121,14 +120,11 @@ class CompletionWindow(Window):
 		@type self: A CompletionWindow object.
 		"""
 		self.__manager.emit("is-visible", True)
-		from operator import truth
-		if self.__is_visible: return
-#		self.__editor.response()
+		if self.__is_visible: return False
 		if self.__signals_are_blocked: self.__unblock_signals()
 		self.show_all()
 		self.__is_visible = True
-#		self.__editor.response()
-		return
+		return False
 
 	def __hide_window(self):
 		"""
@@ -138,12 +134,11 @@ class CompletionWindow(Window):
 		@type self: A CompletionWindow object.
 		"""
 		self.__manager.emit("is-visible", False)
-		from operator import not_, truth
-		if not_(self.__is_visible): return
-		if not_(self.__signals_are_blocked): self.__block_signals()
+		if not self.__is_visible: return False
+		if not self.__signals_are_blocked: self.__block_signals()
 		self.hide_all()
 		self.__is_visible = False
-		return
+		return False
 
 	def __position_window(self, width, height):
 		"""
@@ -169,13 +164,12 @@ class CompletionWindow(Window):
 		position_y = window_y + cursor_y + cursor_height
 		# If the completion window extends past the text editor's buffer,
 		# reposition the completion window inside the text editor's buffer area.
-		from operator import gt, not_, ne
-		if gt((position_x + width), (window_x + window_width)):
+		if (position_x + width) > (window_x + window_width):
 			position_x = (window_x + window_width) - width
-		if gt((position_y + height), (window_y + window_height)):
+		if (position_y + height) > (window_y + window_height):
 			position_y = (window_y + cursor_y) - height
-		if not_(self.__signals_are_blocked):
-			if ne(position_y, self.get_position()[1]):
+		if not self.__signals_are_blocked:
+			if position_y != self.get_position()[1]:
 				position_x = self.get_position()[0]
 				self.move(position_x, position_y)
 			return
@@ -196,8 +190,7 @@ class CompletionWindow(Window):
 		@return: The height of the completion window.
 		@rtype: An Integer object.
 		"""
-		from operator import le
-		if le(width, 200):
+		if width < 200:
 			width = 200
 		else:
 			width += 28
@@ -216,9 +209,7 @@ class CompletionWindow(Window):
 		@return: The height of the completion window.
 		@rtype: An Integer object.
 		"""
-		from operator import gt
-		if gt(height, 200):
-			height = 200
+		if height > 200: height = 200
 		return height
 
 	def __block_signals(self):
@@ -252,22 +243,6 @@ class CompletionWindow(Window):
 		self.__manager.handler_unblock(self.__signal_id_8)
 		self.__signals_are_blocked = False
 		return
-
-	def __precompile_methods(self):
-		try:
-			from psyco import bind
-			bind(self.__position_window)
-			bind(self.__calculate_window_height)
-			bind(self.__calculate_window_width)
-			bind(self.__show_window)
-			bind(self.__hide_window)
-			bind(self.__block_signals)
-			bind(self.__unblock_signals)
-		except ImportError:
-			pass
-		except:
-			pass
-		return False
 
 ########################################################################
 #
@@ -308,7 +283,8 @@ class CompletionWindow(Window):
 		@param args: Irrelevant arguments.
 		@type args: A List object.
 		"""
-		self.__hide_window()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__hide_window, priority=PRIORITY_LOW)
 		return False
 
 	def __show_window_cb(self, manager, view):
@@ -331,7 +307,8 @@ class CompletionWindow(Window):
 		self.set_property("width-request", width)
 		self.set_property("height-request", height)
 		self.__position_window(width, height)
-		self.__show_window()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__show_window, priority=PRIORITY_LOW)
 		return
 
 	def __key_press_event_cb(self, window, event):
@@ -344,8 +321,8 @@ class CompletionWindow(Window):
 		@param window: Reference to the CompletionWindow instance.
 		@type window: A CompletionWindow object.
 		"""
-		from operator import eq, contains
-		if contains(self.__keys, event.keyval): self.__hide_window()
+		from gobject import idle_add, PRIORITY_LOW
+		if event.keyval in self.__keys: idle_add(self.__hide_window, priority=PRIORITY_LOW)
 		return False
 
 	def __button_press_event_cb(self, *args):
@@ -355,7 +332,8 @@ class CompletionWindow(Window):
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
 		"""
-		self.__hide_window()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__hide_window, priority=PRIORITY_LOW)
 		return False
 
 	def __precompile_methods(self):

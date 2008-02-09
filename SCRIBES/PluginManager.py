@@ -54,8 +54,8 @@ class PluginManager(object):
 			self.__registration_id = self.__editor.register_object()
 			self.__signal_id_1 = editor.connect("close-document", self.__quit_cb)
 			self.__signal_id_2 = editor.connect("close-document-no-save", self.__quit_cb)
-			from gobject import idle_add, PRIORITY_LOW
-			idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+#			from gobject import idle_add, PRIORITY_LOW
+#			idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		except PluginFolderNotFoundError:
 			print "Error: No plugin folder found"
 
@@ -225,10 +225,9 @@ class PluginManager(object):
 		@param version: Version of a plugin.
 		@type version: A Float object.
 		"""
-		from operator import contains, gt
 		for info in self.__plugin_objects.copy():
-			if contains(info, name):
-				if gt(version, info[1]):
+			if name in info:
+				if (version > info[1]):
 					info[2].unload()
 					self.__plugin_objects.remove(info)
 				else:
@@ -249,9 +248,8 @@ class PluginManager(object):
 		"""
 		from os import makedirs, path
 		from Exceptions import PluginFolderNotFoundError
-		from operator import not_
 		filename = path.join(self.__editor.core_plugin_folder, "__init__.py")
-		if not_(path.exists(filename)): raise PluginFolderNotFoundError
+		if not path.exists(filename): raise PluginFolderNotFoundError
 		filename = path.join(self.__editor.home_plugin_folder, "__init__.py")
 		if path.exists(filename): return
 		try:
@@ -273,9 +271,8 @@ class PluginManager(object):
 		@type self: A ScribesPluginManager object.
 		"""
 		from sys import path
-		from operator import contains, not_
-		if not_(contains(path, self.__editor.core_plugin_folder)): path.insert(0, self.__editor.core_plugin_folder)
-		if not_(contains(path, self.__editor.home_plugin_folder)): path.insert(0, self.__editor.home_plugin_folder)
+		if not (self.__editor.core_plugin_folder in path): path.insert(0, self.__editor.core_plugin_folder)
+		if not (self.__editor.home_plugin_folder in path): path.insert(0, self.__editor.home_plugin_folder)
 		return
 
 	def __destroy(self):

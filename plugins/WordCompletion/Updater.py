@@ -54,7 +54,7 @@ class CompletionUpdater(object):
 		self.__init_attributes(manager, editor)
 		from gobject import idle_add, PRIORITY_LOW, timeout_add
 		timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
-		#idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		self.__signal_id_1 = self.__editor.connect_after("loaded-document", self.__loaded_document_cb)
 		self.__signal_id_2 = self.__editor.textbuffer.connect_after("changed", self.__changed_cb)
 		self.__signal_id_3 = self.__manager.connect("destroy", self.__destroy_cb)
@@ -114,10 +114,9 @@ class CompletionUpdater(object):
 		@type self: A CompletionUpdater object.
 		"""
 		try:
-			from operator import is_
 			if self.__is_indexing: return False #self.__update_queue()
 			if self.__editor.is_readonly: return False
-			if is_(self.__indexer, None):
+			if self.__indexer is None:
 				from gobject import idle_add, PRIORITY_LOW, timeout_add
 				timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
 				return False
@@ -141,8 +140,7 @@ class CompletionUpdater(object):
 		"""
 		try:
 			if self.__is_indexing: return False #self.__update_queue()
-			from operator import not_
-			if not_(self.__indexer): return False
+			if not self.__indexer: return False
 			self.__is_indexing = True
 			from thread import start_new_thread
 			start_new_thread(self.__send_text, ())
@@ -162,9 +160,8 @@ class CompletionUpdater(object):
 			from dbus import DBusException
 			from SCRIBES.info import dbus_iface, session_bus, python_path
 			services = dbus_iface.ListNames()
-			from operator import contains
 			self.__indexer = None
-			if contains(services, indexer_dbus_service):
+			if indexer_dbus_service in services:
 				try:
 					self.__indexer = session_bus.get_object(indexer_dbus_service, indexer_dbus_path)
 					from gobject import idle_add, PRIORITY_LOW
@@ -314,8 +311,7 @@ class CompletionUpdater(object):
 		return
 
 	def __finished_indexing_cb(self, editor_id, dictionary):
-		from operator import ne
-		if ne(editor_id, self.__editor.id): return True
+		if editor_id != self.__editor.id: return True
 		from thread import start_new_thread
 		start_new_thread(self.__update_dictionary, (dictionary,))
 #		from gobject import idle_add, PRIORITY_LOW
@@ -323,8 +319,7 @@ class CompletionUpdater(object):
 		return True
 
 	def __busy_cb(self, editor_id):
-		from operator import ne
-		if ne(editor_id, self.__editor.id): return True
+		if editor_id != self.__editor.id: return True
 		self.__queue.clear()
 		self.__is_indexing = False
 		return True

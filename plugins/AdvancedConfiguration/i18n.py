@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2006 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -18,5 +18,19 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
 # USA
 
+"""
+Internationalization module.
+
+@author: Lateef Alabi-Oki
+@organization: Scribes
+@copyright: Copyright © 2008 Lateef Alabi-Oki
+@license: GNU GPLv3 or Later
+@contact: mystilleef@gmail.com
+"""
 from gettext import gettext as _
-msg0001 = _("_Advanced Configuration")
+msg0001 = _("Template Placeholder Colors")
+msg0002 = _("Normal Placeholder Color")
+msg0003 = _("Selected Placeholder Color")
+msg0004 = _("Modification Placeholder Color")
+msg0005 = _("Modified Placeholder Color")
+msg0006 = _("Advanced Configuration")

@@ -93,13 +93,12 @@ class CompletionScrollWin(ScrolledWindow):
 		@type view: A CompletionView object.
 		"""
 		from gtk import POLICY_NEVER, POLICY_ALWAYS
-		from operator import le, ge
 		width, height = view.size_request()
-		if le(width, 200) and le(height, 200):
+		if width < 200 and height < 200:
 			self.set_policy(POLICY_NEVER, POLICY_NEVER)
-		elif ge(width, 200) and le(height, 200):
+		elif (width > 200) and (height < 200):
 			self.set_policy(POLICY_NEVER, POLICY_NEVER)
-		elif le(width, 200) and ge(height, 200):
+		elif (width < 200) and (height > 200):
 			self.set_policy(POLICY_NEVER, POLICY_ALWAYS)
 		else:
 			self.set_policy(POLICY_NEVER, POLICY_ALWAYS)

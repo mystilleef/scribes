@@ -49,8 +49,6 @@ class CompletionMonitor(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(manager, editor)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = self.__manager.connect("update", self.__update_cb)
 		self.__signal_id_3 = editor.textbuffer.connect_after("insert-text", self.__insert_text_cb)
@@ -62,6 +60,8 @@ class CompletionMonitor(object):
 		self.__signal_id_9 = editor.textview.connect_after("paste-clipboard", self.__generic_cb)
 		self.__signal_id_10 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_11 = manager.connect("is-visible", self.__is_visible_cb)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -129,12 +129,11 @@ class CompletionMonitor(object):
 		@return: A list of words that start with word.
 		@rtype: A List object.
 		"""
-		from operator import not_, ne
 		dictionary = self.__dictionary.get_dictionary()
-		if not_(dictionary): return None
+		if not dictionary: return None
 		match_list = [list(items) for items in dictionary.items() \
-				if items[0].startswith(word) and ne(items[0], word)]
-		if not_(match_list): return None
+				if items[0].startswith(word) and (items[0] != word)]
+		if not match_list: return None
 		match_list.sort(self.__sort_matches_occurrence_only)
 		matches = [items[0] for items in match_list]
 		return matches
@@ -159,18 +158,16 @@ class CompletionMonitor(object):
 		@return: Returns 0, 1, -1 depending on importance
 		@rtype: A Integer object.
 		"""
-		from operator import gt, lt, eq
-		if lt(len(x[0]), len(y[0])): return -1
-		if gt(len(x[0]), len(y[0])): return 1
-		if eq(len(x[0]), len(y[0])):
-			if lt(x[1], y[1]): return 1
-			if gt(x[1], y[1]): return -1
+		if (len(x[0]) < len(y[0])): return -1
+		if (len(x[0]) > len(y[0])): return 1
+		if (len(x[0]) == len(y[0])):
+			if (x[1] < y[1]): return 1
+			if (x[1] > y[1]): return -1
 		return 0
 
 	def __sort_matches_occurrence_only(self, x, y):
-		from operator import gt, lt
-		if lt(x[1], y[1]): return 1
-		if gt(x[1], y[1]): return -1
+		if (x[1] < y[1]): return 1
+		if (x[1] > y[1]): return -1
 		return 0
 
 	def __precompile_methods(self):
@@ -204,8 +201,7 @@ class CompletionMonitor(object):
 		return dictionary
 
 	def __update_dictionary(self, dictionary):
-		from operator import eq
-		if eq(self.__dictionary.get_dictionary(), dictionary): return False
+		if (self.__dictionary.get_dictionary() == dictionary): return False
 		self.__dictionary.update(dictionary)
 		return False
 
@@ -226,8 +222,7 @@ class CompletionMonitor(object):
 		@type textbuffer: A ScribesTextBuffer object.
 		"""
 		try:
-			from operator import gt
-			if gt(length, 1): raise ValueError
+			if (length > 1): raise ValueError
 			from gobject import idle_add, source_remove, PRIORITY_LOW, timeout_add
 			try:
 				source_remove(self.__insert_text_id)
@@ -287,10 +282,9 @@ class CompletionMonitor(object):
 		@param textview: The text editor's buffer container.
 		@type textview: A textview object.
 		"""
-		from operator import eq, contains
 		from gtk import keysyms
 		hide_keys = (keysyms.BackSpace, keysyms.space, keysyms.Tab, keysyms.Escape)
-		if contains(hide_keys, event.keyval): self.__manager.emit("no-match-found")
+		if  event.keyval in hide_keys: self.__manager.emit("no-match-found")
 		return False
 
 	def __is_visible_cb(self, manager, visibility):
