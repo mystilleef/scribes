@@ -94,12 +94,15 @@ class GotoBarTrigger(GObject):
 		@param trigger: An object to show the goto bar.
 		@type trigger: A Trigger object.
 		"""
+		from gtk.gdk import threads_enter, threads_leave
+		threads_enter()
 		try:
 			self.__gotobar.show_bar()
 		except AttributeError:
 			from Bar import GotoBar
 			self.__gotobar = GotoBar(self.__editor)
 			self.__gotobar.show_bar()
+		threads_leave()
 		return
 
 	def __destroy_cb(self, trigger):

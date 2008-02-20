@@ -150,7 +150,9 @@ class Trigger(GObject):
 		@param self: Reference to the Trigger instance.
 		@type self: A Trigger object.
 		"""
-		self.emit("activate")
+#		self.emit("activate")
+		from thread import start_new_thread
+		start_new_thread(self.emit, ("activate",))
 		return
 
 	def destroy(self):

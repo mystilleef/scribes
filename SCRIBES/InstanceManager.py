@@ -134,7 +134,6 @@ class EditorManager(object):
 		@param type: An Integer object.
 		"""
 		try:
-			from operator import contains, not_
 			self.__editor_instances.remove(instance)
 			self.__registration_ids.remove(number)
 		except ValueError:
@@ -143,7 +142,7 @@ class EditorManager(object):
 			print "From InstanceManager.py line 118"
 			print "Instance not found,", instance
 			print "===================================================="
-		if not_(self.__editor_instances): self.__quit()
+		if not self.__editor_instances: self.__quit()
 		return
 
 	def response(self):
@@ -195,10 +194,9 @@ class EditorManager(object):
 		@param uris: A list of files to open.
 		@type uris: A list object.
 		"""
-		from operator import not_, contains
 		if uris:
-			has_uri = lambda x: contains(self.get_uris(), x)
-			has_not_uri = lambda x: not_(contains(self.get_uris(), x))
+			has_uri = lambda x: x in self.get_uris()
+			has_not_uri = lambda x: not (x in self.get_uris())
 			open_file = lambda x: self.__open_file(x, encoding)
 			# Focus respective window if file is already open.
 			map(self.focus_file, filter(has_uri, uris))
@@ -219,8 +217,7 @@ class EditorManager(object):
 		@param uris: A list of files to open.
 		@type uris: A list object.
 		"""
-		from operator import not_
-		if not_(uris): return False
+		if not uris: return False
 		from gobject import idle_add
 		for uri in uris:
 			idle_add(self.__close_file, uri)
@@ -248,16 +245,15 @@ class EditorManager(object):
 		@param uri: A URI.
 		@type uri: A String object.
 		"""
-		from operator import truth, not_, eq
-		same = lambda editor: eq(str(editor.uri), uri)
+		same = lambda editor: str(editor.uri) == uri
 		found_instance = filter(same, self.__editor_instances)
-		if not_(found_instance): return False
+		if not found_instance: return False
 		editor = found_instance[0]
 		editor.window.set_focus_on_map(True)
 		xcoordinate, ycoordinate = editor.window.get_position()
 		window_is_maximized = editor.window.is_maximized
 		editor.window.hide()
-		if not_(window_is_maximized): editor.window.move(xcoordinate, ycoordinate)
+		if not window_is_maximized: editor.window.move(xcoordinate, ycoordinate)
 		editor.window.window.show()
 		editor.window.show_all()
 		editor.window.deiconify()
@@ -273,9 +269,8 @@ class EditorManager(object):
 		@param return: A list of files loaded in editor windows.
 		@type type: A List object.
 		"""
-		from operator import not_, truth
-		if not_(self.__editor_instances): return []
-		uris = [str(editor.uri) for editor in self.__editor_instances if truth(editor.uri)]
+		if not self.__editor_instances: return []
+		uris = [str(editor.uri) for editor in self.__editor_instances if editor.uri]
 		return uris
 
 	def get_gconf_client(self):
@@ -331,8 +326,7 @@ class EditorManager(object):
 		@param uri: A file to open.
 		@type uri: A String object.
 		"""
-		from operator import not_
-		if not_(uri): return False
+		if not uri: return False
 		instances = self.__editor_instances
 		empty_windows = [x for x in instances if x.can_load_file]
 		if empty_windows:
@@ -356,9 +350,8 @@ class EditorManager(object):
 		@param uri: A file to close.
 		@type uri: A String object.
 		"""
-		from operator import not_, eq
 		from itertools import ifilter
-		same = lambda editor: eq(editor.uri, uri)
+		same = lambda editor: editor.uri == uri
 		from gobject import idle_add
 		for document in ifilter(same, self.__editor_instances):
 			idle_add(close_file, document)

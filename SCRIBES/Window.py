@@ -185,9 +185,9 @@ class ScribesWindow(Window):
 		@return: True to prevent propagation of the signal to parent widgets.
 		@rtype: A Boolean object.
 		"""
-		if self.__is_first_time:
-			self.__is_first_time = False
-			self.__is_mapped = True
+		if not self.__is_first_time: return False
+		self.__is_first_time = False
+		self.__is_mapped = True
 		return True
 
 	def __focus_out_event_cb(self, window, event):
@@ -248,12 +248,11 @@ class ScribesWindow(Window):
 		@return: True to prevent propagation of the signal to parent widgets.
 		@rtype: A Boolean object.
 		"""
-		from operator import eq, contains
 		from gtk.gdk import WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN
 		from gtk.gdk import WINDOW_STATE_ICONIFIED
-		if eq(event.new_window_state, WINDOW_STATE_ICONIFIED): return False
+		if (event.new_window_state == WINDOW_STATE_ICONIFIED): return False
 		self.__is_maximized = False
-		if contains((WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN), event.new_window_state):
+		if event.new_window_state in (WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN):
 			self.__is_maximized = True
 		return False
 
@@ -674,6 +673,7 @@ class ScribesWindow(Window):
 		try:
 			from psyco import bind
 			bind(self.__key_press_event_cb)
+			bind(self.__saved_document_cb)
 		except ImportError:
 			pass
 		return False

@@ -50,6 +50,8 @@ class EncodingManager(object):
 		self.__signal_id_1 = editor.connect("loaded-document", self.__loaded_document_cb)
 		self.__signal_id_2 = editor.connect("saved-document", self.__saved_document_cb)
 		self.__signal_id_3 = editor.connect("renamed-document", self.__renamed_document_cb)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor):
 		"""
@@ -217,6 +219,22 @@ class EncodingManager(object):
 		"""
 		self.__destroy()
 		return
+
+	def __precompile_methods(self):
+		"""
+		Tell psyco to optimize some methods.
+
+		@param self: Reference to the EncodingManager instance.
+		@type self: An EncodingManager object.
+		"""
+		try:
+			from psyco import bind
+			bind(self.__saved_document_cb)
+			bind(self.__map_encoding_to_file)
+			bind(self.__format_encoding)
+		except ImportError:
+			pass
+		return False
 
 ########################################################################
 #

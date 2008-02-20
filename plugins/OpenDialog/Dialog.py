@@ -115,19 +115,17 @@ class OpenDialog(object):
 		return
 
 	def __set_folder(self):
-		from operator import not_, ne
-		if not_(self.__editor.uri): return False
+		if not (self.__editor.uri): return False
 		from gnomevfs import URI, get_local_path_from_uri
 		folder_uri = str(URI(self.__editor.uri).parent)
-		if ne(folder_uri, self.__dialog.get_current_folder_uri()):
+		if (folder_uri != self.__dialog.get_current_folder_uri()):
 			self.__dialog.set_current_folder_uri(str(URI(self.__editor.uri).parent))
 		#self.__dialog.set_uri(self.__editor.uri)
 		return False
 
 	def __response_cb(self, dialog, response_id):
-		from operator import ne
 		from gtk import RESPONSE_OK
-		if ne(response_id, RESPONSE_OK): return False
+		if (response_id != RESPONSE_OK): return False
 		# Load selected uri(s) into the text editor's buffer.
 		uri_list = self.__dialog.get_uris()
 		self.__editor.open_files(uri_list, self.__box.encoding)

@@ -75,9 +75,8 @@ def __open_via_dbus(uris=None):
 	@type uris: A List object.
 	"""
 	dbus_service = __get_dbus_service()
-	from operator import not_
-	if not_(dbus_service): return
-	if not_(uris): uris = ""
+	if not dbus_service: return
+	if not uris: uris = ""
 	dbus_service.open_files(uris, dbus_interface=scribes_dbus_service)
 	raise SystemExit
 	return
@@ -105,10 +104,10 @@ def __init_threads():
 	"""
 	from gobject import threads_init
 	threads_init()
-#	from dbus.glib import threads_init
-#	threads_init()
-#	from gtk.gdk import threads_init
-#	threads_init()
+	from dbus.glib import threads_init
+	threads_init()
+	from gtk.gdk import threads_init
+	threads_init()
 	return
 
 def __get_dbus_service():
@@ -120,8 +119,7 @@ def __get_dbus_service():
 	"""
 	from info import dbus_iface, session_bus
 	services = dbus_iface.ListNames()
-	from operator import contains, not_
-	if not_(contains(services, scribes_dbus_service)): return None
+	if not (scribes_dbus_service in services): return None
 	proxy_object = session_bus.get_object(scribes_dbus_service, scribes_dbus_path)
 	return proxy_object
 
@@ -137,8 +135,7 @@ def __get_uris(argv):
 	from commandline import CommandLineProcessor
 	arguments = CommandLineProcessor(argv)
 	uris = arguments.uri_list
-	from operator import not_
-	if not_(uris): raise SystemExit
+	if not uris: raise SystemExit
 	return uris
 
 def __mainloop():
@@ -159,11 +156,10 @@ def __fork_scribes():
 	Detach Scribes from the shell terminal and run it in its own
 	process.
 	"""
-	from operator import ne, not_
-	if not_(__can_fork()): return
+	if not __can_fork(): return
 	from os import fork
 	pid = fork()
-	if ne(pid, 0):
+	if pid != 0:
 		from sys import exit
 		exit(0)
 	return

@@ -52,6 +52,8 @@ class TreeView(object):
 		self.__setup_treeview()
 		self.__populate_model()
 		self.__treeview.set_property("sensitive", True)
+		self.__sig_id1 = self.__treeview.connect_after("cursor-changed", self.__cursor_changed_cb)
+		self.__sig_id2 = manager.connect_after("destroy", self.__destroy_cb)
 
 	def __init_attributes(self, editor, manager):
 		"""
@@ -70,6 +72,7 @@ class TreeView(object):
 		self.__manager = manager
 		self.__treeview = manager.glade.get_widget("TemplateColorsTreeView")
 		self.__model = self.__create_model()
+		self.__sig_id1 = self.__sig_id2 = None
 		return
 
 	def __create_model(self):
@@ -80,7 +83,7 @@ class TreeView(object):
 		@type self: A EncodingSelectionWindow object.
 		"""
 		from gtk import ListStore
-		model = ListStore(str)
+		model = ListStore(str, str)
 		return model
 
 	def __setup_treeview(self):
@@ -113,9 +116,49 @@ class TreeView(object):
 		"""
 		from i18n import msg0002, msg0003, msg0004, msg0005
 		self.__model.clear()
-		self.__model.append([msg0002])
-		self.__model.append([msg0003])
-		self.__model.append([msg0004])
-		self.__model.append([msg0005])
+		self.__model.append([msg0002, "normal"])
+		self.__model.append([msg0003, "selected"])
+		self.__model.append([msg0004, "modification"])
+		self.__model.append([msg0005, "modified"])
 		self.__treeview.columns_autosize()
+		return
+
+	def __destroy(self):
+		"""
+		Destroy object.
+
+		@param self: Reference to the TreeView instance.
+		@type self: A TreeView object.
+		"""
+		self.__editor.disconnect_signal(self.__sig_id1, self.__treeview)
+		self.__editor.disconnect_signal(self.__sig_id2, self.__manager)
+		self.__treeview.destroy()
+		del self
+		self = None
+		return
+
+	def __cursor_changed_cb(self, *args):
+		"""
+		Handles callback when the "cursor-changed" signal is emitted.
+
+		@param self: Reference to the TreeView instance.
+		@type self: A TreeView object.
+		"""
+		try:
+			selection = self.__treeview.get_selection()
+			model, iterator = selection.get_selected()
+			string = model.get_value(iterator, 1)
+			self.__manager.emit("selected-placeholder", string)
+		except TypeError:
+			pass
+		return True
+
+	def __destroy_cb(self, *args):
+		"""
+		Handles callback when the "destroy" signal is emitted.
+
+		@param self: Reference to the TreeView instance.
+		@type self: A TreeView object.
+		"""
+		self.__destroy()
 		return

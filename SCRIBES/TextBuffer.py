@@ -59,6 +59,8 @@ class ScribesTextBuffer(SourceBuffer):
 		self.__signal_id_9 = editor.connect("renamed-document", self.__renamed_document_cb)
 		self.__signal_id_10 = self.connect("notify::cursor-position", self.__cursor_position_cb)
 		self.__signal_id_11 = editor.connect("reload-document", self.__reload_document_cb)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor):
 		"""
@@ -138,7 +140,9 @@ class ScribesTextBuffer(SourceBuffer):
 		if self.get_modified(): self.set_modified(False)
 		self.end_not_undoable_action()
 		self.__undoable_action = False
-		self.__set_cursor_positon()
+		#self.__set_cursor_positon()
+		from thread import start_new_thread
+		start_new_thread(self.__set_cursor_positon, ())
 		return False
 
 	def __saved_document_cb(self, *args):
@@ -279,8 +283,7 @@ class ScribesTextBuffer(SourceBuffer):
 		return
 
 	def __update_cursor_position(self):
-		from operator import not_
-		if not_(self.__uri): return False
+		if not (self.__uri): return False
 		from cursor_metadata import update_cursor_position_in_database
 		from cursor import get_cursor_line, get_cursor_index
 		cursor_line = get_cursor_line(self)
@@ -337,14 +340,13 @@ class ScribesTextBuffer(SourceBuffer):
 			cursor_line, cursor_index = 1, 0
 		start_iterator = self.get_start_iter()
 		number_of_lines = self.get_line_count()
-		from operator import gt
-		if gt(cursor_line, number_of_lines):
+		if cursor_line > number_of_lines:
 			self.place_cursor(start_iterator)
 			self.__editor.textview.grab_focus()
 			return False
 		iterator = self.get_iter_at_line(cursor_line - 1)
 		line_index = iterator.get_bytes_in_line()
-		if gt(cursor_index, line_index):
+		if cursor_index > line_index:
 			iterator.set_line_index(line_index)
 		else:
 			iterator.set_line_index(cursor_index)
@@ -355,10 +357,17 @@ class ScribesTextBuffer(SourceBuffer):
 		return False
 
 	def __precompile_methods(self):
+		"""
+		Let psyco perform byte compilation optimizations on methods.
+
+		@param self: Reference to the ScribesTextBuffer instance.
+		@type self: A ScribesTextBuffer object.
+		"""
 		try:
 			from psyco import bind
 			bind(self.__cursor_position_cb)
 			bind(self.__stop_update_cursor_timer)
+			bind(self.__update_cursor_position)
 		except ImportError:
 			pass
 		except:
@@ -366,6 +375,12 @@ class ScribesTextBuffer(SourceBuffer):
 		return False
 
 	def __destroy(self):
+		"""
+		Destroy object.
+
+		@param self: Reference to the ScribesTextBuffer instance.
+		@type self: A ScribesTextBuffer object.
+		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)

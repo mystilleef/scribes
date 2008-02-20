@@ -438,16 +438,12 @@ class TemplateProcessor(object):
 		"""
 		Contribution by rockalite
 		"""
-		client = editor.gconf_client
-		use_tabs = True
-		if client.get("/apps/scribes/use_tabs"):
-			use_tabs = client.get_bool("/apps/scribes/use_tabs")
-		if not use_tabs:
-			tab_width = 4
-			if client.get("/apps/scribes/tab"):
-				tab_width = client.get_int("/apps/scribes/tab")
-			return template.replace('\t', ' ' * tab_width)
-		return template
+		from UseTabsMetadata import get_value
+		use_tabs = get_value()
+		if use_tabs: return template
+		from TabWidthMetadata import get_value
+		tab_width = get_value()
+		return template.replace('\t', ' ' * tab_width)
 
 ########################################################################
 #

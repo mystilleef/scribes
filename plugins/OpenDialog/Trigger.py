@@ -98,9 +98,8 @@ class OpenDialogTrigger(GObject):
 		try:
 			self.__open_dialog.show_dialog()
 		except AttributeError:
-			from Dialog import OpenDialog
-			self.__open_dialog = OpenDialog(self.__editor)
-			self.__open_dialog.show_dialog()
+			from Manager import Manager
+			self.__open_dialog = Manager(self.__editor)
 		return
 
 	def __destroy_cb(self, trigger):
@@ -116,7 +115,7 @@ class OpenDialogTrigger(GObject):
 		self.__editor.remove_trigger(self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)
-		if self.__open_dialog: self.__open_dialog.destroy_()
+		if self.__open_dialog: self.__open_dialog.destroy()
 		del self
 		self = None
 		return

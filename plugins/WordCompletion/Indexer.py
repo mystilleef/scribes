@@ -102,19 +102,20 @@ class CompletionIndexer(object):
 		try:
 			if self.__is_busy: raise ValueError
 			self.__is_busy = True
-			from gobject import timeout_add, source_remove
-			try:
-				source_remove(self.__timer)
-			except:
-				pass
-			self.__timer = timeout_add(1000, self.__process_text, text, id)
+			from thread import start_new_thread
+			start_new_thread(self.__process_text, (text, id))
+			#from gobject import timeout_add, source_remove
+			#try:
+			#	source_remove(self.__timer)
+			#except:
+			#	pass
+			#self.__timer = timeout_add(1000, self.__process_text, text, id)
 		except ValueError:
 			self.__dbus.busy(id)
 		return
 
 	def __process_text(self, text, id):
-		from operator import not_
-		if not_(text):
+		if not text:
 			self.__dbus.finished_indexing(id, self.__empty_dict)
 			self.__is_busy = False
 			return False
@@ -137,8 +138,7 @@ class CompletionIndexer(object):
 		@param return: A list of words for automatic completion.
 		@type return: A List object.
 		"""
-		from operator import not_
-		if not_(text): return None
+		if not text: return None
 		from re import split
 		completion_list = split(self.__pattern, text)#.decode("utf-8"))
 		completions = filter(self.__filter, completion_list)
@@ -157,18 +157,16 @@ class CompletionIndexer(object):
 		@return: A dictionary of words ranked by occurence.
 		@rtype: A Dict object.
 		"""
-		from operator import not_
-		if not_(completions): return self.__empty_dict
+		if not completions: return self.__empty_dict
 		dictionary = {}
 		# Index strings based on their occurence in the editor's
 		# buffer and place them in a dictionary.
-		from operator import contains
 		for string in completions:
-			if contains(dictionary.keys(), string):
+			if string in dictionary.keys():
 				dictionary[string] += 1
 			else:
 				dictionary[string] = 1
-		if not_(dictionary): return self.__empty_dict
+		if not dictionary: return self.__empty_dict
 		return dictionary
 
 	def __filter(self, string):
@@ -184,9 +182,8 @@ class CompletionIndexer(object):
 		@param string: A string to check.
 		@type string: A String object.
 		"""
-		from operator import lt, truth
-		if lt(len(string), 4): return False
-		if truth(string.startswith("---")) or truth(string.startswith("___")): return False
+		if len(string) < 4: return False
+		if string.startswith("---") or string.startswith("___"): return False
 		return True
 
 	def __update_queue(self, id, text):
@@ -219,8 +216,7 @@ class CompletionIndexer(object):
 	def __start_up_check(self):
 		from SCRIBES.info import dbus_iface
 		services = dbus_iface.ListNames()
-		from operator import contains, not_
-		if not_(contains(services, indexer_dbus_service)): return
+		if not (indexer_dbus_service in services): return
 #		print "Ooops! Found another completion indexer, killing this one."
 		from os import _exit
 		_exit(0)
@@ -235,8 +231,7 @@ class CompletionIndexer(object):
 		"""
 		from SCRIBES.info import dbus_iface
 		services = dbus_iface.ListNames()
-		from operator import eq
-		if eq(services.count(indexer_dbus_service), 1): return True
+		if services.count(indexer_dbus_service) == 1: return True
 #		print "Ooops! Found another completion indexer, killing this one."
 		from os import _exit
 		_exit(0)
@@ -263,6 +258,7 @@ if __name__ == "__main__":
 	from sys import argv, path
 	python_path = argv[1]
 	path.insert(0, python_path)
+	from gobject import MainLoop, threads_init
+	threads_init()
 	CompletionIndexer()
-	from gobject import MainLoop
 	MainLoop().run()

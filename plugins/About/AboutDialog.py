@@ -37,10 +37,6 @@ class ScribesAboutDialog(AboutDialog):
 	This class implements the about dialog for the text editor.
 	"""
 
-	__gsignals__ = {
-		"delete": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	}
-
 	def __init__(self, editor):
 		"""
 		Initialize the dialog.
@@ -54,7 +50,6 @@ class ScribesAboutDialog(AboutDialog):
 		AboutDialog.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
-		self.__signal_id_1 = self.connect("delete", self.__destroy_cb)
 
 	def __init_attributes(self, editor):
 		"""
@@ -68,7 +63,6 @@ class ScribesAboutDialog(AboutDialog):
 		"""
 		self.__editor = editor
 		self.__status_id = None
-		self.__signal_id_1 = None
 		return
 
 	def __set_properties(self):
@@ -110,7 +104,11 @@ class ScribesAboutDialog(AboutDialog):
 		self.__editor.emit("show-dialog", self)
 		from i18n import msg0002
 		self.__status_id = self.__editor.feedback.set_modal_message(msg0002, "about")
+		self.show_all()
+		from gtk.gdk import threads_enter, threads_leave
+		threads_enter()
 		response = self.run()
+		threads_leave()
 		if response: self.hide_dialog()
 		return
 
@@ -126,7 +124,7 @@ class ScribesAboutDialog(AboutDialog):
 		self.hide()
 		return
 
-	def __destroy_cb(self, dialog):
+	def __destroy(self):
 		"""
 		Handles callback when the "destroy" signal is emitted.
 
@@ -136,8 +134,11 @@ class ScribesAboutDialog(AboutDialog):
 		@param dialog: Reference to the ScribesAboutDialog instance.
 		@type dialog: A ScribesAboutDialog object.
 		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.destroy()
 		del self
 		self = None
+		return
+
+	def destroy_(self):
+		self.__destroy()
 		return

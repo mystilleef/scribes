@@ -120,7 +120,7 @@ class AboutTrigger(GObject):
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor.textview)
-		if self.__about_dialog: self.__about_dialog.emit("delete")
+		if self.__about_dialog: self.__about_dialog.destroy_()
 		del self
 		self = None
 		return

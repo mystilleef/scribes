@@ -31,7 +31,7 @@ components of the document browser.
 
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE
 
-class DocumentManager(GObject):
+class Manager(GObject):
 	"""
 	This class manages graphic user interface components of the document
 	browser.
@@ -40,113 +40,71 @@ class DocumentManager(GObject):
 	__gsignals__ = {
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"update": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"show-browser": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
 		"""
-		Initialize an instance of this class.
+		Initialize object.
 
-		@param self: Reference to the DocumentManager instance.
-		@type self: A DocumentManager object.
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
 
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		self.__arrange_widgets()
-		self.__signal_id_1 = self.connect_after("destroy", self.__destroy_cb)
-		self.__signal_id_2 = self.__close_button.connect("clicked", self.__manager_clicked_cb)
-		self.__signal_id_3 = self.__treeview.connect("row-activated", self.__row_activated_cb)
-		self.__signal_id_4 = self.connect("show-browser", self.__show_browser_cb)
-
-	def show_browser(self):
-		"""
-		Show the bookmark browser.
-
-		@param self: Reference to the DocumentManager instance.
-		@type self: A DocumentManager object.
-		"""
-		self.emit("update")
-		return
+		from thread import start_new_thread
+		from Window import Window
+		start_new_thread(Window, (editor, self))
+		#Window(editor, self)
+		from TreeView import TreeView
+		#TreeView(editor, self)
+		start_new_thread(TreeView, (editor, self))
 
 	def __init_attributes(self, editor):
 		"""
 		Initialize data attributes.
 
-		@param self: Reference to the DocumentManager instance.
-		@type self: A DocumentManager object.
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
 
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		from Window import BrowserWindow
-		self.__window = BrowserWindow(self, editor)
-		from Treeview import BrowserTreeView
-		self.__treeview = BrowserTreeView(self, editor)
-		from gtk import STOCK_CLOSE, Button
-		self.__close_button = Button(stock=STOCK_CLOSE, use_underline=True)
-		self.__signal_id_1 = None
-		self.__signal_id_2 = None
-		self.__signal_id_3 = None
-		self.__signal_id_4 = None
+		from os.path import join, split
+		current_folder = split(globals()["__file__"])[0]
+		glade_file = join(current_folder, "DocumentBrowser.glade")
+		from gtk.glade import XML
+		self.__glade = XML(glade_file, "Window", "scribes")
 		return
 
-	def __arrange_widgets(self):
-		"""
-		Arrange graphic user interface components.
+	def __get_glade(self):
+		return self.__glade
 
-		@param self: Reference to the DocumentManager instance.
-		@type self: A DocumentManager object.
+	glade = property(__get_glade)
+
+	def show_browser(self):
 		"""
-		scrollwin = self.__editor.create_scrollwin()
-		scrollwin.add(self.__treeview)
-		self.__window.vbox.pack_start(scrollwin, True, True, 0)
-		self.__window.action_area.pack_start(self.__close_button, False, False, 0)
+		Show the document browser.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
+		self.emit("update")
 		return
 
-	def __destroy_cb(self, manager):
+	def destroy(self):
 		"""
 		Handles callback when the "destroy" signal is emitted.
 
-		@param self: Reference to the DocumentManager instance.
-		@type self: A DocumentManager object.
-
-		@param manager: Reference to the DocumentManager instance.
-		@type manager: A DocumentManager object.
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
 		"""
-		from operator import truth
-		self.__editor.disconnect_signal(self.__signal_id_1, self)
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__close_button)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__treeview)
-		self.__editor.disconnect_signal(self.__signal_id_4, self)
-		if truth(self.__close_button): self.__close_button.destroy()
+		self.emit("destroy")
 		del self
 		self = None
-		return
-
-	def __manager_clicked_cb(self, button):
-		"""
-		Handles callback when the "clicked" signal is emitted.
-
-		@param self: Reference to the DocumentManager instance.
-		@type self: An DocumentManager object.
-
-		@param button: Reference to the close button.
-		@type button: A gtk.Button object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
-		self.__window.hide_dialog()
-		return False
-
-	def __row_activated_cb(self, *args):
-		self.__window.hide_dialog()
-		return False
-
-	def __show_browser_cb(self, manager):
-		self.__window.show_dialog()
 		return

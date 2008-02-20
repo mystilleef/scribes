@@ -256,8 +256,7 @@ class Editor(GObject):
 		return get_language(self.__uri)
 
 	def __get_mimetype(self):
-		from operator import not_
-		if not_(self.__uri): return None
+		if not self.__uri: return None
 		from gnomevfs import get_mime_type
 		return get_mime_type(self.__uri)
 
@@ -672,8 +671,7 @@ class Editor(GObject):
 		return generate_random_number(sequence)
 
 	def mark(self, iterator, alignment="right"):
-		from operator import eq
-		if eq(alignment, "right"):
+		if alignment == "right":
 			mark = self.__textbuffer.create_mark(None, iterator, False)
 		else:
 			mark = self.__textbuffer.create_mark(None, iterator, True)

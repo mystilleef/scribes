@@ -19,8 +19,8 @@
 # USA
 
 """
-This module documents a class responsible for managing each component of
-the advanced configuration window.
+This modules documents a class that manages essential components of the
+open dialog file chooser.
 
 @author: Lateef Alabi-Oki
 @organization: Scribes
@@ -29,20 +29,19 @@ the advanced configuration window.
 @contact: mystilleef@gmail.com
 """
 
-from gobject import SIGNAL_ACTION, SIGNAL_RUN_LAST, TYPE_NONE, GObject
-from gobject import TYPE_PYOBJECT
+from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_PYOBJECT
 
 class Manager(GObject):
 	"""
-	This class manages each component of the advanced configuration
-	window. Communication between components are doing via the object
-	of this class.
+	This class manages the components of the filechooser window.
 	"""
 
 	__gsignals__ = {
-		"show-window": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"destroy": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"selected-placeholder": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"load-files": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"selected-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -57,47 +56,59 @@ class Manager(GObject):
 		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		from Window import Window
-		Window(editor, self)
 		from thread import start_new_thread
-		from ForkScribesCheckButton import CheckButton
-		start_new_thread(CheckButton, (editor, self))
-		from BracketSelectionColorButton import ColorButton
-		start_new_thread(ColorButton, (editor, self))
-		from TemplateColorsTreeView import TreeView
-		start_new_thread(TreeView, (editor, self))
+		from OpenButton import Button
+		start_new_thread(Button, (editor, self))
+		from Window import Window
+		start_new_thread(Window, (editor, self))
+#		from CancelButton import Button
+#		start_new_thread(Button, (editor, self))
+		from FileChooser import FileChooser
+		start_new_thread(FileChooser, (editor, self))
 
 	def __init_attributes(self, editor):
 		"""
-		Initialize object's attributes.
+		Initialize data attributes.
 
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
+
+		@param editor: Reference to the text editor.
+		@type editor: An Editor object.
 		"""
 		self.__editor = editor
 		from os.path import join, split
 		current_folder = split(globals()["__file__"])[0]
-		glade_file = join(current_folder, "AdvancedConfigurationWindow.glade")
+		glade_file = join(current_folder, "OpenDialog.glade")
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, "Window", "scribes")
-		self.__signal_id_1 = None
 		return
 
 	def __get_glade(self):
 		return self.__glade
 
-	def __destroy(self):
-		del self
-		self = None
-		return
-
 	glade = property(__get_glade)
 
-	def show(self):
-		self.emit("show-window")
+	def show_dialog(self):
+		"""
+		Show the open file chooser dialog.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
+		#self.emit("show-window")
+		from thread import start_new_thread
+		start_new_thread(self.emit, ("show-window",))
 		return
 
 	def destroy(self):
+		"""
+		Handles callback when the "destroy" signal is emitted.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
 		self.emit("destroy")
-		self.__destroy()
+		del self
+		self = None
 		return

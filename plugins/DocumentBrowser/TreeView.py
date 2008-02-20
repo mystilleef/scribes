@@ -29,14 +29,12 @@ document browser.
 @contact: mystilleef@gmail.com
 """
 
-from gtk import TreeView
-
-class BrowserTreeView(TreeView):
+class TreeView(object):
 	"""
 	This class creates a treeview for the bookmark browser.
 	"""
 
-	def __init__(self, manager, editor):
+	def __init__(self, editor, manager):
 		"""
 		Intialize an instance of this class.
 
@@ -49,15 +47,16 @@ class BrowserTreeView(TreeView):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		TreeView.__init__(self)
-		self.__init_attributes(manager, editor)
+		self.__init_attributes(editor, manager)
 		self.__set_properties()
 		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = self.__manager.connect("update", self.__update_cb)
-		self.__signal_id_3 = self.connect_after("row-activated", self.__row_activated_cb)
-		self.__signal_id_4 = self.connect("key-press-event", self.__key_press_event_cb)
+		self.__signal_id_3 = self.__treeview.connect("row-activated", self.__row_activated_cb)
+		self.__signal_id_4 = self.__treeview.connect("key-press-event", self.__key_press_event_cb)
+		self.__populate_model()
+		self.__treeview.set_property("sensitive", True)
 
-	def __init_attributes(self, manager, editor):
+	def __init_attributes(self, editor, manager):
 		"""
 		Initialize data attributes.
 
@@ -72,6 +71,7 @@ class BrowserTreeView(TreeView):
 		"""
 		self.__manager = manager
 		self.__editor = editor
+		self.__treeview = manager.glade.get_widget("TreeView")
 		self.__uri_list = []
 		self.__model = self.__create_model()
 		self.__name_renderer = self.__create_renderer()
@@ -91,17 +91,17 @@ class BrowserTreeView(TreeView):
 		@param self: Reference to the BrowserTreeView instance.
 		@type self: A BrowserTreeView object.
 		"""
-		self.set_property("model", self.__model)
-		self.set_property("rules-hint", True)
-		self.set_property("search-column", 0)
-		self.set_property("headers-clickable", True)
-		self.append_column(self.__name_column)
-		self.append_column(self.__type_column)
-		self.append_column(self.__path_column)
+		self.__treeview.set_property("model", self.__model)
+		self.__treeview.set_property("rules-hint", True)
+		self.__treeview.set_property("search-column", 0)
+		self.__treeview.set_property("headers-clickable", True)
+		self.__treeview.append_column(self.__name_column)
+		self.__treeview.append_column(self.__type_column)
+		self.__treeview.append_column(self.__path_column)
 		self.__name_column.clicked()
 		return
 
-	def __create_model(self,):
+	def __create_model(self):
 		"""
 		Create model for the treeview.
 
@@ -165,9 +165,8 @@ class BrowserTreeView(TreeView):
 		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
-		self.__editor.disconnect_signal(self.__signal_id_3, self)
-		if self.__model: self.__model.clear()
-		self.destroy()
+		self.__editor.disconnect_signal(self.__signal_id_3, self.__treeview)
+		self.__treeview.destroy()
 		del self
 		self = None
 		return
@@ -185,36 +184,34 @@ class BrowserTreeView(TreeView):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		uris = self.__editor.instance_manager.get_uris()
-		from operator import not_
-		if not_(uris):
-			from i18n import msg0006
-			self.__editor.feedback.update_status_message(msg0006, "warning")
-			return	False
 #		from gobject import idle_add
 #		idle_add(self.__populate_model, uris)
 		from thread import start_new_thread
-		start_new_thread(self.__populate_model, (uris,))
-		self.__manager.emit("show-browser")
+		start_new_thread(self.__populate_model, ())
+		self.__manager.emit("show-window")
 		return False
 
-	def __populate_model(self, uris):
+	def __populate_model(self):
 		"""
 		Populate the model.
 
 		@param self: Reference to the BrowserTreeView instance.
 		@type self: A BrowserTreeView object.
 		"""
+		uris = self.__editor.instance_manager.get_uris()
+		if not (uris):
+			from i18n import msg0006
+			self.__editor.feedback.update_status_message(msg0006, "warning")
+			return	False
 		uris.sort()
 		self.__uri_list.sort()
-		from operator import eq
-		if eq(uris, self.__uri_list): return
+		if uris == self.__uri_list: return
 		self.__uri_list = uris
 		self.__model.clear()
 		for uri in self.__uri_list:
 			file_type, filename, pathname, fileuri= self.__process_uri(uri)
 			self.__model.append([filename, file_type, pathname, fileuri])
-		self.__editor.select_row(self)
+		self.__editor.select_row(self.__treeview)
 		return
 
 	def __process_uri(self, uri):
@@ -258,18 +255,18 @@ class BrowserTreeView(TreeView):
 		"""
 		iterator = self.__model.get_iter(path)
 		uri = self.__model.get_value(iterator, 3)
+		self.__manager.emit("hide-window")
 		self.__editor.instance_manager.focus_file(uri)
 		return True
 
 	def __key_press_event_cb(self, treeview, event):
-		from operator import ne, not_
 		from gtk import keysyms
-		if ne(event.keyval, keysyms.Delete): return False
+		if event.keyval != keysyms.Delete: return False
 		selection = treeview.get_selection()
 		model, iterator = selection.get_selected()
-		if not_(iterator): return False
+		if not iterator: return False
 		uri = model.get_value(iterator, 3)
 		model.remove(iterator)
-		self.__editor.select_row(self)
+		self.__editor.select_row(self.__treeview)
 		self.__editor.instance_manager.close_files([uri])
 		return False

@@ -59,6 +59,8 @@ class FeedbackManager(object):
 		self.__signal_id_11 = editor.connect_after("modified-document", self.__changed_cb)
 		self.__signal_id_12 = editor.connect("gui-created", self.__gui_created_cb)
 		self.__signal_id_13 = editor.connect("reload-document", self.__reload_document_cb)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor):
 		"""
@@ -242,8 +244,7 @@ class FeedbackManager(object):
 		@type message: A String object.
 		"""
 		try:
-			from operator import not_
-			if not_(message): return False
+			if not message: return False
 			statusbar = self.__editor.statusone
 			statusbar.pop(statusbar.context_id)
 			context_id = statusbar.get_context_id(message)
@@ -265,8 +266,7 @@ class FeedbackManager(object):
 		@type message: A gtk.STOCK object.
 		"""
 		try:
-			from operator import not_
-			if not_(icon): return False
+			if not icon: return False
 			image = self.__editor.status_image
 			frame = self.__editor.status_image_frame
 			image.clear()
@@ -318,10 +318,9 @@ class FeedbackManager(object):
 		@param self: Reference to the FeedbackManager instance.
 		@type self: A FeedbackManager object.
 		"""
-		from operator import not_, is_
-		if self.__message_stack and not_(self.__editor.is_readonly):
+		if self.__message_stack and not self.__editor.is_readonly:
 			self.__set_message_from_stack()
-		elif is_(self.__filename, None):
+		elif self.__filename is None:
 			self.__remove_message()
 			self.__remove_icon()
 		else:
@@ -388,8 +387,7 @@ class FeedbackManager(object):
 		@return: True if feedback data is found in message stack.
 		@rtype: A Boolean object.
 		"""
-		from operator import contains
-		if contains(feedback, message_id):
+		if message_id in feedback:
 			self.__message_stack.remove(feedback)
 			return True
 		return False
@@ -404,8 +402,7 @@ class FeedbackManager(object):
 		@param time: How long to reset the statusbar.
 		@type time: An Integer object.
 		"""
-		from operator import is_
-		if is_(time, None): time = 3
+		if time is None: time = 3
 		time *= 1000
 		from gobject import timeout_add
 		self.__remove_timer()
@@ -436,8 +433,7 @@ class FeedbackManager(object):
 		@param icon: A string representing an image.
 		@type icon: A String object.
 		"""
-		from operator import contains
-		if contains(self.__error_strings, icon):
+		if icon in self.__error_strings:
 			from gtk.gdk import beep
 			beep()
 		return False
@@ -675,9 +671,8 @@ class FeedbackManager(object):
 		@param uri: A string representing a file.
 		@type uri: A String object.
 		"""
-		from operator import not_
 		if self.__is_busy: return False
-		if not_(self.__default_message_is_set): return False
+		if not self.__default_message_is_set: return False
 		from internationalization import msg0085
 		message = msg0085 % self.__filename
 		self.update_status_message(message, "save", 5)
@@ -735,14 +730,27 @@ class FeedbackManager(object):
 		@param args: Unimportant arguments.
 		@type args: A Tuple object.
 		"""
-		from operator import not_, ne, is_
-		if is_(self.__filename, None): return False
-		if not_(self.__default_message_is_set): return False
+		if self.__filename is None: return False
+		if not self.__default_message_is_set: return False
 		from gtk import STOCK_EDIT
-		if ne(self.__editor.status_image.get_stock()[0], STOCK_EDIT): self.__set_icon("edit")
+		if self.__editor.status_image.get_stock()[0] != STOCK_EDIT: self.__set_icon("edit")
 		return False
 
 	def __gui_created_cb(self, *args):
 		self.__remove_message()
 		self.__remove_icon()
+		return False
+
+	def __precompile_methods(self):
+		try:
+			from psyco import bind
+			bind(self.__set_icon)
+			bind(self.__set_message)
+			bind(self.__set_default_icon)
+			bind(self.__set_message_from_stack)
+			bind(self.update_status_message)
+			bind(self.set_modal_message)
+			bind(self.unset_modal_message)
+		except ImportError:
+			pass
 		return False

@@ -48,6 +48,8 @@ class FileModificationMonitor(object):
 		editor.session_bus.add_signal_receiver(self.__saved_document_cb,
 						signal_name="error",
 						dbus_interface=save_dbus_service)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor):
 		"""
@@ -74,8 +76,7 @@ class FileModificationMonitor(object):
 		@param self: Reference to the FileModificationMonitor instance.
 		@type self: A FileModificationMonitor object.
 		"""
-		from operator import not_
-		if not_(self.__editor.uri.startswith("file:///")): return
+		if not self.__editor.uri.startswith("file:///"): return
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monitor_id = monitor_add(self.__editor.uri, MONITOR_FILE,
 					self.__file_changed_cb)
@@ -90,8 +91,7 @@ class FileModificationMonitor(object):
 		"""
 		self.__last_modification_time = None
 		from gnomevfs import monitor_cancel
-		from operator import not_
-		if not_(self.__monitor_id): return
+		if not self.__monitor_id: return
 		monitor_cancel(self.__monitor_id)
 		return
 
@@ -121,9 +121,8 @@ class FileModificationMonitor(object):
 		@rtype: A gnomevfs.FILE_INFO object.
 		"""
 		try:
-			from operator import is_
-			if is_(self.__editor.uri, None): return None
-			if is_(self.__editor.uri.startswith("file:///"), False): return None
+			if self.__editor.uri is None: return None
+			if self.__editor.uri.startswith("file:///") is False: return None
 			from gnomevfs import get_file_info
 			fileinfo = get_file_info(self.__editor.uri)
 		except:			return None		return fileinfo
@@ -154,6 +153,21 @@ class FileModificationMonitor(object):
 		self = None
 		return
 
+	def __precompile_methods(self):
+		"""
+		Use psyco to optimize methods.
+
+		@param self: Reference to the FileModificationMonitor instance.
+		@type self: A FileModificationMonitor object.
+		"""
+		try:
+			from psyco import bind
+			bind(self.__get_file_info)
+			bind(self.__saved_document_cb)
+		except ImportError:
+			pass
+		return False
+
 	def __file_changed_cb(self, monitor_uri, info_uri, event_type):
 		"""
 		Handles callback when the current file is modified.
@@ -175,8 +189,7 @@ class FileModificationMonitor(object):
 		from gnomevfs import MONITOR_EVENT_CHANGED
 		if event_type in [MONITOR_EVENT_DELETED, MONITOR_EVENT_CREATED, MONITOR_EVENT_CHANGED]:
 			try:
-				from operator import eq
-				if eq(self.__last_modification_time, self.__get_file_info().mtime): return
+				if self.__last_modification_time == self.__get_file_info().mtime: return
 				print "Another program is modifying document"
 				self.__show_modification_dialog()
 			except AttributeError:

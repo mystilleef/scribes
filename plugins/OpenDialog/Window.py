@@ -83,9 +83,9 @@ class Window(object):
 		@param self: Reference to the Window instance.
 		@type self: A Window object.
 		"""
-		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 1.6, 2.5)
-		self.__window.set_property("default-width", width)
-		self.__window.set_property("default-height", height)
+		#width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 1.6, 2.5)
+		self.__window.set_property("default-width", 640)
+		self.__window.set_property("default-height", 480)
 		self.__window.set_transient_for(self.__editor.window)
 		return
 
@@ -148,9 +148,9 @@ class Window(object):
 		@param self: Reference to the Window instance.
 		@type self: An Window object.
 		"""
-		#from thread import start_new_thread
-		#start_new_thread(self.__hide, ())
-		self.__hide()
+		from thread import start_new_thread
+		start_new_thread(self.__hide, ())
+		#self.__hide()
 		return
 
 	def __show_window_cb(self, *args):
@@ -160,9 +160,9 @@ class Window(object):
 		@param self: Reference to the Window instance.
 		@type self: An Window object.
 		"""
-		#from thread import start_new_thread
-		#start_new_thread(self.__show, ())
-		self.__show()
+		from thread import start_new_thread
+		start_new_thread(self.__show, ())
+		#self.__show()
 		return
 
 	def __delete_event_cb(self, *args):
@@ -172,9 +172,9 @@ class Window(object):
 		@param self: Reference to the Window instance.
 		@type self: An Window object.
 		"""
-	#	from thread import start_new_thread
-	#	start_new_thread(self.__hide, ())
-		self.__hide()
+		from thread import start_new_thread
+		start_new_thread(self.__hide, ())
+		#self.__hide()
 		return True
 
 	def __key_press_event_cb(self, window, event):
@@ -186,7 +186,7 @@ class Window(object):
 		"""
 		from gtk import keysyms
 		if event.keyval != keysyms.Escape: return False
-#		from thread import start_new_thread
-#		start_new_thread(self.__hide, ())
-		self.__hide()
+		from thread import start_new_thread
+		start_new_thread(self.__hide, ())
+	#	self.__hide()
 		return True

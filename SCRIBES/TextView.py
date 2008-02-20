@@ -271,8 +271,7 @@ class ScribesTextView(SourceView):
 		@return: False to propagate signals to parent widgets, True otherwise.
 		@rtype: A Boolean object.
 		"""
-		from operator import contains
-		if contains(context.targets, "text/uri-list"): return True
+		if "text/uri-list" in context.targets: return True
 		return False
 
 	def __drag_drop_cb(self, textview, context, x, y, time):
@@ -300,8 +299,7 @@ class ScribesTextView(SourceView):
 		@return: False to propagate signals to parent widgets, True otherwise.
 		@rtype: A Boolean object.
 		"""
-		from operator import contains
-		if contains(context.targets, "text/uri-list"): return True
+		if "text/uri-list" in context.targets: return True
 		return False
 
 	def __drag_data_received_cb(self, textview, context, xcord, ycord,
@@ -336,9 +334,8 @@ class ScribesTextView(SourceView):
 		@return: False to propagate signals to parent widgets, True otherwise.
 		@rtype: A Boolean object.
 		"""
-		from operator import contains, not_, ne
-		if not_(contains(context.targets, "text/uri-list")): return False
-		if ne(info, 80): return False
+		if not ("text/uri-list" in context.targets): return False
+		if info != 80: return False
 		# Load file
 		uri_list = list(selection_data.get_uris())
 		self.__editor.instance_manager.open_files(uri_list, None)
@@ -371,8 +368,7 @@ class ScribesTextView(SourceView):
 		@type: A Boolean Object.
 		"""
 		selection = self.get_buffer().get_selection_bounds()
-		from operator import not_
-		if not_(selection): return False
+		if not selection: return False
 		string = self.get_buffer().get_text(selection[0], selection[1])
 		data.set(data.target, 8, string)
 		return False
@@ -552,8 +548,7 @@ class ScribesTextView(SourceView):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		if self.__bar_is_visible is False:
-			self.grab_focus()
+		if self.__bar_is_visible is False: self.grab_focus()
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return False

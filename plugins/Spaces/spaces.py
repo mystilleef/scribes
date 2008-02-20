@@ -42,18 +42,16 @@ def convert_spaces_to_tabs(sourceview):
 	@rtype: A List object.
 	"""
 	converted_lines = []
-	sourceview.set_property("editable", False)
 	sourcebuffer = sourceview.get_property("buffer")
 	begin, end = sourcebuffer.get_bounds()
 	first_line = begin.get_line()
 	last_line = end.get_line()
 	sourcebuffer.begin_user_action()
-	for line in range(first_line, last_line+1):
+	for line in xrange(first_line, last_line+1):
 		result = convert_spaces_to_tabs_on_line(sourceview, line)
 		if result:
 			converted_lines.append(line)
 	sourcebuffer.end_user_action()
-	sourceview.set_property("editable", True)
 	return converted_lines
 
 def convert_spaces_to_tabs_on_line(sourceview, line_number):
@@ -114,18 +112,16 @@ def convert_tabs_to_spaces(sourceview):
 	@rtype: A List object.
 	"""
 	converted_lines = []
-	sourceview.set_property("editable", False)
 	sourcebuffer = sourceview.get_property("buffer")
 	begin, end = sourcebuffer.get_bounds()
 	first_line = begin.get_line()
 	last_line = end.get_line()
 	sourcebuffer.begin_user_action()
-	for line in range(first_line, last_line+1):
+	for line in xrange(first_line, last_line+1):
 		result = convert_tabs_to_spaces_on_line(sourceview, line)
 		if result:
 			converted_lines.append(line)
 	sourcebuffer.end_user_action()
-	sourceview.set_property("editable", True)
 	return converted_lines
 
 def convert_tabs_to_spaces_on_line(sourceview, line_number):
@@ -165,7 +161,7 @@ def convert_tabs_to_spaces_on_line(sourceview, line_number):
 	if not len(space_list):
 		return False
 	if number_of_spaces % tab_width:
-		for space in range(number_of_spaces % tab_width):
+		for space in xrange(number_of_spaces % tab_width):
 			space_list.remove(" ")
 	string = "".join(space_list)
 	sourcebuffer.delete(begin_position, transition_position)
@@ -184,18 +180,16 @@ def remove_trailing_spaces(sourceview):
 	@rtype: A List object.
 	"""
 	affected_lines = []
-	sourceview.set_property("editable", False)
 	sourcebuffer = sourceview.get_property("buffer")
 	begin, end = sourcebuffer.get_bounds()
 	first_line = begin.get_line()
 	last_line = end.get_line()
 	sourcebuffer.begin_user_action()
-	for line in range(first_line, last_line+1):
+	for line in xrange(first_line, last_line+1):
 		result = remove_trailing_spaces_on_line(sourceview, line)
 		if result:
 			affected_lines.append(line)
 	sourcebuffer.end_user_action()
-	sourceview.set_property("editable", True)
 	return affected_lines
 
 def remove_trailing_spaces_on_line(sourceview, line_number):

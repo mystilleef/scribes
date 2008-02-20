@@ -99,9 +99,8 @@ class DocumentBrowserTrigger(GObject):
 		try:
 			self.__manager.show_browser()
 		except AttributeError:
-			from Manager import DocumentManager
-			self.__manager = DocumentManager(self.__editor)
-			self.__manager.show_browser()
+			from Manager import Manager
+			self.__manager = Manager(self.__editor)
 		return
 
 	def __destroy_cb(self, trigger):

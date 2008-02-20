@@ -241,22 +241,21 @@ class FileLoader(object):
 			from Exceptions import CloseFileError, ReadFileError
 			from Exceptions import GnomeVfsError
 			from gnomevfs import EOFError
-			from operator import is_, eq, contains, not_
 			if self.__uri.startswith("file:///"):
-				if not_(contains((None, EOFError), result)): raise GnomeVfsError
+				if not (result in (None, EOFError)): raise GnomeVfsError
 				self.__insert_string_to_buffer(buffer, handle)
 				try:
 					handle.close(self.__close_cb)
 				except:
 					raise CloseFileError
 			else:
-				if is_(result, None):
+				if result is None:
 					try:
 						self.__temp_buffer += buffer
 						handle.read(4096, self.__read_cb)
 					except:
 						raise ReadFileError
-				elif eq(result, EOFError):
+				elif (result == EOFError):
 					try:
 						self.__insert_string_to_buffer(self.__temp_buffer, handle)
 						handle.close(self.__close_cb)
@@ -321,7 +320,10 @@ class FileLoader(object):
 				except TypeError:
 					unicode_string = string.decode("utf-8")
 			utf8_string = unicode_string.encode("utf-8")
+			from gtk.gdk import threads_enter, threads_leave
+			threads_enter()
 			self.__editor.textbuffer.set_text(utf8_string)
+			threads_leave()
 		except UnicodeDecodeError:
 			from internationalization import msg0487
 			self.__error(msg0487, True)
@@ -378,4 +380,3 @@ class FileLoader(object):
 		del self
 		self = None
 		return
-
