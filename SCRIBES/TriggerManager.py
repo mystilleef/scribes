@@ -134,7 +134,6 @@ class TriggerManager(object):
 			del trigger
 			del self.__trigger_dictionary[name]
 			self.__update_accelerator_info()
-			from operator import not_
 			if self.__trigger_dictionary: return
 			if self.__is_quiting: self.__destroy()
 		except KeyError:
@@ -199,22 +198,21 @@ class TriggerManager(object):
 		from Exceptions import DuplicateTriggerNameError
 		from Exceptions import DuplicateTriggerRemovalError
 		from Exceptions import DuplicateTriggerAcceleratorError
-		from operator import not_, contains, eq
-		if not_(trigger.name): raise InvalidTriggerNameError
-		if contains(self.__trigger_dictionary.keys(), trigger.name):
+		if not (trigger.name): raise InvalidTriggerNameError
+		if trigger.name in self.__trigger_dictionary.keys():
 			if trigger.error: raise DuplicateTriggerNameError
 			trigger_object, accelerator = self.__trigger_dictionary[trigger.name]
-			if not_(trigger_object.removable): raise DuplicateTriggerRemovalError
+			if not (trigger_object.removable): raise DuplicateTriggerRemovalError
 			del self.__trigger_dictionary[trigger_object.name]
 			trigger_object.destroy()
 			return
-		if not_(accelerator): return
+		if not (accelerator): return
 		for trigger_object, trigger_accelerator in self.__trigger_dictionary.values():
-			if eq(accelerator, trigger_accelerator):
+			if (accelerator == trigger_accelerator):
 				if trigger.error:
 					raise DuplicateTriggerAcceleratorError
 				else:
-					if not_(trigger_object.removable): raise DuplicateTriggerRemovalError
+					if not (trigger_object.removable): raise DuplicateTriggerRemovalError
 					del self.__trigger_dictionary[trigger_object.name]
 					trigger_object.destroy()
 				break
@@ -236,8 +234,7 @@ class TriggerManager(object):
 		@param accelerator: A keyboard shortcut associated with a trigger.
 		@type accelerator: A String object.
 		"""
-		from operator import not_
-		if not_(accelerator): return None
+		if not (accelerator): return None
 		accel_list = [accel.strip() for accel in accelerator.split("-")]
 		accel = []
 		for item in accel_list:
@@ -268,11 +265,10 @@ class TriggerManager(object):
 		modifiers = ("ctrl", "shift", "alt")
 		keyname = set([])
 		accelerators = set([])
-		from operator import contains, not_
 		for trigger_object, accelerator in self.__trigger_dictionary.values():
-			if not_(accelerator): continue
+			if not (accelerator): continue
 			for item in accelerator:
-				if contains(modifiers, item): continue
+				if item in modifiers: continue
 				keyname.add(item)
 			accelerators.add(accelerator)
 		self.__accelerator_keyname_list = keyname
@@ -291,10 +287,9 @@ class TriggerManager(object):
 		"""
 		accelerator.sort()
 		accelerator = tuple(accelerator)
-		from operator import contains, not_, eq
-		if not_(contains(self.__accelerators, accelerator)): return False
+		if not (accelerator in self.__accelerators): return False
 		for trigger, accel in self.__trigger_dictionary.values():
-			if eq(accel, accelerator):
+			if accel == accelerator:
 				trigger.activate()
 				break
 		return True

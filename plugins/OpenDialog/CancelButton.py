@@ -49,9 +49,9 @@ class Button(object):
 		@type manager: A Manager object.
 		"""
 		self.__init_attributes(editor, manager)
-		self.__sig_id1 = manager.connect("selected-file", self.__selected_file_cb)
-		self.__sig_id2 = manager.connect("destroy", self.__destroy_cb)
-		self.__sig_id3 = self.__button.connect("clicked", self.__clicked_cb)
+		self.__sig_id1 = manager.connect("destroy", self.__destroy_cb)
+		self.__sig_id2 = self.__button.connect("clicked", self.__clicked_cb)
+		self.__button.set_property("sensitive", True)
 
 	def __init_attributes(self, editor, manager):
 		"""
@@ -68,7 +68,7 @@ class Button(object):
 		"""
 		self.__editor = editor
 		self.__manager = manager
-		self.__button = manager.glade.get_widget("OpenButton")
+		self.__button = manager.glade.get_widget("CancelButton")
 		return
 
 	def __destroy(self):
@@ -79,8 +79,7 @@ class Button(object):
 		@type self: A Button object.
 		"""
 		self.__editor.disconnect_signal(self.__sig_id1, self.__manager)
-		self.__editor.disconnect_signal(self.__sig_id2, self.__manager)
-		self.__editor.disconnect_signal(self.__sig_id3, self.__button)
+		self.__editor.disconnect_signal(self.__sig_id2, self.__button)
 		self.__button.destroy()
 		del self
 		self = None
@@ -88,7 +87,7 @@ class Button(object):
 
 	def __destroy_cb(self, *args):
 		"""
-		Handles callback when the "destroy" signal is emitted.
+		Handles callback when this object needs to be destroyed.
 
 		@param self: Reference to the Button instance.
 		@type self: A Button object.
@@ -96,27 +95,12 @@ class Button(object):
 		self.__destroy()
 		return
 
-	def __selected_file_cb(self, manager, value):
-		"""
-		Handles callback when the "selected-file" signal is emitted.
-
-		@param self: Reference to the Button instance.
-		@type self: A Button object.
-
-		@param manager: Reference to the Manager instance.
-		@type manager: A Manager object.
-		"""
-		self.__button.set_property("sensitive", value)
-		return
-
 	def __clicked_cb(self, *args):
 		"""
 		Handles callback when the button is clicked.
 
-		@param self: Reference to the Button instance.
-		@type self: A Button object.
+		@param self: Reference to the But instance.
+		@type self: A_or_An class object.
 		"""
 		self.__manager.emit("hide-window")
-		self.__button.set_property("sensitive", False)
-		self.__manager.emit("load-files")
 		return

@@ -42,6 +42,7 @@ class Manager(GObject):
 		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"load-files": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"selected-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"encoding": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -56,15 +57,18 @@ class Manager(GObject):
 		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
+		self.__sig_id1 = self.connect("encoding", self.__encoding_cb)
 		from thread import start_new_thread
+		from EncodingComboBox import ComboBox
+		start_new_thread(ComboBox, (editor, self))
 		from OpenButton import Button
+		start_new_thread(Button, (editor, self))
+		from FileChooser import FileChooser
+		start_new_thread(FileChooser, (editor, self))
+		from CancelButton import Button
 		start_new_thread(Button, (editor, self))
 		from Window import Window
 		start_new_thread(Window, (editor, self))
-#		from CancelButton import Button
-#		start_new_thread(Button, (editor, self))
-		from FileChooser import FileChooser
-		start_new_thread(FileChooser, (editor, self))
 
 	def __init_attributes(self, editor):
 		"""
@@ -82,12 +86,17 @@ class Manager(GObject):
 		glade_file = join(current_folder, "OpenDialog.glade")
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, "Window", "scribes")
+		self.__encoding = None
 		return
 
 	def __get_glade(self):
 		return self.__glade
 
+	def __get_encoding(self):
+		return self.__encoding
+
 	glade = property(__get_glade)
+	encoding = property(__get_encoding)
 
 	def show_dialog(self):
 		"""
@@ -96,9 +105,8 @@ class Manager(GObject):
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
 		"""
-		#self.emit("show-window")
-		from thread import start_new_thread
-		start_new_thread(self.emit, ("show-window",))
+		from gobject import idle_add
+		idle_add(self.emit, "show-window")
 		return
 
 	def destroy(self):
@@ -108,7 +116,18 @@ class Manager(GObject):
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
 		"""
+		self.__editor.disconnect_signal(self.__sig_id1, self)
 		self.emit("destroy")
 		del self
 		self = None
 		return
+
+	def __encoding_cb(self, manager, encoding):
+		"""
+		Handles callback when encoding information changes.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
+		self.__encoding = encoding
+		return False

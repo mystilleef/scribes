@@ -422,9 +422,7 @@ class Editor(GObject):
 	def load_uri(self, uri, encoding="utf-8"):
 		self.__can_load_file = False
 		from FileLoader import FileLoader
-		from thread import start_new_thread
-		start_new_thread(FileLoader, (self, uri, encoding))
-		#FileLoader(self, uri, encoding)
+		FileLoader(self, uri, encoding)
 		return False
 
 	def create_new_file(self):
@@ -855,8 +853,6 @@ class Editor(GObject):
 		@param self: Reference to this editor instance.
 		@type self: An Editor object.
 		"""
-		#from thread import start_new_thread
-		#start_new_thread(self.__create_widgets, ())
 		self.__create_widgets()
 		return
 
@@ -876,8 +872,6 @@ class Editor(GObject):
 		@type editor: An Editor object.
 		"""
 		self.__manager_registration_id = self.__instance_manager.register_editor(self)
-		#from thread import start_new_thread
-		#start_new_thread(self.__start_core_services, ())
 		self.__start_core_services()
 		return
 
@@ -914,8 +908,6 @@ class Editor(GObject):
 		return
 
 	def __created_widgets_after_cb(self, editor):
-	#	from thread import start_new_thread
-	#	start_new_thread(self.__arrange_widgets, ())
 		self.__arrange_widgets()
 		return
 
@@ -940,9 +932,8 @@ class Editor(GObject):
 		return False
 
 	def __initialize_plugins(self):
-		from thread import start_new_thread
 		from PluginManager import PluginManager
-		start_new_thread(PluginManager, (self,))
+		PluginManager(self)
 		return False
 
 	def __checking_document_cb(self, editor, uri):

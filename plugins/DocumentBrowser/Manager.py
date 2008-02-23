@@ -59,9 +59,7 @@ class Manager(GObject):
 		from thread import start_new_thread
 		from Window import Window
 		start_new_thread(Window, (editor, self))
-		#Window(editor, self)
 		from TreeView import TreeView
-		#TreeView(editor, self)
 		start_new_thread(TreeView, (editor, self))
 
 	def __init_attributes(self, editor):
@@ -94,7 +92,8 @@ class Manager(GObject):
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
 		"""
-		self.emit("update")
+		from gobject import idle_add
+		idle_add(self.emit, "update")
 		return
 
 	def destroy(self):

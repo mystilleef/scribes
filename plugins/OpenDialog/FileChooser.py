@@ -72,7 +72,6 @@ class FileChooser(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__chooser = manager.glade.get_widget("FileChooser")
-		self.__treeview = self.__chooser.get_children()[0].get_children()[0].get_children()[2].get_children()[1].get_children()[0].get_children()[0].get_children()[0]
 		self.__sig_id1 = self.__status_id = None
 		return
 
@@ -96,10 +95,8 @@ class FileChooser(object):
 		@param self: Reference to the FileChooser instance.
 		@type self: A FileChooser object.
 		"""
-		self.__treeview.grab_focus()
 		if not (self.__editor.uri): return
 		self.__chooser.set_uri(self.__editor.uri)
-		self.__treeview.grab_focus()
 		return
 
 	def __load_uris(self):
@@ -110,7 +107,7 @@ class FileChooser(object):
 		@type self: A FileChooser object.
 		"""
 		self.__manager.emit("hide-window")
-		encoding = None
+		encoding = self.__manager.encoding
 		uris = self.__chooser.get_uris()
 		self.__editor.open_files(uris, encoding)
 		return

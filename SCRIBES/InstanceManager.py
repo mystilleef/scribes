@@ -332,8 +332,6 @@ class EditorManager(object):
 		if empty_windows:
 			# Always load files in empty editor windows first.
 			editor = empty_windows[0]
-##			from thread import start_new_thread
-#			start_new_thread(editor.load_uri, (uri, encoding))
 			editor.load_uri(uri, encoding)
 		else:
 			from gobject import idle_add

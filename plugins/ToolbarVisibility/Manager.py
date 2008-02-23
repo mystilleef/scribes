@@ -44,7 +44,7 @@ class Manager(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(editor)
-		self.__sig_id_1 = editor.window.connect("motion-notify-event", self.__motion_notify_event_cb)
+		self.__sig_id_1 = editor.textview.connect("motion-notify-event", self.__motion_notify_event_cb)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__monitor_mouse, priority=PRIORITY_LOW)
 
@@ -136,7 +136,7 @@ class Manager(object):
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
 		"""
-		self.__editor.window.handler_block(self.__sig_id_1)
+		self.__editor.textview.handler_block(self.__sig_id_1)
 		return
 
 	def __enable_mouse_monitor(self):
@@ -146,7 +146,7 @@ class Manager(object):
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
 		"""
-		self.__editor.window.handler_unblock(self.__sig_id_1)
+		self.__editor.textview.handler_unblock(self.__sig_id_1)
 		return
 
 	def toggle_minimal_interface(self):
@@ -173,7 +173,7 @@ class Manager(object):
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
 		"""
-		self.__editor.disconnect_signal(self.__sig_id_1, self.__editor.window)
+		self.__editor.disconnect_signal(self.__sig_id_1, self.__editor.textview)
 		del self
 		self = None
 		return

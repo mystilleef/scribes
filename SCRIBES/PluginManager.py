@@ -45,7 +45,7 @@ class PluginManager(object):
 		@type editor: A editor object.
 		"""
 		try:
-#			self.__precompile_methods()
+#			self.__precompile_methods() this is a test file.
 			from Exceptions import PluginFolderNotFoundError
 			self.__init_attributes(editor)
 			self.__check_plugin_folders()

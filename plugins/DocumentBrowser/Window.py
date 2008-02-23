@@ -160,8 +160,8 @@ class Window(object):
 		@param self: Reference to the Window instance.
 		@type self: An Window object.
 		"""
-		#from thread import start_new_thread
-		#start_new_thread(self.__show, ())
+	#	from thread import start_new_thread
+	#	start_new_thread(self.__show, ())
 		self.__show()
 		return
 
@@ -186,7 +186,7 @@ class Window(object):
 		"""
 		from gtk import keysyms
 		if event.keyval != keysyms.Escape: return False
-#		from thread import start_new_thread
-#		start_new_thread(self.__hide, ())
+	#	from thread import start_new_thread
+	#	start_new_thread(self.__hide, ())
 		self.__hide()
 		return True

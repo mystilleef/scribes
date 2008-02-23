@@ -101,7 +101,6 @@ def get_line_bounds(textbuffer):
 		last_line = iterator.get_line()
 		begin_position = textbuffer.get_iter_at_line(last_line)
 		end_position = iterator.copy()
-		from operator import not_
 		if not_(iterator.ends_line()): end_position.forward_to_line_end()
 	else:
 		cursor_line = get_cursor_line(textbuffer)
@@ -121,8 +120,7 @@ def get_text_on_line(textbuffer, line):
 	@type text: A String object.
 	"""
 	begin_position = textbuffer.get_iter_at_line(line)
-	if begin_position.ends_line():
-		return ""
+	if begin_position.ends_line(): return ""
 	end_position = begin_position.copy()
 	end_position.forward_to_line_end()
 	text = textbuffer.get_text(begin_position, end_position)
@@ -317,3 +315,19 @@ def delete_cursor_to_line_begin(textbuffer):
 	textbuffer.delete(begin_position, cursor_position)
 	textbuffer.end_user_action()
 	return True
+
+try:
+	from psyco import bind
+	bind(delete_cursor_to_line_begin)
+	bind(delete_cursor_to_line_end)
+	bind(select_line)
+	bind(delete_line)
+	bind(duplicate_line)
+	bind(free_line_below)
+	bind(free_line_above)
+	bind(join_line)
+	bind(get_text_on_line)
+	bind(get_beginning_spaces)
+except ImportError:
+	pass
+	
