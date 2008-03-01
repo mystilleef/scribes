@@ -186,5 +186,5 @@ class TemplateLoader(object):
 		from gnomevfs import MONITOR_EVENT_CHANGED
 		from operator import contains
 		events = [MONITOR_EVENT_CHANGED, MONITOR_EVENT_DELETED, MONITOR_EVENT_CREATED]
-		if contains(events, event_type): self.__load_templates()
+		if event_type in events: self.__load_templates()
 		return

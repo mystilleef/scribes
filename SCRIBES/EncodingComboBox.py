@@ -62,7 +62,6 @@ class EncodingComboBox(ComboBox):
 					self.__update_encoding_list_cb)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__populate_model, priority=PRIORITY_LOW)
-		#self.__populate_model()
 
 	def __init_attributes(self, editor):
 		"""

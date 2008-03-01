@@ -330,4 +330,3 @@ try:
 	bind(get_beginning_spaces)
 except ImportError:
 	pass
-	

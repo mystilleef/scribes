@@ -122,13 +122,12 @@ class Highlighter(object):
 		@type self: A Highlighter object.
 		"""
 		textbuffer = self.__editor.textbuffer
-		from operator import not_, truth
-		if truth(self.__buffer_is_tagged):
+		if (self.__buffer_is_tagged):
 			begin = textbuffer.get_iter_at_mark(self.__start_mark)
 			end = textbuffer.get_iter_at_mark(self.__end_mark)
 			textbuffer.remove_tag(self.__highlight_tag, begin, end)
 		iterator = textbuffer.get_iter_at_mark(textbuffer.get_insert())
-		if not_(self.__match(iterator)): return False
+		if not (self.__match(iterator)): return False
 		cursor_iter = textbuffer.get_iter_at_mark(textbuffer.get_insert())
 		try:
 			start, end = self.__get_boundary(cursor_iter, iterator)
@@ -156,13 +155,12 @@ class Highlighter(object):
 		"""
 		# The madness going on over here is as a result of the strangeness
 		# of the GtkSourceView API. If your head hurts, kindly move along.
-		from operator import truth
-		if truth(self.__is_start_character(citerator.get_char())):
+		if (self.__is_start_character(citerator.get_char())):
 			iterator.forward_char()
 			return citerator, iterator
-		if truth(self.__is_end_character(citerator.get_char())):
+		if (self.__is_end_character(citerator.get_char())):
 			citerator.backward_char()
-			if truth(self.__is_end_character(citerator.get_char())):
+			if (self.__is_end_character(citerator.get_char())):
 				self.__match(citerator)
 				textbuffer = self.__editor.textbuffer
 				cursor_iter = textbuffer.get_iter_at_mark(textbuffer.get_insert())
@@ -170,7 +168,7 @@ class Highlighter(object):
 			citerator.forward_char()
 			return None
 		citerator.backward_char()
-		if truth(self.__is_start_character(citerator.get_char())): return None
+		if (self.__is_start_character(citerator.get_char())): return None
 		citerator.forward_char()
 		return citerator, iterator
 
@@ -239,12 +237,11 @@ class Highlighter(object):
 		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
-		from operator import truth
-		if truth(self.__start_mark):
-			if truth(self.__start_mark.get_deleted()):
+		if (self.__start_mark):
+			if (self.__start_mark.get_deleted()):
 				self.__editor.textbuffer.delete_mark(self.__start_mark)
-		if truth(self.__end_mark):
-			if truth(self.__end_mark.get_deleted()):
+		if (self.__end_mark):
+			if (self.__end_mark.get_deleted()):
 				self.__editor.textbuffer.delete_mark(self.__end_mark)
 		from gnomevfs import monitor_cancel
 		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
@@ -284,8 +281,7 @@ class Highlighter(object):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		from operator import not_
-		if not_(self.__can_highlight): return
+		if not (self.__can_highlight): return
 		from gobject import idle_add, source_remove, timeout_add, PRIORITY_LOW
 		try:
 			source_remove(self.__cursor_moved_id)
@@ -316,11 +312,10 @@ class Highlighter(object):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		from operator import ne, is_
-		if ne(tag, self.__highlight_tag): return False
+		if (tag != self.__highlight_tag): return False
 		textbuffer = self.__editor.textbuffer
-		if is_(self.__start_mark, None): self.__start_mark = textbuffer.create_mark(None, start, True)
-		if is_(self.__end_mark, None): self.__end_mark = textbuffer.create_mark(None, end, False)
+		if self.__start_mark is None: self.__start_mark = textbuffer.create_mark(None, start, True)
+		if self.__end_mark is None: self.__end_mark = textbuffer.create_mark(None, end, False)
 		textbuffer.move_mark(self.__start_mark, start)
 		textbuffer.move_mark(self.__end_mark, end)
 		self.__buffer_is_tagged = True
@@ -348,8 +343,7 @@ class Highlighter(object):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		from operator import ne
-		if ne(tag, self.__highlight_tag): return False
+		if (tag != self.__highlight_tag): return False
 		self.__buffer_is_tagged = False
 		return True
 
@@ -379,12 +373,12 @@ class Highlighter(object):
 		@type *args: A List object.
 		"""
 		self.__can_highlight = True
-		from gobject import idle_add, source_remove
+		from gobject import idle_add, source_remove, PRIORITY_LOW
 		try:
 			source_remove(self.__generic_id)
 		except:
 			pass
-		self.__generic_id = idle_add(self.__highlight_region)
+		self.__generic_id = idle_add(self.__highlight_region, priority=PRIORITY_LOW)
 		return
 
 ########################################################################
@@ -399,18 +393,6 @@ class Highlighter(object):
 
 		@param self: Reference to the LexicalScopeHighlight instance.
 		@type self: A LexicalScopeHighlight object.
-
-		@param client: A client used to query the GConf daemon and database
-		@type client: A gconf.Client object.
-
-		@param cnxn_id: The identification number for the GConf client.
-		@type cnxn_id: An Integer object.
-
-		@param entry: An entry from the GConf database.
-		@type entry: A gconf.Entry object.
-
-		@param data: Optional data
-		@type data: Any type object.
 		"""
 		textbuffer = self.__editor.textbuffer
 		begin, end = textbuffer.get_bounds()

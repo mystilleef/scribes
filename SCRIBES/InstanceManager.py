@@ -366,9 +366,9 @@ class EditorManager(object):
 		@type uri: A String object.
 		"""
 		from Editor import Editor
-		from thread import start_new_thread
-		start_new_thread(Editor, (self, uri, encoding))
-		#Editor(self, uri, encoding)
+		#from thread import start_new_thread
+		#start_new_thread(Editor, (self, uri, encoding))
+		Editor(self, uri, encoding)
 		return False
 
 	def __init_gnome_libs(self):

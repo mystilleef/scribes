@@ -50,7 +50,6 @@ class TemplateMonitor(object):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__precompile_methods()
 		self.__init_attributes(manager, editor)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = manager.connect("loaded-general-templates", self.__loaded_general_templates_cb)
@@ -59,6 +58,8 @@ class TemplateMonitor(object):
 		self.__signal_id_5 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_6 = manager.connect("trigger-activated", self.__trigger_activated_cb)
 		self.__signal_id_7 = manager.connect("template-destroyed", self.__template_destroyed_cb)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -104,13 +105,12 @@ class TemplateMonitor(object):
 		@param word: A possible template trigger.
 		@type word: A String object.
 		"""
-		from operator import contains
 		general = "General" + word.lstrip("`")
 		language = ""
 		if self.__language: language = self.__language + word.lstrip("`")
-		if contains(self.__language_dictionary.keys(), language):
+		if language in self.__language_dictionary.keys():
 			return self.__language_dictionary[language]
-		elif contains(self.__general_dictionary.keys(), general):
+		elif general in self.__general_dictionary.keys():
 			return self.__general_dictionary[general]
 		return None
 
@@ -124,8 +124,7 @@ class TemplateMonitor(object):
 		@param word: A string.
 		@type word: A String object.
 		"""
-		from operator import is_
-		if is_(self.__get_template(word), None):
+		if self.__get_template(word) is None:
 			self.__manager.emit("no-trigger-found", (self.__bmark, self.__emark))
 			return False
 		# Call this to remove previous highlight.
@@ -228,10 +227,9 @@ class TemplateMonitor(object):
 		@param self: Reference to the TemplateMonitor instance.
 		@type self: A TemplateMonitor object.
 		"""
-		from operator import not_
 		from utils import word_to_cursor
 		word = word_to_cursor(self.__editor.textbuffer, self.__editor.get_cursor_position())
-		if not_(word):
+		if not (word):
 			self.__manager.emit("no-trigger-found", (self.__bmark, self.__emark))
 			return False
 		from gobject import idle_add, source_remove, timeout_add
@@ -245,14 +243,13 @@ class TemplateMonitor(object):
 	def __key_press_event_cb(self, textview, event):
 		result = False
 		from gtk import keysyms
-		from operator import eq, not_, is_
-		if eq(event.keyval, keysyms.Tab):
+		if event.keyval == keysyms.Tab:
 			try:
 				from utils import word_to_cursor
 				word = word_to_cursor(self.__editor.textbuffer, self.__editor.get_cursor_position())
-				if not_(word): raise Exception
+				if not (word): raise Exception
 				template = self.__get_template(word)
-				if is_(template, None): raise Exception
+				if template is None: raise Exception
 				result = True
 				self.__remove_trigger(word)
 				self.__manager.emit("trigger-activated", template)
@@ -261,7 +258,7 @@ class TemplateMonitor(object):
 					self.__manager.emit("next-placeholder")
 					return True
 				return False
-		if eq(event.keyval, keysyms.ISO_Left_Tab):
+		if (event.keyval == keysyms.ISO_Left_Tab):
 			if self.__active_templates:
 				self.__manager.emit("previous-placeholder")
 				return True

@@ -53,7 +53,7 @@ class Highlighter(object):
 		self.__signal_id_2 = manager.connect("trigger-found", self.__trigger_found_cb)
 		self.__signal_id_3 = manager.connect("no-trigger-found", self.__no_trigger_found_cb)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=500)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -76,6 +76,25 @@ class Highlighter(object):
 		self.__status_id = None
 		return
 
+	def __tag_text(self, position):
+		textbuffer = self.__editor.textbuffer
+		start = textbuffer.get_iter_at_mark(position[0])
+		end = textbuffer.get_iter_at_mark(position[1])
+		textbuffer.apply_tag(self.__highlight_tag, start, end)
+		self.__is_highlighted = True
+		self.__status_id = self.__editor.feedback.set_modal_message("Template trigger highlighted", "info")
+		return False
+
+	def __untag_text(self, position):
+		textbuffer = self.__editor.textbuffer
+		start = textbuffer.get_iter_at_mark(position[0])
+		end = textbuffer.get_iter_at_mark(position[1])
+		textbuffer.remove_tag(self.__highlight_tag, start, end)
+		self.__is_highlighted = False
+		from gobject import idle_add
+		idle_add(self.__editor.feedback.unset_modal_message, self.__status_id)
+		return False
+
 	def __destroy_cb(self, manager):
 		self.__editor.textbuffer.get_tag_table().remove(self.__highlight_tag)
 		self.__editor.disconnect_signal(self.__signal_id_1, manager)
@@ -86,23 +105,22 @@ class Highlighter(object):
 
 	def __trigger_found_cb(self, manager, position):
 		if self.__is_highlighted: return
-		textbuffer = self.__editor.textbuffer
-		start = textbuffer.get_iter_at_mark(position[0])
-		end = textbuffer.get_iter_at_mark(position[1])
-		textbuffer.apply_tag(self.__highlight_tag, start, end)
-		self.__is_highlighted = True
-		self.__status_id = self.__editor.feedback.set_modal_message("Template trigger highlighted", "info")
+		try:
+			from gobject import idle_add, PRIORITY_LOW, source_remove
+			source_remove(self.__tag_text_id)
+		except AttributeError:
+			pass
+		self.__tag_text_id = idle_add(self.__tag_text, position, priority=500)
 		return
 
 	def __no_trigger_found_cb(self, manager, position):
 		if self.__is_highlighted is False: return
-		textbuffer = self.__editor.textbuffer
-		start = textbuffer.get_iter_at_mark(position[0])
-		end = textbuffer.get_iter_at_mark(position[1])
-		textbuffer.remove_tag(self.__highlight_tag, start, end)
-		self.__is_highlighted = False
-		from gobject import idle_add
-		idle_add(self.__editor.feedback.unset_modal_message, self.__status_id)
+		try:
+			from gobject import idle_add, PRIORITY_LOW, source_remove
+			source_remove(self.__untag_text_id)
+		except AttributeError:
+			pass
+		self.__untag_text_id = idle_add(self.__untag_text, position, priority=500)
 		return
 
 	def __precompile_methods(self):
@@ -110,6 +128,8 @@ class Highlighter(object):
 			from psyco import bind
 			bind(self.__trigger_found_cb)
 			bind(self.__no_trigger_found_cb)
+			bind(self.__tag_text)
+			bind(self.__untag_text)
 		except ImportError:
 			pass
 		return False

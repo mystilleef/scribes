@@ -146,7 +146,7 @@ class EncodingManager(object):
 		"""
 		from EncodingMetadata import set_value
 		set_value(new_encoding_list)
-		return
+		return False
 
 	def __map_encoding_to_file(self, uri, encoding):
 		"""
@@ -266,10 +266,8 @@ class EncodingManager(object):
 		encoding = self.__format_encoding(encoding)
 		if encoding in self.__default_encoding: return
 		self.__encoding = encoding
-		#from gobject import idle_add, PRIORITY_LOW
-		#idle_add(self.__set_guess_list, encoding, priority=PRIORITY_LOW)
-		from thread import start_new_thread
-		start_new_thread(self.__set_guess_list, (encoding,))
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set_guess_list, encoding, priority=PRIORITY_LOW)
 		return
 
 	def __saved_document_cb(self, editor, uri, encoding):
@@ -281,10 +279,8 @@ class EncodingManager(object):
 		"""
 		if encoding is None: return
 		encoding = self.__format_encoding(encoding)
-		#from gobject import idle_add, PRIORITY_LOW
-		#idle_add(self.__map_encoding_to_file, uri, encoding, priority=PRIORITY_LOW)
-		from thread import start_new_thread
-		start_new_thread(self.__map_encoding_to_file, (uri, encoding))
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__map_encoding_to_file, uri, encoding, priority=PRIORITY_LOW)
 		if encoding in [self.__default_encoding, self.__encoding]: return
 		self.__encoding = encoding
 		return
@@ -306,10 +302,7 @@ class EncodingManager(object):
 		@type encoding: A String object.
 		"""
 		self.__encoding = "utf-8" if encoding is None else self.__format_encoding(encoding)
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__map_encoding_to_file, uri, self.__encoding, priority=PRIORITY_LOW)
-#		idle_add(self.__set_guess_list, self.__encoding, priority=PRIORITY_LOW)
-		from thread import start_new_thread
-		start_new_thread(self.__map_encoding_to_file, (uri, self.__encoding))
-		start_new_thread(self.__set_guess_list, (self.__encoding,))
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__map_encoding_to_file, uri, self.__encoding, priority=PRIORITY_LOW)
+		idle_add(self.__set_guess_list, self.__encoding, priority=PRIORITY_LOW)
 		return

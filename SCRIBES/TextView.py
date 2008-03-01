@@ -895,8 +895,10 @@ class ScribesTextView(SourceView):
 		"""
 		self.grab_focus()
 #		self.__make_responsive()
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__refresh, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__refresh, priority=PRIORITY_LOW)
+#		from thread import start_new_thread
+#		start_new_thread(self.__refresh, ())
 		return False
 
 	def __refresh(self):

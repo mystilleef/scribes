@@ -288,6 +288,5 @@ class EncodingSelectionWindow(object):
 		"""
 		# Hide window when escape key is pressed.
 		from gtk import keysyms
-		from operator import eq
-		if eq(event.keyval, keysyms.Escape): self.hide()
+		if (event.keyval == keysyms.Escape): self.hide()
 		return False

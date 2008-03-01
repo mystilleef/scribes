@@ -70,7 +70,7 @@ class FileSaver(object):	"""
 						signal_name="is_ready",
 						dbus_interface=save_dbus_service)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=500)
 
 	def __init_attributes(self, editor):
 		"""
@@ -120,9 +120,8 @@ class FileSaver(object):	"""
 		from Exceptions import DoNothingError
 		try:
 			self.__determine_action(is_closing)
-			#self.__save_file(encoding)
-			from thread import start_new_thread
-			start_new_thread(self.__save_file, (encoding,))
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.__save_file, encoding, priority=500)
 		except DoNothingError:			pass
 		return False
 
@@ -141,11 +140,9 @@ class FileSaver(object):	"""
 		try:
 			if self.__is_saving: raise ValueError
 			self.__encoding = "utf-8" if encoding is None else encoding
-			from operator import not_
 			self.__editor.emit("saving-document", self.__editor.uri)
-			from thread import start_new_thread
-			start_new_thread(self.__begin_saving, ())
-			#self.__begin_saving()
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.__begin_saving, priority=PRIORITY_LOW)
 		except ValueError:
 			print "Deffering save process"
 			self.__queue_flag = True
@@ -199,9 +196,8 @@ class FileSaver(object):	"""
 			# contains a document but there is no document to save.
 			self.__can_quit = True
 			self.__editor.create_new_file()
-			from thread import start_new_thread
-			start_new_thread(self.save_file, ())
-			#self.save_file()
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.save_file, priority=PRIORITY_LOW)
 		else:
 			# Show the save dialog if the text editor's buffer is empty and
 			# there is no document to save.
@@ -235,10 +231,8 @@ class FileSaver(object):	"""
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.save_file, self.__editor.encoding, False, priority=PRIORITY_LOW)
-		from thread import start_new_thread
-		start_new_thread(self.save_file, (self.__editor.encoding, False))
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.save_file, self.__editor.encoding, False, priority=1000)
 		return False
 
 	def __remove_save_timer(self):
@@ -308,6 +302,7 @@ class FileSaver(object):	"""
 			from psyco import bind
 			bind(self.save_file)
 			bind(self.__save_file)
+			bind(self.__remove_save_timer)
 		except ImportError:
 			pass
 		except:
@@ -323,10 +318,8 @@ class FileSaver(object):	"""
 		"""
 		try:
 			self.__queue.pop()
-			#from gobject import idle_add
-			#idle_add(self.__begin_saving)
-			from thread import start_new_thread
-			start_new_thread(self.__begin_saving, ())
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.__begin_saving, priority=1000)
 		except IndexError:
 			self.__is_saving = False
 			self.__toggle_readonly_mode()
@@ -341,8 +334,7 @@ class FileSaver(object):	"""
 		@param self: Reference to the FileSaver instance.
 		@type self: A FileSaver object.
 		"""
-		from operator import not_
-		if not_(self.__toggle_readonly): return
+		if not (self.__toggle_readonly): return
 		self.__editor.trigger("toggle_readonly")
 		self.__toggle_readonly = False
 		return
@@ -379,13 +371,10 @@ class FileSaver(object):	"""
 		"""
 		self.__can_quit = True
 		self.__remove_save_timer()
-		from operator import not_
 		if self.__error_flag: return self.__destroy()
-		if not_(self.__editor.file_is_saved):
-			#from gobject import idle_add, PRIORITY_LOW
-			#idle_add(self.save_file, self.__editor.encoding, True, priority=PRIORITY_LOW)
-			from thread import start_new_thread
-			start_new_thread(self.save_file, (self.__editor.encoding, True))
+		if not (self.__editor.file_is_saved):
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.save_file, self.__editor.encoding, True, priority=500)
 		else:
 			self.__destroy()
 		return True
@@ -462,10 +451,8 @@ class FileSaver(object):	"""
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.save_file, encoding, False, priority=PRIORITY_LOW)
-		from thread import start_new_thread
-		start_new_thread(self.save_file, (encoding, False))
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.save_file, encoding, False, priority=500)
 		return True
 
 	def __saving_document_cb(self, *args):
@@ -523,7 +510,7 @@ class FileSaver(object):	"""
 		self.__editor.emit("modified-document")
 		if self.__editor.uri is None: return False
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__save_timer = timeout_add(SAVE_TIMER, self.__save_file_timeout_cb, priority=PRIORITY_LOW)
+		self.__save_timer = timeout_add(SAVE_TIMER, self.__save_file_timeout_cb, priority=1000)
 		return False
 
 	def __reload_document_cb(self, *args):
@@ -551,10 +538,8 @@ class FileSaver(object):	"""
 		"""
 		if self.__editor.is_readonly: self.__toggle_readonly = True
 		self.__should_rename = True
-		from thread import start_new_thread
-		start_new_thread(self.save_file, (encoding, False))
-		#from gobject import idle_add, PRIORITY_LOW
-		#idle_add(self.save_file, encoding, False, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.save_file, encoding, False, priority=500)
 		return False
 
 	def __is_ready_cb(self, *args):
@@ -577,12 +562,9 @@ class FileSaver(object):	"""
 		@param editor_id: The identification number of the editor object.
 		@type editor_id: An Integer object.
 		"""
-		from operator import ne
-		if ne(self.__editor.id, editor_id): return False
-		from thread import start_new_thread
-		start_new_thread(self.__check_queue, ())
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__check_queue, priority=PRIORITY_LOW)
+		if (self.__editor.id != editor_id): return False
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__check_queue, priority=500)
 		return False
 
 	def __error_cb(self, editor_id, error_message, error_id):
@@ -601,12 +583,10 @@ class FileSaver(object):	"""
 		@param error_id: An error id.
 		@type error_id: An Integer object.
 		"""
-		from operator import ne
-		if ne(self.__editor.id, editor_id): return False
+		if (self.__editor.id != editor_id): return False
 		error_message = error_message + " " + str(error_id)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__error, error_message, priority=PRIORITY_LOW)
-#		self.__error(error_message)
 		return False
 
 	def __reply_handler_cb(self, *args):
@@ -627,6 +607,4 @@ class FileSaver(object):	"""
 		"""
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__error, error, priority=PRIORITY_LOW)
-		print "SAVE ERROR: BEEF!"
-#		self.__error(error)
 		return None

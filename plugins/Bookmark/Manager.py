@@ -256,8 +256,8 @@ class BookmarkManager(GObject):
 			self.bookmark_list.remove(textmark)
 			if not self.get_bookmarked_lines():
 				self.textview.set_show_line_markers(False)
-			from gobject import idle_add
-			idle_add(self.__update_bookmark_database)
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.__update_bookmark_database, priority=PRIORITY_LOW)
 		return False
 
 	def __manager_saved_document_cb(self, *args):

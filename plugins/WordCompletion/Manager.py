@@ -98,7 +98,7 @@ class CompletionManager(GObject):
 		self.__scrollwin.add(self.__textview)
 		self.__window.add(self.__scrollwin)
 		return
-		
+
 	def __destroy_cb(self, manager):
 		"""
 		Handles callback when the "destroy" signal is emitted.

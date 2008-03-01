@@ -156,8 +156,7 @@ class EncodingErrorWindow(object):
 		"""
 		# Hide window when escape key is pressed.
 		from gtk import keysyms
-		from operator import eq
-		if eq(event.keyval, keysyms.Escape): self.__hide()
+		if (event.keyval == keysyms.Escape): self.__hide()
 		return False
 
 	def __close_clicked_cb(self, *args):

@@ -58,17 +58,16 @@ class Manager(GObject):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		self.__sig_id1 = self.connect("encoding", self.__encoding_cb)
-		from thread import start_new_thread
 		from EncodingComboBox import ComboBox
-		start_new_thread(ComboBox, (editor, self))
+		ComboBox(editor, self)
 		from OpenButton import Button
-		start_new_thread(Button, (editor, self))
+		Button(editor, self)
 		from FileChooser import FileChooser
-		start_new_thread(FileChooser, (editor, self))
+		FileChooser(editor, self)
 		from CancelButton import Button
-		start_new_thread(Button, (editor, self))
+		Button(editor, self)
 		from Window import Window
-		start_new_thread(Window, (editor, self))
+		Window(editor, self)
 
 	def __init_attributes(self, editor):
 		"""
@@ -105,8 +104,7 @@ class Manager(GObject):
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
 		"""
-		from gobject import idle_add
-		idle_add(self.emit, "show-window")
+		self.emit("show-window")
 		return
 
 	def destroy(self):
@@ -130,4 +128,8 @@ class Manager(GObject):
 		@type self: A Manager object.
 		"""
 		self.__encoding = encoding
+		print "=================================="
+		print "Encoding changed!"
+		print "Openning file with: ", encoding
+		print "=================================="
 		return False

@@ -47,12 +47,12 @@ class BracketManager(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(editor)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__compile_methods, priority=PRIORITY_LOW)
 		self.__check_mimetype()
 		self.__signal_id_1 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_2 = editor.connect("cursor-moved", self.__cursor_moved_cb)
 		self.__signal_id_3 = editor.connect("loaded-document", self.__loaded_document_cb)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__compile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor):
 		"""
@@ -116,43 +116,42 @@ class BracketManager(object):
 		@param keyval: A value representing a keyboard symbol
 		@type keyval: An Integer object.
 		"""
-		from operator import eq, truth
 		from gtk import keysyms
-		if eq(keyval, keysyms.quotedbl):
+		if (keyval == keysyms.quotedbl):
 			self.__insert_pair_characters(keyval, keysyms.quotedbl)
-		elif eq(keyval, keysyms.braceleft):
+		elif (keyval == keysyms.braceleft):
 			self.__insert_pair_characters(keyval, keysyms.braceright)
-		elif eq(keyval, keysyms.bracketleft):
+		elif (keyval == keysyms.bracketleft):
 			self.__insert_pair_characters(keyval, keysyms.bracketright)
-		elif eq(keyval, keysyms.parenleft):
+		elif (keyval == keysyms.parenleft):
 			self.__insert_pair_characters(keyval, keysyms.parenright)
-		elif eq(keyval, keysyms.leftdoublequotemark):
+		elif (keyval == keysyms.leftdoublequotemark):
 			self.__insert_pair_characters(keyval, keysyms.righdoublequotemark)
-		elif eq(keyval, keysyms.guillemotleft):
+		elif (keyval == keysyms.guillemotleft):
 			self.__insert_pair_characters(keyval, keysyms.guillemotright)
-		elif eq(keyval, keysyms.guillemotright):
+		elif (keyval == keysyms.guillemotright):
 			self.__insert_pair_characters(keyval, keysyms.guillemotleft)
-		elif eq(keyval , keysyms.leftsinglequotemark):
+		elif (keyval == keysyms.leftsinglequotemark):
 			self.__insert_pair_characters(keyval, keysyms.rightsinglequotemark)
-		elif eq(keyval , keysyms.leftmiddlecurlybrace):
+		elif (keyval == keysyms.leftmiddlecurlybrace):
 			self.__insert_pair_characters(keyval, keysyms.rightmiddlecurlybrace)
-		elif eq(keyval , keysyms.lowleftcorner):
+		elif (keyval == keysyms.lowleftcorner):
 			self.__insert_pair_characters(keyval, keysyms.lowrightcorner)
-		elif eq(keyval , keysyms.topleftparens):
+		elif (keyval == keysyms.topleftparens):
 			self.__insert_pair_characters(keyval, keysyms.toprightparens)
-		elif eq(keyval , keysyms.topleftsqbracket):
+		elif (keyval == keysyms.topleftsqbracket):
 			self.__insert_pair_characters(keyval, keysyms.toprightsqbracket)
-		elif eq(keyval , keysyms.upleftcorner):
+		elif (keyval == keysyms.upleftcorner):
 			self.__insert_pair_characters(keyval, keysyms.uprightcorner)
-		elif eq(keyval , keysyms.botleftparens):
+		elif (keyval == keysyms.botleftparens):
 			self.__insert_pair_characters(keyval, keysyms.botrightparens)
-		elif eq(keyval , keysyms.botleftsqbracket):
+		elif (keyval == keysyms.botleftsqbracket):
 			self.__insert_pair_characters(keyval, keysyms.botrightsqbracket)
-		elif eq(keyval , keysyms.less):
+		elif (keyval == keysyms.less):
 			self.__insert_pair_characters(keyval, keysyms.greater)
-		elif eq(keyval , keysyms.dollar):
+		elif (keyval == keysyms.dollar):
 			self.__insert_pair_characters(keyval, keysyms.dollar)
-		elif eq(keyval , keysyms.apostrophe):
+		elif (keyval == keysyms.apostrophe):
 			if truth(self.__can_insert_apostrophe()):
 				self.__insert_pair_characters(keyval, keysyms.apostrophe)
 			else:
@@ -203,42 +202,41 @@ class BracketManager(object):
 		@type keyval: An Integer object.
 		"""
 		from gtk import keysyms
-		from operator import eq
-		if eq(keyval, keysyms.quotedbl):
+		if (keyval == keysyms.quotedbl):
 			self.__insert_enclosed_selection(keysyms.quotedbl, keysyms.quotedbl)
-		elif eq(keyval, keysyms.braceleft):
+		elif (keyval == keysyms.braceleft):
 			self.__insert_enclosed_selection(keysyms.braceleft, keysyms.braceright)
-		elif eq(keyval, keysyms.bracketleft):
+		elif (keyval == keysyms.bracketleft):
 			self.__insert_enclosed_selection(keysyms.bracketleft, keysyms.bracketright)
-		elif eq(keyval, keysyms.parenleft):
+		elif (keyval == keysyms.parenleft):
 			self.__insert_enclosed_selection(keysyms.parenleft, keysyms.parenright)
-		elif eq(keyval, keysyms.leftdoublequotemark):
+		elif (keyval == keysyms.leftdoublequotemark):
 			self.__insert_enclosed_selection(keysyms.leftdoublequotemark, keysyms.rightdoublequotemark)
-		elif eq(keyval, keysyms.guillemotleft):
+		elif (keyval == keysyms.guillemotleft):
 			self.__insert_enclosed_selection(keysyms.guillemotleft, keysyms.guillemotright)
-		elif eq(keyval, keysyms.guillemotright):
+		elif (keyval == keysyms.guillemotright):
 			self.__insert_enclosed_selection(keysyms.guillemotright, keysyms.guillemotleft)
-		elif eq(keyval, keysyms.leftsinglequotemark):
+		elif (keyval == keysyms.leftsinglequotemark):
 			self.__insert_enclosed_selection(keysyms.leftsinglequotemark, keysyms.rightsinglequotemark)
-		elif eq(keyval, keysyms.leftmiddlecurlybrace):
+		elif (keyval == keysyms.leftmiddlecurlybrace):
 			self.__insert_enclosed_selection(keysyms.leftmiddlecurlybrace, keysyms.rightmiddlecurlybrace)
-		elif eq(keyval, keysyms.lowleftcorner):
+		elif (keyval == keysyms.lowleftcorner):
 			self.__insert_enclosed_selection(keysyms.lowleftcorner, keysyms.lowrightcorner)
-		elif eq(keyval, keysyms.topleftparens):
+		elif (keyval == keysyms.topleftparens):
 			self.__insert_enclosed_selection(keysyms.topleftparens, keysyms.toprightparens)
-		elif eq(keyval, keysyms.topleftsqbracket):
+		elif (keyval == keysyms.topleftsqbracket):
 			self.__insert_enclosed_selection(keysyms.topleftsqbracket, keysyms.toprightsqbracket)
-		elif eq(keyval, keysyms.upleftcorner):
+		elif (keyval == keysyms.upleftcorner):
 			self.__insert_enclosed_selection(keysyms.upleftcorner, keysyms.uprightcorner)
-		elif eq(keyval, keysyms.botleftparens):
+		elif (keyval == keysyms.botleftparens):
 			self.__insert_enclosed_selection(keysyms.botleftparens, keysyms.botrightparens)
-		elif eq(keyval, keysyms.botleftsqbracket):
+		elif (keyval == keysyms.botleftsqbracket):
 			self.__insert_enclosed_selection(keysyms.botleftsqbracket, keysyms.botrightsqbracket)
-		elif eq(keyval, keysyms.less):
+		elif (keyval == keysyms.less):
 			self.__insert_enclosed_selection(keysyms.less, keysyms.greater)
-		elif eq(keyval, keysyms.dollar):
+		elif (keyval == keysyms.dollar):
 			self.__insert_enclosed_selection(keysyms.dollar, keysyms.dollar)
-		elif eq(keyval, keysyms.apostrophe):
+		elif (keyval == keysyms.apostrophe):
 			self.__insert_enclosed_selection(keysyms.apostrophe, keysyms.apostrophe)
 		return
 
@@ -295,10 +293,9 @@ class BracketManager(object):
 		"""
 		begin_mark = self.__monitor_list[-1][1][0]
 		end_mark = self.__monitor_list[-1][1][1]
-		from operator import not_
-		if not_(begin_mark.get_deleted()):
+		if not (begin_mark.get_deleted()):
 			self.__editor.textbuffer.delete_mark(begin_mark)
-		if not_(end_mark.get_deleted()):
+		if not (end_mark.get_deleted()):
 			self.__editor.textbuffer.delete_mark(end_mark)
 		del self.__monitor_list[-1]
 		return
@@ -313,18 +310,17 @@ class BracketManager(object):
 		@return: True to handle keyboard events.
 		@rtype: A Boolean object.
 		"""
-		from operator import ne
 		textbuffer = self.__editor.textbuffer
 		begin_mark = self.__monitor_list[-1][1][0]
 		end_mark = self.__monitor_list[-1][1][1]
 		begin = textbuffer.get_iter_at_mark(begin_mark)
 		end = textbuffer.get_iter_at_mark(end_mark)
-		if ne(len(textbuffer.get_text(begin, end)), 2): return False
+		if (len(textbuffer.get_text(begin, end)) != 2): return False
 		begin.forward_char()
 		from gtk.gdk import keyval_to_unicode
 		close_keyval = self.__monitor_list[-1][0]
 		character = unichr(keyval_to_unicode(close_keyval)).encode("utf-8")
-		if ne(begin.get_char(), character): return False
+		if (begin.get_char() != character): return False
 		begin.backward_char()
 		textbuffer.begin_user_action()
 		self.__editor.block_response()
@@ -348,8 +344,7 @@ class BracketManager(object):
 		end_iterator = self.__editor.get_cursor_position()
 		start_iterator = end_iterator.copy()
 		start_iterator.backward_char()
-		from operator import eq
-		if eq(start_iterator.get_char(), self.__escape_character): return True
+		if (start_iterator.get_char() == self.__escape_character): return True
 		return False
 
 	def __remove_escape_character(self):
@@ -382,11 +377,10 @@ class BracketManager(object):
 		@rtype: A Boolean object.
 		"""
 		iterator = self.__editor.get_cursor_iterator()
-		from operator import truth
-		if truth(iterator.starts_line()): return True
+		if (iterator.starts_line()): return True
 		iterator.backward_char()
 		character = iterator.get_char()
-		if truth(character.isalpha()): return False
+		if (character.isalpha()): return False
 		return True
 
 	def __insert_apostrophe(self):
@@ -399,9 +393,7 @@ class BracketManager(object):
 		from gtk import keysyms
 		from gtk.gdk import keyval_to_unicode
 		utf8_apostrophe_character = unichr(keyval_to_unicode(keysyms.apostrophe)).encode("utf-8")
-		self.__editor.block_response()
 		self.__editor.textbuffer.insert_at_cursor(utf8_apostrophe_character)
-		self.__editor.unblock_response()
 		return
 
 	def __check_mimetype(self):
@@ -412,18 +404,17 @@ class BracketManager(object):
 		@param self: Reference to the BracketManager instance.
 		@type self: A BracketManager object.
 		"""
-		from operator import eq, contains, not_
 		from gnomevfs import get_mime_type
 		from gtk import keysyms
 		markup_mimetype = ["text/html", "application/xml", "text/xml", "application/docbook+xml"]
-		if not_(self.__editor.uri): return
+		if not (self.__editor.uri): return
 		try:
 			mimetype = get_mime_type(self.__editor.uri)
 		except RuntimeError:
 			return
-		if eq(mimetype, "text/x-tex"):
+		if (mimetype == "text/x-tex"):
 			self.__open_pair_characters.append(keysyms.dollar)
-		elif contains(markup_mimetype, mimetype):
+		elif mimetype in markup_mimetype:
 			self.__open_pair_characters.append(keysyms.less)
 		return
 
@@ -495,28 +486,27 @@ class BracketManager(object):
 		"""
 		#from gtk.gdk import keyval_name
 		#print keyval_name(event.keyval)
-		from operator import truth, eq, contains
 		selection = self.__editor.textbuffer.get_selection_bounds()
-		if truth(selection) and contains(self.__open_pair_characters_for_enclosement, event.keyval):
+		if selection and (event.keyval in self.__open_pair_characters_for_enclosement):
 			self.__enclose_selection(event.keyval)
 			return True
-		if truth(self.__monitor_list):
+		if (self.__monitor_list):
 			from gtk import keysyms
-			if eq(event.keyval, keysyms.BackSpace):
+			if (event.keyval == keysyms.BackSpace):
 				result = self.__remove_closing_pair_character()
 				return result
-			if eq(keysyms.Escape, event.keyval):
+			if (keysyms.Escape == event.keyval):
 				self.__move_cursor_out_of_bracket_region()
 				return True
-			if eq(self.__monitor_list[-1][0], event.keyval):
-				if contains((keysyms.quotedbl, keysyms.apostrophe), event.keyval):
-					if truth(self.__has_escape_character()):
+			if (self.__monitor_list[-1][0] == event.keyval):
+				if event.keyval in (keysyms.quotedbl, keysyms.apostrophe):
+					if (self.__has_escape_character()):
 						self.__remove_escape_character()
 						self.__insert_closing_pair_character(event.keyval)
 						return True
 				self.__move_cursor_out_of_bracket_region()
 				return True
-		if contains(self.__open_pair_characters, event.keyval):
+		if event.keyval in self.__open_pair_characters:
 			self.__insert_closing_pair_character(event.keyval)
 			return True
 		return False
@@ -531,22 +521,21 @@ class BracketManager(object):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		from gobject import idle_add
-		idle_add(self.__monitor_pair_characters)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__monitor_pair_characters, priority=PRIORITY_LOW)
 		return
 
 	def __monitor_pair_characters(self):
-		from operator import not_, truth
-		if not_(self.__monitor_list): return False
+		if not (self.__monitor_list): return False
 		textbuffer = self.__editor.textbuffer
 		begin_mark = self.__monitor_list[-1][1][0]
 		end_mark = self.__monitor_list[-1][1][1]
 		begin = textbuffer.get_iter_at_mark(begin_mark)
 		end = textbuffer.get_iter_at_mark(end_mark)
 		cursor_position = self.__editor.get_cursor_iterator()
-		if truth(cursor_position.equal(begin)) or truth(cursor_position.equal(end)):
+		if (cursor_position.equal(begin)) or (cursor_position.equal(end)):
 			self.__stop_monitoring()
-		elif not_(cursor_position.in_range(begin, end)):
+		elif not (cursor_position.in_range(begin, end)):
 			self.__stop_monitoring()
 		return False
 
@@ -560,5 +549,6 @@ class BracketManager(object):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__check_mimetype()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__check_mimetype, priority=PRIORITY_LOW)
 		return

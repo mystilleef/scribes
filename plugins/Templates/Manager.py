@@ -62,15 +62,14 @@ class TemplatesManager(GObject):
 		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		from thread import start_new_thread
 		from Highlighter import Highlighter
-		start_new_thread(Highlighter, (self, editor))
+		Highlighter(self, editor)
 		from Monitor import TemplateMonitor
-		start_new_thread(TemplateMonitor, (self, editor))
+		TemplateMonitor(self, editor)
 		from Loader import TemplateLoader
-		start_new_thread(TemplateLoader, (self, editor))
+		TemplateLoader(self, editor)
 		from Factory import TemplateFactory
-		start_new_thread(TemplateFactory, (self, editor))
+		TemplateFactory(self, editor)
 		self.__signal_id_1 = self.connect("destroy", self.__destroy_cb)
 
 	def __init_attributes(self, editor):

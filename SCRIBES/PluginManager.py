@@ -147,14 +147,14 @@ class PluginManager(object):
 		from os import listdir
 		from gobject import idle_add, PRIORITY_LOW
 		core_files = listdir(self.__editor.core_plugin_folder)
-		from thread import start_new_thread
+		#from thread import start_new_thread
 		for filename in core_files:
-			start_new_thread(self.__init_module, (filename, self.__editor.core_plugin_folder))
-			#idle_add(self.__init_module, filename, self.__editor.core_plugin_folder, priority=PRIORITY_LOW)
+		#	start_new_thread(self.__init_module, (filename, self.__editor.core_plugin_folder))
+			idle_add(self.__init_module, filename, self.__editor.core_plugin_folder, priority=PRIORITY_LOW)
 		home_files = listdir(self.__editor.home_plugin_folder)
 		for filename in home_files:
-			start_new_thread(self.__init_module, (filename, self.__editor.home_plugin_folder))
-			#idle_add(self.__init_module, filename, self.__editor.home_plugin_folder, priority=PRIORITY_LOW)
+			#start_new_thread(self.__init_module, (filename, self.__editor.home_plugin_folder))
+			idle_add(self.__init_module, filename, self.__editor.home_plugin_folder, priority=PRIORITY_LOW)
 		return False
 
 	def __unload_plugins(self):
@@ -165,10 +165,10 @@ class PluginManager(object):
 		@type self: A PluginManager object.
 		"""
 		from gobject import idle_add, PRIORITY_LOW
-		from thread import start_new_thread
+		#from thread import start_new_thread
 		for plugin_info in self.__plugin_objects.copy():
-			start_new_thread(self.__unload_plugin, (plugin_info,))
-			#idle_add(self.__unload_plugin, plugin_info, priority=PRIORITY_LOW)
+			#start_new_thread(self.__unload_plugin, (plugin_info,))
+			idle_add(self.__unload_plugin, plugin_info, priority=PRIORITY_LOW)
 		return False
 
 	def __get_module_info(self, module):

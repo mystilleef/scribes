@@ -231,9 +231,7 @@ class StatusTwo(ScribesStatusbar):
 			if self.__is_updating: return False
 			self.__is_updating = True
 			from cursor import update_cursor_position
-			from thread import start_new_thread
-			start_new_thread(update_cursor_position, (self, textview))
-			#update_cursor_position(self, textview)
+			update_cursor_position(self, textview)
 		except AttributeError:
 			pass
 		except RuntimeError:

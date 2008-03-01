@@ -66,7 +66,6 @@ class Trigger(GObject):
 			if this trigger should be removed or destroyed.
 		@type removable: A Boolean object.
 		"""
-#		self.__precompile_methods()
 		GObject.__init__(self)
 		self.__init_attributes(name, accelerator, description, error, removable)
 		from gobject import idle_add, PRIORITY_LOW
@@ -113,13 +112,11 @@ class Trigger(GObject):
 		return self.__name
 
 	def __get_accelerator(self):
-		from operator import not_
-		if not_(self.__accelerator): return None
+		if not (self.__accelerator): return None
 		return self.__accelerator
 
 	def __get_description(self):
-		from operator import not_
-		if not_(self.__description): return None
+		if not (self.__description): return None
 		return self.__description
 
 	def __get_error(self):
@@ -150,11 +147,7 @@ class Trigger(GObject):
 		@param self: Reference to the Trigger instance.
 		@type self: A Trigger object.
 		"""
-		from gobject import idle_add
-		idle_add(self.emit, "activate")
-#		self.emit("activate")
-#		from thread import start_new_thread
-#		start_new_thread(self.emit, ("activate",))
+		self.emit("activate")
 		return
 
 	def destroy(self):

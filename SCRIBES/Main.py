@@ -57,7 +57,7 @@ def __open(uris=None):
 	@type uris: A List object.
 	"""
 	__open_via_dbus(uris)
-	__init_threads()
+	#__init_threads()
 	from gobject import idle_add, PRIORITY_HIGH
 	idle_add(__launch_new_editor, uris, priority=PRIORITY_HIGH)
 	return
@@ -145,8 +145,6 @@ def __mainloop():
 	__fork_scribes()
 	from utils import init_gnome
 	init_gnome()
-#	from gobject import MainLoop
-#	MainLoop().run()
 	from gtk import main
 	main()
 	return

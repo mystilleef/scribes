@@ -49,13 +49,13 @@ class TemplateFactory(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(manager, editor)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods)
 		self.__signal_id_1 = manager.connect("trigger-activated", self.__trigger_activated_cb)
 		self.__signal_id_2 = manager.connect("next-placeholder", self.__next_placeholder_cb)
 		self.__signal_id_3 = manager.connect("previous-placeholder", self.__previous_placeholder_cb)
 		self.__signal_id_4 = manager.connect("template-destroyed", self.__template_destroyed_cb)
 		self.__signal_id_5 = manager.connect("destroy", self.__destroyed_cb)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -91,7 +91,6 @@ class TemplateFactory(object):
 		@type template: A TemplateManager object.
 		"""
 		from Processor import TemplateProcessor
-		self.__editor.block_response()
 		self.__templates.append(TemplateProcessor(manager, self.__editor, template))
 		return
 
@@ -132,7 +131,6 @@ class TemplateFactory(object):
 			self.__templates.remove(processor)
 		except:
 			pass
-		self.__editor.unblock_response()
 		return
 
 	def __precompile_methods(self):

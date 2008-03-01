@@ -153,6 +153,13 @@ class FileModificationMonitor(object):
 		self = None
 		return
 
+	def __update_modification_time(self):
+		try:
+			self.__last_modification_time = self.__get_file_info().mtime
+		except AttributeError:
+			pass
+		return False
+
 	def __precompile_methods(self):
 		"""
 		Use psyco to optimize methods.
@@ -164,6 +171,7 @@ class FileModificationMonitor(object):
 			from psyco import bind
 			bind(self.__get_file_info)
 			bind(self.__saved_document_cb)
+			bind(self.__update_modification_time)
 		except ImportError:
 			pass
 		return False
@@ -189,12 +197,12 @@ class FileModificationMonitor(object):
 		from gnomevfs import MONITOR_EVENT_CHANGED
 		if event_type in [MONITOR_EVENT_DELETED, MONITOR_EVENT_CREATED, MONITOR_EVENT_CHANGED]:
 			try:
-				if self.__last_modification_time == self.__get_file_info().mtime: return
+				if self.__last_modification_time == self.__get_file_info().mtime: return False
 				print "Another program is modifying document"
 				self.__show_modification_dialog()
 			except AttributeError:
 				pass
-		return
+		return False
 
 	def __rename_document_cb(self, *args):
 		"""
@@ -217,10 +225,8 @@ class FileModificationMonitor(object):
 		return
 
 	def __saved_document_cb(self, *args):
-		try:
-			self.__last_modification_time = self.__get_file_info().mtime
-		except AttributeError:
-			pass
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__update_modification_time, priority=PRIORITY_LOW)
 		return
 
 	def __close_document_cb(self, *args):

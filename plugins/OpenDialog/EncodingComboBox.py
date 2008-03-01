@@ -56,8 +56,8 @@ class ComboBox(object):
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monitor_id_1 = monitor_add(self.__database_uri, MONITOR_FILE,
 					self.__update_encoding_list_cb)
-		from thread import start_new_thread
-		start_new_thread(self.__populate_model, ())
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__populate_model, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor, manager):
 		"""
@@ -255,8 +255,8 @@ class ComboBox(object):
 		@param self: Reference to the ComboBox instance.
 		@type self: An ComboBox object.
 		"""
-		from thread import start_new_thread
-		start_new_thread(self.__populate_model, ())
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__populate_model, priority=PRIORITY_LOW)
 		return
 
 	def __destroy_cb(self, *args):

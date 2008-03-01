@@ -184,10 +184,8 @@ class TreeView(object):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-#		from gobject import idle_add
-#		idle_add(self.__populate_model, uris)
-		from thread import start_new_thread
-		start_new_thread(self.__populate_model, ())
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__populate_model, priority=PRIORITY_LOW)
 		self.__manager.emit("show-window")
 		return False
 

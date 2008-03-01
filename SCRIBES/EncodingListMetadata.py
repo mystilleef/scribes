@@ -79,4 +79,3 @@ def set_value(value):
 	database["encodings"] = value
 	database.close()
 	return
-

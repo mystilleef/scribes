@@ -357,15 +357,14 @@ class TriggerManager(object):
 		"""
 		if self.__bar_is_visible: return False
 		from gtk.gdk import CONTROL_MASK, MOD1_MASK, SHIFT_MASK, keyval_name
-		from operator import contains, not_
 		keyname = keyval_name(event.keyval)
-		if not_(contains(self.__accelerator_keyname_list, keyname)): return False
+		if not(keyname in self.__accelerator_keyname_list): return False
 		special_keys = ("Delete", "Insert", "Home", "End", "PageUp",
 						"PageDown", "Right", "Left", "Up", "Down", "F1",
 						"F12", "F10", "Return")
 		# Control and Shift key are pressed.
 		if event.state & CONTROL_MASK and event.state & SHIFT_MASK:
-			if contains(special_keys, keyname):
+			if keyname in special_keys:
 				accelerator = ["ctrl", "shift"] + [keyname]
 			else:
 				accelerator = ["ctrl"] + [keyname]
@@ -373,7 +372,7 @@ class TriggerManager(object):
 
 		# Alt and Shift key are pressed.
 		if event.state & SHIFT_MASK and event.state & MOD1_MASK:
-			if contains(special_keys, keyname):
+			if keyname in special_keys:
 				accelerator = ["alt", "shift"] + [keyname]
 			else:
 				accelerator = ["alt"] + [keyname]

@@ -83,8 +83,8 @@ class FileChooser(object):
 		@type self: A FileChooser object.
 		"""
 		from SCRIBES.dialogfilter import create_filter_list
-		for filter in create_filter_list():
-			self.__chooser.add_filter(filter)
+		for filter_ in create_filter_list():
+			self.__chooser.add_filter(filter_)
 		self.__set_folder()
 		return
 
@@ -95,9 +95,9 @@ class FileChooser(object):
 		@param self: Reference to the FileChooser instance.
 		@type self: A FileChooser object.
 		"""
-		if not (self.__editor.uri): return
+		if not (self.__editor.uri): return False
 		self.__chooser.set_uri(self.__editor.uri)
-		return
+		return False
 
 	def __load_uris(self):
 		"""
@@ -110,7 +110,7 @@ class FileChooser(object):
 		encoding = self.__manager.encoding
 		uris = self.__chooser.get_uris()
 		self.__editor.open_files(uris, encoding)
-		return
+		return False
 
 	def __destroy(self):
 		"""
@@ -146,7 +146,9 @@ class FileChooser(object):
 		@param self: Reference to the FileChooser instance.
 		@type self: A FileChooser object.
 		"""
-		self.__set_folder()
+		from gobject import idle_add
+		idle_add(self.__set_folder)
+		#self.__set_folder()
 		return
 
 	def __file_activated_cb(self, *args):
@@ -156,8 +158,8 @@ class FileChooser(object):
 		@param self: Reference to the FileChooser instance.
 		@type self: A FileChooser object.
 		"""
-		from thread import start_new_thread
-		start_new_thread(self.__load_uris, ())
+		from gobject import idle_add
+		idle_add(self.__load_uris)
 		return False
 
 	def __load_files_cb(self, *args):
@@ -167,8 +169,8 @@ class FileChooser(object):
 		@param self: Reference to the FileChooser instance.
 		@type self: A FileChooser object.
 		"""
-		from thread import start_new_thread
-		start_new_thread(self.__load_uris, ())
+		from gobject import idle_add
+		idle_add(self.__load_uris)
 		return
 
 	def __selection_changed_cb(self, *args):

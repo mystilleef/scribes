@@ -95,15 +95,11 @@ class SaveDialogTrigger(GObject):
 		@param trigger: An object to show the document browser.
 		@type trigger: A Trigger object.
 		"""
-		from gtk.gdk import threads_enter, threads_leave
-		threads_enter()
 		try:
 			self.__save_dialog.show_dialog()
 		except AttributeError:
-			from Dialog import SaveDialog
-			self.__save_dialog = SaveDialog(self.__editor)
-			self.__save_dialog.show_dialog()
-		threads_leave()
+			from Manager import Manager
+			self.__save_dialog = Manager(self.__editor)
 		return
 
 	def __destroy_cb(self, trigger):
@@ -119,7 +115,7 @@ class SaveDialogTrigger(GObject):
 		self.__editor.remove_trigger(self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)
-		if self.__save_dialog: self.__save_dialog.destroy_()
+		if self.__save_dialog: self.__save_dialog.destroy()
 		del self
 		self = None
 		return

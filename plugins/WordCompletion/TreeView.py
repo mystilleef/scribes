@@ -259,15 +259,13 @@ class CompletionTreeView(TreeView):
 		@param completion_list: A list of words for completion.
 		@type completion_list: A List object.
 		"""
-		#try:
-		#	from gobject import source_remove, idle_add, PRIORITY_LOW
-		#	source_remove(self.__populate_id)
-		#except:
-		#	pass
+		try:
+			from gobject import source_remove, idle_add, PRIORITY_LOW
+			source_remove(self.__populate_id)
+		except:
+			pass
 		from collections import deque
-		#self.__populate_id = idle_add(self.__populate_model, deque(completion_list), priority=PRIORITY_LOW)
-		from thread import start_new_thread
-		start_new_thread(self.__populate_model, (deque(completion_list),))
+		self.__populate_id = idle_add(self.__populate_model, deque(completion_list), priority=PRIORITY_LOW)
 		return
 
 	def __no_match_found_cb(self, *args):

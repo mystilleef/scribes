@@ -111,16 +111,11 @@ class FeedbackManager(object):
 		@rtype: A Boolean object.
 		"""
 		self.__is_busy = True
-#		from gobject import idle_add, PRIORITY_LOW
-		from thread import start_new_thread
-		start_new_thread(self.__set_message, (message,))
-		start_new_thread(self.__set_icon, (icon,))
-		start_new_thread(self.__reset, (time,))
-		start_new_thread(self.__beep, (icon,))
-#		idle_add(self.__set_message, message, priority=PRIORITY_LOW)
-#		idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
-#		idle_add(self.__reset, time, priority=PRIORITY_LOW)
-#		idle_add(self.__beep, icon, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set_message, message, priority=PRIORITY_LOW)
+		idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
+		idle_add(self.__reset, time, priority=PRIORITY_LOW)
+		idle_add(self.__beep, icon, priority=PRIORITY_LOW)
 		self.__default_message_is_set = False
 		return False
 
@@ -139,12 +134,9 @@ class FeedbackManager(object):
 		"""
 		message_id = self.__editor.generate_random_number(self.__message_stack)
 		self.__message_stack.append((message, icon, message_id))
-#		from gobject import idle_add, PRIORITY_LOW
-		from thread import start_new_thread
-		start_new_thread(self.__set_message, (message,))
-		start_new_thread(self.__set_icon, (icon,))
-		#idle_add(self.__set_message, message, priority=PRIORITY_LOW)
-		#idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set_message, message, priority=PRIORITY_LOW)
+		idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
 		self.__default_message_is_set = False
 		return message_id
 
@@ -169,10 +161,8 @@ class FeedbackManager(object):
 				found = self.__remove_message_from_stack(message_id, feedback)
 				if found: break
 			if reset:
-				#from gobject import idle_add, PRIORITY_LOW
-				#idle_add(self.__reset_message, priority=PRIORITY_LOW)
-				from thread import start_new_thread
-				start_new_thread(self.__reset_message, ())
+				from gobject import idle_add, PRIORITY_LOW
+				idle_add(self.__reset_message, priority=PRIORITY_LOW)
 		except RuntimeError:
 			pass
 		return False
@@ -184,9 +174,7 @@ class FeedbackManager(object):
 		@param self: Reference to the FeedbackManager instance.
 		@type self: A FeedbackManager object.
 		"""
-		from thread import start_new_thread
-		start_new_thread(self.__spinner.start, ())
-		#self.__spinner.start()
+		self.__spinner.start()
 		return False
 
 	def stop_spinner(self):
@@ -196,9 +184,7 @@ class FeedbackManager(object):
 		@param self: Reference to the FeedbackManager instance.
 		@type self: A FeedbackManager object.
 		"""
-		from thread import start_new_thread
-		start_new_thread(self.__spinner.stop, ())
-		#self.__spinner.stop()
+		self.__spinner.stop()
 		return False
 
 	def start_busy_cursor(self):
@@ -209,9 +195,7 @@ class FeedbackManager(object):
 		@type self: A FeedbackManager object.
 		"""
 		from cursor import show_busy_textview_cursor
-		#show_busy_textview_cursor(self.__editor.textview)
-		from thread import start_new_thread
-		start_new_thread(show_busy_textview_cursor, (self.__editor.textview,))
+		show_busy_textview_cursor(self.__editor.textview)
 		return False
 
 	def stop_busy_cursor(self):
@@ -222,9 +206,7 @@ class FeedbackManager(object):
 		@type self: A FeedbackManager object.
 		"""
 		from cursor import show_textview_cursor
-		#show_textview_cursor(self.__editor.textview)
-		from thread import start_new_thread
-		start_new_thread(show_textview_cursor, (self.__editor.textview,))
+		show_textview_cursor(self.__editor.textview)
 		return False
 
 ########################################################################
