@@ -85,8 +85,8 @@ class Window(object):
 		@type self: A Window object.
 		"""
 		#width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 1.6, 2.5)
-		self.__window.set_property("default-width", 640)
-		self.__window.set_property("default-height", 480)
+		#self.__window.set_property("default-width", 640)
+		#self.__window.set_property("default-height", 480)
 		self.__window.set_transient_for(self.__editor.window)
 		return
 

@@ -42,8 +42,9 @@ class CompletionDictionary(object):
 		@param self: Reference to the CompletionDictionary instance.
 		@type self: A CompletionDictionary object.
 		"""
-		self.__precompile_methods()
 		self.__init_attributes()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
 		"""
@@ -69,7 +70,7 @@ class CompletionDictionary(object):
 		if self.__is_updating: return
 		self.__is_updating = True
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__update, dictionary, priority=PRIORITY_LOW)
+		idle_add(self.__update, dictionary, priority=2000)
 		return
 
 	def __update(self, dictionary):
@@ -89,7 +90,6 @@ class CompletionDictionary(object):
 
 	def get_dictionary(self):
 		return self.__dictionary
-
 
 	def __precompile_methods(self):
 		try:

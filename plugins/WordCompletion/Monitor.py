@@ -231,7 +231,7 @@ class CompletionMonitor(object):
 			if self.__completion_window_is_visible:
 				self.__insert_text_id = idle_add(self.__check_buffer, priority=PRIORITY_LOW)
 			else:
-				self.__insert_text_id = timeout_add(500, self.__check_buffer, priority=PRIORITY_LOW)
+				self.__insert_text_id = timeout_add(500, self.__check_buffer, priority=2500)
 		except ValueError:
 			self.__manager.emit("no-match-found")
 		return False
@@ -269,7 +269,7 @@ class CompletionMonitor(object):
 			source_remove(self.__dictionary_timer)
 		except:
 			pass
-		self.__dictionary_timer = timeout_add(1000, self.__update_dictionary, dictionary, priority=PRIORITY_LOW)
+		self.__dictionary_timer = timeout_add(1000, self.__update_dictionary, dictionary, priority=2500)
 		return
 
 	def __key_press_event_cb(self, textview, event):

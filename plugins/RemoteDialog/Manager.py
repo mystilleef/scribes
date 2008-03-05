@@ -40,9 +40,9 @@ class Manager(GObject):
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"encoding": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"load-file": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"rename": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"encoding": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -60,10 +60,10 @@ class Manager(GObject):
 		self.__sig_id1 = self.connect("encoding", self.__encoding_cb)
 		from EncodingComboBox import ComboBox
 		ComboBox(editor, self)
-		from SaveButton import Button
+		from OpenButton import Button
 		Button(editor, self)
-		from FileChooser import FileChooser
-		FileChooser(editor, self)
+		from ComboBoxEntry import ComboBoxEntry
+		ComboBoxEntry(editor, self)
 		from CancelButton import Button
 		Button(editor, self)
 		from Window import Window
@@ -82,7 +82,7 @@ class Manager(GObject):
 		self.__editor = editor
 		from os.path import join, split
 		current_folder = split(globals()["__file__"])[0]
-		glade_file = join(current_folder, "SaveDialog.glade")
+		glade_file = join(current_folder, "RemoteDialog.glade")
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, "Window", "scribes")
 		self.__encoding = None
@@ -128,8 +128,4 @@ class Manager(GObject):
 		@type self: A Manager object.
 		"""
 		self.__encoding = encoding
-		print "=================================="
-		print "Encoding changed!"
-		print "Openning file with: ", encoding
-		print "=================================="
 		return False

@@ -888,11 +888,9 @@ class Editor(GObject):
 		# Initialize encoding manager.
 		from EncodingManager import EncodingManager
 		self.__encoding_manager = EncodingManager(self)
-		from thread import start_new_thread
 		# Initialize file modification monitor
-		from FileModificationMonitor import FileModificationMonitor
-		#start_new_thread(FileModificationMonitor, (self,))
-		FileModificationMonitor(self)
+#		from FileModificationMonitor import FileModificationMonitor
+#		FileModificationMonitor(self)
 		# Initialize the object that saves files.
 		# Initialize the feedback manager.
 		from Feedback import FeedbackManager
@@ -901,9 +899,7 @@ class Editor(GObject):
 		from TriggerManager import TriggerManager
 		self.__trigger_manager = TriggerManager(self)
 		from NewFileSaver import FileSaver
-#		from FileSaver import FileSaver
 		FileSaver(self)
-		#FileSaver(self)
 		self.emit("started-core-services")
 		return
 
@@ -912,8 +908,6 @@ class Editor(GObject):
 		return
 
 	def __gui_created_after_cb(self, editor):
-	#	from gobject import idle_add, PRIORITY_LOW
-	#	idle_add(self.__initialize_plugins, priority=PRIORITY_LOW)
 		return
 
 	def __started_core_services_cb(self, *args):
@@ -922,13 +916,11 @@ class Editor(GObject):
 			from gobject import idle_add, PRIORITY_LOW
 			if not self.__file_uri: raise ValueError
 			idle_add(self.load_uri, self.__file_uri.strip(), self.__encoding)
-#			self.load_uri(self.__file_uri.strip(), self.__encoding)
 		except ValueError:
 			pass
 		finally:
 			# Initialize plugins
-			idle_add(self.__initialize_plugins, priority=PRIORITY_LOW)
-#			self.__initialize_plugins()
+			idle_add(self.__initialize_plugins, priority=5000)
 		return False
 
 	def __initialize_plugins(self):
@@ -959,7 +951,6 @@ class Editor(GObject):
 
 	def __saved_document_cb(self, *args):
 		self.__file_is_saved = True
-	#	print "Encoding is: ", self.encoding
 		return
 
 	def __renamed_document_cb(self, editor, uri, *args):

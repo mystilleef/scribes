@@ -73,5 +73,5 @@ class RemoteDialogPlugin(object):
 		@param self: Reference to the RemoteDialogPlugin instance.
 		@type self: An RemoteDialogPlugin object.
 		"""
-		self.__trigger.emit("destroy")
+		self.__trigger.destroy()
 		return

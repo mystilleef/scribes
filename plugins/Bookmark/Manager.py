@@ -119,7 +119,7 @@ class BookmarkManager(GObject):
 		self.textview.set_show_line_markers(True)
 		self.textview.set_marker_pixbuf("scribes_bookmark", self.bookmark_image)
 		from gobject import idle_add
-		idle_add(self.__update_bookmark_database)
+		idle_add(self.__update_bookmark_database, priority=2000)
 		return
 
 	def remove_bookmark_on_line(self, line):
@@ -271,7 +271,7 @@ class BookmarkManager(GObject):
 		@type editor: An Editor object.
 		"""
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__update_bookmark_database, priority=PRIORITY_LOW)
+		idle_add(self.__update_bookmark_database, priority=2000)
 		return
 
 	def __manager_destroy_cb(self, manager):

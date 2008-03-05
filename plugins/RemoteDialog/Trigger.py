@@ -29,17 +29,11 @@ editor's remote dialog.
 @contact: mystilleef@gmail.com
 """
 
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE
-
-class RemoteDialogTrigger(GObject):
+class RemoteDialogTrigger(object):
 	"""
 	This class creates an object that shows the text editor's remote
 	dialog.
 	"""
-
-	__gsignals__ = {
-		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	}
 
 	def __init__(self, editor):
 		"""
@@ -51,11 +45,9 @@ class RemoteDialogTrigger(GObject):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		GObject.__init__(self)
 		self.__init_attributes(editor)
 		self.__create_trigger()
 		self.__signal_id_1 = self.__trigger.connect("activate", self.__show_remote_dialog_cb)
-		self.__signal_id_2 = self.connect("destroy", self.__destroy_cb)
 
 	def __init_attributes(self, editor):
 		"""
@@ -98,12 +90,11 @@ class RemoteDialogTrigger(GObject):
 		try:
 			self.__remote_dialog.show_dialog()
 		except AttributeError:
-			from Dialog import RemoteDialog
-			self.__remote_dialog = RemoteDialog(self.__editor)
-			self.__remote_dialog.show_dialog()
+			from Manager import Manager
+			self.__remote_dialog = Manager(self.__editor)
 		return
 
-	def __destroy_cb(self, trigger):
+	def destroy(self):
 		"""
 		Handles callback when the destroy "signal" is emitted.
 
@@ -115,9 +106,7 @@ class RemoteDialogTrigger(GObject):
 		"""
 		self.__editor.remove_trigger(self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
-		self.__editor.disconnect_signal(self.__signal_id_2, self)
-		if self.__remote_dialog: self.__remote_dialog.emit("delete")
+		if self.__remote_dialog: self.__remote_dialog.destroy()
 		del self
 		self = None
 		return
-

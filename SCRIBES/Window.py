@@ -42,7 +42,6 @@ class ScribesWindow(Window):
 		@param self: Reference to the text editor's window instance.
 		@type self: A ScribesWindow object.
 		"""
-#		self.__precompile_methods()
 		Window.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -69,6 +68,8 @@ class ScribesWindow(Window):
 		self.__signal_id_21 = self.__editor.connect("checking-document", self.__checking_document_cb)
 		self.__signal_id_22 = self.__editor.connect("buffer-created", self.__created_widgets_cb)
 		self.__signal_id_23 = self.__editor.connect("reload-document", self.__reload_document_cb)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor):
 		"""
