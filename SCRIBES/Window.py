@@ -45,6 +45,7 @@ class ScribesWindow(Window):
 		Window.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
+		self.__signal_id_30 = self.connect("size-request", self.__size_request_cb)
 		self.__signal_id_1 = self.connect("delete-event", self.__delete_event_cb)
 		self.__signal_id_2 = self.connect("map-event", self.__map_event_cb, editor)
 		self.__signal_id_3 = self.connect("window-state-event", self.__state_event_cb)
@@ -69,7 +70,7 @@ class ScribesWindow(Window):
 		self.__signal_id_22 = self.__editor.connect("buffer-created", self.__created_widgets_cb)
 		self.__signal_id_23 = self.__editor.connect("reload-document", self.__reload_document_cb)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=5000)
 
 	def __init_attributes(self, editor):
 		"""
@@ -104,6 +105,7 @@ class ScribesWindow(Window):
 		self.__signal_id_22 = None
 		# Register a unique number with the editor's termination queue
 		self.__termination_id = editor.register_object()
+		self.__count = 0
 		return
 
 	def __get_is_maximized(self):
@@ -134,6 +136,15 @@ class ScribesWindow(Window):
 		self.set_property("border-width", 1)
 		self.set_property("name", "EditorWindow")
 		self.set_focus_on_map(True)
+		return
+
+	def __set_window_position_in_database(self):
+		xcoordinate, ycoordinate = self.get_position()
+		width, height = self.get_size()
+		is_maximized = self.__is_maximized
+		# Update the metadata database with the size and position of the window.
+		from gobject import idle_add
+		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height, priority=5000)
 		return
 
 ########################################################################
@@ -186,9 +197,9 @@ class ScribesWindow(Window):
 		@return: True to prevent propagation of the signal to parent widgets.
 		@rtype: A Boolean object.
 		"""
+		self.__is_mapped = True
 		if not self.__is_first_time: return False
 		self.__is_first_time = False
-		self.__is_mapped = True
 		return True
 
 	def __focus_out_event_cb(self, window, event):
@@ -210,21 +221,11 @@ class ScribesWindow(Window):
 		# Save a document when the text editor's window loses focus.
 		if self.__editor.uri and self.__editor.file_is_saved is False and self.__editor.is_readonly is False:
 			self.__editor.trigger("save_file")
-		xcoordinate, ycoordinate = self.get_position()
-		width, height = self.get_size()
-		is_maximized = self.__is_maximized
-		# Update the metadata database with the size and position of the window.
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height, priority=PRIORITY_LOW)
+		self.__set_window_position_in_database()
 		return False
 
 	def __focus_in_event_cb(self, *args):
-		xcoordinate, ycoordinate = self.get_position()
-		width, height = self.get_size()
-		is_maximized = self.__is_maximized
-		# Update the metadata database with the size and position of the window.
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height, priority=PRIORITY_LOW)
+		self.__set_window_position_in_database()
 		return False
 
 	def __state_event_cb(self, window, event):
@@ -251,6 +252,12 @@ class ScribesWindow(Window):
 		self.__is_maximized = False
 		if event.new_window_state in (WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN):
 			self.__is_maximized = True
+		self.__set_window_position_in_database()
+		return False
+
+	def __size_request_cb(self, *args):
+		if not self.__is_mapped: return False
+		self.__set_window_position_in_database()
 		return False
 
 	def __loading_document_cb(self, editor, uri):
@@ -268,8 +275,7 @@ class ScribesWindow(Window):
 		# Set the titlebar to show the file is currently being loaded.
 		self.__determine_title(uri)
 		from internationalization import msg0335
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.set_title, msg0335 % self.__title, priority=PRIORITY_LOW)
+		self.set_title(msg0335 % self.__title)
 		return
 
 	def __loaded_document_cb(self, editor, uri, *args):
@@ -285,10 +291,8 @@ class ScribesWindow(Window):
 		#self.__editor.textbuffer.handler_unblock(self.__signal_id_18)
 		self.__editor.handler_unblock(self.__signal_id_18)
 		self.__uri = uri
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.set_title, self.__title, priority=PRIORITY_LOW)
-		self.show_all()
-		self.present()
+		self.set_title(self.__title)
+		self.__is_loaded = True
 		return
 
 	def __load_error_cb(self, editor, uri):
@@ -311,10 +315,7 @@ class ScribesWindow(Window):
 		from internationalization import msg0025
 		self.__uri = None
 		self.__title = None
-		from thread import start_new_thread
-		start_new_thread(self.set_title, (msg0025,))
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.set_title, msg0335 % self.__title, priority=PRIORITY_LOW)
+		self.set_title(msg0025)
 		if self.__is_mapped is False: self.__editor.emit("close-document-no-save")
 		return
 
@@ -325,9 +326,8 @@ class ScribesWindow(Window):
 		# Set the titlebar to show the file is currently being loaded.
 		self.__determine_title(uri)
 		from internationalization import msg0335
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.set_title, msg0335 % self.__title, priority=PRIORITY_LOW)
-		self.__position_window()
+		self.set_title(msg0335 % self.__title)
+		self.__show_window()
 		return
 
 	def __enable_readonly_cb(self, editor):
@@ -341,8 +341,7 @@ class ScribesWindow(Window):
 		@type editor: An Editor object.
 		"""
 		from internationalization import msg0034
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.set_title, self.__title + msg0034, priority=PRIORITY_LOW)
+		self.set_title(self.__title + msg0034)
 		return
 
 	def __disable_readonly_cb(self, editor):
@@ -355,8 +354,7 @@ class ScribesWindow(Window):
 		@param editor: An instance of the text editor.
 		@type editor: An Editor object.
 		"""
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.set_title, self.__title, priority=PRIORITY_LOW)
+		self.set_title(self.__title)
 		return
 
 	def __gui_created_cb(self, editor):
@@ -516,6 +514,7 @@ class ScribesWindow(Window):
 		"""
 		self.__position_window()
 		self.show_all()
+		self.present()
 		from gtk.gdk import notify_startup_complete
 		notify_startup_complete()
 		return False
@@ -532,10 +531,7 @@ class ScribesWindow(Window):
 		@type self: A ScribesWindow object.
 		"""
 		try:
-			if self.__uri:
-				uri = self.__uri
-			else:
-				uri = '<EMPTY>'
+			uri = self.__uri if self.__uri else "<EMPTY>"
 			# Get window position from the position database, if possible.
 			from position_metadata import get_window_position_from_database
 			maximize, width, height, xcoordinate, ycoordinate = \
@@ -544,11 +540,11 @@ class ScribesWindow(Window):
 			if maximize:
 				self.maximize()
 			else:
+				self.resize(width, height)
 				if self.__is_mapped is False:
 					self.move(xcoordinate, ycoordinate)
-				self.resize(width, height)
 		except TypeError:
-			pass
+			print "An error occured"
 		return False
 
 	def __saved_document_cb(self, *args):
@@ -599,16 +595,13 @@ class ScribesWindow(Window):
 	def __renamed_document_cb(self, editor, uri, *args):
 		self.__uri = uri
 		self.__determine_title(self.__uri)
-		#self.set_title(self.__title)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.set_title, self.__title, priority=PRIORITY_LOW)
+		self.set_title(self.__title)
 		return False
 
 	def __reload_document_cb(self, *args):
 		from internationalization import msg0489
 		message = msg0489 % (self.__uri)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.set_title, message, priority=PRIORITY_LOW)
+		self.set_title(message)
 		return False
 
 ########################################################################
@@ -635,6 +628,7 @@ class ScribesWindow(Window):
 		return False
 
 	def __update_position(self, is_maximized, xcoordinate, ycoordinate, width, height):
+		if not self.__is_mapped: return False
 		if self.__uri:
 			uri = self.__uri
 		else:
@@ -646,6 +640,8 @@ class ScribesWindow(Window):
 		else:
 			window_position = (False, width, height, xcoordinate, ycoordinate)
 			update_window_position_in_database(str(uri), window_position)
+		self.__count += 1
+		print "title: ", self.__title, "position: ", window_position, "count: ", self.__count
 		return False
 
 	def __stop_window_position_timer(self):
@@ -702,6 +698,7 @@ class ScribesWindow(Window):
 		self.__editor.disconnect_signal(self.__signal_id_22, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_23, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_24, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_30, self)
 		self.__editor.unregister_object(self.__termination_id)
 		del self
 		self = None

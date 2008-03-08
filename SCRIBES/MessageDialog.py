@@ -153,7 +153,7 @@ class ScribesMessageDialog(MessageDialog):
 		@type self: A ScribesErrorDialog object.
 		"""
 		if self.__use_signals: self.__editor.emit("hide-dialog", self)
-		self.hide_all()
+		self.hide()
 		self.__use_signals = False
 		return
 

@@ -112,7 +112,6 @@ class ScribesTextView(SourceView):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__client = editor.gconf_client
 		self.__editor = editor
 		self.__registration_id = editor.register_object()
 		self.__spell_checker = None

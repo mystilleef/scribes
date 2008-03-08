@@ -107,7 +107,7 @@ class Editor(GObject):
 #		self.connect_after("loaded-document", self.__loaded_document_after_cb)
 		from gobject import idle_add, PRIORITY_HIGH, PRIORITY_LOW
 		idle_add(self.__init_attributes, manager, file_uri, encoding, priority=PRIORITY_HIGH)
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=5000)
 
 ########################################################################
 #
@@ -231,7 +231,11 @@ class Editor(GObject):
 		return self.__contains_document
 
 	def __get_gconf_client(self):
-		return self.__instance_manager.get_gconf_client()
+		"""
+		Function is deprecated.
+		"""
+		# This function is deprecated
+		return None
 
 	def __get_status_image(self):
 		return self.__status_image

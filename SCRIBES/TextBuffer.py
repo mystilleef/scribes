@@ -60,7 +60,7 @@ class ScribesTextBuffer(SourceBuffer):
 		self.__signal_id_10 = self.connect("notify::cursor-position", self.__cursor_position_cb)
 		self.__signal_id_11 = editor.connect("reload-document", self.__reload_document_cb)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		idle_add(self.__precompile_methods, priority=5000)
 
 	def __init_attributes(self, editor):
 		"""

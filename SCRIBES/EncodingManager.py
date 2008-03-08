@@ -266,8 +266,8 @@ class EncodingManager(object):
 		encoding = self.__format_encoding(encoding)
 		if encoding in self.__default_encoding: return
 		self.__encoding = encoding
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__set_guess_list, encoding, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__set_guess_list, encoding, priority=5000)
 		return
 
 	def __saved_document_cb(self, editor, uri, encoding):

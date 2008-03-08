@@ -59,13 +59,10 @@ class Manager(GObject):
 		self.__init_attributes(editor)
 		from Window import Window
 		Window(editor, self)
-		from thread import start_new_thread
 		from ForkScribesCheckButton import CheckButton
-		start_new_thread(CheckButton, (editor, self))
+		CheckButton(editor, self)
 		from BracketSelectionColorButton import ColorButton
-		start_new_thread(ColorButton, (editor, self))
-		from TemplateColorsTreeView import TreeView
-		start_new_thread(TreeView, (editor, self))
+		ColorButton(editor, self)
 
 	def __init_attributes(self, editor):
 		"""

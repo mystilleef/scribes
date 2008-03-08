@@ -132,15 +132,14 @@ class OutputProcessor(object):
 		@param uri: Location to write file to.
 		@type uri: A String object.
 		"""
-		from operator import not_, is_
-		if not_(uri.startswith("file:///")): return
+		if not uri.startswith("file:///"): return
 		from gnomevfs import get_local_path_from_uri
 		file_path = get_local_path_from_uri(uri)
 		from os import access, W_OK, path
 		folder_path = path.dirname(file_path)
 		from Exceptions import PermissionError
-		if is_(access(folder_path, W_OK), False):
-			raise PermissionError		elif is_(access(file_path, W_OK), False):
+		if access(folder_path, W_OK) is False:
+			raise PermissionError		elif access(file_path, W_OK) is False:
 			if path.exists(file_path): raise PermissionError
 		return
 
@@ -203,8 +202,7 @@ class OutputProcessor(object):
 		@return: URI to a swap file.
 		@rtype: A String object.
 		"""
-		from operator import contains
-		if contains(self.__file_dictionary.keys(), editor_id): return self.__file_dictionary[editor_id]
+		if editor_id in self.__file_dictionary.keys(): return self.__file_dictionary[editor_id]
 		swap_uri = self.__create_swap_file(self.__create_swap_folder())
 		self.__file_dictionary[editor_id] = swap_uri
 		return swap_uri

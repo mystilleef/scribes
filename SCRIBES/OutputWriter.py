@@ -175,8 +175,7 @@ class OutputWriter(GObject):
 		try:
 			if info.vfs_status: raise Exception
 			from gnomevfs import XFER_PHASE_COMPLETED
-			from operator import ne
-			if ne(info.phase, XFER_PHASE_COMPLETED): return True
+			if info.phase != XFER_PHASE_COMPLETED: return True
 			self.__set_file_info()
 			self.__finish_up()
 		except:
@@ -222,8 +221,7 @@ class OutputWriter(GObject):
 		@rtype: A gnomevfs.FILE_INFO object.
 		"""
 		try:
-			from operator import is_
-			if is_(self.__uri.startswith("file:///"), False): return None
+			if self.__uri.startswith("file:///") is False: return None
 			from gnomevfs import get_file_info
 			fileinfo = get_file_info(self.__uri)
 		except:			return None		return fileinfo
@@ -235,8 +233,7 @@ class OutputWriter(GObject):
 		@param self: Reference to the OutputWriter instance.
 		@type self: A OutputWriter object.
 		"""
-		from operator import not_
-		if not_(self.__file_info): return
+		if not self.__file_info: return
 		try:
 			from gnomevfs import set_file_info, SET_FILE_INFO_PERMISSIONS
 			set_file_info(self.__uri, self.__file_info, SET_FILE_INFO_PERMISSIONS)

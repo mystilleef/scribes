@@ -202,9 +202,8 @@ class FileLoader(object):
 					from gnomevfs import get_local_path_from_uri
 					local_path = get_local_path_from_uri(self.__uri)
 					from os.path import getsize
-					from operator import not_
 					size = getsize(local_path)
-					if not_(size): size = 4096
+					if not (size): size = 4096
 					handle.read(size, self.__read_cb)
 				except:
 					raise ReadFileError
@@ -320,10 +319,7 @@ class FileLoader(object):
 				except TypeError:
 					unicode_string = string.decode("utf-8")
 			utf8_string = unicode_string.encode("utf-8")
-			from gtk.gdk import threads_enter, threads_leave
-			threads_enter()
 			self.__editor.textbuffer.set_text(utf8_string)
-			threads_leave()
 		except UnicodeDecodeError:
 			from internationalization import msg0487
 			self.__error(msg0487, True)

@@ -44,18 +44,14 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
-		from gobject import idle_add, PRIORITY_LOW
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
 		self.__init_attributes()
 		self.__init_i18n()
-#		from signal import signal, SIGHUP, SIGTERM, SIGSEGV
-#		signal(SIGHUP, self.__kernel_signals_cb)
-#		signal(SIGSEGV, self.__kernel_signals_cb)
-#		signal(SIGTERM, self.__kernel_signals_cb)
-#		idle_add(self.__init_gnome_libs, priority=PRIORITY_LOW)
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		from gobject import idle_add, timeout_add
+		idle_add(self.__precompile_methods, priority=5000)
+		timeout_add(300000, self.__init_garbage_collector, priority=5000)
 
 	def __init_attributes(self):
 		"""
@@ -69,26 +65,8 @@ class EditorManager(object):
 		self.__registration_ids = deque([])
 		from GlobalStore import Store
 		self.__store = Store()
-		from gconf import client_get_default
-		self.__client = client_get_default()
-		self.__authentication_manager_is_initialized = False
 		from SaveProcessMonitor import SaveProcessMonitor
 		self.__save_process_monitor = SaveProcessMonitor()
-		self.__response_is_busy = False
-		return
-
-	def __set_vm_properties(self):
-		"""
-		Set virtual machine's (Python) system properties.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-		"""
-		from sys import setcheckinterval, getrecursionlimit, setrecursionlimit, setdlopenflags
-		from dl import RTLD_LAZY, RTLD_GLOBAL
-		setcheckinterval(INTERVAL)
-		setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
-		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 		return
 
 ########################################################################
@@ -273,31 +251,6 @@ class EditorManager(object):
 		uris = [str(editor.uri) for editor in self.__editor_instances if editor.uri]
 		return uris
 
-	def get_gconf_client(self):
-		"""
-		Get an object that can access and monitor GConf.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-
-		@return: A GConf Client object.
-		@rtype: A gconf.Client object.
-		"""
-		return self.__client
-
-	def init_authentication_manager(self):
-		"""
-		Initialize the gnome authentication manager.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-		"""
-		if self.__authentication_manager_is_initialized: return
-		from gnome.ui import authentication_manager_init
-		authentication_manager_init()
-		self.__authentication_manager_is_initialized = True
-		return
-
 	def get_editor_instances(self):
 		"""
 		Return all editor instances.
@@ -366,20 +319,7 @@ class EditorManager(object):
 		@type uri: A String object.
 		"""
 		from Editor import Editor
-		#from thread import start_new_thread
-		#start_new_thread(Editor, (self, uri, encoding))
 		Editor(self, uri, encoding)
-		return False
-
-	def __init_gnome_libs(self):
-		"""
-		Initialize GNOME libraries.
-
-		@param self: Reference to the InstanceManager instance.
-		@type self: An InstanceManager object.
-		"""
-		from utils import init_gnome
-		init_gnome()
 		return False
 
 	def __init_garbage_collector(self):
@@ -464,5 +404,7 @@ class EditorManager(object):
 		"""
 		self.__remove_swap_area()
 		self.__save_process_monitor.destroy()
-		raise SystemExit
+		from gtk import main_quit
+		main_quit()
+		#raise SystemExit
 		return

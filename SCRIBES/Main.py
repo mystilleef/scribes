@@ -29,8 +29,8 @@ program.
 @contact: mystilleef@gmail.com
 """
 
-from dbus.mainloop.glib import DBusGMainLoop
-DBusGMainLoop(set_as_default=True)
+#from dbus.mainloop.glib import DBusGMainLoop
+#DBusGMainLoop(set_as_default=True)
 scribes_dbus_service = "net.sourceforge.Scribes"
 scribes_dbus_path = "/net/sourceforge/Scribes"
 
@@ -59,7 +59,7 @@ def __open(uris=None):
 	__open_via_dbus(uris)
 	#__init_threads()
 	from gobject import idle_add, PRIORITY_HIGH
-	idle_add(__launch_new_editor, uris, priority=PRIORITY_HIGH)
+	idle_add(__launch_new_editor, uris)
 	return
 
 def __open_via_dbus(uris=None):
