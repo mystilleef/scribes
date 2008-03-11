@@ -60,6 +60,7 @@ scribes_PYTHON = \
 	internationalization.py \
 	license.py \
 	lines.py \
+	LanguagePluginManager.py \
 	Main.py \
 	MessageDialog.py \
 	MainContainer.py \

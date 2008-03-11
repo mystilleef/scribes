@@ -34,6 +34,7 @@ EXTRA_DIST = m4 \
 	CONTRIBUTORS \
 	TODO \
 	plugins \
+	LanguagePlugins \
 	compile.py \
 	TRANSLATORS
 
@@ -50,5 +51,11 @@ install-data-hook:
 		rm -rf $(DESTDIR)$(datadir)/scribes/plugins ;\
 		echo "removed " $(DESTDIR)$(datadir)/scribes/plugins ;\
 	fi
+	if [ -d $(DESTDIR)$(datadir)/scribes/plugins ]; then \
+		echo "removing " $(DESTDIR)$(datadir)/scribes/LanguagePlugins ;\
+		rm -rf $(DESTDIR)$(datadir)/scribes/LanguagePlugins ;\
+		echo "removed " $(DESTDIR)$(datadir)/scribes/LanguagePlugins ;\
+	fi
 	cp -R plugins $(DESTDIR)$(datadir)/scribes
+	cp -R LanguagePlugins $(DESTDIR)$(datadir)/scribes
 	chmod 755 $(DESTDIR)$(startupdir)/$(startup_script)

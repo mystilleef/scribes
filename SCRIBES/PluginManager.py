@@ -108,7 +108,7 @@ class PluginManager(object):
 		except DuplicatePluginError:
 			print "Duplicate Plugin: ", (plugin_name, plugin_version)
 		except DoNotLoadError:
-			print "Not loading: ", (filename)
+			#print "Not loading: ", (filename)
 			self.__plugin_modules.add(module)
 		return False
 

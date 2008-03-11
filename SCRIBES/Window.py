@@ -256,8 +256,8 @@ class ScribesWindow(Window):
 		return False
 
 	def __size_request_cb(self, *args):
-		if not self.__is_mapped: return False
-		self.__set_window_position_in_database()
+#		if not self.__is_mapped: return False
+#		self.__set_window_position_in_database()
 		return False
 
 	def __loading_document_cb(self, editor, uri):
@@ -544,7 +544,8 @@ class ScribesWindow(Window):
 				if self.__is_mapped is False:
 					self.move(xcoordinate, ycoordinate)
 		except TypeError:
-			print "An error occured"
+			#print "An error occured"
+			pass
 		return False
 
 	def __saved_document_cb(self, *args):
@@ -641,7 +642,7 @@ class ScribesWindow(Window):
 			window_position = (False, width, height, xcoordinate, ycoordinate)
 			update_window_position_in_database(str(uri), window_position)
 		self.__count += 1
-		print "title: ", self.__title, "position: ", window_position, "count: ", self.__count
+		#print "title: ", self.__title, "position: ", window_position, "count: ", self.__count
 		return False
 
 	def __stop_window_position_timer(self):

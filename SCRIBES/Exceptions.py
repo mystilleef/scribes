@@ -76,6 +76,9 @@ class DoNotLoadError(Error):
 class InvalidTriggerNameError(Error):
 	pass
 
+class InvalidLanguagePluginError(Error):
+	pass
+	
 class DuplicateTriggerNameError(Error):
 	pass
 

@@ -292,6 +292,14 @@ class Editor(GObject):
 		from info import core_plugin_folder
 		return core_plugin_folder
 
+	def __get_home_language_plugin_folder(self):
+		from info import home_language_plugin_folder
+		return home_language_plugin_folder
+
+	def __get_core_language_plugin_folder(self):
+		from info import core_language_plugin_folder
+		return core_language_plugin_folder
+
 	def __get_scribes_prefix(self):
 		from info import scribes_prefix
 		return scribes_prefix
@@ -400,6 +408,8 @@ class Editor(GObject):
 	desktop_folder = property(__get_desktop_folder)
 	home_plugin_folder = property(__get_home_plugin_folder)
 	core_plugin_folder = property(__get_core_plugin_folder)
+	home_language_plugin_folder = property(__get_home_language_plugin_folder)
+	core_language_plugin_folder = property(__get_core_language_plugin_folder)
 	dbus_iface = property(__get_dbus_iface)
 	metadata_folder = property(__get_metadata_folder)
 	scribes_prefix = property(__get_scribes_prefix)
@@ -925,10 +935,16 @@ class Editor(GObject):
 		finally:
 			# Initialize plugins
 			idle_add(self.__initialize_plugins, priority=5000)
+			idle_add(self.__initialize_language_plugins, priority=5000)
 		return False
 
 	def __initialize_plugins(self):
 		from PluginManager import PluginManager
+		PluginManager(self)
+		return False
+
+	def __initialize_language_plugins(self):
+		from LanguagePluginManager import PluginManager
 		PluginManager(self)
 		return False
 
