@@ -124,7 +124,6 @@ class PluginManager(object):
 		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
 		del self
 		self = None
-		print "Destroyed language plugin manager."
 		return
 
 	def __set_plugin_search_path(self):
@@ -276,7 +275,6 @@ class PluginManager(object):
 		home_files = listdir(self.__editor.home_language_plugin_folder)
 		for filename in home_files:
 			idle_add(self.__init_module, filename, self.__editor.home_language_plugin_folder, priority=PRIORITY_LOW)
-		print "loading plugins"
 		return False
 
 	def __unload_plugins(self):
@@ -287,7 +285,6 @@ class PluginManager(object):
 		@type self: A PluginManager object.
 		"""
 		map(self.__unload_plugin, self.__plugin_objects.copy())
-		print "unloaded plugins"
 		if self.__is_quiting: self.__destroy()
 		return False
 
