@@ -32,7 +32,7 @@ checking.
 class Trigger(object):
 	"""
 	This class creates an object, a trigger, that (un)comments lines
-	in python source code.
+	in several source code.
 	"""
 
 	def __init__(self, editor):
@@ -70,7 +70,7 @@ class Trigger(object):
 		@param self: Reference to the Trigger instance.
 		@type self: A Trigger object.
 		"""
-		# Trigger that (un)comments lines in python source code.
+		# Trigger that (un)comments lines in several source code.
 		self.__trigger = self.__editor.create_trigger("toggle_comment", "alt - c")
 		self.__editor.add_trigger(self.__trigger)
 		return self.__trigger

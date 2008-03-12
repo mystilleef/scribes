@@ -622,6 +622,7 @@ s,@OMF_DIR@,|#_!!_#|${datadir}/omf,g
 s,@DOC_USER_FORMATS@,|#_!!_#|,g
 s,@ENABLE_SK_TRUE@,|#_!!_#|,g
 s,@ENABLE_SK_FALSE@,|#_!!_#|#,g
+s,@DISTCHECK_CONFIGURE_FLAGS@,|#_!!_#|--disable-scrollkeeper ,g
 s,@HAVE_GNOME_DOC_UTILS_TRUE@,|#_!!_#|,g
 s,@HAVE_GNOME_DOC_UTILS_FALSE@,|#_!!_#|#,g
 s,@PYTHON@,|#_!!_#|/usr/bin/python,g

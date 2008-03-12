@@ -99,6 +99,9 @@ CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DISTCHECK_CONFIGURE_FLAGS = \
+	--disable-scrollkeeper
+
 DOC_USER_FORMATS = @DOC_USER_FORMATS@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -231,9 +234,6 @@ SUBDIRS = po help data SCRIBES
 # Workaround broken scrollkeeper that doesn't remove its files on
 # uninstall.
 distuninstallcheck_listfiles = find . -type f -print | grep -v scrollkeeper
-DISTCHECK_CONFIGURE_FLAGS = \
-	--disable-scrollkeeper
-
 EXTRA_DIST = m4 \
 	autogen.sh \
 	depcheck.py \

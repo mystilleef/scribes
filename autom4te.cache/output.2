@@ -747,6 +747,7 @@ OMF_DIR
 DOC_USER_FORMATS
 ENABLE_SK_TRUE
 ENABLE_SK_FALSE
+DISTCHECK_CONFIGURE_FLAGS
 HAVE_GNOME_DOC_UTILS_TRUE
 HAVE_GNOME_DOC_UTILS_FALSE
 PYTHON
@@ -6273,6 +6274,9 @@ else
 fi
 
 
+DISTCHECK_CONFIGURE_FLAGS="--disable-scrollkeeper $DISTCHECK_CONFIGURE_FLAGS"
+
+
  
 
 if test "$gdu_cv_have_gdu" = "yes"; then
@@ -7402,6 +7406,7 @@ OMF_DIR!$OMF_DIR$ac_delim
 DOC_USER_FORMATS!$DOC_USER_FORMATS$ac_delim
 ENABLE_SK_TRUE!$ENABLE_SK_TRUE$ac_delim
 ENABLE_SK_FALSE!$ENABLE_SK_FALSE$ac_delim
+DISTCHECK_CONFIGURE_FLAGS!$DISTCHECK_CONFIGURE_FLAGS$ac_delim
 HAVE_GNOME_DOC_UTILS_TRUE!$HAVE_GNOME_DOC_UTILS_TRUE$ac_delim
 HAVE_GNOME_DOC_UTILS_FALSE!$HAVE_GNOME_DOC_UTILS_FALSE$ac_delim
 PYTHON!$PYTHON$ac_delim
@@ -7417,7 +7422,7 @@ LIB@&t@OBJS!$LIB@&t@OBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 47; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 48; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

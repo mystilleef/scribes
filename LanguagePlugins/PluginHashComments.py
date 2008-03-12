@@ -29,19 +29,19 @@ show the about dialog.
 @contact: <mystilleef@gmail.com>
 """
 
-name = "Python (un)comment plugin"
+name = "Hash (un)comment plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-languages = ["Python"]
+languages = ["Python", "Ruby", "Perl"]
 version = 0.1
 autoload = True
 class_name = "CommentPlugin"
-short_description = "(Un)comment lines in python source code"
+short_description = "(Un)comment lines in several source code"
 long_description = """This plugin allows users to (un)comment lines in
-python source code by pressing (alt - c)"""
+hash source code by pressing (alt - c)"""
 
 class CommentPlugin(object):
 	"""
-	Load and initialize comment plugin for python source code.
+	Load and initialize comment plugin for several source code.
 	"""
 
 	def __init__(self, editor):
@@ -59,12 +59,12 @@ class CommentPlugin(object):
 
 	def load(self):
 		"""
-		Initialize the python comment plugin.
+		Initialize the hash comment plugin.
 
 		@param self: Reference to the CommentPlugin instance.
 		@type self: An CommentPlugin object.
 		"""
-		from PythonComments.Trigger import Trigger
+		from HashComments.Trigger import Trigger
 		self.__trigger = Trigger(self.__editor)
 		return
 

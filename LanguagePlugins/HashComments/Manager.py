@@ -19,7 +19,7 @@
 # USA
 
 """
-This module documents a class that (un)comments lines in Python source
+This module documents a class that (un)comments lines in several source
 code
 
 @author: Lateef Alabi-Oki
@@ -31,7 +31,7 @@ code
 
 class Manager(object):
 	"""
-	This class (un)comments lines in Python source code.
+	This class (un)comments lines in several source code.
 	"""
 
 	def __init__(self, editor):

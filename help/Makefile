@@ -91,6 +91,7 @@ CYGPATH_W = echo
 DATADIRNAME = share
 DEFS = -DPACKAGE_NAME=\"scribes\" -DPACKAGE_TARNAME=\"scribes\" -DPACKAGE_VERSION=\"0.3.4-dev3\" -DPACKAGE_STRING=\"scribes\ 0.3.4-dev3\" -DPACKAGE_BUGREPORT=\"\<mystilleef@gmail.com\>\" -DPACKAGE=\"scribes\" -DVERSION=\"0.3.4-dev3\" -DGETTEXT_PACKAGE=\"scribes\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LOCALE_H=1 -DHAVE_LC_MESSAGES=1 -DHAVE_BIND_TEXTDOMAIN_CODESET=1 -DHAVE_GETTEXT=1 -DHAVE_DCGETTEXT=1 -DENABLE_NLS=1
 DEPDIR = .deps
+DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper 
 DOC_USER_FORMATS = 
 ECHO_C = 
 ECHO_N = -n
@@ -753,8 +754,8 @@ check-doc-docs: $(_DOC_C_DOCS) $(_DOC_LC_DOCS)
 
 check-doc-omf: $(_DOC_OMF_ALL)
 	@list='$(_DOC_OMF_ALL)'; for omf in $$list; do \
-	  echo "xmllint --noout --dtdvalid 'http://scrollkeeper.sourceforge.net/dtds/scrollkeeper-omf-1.0/scrollkeeper-omf.dtd' $$omf"; \
-	  xmllint --noout --dtdvalid 'http://scrollkeeper.sourceforge.net/dtds/scrollkeeper-omf-1.0/scrollkeeper-omf.dtd' $$omf; \
+	  echo "xmllint --noout --xinclude --dtdvalid 'http://scrollkeeper.sourceforge.net/dtds/scrollkeeper-omf-1.0/scrollkeeper-omf.dtd' $$omf"; \
+	  xmllint --noout --xinclude --dtdvalid 'http://scrollkeeper.sourceforge.net/dtds/scrollkeeper-omf-1.0/scrollkeeper-omf.dtd' $$omf; \
 	done
 
 .PHONY: install-doc-docs install-doc-html install-doc-figs install-doc-omf install-doc-dsk
