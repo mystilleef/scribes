@@ -63,6 +63,22 @@ class Manager(object):
 		self.__feedback = editor.feedback
 		return
 
+	def __precompile_methods(self):
+		"""
+		Optimize methods using Psyco
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
+		try:
+			from psyco import bind
+			bind(self.scroll_up)
+			bind(self.scroll_down)
+			bind(self.center)
+		except ImportError:
+			pass
+		return False
+
 ########################################################################
 #
 #							Public Methods
@@ -120,19 +136,3 @@ class Manager(object):
 		del self
 		self = None
 		return
-
-	def __precompile_methods(self):
-		"""
-		Optimize methods using Psyco
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
-		try:
-			from psyco import bind
-			bind(self.scroll_up)
-			bind(self.scroll_down)
-			bind(self.center)
-		except ImportError:
-			pass
-		return False

@@ -166,9 +166,8 @@ def show_busy_textview_cursor(textview):
 	return
 
 def move_view_to_cursor(textview):
-	textbuffer = textview.get_buffer()
-	cursor_mark = textbuffer.get_insert()
-	textview.scroll_to_mark(cursor_mark, 0.05, False, 0.5, 0.5)
+	iterator = get_cursor_iterator(textview.get_buffer())
+	textview.scroll_to_iter(iterator, 0.001, use_align=True, xalign=1.0)
 	return
 
 def word_to_cursor(textbuffer):
