@@ -130,7 +130,9 @@ class ColorEditorTreeView(TreeView):
 		@param self: Reference to the ColorEditorTreeView instance.
 		@type self: A ColorEditorTreeView object.
 		"""
+		self.__treeview.set_model(None)
 		map(self.__fill_language_and_elements, self.__language_list)
+		self.__treeview.set_model(self.__model)
 		return
 
 	def __fill_language_and_elements(self, language):

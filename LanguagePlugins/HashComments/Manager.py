@@ -279,22 +279,20 @@ class Manager(object):
 			if self.__should_comment(lines):
 				self.__commented = True
 				lines = self.__comment_lines(lines)
+				offset += 1
 			else:
 				self.__commented = False
 				lines = self.__uncomment_lines(lines)
+				offset -= 1
 			text = "\n".join(lines)
-			self.__buffer.begin_not_undoable_action()
 			self.__buffer.place_cursor(begin)
 			self.__buffer.delete(begin, end)
 			self.__buffer.insert_at_cursor(text)
-			self.__buffer.end_not_undoable_action()
 			iterator = self.__buffer.get_iter_at_offset(offset)
 			self.__buffer.place_cursor(iterator)
 		except TypeError:
-			self.__buffer.begin_not_undoable_action()
 			self.__buffer.insert_at_cursor("#")
 			self.__commented = True
-			self.__buffer.end_not_undoable_action()
 			iterator = self.__buffer.get_iter_at_offset(offset)
 			self.__buffer.place_cursor(iterator)
 		except ReadOnlyError:

@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Copyright © 2005 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
@@ -21,9 +21,9 @@
 # Boston, MA  02110-1301  USA
 
 """
-This module exposes a class responsible for creating the graphic user interface
-components of the text editor. The class also manages state information about
-text editor instances.
+This module exposes a class responsible for creating the graphic user
+interface components of the text editor. The class also manages state
+information about text editor instances.
 
 @author: Lateef Alabi-Oki
 @organiation: The Scribes Project
@@ -91,10 +91,12 @@ class Editor(GObject):
 		@param type: A String object.
 		"""
 		GObject.__init__(self)
-		self.__signal_id_1 = self.connect("initialized-attributes", self.__initialized_attributes_cb)		self.__signal_id_2 = self.connect("created-widgets", self.__created_widgets_cb)
+		self.__signal_id_1 = self.connect("initialized-attributes", self.__initialized_attributes_cb)
+		self.__signal_id_2 = self.connect("created-widgets", self.__created_widgets_cb)
 		self.__signal_id_3 = self.connect_after("gui-created", self.__gui_created_after_cb)
 		self.__signal_id_4 = self.connect("checking-document", self.__checking_document_cb)
-		self.__signal_id_5 = self.connect("loaded-document", self.__loaded_document_cb)		self.__signal_id_6 = self.connect("load-error", self.__load_error_cb)
+		self.__signal_id_5 = self.connect("loaded-document", self.__loaded_document_cb)
+		self.__signal_id_6 = self.connect("load-error", self.__load_error_cb)
 		self.__signal_id_7 = self.connect("saved-document", self.__saved_document_cb)
 		self.__signal_id_8 = self.connect("modified-document", self.__modified_document_cb)
 		self.__signal_id_9 = self.connect("renamed-document", self.__renamed_document_cb)
@@ -356,7 +358,8 @@ class Editor(GObject):
 		from license import license_string
 		return license_string
 
-#########################################################################
+########################################################################
+#
 #					Public API Properties
 #
 ########################################################################
@@ -625,10 +628,6 @@ class Editor(GObject):
 		from utils import create_scrollwin
 		return create_scrollwin()
 
-	def create_menuitem(self, string, stock_id=None):
-		from utils import create_menuitem
-		return create_menuitem(string, stock_id)
-
 	def convert_color_to_string(self, color):
 		from utils import convert_color_to_spec
 		return convert_color_to_spec(color)
@@ -641,7 +640,8 @@ class Editor(GObject):
 		return get_cursor_iterator(self.__textbuffer)
 
 	def create_button_box(self, stock_id, string):
-		return create_button(stock_id, string)
+		from utils import create_button_box
+		return create_button_box(stock_id, string)
 
 	def create_button(self, stock_id, string):
 		from utils import create_button
@@ -723,10 +723,6 @@ class Editor(GObject):
 	def calculate_resolution_independence(self, window, width, height):
 		from utils import calculate_resolution_independence
 		return calculate_resolution_independence(window, width, height)
-
-	def generate_random_number(self, sequence):
-		from utils import generate_random_number
-		return generate_random_number(sequence)
 
 	def set_message(self, message, icon, time):
 		return
@@ -855,7 +851,8 @@ class Editor(GObject):
 		collect()
 		return False
 
-#########################################################################
+########################################################################
+#
 #					Signal and Event Handlers
 #
 ########################################################################
@@ -964,7 +961,7 @@ class Editor(GObject):
 	#	print "Encoding is: ", self.encoding
 		return
 
-	def __load_error_cb(self, editor, uri):
+	def __load_error_cb(self, *args):
 		self.__can_load_file = True
 		self.__uri = None
 		return
@@ -987,25 +984,27 @@ class Editor(GObject):
 		self.load_uri(self.__uri)
 		return
 
-	def __rename_document_cb(self, editor, uri, encoding):
+	def __rename_document_cb(self, editor, uri, *args):
 		self.__uri = uri
 		return
 
-	def __enable_readonly_cb(self, editor):
+	def __enable_readonly_cb(self, *args):
 		self.__is_readonly = True
 		return
 
-	def __disable_readonly_cb(self, editor):
+	def __disable_readonly_cb(self, *args):
 		self.__is_readonly = False
 		return
 
-	def __modified_document_cb(self, editor):
+	def __modified_document_cb(self, *args):
 		self.__file_is_saved = False
 		self.__contains_document = True
 		self.__can_load_file = False
 		return False
 
-##########################################################################						Editor Attributes
+########################################################################
+#
+#						Editor Attributes
 #
 ########################################################################
 
