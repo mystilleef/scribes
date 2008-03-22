@@ -41,6 +41,7 @@ scribes_PYTHON = \
 	ErrorDialog.py \
 	EncodedFilesMetadata.py \
 	EncodingComboBox.py \
+	EncodingComboBoxGlade.py \
 	EncodingErrorWindow.py \
 	EncodingMetadata.py \
 	EncodingListMetadata.py \

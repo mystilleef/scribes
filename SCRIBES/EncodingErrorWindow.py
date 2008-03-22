@@ -37,6 +37,7 @@ class EncodingErrorWindow(object):
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
+		#~ self.__set_properties()
 		#self.__add_combobox()
 		self.__sig_id_1 = self.__window.connect("delete-event", self.__delete_event_cb)
 		self.__sig_id_2 = self.__window.connect("key-press-event", self.__key_press_event_cb)
@@ -66,8 +67,8 @@ class EncodingErrorWindow(object):
 		self.__open_button = glade.get_widget("OpenButton")
 		self.__close_button = glade.get_widget("CloseButton")
 		self.__uri = None
-	#	from EncodingComboBox import EncodingComboBox
-	#	self.__combobox = EncodingComboBox(editor)
+		from EncodingComboBoxGlade import ComboBox
+		self.__combobox = ComboBox(editor, glade)
 		return
 
 	def show_message(self, title, uri):
@@ -87,6 +88,10 @@ class EncodingErrorWindow(object):
 		self.__label.set_label(title)
 		self.__show()
 		return
+
+	def __set_properties(self):
+		self.__window.set_properties("transient-for", self.__editor.window)
+		return 
 
 	def __add_combobox(self):
 		"""

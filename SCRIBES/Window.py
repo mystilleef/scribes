@@ -45,7 +45,6 @@ class ScribesWindow(Window):
 		Window.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
-		self.__signal_id_30 = self.connect("size-request", self.__size_request_cb)
 		self.__signal_id_1 = self.connect("delete-event", self.__delete_event_cb)
 		self.__signal_id_2 = self.connect("map-event", self.__map_event_cb, editor)
 		self.__signal_id_3 = self.connect("window-state-event", self.__state_event_cb)
@@ -253,11 +252,6 @@ class ScribesWindow(Window):
 		if event.new_window_state in (WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN):
 			self.__is_maximized = True
 		self.__set_window_position_in_database()
-		return False
-
-	def __size_request_cb(self, *args):
-#		if not self.__is_mapped: return False
-#		self.__set_window_position_in_database()
 		return False
 
 	def __loading_document_cb(self, editor, uri):
@@ -515,8 +509,8 @@ class ScribesWindow(Window):
 		self.__position_window()
 		self.show_all()
 		self.present()
-		from gtk.gdk import notify_startup_complete
-		notify_startup_complete()
+#		from gtk.gdk import notify_startup_complete
+#		notify_startup_complete()
 		return False
 
 	def __position_window(self):
@@ -663,6 +657,10 @@ class ScribesWindow(Window):
 			from psyco import bind
 			bind(self.__key_press_event_cb)
 			bind(self.__saved_document_cb)
+			bind(self.__changed_cb)
+			bind(self.__focus_in_event_cb)
+			bind(self.__focus_out_event_cb)
+			bind(self.__state_event_cb)
 		except ImportError:
 			pass
 		return False
@@ -699,7 +697,6 @@ class ScribesWindow(Window):
 		self.__editor.disconnect_signal(self.__signal_id_22, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_23, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_24, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_30, self)
 		self.__editor.unregister_object(self.__termination_id)
 		del self
 		self = None

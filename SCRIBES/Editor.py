@@ -953,6 +953,7 @@ class Editor(GObject):
 	def __loaded_document_cb(self, *args):
 		self.__can_load_file = False
 		self.__contains_document = True
+#		print "Language ID: ", self.language.get_id()
 		return
 
 	def __loaded_document_after_cb(self, *args):

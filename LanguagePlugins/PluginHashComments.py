@@ -31,11 +31,11 @@ show the about dialog.
 
 name = "Hash (un)comment plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-languages = ["Python", "Ruby", "Perl"]
+languages = ["Python", "Ruby", "Perl", "sh"]
 version = 0.1
 autoload = True
 class_name = "CommentPlugin"
-short_description = "(Un)comment lines in several source code"
+short_description = "(Un)comment lines in source code"
 long_description = """This plugin allows users to (un)comment lines in
 hash source code by pressing (alt - c)"""
 

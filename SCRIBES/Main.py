@@ -58,7 +58,7 @@ def __open(uris=None):
 	"""
 	__open_via_dbus(uris)
 	#__init_threads()
-	from gobject import idle_add, PRIORITY_HIGH
+	from gobject import idle_add
 	idle_add(__launch_new_editor, uris)
 	return
 
@@ -158,8 +158,8 @@ def __fork_scribes():
 	from os import fork
 	pid = fork()
 	if pid != 0:
-		from sys import exit
-		exit(0)
+		from sys import exit as exit_
+		exit_(0)
 	return
 
 def __can_fork():
