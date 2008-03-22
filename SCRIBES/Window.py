@@ -80,6 +80,7 @@ class ScribesWindow(Window):
 		"""
 		self.__editor = editor
 		self.__title = None
+		self.__is_quiting = False
 		self.__bar_is_visible = False
 		self.__bar = None
 		self.__is_fullscreen = False
@@ -142,8 +143,9 @@ class ScribesWindow(Window):
 		width, height = self.get_size()
 		is_maximized = self.__is_maximized
 		# Update the metadata database with the size and position of the window.
-		from gobject import idle_add
-		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height, priority=5000)
+#		from gobject import idle_add
+#		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height, priority=5000)
+		self.__update_position(is_maximized, xcoordinate, ycoordinate, width, height)
 		return
 
 ########################################################################
@@ -217,13 +219,16 @@ class ScribesWindow(Window):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
+
 		# Save a document when the text editor's window loses focus.
 		if self.__editor.uri and self.__editor.file_is_saved is False and self.__editor.is_readonly is False:
 			self.__editor.trigger("save_file")
+		if self.__is_quiting: return False
 		self.__set_window_position_in_database()
 		return False
 
 	def __focus_in_event_cb(self, *args):
+		if self.__is_quiting: return False
 		self.__set_window_position_in_database()
 		return False
 
@@ -251,7 +256,10 @@ class ScribesWindow(Window):
 		self.__is_maximized = False
 		if event.new_window_state in (WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN):
 			self.__is_maximized = True
-		self.__set_window_position_in_database()
+#		if not self.__is_mapped: return False
+#		print "In state event callback"
+#		self.__set_window_position_in_database()
+#		print "Out state event callback"
 		return False
 
 	def __loading_document_cb(self, editor, uri):
@@ -538,7 +546,7 @@ class ScribesWindow(Window):
 				if self.__is_mapped is False:
 					self.move(xcoordinate, ycoordinate)
 		except TypeError:
-			#print "An error occured"
+#			print "An error occured"
 			pass
 		return False
 
@@ -571,6 +579,7 @@ class ScribesWindow(Window):
 		@param editor: An instance of the text editor's buffer.
 		@type editor: An Editor object.
 		"""
+		self.__is_quiting = True
 		self.__editor.disconnect_signal(self.__signal_id_17, self)
 		# Get the text editor's window size and position.
 		xcoordinate, ycoordinate = self.get_position()
@@ -583,6 +592,7 @@ class ScribesWindow(Window):
 		return False
 
 	def __close_document_no_save_cb(self, editor):
+		self.__is_quiting = True
 		self.__editor.disconnect_signal(self.__signal_id_17, self)
 		self.__destroy()
 		return False
@@ -636,7 +646,6 @@ class ScribesWindow(Window):
 			window_position = (False, width, height, xcoordinate, ycoordinate)
 			update_window_position_in_database(str(uri), window_position)
 		self.__count += 1
-		#print "title: ", self.__title, "position: ", window_position, "count: ", self.__count
 		return False
 
 	def __stop_window_position_timer(self):
