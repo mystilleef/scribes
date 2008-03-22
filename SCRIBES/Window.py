@@ -143,9 +143,9 @@ class ScribesWindow(Window):
 		width, height = self.get_size()
 		is_maximized = self.__is_maximized
 		# Update the metadata database with the size and position of the window.
-#		from gobject import idle_add
-#		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height, priority=5000)
-		self.__update_position(is_maximized, xcoordinate, ycoordinate, width, height)
+		from gobject import idle_add
+		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height, priority=5000)
+#		self.__update_position(is_maximized, xcoordinate, ycoordinate, width, height)
 		return
 
 ########################################################################
