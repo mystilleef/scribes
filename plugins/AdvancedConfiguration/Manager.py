@@ -57,12 +57,12 @@ class Manager(GObject):
 		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		from Window import Window
-		Window(editor, self)
 		from ForkScribesCheckButton import CheckButton
 		CheckButton(editor, self)
 		from BracketSelectionColorButton import ColorButton
 		ColorButton(editor, self)
+		from Window import Window
+		Window(editor, self)
 
 	def __init_attributes(self, editor):
 		"""

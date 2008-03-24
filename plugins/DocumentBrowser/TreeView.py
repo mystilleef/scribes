@@ -204,12 +204,17 @@ class TreeView(object):
 		uris.sort()
 		self.__uri_list.sort()
 		if uris == self.__uri_list: return
+		self.__treeview.set_property("sensitive", False)
 		self.__uri_list = uris
+		self.__treeview.set_model(None)
 		self.__model.clear()
 		for uri in self.__uri_list:
 			file_type, filename, pathname, fileuri= self.__process_uri(uri)
 			self.__model.append([filename, file_type, pathname, fileuri])
+		self.__treeview.set_model(self.__model)
 		self.__editor.select_row(self.__treeview)
+		self.__treeview.set_property("sensitive", True)
+		self.__treeview.grab_focus()
 		return
 
 	def __process_uri(self, uri):

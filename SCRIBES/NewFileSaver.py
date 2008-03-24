@@ -32,7 +32,8 @@ This module documents a class that saves files.
 SAVE_TIMER = 7000  # units in milliseconds (1000th of a second)
 save_dbus_service = "org.sourceforge.ScribesSaveProcessor"
 
-class FileSaver(object):	"""
+class FileSaver(object):
+	"""
 	This class creates an object that saves the content of the text
 	editor's buffer to a file.
 	"""
@@ -122,10 +123,12 @@ class FileSaver(object):	"""
 			self.__determine_action(is_closing)
 			from gobject import idle_add, PRIORITY_LOW
 			idle_add(self.__save_file, encoding, priority=500)
-		except DoNothingError:			pass
+		except DoNothingError:
+			pass
 		return False
 
-#########################################################################
+########################################################################
+#
 #                       Helper Methods
 #
 ########################################################################
@@ -181,7 +184,8 @@ class FileSaver(object):	"""
 		self.__processor = self.__editor.get_save_processor()
 		return self.__processor
 
-	def __determine_action(self, is_closing):		"""
+	def __determine_action(self, is_closing):
+		"""
 		Determine what saving action to take for files that have not
 		yet been saved to disk.
 
@@ -192,7 +196,8 @@ class FileSaver(object):	"""
 		@type is_closing: A Boolean object.
 		"""
 		if self.__editor.uri: return
-		if is_closing:			# Create a new file and save it if the text editor's buffer
+		if is_closing:
+			# Create a new file and save it if the text editor's buffer
 			# contains a document but there is no document to save.
 			self.__can_quit = True
 			self.__editor.create_new_file()
