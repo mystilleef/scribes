@@ -58,7 +58,6 @@ class Manager(object):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__client = editor.gconf_client
 		self.__buffer = editor.textbuffer
 		self.__feedback = editor.feedback
 		return
@@ -78,11 +77,10 @@ class Manager(object):
 		"""
 		cursor_iterator = self.__editor.get_cursor_iterator()
 		current_line = cursor_iterator.get_line()
-		from operator import eq, is_
 		try:
-			if eq(current_line, 0): raise RuntimeError
+			if current_line == 0: raise RuntimeError
 			line = self.__find_empty_line(cursor_iterator)
-			if is_(line, None): raise ValueError
+			if line is None: raise ValueError
 			self.__jump_to_line(line)
 			from i18n import msg0003
 			self.__feedback.update_status_message(msg0003, "yes", 5)
@@ -103,11 +101,10 @@ class Manager(object):
 		number_of_lines = self.__buffer.get_line_count()
 		cursor_iterator = self.__editor.get_cursor_iterator()
 		current_line = cursor_iterator.get_line()
-		from operator import eq, is_
 		try:
-			if eq(current_line, number_of_lines-1): raise RuntimeError
+			if current_line == number_of_lines-1: raise RuntimeError
 			line = self.__find_empty_line(cursor_iterator, False)
-			if is_(line, None): raise ValueError
+			if line is None: raise ValueError
 			self.__jump_to_line(line)
 			from i18n import msg0005
 			self.__feedback.update_status_message(msg0005, "yes", 5)
@@ -238,12 +235,11 @@ class Manager(object):
 		@return: Line number of empty line or None
 		@rtype: An Integer or None object.
 		"""
-		from operator import not_
 		while True:
 			if backwards:
-				if not_(iterator.backward_line()): return None
+				if not iterator.backward_line(): return None
 			else:
-				if not_(iterator.forward_line()): return None
+				if not iterator.forward_line(): return None
 			if self.__is_empty_line(iterator): return iterator.get_line()
 		return None
 
@@ -264,8 +260,7 @@ class Manager(object):
 		temporary_iterator = iterator.copy()
 		temporary_iterator.forward_to_line_end()
 		text = iterator.get_text(temporary_iterator)
-		from operator import not_
-		if not_(text): return True
+		if not text: return True
 		if text.isspace(): return True
 		return False
 
@@ -304,8 +299,7 @@ class Manager(object):
 		@return: Realigned text.
 		@rtype: A String object.
 		"""
-		from operator import not_, gt, le
-		if not_(text) or text.isspace(): raise RuntimeError
+		if not text or text.isspace(): raise RuntimeError
 		text_lines = text.split("\n")
 		indentation = self.__get_indentation(text_lines[0])
 		wrap_width = self.__calculate_wrap_width(indentation)
@@ -315,11 +309,11 @@ class Manager(object):
 		line = line.replace("\t", " ")
 		line = line.strip()
 		line = self.__respace_line(line)
-		if gt(len(line), wrap_width):
+		if len(line) > wrap_width:
 			while True:
 				new_line, remainder = self.__shorten_line(line, wrap_width)
 				reflowed_lines.append(new_line)
-				if le(len(remainder), wrap_width): break
+				if len(remainder) < wrap_width: break
 				line = remainder.strip()
 		else:
 			reflowed_lines.append(line)
@@ -367,8 +361,7 @@ class Manager(object):
 		@return: A list of indented lines.
 		@rtype: A List object.
 		"""
-		from operator import lt
-		if lt(len(reflowed_lines), 2): return reflowed_lines
+		if len(reflowed_lines) < 2: return reflowed_lines
 		indent_line = lambda x: indentation + x.strip()
 		indented_lines = map(indent_line, reflowed_lines)
 		return indented_lines
@@ -384,9 +377,8 @@ class Manager(object):
 		@type line: A String object.
 		"""
 		indentation_list = []
-		from operator import contains, not_
 		for char in line:
-			if not_(contains([" ", "\t"], char)): break
+			if not (char in [" ", "\t"]): break
 			indentation_list.append(char)
 		return "".join(indentation_list)
 
@@ -428,8 +420,7 @@ class Manager(object):
 		@rtype: An Integer object.
 		"""
 		width = self.__get_right_margin_width()
-		from operator import not_, ne
-		if not_(indentation): return width
+		if not indentation: return width
 		tab_width = self.__get_tab_width()
 		number_of_tab_chars = indentation.count("\t")
 		number_of_space_chars = indentation.count(" ")
@@ -446,9 +437,8 @@ class Manager(object):
 		@return: Tab width.
 		@rtype: An Integer object.
 		"""
-		tab_width = 4
-		if self.__client.get("/apps/scribes/tab"):
-			tab_width = self.__client.get_int("/apps/scribes/tab")
+		from TabWidthMetadata import get_value
+		tab_width = get_value()
 		return tab_width
 
 	def __is_readonly(self):
@@ -461,8 +451,7 @@ class Manager(object):
 		@return: True if editor is in readonly mode.
 		@rtype: A Boolean object.
 		"""
-		from operator import not_
-		if not_(self.__editor.is_readonly): return False
+		if not (self.__editor.is_readonly): return False
 		from i18n import msg0010
 		self.__editor.feedback.update_status_message(msg0010, "warning", 7)
 		return True
@@ -477,9 +466,8 @@ class Manager(object):
 		@return: Margin/wrap width.
 		@rtype: An Integer object.
 		"""
-		margin_position = 72
-		if self.__client.get("/apps/scribes/margin_position"):
-			margin_position = self.__client.get_int("/apps/scribes/margin_position")
+		from MarginPositionMetadata import get_value
+		margin_position = get_value()
 		return margin_position
 
 	def __precompile_methods(self):

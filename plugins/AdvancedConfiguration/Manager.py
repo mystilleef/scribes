@@ -61,6 +61,8 @@ class Manager(GObject):
 		CheckButton(editor, self)
 		from BracketSelectionColorButton import ColorButton
 		ColorButton(editor, self)
+		from UnsavedFolderComboBox import ComboBox
+		ComboBox(editor, self)
 		from Window import Window
 		Window(editor, self)
 
