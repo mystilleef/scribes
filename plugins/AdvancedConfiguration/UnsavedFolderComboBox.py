@@ -75,7 +75,7 @@ class ComboBox(object):
 		self.__combobox.pack_start(pixbuf_renderer, False)
 		self.__combobox.pack_start(text_renderer, True)
 		self.__combobox.set_attributes(text_renderer, text=1)
-		self.__combobox.set_attributes(pixbuf_renderer, "icon-name"=0)
+		self.__combobox.set_attributes(pixbuf_renderer, icon_name=0)
 		return
 
 	def __create_model(self):
@@ -101,9 +101,11 @@ class ComboBox(object):
 		"""
 		self.__combobox.set_property("sensitive", False)
 		self.__combobox.set_model(None)
-		#
-		# code to populate model goes here.
-		#
+#		from UnsavedFolderMetadata import get_value
+#		folder = get_value()
+		self.__model.clear()
+		self.__model.append(["folder", "Desktop"])
 		self.__combobox.set_model(self.__model)
+		self.__combobox.set_active(0)
 		self.__combobox.set_property("sensitive", True)
 		return False

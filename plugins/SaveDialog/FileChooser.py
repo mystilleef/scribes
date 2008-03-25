@@ -171,7 +171,7 @@ class FileChooser(object):
 		"""
 		from gobject import idle_add
 		idle_add(self.__set_folder)
-		self.__entry.grab_focus()
+#		self.__entry.grab_focus()
 		return
 
 	def __file_activated_cb(self, *args):

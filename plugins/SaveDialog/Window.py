@@ -158,6 +158,7 @@ class Window(object):
 		"""
 		from gobject import idle_add
 		idle_add(self.__show)
+#		self.__show()
 		return
 
 	def __delete_event_cb(self, *args):
