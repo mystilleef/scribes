@@ -76,6 +76,8 @@ class ComboBox(object):
 		self.__combobox.pack_start(text_renderer, True)
 		self.__combobox.set_attributes(text_renderer, text=1)
 		self.__combobox.set_attributes(pixbuf_renderer, icon_name=0)
+		sepfunc = lambda model, iter_: True if model.get_value(iter_, 1) == "Separator" else False
+		self.__combobox.set_row_separator_func(sepfunc)
 		return
 
 	def __create_model(self):
@@ -102,9 +104,11 @@ class ComboBox(object):
 		self.__combobox.set_property("sensitive", False)
 		self.__combobox.set_model(None)
 #		from UnsavedFolderMetadata import get_value
-#		folder = get_value()
+#		icon_name, folder_name = get_value()
 		self.__model.clear()
-		self.__model.append(["folder", "Desktop"])
+		self.__model.append(["desktop", "Desktop"])
+		self.__model.append(["empty", "Separator"])
+		self.__model.append(["folder", "other..."])
 		self.__combobox.set_model(self.__model)
 		self.__combobox.set_active(0)
 		self.__combobox.set_property("sensitive", True)

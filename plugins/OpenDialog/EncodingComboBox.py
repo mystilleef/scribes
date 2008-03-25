@@ -138,6 +138,7 @@ class ComboBox(object):
 		"""
 		self.__combobox.handler_block(self.__sig_id1)
 		self.__combobox.set_property("sensitive", False)
+		self.__combobox.set_model(None)
 		self.__model.clear()
 		from SCRIBES.internationalization import msg0159, msg0158, msg0292
 		self.__model.append([msg0292])
@@ -151,6 +152,7 @@ class ComboBox(object):
 			self.__model.append([encoding])
 		self.__model.append(["Separator"])
 		self.__model.append([msg0158])
+		self.__combobox.set_model(self.__model)
 		self.__combobox.set_active(0)
 		self.__combobox.set_property("sensitive", True)
 		self.__combobox.handler_unblock(self.__sig_id1)
