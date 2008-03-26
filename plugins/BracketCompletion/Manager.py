@@ -152,7 +152,7 @@ class BracketManager(object):
 		elif (keyval == keysyms.dollar):
 			self.__insert_pair_characters(keyval, keysyms.dollar)
 		elif (keyval == keysyms.apostrophe):
-			if truth(self.__can_insert_apostrophe()):
+			if self.__can_insert_apostrophe():
 				self.__insert_pair_characters(keyval, keysyms.apostrophe)
 			else:
 				self.__insert_apostrophe()

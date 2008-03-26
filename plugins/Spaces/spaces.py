@@ -119,8 +119,7 @@ def convert_tabs_to_spaces(sourceview):
 	sourcebuffer.begin_user_action()
 	for line in xrange(first_line, last_line+1):
 		result = convert_tabs_to_spaces_on_line(sourceview, line)
-		if result:
-			converted_lines.append(line)
+		if result: converted_lines.append(line)
 	sourcebuffer.end_user_action()
 	return converted_lines
 

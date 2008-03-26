@@ -49,6 +49,7 @@ class ComboBox(object):
 		"""
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
+		self.__sig_id1 = self.__combobox.connect("changed", self.__changed_cb)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__populate_model, priority=PRIORITY_LOW)
 
@@ -102,14 +103,35 @@ class ComboBox(object):
 		@type self: A ComboBox object.
 		"""
 		self.__combobox.set_property("sensitive", False)
+		self.__combobox.handler_block(self.__sig_id1)
 		self.__combobox.set_model(None)
-#		from UnsavedFolderMetadata import get_value
-#		icon_name, folder_name = get_value()
+		from UnsavedFolderMetadata import get_value
+		uri = get_value()
+		icon_name, folder_name = self.__format_uri_for_display(uri)
 		self.__model.clear()
-		self.__model.append(["desktop", "Desktop"])
+		self.__model.append([icon_name, folder_name])
 		self.__model.append(["empty", "Separator"])
 		self.__model.append(["folder", "other..."])
 		self.__combobox.set_model(self.__model)
 		self.__combobox.set_active(0)
+		self.__combobox.handler_unblock(self.__sig_id1)
 		self.__combobox.set_property("sensitive", True)
 		return False
+
+	def __format_uri_for_display(self, uri):
+		from gnomevfs import get_local_path_from_uri
+		local_path = get_local_path_from_uri(uri)
+		from os.path import basename
+		folder_name = basename(local_path)
+		icon_name = "desktop" if folder_name == "Desktop" else "folder"
+		return icon_name, folder_name
+
+	def __changed_cb(self, *args):
+		iterator = self.__combobox.get_active_iter()
+		active_text = self.__model.get_value(iterator, 1)
+		self.__combobox.handler_block(self.__sig_id1)
+		self.__combobox.set_active(0)
+		self.__combobox.handler_unblock(self.__sig_id1)
+		if active_text != "other...": return
+		print "show file chooser"
+		return

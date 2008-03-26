@@ -143,7 +143,8 @@ class SpacesTrigger(GObject):
 		from i18n import msg0005
 		status_id = self.__editor.feedback.set_modal_message(msg0005, "run")
 		self.__editor.show_busy_cursor()
-		show_busy_textview_cursor(self.__editor.textview)
+#		from SCRIBES.cursor import show_busy_textview_cursor
+#		show_busy_textview_cursor(self.__editor.textview)
 		from spaces import convert_tabs_to_spaces
 		converted_lines = convert_tabs_to_spaces(self.__editor.textview)
 		self.__editor.show_normal_cursor()
