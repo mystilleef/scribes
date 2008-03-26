@@ -66,12 +66,18 @@ class Updater(object):
 		return
 
 	def __get_symbols(self):
-		self.__symbols.clear()
-		from compiler import parse
-		parse_tree = parse(self.__editor.get_text())
-		nodes = parse_tree.getChildNodes()
-		self.__extract_symbols(nodes, 0)
-		self.__manager.emit("update", self.__symbols)
+		try:
+			self.__symbols.clear()
+			from compiler import parse
+			parse_tree = parse(self.__editor.get_text())
+			nodes = parse_tree.getChildNodes()
+			self.__extract_symbols(nodes, 0)
+			self.__manager.emit("update", self.__symbols)
+		except SyntaxError:
+			pass
+		finally:
+			from gc import collect
+			collect()
 		return False
 
 	def __extract_symbols(self, nodes, depth):

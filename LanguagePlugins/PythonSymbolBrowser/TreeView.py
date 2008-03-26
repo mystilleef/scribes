@@ -176,17 +176,17 @@ class TreeView(object):
 					found_line = True
 					break
 				if found_line: break
-			else:
-				iterator = self.__model.iter_next(iterator)
-				if iterator is None: break
-		try:
-			path = self.__model.get_path(iterator)
-			self.__treeview.expand_to_path(path)
-			self.__treeview.get_selection().select_iter(iterator)
-			self.__treeview.set_cursor(path)
-			self.__treeview.scroll_to_cell(path, use_align=True, row_align=0.5)
-		except TypeError:
-			pass
+				iterator = parent_iterator
+			iterator = self.__model.iter_next(iterator)
+			if iterator is None: break
+#		try:
+		path = self.__model.get_path(iterator)
+		self.__treeview.expand_to_path(path)
+		self.__treeview.get_selection().select_iter(iterator)
+		self.__treeview.set_cursor(path)
+		self.__treeview.scroll_to_cell(path, use_align=True, row_align=0.5)
+#		except TypeError:
+#			pass
 		return
 
 	def __get_indentation_levels(self, symbols):
