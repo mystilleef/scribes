@@ -52,6 +52,8 @@ class Drawer(object):
 		self.__sig_id2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sig_id3 = manager.connect("color", self.__color_cb)
 		self.__sig_id4 = manager.connect("show", self.__show_cb)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor, manager):
 		"""
@@ -119,9 +121,7 @@ class Drawer(object):
 	def __draw_nbsp(self, cr, iterator):
 		rect = self.__textview.get_iter_location(iterator)
 		from gtk import TEXT_WINDOW_TEXT
-		x, y = self.__textview.buffer_to_window_coords(TEXT_WINDOW_TEXT,
-												rect.x,
-												rect.y + rect.height / 2)
+		x, y = self.__textview.buffer_to_window_coords(TEXT_WINDOW_TEXT, rect.x, rect.y + rect.height / 2)
 		cr.save()
 		cr.move_to(x + 2, y - 2)
 		cr.rel_line_to(+7,0)
@@ -149,6 +149,19 @@ class Drawer(object):
 			self.__block_event_after_signal()
 		self.__textview.queue_draw()
 		return
+
+	def __precompile_method(self):
+		try:
+			from psyco import bind
+			bind(self.__event_after_cb)
+			bind(self.__check_event_signal)
+			bind(self.__draw_whitespaces)
+			bind(self.__draw_space)
+			bind(self.__draw_tab)
+			bind(self.__draw_nbsp)
+		except ImportError:
+			pass
+		return False
 
 	def __event_after_cb(self, textview, event):
 		if self.__show is False: return False

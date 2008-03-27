@@ -61,6 +61,9 @@ class Manager(object):
 		self.__has_selection = False
 		self.__commented = False
 		self.__readonly = False
+		iterator = editor.get_cursor_iterator()
+		self.__selection_offset_begin = None
+		self.__selection_offset_end = None
 		return
 
 	def __backward_to_line_begin(self, iterator):
@@ -102,6 +105,8 @@ class Manager(object):
 		"""
 		self.__has_selection = True
 		begin, end = self.__buffer.get_selection_bounds()
+		self.__selection_offset_begin = begin.get_offset()
+		self.__selection_offset_end = end.get_offset()
 		end_position = self.__forward_to_line_end(end)
 		begin_position = self.__backward_to_line_begin(begin)
 		return begin_position, end_position
@@ -288,8 +293,14 @@ class Manager(object):
 			self.__buffer.place_cursor(begin)
 			self.__buffer.delete(begin, end)
 			self.__buffer.insert_at_cursor(text)
-			iterator = self.__buffer.get_iter_at_offset(offset)
-			self.__buffer.place_cursor(iterator)
+			if self.__has_selection:
+				diff = 1 if self.__commented else -1
+				begin = self.__buffer.get_iter_at_offset(self.__selection_offset_begin + (diff))
+				end = self.__buffer.get_iter_at_offset(self.__selection_offset_end + (diff))
+				self.__buffer.select_range(begin, end)
+			else:
+				iterator = self.__buffer.get_iter_at_offset(offset)
+				self.__buffer.place_cursor(iterator)
 		except TypeError:
 			self.__buffer.insert_at_cursor("#")
 			self.__commented = True
