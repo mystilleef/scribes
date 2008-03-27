@@ -174,7 +174,7 @@ class TriggerManager(object):
 		return
 
 	def get_all_trigger_info(self):
-		return
+		return self.__trigger_dictionary
 
 	def get_trigger_names(self):
 		return self.__trigger_dictionary.keys()

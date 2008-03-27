@@ -74,7 +74,7 @@ class Trigger(object):
 		@type self: A Trigger object.
 		"""
 		# Trigger to toggle white space.
-		self.__trigger = self.__editor.create_trigger("show_white_spaces", "ctrl - m")
+		self.__trigger = self.__editor.create_trigger("show_white_spaces", "alt - period")
 		self.__editor.add_trigger(self.__trigger)
 		return self.__trigger
 
@@ -88,10 +88,16 @@ class Trigger(object):
 		@param trigger: An object to show the symbol browser.
 		@type trigger: A Trigger object.
 		"""
-		print dir(self.__editor.trigger_manager)
 		from DrawWhitespaceMetadata import get_value, set_value
 		value = False if get_value() else True
 		set_value(value)
+		if value:
+			icon = "yes"
+			message = "Showing whitespace"
+		else:
+			icon = "no"
+			message = "Hiding whitespace"
+		self.__editor.update_status_message(message, icon, 7)
 		return
 
 	def destroy(self):

@@ -724,16 +724,23 @@ class Editor(GObject):
 		from utils import calculate_resolution_independence
 		return calculate_resolution_independence(window, width, height)
 
-	def set_message(self, message, icon, time):
-		return
+	def update_status_message(self, message=None, icon=None, time=7):
+		return self.__feedback.update_status_message(message, icon, time)
 
-	def unset_message(self, message_id):
+	def set_message(self, message=None, icon=None):
+		message_id = self.__feedback.set_modal_message(message, icon)
+		return message_id
+
+	def unset_message(self, message_id, reset=True):
+		self.__feedback.unset_modal_message(message_id, reset)
 		return
 
 	def start_spinner(self):
+		self.__feedback.start_spinner()
 		return
 
 	def stop_spinner(self):
+		self.__feedback.stop_spinner()
 		return
 
 	def show_encoding_error(self, title, uri):
