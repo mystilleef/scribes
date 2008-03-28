@@ -52,6 +52,7 @@ class Button(object):
 		self.__sig_id1 = manager.connect("error", self.__error_cb)
 		self.__sig_id2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sig_id3 = self.__button.connect("clicked", self.__clicked_cb)
+		self.__button.set_property("sensitive", True)
 
 	def __init_attributes(self, editor, manager):
 		"""
@@ -106,7 +107,7 @@ class Button(object):
 		@param manager: Reference to the Manager instance.
 		@type manager: A Manager object.
 		"""
-		self.__button.set_property("sensitive", value)
+#		self.__button.set_property("sensitive", value)
 		return
 
 	def __clicked_cb(self, *args):
@@ -117,6 +118,6 @@ class Button(object):
 		@type self: A Button object.
 		"""
 		self.__manager.emit("hide-window")
-		self.__button.set_property("sensitive", False)
+#		self.__button.set_property("sensitive", False)
 		self.__manager.emit("rename")
 		return

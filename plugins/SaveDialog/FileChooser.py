@@ -53,8 +53,8 @@ class FileChooser(object):
 		self.__chooser.set_property("sensitive", True)
 		self.__sig_id1 = self.__manager.connect_after("show-window", self.__show_window_cb)
 		self.__sig_id2 = self.__manager.connect("destroy", self.__destroy_cb)
-		self.__sig_id3 = self.__entry.connect("activate", self.__file_activated_cb)
-		self.__sig_id4 = self.__entry.connect("changed", self.__changed_cb)
+#		self.__sig_id3 = self.__entry.connect("activate", self.__file_activated_cb)
+#		self.__sig_id4 = self.__entry.connect("changed", self.__changed_cb)
 		self.__sig_id5 = self.__manager.connect("rename", self.__rename_file_cb)
 		self.__sig_id6 = self.__chooser.connect("confirm-overwrite", self.__confirm_overwrite_cb)
 
@@ -74,7 +74,7 @@ class FileChooser(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__chooser = manager.glade.get_widget("FileChooser")
-		self.__entry = self.__chooser.get_children()[0].get_children()[0].get_children()[0].get_children()[2]
+#		self.__entry = self.__chooser.get_children()[0].get_children()[0].get_children()[0].get_children()[2]
 		self.__sig_id1 = self.__status_id = None
 		return
 
@@ -112,7 +112,7 @@ class FileChooser(object):
 				self.__chooser.set_current_folder(self.__editor.desktop_folder)
 			except:
 				self.__chooser.set_current_folder(self.__editor.home_folder)
-		self.__entry.grab_focus()
+#		self.__entry.grab_focus()
 		from gobject import idle_add
 		idle_add(self.__emit_error)
 		return False
@@ -131,8 +131,8 @@ class FileChooser(object):
 		return False
 
 	def __emit_error(self):
-		value = True if self.__entry.get_text() else False
-		self.__manager.emit("error", value)
+#		value = True if self.__entry.get_text() else False
+#		self.__manager.emit("error", value)
 		return False
 
 	def __destroy(self):
@@ -144,8 +144,8 @@ class FileChooser(object):
 		"""
 		self.__editor.disconnect_signal(self.__sig_id1, self.__manager)
 		self.__editor.disconnect_signal(self.__sig_id2, self.__manager)
-		self.__editor.disconnect_signal(self.__sig_id3, self.__entry)
-		self.__editor.disconnect_signal(self.__sig_id4, self.__entry)
+#		self.__editor.disconnect_signal(self.__sig_id3, self.__entry)
+#		self.__editor.disconnect_signal(self.__sig_id4, self.__entry)
 		self.__editor.disconnect_signal(self.__sig_id5, self.__manager)
 		self.__chooser.destroy()
 		del self
