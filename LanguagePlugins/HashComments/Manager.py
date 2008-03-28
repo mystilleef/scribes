@@ -62,8 +62,10 @@ class Manager(object):
 		self.__commented = False
 		self.__readonly = False
 		iterator = editor.get_cursor_iterator()
-		self.__selection_offset_begin = None
-		self.__selection_offset_end = None
+		self.__selection_begin_index = None
+		self.__selection_begin_line = None
+		self.__selection_end_index = None
+		self.__selection_end_line = None
 		return
 
 	def __backward_to_line_begin(self, iterator):
@@ -105,8 +107,10 @@ class Manager(object):
 		"""
 		self.__has_selection = True
 		begin, end = self.__buffer.get_selection_bounds()
-		self.__selection_offset_begin = begin.get_offset()
-		self.__selection_offset_end = end.get_offset()
+		self.__selection_begin_index = begin.get_line_index()
+		self.__selection_begin_line = begin.get_line()
+		self.__selection_end_index = end.get_line_index()
+		self.__selection_end_line = end.get_line()
 		end_position = self.__forward_to_line_end(end)
 		begin_position = self.__backward_to_line_begin(begin)
 		return begin_position, end_position
@@ -294,9 +298,15 @@ class Manager(object):
 			self.__buffer.delete(begin, end)
 			self.__buffer.insert_at_cursor(text)
 			if self.__has_selection:
-				diff = 1 if self.__commented else -1
-				begin = self.__buffer.get_iter_at_offset(self.__selection_offset_begin + (diff))
-				end = self.__buffer.get_iter_at_offset(self.__selection_offset_end + (diff))
+				# Make sure selection is persistent.
+				begin = self.__buffer.get_iter_at_line_index(self.__selection_begin_line, self.__selection_begin_index)
+				end = self.__buffer.get_iter_at_line_index(self.__selection_end_line, self.__selection_end_index)
+				if self.__commented:
+					begin.forward_char()
+					end.forward_char()
+				else:
+					begin.backward_char()
+					end.backward_char()
 				self.__buffer.select_range(begin, end)
 			else:
 				iterator = self.__buffer.get_iter_at_offset(offset)
