@@ -128,7 +128,7 @@ class SpacesPopupMenuItem(ImageMenuItem):
 		elif menuitem == self.spaces_to_tabs_menuitem:
 			self.editor.trigger("spaces_to_tabs")
 		else:
-			self.editor.trigger("remove_trailing_spaces")
+			self.editor.trigger("removes_trailing_space")
 		return True
 
 	def __popup_focus_in_event_cb(self, event, textview):
