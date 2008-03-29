@@ -32,7 +32,7 @@ button for the advanced configuration window.
 class CheckButton(object):
 	"""
 	This class creates an object that defines the behavior of the
-	"fork scribes" check button.
+	"fork scribes" check button in the advanced configuration window.
 	"""
 
 	def __init__(self, editor, manager):

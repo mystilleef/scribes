@@ -67,6 +67,7 @@ class ComboBox(object):
 		self.__manager = manager
 		self.__combobox = manager.glade.get_widget("ComboBox")
 		self.__model = self.__create_model()
+		self.__chooser = None
 		return
 
 	def __set_properties(self):
@@ -133,5 +134,20 @@ class ComboBox(object):
 		self.__combobox.set_active(0)
 		self.__combobox.handler_unblock(self.__sig_id1)
 		if active_text != "other...": return
-		print "show file chooser"
+		self.__show_folder_selector()
+		return
+
+	def __show_folder_selector(self):
+		"""
+		Show folder selector.
+
+		@param self: Reference to the ComboBox instance.
+		@type self: A ComboBox object.
+		"""
+		try:
+			self.__chooser.show()
+		except AttributeError:
+			from FileChooserManager import Manager
+			self.__chooser = Manager(self.__editor, self.__manager)
+			self.__chooser.show()
 		return

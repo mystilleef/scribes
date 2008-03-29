@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -24,20 +24,20 @@ advanced configuration window.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
+@copyright: Copyright © 2008 Lateef Alabi-Oki
+@license: GNU GPLv3 or Later
 @contact: mystilleef@gmail.com
 """
 
 class Trigger(object):
 	"""
-	This class creates an object that shows the text editor's
-	advanced configuration window.
+	This class creates and manages the trigger that shows the advanced
+	configuration window.
 	"""
 
 	def __init__(self, editor):
 		"""
-		Initialize the trigger.
+		Initialize object.
 
 		@param self: Reference to the Trigger instance.
 		@type self: A Trigger object.
@@ -46,7 +46,6 @@ class Trigger(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(editor)
-		self.__create_trigger()
 		self.__signal_id_1 = self.__trigger.connect("activate", self.__show_window_cb)
 
 	def __init_attributes(self, editor):
@@ -61,7 +60,7 @@ class Trigger(object):
 		"""
 		self.__editor = editor
 		self.__manager = None
-		self.__trigger = None
+		self.__trigger = self.__create_trigger()
 		self.__signal_id_1 = None
 		from MenuItem import MenuItem
 		self.__menuitem = MenuItem(editor)
@@ -74,20 +73,17 @@ class Trigger(object):
 		@param self: Reference to the Trigger instance.
 		@type self: A Trigger object.
 		"""
-		# Trigger to show the about dialog.
-		self.__trigger = self.__editor.create_trigger("show_advanced_configuration_window")
-		self.__editor.add_trigger(self.__trigger)
-		return
+		# Trigger that shows advanced configuration window.
+		trigger = self.__editor.create_trigger("show_advanced_configuration_window")
+		self.__editor.add_trigger(trigger)
+		return trigger
 
-	def __show_window_cb(self, trigger):
+	def __show_window_cb(self, *args):
 		"""
 		Handles callback when the "activate" signal is emitted.
 
 		@param self: Reference to the Trigger instance.
 		@type self: A Trigger object.
-
-		@param trigger: An object to show template editor
-		@type trigger: A Trigger object.
 		"""
 		try:
 			self.__manager.show()

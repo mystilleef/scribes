@@ -35,14 +35,17 @@ from gobject import TYPE_PYOBJECT
 class Manager(GObject):
 	"""
 	This class manages each component of the advanced configuration
-	window. Communication between components are doing via the object
-	of this class.
+	window. Communication between components are done via this classes
+	instance.
 	"""
 
 	__gsignals__ = {
 		"show-window": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"show-chooser-window": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"hide-chooser-window": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"destroy": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"selected-placeholder": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"new-folder": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -77,26 +80,54 @@ class Manager(GObject):
 		from os.path import join, split
 		current_folder = split(globals()["__file__"])[0]
 		glade_file = join(current_folder, "AdvancedConfigurationWindow.glade")
+		open_glade_file = join(current_folder, "FileChooser.glade")
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, "Window", "scribes")
+		self.__open_glade = XML(open_glade_file, "Window", "scribes")
 		self.__signal_id_1 = None
 		return
 
 	def __get_glade(self):
+		"""
+		Private getter method (python property) for the glade GUI
+		"""
 		return self.__glade
 
+	def __get_filechooser_glade(self):
+		return self.__open_glade
+
 	def __destroy(self):
+		"""
+		Destroy object.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
 		del self
 		self = None
 		return
 
+	# Public API reference to the advanced configuration window GUI
 	glade = property(__get_glade)
+	filechooser_glade = property(__get_filechooser_glade)
 
 	def show(self):
+		"""
+		Show advanced configuration window.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
 		self.emit("show-window")
 		return
 
 	def destroy(self):
+		"""
+		Destroy object.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
 		self.emit("destroy")
 		self.__destroy()
 		return

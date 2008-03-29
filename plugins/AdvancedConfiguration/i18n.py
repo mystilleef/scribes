@@ -27,6 +27,7 @@ Internationalization module.
 @license: GNU GPLv3 or Later
 @contact: mystilleef@gmail.com
 """
+
 from gettext import gettext as _
 msg0001 = _("Template Placeholder Colors")
 msg0002 = _("Normal Placeholder Color")

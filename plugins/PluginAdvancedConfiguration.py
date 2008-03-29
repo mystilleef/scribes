@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -19,14 +19,14 @@
 # USA
 
 """
-This module documents a class that implements the plug-in protocol to
-show the about dialog.
+This module documents a class that loads the advanced configuration
+window plugin.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: <mystilleef@gmail.com>
+@copyright: Copyright © 2008 Lateef Alabi-Oki
+@license: GNU GPLv3 or Later
+@contact: mystilleef@gmail.com
 """
 
 name = "Advanced configuration plugin"
@@ -34,18 +34,20 @@ authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
 autoload = True
 class_name = "AdvancedConfigurationPlugin"
-short_description = "Show the advanced configuration dialog."
-long_description = """This plug-in shows the advanced configuration dialog."""
+short_description = "Shows the advanced configuration window."
+long_description = """Shows the advanced configuration window. The
+window allows user to configure advanced options provided by the
+editor."""
 
 class AdvancedConfigurationPlugin(object):
 	"""
-	This class initializes a plug-in that shows the advanced configuration
-	dialog.
+	This class loads a plugin that shows the advanced configuration
+	window.
 	"""
 
 	def __init__(self, editor):
 		"""
-		Initialize the plug-in object.
+		Initialize object.
 
 		@param self: Reference to the AdvancedConfigurationPlugin instance.
 		@type self: A AdvancedConfigurationPlugin object.
@@ -58,7 +60,7 @@ class AdvancedConfigurationPlugin(object):
 
 	def load(self):
 		"""
-		Initialize the AdvancedConfigurationPlugin instance.
+		Load advanced configuration window.
 
 		@param self: Reference to the AdvancedConfigurationPlugin instance.
 		@type self: An AdvancedConfigurationPlugin object.
@@ -69,7 +71,7 @@ class AdvancedConfigurationPlugin(object):
 
 	def unload(self):
 		"""
-		Destroy the AdvancedConfigurationPlugin instance.
+		Unload advanced configuration window.
 
 		@param self: Reference to the AdvancedConfigurationPlugin instance.
 		@type self: An AdvancedConfigurationPlugin object.
