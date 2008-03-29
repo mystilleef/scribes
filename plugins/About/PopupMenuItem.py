@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -15,22 +15,23 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
+# USA
 
 """
-This module documents a class that implements the about popup menu item
-for the text editor.
+This modules documents a class that implements the about dialog popup
+menu item.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
+@copyright: Copyright © 2008 Lateef Alabi-Oki
+@license: GNU GPLv3 or Later
 @contact: mystilleef@gmail.com
 """
 
 from gtk import ImageMenuItem
 
-class AboutPopupMenuItem(ImageMenuItem):
+class PopupMenuItem(ImageMenuItem):
 	"""
 	This class creates the about popup menu item for the text editor.
 	"""
@@ -55,8 +56,8 @@ class AboutPopupMenuItem(ImageMenuItem):
 		"""
 		Initialize the popup menu item's attributes.
 
-		@param self: Reference to the ScribesAboutMenuItem instance.
-		@type self: A ScribesAboutMenuItem object.
+		@param self: Reference to the PopupMenuItem instance.
+		@type self: A PopupMenuItem object.
 
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
@@ -66,41 +67,28 @@ class AboutPopupMenuItem(ImageMenuItem):
 		self.__signal_id_2 = None
 		return
 
-	def __popup_activate_cb(self, menuitem):
+	def __popup_activate_cb(self, *args):
 		"""
 		Handles callback when the "activate" signal is emitted.
 
-		@param self: Reference to the ScribesAboutMenuItem instance.
-		@type self: A ScribesAboutMenuItem object.
-
-		@param menuitem: A menuitem for the ScribesAboutMenuItem.
-		@type menuitem: A gtk.MenuItem object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
+		@param self: Reference to the PopupMenuItem instance.
+		@type self: A PopupMenuItem object.
 		"""
 		self.__editor.trigger("show_about_dialog")
 		return True
 
-	def __focus_in_event_cb(self, textview, event):
+	def __focus_in_event_cb(self, *args):
 		"""
 		Handles callback when the "focus-in-event" signal is emitted.
 
-		@param self: Reference to the AboutPopupMenuItem instance.
-		@type self: An AboutPopupMenuItem object.
-
-		@param textview: Reference to the editor's view.
-		@type textview: A ScribesTextView object.
-
-		@param event: An event that occurs when the popup is hidden.
-		@type event: A gtk.Event object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
+		@param self: Reference to the PopupMenuItem instance.
+		@type self: An PopupMenuItem object.
 		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor.textview)
 		self.destroy()
 		del self
 		self = None
+		from gc import collect
+		collect()
 		return False

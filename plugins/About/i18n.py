@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2006 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #

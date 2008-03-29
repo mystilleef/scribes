@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -19,30 +19,28 @@
 # USA
 
 """
-This module documents a class that creates the about dialog for the
-text editor.
+This module documents the class that creates the about window.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
+@copyright: Copyright © 2008 Lateef Alabi-Oki
+@license: GNU GPLv3 or Later
 @contact: mystilleef@gmail.com
 """
 
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE
 from gtk import AboutDialog
 
-class ScribesAboutDialog(AboutDialog):
+class Dialog(AboutDialog):
 	"""
-	This class implements the about dialog for the text editor.
+	This class implements the about window.
 	"""
 
 	def __init__(self, editor):
 		"""
-		Initialize the dialog.
+		Initialize object.
 
-		@param self: Reference to the ScribesAboutDialog instance.
-		@type self: A ScribesAboutDialog object.
+		@param self: Reference to the AboutDialog instance.
+		@type self: A AboutDialog object.
 
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
@@ -53,10 +51,10 @@ class ScribesAboutDialog(AboutDialog):
 
 	def __init_attributes(self, editor):
 		"""
-		Initialize the dialog's data attributes.
+		Initialize attributes.
 
-		@param self: Reference to the ScribesAboutDialog instance.
-		@type self: A ScribesAboutDialog object.
+		@param self: Reference to the AboutDialog instance.
+		@type self: A AboutDialog object.
 
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
@@ -69,8 +67,8 @@ class ScribesAboutDialog(AboutDialog):
 		"""
 		Define the default properties of the dialog.
 
-		@param self: Reference to the ScribesAboutDialog instance.
-		@type self: A ScribesAboutDialog object.
+		@param self: Reference to the AboutDialog instance.
+		@type self: A AboutDialog object.
 		"""
 		from i18n import msg0001
 		# Set dialog properties.
@@ -98,17 +96,14 @@ class ScribesAboutDialog(AboutDialog):
 		"""
 		Show the dialog.
 
-		@param self: Reference to the ScribesAboutDialog instance.
-		@type self: A ScribesAboutDialog object.
+		@param self: Reference to the AboutDialog instance.
+		@type self: A AboutDialog object.
 		"""
 		self.__editor.emit("show-dialog", self)
 		from i18n import msg0002
-		self.__status_id = self.__editor.feedback.set_modal_message(msg0002, "about")
+		self.__status_id = self.__editor.set_message(msg0002, "about")
 		self.show_all()
-		from gtk.gdk import threads_enter, threads_leave
-		threads_enter()
 		response = self.run()
-		threads_leave()
 		if response: self.hide_dialog()
 		return
 
@@ -116,10 +111,10 @@ class ScribesAboutDialog(AboutDialog):
 		"""
 		Hide the dialog.
 
-		@param self: Reference to the ScribesAboutDialog instance.
-		@type self: A ScribesAboutDialog object.
+		@param self: Reference to the AboutDialog instance.
+		@type self: A AboutDialog object.
 		"""
-		self.__editor.feedback.unset_modal_message(self.__status_id)
+		self.__editor.unset_message(self.__status_id)
 		self.__editor.emit("hide-dialog", self)
 		self.hide()
 		return
@@ -128,11 +123,8 @@ class ScribesAboutDialog(AboutDialog):
 		"""
 		Handles callback when the "destroy" signal is emitted.
 
-		@param self: Reference to the ScribesAboutDialog instance.
-		@type self: A ScribesAboutDialog object.
-
-		@param dialog: Reference to the ScribesAboutDialog instance.
-		@type dialog: A ScribesAboutDialog object.
+		@param self: Reference to the AboutDialog instance.
+		@type self: A AboutDialog object.
 		"""
 		self.destroy()
 		del self

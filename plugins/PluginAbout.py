@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -19,14 +19,13 @@
 # USA
 
 """
-This module documents a class that implements the plug-in protocol to
-show the about dialog.
+This module documents a class that loads the about plugin.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: <mystilleef@gmail.com>
+@copyright: Copyright © 2008 Lateef Alabi-Oki
+@license: GNU GPLv3 or Later
+@contact: mystilleef@gmail.com
 """
 
 name = "About Plugin"
@@ -34,20 +33,20 @@ authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
 autoload = True
 class_name = "AboutPlugin"
-short_description = "Show the about dialog."
-long_description = """This plug-in shows the about dialog."""
+short_description = "Shows the about dialog."
+long_description = """Shows the about dialog."""
 
 class AboutPlugin(object):
 	"""
-	This class initializes a plug-in that shows the about dialog.
+	This class loads the plugin that shows the about dialog.
 	"""
 
 	def __init__(self, editor):
 		"""
-		Initialize the plug-in object.
+		Initialize object.
 
-		@param self: Reference to the AboutPlugin instance.
-		@type self: A AboutPlugin object.
+		@param self: Reference to the AboutPlugin loader.
+		@type self: An AboutPlugin object.
 
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
@@ -57,21 +56,21 @@ class AboutPlugin(object):
 
 	def load(self):
 		"""
-		Initialize the AboutPlugin instance.
+		Load the about plugin.
 
-		@param self: Reference to the AboutPlugin instance.
+		@param self: Reference to the AboutPlugin loader.
 		@type self: An AboutPlugin object.
 		"""
-		from About.Trigger import AboutTrigger
-		self.__trigger = AboutTrigger(self.__editor)
+		from About.Trigger import Trigger
+		self.__trigger = Trigger(self.__editor)
 		return
 
 	def unload(self):
 		"""
-		Destroy the AboutPlugin instance.
+		Unload the about plugin.
 
-		@param self: Reference to the AboutPlugin instance.
+		@param self: Reference to the AboutPlugin loader.
 		@type self: An AboutPlugin object.
 		"""
-		self.__trigger.emit("destroy")
+		self.__trigger.destroy()
 		return

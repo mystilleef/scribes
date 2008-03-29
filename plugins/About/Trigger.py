@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -19,44 +19,35 @@
 # USA
 
 """
-This module documents a class that creates a trigger for the text
-editor's about dialog.
+This modules documents a class that create the trigger that shows the
+about window.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
+@copyright: Copyright © 2008 Lateef Alabi-Oki
+@license: GNU GPLv3 or Later
 @contact: mystilleef@gmail.com
 """
 
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE
-
-class AboutTrigger(GObject):
+class Trigger(object):
 	"""
-	This class creates an object that shows the text editor's about
-	dialog.
+	This class creates and manages the trigger that shows the about
+	window.
 	"""
-
-	__gsignals__ = {
-		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	}
 
 	def __init__(self, editor):
 		"""
-		Initialize the trigger.
+		Initialize object.
 
-		@param self: Reference to the AboutTrigger instance.
-		@type self: An AboutTrigger object.
+		@param self: Reference to the Trigger instance.
+		@type self: A Trigger object.
 
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		GObject.__init__(self)
 		self.__init_attributes(editor)
-		self.__create_trigger()
-		self.__signal_id_1 = self.__trigger.connect("activate", self.__show_about_dialog_cb)
-		self.__signal_id_2 = self.connect_after("destroy", self.__destroy_cb)
-		self.__signal_id_3 = self.__editor.textview.connect_after("populate-popup", self.__popup_cb)
+		self.__sig_id1 = self.__trigger.connect("activate", self.__show_about_dialog_cb)
+		self.__sig_id2 = editor.textview.connect_after("populate-popup", self.__popup_cb)
 
 	def __init_attributes(self, editor):
 		"""
@@ -70,7 +61,7 @@ class AboutTrigger(GObject):
 		"""
 		self.__editor = editor
 		self.__about_dialog = None
-		self.__trigger = None
+		self.__trigger = self.__create_trigger()
 		self.__signal_id_1 = None
 		self.__signal_id_2 = None
 		self.__signal_id_3 = None
@@ -78,51 +69,44 @@ class AboutTrigger(GObject):
 
 	def __create_trigger(self):
 		"""
-		Create the trigger.
+		Create a trigger.
 
-		@param self: Reference to the AboutTrigger instance.
-		@type self: A AboutTrigger object.
+		@param self: Reference to the Trigger instance.
+		@type self: A Trigger object.
 		"""
 		# Trigger to show the about dialog.
-		self.__trigger = self.__editor.create_trigger("show_about_dialog")
-		self.__editor.add_trigger(self.__trigger)
+		trigger = self.__editor.create_trigger("show_about_dialog")
+		self.__editor.add_trigger(trigger)
+		return trigger
+
+	def destroy(self):
+		"""
+		Destroy object.
+
+		@param self: Reference to the Trigger instance.
+		@type self: An Trigger object.
+		"""
+		self.__editor.remove_trigger(self.__trigger)
+		self.__editor.disconnect_signal(self.__sig_id1, self.__trigger)
+		self.__editor.disconnect_signal(self.__sig_id2, self.__editor.textview)
+		if self.__about_dialog: self.__about_dialog.destroy_()
+		del self
+		self = None
 		return
 
-	def __show_about_dialog_cb(self, trigger):
+	def __show_about_dialog_cb(self, *args):
 		"""
 		Handles callback when the "activate" signal is emitted.
 
-		@param self: Reference to the AboutTrigger instance.
-		@type self: A AboutTrigger object.
-
-		@param trigger: An object to show the document browser.
-		@type trigger: A Trigger object.
+		@param self: Reference to the Trigger instance.
+		@type self: A Trigger object.
 		"""
 		try:
 			self.__about_dialog.show_dialog()
 		except AttributeError:
-			from AboutDialog import ScribesAboutDialog
-			self.__about_dialog = ScribesAboutDialog(self.__editor)
+			from AboutDialog import Dialog
+			self.__about_dialog = Dialog(self.__editor)
 			self.__about_dialog.show_dialog()
-		return
-
-	def __destroy_cb(self, trigger):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the AboutTrigger instance.
-		@type self: An AboutTrigger object.
-
-		@param trigger: Reference to the AboutTrigger instance.
-		@type trigger: An AboutTrigger object.
-		"""
-		self.__editor.remove_trigger(self.__trigger)
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
-		self.__editor.disconnect_signal(self.__signal_id_2, self)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor.textview)
-		if self.__about_dialog: self.__about_dialog.destroy_()
-		del self
-		self = None
 		return
 
 	def __popup_cb(self, textview, menu):
