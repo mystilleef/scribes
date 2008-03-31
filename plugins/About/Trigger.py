@@ -124,7 +124,7 @@ class Trigger(object):
 		"""
 		from gtk import SeparatorMenuItem
 		menu.append(SeparatorMenuItem())
-		from PopupMenuItem import AboutPopupMenuItem
-		menu.append(AboutPopupMenuItem(self.__editor))
+		from PopupMenuItem import PopupMenuItem
+		menu.append(PopupMenuItem(self.__editor))
 		menu.show_all()
 		return False
