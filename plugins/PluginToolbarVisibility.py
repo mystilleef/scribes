@@ -32,7 +32,7 @@ show the about dialog.
 name = "Show/Hide Toolbar Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = False
+autoload = True
 class_name = "ToolbarVisibilityPlugin"
 short_description = "Show or the toolbar."
 long_description = """This plug-in shows or hides the toolbar."""

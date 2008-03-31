@@ -19,8 +19,7 @@
 # USA
 
 """
-This module documents a class that manages the components of a file
-chooser object.
+This module documents a class that loads the about plugin.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
@@ -29,45 +28,49 @@ chooser object.
 @contact: mystilleef@gmail.com
 """
 
-class Manager(object):
+name = "Smart Space Plugin"
+authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
+version = 0.1
+autoload = True
+class_name = "SmartSpacePlugin"
+short_description = "Smart space plugin."
+long_description = """Smart space plugin."""
+
+class SmartSpacePlugin(object):
 	"""
-	This class manages components of the file chooser objec.t
+	This class loads the plugin that shows the about dialog.
 	"""
 
-	def __init__(self, editor, manager):
+	def __init__(self, editor):
 		"""
 		Initialize object.
 
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param manager: Object that manages components of the advanced configuration window.
-		@type manager: A Manager object.
-		"""
-		self.__init_attributes(editor, manager)
-#		from FileChooserOpenButton import Button
-#		Button(editor, manager)
-		from FileChooserWidget import FileChooser
-		FileChooser(editor, manager)
-#		from FileChooserCancelButton import Button
-#		Button(editor, manager)
-		from FileChooserWindow import Window
-		Window(editor, manager)
-
-	def __init_attributes(self, editor, manager):
-		"""
-		Initialize attributes.
+		@param self: Reference to the AboutPlugin loader.
+		@type self: An AboutPlugin object.
 
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
-
-		@param manager: Object that manages components of the advanced configuration window.
-		@type manager: A Manager object.
 		"""
 		self.__editor = editor
-		self.__manager = manager
+		self.__manager = None
+
+	def load(self):
+		"""
+		Load the about plugin.
+
+		@param self: Reference to the AboutPlugin loader.
+		@type self: An AboutPlugin object.
+		"""
+		from SmartSpace.Manager import Manager
+		self.__manager = Manager(self.__editor)
 		return
 
-	def show(self):
-		self.__manager.emit("show-chooser-window")
+	def unload(self):
+		"""
+		Unload the about plugin.
+
+		@param self: Reference to the AboutPlugin loader.
+		@type self: An AboutPlugin object.
+		"""
+		self.__manager.destroy()
 		return

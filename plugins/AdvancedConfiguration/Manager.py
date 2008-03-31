@@ -45,6 +45,7 @@ class Manager(GObject):
 		"hide-chooser-window": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"destroy": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"selected-placeholder": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"selected-file": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"new-folder": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 

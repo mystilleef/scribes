@@ -50,6 +50,7 @@ class ComboBox(object):
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
 		self.__sig_id1 = self.__combobox.connect("changed", self.__changed_cb)
+		self.__sig_id2 = manager.connect("new-folder", self.__new_folder_cb)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__populate_model, priority=PRIORITY_LOW)
 
@@ -136,6 +137,10 @@ class ComboBox(object):
 		if active_text != "other...": return
 		self.__show_folder_selector()
 		return
+
+	def __new_folder_cb(self, manager, folder):
+		print "New folder: ", folder
+		return False
 
 	def __show_folder_selector(self):
 		"""

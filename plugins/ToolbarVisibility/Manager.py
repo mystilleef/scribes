@@ -60,6 +60,7 @@ class Manager(object):
 		"""
 		self.__editor = editor
 		self.__timer = self.__sig_id_1 = None
+		self.__activate = False
 		return
 
 	def __monitor_mouse(self):
@@ -87,6 +88,7 @@ class Manager(object):
 		@param event: A gobject event.
 		@type event: An gtk.Event object.
 		"""
+		if self.__activate is False: return False
 		window.window.get_pointer()
 		self.__show_full_view()
 		try:
@@ -137,6 +139,7 @@ class Manager(object):
 		@type self: A Manager object.
 		"""
 		self.__editor.textview.handler_block(self.__sig_id_1)
+		self.__activate = False
 		return
 
 	def __enable_mouse_monitor(self):
@@ -147,6 +150,7 @@ class Manager(object):
 		@type self: A Manager object.
 		"""
 		self.__editor.textview.handler_unblock(self.__sig_id_1)
+		self.__activate = True
 		return
 
 	def toggle_minimal_interface(self):

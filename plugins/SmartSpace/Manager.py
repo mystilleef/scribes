@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright © 2008 Lateef Alabi-Oki
+# Copyright (C) 2006 - Steve Frécinaux
 #
 # This file is part of Scribes.
 #
@@ -19,8 +20,8 @@
 # USA
 
 """
-This module documents a class that manages the components of a file
-chooser object.
+This module documents a class that figures out how to unindent
+white spaces when spaces are used for indentation.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
@@ -29,45 +30,58 @@ chooser object.
 @contact: mystilleef@gmail.com
 """
 
-class Manager(object):
+from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE
+from gobject import TYPE_PYOBJECT
+
+class Manager(GObject):
 	"""
-	This class manages components of the file chooser objec.t
+	This class unindents white space properly when spaces are used for
+	indentation.
 	"""
 
-	def __init__(self, editor, manager):
+	__gsignals__ = {
+		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"activate": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+	}
+
+	def __init__(self, editor):
 		"""
 		Initialize object.
 
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param manager: Object that manages components of the advanced configuration window.
-		@type manager: A Manager object.
-		"""
-		self.__init_attributes(editor, manager)
-#		from FileChooserOpenButton import Button
-#		Button(editor, manager)
-		from FileChooserWidget import FileChooser
-		FileChooser(editor, manager)
-#		from FileChooserCancelButton import Button
-#		Button(editor, manager)
-		from FileChooserWindow import Window
-		Window(editor, manager)
-
-	def __init_attributes(self, editor, manager):
-		"""
-		Initialize attributes.
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
 
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
+		"""
+		GObject.__init__(self)
+		self.__init_attributes(editor)
+		from SmartSpace import SmartSpace
+		SmartSpace(editor, self)
+		from ConfigurationManager import Manager
+		Manager(editor, self)
 
-		@param manager: Object that manages components of the advanced configuration window.
-		@type manager: A Manager object.
+	def __init_attributes(self, editor):
+		"""
+		Initialize data attributes.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+
+		@param editor: Reference to the text editor.
+		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__manager = manager
 		return
 
-	def show(self):
-		self.__manager.emit("show-chooser-window")
+	def destroy(self):
+		"""
+		Handles callback when the "destroy" signal is emitted.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
+		self.emit("destroy")
+		del self
+		self = None
 		return
