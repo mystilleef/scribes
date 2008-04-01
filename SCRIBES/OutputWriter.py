@@ -240,7 +240,8 @@ class OutputWriter(GObject):
 		if not self.__file_info: return
 		try:
 			from gnomevfs import set_file_info, SET_FILE_INFO_PERMISSIONS
-			set_file_info(self.__uri, self.__file_info, SET_FILE_INFO_PERMISSIONS)
+			from gnomevfs import URI
+			set_file_info(URI(self.__uri), self.__file_info, SET_FILE_INFO_PERMISSIONS)
 		except:
 			pass
 		return
