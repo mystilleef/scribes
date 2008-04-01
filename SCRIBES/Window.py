@@ -45,6 +45,7 @@ class ScribesWindow(Window):
 		Window.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
+		self.__enable_rgba_visual_murrine()
 		self.__signal_id_1 = self.connect("delete-event", self.__delete_event_cb)
 		self.__signal_id_2 = self.connect("map-event", self.__map_event_cb, editor)
 		self.__signal_id_3 = self.connect("window-state-event", self.__state_event_cb)
@@ -106,6 +107,12 @@ class ScribesWindow(Window):
 		# Register a unique number with the editor's termination queue
 		self.__termination_id = editor.register_object()
 		self.__count = 0
+		return
+
+	def __enable_rgba_visual_murrine(self):
+		screen = self.get_screen()
+		colormap = screen.get_rgba_colormap()
+		if colormap: self.set_colormap(colormap)
 		return
 
 	def __get_is_maximized(self):
