@@ -180,7 +180,8 @@ class OutputWriter(GObject):
 			self.__finish_up()
 		except:
 			handle.cancel()
-			self.__error("FileTransferUpdateError", 15)		return True
+			self.__error("FileTransferUpdateError", 15)
+		return True
 
 	def __finish_up(self):
 		"""
@@ -222,9 +223,12 @@ class OutputWriter(GObject):
 		"""
 		try:
 			if self.__uri.startswith("file:///") is False: return None
-			from gnomevfs import get_file_info
-			fileinfo = get_file_info(self.__uri)
-		except:			return None		return fileinfo
+			from gnomevfs import get_file_info, URI
+			fileinfo = get_file_info(URI(self.__uri))
+		except:
+#			print "ERROR: Could not get file info."
+			return None
+		return fileinfo
 
 	def __set_file_info(self):
 		"""
