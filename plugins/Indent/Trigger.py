@@ -53,6 +53,8 @@ class IndentTrigger(GObject):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		self.__create_trigger()
+		from Manager import Manager
+		Manager(editor)
 		self.__signal_id_1 = self.__trigger.connect("activate", self.__indent_cb)
 		self.__signal_id_3 = self.__unindent_trigger.connect("activate", self.__unindent_cb)
 		self.__signal_id_2 = self.connect("destroy", self.__destroy_cb)

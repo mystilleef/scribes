@@ -45,7 +45,6 @@ class ScribesWindow(Window):
 		Window.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
-		#self.__enable_rgba_visual_murrine()
 		self.__signal_id_1 = self.connect("delete-event", self.__delete_event_cb)
 		self.__signal_id_2 = self.connect("map-event", self.__map_event_cb, editor)
 		self.__signal_id_3 = self.connect("window-state-event", self.__state_event_cb)
@@ -521,11 +520,10 @@ class ScribesWindow(Window):
 		@return: True to call this function again, False otherwise.
 		@rtype: A Boolean object.
 		"""
-		self.__enable_rgba_visual_murrine()
+#		self.__enable_rgba_visual_murrine()
 		self.__position_window()
 		self.show_all()
 		self.present()
-
 		from gtk.gdk import notify_startup_complete
 		notify_startup_complete()
 		return False
