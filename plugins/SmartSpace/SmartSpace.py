@@ -67,6 +67,7 @@ class SmartSpace(object):
 		self.__editor = editor
 		self.__manager = manager
 		self.__textview = editor.textview
+		self.__buffer = editor.textbuffer
 		self.__activate = False
 		self.__blocked = False
 		return
@@ -103,35 +104,27 @@ class SmartSpace(object):
 		if self.__activate is False: return False
 		from gtk.keysyms import BackSpace
 		if event.keyval != BackSpace: return False
-		buffer_ = self.__textview.get_buffer()
-		if buffer_.get_has_selection(): return False
+		if self.__buffer.get_has_selection(): return False
 		iterator = self.__editor.get_cursor_iterator()
-		offset = iterator.get_line_offset()
-		# We're at the begining of the line, so we can't obviously
-		# unindent in this case
-		if offset == 0: return False
+		if iterator.starts_line() or iterator.is_start(): return False
 		start = iterator.copy()
-		start.backward_char()
-		# If the previous char is a tab, we should just remove it
-		if start.get_char() == '\t':
-			buffer_.begin_user_action()
-			buffer_.delete(start, iterator)
-			buffer_.end_user_action()
-			return True
-		# Otherwise, check how many spaces we're able to remove
-		max_move = (offset - 1) % self.__textview.get_tabs_width() + 1
-		moved = 0
-		while moved < max_move and start.get_char() == ' ':
+		while True:
 			start.backward_char()
-			moved += 1
-		start.forward_char()
-		# The iterator hasn't moved, so there is nothing to remove
-		if moved == 0: return False
-		# Actually delete the spaces
-		buffer_.begin_user_action()
-		buffer_.delete(start, iterator)
-		buffer_.end_user_action()
+			if start.get_char() != " ": break
+			start = self.__reposition_iterators(start)
+			break
+		self.__buffer.begin_user_action()
+		self.__buffer.delete(start, iterator)
+		self.__buffer.end_user_action()
 		return True
+
+	def __reposition_iterators(self, start):
+		indentation = self.__textview.get_tabs_width()
+		iterator = start.copy()
+		for value in xrange(indentation):
+			iterator.backward_char()
+			if iterator.get_char() != " ": return start
+		return iterator
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
