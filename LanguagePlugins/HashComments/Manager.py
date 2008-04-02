@@ -292,21 +292,15 @@ class Manager(object):
 			else:
 				self.__commented = False
 				lines = self.__uncomment_lines(lines)
-				offset -= 1
+				# If line is not empty (offset - 1)
+				if not (len(lines) == 1 and not lines[0]): offset -= 1
 			text = "\n".join(lines)
 			self.__buffer.place_cursor(begin)
 			self.__buffer.delete(begin, end)
 			self.__buffer.insert_at_cursor(text)
 			if self.__has_selection:
-				# Make sure selection is persistent.
-				begin = self.__buffer.get_iter_at_line_index(self.__selection_begin_line, self.__selection_begin_index)
-				end = self.__buffer.get_iter_at_line_index(self.__selection_end_line, self.__selection_end_index)
-				if self.__commented:
-					begin.forward_char()
-					end.forward_char()
-				else:
-					begin.backward_char()
-					end.backward_char()
+				begin = self.__get_begin_selection()
+				end = self.__get_end_selection()
 				self.__buffer.select_range(begin, end)
 			else:
 				iterator = self.__buffer.get_iter_at_offset(offset)
@@ -322,6 +316,34 @@ class Manager(object):
 			self.__update_feedback_message()
 			self.__reset_flags()
 		return
+
+	def __get_begin_selection(self):
+		iterator = self.__buffer.get_iter_at_line(self.__selection_begin_line)
+		line_size = iterator.get_bytes_in_line()
+		if self.__selection_begin_index >= line_size:
+			begin = self.__forward_to_line_end(iterator)
+			begin.forward_char()
+		else:
+			begin = self.__buffer.get_iter_at_line_index(self.__selection_begin_line, self.__selection_begin_index)
+		if self.__commented:
+			begin.forward_char()
+		else:
+			begin.backward_char()
+		return begin
+
+	def __get_end_selection(self):
+		iterator = self.__buffer.get_iter_at_line(self.__selection_end_line)
+		line_size = iterator.get_bytes_in_line()
+		if self.__selection_end_index >= line_size:
+			end = self.__forward_to_line_end(iterator)
+			end.forward_char()
+		else:
+			end = self.__buffer.get_iter_at_line_index(self.__selection_end_line, self.__selection_end_index)
+		if self.__commented:
+			end.forward_char()
+		else:
+			end.backward_char()
+		return end
 
 	def destroy(self):
 		"""
