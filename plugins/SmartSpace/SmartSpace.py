@@ -111,20 +111,25 @@ class SmartSpace(object):
 		while True:
 			start.backward_char()
 			if start.get_char() != " ": break
-			start = self.__reposition_iterators(start)
+			start.forward_char()
+			start = self.__get_start_position(start, iterator.get_line_offset())
 			break
 		self.__buffer.begin_user_action()
 		self.__buffer.delete(start, iterator)
 		self.__buffer.end_user_action()
 		return True
 
-	def __reposition_iterators(self, start):
+	def __get_start_position(self, start, cursor_offset):
 		indentation = self.__textview.get_tabs_width()
-		iterator = start.copy()
-		for value in xrange(indentation):
-			iterator.backward_char()
-			if iterator.get_char() != " ": return start
-		return iterator
+		moves = cursor_offset % indentation
+		if moves == 0 : moves = indentation
+		for value in xrange(moves):
+			if start.starts_line(): return start
+			start.backward_char()
+			if start.get_char() == " ": continue
+			start.forward_char()
+			break
+		return start
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
