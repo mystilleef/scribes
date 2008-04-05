@@ -142,6 +142,7 @@ class Manager(object):
 			number_of_indentation_spaces = number - (number % indentation_width)
 			if self.__textview.get_insert_spaces_instead_of_tabs():
 				whitespaces = " " * number_of_indentation_spaces
+				if indentation_width == whitespaces.count(" "): return ""
 				whitespaces = whitespaces[:indentation_width]
 			else:
 				whitespaces = "\t" * ((number_of_indentation_spaces / indentation_width) - 1)
