@@ -134,18 +134,16 @@ class Manager(object):
 	def __get_dedentation_for_next_line(self):
 		whitespaces = self.__get_line_indentation()
 		indentation_width = self.__textview.get_tabs_width()
-		if not whitespaces:
-			whitespaces = ""
+		if not whitespaces: return ""
+		whitespaces = whitespaces.replace("\t", " " * indentation_width)
+		number = whitespaces.count(" ")
+		number_of_indentation_spaces = number - (number % indentation_width)
+		if self.__textview.get_insert_spaces_instead_of_tabs():
+			whitespaces = " " * number_of_indentation_spaces
+			if indentation_width == whitespaces.count(" "): return ""
+			whitespaces = whitespaces[:indentation_width]
 		else:
-			whitespaces = whitespaces.replace("\t", " " * indentation_width)
-			number = whitespaces.count(" ")
-			number_of_indentation_spaces = number - (number % indentation_width)
-			if self.__textview.get_insert_spaces_instead_of_tabs():
-				whitespaces = " " * number_of_indentation_spaces
-				if indentation_width == whitespaces.count(" "): return ""
-				whitespaces = whitespaces[:indentation_width]
-			else:
-				whitespaces = "\t" * ((number_of_indentation_spaces / indentation_width) - 1)
+			whitespaces = "\t" * ((number_of_indentation_spaces / indentation_width) - 1)
 		return whitespaces
 
 	def __insert_indentation_on_next_line(self, whitespaces):
