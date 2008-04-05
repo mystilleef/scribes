@@ -106,7 +106,7 @@ class SmartSpace(object):
 		if event.keyval != BackSpace: return False
 		if self.__buffer.get_has_selection(): return False
 		iterator = self.__editor.get_cursor_iterator()
-		if iterator.starts_line() or iterator.is_start(): return False
+		if iterator.starts_line(): return False
 		start = iterator.copy()
 		while True:
 			start.backward_char()
