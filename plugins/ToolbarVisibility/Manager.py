@@ -92,11 +92,11 @@ class Manager(object):
 		window.window.get_pointer()
 		self.__show_full_view()
 		try:
-			from gobject import source_remove, timeout_add, PRIORITY_LOW
+			from gobject import source_remove, timeout_add
 			source_remove(self.__timer)
 		except TypeError:
 			pass
-		self.__timer = timeout_add(2500, self.__hide_full_view, priority=PRIORITY_LOW)
+		self.__timer = timeout_add(2500, self.__hide_full_view, priority=2000)
 		return False
 
 	def __show_full_view(self):

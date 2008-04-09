@@ -170,6 +170,13 @@ class Manager(object):
 		if iterator.forward_search(":", TEXT_SEARCH_TEXT_ONLY ,end): return True
 		return False
 
+	def __cursor_is_before_return(self):
+		iterator = self.__editor.get_cursor_iterator()
+		end = self.__editor.forward_to_line_end(iterator.copy())
+		text = self.__editor.textbuffer.get_text(iterator, end).strip(" \t")
+		if text: return True
+		return False
+
 	def __starts_with_return(self):
 		text = self.__get_line_text()
 		text = text.strip(" \t")
@@ -186,6 +193,7 @@ class Manager(object):
 			return True
 		starts_with_return = self.__starts_with_return()
 		if not starts_with_return: return False
+		if self.__cursor_is_before_return(): return False
 		self.__dedent_next_line()
 		return True
 

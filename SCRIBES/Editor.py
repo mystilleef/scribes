@@ -334,6 +334,10 @@ class Editor(GObject):
 		from info import author
 		return author
 
+	def __get_cursor_iterator(self):
+		from cursor import get_cursor_iterator
+		return get_cursor_iterator(self.__textbuffer)
+
 	def __get_documenters(self):
 		from info import documenters
 		return documenters
@@ -429,6 +433,7 @@ class Editor(GObject):
 	translators = property(__get_translators)
 	copyrights = property(__get_copyrights)
 	license = property(__get_license)
+	cursor = cursor_position = cursor_iterator = property(__get_cursor_iterator)
 
 ########################################################################
 #
@@ -746,6 +751,29 @@ class Editor(GObject):
 	def show_encoding_error(self, title, uri):
 		self.__encoding_error_dialog.show_message(title, uri)
 		return
+
+	def forward_to_line_end(self, iterator):
+		if iterator.ends_line(): return iterator
+		iterator.forward_to_line_end()
+		return iterator
+
+	def backward_to_line_begin(self, iterator):
+		if iterator.starts_line(): return iterator
+		while True:
+			iterator.backward_char()
+			if iterator.starts_line(): break
+		return iterator
+
+	def get_line_text(self, iterator):
+		begin = self.backward_to_line_begin(iterator.copy())
+		end = self.forward_to_line_end(iterator.copy())
+		text = self.__textbuffer.get_text(begin, end)
+		return text
+
+	def is_empty_line(self, iterator):
+		text = self.get_line_text(iterator).strip(" \t\n\x0D\x0A")
+		if text: return False
+		return True
 
 ########################################################################
 
