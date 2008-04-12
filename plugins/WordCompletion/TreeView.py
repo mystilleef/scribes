@@ -125,12 +125,15 @@ class CompletionTreeView(TreeView):
 		@param self: Reference to the CompletionTreeView instance.
 		@type self: A CompletionTreeView object.
 		"""
+		
 		if completion_list != self.__word_list:
+			self.set_model(None)
 			self.__word_list = completion_list
 			self.__model.clear()
 			for word in self.__word_list:
 				self.__model.append([word])
 			self.columns_autosize()
+			self.set_model(self.__model)
 		self.__manager.emit("populated-model", self)
 		self.get_selection().select_path(0)
 		return False

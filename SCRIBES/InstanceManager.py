@@ -404,7 +404,7 @@ class EditorManager(object):
 		"""
 		self.__remove_swap_area()
 		self.__save_process_monitor.destroy()
-		from gtk import main_quit
-		main_quit()
-		#raise SystemExit
+#		from gtk import main_quit
+#		main_quit()
+		raise SystemExit
 		return
