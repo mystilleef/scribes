@@ -61,6 +61,7 @@ class Manager(object):
 		self.__editor = editor
 		self.__timer = self.__sig_id_1 = None
 		self.__activate = False
+		self.__show = None
 		return
 
 	def __monitor_mouse(self):
@@ -74,6 +75,10 @@ class Manager(object):
 		from MinimalModeMetadata import get_value
 		if get_value(): self.__enable_mouse_monitor()
 		return False
+
+	def __is_within_range(self):
+		
+		return True
 
 	def __motion_notify_event_cb(self, window, event):
 		"""
@@ -89,14 +94,18 @@ class Manager(object):
 		@type event: An gtk.Event object.
 		"""
 		if self.__activate is False: return False
-		window.window.get_pointer()
-		self.__show_full_view()
-		try:
-			from gobject import source_remove, timeout_add
-			source_remove(self.__timer)
-		except TypeError:
-			pass
-		self.__timer = timeout_add(2500, self.__hide_full_view, priority=2000)
+		x, y, type_ = window.window.get_pointer()
+		if y <= 20:
+			if self.__show is True: return False
+			self.__show_full_view()
+		else:
+			if self.__show is False: return False
+			self.__hide_full_view()
+#			from gobject import source_remove, timeout_add
+#			source_remove(self.__timer)
+#		except TypeError:
+#			pass
+#		self.__timer = timeout_add(2500, self.__hide_full_view, priority=2000)
 		return False
 
 	def __show_full_view(self):
@@ -113,6 +122,7 @@ class Manager(object):
 		self.__editor.statuscontainer.show_all()
 		self.__editor.statuscontainer.set_no_show_all(True)
 		self.__editor.toolbar.set_no_show_all(True)
+		self.__show = True
 		return False
 
 	def __hide_full_view(self):
@@ -129,6 +139,7 @@ class Manager(object):
 		self.__editor.statuscontainer.hide()
 		self.__editor.statuscontainer.set_no_show_all(True)
 		self.__editor.toolbar.set_no_show_all(True)
+		self.__show = False
 		return False
 
 	def __disable_mouse_monitor(self):
