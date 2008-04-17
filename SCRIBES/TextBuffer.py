@@ -28,9 +28,9 @@ editor.
 @contact: mystilleef@gmail.com
 """
 
-from gtksourceview import SourceBuffer
+from gtksourceview2 import Buffer
 
-class ScribesTextBuffer(SourceBuffer):
+class ScribesTextBuffer(Buffer):
 	"""
 	This class creates the buffer for the text editor.
 	"""
@@ -45,7 +45,7 @@ class ScribesTextBuffer(SourceBuffer):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		SourceBuffer.__init__(self)
+		Buffer.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__signal_id_1 = editor.connect("close-document-no-save", self.__close_document_no_save_cb)
@@ -96,9 +96,15 @@ class ScribesTextBuffer(SourceBuffer):
 		@type self: A ScribesTextBuffer object.
 		"""
 		self.notify("cursor-position")
-		self.set_check_brackets(False)
+		self.set_highlight_matching_brackets(False)
 		self.set_max_undo_levels(0)
 		self.set_text("")
+		self.remove_all_tags(self.get_start_iter(), self.get_end_iter())
+		from gtksourceview2 import style_scheme_manager_get_default
+		mgr = style_scheme_manager_get_default()
+		style_scheme = mgr.get_scheme('oblivion')
+		if style_scheme: self.set_style_scheme(style_scheme)
+		self.set_highlight_syntax(False)
 		if self.get_modified(): self.set_modified(False)
 		return False
 
@@ -167,7 +173,7 @@ class ScribesTextBuffer(SourceBuffer):
 		@param editor: An instance of the text editor.
 		@type editor: An Editor object.
 		"""
-		self.set_check_brackets(False)
+		self.set_highlight_matching_brackets(False)
 		return False
 
 	def __disable_readonly_cb(self, editor):
@@ -181,7 +187,7 @@ class ScribesTextBuffer(SourceBuffer):
 		@param editor: An instance of the text editor.
 		@type editor: An Editor object.
 		"""
-		self.set_check_brackets(True)
+		self.set_highlight_matching_brackets(True)
 		return False
 
 	def __load_error_cb(self, editor, uri):
@@ -231,7 +237,7 @@ class ScribesTextBuffer(SourceBuffer):
 		"""
 		self.__uri = uri
 		if self.get_modified(): self.set_modified(False)
-		self.set_check_brackets(True)
+		self.set_highlight_matching_brackets(True)
 		from gobject import idle_add
 		idle_add(self.__activate_sytnax_colors)
 		return False

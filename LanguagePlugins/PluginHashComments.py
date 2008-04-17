@@ -31,7 +31,7 @@ show the about dialog.
 
 name = "Hash (un)comment plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-languages = ["Python", "Ruby", "Perl", "sh"]
+languages = ["python", "ruby", "perl", "sh"]
 version = 0.1
 autoload = True
 class_name = "CommentPlugin"

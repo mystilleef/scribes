@@ -28,9 +28,9 @@ buffer.
 @contact: mystilleef@gmail.com
 """
 
-from gtksourceview import SourceView
+from gtksourceview2 import View
 
-class ScribesTextView(SourceView):
+class ScribesTextView(View):
 	"""
 	This class creates the container object that holds the text editor's buffer.
 	It defines the state, properties and behavior of the container object,
@@ -52,7 +52,7 @@ class ScribesTextView(SourceView):
 		@param editor: Reference to the text editor instance.
 		@type editor: An Editor object.
 		"""
-		SourceView.__init__(self)
+		View.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
 		# Monitor signals and events.
@@ -93,14 +93,14 @@ class ScribesTextView(SourceView):
 								MONITOR_FILE, self.__margin_position_cb)
 		self.__monitor_id_7 = monitor_add(self.__spell_check_database_uri,
 								MONITOR_FILE, self.__spell_check_cb)
-		self.__monitor_id_8 = monitor_add(self.__use_theme_database_uri,
-								MONITOR_FILE, self.__themes_cb)
-		self.__monitor_id_9 = monitor_add(self.__fg_color_database_uri,
-								MONITOR_FILE, self.__foreground_cb)
-		self.__monitor_id_10 = monitor_add(self.__bg_color_database_uri,
-								MONITOR_FILE, self.__background_cb)
-		self.__monitor_id_11 = monitor_add(self.__syntax_database_uri,
-								MONITOR_FILE, self.__syntax_cb)
+#		self.__monitor_id_8 = monitor_add(self.__use_theme_database_uri,
+#								MONITOR_FILE, self.__themes_cb)
+#		self.__monitor_id_9 = monitor_add(self.__fg_color_database_uri,
+#								MONITOR_FILE, self.__foreground_cb)
+#		self.__monitor_id_10 = monitor_add(self.__bg_color_database_uri,
+#								MONITOR_FILE, self.__background_cb)
+#		self.__monitor_id_11 = monitor_add(self.__syntax_database_uri,
+#								MONITOR_FILE, self.__syntax_cb)
 
 	def __init_attributes(self, editor):
 		"""
@@ -139,14 +139,14 @@ class ScribesTextView(SourceView):
 		self.__margin_position_database_uri = get_uri_from_local_path(margin_position_database_path)
 		spell_check_database_path = join(preference_folder, "SpellCheck.gdb")
 		self.__spell_check_database_uri = get_uri_from_local_path(spell_check_database_path)
-		use_theme_database_path = join(preference_folder, "UseTheme.gdb")
-		self.__use_theme_database_uri = get_uri_from_local_path(use_theme_database_path)
-		fg_color_database_path = join(preference_folder, "ForegroundColor.gdb")
-		self.__fg_color_database_uri = get_uri_from_local_path(fg_color_database_path)
-		bg_color_database_path = join(preference_folder, "BackgroundColor.gdb")
-		self.__bg_color_database_uri = get_uri_from_local_path(bg_color_database_path)
-		syntax_database_path = join(syntax_folder, "SyntaxColors.gdb")
-		self.__syntax_database_uri = get_uri_from_local_path(syntax_database_path)
+#		use_theme_database_path = join(preference_folder, "UseTheme.gdb")
+#		self.__use_theme_database_uri = get_uri_from_local_path(use_theme_database_path)
+#		fg_color_database_path = join(preference_folder, "ForegroundColor.gdb")
+#		self.__fg_color_database_uri = get_uri_from_local_path(fg_color_database_path)
+#		bg_color_database_path = join(preference_folder, "BackgroundColor.gdb")
+#		self.__bg_color_database_uri = get_uri_from_local_path(bg_color_database_path)
+#		syntax_database_path = join(syntax_folder, "SyntaxColors.gdb")
+#		self.__syntax_database_uri = get_uri_from_local_path(syntax_database_path)
 		return
 
 	def __set_properties(self):
@@ -184,13 +184,13 @@ class ScribesTextView(SourceView):
 				pass
 		from MarginPositionMetadata import get_value
 		margin_position = get_value()
-		self.set_margin(margin_position)
+		self.set_right_margin(margin_position)
 		from DisplayRightMarginMetadata import get_value
 		show_margin = get_value()
-		self.set_show_margin(show_margin)
+		self.set_show_right_margin(show_margin)
 		from TabWidthMetadata import get_value
 		tab_width = get_value()
-		self.set_tabs_width(tab_width)
+		self.set_tab_width(tab_width)
 		from UseTabsMetadata import get_value
 		use_tabs = get_value()
 		self.set_insert_spaces_instead_of_tabs(not use_tabs)
@@ -199,26 +199,26 @@ class ScribesTextView(SourceView):
 		from pango import FontDescription
 		font = FontDescription(font_name)
 		self.modify_font(font)
-		from gtk import WRAP_WORD, WRAP_NONE
+		from gtk import WRAP_CHAR, WRAP_NONE
 		from TextWrappingMetadata import get_value
 		wrap_mode_bool = get_value()
 		if wrap_mode_bool:
-			self.set_wrap_mode(WRAP_WORD)
+			self.set_wrap_mode(WRAP_CHAR)
 		else:
 			self.set_wrap_mode(WRAP_NONE)
-		from UseThemeMetadata import get_value
-		use_theme_colors = get_value()
-		if use_theme_colors is False:
-			from ForegroundColorMetadata import get_value
-			fgcolor = get_value()
-			from BackgroundColorMetadata import get_value
-			bgcolor = get_value()
-			from gtk.gdk import color_parse
-			foreground_color = color_parse(fgcolor)
-			background_color = color_parse(bgcolor)
-			from gtk import STATE_NORMAL
-			self.modify_base(STATE_NORMAL, background_color)
-			self.modify_text(STATE_NORMAL, foreground_color)
+#		from UseThemeMetadata import get_value
+#		use_theme_colors = get_value()
+#		if use_theme_colors is False:
+#			from ForegroundColorMetadata import get_value
+#			fgcolor = get_value()
+#			from BackgroundColorMetadata import get_value
+#			bgcolor = get_value()
+#			from gtk.gdk import color_parse
+#			foreground_color = color_parse(fgcolor)
+#			background_color = color_parse(bgcolor)
+#			from gtk import STATE_NORMAL
+#			self.modify_base(STATE_NORMAL, background_color)
+#			self.modify_text(STATE_NORMAL, foreground_color)
 		return
 
 ################################################################################
@@ -713,7 +713,7 @@ class ScribesTextView(SourceView):
 		@type self: A ScribesTextView object.
 		"""
 		from TabWidthMetadata import get_value
-		self.set_tabs_width(get_value())
+		self.set_tab_width(get_value())
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
@@ -744,7 +744,7 @@ class ScribesTextView(SourceView):
 		@type self: A ScribesTextView object.
 		"""
 		from MarginPositionMetadata import get_value
-		self.set_margin(int(get_value()))
+		self.set_right_margin(int(get_value()))
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
@@ -758,7 +758,7 @@ class ScribesTextView(SourceView):
 		@type self: A ScribesTextView object.
 		"""
 		from DisplayRightMarginMetadata import get_value
-		self.set_show_margin(get_value())
+		self.set_show_right_margin(get_value())
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
@@ -949,10 +949,10 @@ class ScribesTextView(SourceView):
 		if self.__monitor_id_5: monitor_cancel(self.__monitor_id_5)
 		if self.__monitor_id_6: monitor_cancel(self.__monitor_id_6)
 		if self.__monitor_id_7: monitor_cancel(self.__monitor_id_7)
-		if self.__monitor_id_8: monitor_cancel(self.__monitor_id_8)
-		if self.__monitor_id_9: monitor_cancel(self.__monitor_id_9)
-		if self.__monitor_id_10: monitor_cancel(self.__monitor_id_10)
-		if self.__monitor_id_11: monitor_cancel(self.__monitor_id_11)
+#		if self.__monitor_id_8: monitor_cancel(self.__monitor_id_8)
+#		if self.__monitor_id_9: monitor_cancel(self.__monitor_id_9)
+#		if self.__monitor_id_10: monitor_cancel(self.__monitor_id_10)
+#		if self.__monitor_id_11: monitor_cancel(self.__monitor_id_11)
 		# Unregister object so that editor can quit.
 		self.__editor.unregister_object(self.__registration_id)
 		# Delete data attributes.

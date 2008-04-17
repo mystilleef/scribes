@@ -68,7 +68,7 @@ def convert_spaces_to_tabs_on_line(sourceview, line_number):
 	@rtype: An Boolean object.
 	"""
 	sourcebuffer = sourceview.get_property("buffer")
-	tab_width = sourceview.get_property("tabs-width")
+	tab_width = sourceview.get_property("tab-width")
 	begin_position = sourcebuffer.get_iter_at_line(line_number)
 	transition_position = begin_position.copy()
 	space_list = []
@@ -137,7 +137,7 @@ def convert_tabs_to_spaces_on_line(sourceview, line_number):
 	@rtype: An Boolean object.
 	"""
 	sourcebuffer = sourceview.get_property("buffer")
-	tab_width = sourceview.get_property("tabs-width")
+	tab_width = sourceview.get_property("tab-width")
 	begin_position = sourcebuffer.get_iter_at_line(line_number)
 	transition_position = begin_position.copy()
 	space_list = []

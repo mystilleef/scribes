@@ -107,6 +107,16 @@ def create_scrollwin():
 	scrollwin.set_shadow_type(SHADOW_IN)
 	return scrollwin
 
+def __get_language_for_mime_type(mime):
+	from gtksourceview2 import language_manager_get_default
+	lang_manager = language_manager_get_default()
+	lang_ids = lang_manager.get_language_ids()
+	for i in lang_ids:
+		lang = lang_manager.get_language(i)
+		for m in lang.get_mime_types():
+			if m == mime: return lang
+	return None
+
 def get_language(uri):
 	"""
 	Determine the source code language for a URI
@@ -119,14 +129,11 @@ def get_language(uri):
 	@rtype: A gtksourceview.SourceLanguage object.
 	"""
 	try:
-		#print "uri", uri
 		if uri is None: return None
 		from gnomevfs import get_mime_type
 		mimetype = get_mime_type(uri)
 		#print "Mimetype", mimetype
-		from gtksourceview import SourceLanguagesManager
-		manager = SourceLanguagesManager()
-		language = manager.get_language_from_mime_type(mimetype)
+		language = __get_language_for_mime_type(mimetype)
 		#print "Language", language
 	except RuntimeError:
 		print "Caught runtime error when determining language"

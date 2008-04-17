@@ -408,8 +408,8 @@ class UndoToolButton(ScribesToolButton):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		editor.textview.connect("undo", self.__toolbutton_undo_cb, editor)
-		editor.textbuffer.connect("can-undo", self.__toolbutton_can_undo_cb, editor)
+#		editor.textview.connect("undo", self.__toolbutton_undo_cb, editor)
+#		editor.textbuffer.connect("can-undo", self.__toolbutton_can_undo_cb, editor)
 		return
 
 	def __toolbutton_undo_cb(self, textview, editor):
@@ -494,8 +494,8 @@ class RedoToolButton(ScribesToolButton):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		editor.textview.connect("redo", self.__toolbutton_redo_cb, editor)
-		editor.textbuffer.connect("can-redo", self.__toolbutton_can_redo_cb, editor)
+#		editor.textview.connect("redo", self.__toolbutton_redo_cb, editor)
+#		editor.textbuffer.connect("can-redo", self.__toolbutton_can_redo_cb, editor)
 		return
 
 	def __toolbutton_enable_readonly_cb(self, editor):

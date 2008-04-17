@@ -99,13 +99,7 @@ def activate_syntax_highlight(textbuffer, language=None):
 	@return: False to terminate the timeout_add function that calls this one.
 	@rtype: A Boolean object.
 	"""
-	textbuffer.set_highlight(True)
-	try:
-		if not language: return False
-		from SyntaxColorsMetadata import get_value
-		syntax_properties = get_value(language.get_id())
-		if not syntax_properties: raise ValueError
-		textbuffer.set_language(set_language_style(language, syntax_properties))
-	except ValueError:
-		textbuffer.set_language(language)
+	if not language: return False
+	textbuffer.set_highlight_syntax(True)
+	textbuffer.set_language(language)
 	return False

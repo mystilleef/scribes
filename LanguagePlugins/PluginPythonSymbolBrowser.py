@@ -31,7 +31,7 @@ show the about dialog.
 
 name = "Python Symbol Browser"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-languages = ["Python"]
+languages = ["python"]
 version = 0.1
 autoload = True
 class_name = "SymbolBrowserPlugin"
