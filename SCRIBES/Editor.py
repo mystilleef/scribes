@@ -362,6 +362,17 @@ class Editor(GObject):
 		from license import license_string
 		return license_string
 
+	def __get_language_manager(self):
+		from gtksourceview2 import language_manager_get_default
+		return language_manager_get_default()
+
+	def __get_language_ids(self):
+		return self.language_manager.get_language_ids()
+
+	def __get_language_objects(self):
+		get_lang_object = lambda x: self.language_manager.get_language(x)
+		return map(get_lang_object, self.language_ids)
+
 ########################################################################
 #
 #					Public API Properties
@@ -434,6 +445,9 @@ class Editor(GObject):
 	copyrights = property(__get_copyrights)
 	license = property(__get_license)
 	cursor = cursor_position = cursor_iterator = property(__get_cursor_iterator)
+	language_manager = property(__get_language_manager)
+	language_ids = property(__get_language_ids)
+	language_objects = property(__get_language_objects)
 
 ########################################################################
 #

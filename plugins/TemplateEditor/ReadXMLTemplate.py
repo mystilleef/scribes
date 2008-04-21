@@ -135,5 +135,5 @@ def get_template_from_element(entry_element):
 	template = ""
 	if template_element.firstChild:
 		template = template_element.firstChild.data
-	template_data = template_key, description, template, language
+	template_data = template_key, description, template, language.lower()
 	return template_data

@@ -29,9 +29,9 @@ the template editor.
 @contact: mystilleef@gmail.com
 """
 
-from gtksourceview import SourceView, SourceBuffer
+from gtksourceview2 import View, Buffer
 
-class Preview(SourceView):
+class Preview(View):
 	"""
 	This class implements the preview window for the template editor.
 	"""
@@ -49,7 +49,7 @@ class Preview(SourceView):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		SourceView.__init__(self, SourceBuffer())
+		View.__init__(self, Buffer())
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
@@ -84,9 +84,8 @@ class Preview(SourceView):
 		@type self: A Preview object.
 		"""
 		self.set_property("auto-indent", False)
-		self.set_property("show-line-markers", False)
 		self.set_property("show-line-numbers", False)
-		self.set_property("show-margin", False)
+		self.set_property("show-right-margin", False)
 		self.__buffer.set_property("highlight", False)
 		self.__buffer.set_property("check-brackets", False)
 		self.set_property("cursor-visible", False)
@@ -116,19 +115,19 @@ class Preview(SourceView):
 			self.set_wrap_mode(WRAP_WORD)
 		else:
 			self.set_wrap_mode(WRAP_NONE)
-		from SCRIBES.UseThemeMetadata import get_value
-		use_theme_colors = get_value()
-		if use_theme_colors is False:
-			from SCRIBES.ForegroundColorMetadata import get_value
-			fgcolor = get_value()
-			from SCRIBES.BackgroundColorMetadata import get_value
-			bgcolor = get_value()
-			from gtk.gdk import color_parse
-			foreground_color = color_parse(fgcolor)
-			background_color = color_parse(bgcolor)
-			from gtk import STATE_NORMAL
-			self.modify_base(STATE_NORMAL, background_color)
-			self.modify_text(STATE_NORMAL, foreground_color)
+#		from SCRIBES.UseThemeMetadata import get_value
+#		use_theme_colors = get_value()
+#		if use_theme_colors is False:
+#			from SCRIBES.ForegroundColorMetadata import get_value
+#			fgcolor = get_value()
+#			from SCRIBES.BackgroundColorMetadata import get_value
+#			bgcolor = get_value()
+#			from gtk.gdk import color_parse
+#			foreground_color = color_parse(fgcolor)
+#			background_color = color_parse(bgcolor)
+#			from gtk import STATE_NORMAL
+#			self.modify_base(STATE_NORMAL, background_color)
+#			self.modify_text(STATE_NORMAL, foreground_color)
 		return
 
 	def __activate_syntax_highlight(self, language_id):
@@ -142,9 +141,7 @@ class Preview(SourceView):
 		@type language_id: A String object.
 		"""
 		self.__buffer.set_property("highlight", True)
-		from gtksourceview import SourceLanguage, SourceLanguagesManager
-		manager = SourceLanguagesManager()
-		languages = manager.get_available_languages()
+		languages = self.__editor.language_objects
 		from operator import eq
 		for language in languages:
 			if eq(language.get_id(), language_id): break
@@ -238,5 +235,5 @@ class Preview(SourceView):
 		if eq(language, "General"):
 			self.__buffer.set_property("highlight", False)
 		else:
-			self.__activate_syntax_highlight(language)
+			self.__activate_syntax_highlight(language.lower())
 		return

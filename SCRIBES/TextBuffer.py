@@ -95,17 +95,17 @@ class ScribesTextBuffer(Buffer):
 		@param self: Reference to the ScribesTextBuffer instance.
 		@type self: A ScribesTextBuffer object.
 		"""
-		self.notify("cursor-position")
+		from gtksourceview2 import style_scheme_manager_get_default
+		mgr = style_scheme_manager_get_default()
+		style_scheme = mgr.get_scheme('tango')
+		if style_scheme: self.set_style_scheme(style_scheme)
+		self.set_highlight_syntax(False)
 		self.set_highlight_matching_brackets(False)
 		self.set_max_undo_levels(0)
 		self.set_text("")
 		self.remove_all_tags(self.get_start_iter(), self.get_end_iter())
-		from gtksourceview2 import style_scheme_manager_get_default
-		mgr = style_scheme_manager_get_default()
-		style_scheme = mgr.get_scheme('oblivion')
-		if style_scheme: self.set_style_scheme(style_scheme)
-		self.set_highlight_syntax(False)
 		if self.get_modified(): self.set_modified(False)
+		self.notify("cursor-position")
 		return False
 
 ################################################################################

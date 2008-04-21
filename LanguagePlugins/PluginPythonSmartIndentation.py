@@ -31,7 +31,7 @@ for Python source code.
 
 name = "Smart indentation plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-languages = ["Python"]
+languages = ["python"]
 version = 0.1
 autoload = True
 class_name = "SmartIndentationPlugin"

@@ -37,8 +37,8 @@ POST_UNINSTALL = :
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/configure ABOUT-NLS \
-	AUTHORS COPYING ChangeLog INSTALL NEWS TODO config.guess \
-	config.sub install-sh missing mkinstalldirs py-compile
+	AUTHORS COPYING ChangeLog INSTALL NEWS TODO install-sh missing \
+	mkinstalldirs py-compile
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gnome-doc-utils.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/configure.ac
@@ -78,15 +78,15 @@ am__remove_distdir = \
 GZIP_ENV = --best
 DIST_ARCHIVES = $(distdir).tar.bz2
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/meek/scribes-gtksv2/missing --run aclocal-1.9
+ACLOCAL = ${SHELL} /home/goldenmyst/scribes-gtksv2/missing --run aclocal-1.9
 ACLOCAL_AMFLAGS = -I m4
 ALL_LINGUAS = de fr nl it pt_BR sv zh_CN
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/meek/scribes-gtksv2/missing --run tar
-AUTOCONF = ${SHELL} /home/meek/scribes-gtksv2/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/meek/scribes-gtksv2/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/meek/scribes-gtksv2/missing --run automake-1.9
+AMTAR = ${SHELL} /home/goldenmyst/scribes-gtksv2/missing --run tar
+AUTOCONF = ${SHELL} /home/goldenmyst/scribes-gtksv2/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/goldenmyst/scribes-gtksv2/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/goldenmyst/scribes-gtksv2/missing --run automake-1.9
 AWK = mawk
 CATALOGS =  de.gmo fr.gmo nl.gmo it.gmo pt_BR.gmo sv.gmo zh_CN.gmo
 CATOBJEXT = .gmo
@@ -153,7 +153,7 @@ LTLIBOBJS =
 MAINT = 
 MAINTAINER_MODE_FALSE = #
 MAINTAINER_MODE_TRUE = 
-MAKEINFO = ${SHELL} /home/meek/scribes-gtksv2/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/goldenmyst/scribes-gtksv2/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_OPTS = -c
@@ -204,7 +204,7 @@ host_alias =
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = /home/meek/scribes-gtksv2/install-sh
+install_sh = /home/goldenmyst/scribes-gtksv2/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale

@@ -115,8 +115,9 @@ class TemplateLoader(object):
 		database = open_template_database()
 		language = {}
 		for elements in database.keys():
-			if elements.startswith(language_id):
-				language[elements] = database[elements][1]
+			if elements.lower().startswith(language_id):
+				element = language_id + elements[len(language_id):]
+				language[element] = database[elements][1]
 		self.__manager.emit("loaded-language-templates", language)
 		close_template_database(database)
 		return

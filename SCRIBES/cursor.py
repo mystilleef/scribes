@@ -86,11 +86,10 @@ def get_cursor_position(textview):
 	cursor_iterator = get_cursor_iterator(textbuffer)
 	line_offset = cursor_iterator.get_line_offset()
 	line_text = textbuffer.get_slice(start_iterator, cursor_iterator, False)
-	tabs_width = textview.get_tabs_width()
-	from operator import eq, contains
-	if contains(line_text, "\t"):
+	tabs_width = textview.get_tab_width()
+	if "\t" in line_text:
 		for characters in line_text:
-			if eq(characters, "\t"): line_offset += (tabs_width - 1)
+			if (characters == "\t"): line_offset += (tabs_width - 1)
 	cursor_column = line_offset
 	return cursor_line, cursor_column
 
@@ -204,8 +203,7 @@ def get_template_trigger(textbuffer):
 def get_word_to_cursor(textbuffer):
 	cursor_position = get_cursor_iterator(textbuffer)
 	from word import ends_word, get_word
-	from operator import not_
-	if not_(ends_word(cursor_position)): return None
+	if not ends_word(cursor_position): return None
 	word = get_word(textbuffer, cursor_position)
 	return word
 
@@ -252,20 +250,19 @@ def get_cursor_size(textview):
 	cursor_height = rectangle.height
 	return cursor_width, cursor_height
 
-#try:
-#	from psyco import bind
-#	bind(get_cursor_iterator)
-#	bind(update_cursor_position)
-#	bind(get_cursor_size)
-#	bind(get_word_before_cursor)
-#	bind(get_word_to_cursor)
-#	bind(get_template_trigger)
-#	bind(get_cursor_line)
-#	bind(get_cursor_index)
-#	bind(get_cursor_window_coordinates)
-#	bind(move_view_to_cursor)
-#except ImportError:
-#	pass
-#except:
-#	pass
-
+try:
+	from psyco import bind
+	bind(get_cursor_iterator)
+	bind(update_cursor_position)
+	bind(get_cursor_size)
+	bind(get_word_before_cursor)
+	bind(get_word_to_cursor)
+	bind(get_template_trigger)
+	bind(get_cursor_line)
+	bind(get_cursor_index)
+	bind(get_cursor_window_coordinates)
+	bind(move_view_to_cursor)
+except ImportError:
+	pass
+except:
+	pass

@@ -168,11 +168,11 @@ class FileLoader(object):
 		"""
 		self.__editor.emit("loading-document", self.__uri)
 		from gnomevfs import OPEN_READ, URI
-		from gnomevfs.async import open
+		from gnomevfs.async import open as open_
 		try:
-			open(URI(self.__uri), self.__open_cb, OPEN_READ, 10)
+			open_(URI(self.__uri), self.__open_cb, OPEN_READ, 10)
 		except:
-			from Exceptions import OpenFileError
+#			from Exceptions import OpenFileError
 			from internationalization import msg0484
 			self.__error(msg0484)
 		return
@@ -217,7 +217,7 @@ class FileLoader(object):
 			self.__error(msg0485)
 		return
 
-	def __read_cb(self, handle, buffer, result, bytes):
+	def __read_cb(self, handle, buffer_, result, bytes):
 		"""
 		Handles callback to insert text into the editor's buffer.
 
@@ -242,7 +242,7 @@ class FileLoader(object):
 			from gnomevfs import EOFError
 			if self.__uri.startswith("file:///"):
 				if not (result in (None, EOFError)): raise GnomeVfsError
-				self.__insert_string_to_buffer(buffer, handle)
+				self.__insert_string_to_buffer(buffer_, handle)
 				try:
 					handle.close(self.__close_cb)
 				except:
@@ -250,7 +250,7 @@ class FileLoader(object):
 			else:
 				if result is None:
 					try:
-						self.__temp_buffer += buffer
+						self.__temp_buffer += buffer_
 						handle.read(4096, self.__read_cb)
 					except:
 						raise ReadFileError

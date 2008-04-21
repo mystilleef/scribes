@@ -81,9 +81,7 @@ class TemplateLanguageTreeView(object):
 		self.__model = self.__create_model()
 		self.__renderer = self.__create_renderer()
 		self.__column = self.__create_column()
-		from gtksourceview import SourceLanguagesManager
-		language_list = SourceLanguagesManager().get_available_languages()
-		self.__languages = [name.get_id() for name in language_list]
+		self.__languages = editor.language_ids
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
 		self.__signal_id_7 = self.__signal_id_8 = None
@@ -165,8 +163,7 @@ class TemplateLanguageTreeView(object):
 		@param self: Reference to the TemplateLanguageTreeView instance.
 		@type self: A TemplateLanguageTreeView object.
 		"""
-		from gtksourceview import SourceLanguagesManager
-		language_list = SourceLanguagesManager().get_available_languages()
+		language_list = self.__editor.language_objects
 		language_names = [(name.get_name(), name.get_id()) for name in language_list]
 		self.__model.append(["General", "General"])
 		for name, id in language_names:

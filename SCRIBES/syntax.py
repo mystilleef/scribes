@@ -100,6 +100,6 @@ def activate_syntax_highlight(textbuffer, language=None):
 	@rtype: A Boolean object.
 	"""
 	if not language: return False
-	textbuffer.set_highlight_syntax(True)
 	textbuffer.set_language(language)
+	textbuffer.set_highlight_syntax(True)
 	return False

@@ -31,7 +31,7 @@ plugins for Python source code.
 
 name = "Navigation and selection plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-languages = ["Python"]
+languages = ["python"]
 version = 0.1
 autoload = True
 class_name = "NavigationSelectionPlugin"

@@ -37,8 +37,8 @@ POST_UNINSTALL = :
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/configure ABOUT-NLS \
-	AUTHORS COPYING ChangeLog INSTALL NEWS TODO config.guess \
-	config.sub install-sh missing mkinstalldirs py-compile
+	AUTHORS COPYING ChangeLog INSTALL NEWS TODO install-sh missing \
+	mkinstalldirs py-compile
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gnome-doc-utils.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/configure.ac
