@@ -54,12 +54,12 @@ class Manager(GObject):
 		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		self.__signal_id_1 = editor.textview.connect_after("populate-popup", self.__popup_cb)
+#		self.__signal_id_1 = editor.textview.connect_after("populate-popup", self.__popup_cb)
 		self.__signal_id_2 = self.connect("destroy", self.__destroy_cb)
-		self.__signal_id_3 = self.connect("syntax-update", self.__syntax_update_cb)
-		self.__signal_id_4 = self.__editor.connect("loaded-document", self.__loaded_document_cb)
-		from gobject import idle_add
-		idle_add(self.__set_syntax_highlight)
+#		self.__signal_id_3 = self.connect("syntax-update", self.__syntax_update_cb)
+#		self.__signal_id_4 = self.__editor.connect("loaded-document", self.__loaded_document_cb)
+#		from gobject import idle_add
+#		idle_add(self.__set_syntax_highlight)
 
 	def __init_attributes(self, editor):
 		"""
@@ -115,10 +115,10 @@ class Manager(GObject):
 		@param self: Reference to the Manager instance.
 		@type self: A Manager object.
 		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor.textview)
+#		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor.textview)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)
-		self.__editor.disconnect_signal(self.__signal_id_3, self)
-		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
+#		self.__editor.disconnect_signal(self.__signal_id_3, self)
+#		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
 		del self
 		self = None
 		return
