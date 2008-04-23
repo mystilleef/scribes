@@ -170,11 +170,8 @@ class FileLoader(object):
 		from gnomevfs import OPEN_READ, URI
 		from gnomevfs.async import open as open_
 		try:
-			print self.__uri
 			open_(URI(self.__uri), self.__open_cb, OPEN_READ, 10)
 		except:
-			print "This is a magnificient."
-#			from Exceptions import OpenFileError
 			from internationalization import msg0484
 			self.__error(msg0484)
 		return

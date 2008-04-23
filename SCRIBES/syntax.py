@@ -101,5 +101,4 @@ def activate_syntax_highlight(textbuffer, language=None):
 	"""
 	if not language: return False
 	textbuffer.set_language(language)
-	textbuffer.set_highlight_syntax(True)
 	return False

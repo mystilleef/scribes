@@ -95,19 +95,21 @@ class ScribesTextBuffer(Buffer):
 		@param self: Reference to the ScribesTextBuffer instance.
 		@type self: A ScribesTextBuffer object.
 		"""
+		self.begin_not_undoable_action()
 		from gtksourceview2 import style_scheme_manager_get_default
 		mgr = style_scheme_manager_get_default()
 		style_scheme = mgr.get_scheme('tango')
 		if style_scheme: self.set_style_scheme(style_scheme)
-		self.set_highlight_syntax(False)
+		self.set_highlight_syntax(True)
 		self.set_highlight_matching_brackets(False)
-		self.set_max_undo_levels(0)
+		self.set_max_undo_levels(-1)
 		self.set_text("")
 		start, end = self.get_bounds()
 		self.remove_all_tags(start, end)
 		self.remove_source_marks(start, end)
 		if self.get_modified(): self.set_modified(False)
 		self.notify("cursor-position")
+		self.end_not_undoable_action()
 		return False
 
 ################################################################################

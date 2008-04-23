@@ -979,8 +979,9 @@ class Editor(GObject):
 		except ValueError:
 			pass
 		finally:
-			# Initialize plugins
+			# Initialize general plugins
 			idle_add(self.__initialize_plugins, priority=5000)
+			# Initialize language specific plugins
 			idle_add(self.__initialize_language_plugins, priority=5000)
 		return False
 
