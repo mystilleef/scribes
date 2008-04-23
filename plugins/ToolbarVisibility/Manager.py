@@ -45,6 +45,8 @@ class Manager(object):
 		"""
 		self.__init_attributes(editor)
 		self.__sig_id_1 = editor.textview.connect("motion-notify-event", self.__motion_notify_event_cb)
+		self.__sig_id_2	= editor.textview.connect("focus-out-event", self.__generic_cb)
+		self.__sig_id_3 = editor.textview.connect("focus-in-event", self.__generic_cb)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__monitor_mouse, priority=PRIORITY_LOW)
 
@@ -76,9 +78,20 @@ class Manager(object):
 		if get_value(): self.__enable_mouse_monitor()
 		return False
 
-	def __is_within_range(self):
-		
-		return True
+	def __show_hide_full_view(self, widget):
+		if self.__activate is False: return False
+		x, y, type_ = widget.window.get_pointer()
+		if y <= 11:
+			if self.__show is True: return False
+			self.__show_full_view()
+		else:
+			if self.__show is False: return False
+			self.__hide_full_view()
+		return
+
+	def __generic_cb(self, *args):
+		self.__show_hide_full_view(self.__editor.textview)
+		return
 
 	def __motion_notify_event_cb(self, window, event):
 		"""
@@ -93,19 +106,7 @@ class Manager(object):
 		@param event: A gobject event.
 		@type event: An gtk.Event object.
 		"""
-		if self.__activate is False: return False
-		x, y, type_ = window.window.get_pointer()
-		if y <= 20:
-			if self.__show is True: return False
-			self.__show_full_view()
-		else:
-			if self.__show is False: return False
-			self.__hide_full_view()
-#			from gobject import source_remove, timeout_add
-#			source_remove(self.__timer)
-#		except TypeError:
-#			pass
-#		self.__timer = timeout_add(2500, self.__hide_full_view, priority=2000)
+		self.__show_hide_full_view(window)
 		return False
 
 	def __show_full_view(self):
@@ -150,6 +151,8 @@ class Manager(object):
 		@type self: A Manager object.
 		"""
 		self.__editor.textview.handler_block(self.__sig_id_1)
+		self.__editor.textview.handler_block(self.__sig_id_2)
+		self.__editor.textview.handler_block(self.__sig_id_3)
 		self.__activate = False
 		return
 
@@ -161,6 +164,8 @@ class Manager(object):
 		@type self: A Manager object.
 		"""
 		self.__editor.textview.handler_unblock(self.__sig_id_1)
+		self.__editor.textview.handler_unblock(self.__sig_id_2)
+		self.__editor.textview.handler_unblock(self.__sig_id_3)
 		self.__activate = True
 		return
 
@@ -189,6 +194,8 @@ class Manager(object):
 		@type self: A Manager object.
 		"""
 		self.__editor.disconnect_signal(self.__sig_id_1, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__sig_id_2, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__sig_id_3, self.__editor.textview)
 		del self
 		self = None
 		return
