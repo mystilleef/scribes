@@ -31,7 +31,7 @@ This module documents a class sets syntax colors via the popup menu.
 name = "Syntax Color Switcher Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "SyntaxColorSwitcherPlugin"
 short_description = "Switch syntax colors"
 long_description = """This plugin enables users to set syntax colors \

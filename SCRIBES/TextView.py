@@ -893,11 +893,8 @@ class ScribesTextView(View):
 		@type self: A ScribesTextView object.
 		"""
 		self.grab_focus()
-#		self.__make_responsive()
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__refresh, priority=PRIORITY_LOW)
-#		from thread import start_new_thread
-#		start_new_thread(self.__refresh, ())
+		from gobject import idle_add
+		idle_add(self.__refresh, priority=5000)
 		return False
 
 	def __refresh(self):
@@ -908,7 +905,6 @@ class ScribesTextView(View):
 			self.window.process_updates(True)
 		except:
 			pass
-#		self.__make_responsive()
 		return False
 
 	def __destroy(self):

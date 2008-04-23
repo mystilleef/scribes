@@ -70,15 +70,15 @@ CONFIG_CLEAN_FILES =
 SOURCES =
 DIST_SOURCES =
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/goldenmyst/scribes-gtksv2/missing --run aclocal-1.9
+ACLOCAL = ${SHELL} /home/meek/scribes-gtksv2/missing --run aclocal-1.9
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 ALL_LINGUAS = de fr nl it pt_BR sv zh_CN
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/goldenmyst/scribes-gtksv2/missing --run tar
-AUTOCONF = ${SHELL} /home/goldenmyst/scribes-gtksv2/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/goldenmyst/scribes-gtksv2/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/goldenmyst/scribes-gtksv2/missing --run automake-1.9
+AMTAR = ${SHELL} /home/meek/scribes-gtksv2/missing --run tar
+AUTOCONF = ${SHELL} /home/meek/scribes-gtksv2/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/meek/scribes-gtksv2/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/meek/scribes-gtksv2/missing --run automake-1.9
 AWK = mawk
 CATALOGS =  de.gmo fr.gmo nl.gmo it.gmo pt_BR.gmo sv.gmo zh_CN.gmo
 CATOBJEXT = .gmo
@@ -143,7 +143,7 @@ LTLIBOBJS =
 MAINT = 
 MAINTAINER_MODE_FALSE = #
 MAINTAINER_MODE_TRUE = 
-MAKEINFO = ${SHELL} /home/goldenmyst/scribes-gtksv2/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/meek/scribes-gtksv2/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_OPTS = -c
@@ -194,7 +194,7 @@ host_alias =
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = /home/goldenmyst/scribes-gtksv2/install-sh
+install_sh = /home/meek/scribes-gtksv2/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -220,7 +220,7 @@ _DOC_REAL_LINGUAS = $(if $(filter environment,$(origin LINGUAS)),		\
 	$(filter $(LINGUAS),$(DOC_LINGUAS)),					\
 	$(DOC_LINGUAS))
 
-_DOC_ABS_SRCDIR = /home/goldenmyst/scribes-gtksv2/help
+_DOC_ABS_SRCDIR = /home/meek/scribes-gtksv2/help
 _ENABLE_SK = true
 
 ################################################################################

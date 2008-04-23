@@ -115,7 +115,7 @@ class Manager(object):
 
 	def __get_indentation_for_next_line(self):
 		whitespaces = self.__get_line_indentation()
-		indentation_width = self.__textview.get_tabs_width()
+		indentation_width = self.__textview.get_tab_width()
 		if not whitespaces:
 			if self.__textview.get_insert_spaces_instead_of_tabs():
 				whitespaces = " " * indentation_width
@@ -133,7 +133,7 @@ class Manager(object):
 
 	def __get_dedentation_for_next_line(self):
 		whitespaces = self.__get_line_indentation()
-		indentation_width = self.__textview.get_tabs_width()
+		indentation_width = self.__textview.get_tab_width()
 		if not whitespaces: return ""
 		whitespaces = whitespaces.replace("\t", " " * indentation_width)
 		number = whitespaces.count(" ")

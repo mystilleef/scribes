@@ -35,8 +35,7 @@ version = 0.1
 autoload = True
 class_name = "PreferencesPlugin"
 short_description = "Shows the dialog that customizes the editor."
-long_description = """Shows the dialog that customizes the editor.\
-"""
+long_description = """Shows the dialog that customizes the editor."""
 
 class PreferencesPlugin(object):
 	"""

@@ -103,7 +103,9 @@ class ScribesTextBuffer(Buffer):
 		self.set_highlight_matching_brackets(False)
 		self.set_max_undo_levels(0)
 		self.set_text("")
-		self.remove_all_tags(self.get_start_iter(), self.get_end_iter())
+		start, end = self.get_bounds()
+		self.remove_all_tags(start, end)
+		self.remove_source_marks(start, end)
 		if self.get_modified(): self.set_modified(False)
 		self.notify("cursor-position")
 		return False
@@ -128,6 +130,9 @@ class ScribesTextBuffer(Buffer):
 		self.__uri = uri
 		self.begin_not_undoable_action()
 		self.__undoable_action = True
+		start, end = self.get_bounds()
+		self.remove_all_tags(start, end)
+		self.remove_source_marks(start, end)
 		from gobject import idle_add
 		idle_add(self.__activate_sytnax_colors)
 		return False
@@ -252,7 +257,7 @@ class ScribesTextBuffer(Buffer):
 		self.__editor.emit("cursor-moved")
 		self.__stop_update_cursor_timer()
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__cursor_update_timer = timeout_add(500, self.__update_cursor_position, priority=PRIORITY_LOW)
+		self.__cursor_update_timer = timeout_add(500, self.__update_cursor_position, priority=5000)
 		return False
 
 ########################################################################

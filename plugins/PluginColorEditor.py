@@ -32,7 +32,7 @@ to show the color editor.
 name = "Color Editor Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "ColorEditorPlugin"
 short_description = "Shows the color editor."
 long_description = """Implements the color editor.\
