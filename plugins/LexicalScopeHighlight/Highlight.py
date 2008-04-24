@@ -78,8 +78,7 @@ class Highlighter(object):
 		self.__can_highlight = True
 		self.__buffer_is_tagged = False
 		self.__highlight_tag = self.__create_highlight_tag()
-		from gtksourceview import source_iter_find_matching_bracket
-		self.__match = source_iter_find_matching_bracket
+		self.__match = editor.find_matching_bracket
 		self.__start_mark = None
 		self.__end_mark = None
 		self.__start_characters = ("(", "[", "<", "{")
@@ -126,17 +125,17 @@ class Highlighter(object):
 			begin = textbuffer.get_iter_at_mark(self.__start_mark)
 			end = textbuffer.get_iter_at_mark(self.__end_mark)
 			textbuffer.remove_tag(self.__highlight_tag, begin, end)
-		iterator = textbuffer.get_iter_at_mark(textbuffer.get_insert())
-		if not (self.__match(iterator)): return False
-		cursor_iter = textbuffer.get_iter_at_mark(textbuffer.get_insert())
+		iterator = self.__editor.cursor
+		match = self.__match(iterator.copy())
+		if not match: return False
 		try:
-			start, end = self.__get_boundary(cursor_iter, iterator)
+			start, end = self.__get_boundary(iterator, match)
 			textbuffer.apply_tag(self.__highlight_tag, start, end)
 		except:
 			pass
 		return False
 
-	def __get_boundary(self, citerator, iterator):
+	def __get_boundary(self, iterator, end):
 		"""
 		Return the region of pair characters.
 
@@ -153,26 +152,18 @@ class Highlighter(object):
 			brackets or nothing.
 		@rtype: A Tuple object.
 		"""
+
 		# The madness going on over here is as a result of the strangeness
 		# of the GtkSourceView API. If your head hurts, kindly move along.
-		if (self.__is_start_character(citerator.get_char())):
-			iterator.forward_char()
-			return citerator, iterator
-		if (self.__is_end_character(citerator.get_char())):
-			citerator.backward_char()
-			if (self.__is_end_character(citerator.get_char())):
-				self.__match(citerator)
-				textbuffer = self.__editor.textbuffer
-				cursor_iter = textbuffer.get_iter_at_mark(textbuffer.get_insert())
-				return citerator, cursor_iter
-			citerator.forward_char()
+		if self.__is_start_character(iterator.copy()):
+			end.forward_char()
+		elif self.__is_end_character(iterator.copy()):
+			pass
+		else:
 			return None
-		citerator.backward_char()
-		if (self.__is_start_character(citerator.get_char())): return None
-		citerator.forward_char()
-		return citerator, iterator
+		return iterator, end
 
-	def __is_start_character(self, character):
+	def __is_start_character(self, iterator):
 		"""
 		Whether or not character is an openning pair character.
 
@@ -185,10 +176,10 @@ class Highlighter(object):
 		@return: True if character is an openning pair character.
 		@rtype: A Boolean object.
 		"""
-		if character in self.__start_characters: return True
+		if iterator.get_char() in self.__start_characters: return True
 		return False
 
-	def __is_end_character(self, character):
+	def __is_end_character(self, iterator):
 		"""
 		Whether or not character is a closing pair character.
 
@@ -201,7 +192,9 @@ class Highlighter(object):
 		@return: True if character is a closing pair character.
 		@rtype: A Boolean object.
 		"""
-		if character in self.__end_characters: return True
+		success = iterator.backward_char()
+		if not success: return False
+		if iterator.get_char() in self.__end_characters: return True
 		return False
 
 	def __create_highlight_tag(self):

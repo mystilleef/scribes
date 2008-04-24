@@ -519,6 +519,128 @@ def disconnect_signal(signal_id, instance):
 		print "Disconnect Signal error: ", instance
 	return
 
+def __is_beside_bracket(iterator, characters):
+	if iterator.get_char() in characters: return True
+	iterator.backward_char()
+	if iterator.get_char() in characters: return True
+	return False
+
+def __is_open_bracket(iterator, characters):
+	return self.__is_beside_bracket(iterator, characters)
+
+def __is_close_bracket(iterator, characters):
+	return self.__is_beside_bracket(iterator, characters)
+
+def __reposition_iterator(iterator, open_chars, close_chars):
+	if self.__is_open_bracket(iterator.copy(), open_chars):
+		if iterator.get_char() in open_chars: return iterator
+		iterator.backward_char()
+	else:
+		if not (iterator.get_char() in close_chars): return iterator
+		iterator.forward_char()
+	return iterator
+
+def __get_open_characters():
+	return ("{", "(", "[", "<")
+
+def __get_close_characters():
+	return ("}", ")", "]", ">")
+
+def __get_open_character(iterator):
+	iterator.backward_char()
+	return iterator.get_char()
+
+def __get_close_character(iterator):
+	return iterator.get_char()
+
+def __get_pair_character(character):
+	if character == "{":
+		pair_character = "}"
+	elif character == "}":
+		pair_character = "{"
+	elif character == "(":
+		pair_character = ")"
+	elif character == ")":
+		pair_character = "("
+	elif character == "[":
+		pair_character = "]"
+	elif character == "]":
+		pair_character = "["
+	elif character == "<":
+		pair_character = ">"
+	elif character == ">":
+		pair_character = "<"
+	return pair_character
+
+def __is_open_character(iterator):
+	characters = __get_open_characters()
+	if iterator.get_char() in characters: return True
+	success = iterator.backward_char()
+	if not success: return False
+	if iterator.get_char() in characters: return True
+	return False
+
+def __is_close_character(iterator):
+	characters = __get_close_characters()
+	iterator.backward_char()
+	if iterator.get_char() in characters: return True
+	iterator.forward_char()
+	if iterator.get_char() in characters: return True
+	return False
+
+def __reposition_open_iterator(iterator):
+	characters = __get_open_characters()
+	if not (iterator.get_char() in characters): return iterator
+	iterator.forward_char()
+	return iterator
+
+def __reposition_close_iterator(iterator):
+	characters = __get_close_characters()
+	iterator.backward_char()
+	if iterator.get_char() in characters: return iterator
+	iterator.forward_char()
+	return iterator
+
+def __search_for_open_character(iterator):
+	iterator = __reposition_close_iterator(iterator.copy())
+	character = __get_close_character(iterator.copy())
+	search_character = __get_pair_character(character)
+	count = 0
+	while True:
+		success = iterator.backward_char()
+		if not success: raise ValueError
+		char = iterator.get_char()
+		if char == character: count += 1
+		if char == search_character and not count: break
+		if char == search_character and count: count -= 1
+	return iterator
+
+def __search_for_close_character(iterator):
+	iterator = __reposition_open_iterator(iterator.copy())
+	character = __get_open_character(iterator.copy())
+	search_character = __get_pair_character(character)
+	count = 0
+	while True:
+		char = iterator.get_char()
+		if char == character: count += 1
+		if char == search_character and not count: break
+		if char == search_character and count: count -= 1
+		success = iterator.forward_char()
+		if not success: raise ValueError
+	return iterator
+
+def find_matching_bracket(iterator):
+	try:
+		if __is_open_character(iterator.copy()):
+			iterator = __search_for_close_character(iterator.copy())
+		elif __is_close_character(iterator.copy()):
+			iterator = __search_for_open_character(iterator.copy())
+		else:
+			iterator = None
+	except ValueError:
+		return None
+	return iterator
+
 def init_gnome():
 	"""
 	Initialize the GNOME libraries.

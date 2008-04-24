@@ -60,8 +60,7 @@ class BracketSelectionTrigger(object):
 		"""
 		self.__editor = editor
 		self.__trigger = self.__signal_id_1 = None
-		from gtksourceview import source_iter_find_matching_bracket
-		self.__match = source_iter_find_matching_bracket
+		self.__match = editor.find_matching_bracket
 		return
 
 ########################################################################
@@ -110,14 +109,13 @@ class BracketSelectionTrigger(object):
 		open_pair_characters = ("(", "[", "{", "<")
 		cursor_iterator = self.__editor.get_cursor_iterator()
 		transition_iterator = cursor_iterator.copy()
-		from operator import truth, contains, ge
 		while True:
-			if truth(transition_iterator.is_start()): break
+			if transition_iterator.is_start(): break
 			transition_iterator.backward_char()
-			if contains(open_pair_characters, transition_iterator.get_char()):
+			if transition_iterator.get_char() in open_pair_characters:
 				begin = transition_iterator.copy()
-				if truth(self.__match(begin)):
-					if ge(begin.compare(cursor_iterator), 0):
+				if self.__match(begin):
+					if begin.compare(cursor_iterator) > 0:
 						transition_iterator.forward_char()
 						self.__editor.textbuffer.select_range(transition_iterator, begin)
 						return True

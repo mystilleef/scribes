@@ -32,7 +32,7 @@ show the about dialog.
 name = "Bracket Completion Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = False
+autoload = True
 class_name = "BracketCompletionPlugin"
 short_description = "Bracket completion operations."
 long_description = """This plug-in performs bracket completion operations"""

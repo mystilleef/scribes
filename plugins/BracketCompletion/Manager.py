@@ -65,8 +65,7 @@ class BracketManager(object):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		from gtksourceview import source_iter_find_matching_bracket
-		self.__match = source_iter_find_matching_bracket
+		self.__match = editor.find_matching_bracket
 		self.__monitor_list = []
 		self.__escape_character = "\\"
 		from gtk import keysyms
@@ -79,7 +78,7 @@ class BracketManager(object):
 			keysyms.topleftsqbracket, keysyms.upleftcorner,
 			keysyms.botleftparens, keysyms.botleftsqbracket,
 			keysyms.apostrophe]
-		self.__open_pair_characters_for_enclosement = self.__open_pair_characters + [keysyms.less,			keysyms.apostrophe]
+		self.__open_pair_characters_for_enclosement = self.__open_pair_characters + [keysyms.less, keysyms.apostrophe]
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = None
 		return

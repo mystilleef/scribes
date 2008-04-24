@@ -789,6 +789,10 @@ class Editor(GObject):
 		if text: return False
 		return True
 
+	def find_matching_bracket(self, iterator):
+		from utils import find_matching_bracket
+		return find_matching_bracket(iterator)
+
 ########################################################################
 
 	def __create_widgets(self):
