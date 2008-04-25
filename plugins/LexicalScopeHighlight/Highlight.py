@@ -275,12 +275,12 @@ class Highlighter(object):
 		@type editor: An Editor object.
 		"""
 		if not (self.__can_highlight): return
-		from gobject import idle_add, source_remove, timeout_add, PRIORITY_LOW
+		from gobject import source_remove, timeout_add
 		try:
 			source_remove(self.__cursor_moved_id)
 		except:
 			pass
-		self.__cursor_moved_id = timeout_add(100, self.__highlight_region, priority=PRIORITY_LOW)
+		self.__cursor_moved_id = timeout_add(300, self.__highlight_region, priority=5000)
 		return
 
 	def __apply_tag_cb(self, textbuffer, tag, start, end):

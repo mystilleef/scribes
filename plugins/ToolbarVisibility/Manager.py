@@ -61,7 +61,7 @@ class Manager(object):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		self.__timer = self.__sig_id_1 = None
+		self.__sig_id_1 = None
 		self.__activate = False
 		self.__show = None
 		return
@@ -87,7 +87,7 @@ class Manager(object):
 		else:
 			if self.__show is False: return False
 			self.__hide_full_view()
-		return
+		return False
 
 	def __generic_cb(self, *args):
 		self.__show_hide_full_view(self.__editor.textview)

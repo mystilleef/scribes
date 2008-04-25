@@ -112,16 +112,16 @@ class BracketSelectionTrigger(object):
 		while True:
 			if transition_iterator.is_start(): break
 			transition_iterator.backward_char()
-			if transition_iterator.get_char() in open_pair_characters:
-				begin = transition_iterator.copy()
-				if self.__match(begin):
-					if begin.compare(cursor_iterator) > 0:
-						transition_iterator.forward_char()
-						self.__editor.textbuffer.select_range(transition_iterator, begin)
-						return True
+			if not (transition_iterator.get_char() in open_pair_characters): continue
+			transition_iterator.forward_char()
+			iterator = self.__match(transition_iterator.copy())
+			if not iterator: return False
+			if iterator.get_offset() < cursor_iterator.get_offset(): return False
+			self.__editor.textbuffer.select_range(transition_iterator, iterator)
+			return True
 		return False
 
-	def __destroy(self):
+	def __destroy(self): 
 		"""
 		Destroy instance of this class.
 

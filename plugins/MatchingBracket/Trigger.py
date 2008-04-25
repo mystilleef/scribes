@@ -114,13 +114,12 @@ class MatchingBracketTrigger(GObject):
 		@return: True if a matching bracket was found.
 		@rtype: A Boolean object.
 		"""
-		from gtksourceview import source_iter_find_matching_bracket as match
-		iterator = self.__editor.get_cursor_iterator()
-		if match(iterator):
-			self.__editor.textbuffer.place_cursor(iterator)
-			self.__editor.move_view_to_cursor()
-			return True
-		return False
+		iterator = self.__editor.cursor
+		match = self.__editor.find_matching_bracket(iterator.copy())
+		if not match: return False
+		self.__editor.textbuffer.place_cursor(match)
+		self.__editor.move_view_to_cursor()
+		return True
 
 	def __destroy_cb(self, trigger):
 		"""
