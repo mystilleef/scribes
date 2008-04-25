@@ -29,18 +29,18 @@ the color editor.
 @contact: mystilleef@gmail.com
 """
 
-class ColorEditorMenuItem(object):
+class MenuItem_(object):
 	"""
 	This class creates an object that adds or removes a menuitem that
 	shows the color editor.
 	"""
 
-	def __init__(self, trigger, editor):
+	def __init__(self, editor):
 		"""
 		Initialize the object.
 
-		@param self: Reference to the ColorEditorMenuItem instance.
-		@type self: An ColorEditorMenuItem object.
+		@param self: Reference to the MenuItem_ instance.
+		@type self: An MenuItem_ object.
 
 		@param trigger: Reference to the ColorEditorTrigger instance.
 		@type trigger: An ColorEditorTrigger object.
@@ -48,17 +48,16 @@ class ColorEditorMenuItem(object):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__init_attributes(trigger, editor)
+		self.__init_attributes(editor)
 		self.__add_menuitem()
-		self.__signal_id_1 = self.__trigger.connect("destroy", self.__menuitem_destroy_cb)
-		self.__signal_id_2 = self.__menuitem.connect("activate", self.__menuitem_activate_cb)
+		self.__sigid1 = self.__menuitem.connect("activate", self.__menuitem_activate_cb)
 
-	def __init_attributes(self, trigger, editor):
+	def __init_attributes(self, editor):
 		"""
 		Initialize the object.
 
-		@param self: Reference to the ColorEditorMenuItem instance.
-		@type self: An ColorEditorMenuItem object.
+		@param self: Reference to the MenuItem_ instance.
+		@type self: An MenuItem_ object.
 
 		@param trigger: Reference to the ColorEditorTrigger instance.
 		@type trigger: An ColorEditorTrigger object.
@@ -66,38 +65,35 @@ class ColorEditorMenuItem(object):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__trigger = trigger
 		self.__editor = editor
-		self.__signal_id_1 = None
-		self.__signal_id_2 = None
+		self.__sigid1 = None
 		from gtk import STOCK_SELECT_COLOR
-		from i18n import msg0002
-		self.__menuitem = editor.create_menuitem(msg0002, STOCK_SELECT_COLOR)
+		from i18n import msg1
+		self.__menuitem = editor.create_menuitem(msg1, STOCK_SELECT_COLOR)
 		return
 
 	def __add_menuitem(self):
 		"""
 		Add menuitem to the editor's preference menu.
 
-		@param self: Reference to the ColorEditorMenuItem instance.
-		@type self: An ColorEditorMenuItem object.
+		@param self: Reference to the MenuItem_ instance.
+		@type self: An MenuItem_ object.
 		"""
 		self.__editor.preference_menu.append(self.__menuitem)
 		self.__editor.preference_menu.show_all()
 		return
 
-	def __menuitem_destroy_cb(self, trigger):
+	def destroy(self):
 		"""
 		Handles callback when the "destroy" signal is emitted.
 
-		@param self: Reference to the ColorEditorMenuItem instance.
-		@type self: An ColorEditorMenuItem object.
+		@param self: Reference to the MenuItem_ instance.
+		@type self: An MenuItem_ object.
 
 		@param trigger: Reference to the ColorEditorTrigger instance.
 		@type trigger: An ColorEditorTrigger object.
 		"""
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__menuitem)
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__sigid1, self.__menuitem)
 		self.__editor.preference_menu.remove(self.__menuitem)
 		self.__menuitem.destroy()
 		del self
@@ -108,8 +104,8 @@ class ColorEditorMenuItem(object):
 		"""
 		Handles callback when the "activate" signal is emitted.
 
-		@param self: Reference to the ColorEditorMenuItem instance.
-		@type self: An ColorEditorMenuItem object.
+		@param self: Reference to the MenuItem_ instance.
+		@type self: An MenuItem_ object.
 
 		@param menuitem: Reference the the automatic replacement menuitem.
 		@type menuitem: A gtk.MenuItem object.
@@ -117,5 +113,5 @@ class ColorEditorMenuItem(object):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		self.__editor.trigger("show_color_editor")
+		self.__editor.trigger("show_theme_selector")
 		return False

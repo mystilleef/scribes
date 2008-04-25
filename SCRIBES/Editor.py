@@ -489,6 +489,11 @@ class Editor(GObject):
 		self.__uri = make_uri_from_shell_arg(newfile)
 		return
 
+	def get_current_folder(self, globals_):
+		from os.path import split
+		folder = split(globals_["__file__"])[0]
+		return folder
+
 	def get_encoding_manager(self):
 		return self.__encoding_manager
 

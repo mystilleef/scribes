@@ -80,9 +80,8 @@ class Manager(GObject):
 		@type editor: An Editor object.
 		"""
 		self.__editor = editor
-		from os.path import join, split
-		current_folder = split(globals()["__file__"])[0]
-		glade_file = join(current_folder, "OpenDialog.glade")
+		from os.path import join
+		glade_file = join(editor.get_current_folder(globals()), "OpenDialog.glade")
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, "Window", "scribes")
 		self.__encoding = None

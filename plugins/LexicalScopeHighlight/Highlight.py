@@ -280,7 +280,7 @@ class Highlighter(object):
 			source_remove(self.__cursor_moved_id)
 		except:
 			pass
-		self.__cursor_moved_id = timeout_add(300, self.__highlight_region, priority=5000)
+		self.__cursor_moved_id = timeout_add(100, self.__highlight_region, priority=5000)
 		return
 
 	def __apply_tag_cb(self, textbuffer, tag, start, end):
@@ -396,7 +396,7 @@ class Highlighter(object):
 		from gobject import idle_add, source_remove, PRIORITY_LOW
 		try:
 			source_remove(self.__highlight_id)
-		except:
+		except AttributeError:
 			pass
 		self.__highlight_id = idle_add(self.__highlight_region, priority=PRIORITY_LOW)
 		return

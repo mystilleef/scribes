@@ -29,26 +29,25 @@ to show the color editor.
 @contact: <mystilleef@gmail.com>
 """
 
-name = "Color Editor Plugin"
+name = "Theme Selector Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = False
-class_name = "ColorEditorPlugin"
-short_description = "Shows the color editor."
-long_description = """Implements the color editor.\
-"""
+autoload = True
+class_name = "ThemeSelectorPlugin"
+short_description = "Shows the theme selector."
+long_description = """Shows the theme selector."""
 
-class ColorEditorPlugin(object):
+class ThemeSelectorPlugin(object):
 	"""
-	This class initializes a plug-in that shows the color editor.
+	This class initializes a plug-in that shows the theme selector.
 	"""
 
 	def __init__(self, editor):
 		"""
 		Initialize the plug-in object.
 
-		@param self: Reference to the ColorEditorPlugin instance.
-		@type self: A ColorEditorPlugin object.
+		@param self: Reference to the ThemeSelectorPlugin instance.
+		@type self: A ThemeSelectorPlugin object.
 
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
@@ -58,21 +57,21 @@ class ColorEditorPlugin(object):
 
 	def load(self):
 		"""
-		Initialize the ColorEditorPlugin instance.
+		Initialize the ThemeSelectorPlugin instance.
 
-		@param self: Reference to the ColorEditorPlugin instance.
-		@type self: An ColorEditorPlugin object.
+		@param self: Reference to the ThemeSelectorPlugin instance.
+		@type self: An ThemeSelectorPlugin object.
 		"""
-		from ColorEditor.Trigger import ColorEditorTrigger
-		self.__trigger = ColorEditorTrigger(self.__editor)
+		from ThemeSelector.Trigger import Trigger
+		self.__trigger = Trigger(self.__editor)
 		return
 
 	def unload(self):
 		"""
-		Destroy the ColorEditorPlugin instance.
+		Destroy the ThemeSelectorPlugin instance.
 
-		@param self: Reference to the ColorEditorPlugin instance.
-		@type self: An ColorEditorPlugin object.
+		@param self: Reference to the ThemeSelectorPlugin instance.
+		@type self: An ThemeSelectorPlugin object.
 		"""
-		self.__trigger.emit("destroy")
+		self.__trigger.destroy()
 		return
