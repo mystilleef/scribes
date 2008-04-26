@@ -127,7 +127,7 @@ class TreeView(object):
 		@param self: Reference to the BrowserTreeView instance.
 		@type self: A BrowserTreeView object.
 		"""
-		self.__treeview.handle_block(self.__signal_id_4)
+		self.__treeview.handler_block(self.__signal_id_4)
 		from Utils import get_treeview_data
 		schemes = get_treeview_data(self.__editor.style_scheme_manager, self.__editor.home_folder)
 		self.__treeview.set_property("sensitive", False)
@@ -143,7 +143,7 @@ class TreeView(object):
 		self.__select_row()
 		self.__treeview.set_property("sensitive", True)
 		self.__treeview.grab_focus()
-		self.__treeview.handle_unblock(self.__signal_id_4)
+		self.__treeview.handler_unblock(self.__signal_id_4)
 		return False
 
 	def __select_row(self):
@@ -154,8 +154,11 @@ class TreeView(object):
 			scheme_id = self.__model.get_value(iterator, 1).get_id()
 			if scheme == scheme_id: break
 			iterator = self.__model.iter_next(iterator)
+		path = self.__model.get_path(iterator)
 		selection = self.__treeview.get_selection()
 		selection.select_iter(iterator)
+		self.__treeview.set_cursor(path)
+		self.__treeview.scroll_to_cell(path, use_align=True, row_align=0.5)
 		return
 
 	def __precompile_method(self):
