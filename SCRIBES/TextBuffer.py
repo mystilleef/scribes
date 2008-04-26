@@ -98,7 +98,7 @@ class ScribesTextBuffer(Buffer):
 		self.begin_not_undoable_action()
 		from gtksourceview2 import style_scheme_manager_get_default
 		mgr = style_scheme_manager_get_default()
-		style_scheme = mgr.get_scheme('tango')
+		style_scheme = mgr.get_scheme('oblivion')
 		if style_scheme: self.set_style_scheme(style_scheme)
 		self.set_highlight_syntax(True)
 		self.set_highlight_matching_brackets(False)

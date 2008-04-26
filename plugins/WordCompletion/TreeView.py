@@ -263,19 +263,19 @@ class CompletionTreeView(TreeView):
 		@type completion_list: A List object.
 		"""
 		try:
-			from gobject import source_remove, idle_add, PRIORITY_LOW
+			from gobject import source_remove, idle_add
 			source_remove(self.__populate_id)
-		except:
+		except AttributeError:
 			pass
 		from collections import deque
-		self.__populate_id = idle_add(self.__populate_model, deque(completion_list), priority=PRIORITY_LOW)
+		self.__populate_id = idle_add(self.__populate_model, deque(completion_list), priority=9999)
 		return
 
 	def __no_match_found_cb(self, *args):
 		try:
 			from gobject import source_remove
 			source_remove(self.__populate_id)
-		except:
+		except AttributeError:
 			pass
 		return
 

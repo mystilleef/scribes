@@ -91,9 +91,6 @@ class Window(object):
 		@param self: Reference to the Window instance.
 		@type self: A Window object.
 		"""
-#		self.__editor.emit("show-dialog", self.__window)
-#		from i18n import msg0001
-#		self.__status_id = self.__editor.feedback.set_modal_message(msg0001, "open")
 		self.__window.show_all()
 		return False
 
@@ -104,8 +101,6 @@ class Window(object):
 		@param self: Reference to the Window instance.
 		@type self: A Window object.
 		"""
-#		self.__editor.emit("hide-dialog", self.__window)
-#		self.__editor.feedback.unset_modal_message(self.__status_id)
 		self.__window.hide()
 		return False
 
