@@ -373,6 +373,10 @@ class Editor(GObject):
 		get_lang_object = lambda x: self.language_manager.get_language(x)
 		return map(get_lang_object, self.language_ids)
 
+	def __get_style_scheme_manager(self):
+		from gtksourceview2 import style_scheme_manager_get_default
+		return style_scheme_manager_get_default()
+
 ########################################################################
 #
 #					Public API Properties
@@ -448,6 +452,7 @@ class Editor(GObject):
 	language_manager = property(__get_language_manager)
 	language_ids = property(__get_language_ids)
 	language_objects = property(__get_language_objects)
+	style_scheme_manager = property(__get_style_scheme_manager)
 
 ########################################################################
 #

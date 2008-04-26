@@ -26,6 +26,7 @@ scribes_PYTHON = \
 	__init__.py \
 	BackgroundColorMetadata.py \
 	bar.py \
+	ColorThemeMetadata.py \
 	commandline.py \
 	cursor.py \
 	cursor_metadata.py \

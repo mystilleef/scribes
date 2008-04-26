@@ -54,6 +54,8 @@ class Manager(GObject):
 		self.__init_attributes(editor)
 		from Window import Window
 		Window(editor, self)
+		from TreeView import TreeView
+		TreeView(editor, self)
 
 
 	def show_window(self):

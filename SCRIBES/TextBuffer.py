@@ -59,6 +59,8 @@ class ScribesTextBuffer(Buffer):
 		self.__signal_id_9 = editor.connect("renamed-document", self.__renamed_document_cb)
 		self.__signal_id_10 = self.connect("notify::cursor-position", self.__cursor_position_cb)
 		self.__signal_id_11 = editor.connect("reload-document", self.__reload_document_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monitor_id_1 = monitor_add(self.__theme_database_uri, MONITOR_FILE, self.__theme_changed_cb)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__precompile_methods, priority=5000)
 
@@ -81,7 +83,11 @@ class ScribesTextBuffer(Buffer):
 		# Register a unique number with the editor's termination queue
 		self.__termination_id = editor.register_object()
 		self.__undoable_action = False
-		self.__cursor_update_timer = None
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		theme_database_path = join(preference_folder, "ColorTheme.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__theme_database_uri = get_uri_from_local_path(theme_database_path)
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
 		self.__signal_id_7 = self.__signal_id_8 = self.__signal_id_9 = None
@@ -96,9 +102,9 @@ class ScribesTextBuffer(Buffer):
 		@type self: A ScribesTextBuffer object.
 		"""
 		self.begin_not_undoable_action()
-		from gtksourceview2 import style_scheme_manager_get_default
-		mgr = style_scheme_manager_get_default()
-		style_scheme = mgr.get_scheme('oblivion')
+		mgr = self.__editor.style_scheme_manager
+		from ColorThemeMetadata import get_value
+		style_scheme = mgr.get_scheme(get_value())
 		if style_scheme: self.set_style_scheme(style_scheme)
 		self.set_highlight_syntax(True)
 		self.set_highlight_matching_brackets(False)
@@ -363,6 +369,12 @@ class ScribesTextBuffer(Buffer):
 		self.__editor.textview.grab_focus()
 		return False
 
+	def __theme_changed_cb(self, *args):
+		from ColorThemeMetadata import get_value
+		style_scheme = self.__editor.style_scheme_manager.get_scheme(get_value())
+		if style_scheme: self.set_style_scheme(style_scheme)
+		return False
+
 	def __precompile_methods(self):
 		"""
 		Let psyco perform byte compilation optimizations on methods.
@@ -388,6 +400,8 @@ class ScribesTextBuffer(Buffer):
 		@param self: Reference to the ScribesTextBuffer instance.
 		@type self: A ScribesTextBuffer object.
 		"""
+		from gnomevfs import monitor_cancel
+		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
