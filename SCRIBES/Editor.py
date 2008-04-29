@@ -375,8 +375,33 @@ class Editor(GObject):
 
 	def __get_style_scheme_manager(self):
 		from gtksourceview2 import style_scheme_manager_get_default
-		return style_scheme_manager_get_default()
+		manager = style_scheme_manager_get_default()
+		self.__update_manager_search_path(manager, self.home_folder)
+		return manager
 
+	def __get_gedit_sytle_path(self, home_folder):
+		from os.path import join, exists
+		base_path = ".gnome2/gedit/styles"
+		gedit_path = join(home_folder, base_path)
+		if exists(gedit_path): return gedit_path
+		return None
+
+	def __get_scribes_style_path(self, home_folder):
+		from os.path import join, exists
+		base_path = ".gnome2/scribes/styles"
+		scribes_path = join(home_folder, base_path)
+		if exists(scribes_path): return scribes_path
+		return None
+
+	def __update_manager_search_path(self, manager, home_folder):
+		gedit_path = self.__get_gedit_sytle_path(home_folder)
+		scribes_path = self.__get_scribes_style_path(home_folder)
+		search_paths = manager.get_search_path()
+		if gedit_path and not (gedit_path in search_paths): manager.prepend_search_path(gedit_path)
+		if scribes_path and not (scribes_path in search_paths): manager.prepend_search_path(scribes_path)
+		manager.force_rescan()
+		return
+	
 ########################################################################
 #
 #					Public API Properties

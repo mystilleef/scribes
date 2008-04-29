@@ -19,8 +19,7 @@
 # USA
 
 """
-This module documents utility function that manipulate the GtkSourceView2
-theme manager
+This module documents a class that implements the behavior of the remove button for the theme configuration window.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
@@ -29,21 +28,31 @@ theme manager
 @contact: mystilleef@gmail.com
 """
 
-def remove_theme(filename):
-	from os.path import exists
-	if not exists(filename): return
-	from os import remove
-	remove(filename)
-	return
+class RemoveButton(object):
+	"""
+	Implements the remove button for the theme configuration window.
+	"""
 
-def __get_scheme_data(manager, id_, home_folder):
-	scheme = manager.get_scheme(id_)
-	name = scheme.get_name() + " - " + scheme.get_description()
-	removable = scheme.get_filename().startswith(home_folder)
-	return name, scheme, removable
+	def __init__(self, editor, manager):
+		self.__init_attributes(editor, manager)
+		self.__sigid1 = manager.connect("can-remove", self.__can_remove_cb)
+		self.__sigid2 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid3 = self.__button.connect("clicked", self.__clicked_cb)
 
-def get_treeview_data(manager, home_folder):
-	manager.force_rescan()
-	get_scheme_data = lambda id_: __get_scheme_data(manager, id_, home_folder)
-	treeview_data = map(get_scheme_data, manager.get_scheme_ids())
-	return treeview_data
+	def __init_attributes(self, editor, manager):
+		self.__editor = editor
+		self.__manager = manager
+		self.__button = manager.glade.get_widget("RemoveButton")
+		return
+
+	def __can_remove_cb(self, manager, can_remove):
+		self.__button.set_property("sensitive", can_remove)
+		return True
+
+	def __clicked_cb(self, *args):
+		self.__manager.emit("remove-theme")
+		return True
+
+	def __destroy_cb(self, *args):
+		self.__button.destroy()
+		return True

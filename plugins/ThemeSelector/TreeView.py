@@ -49,10 +49,11 @@ class TreeView(object):
 		"""
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
-		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = self.__manager.connect_after("show-window", self.__update_cb)
-		self.__signal_id_3 = self.__treeview.connect("row-activated", self.__generic_cb)
-		self.__signal_id_4 = self.__treeview.connect("cursor-changed", self.__generic_cb)
+		self.__sigid1 = self.__manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = self.__manager.connect_after("show-window", self.__update_cb)
+		self.__sigid3 = self.__treeview.connect("row-activated", self.__generic_cb)
+		self.__sigid4 = self.__treeview.connect("cursor-changed", self.__generic_cb)
+		self.__sigid5 = self.__manager.connect("remove-theme", self.__remove_theme_cb)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
 
@@ -127,7 +128,7 @@ class TreeView(object):
 		@param self: Reference to the BrowserTreeView instance.
 		@type self: A BrowserTreeView object.
 		"""
-		self.__treeview.handler_block(self.__signal_id_4)
+		self.__treeview.handler_block(self.__sigid4)
 		from Utils import get_treeview_data
 		schemes = get_treeview_data(self.__editor.style_scheme_manager, self.__editor.home_folder)
 		self.__treeview.set_property("sensitive", False)
@@ -143,13 +144,15 @@ class TreeView(object):
 		self.__select_row()
 		self.__treeview.set_property("sensitive", True)
 		self.__treeview.grab_focus()
-		self.__treeview.handler_unblock(self.__signal_id_4)
+		self.__treeview.handler_unblock(self.__sigid4)
+		self.__emit_can_remove_signal()
 		return False
 
 	def __select_row(self):
 		from ColorThemeMetadata import get_value
 		scheme = get_value()
 		iterator = self.__model.get_iter_first()
+		print iterator
 		while True:
 			scheme_id = self.__model.get_value(iterator, 1).get_id()
 			if scheme == scheme_id: break
@@ -180,10 +183,11 @@ class TreeView(object):
 		@param manager: Reference to the BookmarkManager instance.
 		@type manager: A BookmarkManager object.
 		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__treeview)
-		self.__editor.disconnect_signal(self.__signal_id_4, self.__treeview)
+		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__treeview)
+		self.__editor.disconnect_signal(self.__sigid4, self.__treeview)
+		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__treeview.destroy()
 		del self
 		self = None
@@ -206,12 +210,33 @@ class TreeView(object):
 		@type: A Boolean Object.
 		"""
 		self.__change_theme()
+		self.__emit_can_remove_signal()
 		return True
+
+	def __remove_theme_cb(self, *args):
+		scheme = self.__get_selected_scheme()
+		from Utils import remove_theme
+		remove_theme(scheme.get_filename())
+		return True
+
+	def __emit_can_remove_signal(self):
+		try:
+			iterator = self.__get_selected_iter()
+			can_remove = self.__model.get_value(iterator, 2)
+			self.__manager.emit("can-remove", can_remove)
+		except TypeError:
+			pass
+		return
 
 	def __get_selected_iter(self):
 		selection = self.__treeview.get_selection()
 		iterator = selection.get_selected()[1]
 		return iterator
+
+	def __get_selected_scheme(self):
+		iterator = self.__get_selected_iter()
+		scheme = self.__model.get_value(iterator, 1)
+		return scheme
 
 	def __change_theme(self):
 		try:

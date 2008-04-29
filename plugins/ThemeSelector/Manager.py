@@ -28,7 +28,7 @@ Documents a class that shows the editor's color editor.
 @contact: mystilleef@gmail.com
 """
 
-from gobject import SIGNAL_RUN_LAST, TYPE_NONE, GObject
+from gobject import SIGNAL_RUN_LAST, TYPE_NONE, GObject, TYPE_PYOBJECT
 
 class Manager(GObject):
 	"""
@@ -38,6 +38,8 @@ class Manager(GObject):
 	__gsignals__ = {
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"can-remove": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"remove-theme": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
@@ -54,9 +56,10 @@ class Manager(GObject):
 		self.__init_attributes(editor)
 		from Window import Window
 		Window(editor, self)
+		from RemoveButton import RemoveButton
+		RemoveButton(editor, self)
 		from TreeView import TreeView
 		TreeView(editor, self)
-
 
 	def show_window(self):
 		"""
