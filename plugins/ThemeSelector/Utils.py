@@ -45,5 +45,5 @@ def __get_scheme_data(manager, id_, home_folder):
 def get_treeview_data(manager, home_folder):
 	manager.force_rescan()
 	get_scheme_data = lambda id_: __get_scheme_data(manager, id_, home_folder)
-	treeview_data = map(get_scheme_data, manager.get_scheme_ids())
+	treeview_data = map(get_scheme_data, set(manager.get_scheme_ids()))
 	return treeview_data

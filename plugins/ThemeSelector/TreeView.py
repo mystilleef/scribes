@@ -50,12 +50,13 @@ class TreeView(object):
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
 		self.__sigid1 = self.__manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = self.__manager.connect_after("show-window", self.__update_cb)
+		self.__sigid2 = self.__manager.connect("remove-theme", self.__remove_theme_cb)
 		self.__sigid3 = self.__treeview.connect("row-activated", self.__generic_cb)
 		self.__sigid4 = self.__treeview.connect("cursor-changed", self.__generic_cb)
-		self.__sigid5 = self.__manager.connect("remove-theme", self.__remove_theme_cb)
+		self.__sigid5 = self.__manager.connect("folder-changed", self.__folder_changed_cb)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
+		idle_add(self.__populate_model, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor, manager):
 		"""
@@ -152,11 +153,13 @@ class TreeView(object):
 		from ColorThemeMetadata import get_value
 		scheme = get_value()
 		iterator = self.__model.get_iter_first()
-		print iterator
-		while True:
-			scheme_id = self.__model.get_value(iterator, 1).get_id()
-			if scheme == scheme_id: break
-			iterator = self.__model.iter_next(iterator)
+		try:
+			while True:
+				scheme_id = self.__model.get_value(iterator, 1).get_id()
+				if scheme == scheme_id: break
+				iterator = self.__model.iter_next(iterator)
+		except TypeError:
+			iterator = self.__model.get_iter_first()
 		path = self.__model.get_path(iterator)
 		selection = self.__treeview.get_selection()
 		selection.select_iter(iterator)
@@ -219,6 +222,11 @@ class TreeView(object):
 		remove_theme(scheme.get_filename())
 		return True
 
+	def __folder_changed_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__populate_model, priority=5000)
+		return True
+
 	def __emit_can_remove_signal(self):
 		try:
 			iterator = self.__get_selected_iter()
@@ -247,15 +255,4 @@ class TreeView(object):
 			set_value(scheme_id)
 		except TypeError:
 			pass
-		return False
-
-	def __update_cb(self, *args):
-		"""
-		Handles callback when the "update" signal is emitted.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-		"""
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__populate_model, priority=PRIORITY_LOW)
 		return False

@@ -40,6 +40,7 @@ class Manager(GObject):
 		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"can-remove": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"remove-theme": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"folder-changed": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
@@ -60,6 +61,8 @@ class Manager(GObject):
 		RemoveButton(editor, self)
 		from TreeView import TreeView
 		TreeView(editor, self)
+		from SchemeMonitor import Monitor
+		Monitor(editor, self)
 
 	def show_window(self):
 		"""
