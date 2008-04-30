@@ -132,9 +132,9 @@ def get_language(uri):
 		if uri is None: return None
 		from gnomevfs import get_mime_type
 		mimetype = get_mime_type(uri)
-		#print "Mimetype", mimetype
+#		print "Mimetype", mimetype
 		language = __get_language_for_mime_type(mimetype)
-		#print "Language", language
+#		print "Language", language
 	except RuntimeError:
 		print "Caught runtime error when determining language"
 		return None

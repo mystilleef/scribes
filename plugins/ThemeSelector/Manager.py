@@ -59,6 +59,8 @@ class Manager(GObject):
 		Window(editor, self)
 		from RemoveButton import RemoveButton
 		RemoveButton(editor, self)
+		from AddButton import AddButton
+		AddButton(editor, self)
 		from TreeView import TreeView
 		TreeView(editor, self)
 		from SchemeMonitor import Monitor

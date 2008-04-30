@@ -47,3 +47,8 @@ def get_treeview_data(manager, home_folder):
 	get_scheme_data = lambda id_: __get_scheme_data(manager, id_, home_folder)
 	treeview_data = map(get_scheme_data, set(manager.get_scheme_ids()))
 	return treeview_data
+
+def change_theme(scheme_id):
+	from ColorThemeMetadata import set_value
+	set_value(scheme_id)
+	return 

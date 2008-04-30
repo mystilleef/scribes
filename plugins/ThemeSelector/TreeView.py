@@ -54,6 +54,9 @@ class TreeView(object):
 		self.__sigid3 = self.__treeview.connect("row-activated", self.__generic_cb)
 		self.__sigid4 = self.__treeview.connect("cursor-changed", self.__generic_cb)
 		self.__sigid5 = self.__manager.connect("folder-changed", self.__folder_changed_cb)
+
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monid1 = monitor_add(self.__uri, MONITOR_FILE, self.__theme_changed_cb)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
 		idle_add(self.__populate_model, priority=PRIORITY_LOW)
@@ -74,10 +77,17 @@ class TreeView(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__schemes = []
+		self.__change = True
 		self.__treeview = manager.glade.get_widget("TreeView")
 		self.__model = self.__create_model()
 		self.__column = self.__create_column()
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
+		self.__monid1 = None
+		from os.path import join
+		preference_folder = join(editor.metadata_folder, "Preferences")
+		theme_database_path = join(preference_folder, "ColorTheme.gdb")
+		from gnomevfs import get_uri_from_local_path
+		self.__uri = get_uri_from_local_path(theme_database_path)
 		return
 
 	def __set_properties(self):
@@ -133,21 +143,25 @@ class TreeView(object):
 		from Utils import get_treeview_data
 		schemes = get_treeview_data(self.__editor.style_scheme_manager, self.__editor.home_folder)
 		self.__treeview.set_property("sensitive", False)
-		if self.__schemes != schemes:
-			from copy import copy
-			self.__schemes = copy(schemes)
-			self.__treeview.set_model(None)
-			self.__model.clear()
-			schemes.sort()
-			for item in schemes:
-				self.__model.append([item[0], item[1], item[2]])
-			self.__treeview.set_model(self.__model)
+		self.__update_model(schemes)
 		self.__select_row()
 		self.__treeview.set_property("sensitive", True)
 		self.__treeview.grab_focus()
 		self.__treeview.handler_unblock(self.__sigid4)
 		self.__emit_can_remove_signal()
 		return False
+
+	def __update_model(self, schemes):
+		if self.__schemes == schemes: return
+		from copy import copy
+		self.__schemes = copy(schemes)
+		self.__treeview.set_model(None)
+		self.__model.clear()
+		schemes.sort()
+		for item in schemes:
+			self.__model.append([item[0], item[1], item[2]])
+		self.__treeview.set_model(self.__model)
+		return
 
 	def __select_row(self):
 		from ColorThemeMetadata import get_value
@@ -191,6 +205,8 @@ class TreeView(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__treeview)
 		self.__editor.disconnect_signal(self.__sigid4, self.__treeview)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
+		from gnomevfs import monitor_cancel
+		if self.__monid1: monitor_cancel(self.__monid1)
 		self.__treeview.destroy()
 		del self
 		self = None
@@ -223,9 +239,22 @@ class TreeView(object):
 		return True
 
 	def __folder_changed_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__populate_model, priority=5000)
+		self.__treeview.set_property("sensitive", False)
+#		from gobject import idle_add
+#		idle_add(self.__populate_model, priority=5000)
+		self.__populate_model()
+		self.__change_theme()
 		return True
+
+	def __theme_changed_cb(self, *args):
+		try:
+			if self.__change: raise ValueError
+			self.__treeview.set_property("sensitive", False)
+			from gobject import idle_add
+			idle_add(self.__populate_model, priority=5000)
+		except ValueError:
+			self.__change = True
+		return
 
 	def __emit_can_remove_signal(self):
 		try:
@@ -248,11 +277,12 @@ class TreeView(object):
 
 	def __change_theme(self):
 		try:
+			self.__change = True
 			iterator = self.__get_selected_iter()
 			scheme = self.__model.get_value(iterator, 1)
 			scheme_id = scheme.get_id()
-			from ColorThemeMetadata import set_value
-			set_value(scheme_id)
+			from Utils import change_theme
+			change_theme(scheme_id)
 		except TypeError:
 			pass
 		return False

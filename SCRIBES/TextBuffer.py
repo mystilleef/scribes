@@ -142,7 +142,8 @@ class ScribesTextBuffer(Buffer):
 		self.remove_all_tags(start, end)
 		self.remove_source_marks(start, end)
 		from gobject import idle_add
-		idle_add(self.__activate_sytnax_colors)
+		idle_add(self.__activate_sytnax_colors, priority = 5000)
+#		self.__activate_sytnax_colors()
 		return False
 
 	def __loaded_document_cb(self, *args):
