@@ -283,8 +283,7 @@ class CompletionWindow(Window):
 		@param args: Irrelevant arguments.
 		@type args: A List object.
 		"""
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__hide_window, priority=PRIORITY_LOW)
+		self.__hide_window()
 		return False
 
 	def __show_window_cb(self, manager, view):
@@ -308,7 +307,7 @@ class CompletionWindow(Window):
 		self.set_property("height-request", height)
 		self.__position_window(width, height)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__show_window, priority=PRIORITY_LOW)
+		idle_add(self.__show_window, priority=5000)
 		return
 
 	def __key_press_event_cb(self, window, event):
@@ -322,7 +321,7 @@ class CompletionWindow(Window):
 		@type window: A CompletionWindow object.
 		"""
 		from gobject import idle_add, PRIORITY_LOW
-		if event.keyval in self.__keys: idle_add(self.__hide_window, priority=PRIORITY_LOW)
+		if event.keyval in self.__keys: self.__hide_window()
 		return False
 
 	def __button_press_event_cb(self, *args):
@@ -332,8 +331,7 @@ class CompletionWindow(Window):
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
 		"""
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__hide_window, priority=PRIORITY_LOW)
+		self.__hide_window()
 		return False
 
 	def __precompile_methods(self):
