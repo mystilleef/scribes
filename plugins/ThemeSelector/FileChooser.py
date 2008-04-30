@@ -83,7 +83,7 @@ class FileChooser(object):
 		"""
 		from gtk import FileFilter
 		filefilter = FileFilter()
-		filefilter.set_name("color schemes")
+		filefilter.set_name("Color Scheme Files")
 #		filefilter.add_mime_type("text/xml")
 		filefilter.add_pattern("*.xml")
 		self.__chooser.add_filter(filefilter)
