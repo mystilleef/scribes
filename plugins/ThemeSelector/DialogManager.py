@@ -29,7 +29,7 @@ color themes
 @contact: mystilleef@gmail.com
 """
 
-from gobject import SIGNAL_RUN_LAST, TYPE_NONE, GObject
+from gobject import SIGNAL_RUN_LAST, TYPE_NONE, GObject, TYPE_PYOBJECT
 
 class Manager(GObject):
 	"""
@@ -40,6 +40,8 @@ class Manager(GObject):
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"selected-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"load-schemes": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
@@ -47,6 +49,8 @@ class Manager(GObject):
 		self.__init_attributes(editor)
 		from DialogWindow import Window
 		Window(editor, self)
+		from FileChooser import FileChooser
+		FileChooser(editor, self)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

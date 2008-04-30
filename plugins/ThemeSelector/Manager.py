@@ -55,14 +55,14 @@ class Manager(GObject):
 		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		from Window import Window
-		Window(editor, self)
 		from RemoveButton import RemoveButton
 		RemoveButton(editor, self)
 		from AddButton import AddButton
 		AddButton(editor, self)
 		from TreeView import TreeView
 		TreeView(editor, self)
+		from Window import Window
+		Window(editor, self)
 		from SchemeMonitor import Monitor
 		Monitor(editor, self)
 
