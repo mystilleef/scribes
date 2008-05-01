@@ -59,9 +59,13 @@ def __is_xml(file_):
 	return get_mime_type(file_) in xml_mime_types
 
 def __get_xml_root_node(file_):
-	from xml.etree.ElementTree import parse
-	xmlobj = parse(file_)
-	node = xmlobj.getroot()
+	try:
+		from xml.parsers.expat import ExpatError
+		from xml.etree.ElementTree import parse
+		xmlobj = parse(file_)
+		node = xmlobj.getroot()
+	except ExpatError:
+		raise ValueError
 	return node
 
 def __is_color_scheme(file_):

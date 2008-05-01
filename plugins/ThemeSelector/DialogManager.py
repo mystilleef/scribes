@@ -49,6 +49,8 @@ class Manager(GObject):
 		self.__init_attributes(editor)
 		from DialogWindow import Window
 		Window(editor, self)
+		from DialogAddButton import Button
+		Button(editor, self)
 		from FileChooser import FileChooser
 		FileChooser(editor, self)
 
