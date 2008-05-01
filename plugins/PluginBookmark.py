@@ -32,7 +32,7 @@ bookmark operations.
 name = "Bookmark Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "BookmarkPlugin"
 short_description = "Bookmark operations."
 long_description = """This plug-in performs operations to bookmark \
