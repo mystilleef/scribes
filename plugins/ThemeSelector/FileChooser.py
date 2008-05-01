@@ -111,20 +111,22 @@ class FileChooser(object):
 		@param self: Reference to the FileChooser instance.
 		@type self: A FileChooser object.
 		"""
-#		self.__manager.emit("hide-window")
-		# get selected schemes
-		# filter out valid schemes
-		# mass file copy
-		# get id of last theme
-		# select theme.
-		# hide_window
-		print "Loading schemes"
+		try:
+			filenames = self.__chooser.get_filenames()
+			from Utils import load_schemes, get_schemes, get_scheme_id
+			from Utils import change_theme
+			schemes = get_schemes(filenames)
+			from os.path import join, exists
+			from os import makedirs
+			folder = join(self.__editor.home_folder, ".gnome2/scribes/styles")
+			if not exists(folder): makedirs(folder)
+			load_schemes(schemes, folder)
+			scheme_id = get_scheme_id(schemes[-1])
+			change_theme(scheme_id)
+			self.__manager.emit("hide")
+		except ValueError:
+			print "Invalid color theme."
 		return False
-
-	def __get_scheme(self, filename):
-		# xml_validation
-		# color_scheme_validation
-		return
 
 	def __destroy(self):
 		"""

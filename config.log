@@ -34,7 +34,6 @@ PATH: /usr/bin
 PATH: /sbin
 PATH: /bin
 PATH: /usr/games
-PATH: /usr/X11R6/bin
 
 
 ## ----------- ##
