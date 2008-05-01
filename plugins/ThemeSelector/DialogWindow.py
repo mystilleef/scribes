@@ -34,7 +34,7 @@ class Window(object):
 	This class creates the window for the document browser window.
 	"""
 
-	def __init__(self, editor, manager):
+	def __init__(self, editor, manager, theme_selector_manager):
 		"""
 		Initialize an instance of this class.
 
@@ -47,7 +47,7 @@ class Window(object):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__init_attributes(editor, manager)
+		self.__init_attributes(editor, manager, theme_selector_manager)
 		self.__set_properties()
 		self.__sigid1 = self.__manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = self.__manager.connect("show", self.__show_cb)
@@ -56,7 +56,7 @@ class Window(object):
 		self.__sigid5 = self.__window.connect("key-press-event", self.__key_press_event_cb)
 		self.__window.set_property("sensitive", True)
 
-	def __init_attributes(self, editor, manager):
+	def __init_attributes(self, editor, manager, theme_selector_manager):
 		"""
 		Initialize data attributes.
 
@@ -70,6 +70,7 @@ class Window(object):
 		@type editor: An Editor object.
 		"""
 		self.__manager = manager
+		self.__ts_manager = theme_selector_manager
 		self.__editor = editor
 		self.__window = manager.glade.get_widget("Window")
 		self.__sig_id1 = None
@@ -82,7 +83,7 @@ class Window(object):
 		@param self: Reference to the Window instance.
 		@type self: A Window object.
 		"""
-		self.__window.set_transient_for(self.__editor.window)
+		self.__window.set_transient_for(self.__ts_manager.glade.get_widget("Window"))
 		return
 
 	def __show(self):
@@ -103,6 +104,7 @@ class Window(object):
 		@type self: A Window object.
 		"""
 		self.__window.hide()
+		self.__ts_manager.emit("focus-treeview")
 		return False
 
 	def __destroy(self):

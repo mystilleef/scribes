@@ -41,6 +41,7 @@ class Manager(GObject):
 		"can-remove": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"remove-theme": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"folder-changed": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"focus-treeview": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):

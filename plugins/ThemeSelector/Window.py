@@ -102,6 +102,7 @@ class Window(object):
 		@type self: A Window object.
 		"""
 		self.__window.hide()
+		self.__manager.emit("focus-treeview")
 		return False
 
 	def __destroy(self):

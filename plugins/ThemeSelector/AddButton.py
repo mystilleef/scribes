@@ -54,7 +54,7 @@ class AddButton(object):
 			self.__dialog_manager.show()
 		except AttributeError:
 			from DialogManager import Manager
-			self.__dialog_manager = Manager(self.__editor)
+			self.__dialog_manager = Manager(self.__editor, self.__manager)
 			self.__dialog_manager.show()
 		return
 

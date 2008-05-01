@@ -44,15 +44,17 @@ class Manager(GObject):
 		"load-schemes": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
-	def __init__(self, editor):
+	def __init__(self, editor, theme_selector_manager):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		from DialogWindow import Window
-		Window(editor, self)
+		Window(editor, self, theme_selector_manager)
 		from DialogAddButton import Button
 		Button(editor, self)
 		from FileChooser import FileChooser
 		FileChooser(editor, self)
+		from DialogCancelButton import Button
+		Button(editor, self)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

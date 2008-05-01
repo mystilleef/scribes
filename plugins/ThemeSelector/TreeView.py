@@ -54,6 +54,7 @@ class TreeView(object):
 		self.__sigid3 = self.__treeview.connect("row-activated", self.__generic_cb)
 		self.__sigid4 = self.__treeview.connect("cursor-changed", self.__generic_cb)
 		self.__sigid5 = self.__manager.connect("folder-changed", self.__folder_changed_cb)
+		self.__sigid6 = self.__manager.connect("focus-treeview", self.__focus_treeview_cb)
 
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monid1 = monitor_add(self.__uri, MONITOR_FILE, self.__theme_changed_cb)
@@ -125,10 +126,12 @@ class TreeView(object):
 		@return: A column for the treeview.
 		@rtype: A gtk.TreeViewColumn object.
 		"""
-		from gtk import TreeViewColumn, CellRendererText
+		from gtk import TreeViewColumn, CellRendererText, TREE_VIEW_COLUMN_FIXED
 		column = TreeViewColumn()
 		renderer = CellRendererText()
-		column.pack_start(renderer, True)
+		column.pack_start(renderer, False)
+		column.set_sizing(TREE_VIEW_COLUMN_FIXED)
+		column.set_resizable(False)
 		column.set_attributes(renderer, text=0)
 		return column
 
@@ -181,6 +184,10 @@ class TreeView(object):
 		self.__treeview.scroll_to_cell(path, use_align=True, row_align=0.5)
 		return
 
+	def __focus_treeview(self):
+		self.__treeview.grab_focus()
+		return
+
 	def __precompile_method(self):
 		try:
 			from psyco import bind
@@ -205,12 +212,17 @@ class TreeView(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__treeview)
 		self.__editor.disconnect_signal(self.__sigid4, self.__treeview)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		from gnomevfs import monitor_cancel
 		if self.__monid1: monitor_cancel(self.__monid1)
 		self.__treeview.destroy()
 		del self
 		self = None
 		return
+
+	def __focus_treeview_cb(self, *args):
+		self.__focus_treeview()
+		return True
 
 	def __generic_cb(self, *args):
 		"""
