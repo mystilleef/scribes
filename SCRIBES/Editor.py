@@ -75,6 +75,7 @@ class Editor(GObject):
 		"rename-document": (SIGNAL_ACTION|SIGNAL_RUN_FIRST|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
 		"buffer-created": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"started-core-services": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"show-window": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, manager, file_uri=None, encoding=None):
@@ -93,7 +94,7 @@ class Editor(GObject):
 		GObject.__init__(self)
 		self.__signal_id_1 = self.connect("initialized-attributes", self.__initialized_attributes_cb)
 		self.__signal_id_2 = self.connect("created-widgets", self.__created_widgets_cb)
-		self.__signal_id_3 = self.connect_after("gui-created", self.__gui_created_after_cb)
+		self.__signal_id_3 = self.connect("gui-created", self.__gui_created_after_cb)
 		self.__signal_id_4 = self.connect("checking-document", self.__checking_document_cb)
 		self.__signal_id_5 = self.connect("loaded-document", self.__loaded_document_cb)
 		self.__signal_id_6 = self.connect("load-error", self.__load_error_cb)
@@ -401,7 +402,7 @@ class Editor(GObject):
 		if scribes_path and not (scribes_path in search_paths): manager.prepend_search_path(scribes_path)
 		manager.force_rescan()
 		return
-	
+
 ########################################################################
 #
 #					Public API Properties
@@ -971,6 +972,7 @@ class Editor(GObject):
 		@type editor: An Editor object.
 		"""
 		self.__manager_registration_id = self.__instance_manager.register_editor(self)
+
 		self.__start_core_services()
 		return
 
@@ -1007,6 +1009,7 @@ class Editor(GObject):
 		return
 
 	def __gui_created_after_cb(self, editor):
+		self.emit("show-window", self.__file_uri)
 		return
 
 	def __started_core_services_cb(self, *args):
@@ -1014,7 +1017,7 @@ class Editor(GObject):
 			# Load file if any.
 			from gobject import idle_add, PRIORITY_LOW
 			if not self.__file_uri: raise ValueError
-			idle_add(self.load_uri, self.__file_uri.strip(), self.__encoding)
+			self.load_uri(self.__file_uri.strip(), self.__encoding)
 		except ValueError:
 			pass
 		finally:

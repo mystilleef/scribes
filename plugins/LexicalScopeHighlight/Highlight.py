@@ -280,7 +280,7 @@ class Highlighter(object):
 			source_remove(self.__cursor_moved_id)
 		except:
 			pass
-		self.__cursor_moved_id = timeout_add(100, self.__highlight_region, priority=5000)
+		self.__cursor_moved_id = timeout_add(500, self.__highlight_region, priority=5000)
 		return
 
 	def __apply_tag_cb(self, textbuffer, tag, start, end):

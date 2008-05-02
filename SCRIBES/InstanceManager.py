@@ -51,7 +51,7 @@ class EditorManager(object):
 		self.__init_i18n()
 		from gobject import idle_add, timeout_add
 		idle_add(self.__precompile_methods, priority=5000)
-		timeout_add(300000, self.__init_garbage_collector, priority=5000)
+		timeout_add(300000, self.__init_garbage_collector, priority=9999)
 
 	def __init_attributes(self):
 		"""
@@ -158,8 +158,7 @@ class EditorManager(object):
 			editor = self.__editor_instances[0]
 			editor.trigger("new_window")
 		else:
-			from gobject import idle_add
-			idle_add(self.__new_editor)
+			self.__new_editor()
 		return False
 
 	def open_files(self, uris=None, encoding="utf-8"):
@@ -181,8 +180,7 @@ class EditorManager(object):
 			# Open new file if it's not already open.
 			map(open_file, filter(has_not_uri, uris))
 		else:
-			from gobject import idle_add
-			idle_add(self.open_window)
+			self.open_window()
 		return False
 
 	def close_files(self, uris):
@@ -196,9 +194,8 @@ class EditorManager(object):
 		@type uris: A list object.
 		"""
 		if not uris: return False
-		from gobject import idle_add
 		for uri in uris:
-			idle_add(self.__close_file, uri)
+			self.__close_file(uri)
 		return False
 
 	def close_all_windows(self):
@@ -208,9 +205,8 @@ class EditorManager(object):
 		@param self: Reference to the EditorManager instance.
 		@type self: An EditorManager object.
 		"""
-		from gobject import idle_add
 		for instance in self.__editor_instances:
-			idle_add(close_file, instance)
+			close_file(instance)
 		return False
 
 	def focus_file(self, uri):
@@ -292,8 +288,7 @@ class EditorManager(object):
 			editor = empty_windows[0]
 			editor.load_uri(uri, encoding)
 		else:
-			from gobject import idle_add
-			idle_add(self.__new_editor, uri, encoding)
+			self.__new_editor(uri, encoding)
 		return False
 
 	def __close_file(self, uri):
@@ -310,7 +305,7 @@ class EditorManager(object):
 		same = lambda editor: editor.uri == uri
 		from gobject import idle_add
 		for document in ifilter(same, self.__editor_instances):
-			idle_add(close_file, document)
+			close_file(document)
 		return False
 
 	def __new_editor(self, uri=None, encoding=None):

@@ -266,7 +266,7 @@ class ScribesTextBuffer(Buffer):
 		self.__editor.emit("cursor-moved")
 		self.__stop_update_cursor_timer()
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__cursor_update_timer = timeout_add(500, self.__update_cursor_position, priority=5000)
+		self.__cursor_update_timer = timeout_add(1000, self.__update_cursor_position, priority=9999)
 		return False
 
 ########################################################################

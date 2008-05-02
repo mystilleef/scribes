@@ -237,7 +237,7 @@ class TemplateMonitor(object):
 			source_remove(self.__cursor_moved_id)
 		except:
 			pass
-		self.__cursor_moved_id = timeout_add(50, self.__check_trigger, word)
+		self.__cursor_moved_id = timeout_add(500, self.__check_trigger, word, priority=5000)
 		return False
 
 	def __key_press_event_cb(self, textview, event):

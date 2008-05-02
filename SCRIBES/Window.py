@@ -68,6 +68,7 @@ class ScribesWindow(Window):
 		self.__signal_id_21 = self.__editor.connect("checking-document", self.__checking_document_cb)
 		self.__signal_id_22 = self.__editor.connect("buffer-created", self.__created_widgets_cb)
 		self.__signal_id_23 = self.__editor.connect("reload-document", self.__reload_document_cb)
+		self.__sigid30 = self.__editor.connect("show-window", self.__show_window_cb)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__precompile_methods, priority=5000)
 
@@ -335,7 +336,6 @@ class ScribesWindow(Window):
 		self.__determine_title(uri)
 		from internationalization import msg0335
 		self.set_title(msg0335 % self.__title)
-		self.__show_window()
 		return
 
 	def __enable_readonly_cb(self, editor):
@@ -377,9 +377,14 @@ class ScribesWindow(Window):
 		@param editor: An instance of the text editor.
 		@type editor: An Editor object.
 		"""
-		if self.__editor.will_load_document: return
-		self.__show_window()
+#		if self.__editor.will_load_document: return
+#		self.__show_window()
 		return
+
+	def __show_window_cb(self, editor, uri):
+		self.__uri = uri
+		self.__show_window()
+		return True
 
 	def __created_widgets_cb(self, editor):
 		#self.__signal_id_18 = self.__editor.textbuffer.connect("changed", self.__changed_cb)
