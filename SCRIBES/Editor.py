@@ -109,7 +109,7 @@ class Editor(GObject):
 		self.__signal_id_15 = self.connect("started-core-services", self.__started_core_services_cb)
 #		self.connect_after("loaded-document", self.__loaded_document_after_cb)
 		from gobject import idle_add, PRIORITY_HIGH, PRIORITY_LOW
-		idle_add(self.__init_attributes, manager, file_uri, encoding, priority=PRIORITY_HIGH)
+		self.__init_attributes(manager, file_uri, encoding)
 		idle_add(self.__precompile_methods, priority=5000)
 
 ########################################################################
