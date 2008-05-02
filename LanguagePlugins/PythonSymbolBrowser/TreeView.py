@@ -115,11 +115,14 @@ class TreeView(object):
 		@rtype: A gtk.TreeViewColumn object.
 		"""
 		from gtk import TreeViewColumn, CellRendererText, CellRendererPixbuf
+		from gtk import TREE_VIEW_COLUMN_FIXED
 		column = TreeViewColumn()
 		pixbuf_renderer = CellRendererPixbuf()
 		text_renderer = CellRendererText()
 		column.pack_start(pixbuf_renderer, False)
-		column.pack_start(text_renderer, True)
+		column.pack_start(text_renderer, False)
+		column.set_sizing(TREE_VIEW_COLUMN_FIXED)
+		column.set_resizable(False)
 		column.set_attributes(text_renderer, text=1)
 		column.set_attributes(pixbuf_renderer, pixbuf=4)
 		return column

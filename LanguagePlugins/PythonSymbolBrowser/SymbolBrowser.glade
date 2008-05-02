@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.2 on Fri Mar 21 09:29:35 2008 -->
+<!--Generated with glade3 3.4.2 on Fri May  2 10:30:01 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="Window">
     <property name="border_width">10</property>
@@ -20,7 +20,7 @@
       <widget class="GtkScrolledWindow" id="scrolledwindow1">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+        <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
         <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
         <property name="shadow_type">GTK_SHADOW_IN</property>
         <child>
@@ -33,6 +33,7 @@
             <property name="headers_visible">False</property>
             <property name="rules_hint">True</property>
             <property name="enable_search">False</property>
+            <property name="fixed_height_mode">True</property>
             <property name="level_indentation">2</property>
           </widget>
         </child>
