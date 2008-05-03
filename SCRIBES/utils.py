@@ -655,10 +655,22 @@ def init_gnome():
 	program = program_init(name, version, properties=properties)
 	return
 
-#try:
-#	from psyco import bind
-#	bind(generate_random_number)
-#	bind(calculate_completion_window_position)
-#	bind(disconnect_signal)
-#except ImportError:
-#	pass
+def backward_to_line_begin(iterator):
+	if iterator.starts_line(): return iterator
+	while True:
+		iterator.backward_char()
+		if iterator.starts_line(): break
+	return iterator
+
+def forward_to_line_end(iterator):
+	if iterator.ends_line(): return iterator
+	iterator.forward_to_line_end()
+	return iterator
+
+try:
+	from psyco import bind
+	bind(generate_random_number)
+	bind(calculate_completion_window_position)
+	bind(disconnect_signal)
+except ImportError:
+	pass

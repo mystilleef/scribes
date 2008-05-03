@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2007 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -51,15 +51,15 @@ class Monitor(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(manager, editor)
-		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = manager.connect("loaded-general-templates", self.__loaded_general_templates_cb)
-		self.__signal_id_3 = manager.connect("loaded-language-templates", self.__loaded_language_templates_cb)
-		self.__signal_id_4 = editor.connect("cursor-moved", self.__cursor_moved_cb)
-		self.__signal_id_5 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
-		self.__signal_id_6 = manager.connect("trigger-activated", self.__trigger_activated_cb)
-		self.__signal_id_7 = manager.connect("template-destroyed", self.__template_destroyed_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = manager.connect("loaded-general-templates", self.__loaded_general_templates_cb)
+		self.__sigid3 = manager.connect("loaded-language-templates", self.__loaded_language_templates_cb)
+		self.__sigid4 = editor.connect("cursor-moved", self.__cursor_moved_cb)
+		self.__sigid5 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
+		self.__sigid6 = manager.connect("trigger-activated", self.__trigger_activated_cb)
+		self.__sigid7 = manager.connect("template-destroyed", self.__template_destroyed_cb)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9000)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -76,8 +76,8 @@ class Monitor(object):
 		self.__language = None
 		self.__language_dictionary = {}
 		self.__general_dictionary = {}
-		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
-		self.__signal_id_4 = None
+		self.__sigid1 = self.__sigid2 = self.__sigid3 = None
+		self.__sigid4 = None
 		self.__active_templates = 0
 		iterator = self.__editor.get_cursor_position()
 		self.__bmark = self.__editor.textbuffer.create_mark(None, iterator, True)
@@ -108,10 +108,8 @@ class Monitor(object):
 		general = "General" + word.lstrip("`")
 		language = ""
 		if self.__language: language = self.__language + word.lstrip("`")
-		if language in self.__language_dictionary.keys():
-			return self.__language_dictionary[language]
-		elif general in self.__general_dictionary.keys():
-			return self.__general_dictionary[general]
+		if language in self.__language_dictionary.keys(): return self.__language_dictionary[language]
+		if general in self.__general_dictionary.keys(): return self.__general_dictionary[general]
 		return None
 
 	def __check_trigger(self, word):
@@ -124,20 +122,17 @@ class Monitor(object):
 		@param word: A string.
 		@type word: A String object.
 		"""
-		if self.__get_template(word) is None:
-			self.__manager.emit("no-trigger-found", (self.__bmark, self.__emark))
-			return False
 		# Call this to remove previous highlight.
 		self.__manager.emit("no-trigger-found", (self.__bmark, self.__emark))
+		if self.__get_template(word) is None: return False
 		self.__mark_position(word)
 		self.__manager.emit("trigger-found", (self.__bmark, self.__emark))
 		return False
 
 	def __remove_trigger(self, word):
-		iterator = self.__editor.get_cursor_position()
+		iterator = self.__editor.cursor_position
 		from utils import remove_trailing_spaces_on_line
-		remove_trailing_spaces_on_line(self.__editor.textview, iterator.get_line())
-		iterator = self.__editor.get_cursor_position()
+		remove_trailing_spaces_on_line(self.__editor.textview, iterator.copy().get_line())
 		temp_iter = iterator.copy()
 		for character in xrange(len(word)): temp_iter.backward_char()
 		self.__editor.textbuffer.delete(iterator, temp_iter)
@@ -153,11 +148,10 @@ class Monitor(object):
 		@param word: A string.
 		@type word: A String object.
 		"""
-		iterator = self.__editor.get_cursor_position()
+		iterator = self.__editor.cursor_position
 		temporary = iterator.copy()
 		self.__editor.textbuffer.move_mark(self.__emark, iterator)
-		for character in xrange(len(word)):
-			temporary.backward_char()
+		for character in xrange(len(word)): temporary.backward_char()
 		self.__editor.textbuffer.move_mark(self.__bmark, temporary)
 		return
 
@@ -173,13 +167,13 @@ class Monitor(object):
 		"""
 		self.__language_dictionary.clear()
 		self.__general_dictionary.clear()
-		self.__editor.disconnect_signal(self.__signal_id_1, manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, manager)
-		self.__editor.disconnect_signal(self.__signal_id_3, manager)
-		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor.textview)
-		self.__editor.disconnect_signal(self.__signal_id_6, manager)
-		self.__editor.disconnect_signal(self.__signal_id_7, manager)
+		self.__editor.disconnect_signal(self.__sigid1, manager)
+		self.__editor.disconnect_signal(self.__sigid2, manager)
+		self.__editor.disconnect_signal(self.__sigid3, manager)
+		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid5, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__sigid6, manager)
+		self.__editor.disconnect_signal(self.__sigid7, manager)
 		self = None
 		del self
 		return
@@ -228,16 +222,17 @@ class Monitor(object):
 		@type self: A TemplateMonitor object.
 		"""
 		from utils import word_to_cursor
-		word = word_to_cursor(self.__editor.textbuffer, self.__editor.get_cursor_position())
-		if not (word):
+		word = word_to_cursor(self.__editor.textbuffer, self.__editor.cursor_position)
+		if word:
+			from gobject import idle_add, source_remove
+			try:
+				source_remove(self.__cursor_moved_id)
+			except AttributeError:
+				pass
+			finally:
+				self.__cursor_moved_id = idle_add(self.__check_trigger, word, priority=99999)
+		else:
 			self.__manager.emit("no-trigger-found", (self.__bmark, self.__emark))
-			return False
-		from gobject import idle_add, source_remove
-		try:
-			source_remove(self.__cursor_moved_id)
-		except:
-			pass
-		self.__cursor_moved_id = idle_add(self.__check_trigger, word, priority=9999)
 		return False
 
 	def __key_press_event_cb(self, textview, event):
@@ -255,15 +250,23 @@ class Monitor(object):
 				self.__remove_trigger(word)
 				self.__manager.emit("trigger-activated", template)
 			except:
-				if self.__active_templates:
-					self.__manager.emit("next-placeholder")
-					return True
-				return False
-		if (event.keyval == keysyms.ISO_Left_Tab):
-			if self.__active_templates:
-				self.__manager.emit("previous-placeholder")
+				if not self.__active_templates: return False
+				self.__manager.emit("next-placeholder")
 				return True
+		else:
+			if not self.__active_templates: return False
+			self.__manager.emit("previous-placeholder")
+			return True
 		return result
+
+	def __emit_trigger_found_signal(self):
+		self.__trigger_found = True
+		return 
+
+	def __emit_no_trigger_found_signal(self):
+		if self.__trigger_found is False: return
+		self.__trigger_found = False
+		return 
 
 	def __trigger_activated_cb(self, *args):
 		self.__active_templates += 1

@@ -803,16 +803,12 @@ class Editor(GObject):
 		return
 
 	def forward_to_line_end(self, iterator):
-		if iterator.ends_line(): return iterator
-		iterator.forward_to_line_end()
-		return iterator
+		from utils import forward_to_line_end
+		return forward_to_line_end(iterator)
 
 	def backward_to_line_begin(self, iterator):
-		if iterator.starts_line(): return iterator
-		while True:
-			iterator.backward_char()
-			if iterator.starts_line(): break
-		return iterator
+		from utils import backward_to_line_begin
+		return backward_to_line_begin(iterator)
 
 	def get_line_text(self, iterator):
 		begin = self.backward_to_line_begin(iterator.copy())
