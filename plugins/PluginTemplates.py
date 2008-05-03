@@ -62,8 +62,8 @@ class TemplatesPlugin(object):
 		@param self: Reference to the TemplatesPlugin instance.
 		@type self: An TemplatesPlugin object.
 		"""
-		from Templates.Manager import TemplatesManager
-		self.__manager = TemplatesManager(self.__editor)
+		from Templates.Manager import Manager
+		self.__manager = Manager(self.__editor)
 		return
 
 	def unload(self):
@@ -73,5 +73,5 @@ class TemplatesPlugin(object):
 		@param self: Reference to the TemplatesPlugin instance.
 		@type self: An TemplatesPlugin object.
 		"""
-		self.__manager.emit("destroy")
+		self.__manager.destroy()
 		return

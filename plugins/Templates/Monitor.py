@@ -30,7 +30,7 @@ activated.
 @contact: mystilleef@gmail.com
 """
 
-class TemplateMonitor(object):
+class Monitor(object):
 	"""
 	This class creates an object that monitors the editor's buffer for
 	template triggers. It emits a signal when template triggers are
@@ -232,17 +232,18 @@ class TemplateMonitor(object):
 		if not (word):
 			self.__manager.emit("no-trigger-found", (self.__bmark, self.__emark))
 			return False
-		from gobject import idle_add, source_remove, timeout_add
+		from gobject import idle_add, source_remove
 		try:
 			source_remove(self.__cursor_moved_id)
 		except:
 			pass
-		self.__cursor_moved_id = timeout_add(500, self.__check_trigger, word, priority=5000)
+		self.__cursor_moved_id = idle_add(self.__check_trigger, word, priority=9999)
 		return False
 
 	def __key_press_event_cb(self, textview, event):
-		result = False
 		from gtk import keysyms
+		if not(event.keyval in (keysyms.Tab, keysyms.ISO_Left_Tab)): return False
+		result = False
 		if event.keyval == keysyms.Tab:
 			try:
 				from utils import word_to_cursor

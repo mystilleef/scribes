@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2007 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -24,8 +24,8 @@ they are found.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
-@copyright: Copyright © 2007 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
+@copyright: Copyright © 2008 Lateef Alabi-Oki
+@license: GNU GPLv3 or Later
 @contact: mystilleef@gmail.com
 """
 
@@ -49,11 +49,11 @@ class Highlighter(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(manager, editor)
-		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = manager.connect("trigger-found", self.__trigger_found_cb)
-		self.__signal_id_3 = manager.connect("no-trigger-found", self.__no_trigger_found_cb)
+		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = manager.connect("trigger-found", self.__trigger_found_cb)
+		self.__sigid3 = manager.connect("no-trigger-found", self.__no_trigger_found_cb)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=500)
+		idle_add(self.__precompile_methods, priority=9000)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -70,60 +70,112 @@ class Highlighter(object):
 		"""
 		self.__manager = manager
 		self.__editor = editor
+		self.__buffer = editor.textbuffer
 		self.__is_highlighted = False
 		self.__highlight_tag = self.__create_highlight_tag()
-		self.__signal_id_1 = self.__signal_id_2 = None
+		self.__sigid1 = self.__sigid2 = None
 		self.__status_id = None
 		return
 
 	def __tag_text(self, position):
-		textbuffer = self.__editor.textbuffer
-		start = textbuffer.get_iter_at_mark(position[0])
-		end = textbuffer.get_iter_at_mark(position[1])
-		textbuffer.apply_tag(self.__highlight_tag, start, end)
+		"""
+		Tag text at marked position.
+
+		@param self: Reference to the Highlighter instance.
+		@type self: A Highlighter object.
+
+		@param position: A list containing marked positions.
+		@type position: A List object.
+		"""
+		start = self.__buffer.get_iter_at_mark(position[0])
+		end = self.__buffer.get_iter_at_mark(position[1])
+		self.__buffer.apply_tag(self.__highlight_tag, start, end)
 		self.__is_highlighted = True
 		self.__status_id = self.__editor.feedback.set_modal_message("Template trigger highlighted", "info")
 		return False
 
 	def __untag_text(self, position):
-		textbuffer = self.__editor.textbuffer
-		start = textbuffer.get_iter_at_mark(position[0])
-		end = textbuffer.get_iter_at_mark(position[1])
-		textbuffer.remove_tag(self.__highlight_tag, start, end)
+		"""
+		Untag text at marked position.
+
+		@param self: Reference to the Highlighter instance.
+		@type self: A Highlighter object.
+
+		@param position: A list containing marked positions
+		@type position: A List object.
+		"""
+		start = self.__buffer.get_iter_at_mark(position[0])
+		end = self.__buffer.get_iter_at_mark(position[1])
+		self.__buffer.remove_tag(self.__highlight_tag, start, end)
 		self.__is_highlighted = False
-		from gobject import idle_add
-		idle_add(self.__editor.feedback.unset_modal_message, self.__status_id)
+		self.__editor.feedback.unset_modal_message(self.__status_id)
 		return False
 
 	def __destroy_cb(self, manager):
-		self.__editor.textbuffer.get_tag_table().remove(self.__highlight_tag)
-		self.__editor.disconnect_signal(self.__signal_id_1, manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, manager)
+		"""
+		Destroy object.
+
+		@param manager: The template manager.
+		@type manager: A Manager object.
+		"""
+		self.__buffer.get_tag_table().remove(self.__highlight_tag)
+		self.__editor.disconnect_signal(self.__sigid1, manager)
+		self.__editor.disconnect_signal(self.__sigid2, manager)
 		del self
 		self = None
 		return
 
 	def __trigger_found_cb(self, manager, position):
+		"""
+		Handles callback when a trigger is found.
+
+		@param self: Reference to the Highlighter instance.
+		@type self: A Highlighter object.
+
+		@param manager: Reference to the handle manager.
+		@type manager: A Manager object.
+
+		@param position: Position of marks in the buffer.
+		@type position: A List object.
+		"""
 		if self.__is_highlighted: return
 		try:
-			from gobject import idle_add, PRIORITY_LOW, source_remove
+			from gobject import idle_add, source_remove
 			source_remove(self.__tag_text_id)
 		except AttributeError:
 			pass
-		self.__tag_text_id = idle_add(self.__tag_text, position, priority=500)
+		self.__tag_text_id = idle_add(self.__tag_text, position)
 		return
 
 	def __no_trigger_found_cb(self, manager, position):
+		"""
+		Handles callback when no trigger is found.
+
+		@param self: Reference to the Highlighter instance.
+		@type self: A Highlighter object.
+
+		@param manager: Reference to the template manager.
+		@type manager: A Manager object.
+
+		@param position: Position of marks in the buffer.
+		@type position: A List object.
+		"""
 		if self.__is_highlighted is False: return
 		try:
 			from gobject import idle_add, PRIORITY_LOW, source_remove
 			source_remove(self.__untag_text_id)
 		except AttributeError:
 			pass
-		self.__untag_text_id = idle_add(self.__untag_text, position, priority=500)
+		self.__untag_text_id = idle_add(self.__untag_text, position)
 		return
 
 	def __precompile_methods(self):
+		"""
+		Precompile the methods.
+
+		@param self: Reference to the Highlighter instance.
+		@type self: A Highlighter object.
+		"""
 		try:
 			from psyco import bind
 			bind(self.__trigger_found_cb)
@@ -138,8 +190,8 @@ class Highlighter(object):
 		"""
 		Create the a highlight tag.
 
-		@param self: Reference to the LexicalScopeHighlight instance.
-		@type self: A LexicalScopeHighlight object.
+		@param self: Reference to the Highlighter instance.
+		@type self: A Highlighter object.
 
 		@return: A region highlight tag.
 		@rtype: A gtk.TextTag object.

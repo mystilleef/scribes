@@ -275,12 +275,12 @@ class Highlighter(object):
 		@type editor: An Editor object.
 		"""
 		if not (self.__can_highlight): return
-		from gobject import source_remove, timeout_add
+		from gobject import source_remove, idle_add
 		try:
 			source_remove(self.__cursor_moved_id)
 		except:
 			pass
-		self.__cursor_moved_id = timeout_add(500, self.__highlight_region, priority=5000)
+		self.__cursor_moved_id = idle_add(self.__highlight_region, priority=9999)
 		return
 
 	def __apply_tag_cb(self, textbuffer, tag, start, end):
@@ -366,12 +366,12 @@ class Highlighter(object):
 		@type *args: A List object.
 		"""
 		self.__can_highlight = True
-		from gobject import idle_add, source_remove, PRIORITY_LOW
+		from gobject import idle_add, source_remove
 		try:
 			source_remove(self.__generic_id)
 		except:
 			pass
-		self.__generic_id = idle_add(self.__highlight_region, priority=PRIORITY_LOW)
+		self.__generic_id = idle_add(self.__highlight_region, priority=9999)
 		return
 
 ########################################################################
@@ -393,10 +393,10 @@ class Highlighter(object):
 		from LexicalScopeHighlightMetadata import get_value
 		color = get_value()
 		self.__highlight_tag.set_property("background", color)
-		from gobject import idle_add, source_remove, PRIORITY_LOW
+		from gobject import idle_add, source_remove
 		try:
 			source_remove(self.__highlight_id)
 		except AttributeError:
 			pass
-		self.__highlight_id = idle_add(self.__highlight_region, priority=PRIORITY_LOW)
+		self.__highlight_id = idle_add(self.__highlight_region, priority=9999)
 		return

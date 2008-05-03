@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2007 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -24,14 +24,14 @@ dynamic templates for the text editor.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
-@copyright: Copyright © 2007 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
+@copyright: Copyright © 2008 Lateef Alabi-Oki
+@license: GNU GPLv3 or Later
 @contact: mystilleef@gmail.com
 """
 
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_PYOBJECT
 
-class TemplatesManager(GObject):
+class Manager(GObject):
 	"""
 	This class creates an object that manages other objects that
 	implement dynamic templates for the text editor. This class allows
@@ -54,49 +54,40 @@ class TemplatesManager(GObject):
 		"""
 		Initialize object.
 
-		@param self: Reference to the TemplatesManager instance.
-		@type self: A TemplatesManager object.
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
 
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
 		GObject.__init__(self)
-		self.__init_attributes(editor)
 		from Highlighter import Highlighter
 		Highlighter(self, editor)
-		from Monitor import TemplateMonitor
-		TemplateMonitor(self, editor)
+		from Monitor import Monitor
+		Monitor(self, editor)
 		from Loader import TemplateLoader
 		TemplateLoader(self, editor)
 		from Factory import TemplateFactory
 		TemplateFactory(self, editor)
-		self.__signal_id_1 = self.connect("destroy", self.__destroy_cb)
 
-	def __init_attributes(self, editor):
+	def __destroy(self):
 		"""
-		Initialize data attributes.
+		Destroy this object and subordinate objects it manages.
 
-		@param self: Reference to the TemplatesManager instance.
-		@type self: A TemplatesManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
 		"""
-		self.__editor = editor
-		self.__signal_id_1 = None
-		return
-
-	def __destroy_cb(self, manager):
-		"""
-		Destroy instance of this object.
-
-		@param self: Reference to the TemplatesManager instance.
-		@type self: A TemplatesManager object.
-
-		@param manager: Reference to the TemplatesManager instance.
-		@type manager: A TemplatesManager object.
-		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.emit("destroy")
 		del self
 		self = None
+		return
+
+	def destroy(self):
+		"""
+		Destroy object and subordinate objects it manages.
+
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
+		"""
+		self.__destroy()
 		return
