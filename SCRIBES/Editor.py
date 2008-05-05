@@ -718,7 +718,9 @@ class Editor(GObject):
 		success = iterator.backward_char()
 		if not success: return None
 		if iterator.get_char() in (" ", "\t", "\n", "\r", "\r\n"): return None
-		word = self.get_line_text(self.cursor_position).split()[-1]
+		start = self.backward_to_line_begin(self.cursor_position.copy())
+		text = self.__textbuffer.get_text(start, self.cursor_position)
+		word = text.split()[-1]
 		return word
 
 	def get_cursor_window_coordinates(self):
