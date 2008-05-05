@@ -73,6 +73,7 @@ class Monitor(object):
 		"""
 		self.__editor = editor
 		self.__manager = manager
+		self.__trigger_found = False
 		self.__language = None
 		self.__language_dictionary = {}
 		self.__general_dictionary = {}
@@ -91,6 +92,8 @@ class Monitor(object):
 			bind(self.__cursor_moved_cb)
 			bind(self.__get_template)
 			bind(self.__check_trigger)
+			bind(self.__emit_trigger_found_signal)
+			bind(self.__emit_no_trigger_found_signal)
 		except ImportError:
 			pass
 		return False
@@ -123,10 +126,10 @@ class Monitor(object):
 		@type word: A String object.
 		"""
 		# Call this to remove previous highlight.
-		self.__manager.emit("no-trigger-found", (self.__bmark, self.__emark))
+		self.__emit_no_trigger_found_signal((self.__bmark, self.__emark))
 		if self.__get_template(word) is None: return False
 		self.__mark_position(word)
-		self.__manager.emit("trigger-found", (self.__bmark, self.__emark))
+		self.__emit_trigger_found_signal((self.__bmark, self.__emark))
 		return False
 
 	def __remove_trigger(self, word):
@@ -222,7 +225,8 @@ class Monitor(object):
 		@type self: A TemplateMonitor object.
 		"""
 		from utils import word_to_cursor
-		word = word_to_cursor(self.__editor.textbuffer, self.__editor.cursor_position)
+#		word = word_to_cursor(self.__editor.textbuffer, self.__editor.cursor_position)
+		word = self.__editor.word_to_cursor()
 		if word:
 			from gobject import idle_add, source_remove
 			try:
@@ -232,7 +236,7 @@ class Monitor(object):
 			finally:
 				self.__cursor_moved_id = idle_add(self.__check_trigger, word, priority=99999)
 		else:
-			self.__manager.emit("no-trigger-found", (self.__bmark, self.__emark))
+			self.__emit_no_trigger_found_signal((self.__bmark, self.__emark))
 		return False
 
 	def __key_press_event_cb(self, textview, event):
@@ -241,8 +245,9 @@ class Monitor(object):
 		result = False
 		if event.keyval == keysyms.Tab:
 			try:
-				from utils import word_to_cursor
-				word = word_to_cursor(self.__editor.textbuffer, self.__editor.get_cursor_position())
+#				from utils import word_to_cursor
+#				word = word_to_cursor(self.__editor.textbuffer, self.__editor.get_cursor_position())
+				word = self.__editor.word_to_cursor()
 				if not (word): raise Exception
 				template = self.__get_template(word)
 				if template is None: raise Exception
@@ -259,14 +264,16 @@ class Monitor(object):
 			return True
 		return result
 
-	def __emit_trigger_found_signal(self):
+	def __emit_trigger_found_signal(self, data):
 		self.__trigger_found = True
-		return 
+		self.__manager.emit("trigger-found", data)
+		return
 
-	def __emit_no_trigger_found_signal(self):
+	def __emit_no_trigger_found_signal(self, data):
 		if self.__trigger_found is False: return
+		self.__manager.emit("no-trigger-found", data)
 		self.__trigger_found = False
-		return 
+		return
 
 	def __trigger_activated_cb(self, *args):
 		self.__active_templates += 1

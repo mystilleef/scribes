@@ -714,8 +714,12 @@ class Editor(GObject):
 		return move_view_to_cursor(self.__textview)
 
 	def word_to_cursor(self):
-		from cursor import word_to_cursor
-		return word_to_cursor(self.__textbuffer)
+		iterator = self.cursor_position.copy()
+		success = iterator.backward_char()
+		if not success: return None
+		if iterator.get_char() in (" ", "\t", "\n", "\r", "\r\n"): return None
+		word = self.get_line_text(self.cursor_position).split()[-1]
+		return word
 
 	def get_cursor_window_coordinates(self):
 		from cursor import get_cursor_window_coordinates

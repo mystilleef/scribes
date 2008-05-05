@@ -78,6 +78,7 @@ class CompletionMonitor(object):
 		"""
 		self.__editor = editor
 		self.__manager = manager
+		self.__match_found = False
 		self.__completion_window_is_visible = False
 		self.__dictionary = self.__create_completion_dictionary()
 		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
@@ -103,14 +104,26 @@ class CompletionMonitor(object):
 			if word:
 				matches = self.__find_matches(word)
 				if matches:
-					self.__manager.emit("match-found", matches)
+					self.__emit_match_found(matches)
 				else:
-					self.__manager.emit("no-match-found")
+					self.__emit_no_match_found()
 			else:
-				self.__manager.emit("no-match-found")
+				self.__emit_no_match_found()
 		except:
-			self.__manager.emit("no-match-found")
+			self.__emit_no_match_found()
 		return False
+
+	def __emit_match_found(self, matches):
+#		if self.__match_found: return
+		self.__match_found = True
+		self.__manager.emit("match-found", matches)
+		return
+
+	def __emit_no_match_found(self):
+		if self.__match_found is False: return
+		self.__manager.emit("no-match-found")
+		self.__match_found = False
+		return
 
 	def __find_matches(self, word):
 		"""
@@ -178,6 +191,8 @@ class CompletionMonitor(object):
 			bind(self.__sort_matches_occurrence_only)
 			bind(self.__insert_text_cb)
 			bind(self.__key_press_event_cb)
+			bind(self.__emit_match_found)
+			bind(self.__emit_no_match_found)
 		except ImportError:
 			pass
 		except:
@@ -233,7 +248,7 @@ class CompletionMonitor(object):
 			else:
 				self.__insert_text_id = timeout_add(500, self.__check_buffer, priority=9999)
 		except ValueError:
-			self.__manager.emit("no-match-found")
+			self.__emit_no_match_found()
 		return False
 
 	def __generic_cb(self, *args):
@@ -284,7 +299,7 @@ class CompletionMonitor(object):
 		"""
 		from gtk import keysyms
 		hide_keys = (keysyms.BackSpace, keysyms.space, keysyms.Tab, keysyms.Escape)
-		if  event.keyval in hide_keys: self.__manager.emit("no-match-found")
+		if  event.keyval in hide_keys: self.__emit_no_match_found()
 		return False
 
 	def __is_visible_cb(self, manager, visibility):
