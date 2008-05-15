@@ -493,6 +493,10 @@ class Editor(GObject):
 		FileLoader(self, uri, encoding)
 		return False
 
+	def refresh(self):
+		self.emit("refresh")
+		return
+
 	def create_new_file(self):
 		from info import desktop_folder
 		from os.path import exists
