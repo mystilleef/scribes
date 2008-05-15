@@ -75,6 +75,7 @@ class Editor(GObject):
 		"rename-document": (SIGNAL_ACTION|SIGNAL_RUN_FIRST|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
 		"buffer-created": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"started-core-services": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"refresh": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-window": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
@@ -749,6 +750,14 @@ class Editor(GObject):
 		else:
 			mark = self.__textbuffer.create_mark(None, iterator, True)
 		return mark
+
+	def create_left_mark(self, iterator=None):
+		if iterator: return self.mark(iterator, "left")
+		return self.mark(self.cursor_position, "left")
+
+	def create_right_mark(self, iterator=None):
+		if iterator: return self.mark(iterator, "right")
+		return self.mark(self.cursor_position, "right")
 
 	def delete_mark(self, mark):
 		if mark.get_deleted(): return

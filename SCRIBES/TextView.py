@@ -78,6 +78,7 @@ class ScribesTextView(View):
 		self.__signal_id_21 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_22 = editor.connect("close-document-no-save", self.__close_document_cb)
 		self.__signal_id_25 = editor.connect("reload-document", self.__reload_document_cb)
+		self.__signal_id_99 = editor.connect("refresh", self.__refresh_cb)
 		# GConf notification monitors.
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monitor_id_1 = monitor_add(self.__font_database_uri, MONITOR_FILE, self.__font_changed_cb)
@@ -859,6 +860,11 @@ class ScribesTextView(View):
 		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
+	def __refresh_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__refresh, priority=5000)
+		return False
+
 	def __refresh_view(self):
 		"""
 		Redraw elements of the view and its children.
@@ -911,6 +917,7 @@ class ScribesTextView(View):
 		self.__editor.disconnect_signal(self.__signal_id_21, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_22, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_25, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_99, self.__editor)
 		from gnomevfs import monitor_cancel
 		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
 		if self.__monitor_id_2: monitor_cancel(self.__monitor_id_2)
