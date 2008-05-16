@@ -497,6 +497,14 @@ class Editor(GObject):
 		self.emit("refresh")
 		return
 
+	def optimize(self, functions):
+		try:
+			from psyco import bind
+			map(bind, functions)
+		except ImportError:
+			pass
+		return
+
 	def create_new_file(self):
 		from info import desktop_folder
 		from os.path import exists
