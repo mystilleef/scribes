@@ -29,12 +29,12 @@ database.
 @contact: mystilleef@gmail.com
 """
 
-class TemplateLoader(object):
+class Loader(object):
 	"""
 	This class creates an object that loads templates from a database.
 	"""
 
-	def __init__(self, manager, editor):
+	def __init__(self, editor, manager):
 		"""
 		Initialize object.
 
@@ -47,7 +47,7 @@ class TemplateLoader(object):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__init_attributes(manager, editor)
+		self.__init_attributes(editor, manager)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = editor.connect("loaded-document", self.__loaded_document_cb)
 		self.__signal_id_3 = editor.connect("renamed-document", self.__loaded_document_cb)
@@ -57,7 +57,7 @@ class TemplateLoader(object):
 					self.__database_changed_cb)
 		self.__load_templates()
 
-	def __init_attributes(self, manager, editor):
+	def __init_attributes(self, editor, manager):
 		"""
 		Initialize data attributes.
 

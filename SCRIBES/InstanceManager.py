@@ -52,6 +52,7 @@ class EditorManager(object):
 		from gobject import idle_add, timeout_add
 		idle_add(self.__precompile_methods, priority=5000)
 		timeout_add(300000, self.__init_garbage_collector, priority=9999)
+		timeout_add(21000, self.__init_psyco, priority=5555)
 
 	def __init_attributes(self):
 		"""
@@ -332,6 +333,16 @@ class EditorManager(object):
 		from gc import collect
 		collect()
 		return True
+
+	def __init_psyco(self):
+		try:
+			from psyco import profile, log
+#			log("/home/meek/Desktop/psyco-log.log")
+			profile()
+			print "Initialized psyco profiling and optimization"
+		except ImportError:
+			pass
+		return False
 
 	def __init_i18n(self):
 		"""

@@ -180,24 +180,29 @@ def get_author_name():
 	@rtype: A String object.
 	"""
 	import pwd,posix
-	# get the user information
-	# returns a list with the following information:
-	# (username, 'x', uid, gid, real life information, home, shell)
 	user = pwd.getpwuid(posix.getuid())
-	# try to get the user's real name first
-	# the real life information is a csv containing real information from the user
-	# we want the first field that usually is the real name
 	name = user[4].split(',')[0]
-	# if the name we get is not what we want
-	if name is None or name == '':
-		# get the username
-		name = user[0]
+	if name is None or name == '': name = user[0]
 	return name
+
+def get_template_word(iterator, buffer_):
+	if iterator.starts_line(): return None
+	chars = (" ", "\t", "(", "{", "<", "[", "=", ")", "}", ">", "]",)
+	begin = iterator.copy()
+	while True:
+		if begin.starts_line(): return buffer_.get_text(begin, iterator)
+		success = begin.backward_char()
+		if success is False: return buffer_.get_text(begin, iterator)
+		if not (begin.get_char() in chars): continue
+		begin.forward_char()
+		break
+	return buffer_.get_text(begin, iterator)
 
 try:
 	from psyco import bind
 	bind(word_to_cursor)
 	bind(insert_string)
+	bind(get_template_word)
 	bind(remove_trailing_spaces_on_line)
 	bind(get_placeholders)
 	bind(has_placeholders)
