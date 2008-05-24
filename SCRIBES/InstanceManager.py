@@ -336,7 +336,7 @@ class EditorManager(object):
 
 	def __init_psyco(self):
 		try:
-			from psyco import profile, log
+			from psyco import profile #, log
 #			log("/home/meek/Desktop/psyco-log.log")
 			profile()
 			print "Initialized psyco profiling and optimization"

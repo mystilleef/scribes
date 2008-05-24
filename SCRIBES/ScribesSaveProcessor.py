@@ -74,30 +74,38 @@ class SaveProcessor(object):
 		"""
 		Write file to disk.
 		"""
-		from gobject import idle_add
-		idle_add(self.__save_file, editor_id, text, uri, encoding)
+#		from gobject import idle_add
+#		idle_add(self.__save_file, editor_id, text, uri, encoding)
+		from thread import start_new_thread
+		start_new_thread(self.__save_file, (editor_id, text, uri, encoding))
 		return
 
 	def update(self, editor_id):
 		"""
 		Update process when a file is closed.
 		"""
-		from gobject import idle_add
-		idle_add(self.__update, editor_id)
+#		from gobject import idle_add
+#		idle_add(self.__update, editor_id)
+		from thread import start_new_thread
+		start_new_thread(self.__update, (editor_id,))
 		return
 
 	def __save_file(self, editor_id, text, uri, encoding):
 		"""
 		Write file to disk
 		"""
-		self.__processor.process(editor_id, text, uri, encoding)
+#		self.__processor.process(editor_id, text, uri, encoding)
+		from thread import start_new_thread
+		start_new_thread(self.__processor.process, (editor_id, text, uri, encoding))
 		return False
 
 	def __update(self, editor_id):
 		"""
 		Update process when a file is closed.
 		"""
-		self.__processor.update(editor_id)
+#		self.__processor.update(editor_id)
+		from thread import start_new_thread
+		start_new_thread(self.__processor.update, (editor_id,))
 		return False
 
 	def __name_change_cb(self, *args):
@@ -139,11 +147,21 @@ def __set_vm_properties():
 	setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
 	return
 
+def __init_psyco():
+	try:
+		from psyco import full
+		full()
+	except ImportError:
+		pass
+	return False
+
 if __name__ == "__main__":
 	__set_vm_properties()
 	from sys import argv, path
 	python_path = argv[1]
 	path.insert(0, python_path)
 	SaveProcessor()
-	from gobject import MainLoop
+	__init_psyco()
+	from gobject import MainLoop, threads_init
+	threads_init()
 	MainLoop().run()

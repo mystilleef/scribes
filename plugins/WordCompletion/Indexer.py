@@ -30,7 +30,7 @@ word completion.
 """
 from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop(set_as_default=True)
-INTERVAL = 500
+INTERVAL = 1000
 RECURSIONLIMITMULTIPLIER = 1000
 indexer_dbus_service = "org.sourceforge.ScribesIndexer"
 indexer_dbus_path = "/org/sourceforge/ScribesIndexer"
@@ -192,10 +192,11 @@ class CompletionIndexer(object):
 
 	def __precompile_methods(self):
 		try:
-			from psyco import bind
+			from psyco import bind, full
 			bind(self.__generate_completion_list)
 			bind(self.__generate_completion_dictionary)
 			bind(self.__filter)
+			full()
 		except ImportError:
 			pass
 		except:
