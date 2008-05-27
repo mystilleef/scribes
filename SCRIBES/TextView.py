@@ -138,10 +138,6 @@ class ScribesTextView(View):
 		"""
 		Set default properties.
 
-		Much of the properties of the view can be defined by users. So the
-		properties of the view are stored in GNOME's configuration database,
-		GConf. During the text editor's initialization process,
-
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
 
@@ -187,11 +183,11 @@ class ScribesTextView(View):
 		from pango import FontDescription
 		font = FontDescription(font_name)
 		self.modify_font(font)
-		from gtk import WRAP_CHAR, WRAP_NONE
+		from gtk import WRAP_WORD_CHAR, WRAP_NONE
 		from TextWrappingMetadata import get_value
 		wrap_mode_bool = get_value()
 		if wrap_mode_bool:
-			self.set_wrap_mode(WRAP_CHAR)
+			self.set_wrap_mode(WRAP_WORD_CHAR)
 		else:
 			self.set_wrap_mode(WRAP_NONE)
 		return
@@ -245,6 +241,7 @@ class ScribesTextView(View):
 		@return: False to propagate signals to parent widgets, True otherwise.
 		@rtype: A Boolean object.
 		"""
+		self.__refresh()
 		if "text/uri-list" in context.targets: return True
 		return False
 
@@ -273,6 +270,7 @@ class ScribesTextView(View):
 		@return: False to propagate signals to parent widgets, True otherwise.
 		@rtype: A Boolean object.
 		"""
+		self.__refresh()
 		if "text/uri-list" in context.targets: return True
 		return False
 
@@ -308,12 +306,14 @@ class ScribesTextView(View):
 		@return: False to propagate signals to parent widgets, True otherwise.
 		@rtype: A Boolean object.
 		"""
+		self.__refresh()
 		if not ("text/uri-list" in context.targets): return False
 		if info != 80: return False
 		# Load file
 		uri_list = list(selection_data.get_uris())
 		self.__editor.instance_manager.open_files(uri_list, None)
 		context.finish(True, False, timestamp)
+		self.__refresh()
 		return True
 
 	def __drag_data_get_cb(self, textview, context, data, info, time):
@@ -341,10 +341,12 @@ class ScribesTextView(View):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
+		self.__refresh()
 		selection = self.get_buffer().get_selection_bounds()
 		if not selection: return False
 		string = self.get_buffer().get_text(selection[0], selection[1])
 		data.set(data.target, 8, string)
+		self.__refresh()
 		return False
 
 	def __checking_document_cb(self, editor, uri):
@@ -700,10 +702,10 @@ class ScribesTextView(View):
 		@param self: Reference to the ScribesTextView instance.
 		@type self: A ScribesTextView object.
 		"""
-		from gtk import WRAP_NONE, WRAP_WORD
+		from gtk import WRAP_NONE, WRAP_WORD_CHAR
 		from TextWrappingMetadata import get_value
 		if get_value():
-			self.set_wrap_mode(WRAP_WORD)
+			self.set_wrap_mode(WRAP_WORD_CHAR)
 		else:
 			self.set_wrap_mode(WRAP_NONE)
 		from gobject import idle_add, PRIORITY_LOW

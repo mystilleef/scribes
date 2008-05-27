@@ -28,7 +28,7 @@ This module documents a class that creates the template editor's window.
 @contact: mystilleef@gmail.com
 """
 
-class TemplateWindow(object):
+class Window(object):
 	"""
 	This class creates the window for the template editor.
 	"""
@@ -37,8 +37,8 @@ class TemplateWindow(object):
 		"""
 		Initialize object.
 
-		@param self: Reference to the TemplateWindow instance.
-		@type self: A TemplateWindow object.
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
 
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
@@ -48,21 +48,20 @@ class TemplateWindow(object):
 		"""
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = manager.connect("show", self.__show_cb)
-		self.__signal_id_3 = self.__window.connect("delete-event", self.__delete_event_cb)
-		self.__signal_id_4 = self.__window.connect("key-press-event", self.__key_press_event_cb)
-		self.__signal_id_5 = manager.connect("importing", self.__importing_cb)
-		self.__signal_id_6 = manager.connect("import-error", self.__import_error_cb)
-		self.__signal_id_7 = manager.connect("sensitive", self.__sensitive_cb)
-		self.__signal_id_8 = self.__window.connect("drag-data-received", self.__drag_data_received_cb)
+		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = manager.connect("show-window", self.__show_cb)
+		self.__sigid3 = manager.connect("hide-window", self.__hide_cb)
+		self.__sigid4 = self.__window.connect("delete-event", self.__delete_event_cb)
+		self.__sigid5 = self.__window.connect("key-press-event", self.__key_press_event_cb)
+		self.__sigid6 = self.__window.connect("drag-data-received", self.__drag_data_received_cb)
+		self.__window.set_property("sensitive", True)
 
 	def __init_attributes(self, manager, editor):
 		"""
 		Initialize data attributes.
 
-		@param self: Reference to the TemplateWindow instance.
-		@type self: A TemplateWindow object.
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
 
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
@@ -73,26 +72,23 @@ class TemplateWindow(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__is_visible = False
-		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
-		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
-		self.__signal_id_7 = self.__signal_id_8 = None
-		self.__window = manager.glade.get_widget("TemplateEditorWindow")
+		self.__window = manager.glade.get_widget("Window")
 		return
 
 	def __set_properties(self):
 		"""
 		Set default properties.
 
-		@param self: Reference to the TemplateWindow instance.
-		@type self: A TemplateWindow object.
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
 		"""
-		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 1.6, 1.6)
-		self.__window.set_property("default-width", width)
-		self.__window.set_property("default-height", height)
-		from gtk import WIN_POS_CENTER, DEST_DEFAULT_ALL
-		self.__window.set_property("window-position", WIN_POS_CENTER)
-		self.__window.set_property("destroy-with-parent", True)
-		#self.__window.set_transient_for(self.__editor.window)
+#		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 1.6, 1.6)
+#		self.__window.set_property("default-width", width)
+#		self.__window.set_property("default-height", height)
+		from gtk import DEST_DEFAULT_ALL
+#		self.__window.set_property("window-position", WIN_POS_CENTER)
+#		self.__window.set_property("destroy-with-parent", True)
+		self.__window.set_transient_for(self.__editor.window)
 		targets = [("text/uri-list", 0, 111)]
 		from gtk.gdk import ACTION_COPY
 		self.__window.drag_dest_set(DEST_DEFAULT_ALL, targets, ACTION_COPY)
@@ -102,8 +98,8 @@ class TemplateWindow(object):
 		"""
 		Show window.
 
-		@param self: Reference to the TemplateWindow instance.
-		@type self: A TemplateWindow object.
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
 		"""
 		self.__window.show_all()
 		self.__is_visible = True
@@ -114,197 +110,64 @@ class TemplateWindow(object):
 		"""
 		Hide window.
 
-		@param self: Reference to the TemplateWindow instance.
-		@type self: A TemplateWindow object.
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
 		"""
 		self.__window.hide()
 		self.__is_visible = False
-		self.__manager.emit("hide")
-		return
-
-	def __import_template(self, xml_template_file):
-		"""
-		Import templates from an XML file.
-
-		@param self: Reference to the TemplateWindow instance.
-		@type self: An TemplateWindow object.
-		"""
-		try:
-			from Exceptions import FileNotFoundError, InvalidFileError
-			from Exceptions import ValidationError, DragDropError
-			from operator import is_, not_
-			self.__manager.emit("importing")
-			if is_(xml_template_file, None): raise FileNotFoundError
-			from ImportTemplate import import_template_from_file
-			templates = import_template_from_file(xml_template_file)
-			if not_(templates): raise NoDataError
-			language = templates[-1][-1]
-			self.__manager.emit("imported-language", language)
-		except FileNotFoundError:
-			from i18n import msg0013
-			self.__editor.error_dialog.show_message(msg0013, parent_window=self.__window)
-			self.__manager.emit("import-error")
-			raise DragDropError
-		except InvalidFileError:
-			from i18n import msg0014
-			self.__editor.error_dialog.show_message(msg0014, parent_window=self.__window)
-			self.__manager.emit("import-error")
-			raise DragDropError
-		except ValidationError:
-			from i18n import msg0014
-			self.__editor.error_dialog.show_message(msg0014, parent_window=self.__window)
-			self.__manager.emit("import-error")
-			raise DragDropError
-		except NoDataError:
-			from i18n import msg0015
-			self.__editor.error_dialog.show_message(msg0015, parent_window=self.__window)
-			self.__manager.emit("import-error")
-			raise DragDropError
 		return
 
 	def __destroy_cb(self, manager):
 		"""
 		Handles callback when the "destroy" signal is emitted.
 
-		@param self: Reference to the TemplateWindow instance.
-		@type self: A TemplateWindow object.
+		@param self: Reference to the Window instance.
+		@type self: A Window object.
 
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
 		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, manager)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__window)
-		self.__editor.disconnect_signal(self.__signal_id_4, self.__window)
-		self.__editor.disconnect_signal(self.__signal_id_5, manager)
-		self.__editor.disconnect_signal(self.__signal_id_6, manager)
-		self.__editor.disconnect_signal(self.__signal_id_7, manager)
-		self.__editor.disconnect_signal(self.__signal_id_8, self.__window)
+		self.__editor.disconnect_signal(self.__sigid1, manager)
+		self.__editor.disconnect_signal(self.__sigid2, manager)
+		self.__editor.disconnect_signal(self.__sigid3, manager)
+		self.__editor.disconnect_signal(self.__sigid4, self.__window)
+		self.__editor.disconnect_signal(self.__sigid5, self.__window)
+		self.__editor.disconnect_signal(self.__sigid6, self.__window)
 		self.__window.destroy()
 		self = None
 		del self
 		return
 
-	def __show_cb(self, manager):
+	def __show_cb(self, *args):
 		"""
-		Handles callback when the "show" signal is emitted.
-
-		@param self: Reference to the TemplateWindow instance.
-		@type self: A TemplateWindow object.
-
-		@param self: Reference to the TemplateManager instance.
-		@type self: A TemplateManager object.
+		Handles callback when the "show-window" signal is emitted.
 		"""
 		self.__show_window()
+		return
+
+	def __hide_cb(self, *args):
+		"""
+		Handles callback when the "hide-window" signal is emitted.
+		"""
+		self.__hide_window()
 		return
 
 	def __delete_event_cb(self, *args):
 		"""
 		Handles callback when the "delete-event" signal is emitted.
-
-		@param self: Reference to the TemplateWindow instance.
-		@type self: A TemplateWindow object.
 		"""
-		self.__hide_window()
+		self.__manager.emit("hide-window")
 		return True
 
 	def __key_press_event_cb(self, window, event):
 		"""
 		Handles callback when the "key-press-event" signal is emitted.
-
-		@param self: Reference to the TemplateEditorWindow instance.
-		@type self: A TemplateEditorWindow object.
-
-		@param window: The template editor's window.
-		@type window: A TemplateEditorWindow object.
-
-		@param event: An event that occurs when the close button is pressed.
-		@type event: A gtk.Event object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
 		"""
-		from operator import not_, ne
-		if not_(self.__is_visible): return False
+		if self.__is_visible is False: return False
 		from gtk import keysyms
-		if ne(event.keyval, keysyms.Escape): return False
-		self.__hide_window()
+		if event.keyval != keysyms.Escape: return False
+		self.__manager.emit("hide-window")
 		return True
 
-	def __importing_cb(self, manager):
-		"""
-		Handles callback when the "importing" signal is emitted.
-
-		@param self: Reference to the TemplateWindow instance.
-		@type self: A TemplateWindow object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-		"""
-		self.__editor.feedback.start_busy_cursor()
-		self.__window.set_property("sensitive", False)
-		return
-
-	def __import_error_cb(self, manager):
-		"""
-		Handles callback when the "import-error" signal is emitted.
-
-		@param self: Reference to the TemplateWindow instance.
-		@type self: A TemplateWindow object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-		"""
-		self.__editor.feedback.stop_busy_cursor()
-		self.__window.set_property("sensitive", True)
-		return
-
-	def __sensitive_cb(self, manager, sensitive):
-		self.__window.set_property("sensitive", sensitive)
-		return
-
-	def __drag_data_received_cb(self, window, context, x, y, selection_data, info, time):
-		"""
-		Handles callback when the "drag-data-received" signal is emitted.
-
-		@param self: Reference to the TemplateEditorWindow instance.
-		@type self: A TemplateEditorWindow object.
-
-		@param window: Reference to the TemplateEditorWindow.
-		@type window: A TemplateEditorWindow object.
-
-		@param context: An object containing data about a drag selection.
-		@type context: A gtk.DragContextData object.
-
-		@param x: The x-cordinate of the drop.
-		@type x: An Integer object.
-
-		@param y: The y-cordinate of the drop.
-		@type y: An Integer object.
-
-		@param selection_data: Data representing the drag selection.
-		@type selection_data: A gtk.SelectionData object.
-
-		@param info: A unique identification for the text editor.
-		@type info: An Integer object.
-
-		@param time: The time the drop operation occurred.
-		@type time: An Integer object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
-		from operator import ne, not_
-		if ne(info, 111): return True
-		self.__window.present()
-		uris = selection_data.get_uris()
-		from gnomevfs import get_local_path_from_uri
-		from Exceptions import DragDropError
-		for uri in uris:
-			try:
-				if not_(uri.startswith("file:///")): continue
-				local_path = get_local_path_from_uri(uri)
-				self.__import_template(local_path)
-			except DragDropError:
-				continue
-		return True
+	def __drag_data_received_cb(self, *args):
+		return False

@@ -27,62 +27,6 @@ Provide syntax highlighting for gtksourceview.Buffer objects.
 @contact: mystilleef@gmail.com
 """
 
-def get_style(style_elements, language, keyword):
-	"""
-	Get a style to be used for syntax highlighting.
-
-	@param style_elements: Attributes of a stye to be used for syntax highlighting.
-	@type style_elements: A Tuple object.
-
-	@return: A style to be used for syntax highlighting.
-	@rtype: A gtk.Style object.
-	"""
-	from gtksourceview import SourceTagStyle
-	style = SourceTagStyle()
-	fgcolor, bgcolor, bold, italic, underline  = style_elements
-	from gtk.gdk import color_parse
-	if fgcolor:
-		style.foreground = color_parse(fgcolor)
-	else:
-		style.foreground = language.get_tag_style(keyword).foreground
-	if bgcolor: style.background = color_parse(bgcolor)
-	if bold is None:
-		style.bold = language.get_tag_style(keyword).bold
-	else:
-		style.bold = bold
-	if italic is None:
-		style.italic = language.get_tag_style(keyword).italic
-	else:
-		style.italic = italic
-	if underline is None:
-		style.underline = language.get_tag_style(keyword).underline
-	else:
-		style.underline = underline
-	return style
-
-def set_language_style(language, syntax_properties):
-	"""
-	Use syntax highlight color found in GConf.
-
-	This function modifies the default language style set by gtksourceview.
-	Language style represent the style of highlighted keywords in source code
-	file. This function uses the style attributes found in the GConf database
-	instead.
-
-	@param language: An object representing the language for a source code.
-	@type language: A gtksourceview.SourceLanguage object.
-
-	@param syntax_properties: Entries found for a particular language in the GConf database.
-	@type syntax_properties: A gconf.Entry object.
-
-	@return: An object representing the language for a source code file.
-	@rtype: A gtksourceview.SourceLanguage object.
-	"""
-	for dictionary in syntax_properties:
-		style = get_style(dictionary.values()[0], language, dictionary.keys()[0])
-		language.set_tag_style(dictionary.keys()[0], style)
-	return language
-
 def activate_syntax_highlight(textbuffer, language=None):
 	"""
 	Highlight keywords in source code for various programming languages.

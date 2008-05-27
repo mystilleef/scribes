@@ -35,41 +35,31 @@ class MenuItem(object):
 	shows the template editor.
 	"""
 
-	def __init__(self, trigger, editor):
+	def __init__(self, editor):
 		"""
 		Initialize the object.
 
 		@param self: Reference to the MenuItem instance.
 		@type self: An MenuItem object.
 
-		@param trigger: Reference to the TemplateEditorTrigger instance.
-		@type trigger: An TemplateEditorTrigger object.
-
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__init_attributes(trigger, editor)
+		self.__init_attributes(editor)
 		self.__add_menuitem()
-		self.__signal_id_1 = self.__trigger.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = self.__menuitem.connect("activate", self.__activate_cb)
+		self.__sigid1 = self.__menuitem.connect("activate", self.__activate_cb)
 
-	def __init_attributes(self, trigger, editor):
+	def __init_attributes(self, editor):
 		"""
 		Initialize the object.
 
 		@param self: Reference to the MenuItem instance.
 		@type self: An MenuItem object.
 
-		@param trigger: Reference to the AutoReplaceTrigger instance.
-		@type trigger: An AutoReplaceTrigger object.
-
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		self.__trigger = trigger
 		self.__editor = editor
-		self.__signal_id_1 = None
-		self.__signal_id_2 = None
 		from gtk import STOCK_PROPERTIES
 		from i18n import msg0010
 		self.__menuitem = editor.create_menuitem(msg0010, STOCK_PROPERTIES)
@@ -88,18 +78,14 @@ class MenuItem(object):
 		self.__editor.preference_menu.show_all()
 		return
 
-	def __destroy_cb(self, trigger):
+	def destroy(self):
 		"""
-		Handles callback when the "destroy" signal is emitted.
+		Destroy instance of this class.
 
 		@param self: Reference to the MenuItem instance.
 		@type self: An MenuItem object.
-
-		@param trigger: Reference to the TemplateEditorTrigger instance.
-		@type trigger: An TemplateEditorTrigger object.
 		"""
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__menuitem)
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
+		self.__editor.disconnect_signal(self.__sigid1, self.__menuitem)
 		self.__editor.preference_menu.remove(self.__menuitem)
 		self.__menuitem.destroy()
 		del self

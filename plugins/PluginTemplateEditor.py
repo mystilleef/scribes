@@ -31,7 +31,7 @@ This module documents a class that loads the template editor plugin.
 name = "Template Editor Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = False
+autoload = True
 class_name = "TemplateEditorPlugin"
 short_description = "This plugin shows the template editor."
 long_description = """\
@@ -64,8 +64,8 @@ class TemplateEditorPlugin(object):
 		@param self: Reference to the TemplateEditorPlugin instance.
 		@type self: An TemplateEditorPlugin object.
 		"""
-		from TemplateEditor.Trigger import TemplateEditorTrigger
-		self.__trigger = TemplateEditorTrigger(self.__editor)
+		from TemplateEditor.Trigger import Trigger
+		self.__trigger = Trigger(self.__editor)
 		return
 
 	def unload(self):
@@ -75,5 +75,5 @@ class TemplateEditorPlugin(object):
 		@param self: Reference to the TemplateEditorPlugin instance.
 		@type self: An TemplateEditorPlugin object.
 		"""
-		self.__trigger.emit("destroy")
+		self.__trigger.destroy()
 		return

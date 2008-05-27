@@ -40,7 +40,7 @@ def open_cursor_database(flag="c"):
 	from info import metadata_folder
 	from os import path
 	if not path.exists(metadata_folder):
-	 	from os import makedirs
+		from os import makedirs
 		makedirs(metadata_folder)
 	database_file = metadata_folder + "cursor.gdb"
 	from shelve import open
@@ -102,5 +102,5 @@ def update_cursor_position_in_database(uri, data):
 	database = open_cursor_database("w")
 	database[str(uri)] = data
 	close_cursor_database(database)
-	return
+	return False
 

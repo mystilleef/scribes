@@ -212,6 +212,7 @@ class Highlighter(object):
 		self.__editor.textbuffer.get_tag_table().add(tag)
 		from LexicalScopeHighlightMetadata import get_value
 		tag.set_property("background", get_value())
+		tag.set_property("foreground", "white")
 		return tag
 
 	def __destroy(self):

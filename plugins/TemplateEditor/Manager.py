@@ -32,7 +32,7 @@ editor.
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_STRING
 from gobject import TYPE_BOOLEAN, TYPE_PYOBJECT
 
-class TemplateManager(GObject):
+class Manager(GObject):
 	"""
 	This class creates an object that manages key components of the
 	template editor.
@@ -40,21 +40,11 @@ class TemplateManager(GObject):
 
 	__gsignals__ = {
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"show": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"hide": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"language-selected": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"trigger-selected": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"description-treeview-sensitivity": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
-		"sensitive": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
-		"template-selected": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"importing": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"import-error": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"remove-template": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"export-template": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"imported-language": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
-	def __init__(self, trigger, editor):
+	def __init__(self, editor):
 		"""
 		Initialize object.
 
@@ -69,30 +59,29 @@ class TemplateManager(GObject):
 		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		scroll = self.__glade.get_widget("PreviewScrolledWindow")
-		from AddButton import AddButton
-		AddButton(self, editor)
-		from EditButton import EditButton
-		EditButton(self, editor)
-		from ExportButton import ExportButton
-		ExportButton(self, editor)
-		from RemoveButton import RemoveButton
-		RemoveButton(self, editor)
-		from Preview import Preview
-		scroll.add(Preview(self, editor))
-		from DescriptionTreeView import DescriptionTreeView
-		DescriptionTreeView(self, editor)
-		from LanguageTreeView import TemplateLanguageTreeView
-		TemplateLanguageTreeView(self, editor)
-		from Window import TemplateWindow
-		TemplateWindow(self, editor)
-		from LinkButton import LinkButton
-		LinkButton(self, editor)
-		from HelpButton import HelpButton
-		HelpButton(self, editor)
-		from ImportButton import ImportButton
-		ImportButton(self, editor)
-		self.__signal_id_1 = trigger.connect("destroy", self.__destroy_cb)
+#		scroll = self.__glade.get_widget("PreviewScrolledWindow")
+#		from AddButton import AddButton
+#		AddButton(self, editor)
+#		from EditButton import EditButton
+#		EditButton(self, editor)
+#		from ExportButton import ExportButton
+#		ExportButton(self, editor)
+#		from RemoveButton import RemoveButton
+#		RemoveButton(self, editor)
+#		from Preview import Preview
+#		scroll.add(Preview(self, editor))
+#		from DescriptionTreeView import DescriptionTreeView
+#		DescriptionTreeView(self, editor)
+#		from LanguageTreeView import TemplateLanguageTreeView
+#		TemplateLanguageTreeView(self, editor)
+		from Window import Window
+		Window(self, editor)
+#		from LinkButton import LinkButton
+#		LinkButton(self, editor)
+#		from HelpButton import HelpButton
+#		HelpButton(self, editor)
+#		from ImportButton import ImportButton
+#		ImportButton(self, editor)
 
 	def __init_attributes(self, editor):
 		"""
@@ -104,13 +93,12 @@ class TemplateManager(GObject):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		from os.path import join, split
-		current_folder = split(globals()["__file__"])[0]
-		glade_file = join(current_folder, "Template.glade")
+		from os.path import join
+		current_folder = editor.get_current_folder(globals())
+		glade_file = join(current_folder, "TemplateEditor.glade")
 		self.__editor = editor
 		from gtk.glade import XML
-		self.__glade = XML(glade_file, "TemplateEditorWindow", "scribes")
-		self.__signal_id_1 = None
+		self.__glade = XML(glade_file, "Window", "scribes")
 		return
 
 	def __get_glade(self):
@@ -125,21 +113,21 @@ class TemplateManager(GObject):
 		@param self: Reference to the TemplateManager instance.
 		@type self: A TemplateManager object.
 		"""
-		self.emit("show")
+		self.emit("show-window")
 		return
 
-	def __destroy_cb(self, trigger):
+	def destroy(self):
+		self.__destroy()
+		return
+
+	def __destroy(self):
 		"""
-		Handles callback when the "destroy" signal is emitted.
+		Destroy instance of this object.
 
-		@param self: Reference to the TemplateManager instance.
-		@type self: A TemplateManager object.
-
-		@param trigger: A trigger to show the template editor.
-		@type trigger: A Trigger object.
+		@param self: Reference to the Manager instance.
+		@type self: A Manager object.
 		"""
 		self.emit("destroy")
-		self.__editor.disconnect_signal(self.__signal_id_1, trigger)
 		del self
 		self = None
 		return
