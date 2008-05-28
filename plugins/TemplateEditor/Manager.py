@@ -42,6 +42,7 @@ class Manager(GObject):
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"language-selected": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -74,6 +75,8 @@ class Manager(GObject):
 #		DescriptionTreeView(self, editor)
 #		from LanguageTreeView import TemplateLanguageTreeView
 #		TemplateLanguageTreeView(self, editor)
+		from LanguageTreeView import TreeView
+		TreeView(self, editor)
 		from Window import Window
 		Window(self, editor)
 #		from LinkButton import LinkButton
