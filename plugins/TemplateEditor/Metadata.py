@@ -86,3 +86,37 @@ def remove_template_from_database(key):
 	del database[str(key)]
 	close_template_database(database)
 	return
+
+def get_value(key):
+	try:
+		database = open_template_database("r")
+		data = database[key]
+	except KeyError:
+		data = None
+	finally:
+		database.close()
+	return data
+
+def get_template_data(language):
+	"""
+	Get all template information from a database for a particular language.
+
+	@param language: Language id
+	@type language: A String object.
+
+	@return: A tuple representing template data for a specific language.
+	@rtype: A Tuple object.
+	"""
+	try:
+		database = open_template_database("r")
+		data = []
+		for key, value in database.iteritems():
+			if key.startswith(language.title()) is False: continue
+			trigger = key[len(language):]
+			description = value[0]
+			template = value[1]
+			data_ = (trigger, description, template, key, language)
+			data.append(data_)
+	finally:
+		database.close()
+	return tuple(data)

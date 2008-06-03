@@ -250,7 +250,8 @@ class TreeView(object):
 		return
 
 	def __show_window_cb(self, *args):
-		self.__treeview.grab_focus()
+		self.__select_language()
+		self.__manager.emit("select-description-view")
 		return False
 
 	def __generic_cb(self, *args):

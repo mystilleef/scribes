@@ -88,7 +88,7 @@ class Window(object):
 		from gtk import DEST_DEFAULT_ALL
 #		self.__window.set_property("window-position", WIN_POS_CENTER)
 #		self.__window.set_property("destroy-with-parent", True)
-		self.__window.set_transient_for(self.__editor.window)
+#		self.__window.set_transient_for(self.__editor.window)
 		targets = [("text/uri-list", 0, 111)]
 		from gtk.gdk import ACTION_COPY
 		self.__window.drag_dest_set(DEST_DEFAULT_ALL, targets, ACTION_COPY)

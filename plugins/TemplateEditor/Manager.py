@@ -43,6 +43,9 @@ class Manager(GObject):
 		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"language-selected": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"template-selected": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"description-view-sensitivity": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"select-description-view": (SIGNAL_RUN_LAST, TYPE_NONE, ())
 	}
 
 	def __init__(self, editor):
@@ -69,10 +72,10 @@ class Manager(GObject):
 #		ExportButton(self, editor)
 #		from RemoveButton import RemoveButton
 #		RemoveButton(self, editor)
-#		from Preview import Preview
-#		scroll.add(Preview(self, editor))
-#		from DescriptionTreeView import DescriptionTreeView
-#		DescriptionTreeView(self, editor)
+		from Preview import Preview
+		Preview(self, editor)
+		from DescriptionTreeView import TreeView
+		TreeView(self, editor)
 #		from LanguageTreeView import TemplateLanguageTreeView
 #		TemplateLanguageTreeView(self, editor)
 		from LanguageTreeView import TreeView

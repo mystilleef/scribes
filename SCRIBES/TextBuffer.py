@@ -88,10 +88,6 @@ class ScribesTextBuffer(Buffer):
 		theme_database_path = join(preference_folder, "ColorTheme.gdb")
 		from gnomevfs import get_uri_from_local_path
 		self.__theme_database_uri = get_uri_from_local_path(theme_database_path)
-		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
-		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
-		self.__signal_id_7 = self.__signal_id_8 = self.__signal_id_9 = None
-		self.__signal_id_10 = None
 		return
 
 	def __set_properties(self):
