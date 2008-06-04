@@ -123,10 +123,10 @@ class Preview(View):
 		scheme = self.__buffer.get_style_scheme()
 		self.__buffer.set_style_scheme(scheme)
 		language = self.__editor.language_manager.get_language(language_id)
-		if not language: return
+		if not language: return False
 		self.__buffer.set_language(language)
 		self.__buffer.set_highlight_syntax(True)
-		return
+		return False
 
 	def __destroy_cb(self, manager):
 		"""
@@ -189,7 +189,13 @@ class Preview(View):
 		@param data: A tuple represent a template trigger and its language category.
 		@type data: A tuple object.
 		"""
-		self.__set_text(data)
+		try:
+			from gobject import idle_add, source_remove
+			source_remove(self.__id2)
+		except AttributeError:
+			pass
+		finally:
+			self.__id2 = idle_add(self.__set_text, data, priority=3333)
 		return
 
 	def __language_selected_cb(self, manager, language):
@@ -205,5 +211,11 @@ class Preview(View):
 		@param language: A language.
 		@type language: A String object.
 		"""
-		self.__activate_syntax_highlight(language)
+		try:
+			from gobject import idle_add, source_remove
+			source_remove(self.__id1)
+		except AttributeError:
+			pass
+		finally:
+			self.__id1 = idle_add(self.__activate_syntax_highlight, language, priority=5555)
 		return

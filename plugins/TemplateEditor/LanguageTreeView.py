@@ -198,6 +198,7 @@ class TreeView(object):
 				else:
 					break
 		self.__treeview.grab_focus()
+		self.__manager.emit("language-selected", language_id)
 		return
 
 	def __get_language(self):
