@@ -4,9 +4,6 @@ class Monitor(object):
 	"""
 
 	def __init__(self, editor, manager):
-		"""
-		Initialize object
-		"""
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = editor.connect("cursor-moved", self.__cursor_moved_cb)
@@ -27,7 +24,6 @@ class Monitor(object):
 		self.__language_triggers = deque([])
 		self.__general_triggers = deque([])
 		self.__view = editor.textview
-		self.__sigid1 = self.__sigid2 = self.__sigid3 = None
 		return
 
 	def __precompile_methods(self):
@@ -86,7 +82,7 @@ class Monitor(object):
 		try:
 			language = self.__editor.language.get_id()
 			get_trigger = lambda key: key[len(language):]
-			keys = map(get_trigger, dictionary.keys())
+			keys = [get_trigger(key) for key in dictionary.keys()]
 			from collections import deque
 			self.__language_triggers = deque(keys)
 		except AttributeError:
@@ -95,7 +91,7 @@ class Monitor(object):
 
 	def __loaded_general_templates_cb(self, manager, dictionary):
 		get_trigger = lambda key: key[len("General"):]
-		keys = map(get_trigger, dictionary.keys())
+		keys = [get_trigger(key) for key in dictionary.keys()]
 		from collections import deque
 		self.__general_triggers = deque(keys)
 		return

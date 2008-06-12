@@ -29,7 +29,7 @@ button on the template editor.
 @contact: mystilleef@gmail.com
 """
 
-class AddButton(object):
+class Button(object):
 	"""
 	This class defines the behavior of the edit button.
 	"""
@@ -48,9 +48,9 @@ class AddButton(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(manager, editor)
-		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = manager.connect("language-selected", self.__language_selected_cb)
-		self.__signal_id_3 = self.__button.connect("clicked", self.__clicked_cb)
+		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = self.__button.connect("clicked", self.__clicked_cb)
+		self.__button.set_property("sensitive", True)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -67,10 +67,7 @@ class AddButton(object):
 		"""
 		self.__manager = manager
 		self.__editor = editor
-		self.__language = None
-		self.__dialog = None
 		self.__button = manager.glade.get_widget("AddButton")
-		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		return
 
 	def __destroy_cb(self, manager):
@@ -83,28 +80,11 @@ class AddButton(object):
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
 		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, manager)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__button)
+		self.__editor.disconnect_signal(self.__sigid1, manager)
+		self.__editor.disconnect_signal(self.__sigid2, self.__button)
 		self.__button.destroy()
 		self = None
 		del self
-		return
-
-	def __language_selected_cb(self, manager, language):
-		"""
-		Handles callback when the "language-selected" signal is emitted.
-
-		@param self: Reference to the AddButton instance.
-		@type self: An AddButton object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param data: Selection information.
-		@type data: A Tuple object.
-		"""
-		self.__language = language
 		return
 
 	def __clicked_cb(self, button):
@@ -120,10 +100,5 @@ class AddButton(object):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		try:
-			self.__dialog.show()
-		except AttributeError:
-			from AddDialog import AddDialog
-			self.__dialog = AddDialog(self.__manager, self.__editor, self.__language)
-			self.__dialog.show()
+		self.__manager.emit("show-add-dialog")
 		return True

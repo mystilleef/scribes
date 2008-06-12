@@ -187,7 +187,7 @@ def get_author_name():
 
 def get_template_word(iterator, buffer_):
 	if iterator.starts_line(): return None
-	chars = (" ", "\t", "(", "{", "<", "[", "=", ")", "}", ">", "]",)
+	chars = (" ", "\t", "(", "{", "<", "[", "=", ")", "}", ">", "]", "|")
 	begin = iterator.copy()
 	while True:
 		if begin.starts_line(): return buffer_.get_text(begin, iterator)

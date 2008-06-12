@@ -42,30 +42,45 @@ class Manager(GObject):
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"process": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"language-selected": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"template-selected": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"description-view-sensitivity": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"select-description-view": (SIGNAL_RUN_LAST, TYPE_NONE, ())
+		"select-description-view": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"show-add-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"show-edit-dialog": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"dialog-hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"valid-trigger": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"trigger-selected": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"description-selected": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"temp-selected": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"process-1": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"process-2": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"database-updated": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"remove-templates": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the TemplateManager instance.
-		@type self: A TemplateManager object.
-
-		@param trigger: An object that shows the template editor.
-		@type trigger: A Trigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-#		scroll = self.__glade.get_widget("PreviewScrolledWindow")
-#		from AddButton import AddButton
-#		AddButton(self, editor)
+		from DatabaseMonitor import Monitor
+		Monitor(self, editor)
+		from Editor import Editor
+		Editor(self, editor)
+		from DialogCancelButton import Button
+		Button(self, editor)
+		from DialogSaveButton import Button
+		Button(self, editor)
+		from DialogDescriptionEntry import Entry
+		Entry(self, editor)
+		from DialogNameEntry import Entry
+		Entry(self, editor)
+		from DialogWindow import Window
+		Window(self, editor)
+		from AddButton import Button
+		Button(self, editor)
+		from RemoveButton import Button
+		Button(self, editor)
 #		from EditButton import EditButton
 #		EditButton(self, editor)
 #		from ExportButton import ExportButton
@@ -90,35 +105,26 @@ class Manager(GObject):
 #		ImportButton(self, editor)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the TemplateManager instance.
-		@type self: A TemplateManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		from os.path import join
 		current_folder = editor.get_current_folder(globals())
 		glade_file = join(current_folder, "TemplateEditor.glade")
+		dialog_file = join(current_folder, "DialogEditor.glade")
 		self.__editor = editor
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, "Window", "scribes")
+		self.__dglade = XML(dialog_file, "Window", "scribes")
 		return
 
 	def __get_glade(self):
 		return self.__glade
 
+	def __get_dglade(self):
+		return self.__dglade
+
 	glade = property(__get_glade)
+	dglade = property(__get_dglade)
 
 	def show(self):
-		"""
-		Show the template editor.
-
-		@param self: Reference to the TemplateManager instance.
-		@type self: A TemplateManager object.
-		"""
 		self.emit("show-window")
 		return
 
@@ -127,12 +133,6 @@ class Manager(GObject):
 		return
 
 	def __destroy(self):
-		"""
-		Destroy instance of this object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		self.emit("destroy")
 		del self
 		self = None

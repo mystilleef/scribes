@@ -92,9 +92,10 @@ class Loader(object):
 		from Metadata import open_template_database, close_template_database
 		database = open_template_database()
 		general = {}
-		for elements in database.keys():
-			if elements.startswith("General"):
-				general[elements] = database[elements][1]
+		for element in database.keys():
+			if not element.startswith("General|"): continue
+			nelement = "General" + element[len("General|"):]
+			general[nelement] = database[element][1]
 		self.__manager.emit("loaded-general-templates", general)
 		close_template_database(database)
 		return
@@ -111,13 +112,14 @@ class Loader(object):
 		language = self.__editor.language
 		if not language: return
 		language_id = language.get_id()
+		string = language_id + "|"
 		from Metadata import open_template_database, close_template_database
 		database = open_template_database()
 		language = {}
-		for elements in database.keys():
-			if elements.lower().startswith(language_id):
-				element = language_id + elements[len(language_id):]
-				language[element] = database[elements][1]
+		for element in database.keys():
+			if not element.startswith(string): continue
+			nelement = language_id + element[len(string):]
+			language[nelement] = database[element][1]
 		self.__manager.emit("loaded-language-templates", language)
 		close_template_database(database)
 		return

@@ -115,15 +115,6 @@ class Inserter(object):
 		return
 
 	def __get_template(self):
-		"""
-		Get template associated with word, if possible.
-
-		@param self: Reference to the TemplateMonitor instance.
-		@type self: A TemplateMonitor object.
-
-		@param word: A possible template trigger.
-		@type word: A String object.
-		"""
 		if self.__trigger is None: return None
 		general = "General" + self.__trigger
 		language = None
@@ -135,34 +126,11 @@ class Inserter(object):
 		return None
 
 	def __loaded_general_templates_cb(self, manager, dictionary):
-		"""
-		Handles callback when the "loaded-general-templates" signal is
-		emitted.
-
-		@param self: Reference to the TemplateMonitor instance.
-		@type self: A TemplateMonitor object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param dictionary: A dictionary containing general templates.
-		@type dictionary: A Dict object.
-		"""
 		self.__general_dictionary.clear()
 		self.__general_dictionary.update(dictionary)
 		return
 
 	def __loaded_language_templates_cb(self, manager, dictionary):
-		"""
-		Handles callback when the "loaded-language-templates" signal is
-		emitted.
-
-		@param self: Reference to the TemplateManager instance.
-		@type self: A TemplateManager object.
-
-		@param dictionary: A dictionary containing language templates.
-		@type dictionary: A Dictionary object.
-		"""
 		self.__language_dictionary.clear()
 		self.__language_dictionary.update(dictionary)
 		return

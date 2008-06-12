@@ -30,7 +30,6 @@ word completion.
 """
 from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop(set_as_default=True)
-INTERVAL = -1
 RECURSIONLIMITMULTIPLIER = 1000
 indexer_dbus_service = "org.sourceforge.ScribesIndexer"
 indexer_dbus_path = "/org/sourceforge/ScribesIndexer"
@@ -249,8 +248,7 @@ def __set_vm_properties():
 		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 	except ImportError:
 		pass
-	global INTERVAL, RECURSIONLIMITMULTIPLIER
-	setcheckinterval(INTERVAL)
+	global RECURSIONLIMITMULTIPLIER
 	setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
 	return
 

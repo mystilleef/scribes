@@ -89,6 +89,7 @@ def remove_template_from_database(key):
 
 def get_value(key):
 	try:
+		data = None
 		database = open_template_database("r")
 		data = database[key]
 	except KeyError:
@@ -96,6 +97,22 @@ def get_value(key):
 	finally:
 		database.close()
 	return data
+
+def remove_value(key):
+	try:
+		database = open_template_database("w")
+		del database[key]
+	finally:
+		database.close()
+	return
+
+def set_value(key, data):
+	try:
+		database = open_template_database("w")
+		database[key] = data
+	finally:
+		database.close()
+	return
 
 def get_template_data(language):
 	"""
@@ -111,7 +128,7 @@ def get_template_data(language):
 		database = open_template_database("r")
 		data = []
 		for key, value in database.iteritems():
-			if key.startswith(language.title()) is False: continue
+			if key.startswith(language) is False: continue
 			trigger = key[len(language):]
 			description = value[0]
 			template = value[1]

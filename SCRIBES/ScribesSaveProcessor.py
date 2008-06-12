@@ -29,7 +29,6 @@
 
 from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop(set_as_default=True)
-INTERVAL = -1
 RECURSIONLIMITMULTIPLIER = 1000000
 dbus_service = "org.sourceforge.ScribesSaveProcessor"
 dbus_path = "/org/sourceforge/ScribesSaveProcessor"
@@ -125,8 +124,7 @@ class SaveProcessor(object):
 		"""
 		from info import dbus_iface
 		services = dbus_iface.ListNames()
-		from operator import contains, not_
-		if not_(contains(services, dbus_service)): return
+		if not (dbus_service in services): return
 		from os import _exit
 		_exit(0)
 		return
@@ -142,8 +140,7 @@ def __set_vm_properties():
 		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 	except ImportError:
 		pass
-	global INTERVAL, RECURSIONLIMITMULTIPLIER
-	setcheckinterval(INTERVAL)
+	global RECURSIONLIMITMULTIPLIER
 	setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
 	return
 

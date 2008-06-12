@@ -34,15 +34,6 @@ class Navigator(object):
 	"""
 
 	def __init__(self, editor, manager):
-		"""
-		Initialize object. attributes.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param manager: Reference to the template manager.
-		@type manager: A Manager object.
-		"""
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("previous-placeholder", self.__previous_placeholder_cb)
@@ -54,15 +45,6 @@ class Navigator(object):
 		idle_add(self.__precompile_method, priority=9999)
 
 	def __init_attributes(self, editor, manager):
-		"""
-		Initialize data attributes.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param manager: Reference to the template manager.
-		@type manager: A Manager object.
-		"""
 		self.__editor = editor
 		self.__manager = manager
 		self.__placeholder_dictionary = {}
@@ -70,12 +52,6 @@ class Navigator(object):
 		return
 
 	def __destroy(self):
-		"""
-		Destroy instance of this class.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		"""
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
@@ -87,12 +63,6 @@ class Navigator(object):
 		return
 
 	def __precompile_method(self):
-		"""
-		Optimize selected methods using psyco.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		"""
 		methods = (self.__select_placeholder, self.__next_placeholder,
 			self.__next_placeholder_cb, self.__previous_placeholder_cb,
 			self.__previous_placeholder, self.__placeholders_cb,
@@ -107,15 +77,6 @@ class Navigator(object):
 		return False
 
 	def __select_placeholder(self, placeholder, end=False):
-		"""
-		Select placeholder.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-
-		@param end: True if placeholder is the last placeholder
-		@type end: A Boolean object.
-		"""
 		if end and (len(placeholder) > 2):
 			key = len(self.__boundaries_dictionary)
 			emark = self.__boundaries_dictionary[key][1]
@@ -133,12 +94,6 @@ class Navigator(object):
 		return
 
 	def __next_placeholder(self):
-		"""
-		Select next placeholder.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		"""
 		placeholders = self.__get_current_placeholders()
 		placeholder = placeholders.popleft()
 		if len(placeholder) > 2: self.__update_mirrors(self.__get_text((placeholder[0], placeholder[1])), placeholder[2:])
@@ -153,12 +108,6 @@ class Navigator(object):
 		return
 
 	def __previous_placeholder(self):
-		"""
-		Select previous placeholder.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		"""
 		placeholders = self.__get_current_placeholders()
 		placeholder = placeholders.pop()
 		placeholders.appendleft(placeholder)
@@ -170,18 +119,6 @@ class Navigator(object):
 		return
 
 	def __update_mirrors(self, text, placeholders):
-		"""
-		Update placeholder mirrors.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-
-		@param text: Text to insert into placeholder
-		@type text: A String. object.
-
-		@param placeholders: Position of placeholders in the editing area.
-		@type placeholders: A Tuple/List object.
-		"""
 		if not placeholders: return
 		if len(placeholders) < 2: return
 		self.__replace_text(text, placeholders[0], placeholders[1])
@@ -189,9 +126,6 @@ class Navigator(object):
 		return
 
 	def __replace_text(self, text, bmark, emark):
-		"""
-		Replace text in editing area.
-		"""
 		begin = self.__editor.textbuffer.get_iter_at_mark(bmark)
 		end = self.__editor.textbuffer.get_iter_at_mark(emark)
 		self.__editor.textbuffer.place_cursor(begin)
@@ -200,46 +134,16 @@ class Navigator(object):
 		return
 
 	def __get_current_placeholders(self):
-		"""
-		Get current placeholders.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-
-		@return: Return placeholders
-		@rtype: A Tuple/List object.
-		"""
 		key = len(self.__placeholder_dictionary)
 		placeholders = self.__placeholder_dictionary[key]
 		return placeholders
 
 	def __get_cursor_placeholder(self, placeholders):
-		"""
-		Get the cursor placeholder.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-
-		@param placeholders: Position of the placeholders in the editing area.
-		@type placeholders: A Tuple/List object.
-		"""
 		for placeholder in placeholders:
 			if len(placeholder) == 1: return placeholder
 		return None
 
 	def __rearrange_placeholders(self, placeholders):
-		"""
-		Rearrange placeholders.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-
-		@param placeholders: Position of placeholders in the editing area.
-		@type placeholders: A List/Tuple object.
-
-		@return: Rearranged placeholders.
-		@rtype: A List/Tuple object.
-		"""
 		dictionary = self.__generate_navigation_dictionary(placeholders)
 		placeholders = self.__extract_placeholders(dictionary)
 		self.__manager.emit("last-placeholder", placeholders[-1])
@@ -248,15 +152,6 @@ class Navigator(object):
 		return deque(placeholders)
 
 	def __extract_placeholders(self, dictionary):
-		"""
-		Extract placeholders for dictionary.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-
-		@param dictionary: Dictionary of placeholders.
-		@type dictionary: A Dictionary object.
-		"""
 		values = dictionary.values()
 		values.sort()
 		extract_placeholders = lambda x: tuple(x[1])
@@ -264,15 +159,6 @@ class Navigator(object):
 		return placeholders
 
 	def __generate_navigation_dictionary(self, placeholders):
-		"""
-		Generate navigation dictionary.
-		
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		
-		@param placeholders: Position of placeholders in the editing area.
-		@type placeholders: A Tuple/List object.
-		"""	
 		dictionary = {}
 		count = 0
 		for placeholder in placeholders:
@@ -281,15 +167,6 @@ class Navigator(object):
 		return dictionary
 
 	def __update_navigation_dictionary(self, placeholder, dictionary, count):
-		"""
-		Update the navigation dictionary.
-		
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		
-		@param placeholder: Position of the placeholder in editing area.
-		@type placeholder: A Tuple/List object.
-		"""
 		text = self.__get_text(placeholder)
 		if text == "cursor": count = 9999
 		if dictionary.has_key(text):
@@ -303,41 +180,17 @@ class Navigator(object):
 		return dictionary
 
 	def __get_text(self, placeholder):
-		"""
-		Get text within placeholder.
-		
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		
-		@param placeholder: The position of placeholder in the editing area.
-		@type placeholder: A Tuple/List object.
-		"""
 		if len(placeholder) < 2: return "cursor"
 		begin = self.__editor.textbuffer.get_iter_at_mark(placeholder[0])
 		end = self.__editor.textbuffer.get_iter_at_mark(placeholder[1])
 		return self.__editor.textbuffer.get_text(begin, end)
 
 	def __update_boundaries_dictionary(self, boundaries):
-		"""
-		Update the boundaries dictionary.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		"""
 		key = len(self.__boundaries_dictionary) + 1
 		self.__boundaries_dictionary[key] = boundaries
 		return False
 
 	def __update_placeholders_dictionary(self, placeholders):
-		"""
-		Update the placeholders dictionary.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-
-		@param placeholders: Positon of placeholders in the editing area.
-		@type placeholders: A List/Deque object.
-		"""
 		placeholders = self.__rearrange_placeholders(placeholders)
 		key = len(self.__placeholder_dictionary) + 1
 		self.__placeholder_dictionary[key] = placeholders
@@ -345,12 +198,6 @@ class Navigator(object):
 		return False
 
 	def __remove_recent_placeholders(self):
-		"""
-		Remove most recent placeholder boundary.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		"""
 		key = len(self.__placeholder_dictionary)
 		values = self.__placeholder_dictionary[key]
 		values.remove(None)
@@ -362,12 +209,6 @@ class Navigator(object):
 		return False
 
 	def __remove_recent_boundaries(self):
-		"""
-		Remove most recent boundaries.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		"""
 		key = len(self.__boundaries_dictionary)
 		marks = self.__boundaries_dictionary[key]
 		del self.__boundaries_dictionary[key]
@@ -380,73 +221,28 @@ class Navigator(object):
 ################################################################################
 
 	def __destroy_cb(self, *args):
-		"""
-		Handles callback when destroy signal is called.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		"""
 		self.__destroy()
 		return False
 
 	def __previous_placeholder_cb(self, *args):
-		"""
-		Handles callback for previous placeholder to be selected.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		"""
 		self.__previous_placeholder()
 		self.__editor.refresh()
 		return
 
 	def __next_placeholder_cb(self, *args):
-		"""
-		Handles callback for next placeholder to be selected.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		"""
 		self.__editor.refresh()
 		self.__next_placeholder()
 		return
 
 	def __template_boundaries_cb(self, manager, boundaries):
-		"""
-		Handles callback when template boundaries are found.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-
-		@param manager: Reference to the template manager.
-		@type manager: A Manager object.
-		"""
 		self.__update_boundaries_dictionary(boundaries)
 		return
 
 	def __placeholders_cb(self, manager, placeholders):
-		"""
-		Handles callback when placeholders are found.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-
-		@param manager: Reference to the template manager.
-		@type manager: A Manager object.
-
-		@param placeholders: Position of placeholders in the editing area.
-		@type placeholders: A List/Deque object.
-		"""
 		self.__update_placeholders_dictionary(placeholders)
 		return
 
 	def __deactivate_template_mode_cb(self, *args):
-		"""
-		Handles callback when template mode is deactivated.
-
-		@param self: Reference to the Navigator instance.
-		@type self: A Navigator object.
-		"""
 		self.__remove_recent_placeholders()
 		self.__remove_recent_boundaries()
 		self.__editor.refresh()

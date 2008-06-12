@@ -37,18 +37,6 @@ class Preview(View):
 	"""
 
 	def __init__(self, manager, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the Preview instance.
-		@type self: A Preview object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		View.__init__(self, Buffer())
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
@@ -58,30 +46,12 @@ class Preview(View):
 		self.__sigid4 = manager.connect("language-selected", self.__language_selected_cb)
 
 	def __init_attributes(self, manager, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the Preview instance.
-		@type self: A Preview object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__manager = manager
 		self.__editor = editor
 		self.__buffer = self.get_property("buffer")
 		return
 
 	def __set_properties(self):
-		"""
-		Set default properties.
-
-		@param self: Reference to the Preview instance.
-		@type self: A Preview object.
-		"""
 		scroll = self.__manager.glade.get_widget("ScrollWin")
 		scroll.add(self)
 		self.set_property("auto-indent", False)
@@ -110,18 +80,7 @@ class Preview(View):
 		return
 
 	def __activate_syntax_highlight(self, language_id):
-		"""
-		Toggle syntax highlight on for a particular language.
-
-		@param self: Reference to the TemplateEditorTextView instance.
-		@type self: A TemplateEditorTextView object.
-
-		@param language_id: An identification for a particular language.
-		@type language_id: A String object.
-		"""
 		self.__buffer.set_highlight_syntax(False)
-		scheme = self.__buffer.get_style_scheme()
-		self.__buffer.set_style_scheme(scheme)
 		language = self.__editor.language_manager.get_language(language_id)
 		if not language: return False
 		self.__buffer.set_language(language)
@@ -129,15 +88,6 @@ class Preview(View):
 		return False
 
 	def __destroy_cb(self, manager):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the Preview instance.
-		@type self: A Preview object.
-
-		@param manager: Reference to the TemplateManager
-		@type manager: A TemplateManager object.
-		"""
 		self.__editor.disconnect_signal(self.__sigid1, manager)
 		self.__editor.disconnect_signal(self.__sigid2, manager)
 		self.__editor.disconnect_signal(self.__sigid3, manager)
@@ -148,18 +98,6 @@ class Preview(View):
 		return
 
 	def __sensitivity_cb(self, manager, sensitive):
-		"""
-		Handles callback when the "description-treeview-sensitivity" is emitted.
-
-		@param self: Reference to the Preview instance.
-		@type self: A Preview object.
-
-		@param manager: Reference to the TemplateManager
-		@type manager: A TemplateManager object.
-
-		@param sensitive: Whether or not the description treeview is sensitive.
-		@type sensitive: A Boolean object.
-		"""
 		if sensitive:
 			self.set_property("sensitive", sensitive)
 		else:
@@ -174,21 +112,10 @@ class Preview(View):
 		template = get_value(key)[1]
 		self.__buffer.set_text(template)
 		self.set_property("sensitive", True)
+		self.__manager.emit("temp-selected", template)
 		return False
 
 	def __template_selected_cb(self, manager, data):
-		"""
-		Handles callback when the "template-selected" signal is emitted.
-
-		@param self: Reference to the Preview instance.
-		@type self: A Preview object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param data: A tuple represent a template trigger and its language category.
-		@type data: A tuple object.
-		"""
 		try:
 			from gobject import idle_add, source_remove
 			source_remove(self.__id2)
@@ -199,18 +126,6 @@ class Preview(View):
 		return
 
 	def __language_selected_cb(self, manager, language):
-		"""
-		Handles callback when the "language-selected" signal is emitted.
-
-		@param self: Reference to the Preview instance.
-		@type self: A Preview object.
-
-		@param manager: Reference to the TemplateManager
-		@type manager: A TemplateManager object.
-
-		@param language: A language.
-		@type language: A String object.
-		"""
 		try:
 			from gobject import idle_add, source_remove
 			source_remove(self.__id1)

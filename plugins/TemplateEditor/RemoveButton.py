@@ -29,28 +29,16 @@ button in the template editor.
 @contact: mystilleef@gmail.com
 """
 
-class RemoveButton(object):
+class Button(object):
 	"""
 	This class defines the behavior of the remove button.
 	"""
 
 	def __init__(self, manager, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the RemoveButton instance.
-		@type self: A RemoveButton object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(manager, editor)
-		self.__signal_id_1 = manager.connect("description-treeview-sensitivity", self.__sensitivity_cb)
-		self.__signal_id_2 = manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_3 = self.__button.connect("clicked", self.__clicked_cb)
+		self.__sigid1 = manager.connect("description-view-sensitivity", self.__sensitivity_cb)
+		self.__sigid2 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid3 = self.__button.connect("clicked", self.__clicked_cb)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -68,7 +56,6 @@ class RemoveButton(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__button = manager.glade.get_widget("RemoveButton")
-		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		return
 
 	def __sensitivity_cb(self, manager, sensitive):
@@ -97,9 +84,9 @@ class RemoveButton(object):
 		@param manager: Reference to the TemplateManager instance.
 		@type manager: A TemplateManager object.
 		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, manager)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__button)
+		self.__editor.disconnect_signal(self.__sigid1, manager)
+		self.__editor.disconnect_signal(self.__sigid2, manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__button)
 		self.__button.destroy()
 		del self
 		self = None
@@ -118,5 +105,6 @@ class RemoveButton(object):
 		@return: True to propagate signals to parent widgets.
 		@type: A Boolean Object.
 		"""
-		self.__manager.emit("remove-template")
+		self.__button.set_property("sensitive", False)
+		self.__manager.emit("remove-templates")
 		return True

@@ -35,38 +35,16 @@ class TreeView(object):
 	"""
 
 	def __init__(self, manager, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the DescriptionTreeView instance.
-		@type self: A DescriptionTreeView object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("language-selected", self.__language_selected_cb)
 		self.__sigid3 = self.__treeview.connect("cursor-changed", self.__cursor_changed_cb)
 		self.__sigid4 = manager.connect_after("select-description-view", self.__select_description_view_cb)
+		self.__sigid5 = manager.connect("remove-templates", self.__remove_templates_cb)
+		self.__sigid6 = manager.connect("database-updated", self.__database_updated_cb)
 
 	def __init_attributes(self, manager, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the DescriptionTreeView instance.
-		@type self: A DescriptionTreeView object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__manager = manager
 		self.__editor = editor
 		self.__language = None
@@ -79,12 +57,6 @@ class TreeView(object):
 		return
 
 	def __set_properties(self):
-		"""
-		Set the description view's default properties.
-
-		@param self: Reference to the TemplateEditorLanguageView instance.
-		@type self: A TemplateEditorLanguageView object.
-		"""
 		from gtk import SELECTION_MULTIPLE
 		selection = self.__treeview.get_selection()
 		selection.set_mode(SELECTION_MULTIPLE)
@@ -99,40 +71,16 @@ class TreeView(object):
 		return
 
 	def __create_model(self):
-		"""
-		Create the model for the template editor's description view.
-
-		@param self: Reference to the TreeView instance.
-		@type self: A TreeView object.
-
-		@return: A model for the description view.
-		@rtype: A gtk.ListStore object.
-		"""
 		from gtk import ListStore
 		model = ListStore(str, str, str)
 		return model
 
 	def __create_renderer(self):
-		"""
-		Create the renderer for the description view's column
-
-		@param self: Reference to the TreeView instance.
-		@type self: A TreeView object.
-		"""
 		from gtk import CellRendererText
 		renderer = CellRendererText()
 		return renderer
 
 	def __create_name_column(self):
-		"""
-		Create the column for the template editor's description view.
-
-		@param self: Reference to the TreeView instance.
-		@type self: A TreeView object.
-
-		@return: A column for the description view.
-		@rtype: A gtk.TreeViewColumn object.
-		"""
 		from gtk import TreeViewColumn, TREE_VIEW_COLUMN_GROW_ONLY
 		from gtk import SORT_ASCENDING
 		from i18n import msg0002
@@ -146,15 +94,6 @@ class TreeView(object):
 		return column
 
 	def __create_description_column(self):
-		"""
-		Create the column for the template editor's description view.
-
-		@param self: Reference to the TreeView instance.
-		@type self: A TreeView object.
-
-		@return: A column for the description view.
-		@rtype: A gtk.TreeViewColumn object.
-		"""
 		from gtk import TreeViewColumn, TREE_VIEW_COLUMN_GROW_ONLY
 		from gtk import SORT_ASCENDING
 		from i18n import msg0003
@@ -164,22 +103,13 @@ class TreeView(object):
 		return column
 
 	def __populate_model(self, data):
-		"""
-		Populate the treeview.
-
-		@param self: Reference to the DescriptionTreeView instance.
-		@type self: A DescriptionTreeView object.
-
-		@param language: An object representing a language.
-		@type language: A gtksourceview.SourceLanguage object.
-		"""
 		self.__model.clear()
 		self.__treeview.set_property("sensitive", False)
 		self.__manager.emit("description-view-sensitivity", False)
 		if not data: return False
 		self.__treeview.set_model(None)
 		for info in data:
-			self.__model.append([info[0], info[1], info[3]])
+			self.__model.append([info[0].strip("|"), info[1], info[3]])
 		self.__treeview.set_model(self.__model)
 		self.__treeview.set_property("sensitive", True)
 		self.__manager.emit("description-view-sensitivity", True)
@@ -187,12 +117,6 @@ class TreeView(object):
 		return False
 
 	def __select_row(self):
-		"""
-		Select the first row in the treeview.
-
-		@param self: Reference to the DescriptionTreeView instance.
-		@type self: A DescriptionTreeView object.
-		"""
 		try:
 			selection = self.__treeview.get_selection()
 			selection.select_path(0)
@@ -206,6 +130,19 @@ class TreeView(object):
 			pass
 		return
 
+	def __get_triggers(self):
+		iterator = self.__model.get_iter_first()
+		if iterator is None: return None
+		triggers = []
+		trigger = self.__model.get_value(iterator, 0)
+		triggers.append(trigger)
+		while True:
+			iterator = self.__model.iter_next(iterator)
+			if iterator is None: break
+			trigger = self.__model.get_value(iterator, 0)
+			triggers.append(trigger)	
+		return triggers
+
 	def __process_language(self, language):
 		self.__language = language
 		from Metadata import get_template_data
@@ -213,38 +150,27 @@ class TreeView(object):
 		self.__populate_model(data)
 		return False
 
+	def __database_update(self):
+		old_triggers = set(self.__get_triggers())
+		self.__process_language(self.__language)
+		new_triggers = set(self.__get_triggers())
+		self.__select_row()
+		self.__treeview.grab_focus()
+		return False
+
 	def __destroy_cb(self, manager):
-		"""
-		Destroy instance of this class.
-
-		@param self: Reference to the DescriptionTreeView instance.
-		@type self: A DescriptionTreeView object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-		"""
 		self.__editor.disconnect_signal(self.__sigid1, manager)
 		self.__editor.disconnect_signal(self.__sigid2, manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__treeview)
 		self.__editor.disconnect_signal(self.__sigid4, manager)
+		self.__editor.disconnect_signal(self.__sigid5, manager)
+		self.__editor.disconnect_signal(self.__sigid6, manager)
 		self.__treeview.destroy()
 		del self
 		self = None
 		return
 
 	def __language_selected_cb(self, manager, language):
-		"""
-		Handles callback when the "language-selected" signal is emitted.
-
-		@param self: Reference to the DescriptionTreeView instance.
-		@type self: A DescriptionTreeView object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param language: An object representing a language object.
-		@type language: A gtksourceview.SourceLanguage object.
-		"""
 		try:
 			from gobject import idle_add, source_remove
 			source_remove(self.__id)
@@ -255,24 +181,36 @@ class TreeView(object):
 		return
 
 	def __cursor_changed_cb(self, treeview):
-		"""
-		Handles callback when the "cursor-changed" signal is emitted.
-
-		@param self: Reference to the DescriptionTreeView instance.
-		@type self: A DescriptionTreeView object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		selection = treeview.get_selection()
 		model, paths = selection.get_selected_rows()
 		if not paths: return
 		iterator = model.get_iter(paths[-1])
 		database_key = model.get_value(iterator, 2)
+		trigger = model.get_value(iterator, 0)
+		description = model.get_value(iterator, 1)
 		self.__manager.emit("template-selected", (self.__language, database_key))
+		self.__manager.emit("trigger-selected", trigger)
+		self.__manager.emit("description-selected", description)
 		return
+
+	def __remove_templates_cb(self, *args):
+		selection = self.__treeview.get_selection()
+		model, paths = selection.get_selected_rows()
+		if not paths: return
+		self.__treeview.set_property("sensitive", False)
+		iterators = [self.__model.get_iter(path) for path in paths]
+		triggers = [self.__model.get_value(iterator, 0) for iterator in iterators]
+		prefix = self.__language + "|"
+		keys = [prefix + trigger for trigger in triggers]
+		from Metadata import remove_value
+		[remove_value(key) for key in keys]
+		return False
 
 	def __select_description_view_cb(self, *args):
 		if self.__treeview.get_property("sensitive") is False: return False
 		self.__treeview.grab_focus()
+		return False
+
+	def __database_updated_cb(self, *args):
+		self.__database_update()
 		return False

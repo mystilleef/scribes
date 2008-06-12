@@ -104,6 +104,6 @@ def get_template_data(language):
 			if key.startswith(language) is False: continue
 			print key
 			print value
-	finally:	
+	finally:
 		database.close()
 	return None
