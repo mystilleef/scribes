@@ -50,6 +50,7 @@ class Editor(View):
 		self.__sigid8 = manager.connect("valid-trigger", self.__valid_trigger_cb)
 		self.__sigid9 = manager.connect("temp-selected", self.__temp_selected_cb)
 		self.__sigid10 = manager.connect("process-2", self.__process_cb)
+		self.__sigid11 = manager.connect("template-selected", self.__template_selected_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -61,6 +62,8 @@ class Editor(View):
 		self.__template = ""
 		self.__placeholder_region = None
 		self.__language = None
+		self.__key = None
+		self.__edit_flag = False
 		return
 
 	def __set_properties(self):
@@ -99,7 +102,8 @@ class Editor(View):
 		template = self.__buffer.get_text(start, end)
 		key = self.__language + "|" + name
 		data = description, template
-		from Metadata import set_value
+		from Metadata import set_value, remove_value
+		if self.__edit_flag: remove_value(self.__key)
 		set_value(key, data)
 		return False
 
@@ -199,6 +203,7 @@ class Editor(View):
 		self.__editor.disconnect_signal(self.__sigid8, manager)
 		self.__editor.disconnect_signal(self.__sigid9, manager)
 		self.__editor.disconnect_signal(self.__sigid10, manager)
+		self.__editor.disconnect_signal(self.__sigid11, manager)
 		self.destroy()
 		self = None
 		del self
@@ -225,11 +230,13 @@ class Editor(View):
 		return False
 
 	def __hide_cb(self, *args):
+		self.__edit_flag = False
 		self.__clear_tags_and_marks()
 		self.__buffer.set_text("")
 		return
 
 	def __show_edit_dialog_cb(self, *args):
+		self.__edit_flag = True
 		self.__buffer.set_text(self.__template)
 		return False
 
@@ -245,3 +252,8 @@ class Editor(View):
 		self.__update_template_database(data)
 		self.__manager.emit("dialog-hide-window")
 		return False
+
+	def __template_selected_cb(self, manager, data):
+		self.__key = data[1]
+		return False
+

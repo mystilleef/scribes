@@ -43,17 +43,23 @@ class TreeView(object):
 		self.__sigid4 = manager.connect_after("select-description-view", self.__select_description_view_cb)
 		self.__sigid5 = manager.connect("remove-templates", self.__remove_templates_cb)
 		self.__sigid6 = manager.connect("database-updated", self.__database_updated_cb)
+		self.__sigid7 = manager.connect("process", self.__process_cb)
+		self.__sigid8 = self.__treeview.connect("row-activated", self.__row_activated_cb)
+		self.__sigid9 = self.__treeview.connect("key-press-event", self.__key_press_event_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
 		self.__language = None
+		from collections import deque
+		self.__trigger_queue = deque()
 		self.__model = self.__create_model()
 		self.__name_renderer = self.__create_renderer()
 		self.__name_column = self.__create_name_column()
 		self.__description_renderer = self.__create_renderer()
 		self.__description_column = self.__create_description_column()
 		self.__treeview = manager.glade.get_widget("TemplateTreeView")
+		self.__selection_row_index = 0
 		return
 
 	def __set_properties(self):
@@ -107,13 +113,14 @@ class TreeView(object):
 		self.__treeview.set_property("sensitive", False)
 		self.__manager.emit("description-view-sensitivity", False)
 		if not data: return False
+		self.__treeview.handler_block(self.__sigid3)
 		self.__treeview.set_model(None)
 		for info in data:
 			self.__model.append([info[0].strip("|"), info[1], info[3]])
 		self.__treeview.set_model(self.__model)
 		self.__treeview.set_property("sensitive", True)
 		self.__manager.emit("description-view-sensitivity", True)
-		self.__select_row()
+		self.__treeview.handler_unblock(self.__sigid3)
 		return False
 
 	def __select_row(self):
@@ -125,10 +132,40 @@ class TreeView(object):
 			self.__treeview.scroll_to_cell(path, self.__treeview.get_column(0), True, 0.5, 0.0)
 			self.__treeview.set_cursor(path, self.__treeview.get_column(0))
 			self.__treeview.columns_autosize()
-#			self.__treeview.grab_focus()
 		except TypeError:
 			pass
 		return
+
+	def __select_row_at_index(self, index):
+		try:
+			iterator = self.__model.get_iter_first()
+			if iterator is None: raise ValueError
+			for count in xrange(index):
+				result = self.__model.iter_next(iterator)
+				if result is None: break
+				iterator = result
+			self.__select_row_at_iterator(iterator)
+		except ValueError:
+			self.__treeview.set_property("sensitive", False)
+		return False
+
+	def __select_row_at_iterator(self, iterator):
+		selection = self.__treeview.get_selection()
+		selection.unselect_all()
+		selection.select_iter(iterator)
+		path = self.__model.get_path(iterator)
+		self.__select_row_at_path(path)
+		return False
+
+	def __select_row_at_path(self, path):
+		self.__treeview.scroll_to_cell(path, self.__treeview.get_column(0), True, 0.5, 0.0)
+		self.__treeview.set_cursor(path, self.__treeview.get_column(0))
+		self.__treeview.columns_autosize()
+		self.__treeview.grab_focus()
+		return False
+
+	def __select_row_at_trigger(self, trigger):
+		return False
 
 	def __get_triggers(self):
 		iterator = self.__model.get_iter_first()
@@ -140,22 +177,42 @@ class TreeView(object):
 			iterator = self.__model.iter_next(iterator)
 			if iterator is None: break
 			trigger = self.__model.get_value(iterator, 0)
-			triggers.append(trigger)	
+			triggers.append(trigger)
 		return triggers
 
-	def __process_language(self, language):
+	def __process_language(self, language, select=False):
 		self.__language = language
 		from Metadata import get_template_data
 		data = get_template_data(language)
 		self.__populate_model(data)
+		if select: self.__select_row()
 		return False
 
+	def __select_trigger_row(self, trigger=None):
+		if trigger is None: return self.__select_row_at_index(self.__selection_row_index)
+		iterator = self.__model.get_iter_first()
+		if iterator is None: return self.__treeview.set_property("sensitive", False)
+		while True:
+			trigger_ = self.__model.get_value(iterator, 0)
+			if trigger == trigger_: break
+			iterator = self.__model.iter_next(iterator)
+			if iterator is None: break
+		self.__select_row_at_iterator(iterator)
+		return
+
+	def __get_trigger_to_select(self, ot, nt):
+		if ot is None: return nt[-1]
+		trigger = set(nt).difference(set(ot))
+		if not trigger: return None
+		return trigger.pop()
+
 	def __database_update(self):
-		old_triggers = set(self.__get_triggers())
+		old_triggers = self.__get_triggers()
 		self.__process_language(self.__language)
-		new_triggers = set(self.__get_triggers())
-		self.__select_row()
-		self.__treeview.grab_focus()
+		new_triggers = self.__get_triggers()
+		if not new_triggers: return self.__treeview.set_property("sensitive", False)
+		trigger = self.__get_trigger_to_select(old_triggers, new_triggers)
+		self.__select_trigger_row(trigger)
 		return False
 
 	def __destroy_cb(self, manager):
@@ -165,10 +222,17 @@ class TreeView(object):
 		self.__editor.disconnect_signal(self.__sigid4, manager)
 		self.__editor.disconnect_signal(self.__sigid5, manager)
 		self.__editor.disconnect_signal(self.__sigid6, manager)
+		self.__editor.disconnect_signal(self.__sigid7, manager)
+		self.__editor.disconnect_signal(self.__sigid8, self.__treeview)
+		self.__editor.disconnect_signal(self.__sigid9, self.__treeview)
 		self.__treeview.destroy()
 		del self
 		self = None
 		return
+
+	def __process_cb(self, *args):
+		self.__treeview.set_property("sensitive", False)
+		return False
 
 	def __language_selected_cb(self, manager, language):
 		try:
@@ -177,7 +241,7 @@ class TreeView(object):
 		except AttributeError:
 			pass
 		finally:
-			self.__id = idle_add(self.__process_language, language, priority=3000)
+			self.__id = idle_add(self.__process_language, language, True, priority=3000)
 		return
 
 	def __cursor_changed_cb(self, treeview):
@@ -191,6 +255,7 @@ class TreeView(object):
 		self.__manager.emit("template-selected", (self.__language, database_key))
 		self.__manager.emit("trigger-selected", trigger)
 		self.__manager.emit("description-selected", description)
+		self.__selection_row_index = self.__get_triggers().index(trigger)
 		return
 
 	def __remove_templates_cb(self, *args):
@@ -214,3 +279,13 @@ class TreeView(object):
 	def __database_updated_cb(self, *args):
 		self.__database_update()
 		return False
+
+	def __row_activated_cb(self, *args):
+		self.__manager.emit("show-edit-dialog")
+		return False
+
+	def __key_press_event_cb(self, treeview, event):
+		from gtk import keysyms
+		if event.keyval != keysyms.Delete: return False
+		self.__manager.emit("remove-templates")
+		return True

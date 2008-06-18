@@ -81,7 +81,8 @@ class Manager(GObject):
 		Button(self, editor)
 		from RemoveButton import Button
 		Button(self, editor)
-#		from EditButton import EditButton
+		from EditButton import Button
+		Button(self, editor)
 #		EditButton(self, editor)
 #		from ExportButton import ExportButton
 #		ExportButton(self, editor)

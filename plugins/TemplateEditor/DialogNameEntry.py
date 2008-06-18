@@ -68,7 +68,7 @@ class Entry(object):
 
 	def __show_edit_dialog_cb(self, *args):
 		self.__is_edit_dialog = True
-		self.__entry.set_text(trigger)
+		self.__entry.set_text(self.__trigger)
 		self.__entry.grab_focus()
 		return
 
