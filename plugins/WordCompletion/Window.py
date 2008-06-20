@@ -59,7 +59,7 @@ class CompletionWindow(Window):
 		self.__signal_id_5 = editor.window.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_6 = editor.textview.connect("focus-out-event", self.__generic_hide_cb)
 		self.__signal_id_7 = editor.textbuffer.connect("delete-range", self.__generic_hide_cb)
-		self.__signal_id_8 = manager.connect("no-match-found", self.__generic_hide_cb)
+		self.__signal_id_8 = manager.connect_after("no-match-found", self.__generic_hide_cb)
 		self.__signal_id_9 = editor.textview.connect("button-press-event", self.__button_press_event_cb)
 		self.__block_signals()
 		from gobject import idle_add, PRIORITY_LOW
@@ -307,7 +307,8 @@ class CompletionWindow(Window):
 		self.set_property("height-request", height)
 		self.__position_window(width, height)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__show_window, priority=5000)
+		idle_add(self.__show_window, priority=9000)
+#		self.__show_window()
 		return
 
 	def __key_press_event_cb(self, window, event):

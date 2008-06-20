@@ -37,31 +37,20 @@ class Window(object):
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("show-window", self.__show_cb)
-		self.__sigid3 = manager.connect("hide-window", self.__hide_cb)
+		self.__sigid2 = manager.connect("show-import-window", self.__show_cb)
+		self.__sigid3 = manager.connect("hide-import-window", self.__hide_cb)
 		self.__sigid4 = self.__window.connect("delete-event", self.__delete_event_cb)
 		self.__sigid5 = self.__window.connect("key-press-event", self.__key_press_event_cb)
-		self.__sigid6 = self.__window.connect("drag-data-received", self.__drag_data_received_cb)
 		self.__window.set_property("sensitive", True)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
 		self.__is_visible = False
-		self.__window = manager.glade.get_widget("Window")
+		self.__window = manager.iglade.get_widget("Window")
 		return
 
 	def __set_properties(self):
-#		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 1.6, 1.6)
-#		self.__window.set_property("default-width", width)
-#		self.__window.set_property("default-height", height)
-		from gtk import DEST_DEFAULT_ALL
-#		self.__window.set_property("window-position", WIN_POS_CENTER)
-#		self.__window.set_property("destroy-with-parent", True)
-#		self.__window.set_transient_for(self.__editor.window)
-		targets = [("text/uri-list", 0, 111)]
-		from gtk.gdk import ACTION_COPY
-		self.__window.drag_dest_set(DEST_DEFAULT_ALL, targets, ACTION_COPY)
 		return
 
 	def __show_window(self):
@@ -81,7 +70,6 @@ class Window(object):
 		self.__editor.disconnect_signal(self.__sigid3, manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__window)
 		self.__editor.disconnect_signal(self.__sigid5, self.__window)
-		self.__editor.disconnect_signal(self.__sigid6, self.__window)
 		self.__window.destroy()
 		self = None
 		del self
@@ -96,15 +84,12 @@ class Window(object):
 		return
 
 	def __delete_event_cb(self, *args):
-		self.__manager.emit("hide-window")
+		self.__manager.emit("hide-import-window")
 		return True
 
 	def __key_press_event_cb(self, window, event):
 		if self.__is_visible is False: return False
 		from gtk import keysyms
 		if event.keyval != keysyms.Escape: return False
-		self.__manager.emit("hide-window")
+		self.__manager.emit("hide-import-window")
 		return True
-
-	def __drag_data_received_cb(self, *args):
-		return False

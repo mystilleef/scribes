@@ -36,18 +36,6 @@ class TreeView(object):
 	"""
 
 	def __init__(self, manager, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the TemplateLanguageTreeView instance.
-		@type self: A TemplateLanguageTreeView object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__populate_model()
@@ -60,18 +48,6 @@ class TreeView(object):
 		self.__treeview.set_property("sensitive", True)
 
 	def __init_attributes(self, manager, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the TemplateLanguageTreeView instance.
-		@type self: A TemplateLanguageTreeView object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__manager = manager
 		self.__editor = editor
 		self.__treeview = manager.glade.get_widget("LanguageTreeView")
@@ -83,12 +59,6 @@ class TreeView(object):
 		return
 
 	def __set_properties(self):
-		"""
-		Set the language view's default properties.
-
-		@param self: Reference to the TemplateEditorLanguageView instance.
-		@type self: A TemplateEditorLanguageView object.
-		"""
 		from gtk.gdk import ACTION_DEFAULT, BUTTON1_MASK
 		from gtk import TARGET_SAME_APP
 		self.__treeview.enable_model_drag_source(BUTTON1_MASK, [("STRING", 0, 123)], ACTION_DEFAULT)
@@ -102,29 +72,11 @@ class TreeView(object):
 		return
 
 	def __create_model(self):
-		"""
-		Create the model for the template editor's language view.
-
-		@param self: Reference to the TemplateEditorLanguageView instance.
-		@type self: A TemplateEditorLanguageView object.
-
-		@return: A model for the language view.
-		@rtype: A gtk.ListStore object.
-		"""
 		from gtk import ListStore
 		model = ListStore(str, str)
 		return model
 
 	def __create_column(self):
-		"""
-		Create the column for the template editor's language view.
-
-		@param self: Reference to the TemplateEditorLanguageView instance.
-		@type self: A TemplateEditorLanguageView object.
-
-		@return: A column for the language view.
-		@rtype: A gtk.TreeViewColumn object.
-		"""
 		from gtk import TreeViewColumn, TREE_VIEW_COLUMN_GROW_ONLY
 		from gtk import SORT_ASCENDING
 		from i18n import msg0001
@@ -138,40 +90,20 @@ class TreeView(object):
 		return column
 
 	def __create_renderer(self):
-		"""
-		Create the renderer for the language view's column
-
-		@param self: Reference to the TemplateEditorLanguageView instance.
-		@type self: A TemplateEditorLanguageView object.
-
-		@return: A renderer for the language view.
-		@rtype: A gtk.CellRendererText object.
-		"""
 		from gtk import CellRendererText
 		renderer = CellRendererText()
 		return renderer
 
 	def __populate_model(self):
-		"""
-		Populate the language view's model.
-
-		@param self: Reference to the TemplateLanguageTreeView instance.
-		@type self: A TemplateLanguageTreeView object.
-		"""
 		language_list = self.__editor.language_objects
 		language_names = [(name.get_name(), name.get_id()) for name in language_list]
 		self.__model.append(["General", "General"])
 		for name, id_ in language_names:
+			if id_ == "def": continue
 			self.__model.append([name, id_])
 		return
 
 	def __select_language(self, language=None):
-		"""
-		Select a row corresponding to the language in the tree view.
-
-		@param self: Reference to the TemplateLanguageTreeView instance.
-		@type self: A TemplateLanguageTreeView object.
-		"""
 		if not language:
 			language_id = self.__get_language()
 		else:
@@ -202,29 +134,11 @@ class TreeView(object):
 		return
 
 	def __get_language(self):
-		"""
-		Get the current language of the file in the text editor.
-
-		@param self: Reference to the TemplateLanguageTreeView instance.
-		@type self: A TemplateLanguageTreeView object.
-
-		@return: Return a language or "General"
-		@rtype: A String object.
-		"""
 		language = self.__editor.language
 		if not language: return "General"
 		return language.get_id()
 
 	def __destroy_cb(self, manager):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the TemplateLanguageTreeView instance.
-		@type self: A TemplateLanguageTreeView object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-		"""
 		self.__editor.disconnect_signal(self.__sigid1, manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
@@ -235,12 +149,6 @@ class TreeView(object):
 		return
 
 	def __cursor_changed_cb(self, *args):
-		"""
-		Handles callback when the "cursor-changed" signal is emitted.
-
-		@param self: Reference to the TemplateLanguageTreeView instance.
-		@type self: A TemplateLanguageTreeView object.
-		"""
 		try:
 			selection = self.__treeview.get_selection()
 			model, iterator = selection.get_selected()
@@ -256,11 +164,5 @@ class TreeView(object):
 		return False
 
 	def __generic_cb(self, *args):
-		"""
-		A generic callback handler to select a language.
-
-		@param self: Reference to the TemplateLanguageTreeView instance.
-		@type self: A TemplateLanguageTreeView object.
-		"""
 		self.__select_language()
 		return

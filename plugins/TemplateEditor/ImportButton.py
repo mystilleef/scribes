@@ -29,58 +29,25 @@ button in the template editor.
 @contact: mystilleef@gmail.com
 """
 
-class ImportButton(object):
+class Button(object):
 	"""
 	This class defines the behavior of the import button.
 	"""
 
 	def __init__(self, manager, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the ImportButton instance.
-		@type self: A ImportButton object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(manager, editor)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = self.__button.connect("clicked", self.__clicked_cb)
+		self.__button.set_property("sensitive", True)
 
 	def __init_attributes(self, manager, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the ImportButton instance.
-		@type self: A ImportButton object.
-
-		@param manager: Reference to the TemplateManager
-		@type manager: A TemplateManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__manager = manager
 		self.__editor = editor
 		self.__button = manager.glade.get_widget("ImportButton")
-		self.__dialog = None
 		self.__signal_id_1 = self.__signal_id_2 = None
 		return
 
 	def __destroy_cb(self, manager):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the ImportButton instance.
-		@type self: An ImportButton object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, manager)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__button)
 		self.__button.destroy()
@@ -89,22 +56,5 @@ class ImportButton(object):
 		return
 
 	def __clicked_cb(self, button):
-		"""
-		Handles callback when the "clicked" signal is emitted
-
-		@param self: Reference to the ImportButton instance.
-		@type self: A ImportButton object.
-
-		@param button: Reference to the ImportButton instance.
-		@type button: An ImportButton object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
-		try:
-			self.__dialog.show()
-		except AttributeError:
-			from ImportDialog import ImportDialog
-			self.__dialog = ImportDialog(self.__manager, self.__editor)
-			self.__dialog.show()
+		self.__manager.emit("show-import-dialog")
 		return False

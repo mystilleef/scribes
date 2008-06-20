@@ -58,6 +58,8 @@ class Manager(GObject):
 		"process-2": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"database-updated": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"remove-templates": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"show-import-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"hide-import-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
@@ -82,6 +84,16 @@ class Manager(GObject):
 		from RemoveButton import Button
 		Button(self, editor)
 		from EditButton import Button
+		Button(self, editor)
+		from ImportDialogWindow import Window
+		Window(self, editor)
+#		from ImportDialogFileChooser import FileChooser
+#		FileChooser(self, editor)
+#		from ImportDialogImportButton import Button
+#		Button(self, editor)
+#		from ImportDialogCancelButton import Button
+#		Button(self, editor)
+		from ImportButton import Button
 		Button(self, editor)
 #		EditButton(self, editor)
 #		from ExportButton import ExportButton
@@ -110,10 +122,12 @@ class Manager(GObject):
 		current_folder = editor.get_current_folder(globals())
 		glade_file = join(current_folder, "TemplateEditor.glade")
 		dialog_file = join(current_folder, "DialogEditor.glade")
+		import_dialog_file = join(current_folder, "ImportDialog.glade")
 		self.__editor = editor
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, "Window", "scribes")
 		self.__dglade = XML(dialog_file, "Window", "scribes")
+		self.__iglade = XML(import_dialog_file, "Window", "scribes")
 		return
 
 	def __get_glade(self):
@@ -122,8 +136,12 @@ class Manager(GObject):
 	def __get_dglade(self):
 		return self.__dglade
 
+	def __get_iglade(self):
+		return self.__iglade
+
 	glade = property(__get_glade)
 	dglade = property(__get_dglade)
+	iglade = property(__get_iglade)
 
 	def show(self):
 		self.emit("show-window")

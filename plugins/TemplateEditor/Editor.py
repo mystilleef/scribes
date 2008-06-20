@@ -74,8 +74,8 @@ class Editor(View):
 		self.set_property("show-right-margin", False)
 		self.__buffer.set_highlight_syntax(False)
 #		self.__buffer.set_property("check-brackets", False)
-		scheme = self.__buffer.get_style_scheme()
-		self.__buffer.set_style_scheme(scheme)
+#		scheme = self.__buffer.get_style_scheme()
+#		self.__buffer.set_style_scheme(scheme)
 		self.set_property("cursor-visible", True)
 		self.set_property("editable", True)
 		self.set_property("sensitive", False)
@@ -130,9 +130,7 @@ class Editor(View):
 	def __process_dollar_character(self):
 		if self.__placeholder_region: return
 		selection = self.__buffer.get_selection_bounds()
-		if selection:
-			self.__enclose_selection(selection)
-			return
+		if selection: return self.__enclose_selection(selection)
 		from SCRIBES.cursor import get_cursor_iterator
 		iterator = get_cursor_iterator(self.__buffer)
 		first_mark = self.__buffer.create_mark(None, iterator, True)
@@ -210,7 +208,7 @@ class Editor(View):
 		return
 
 	def __cursor_position_cb(self, *args):
-		if not (self.__placeholder_region): return
+		if not self.__placeholder_region: return
 		begin = self.__buffer.get_iter_at_mark(self.__placeholder_region[0])
 		end = self.__buffer.get_iter_at_mark(self.__placeholder_region[1])
 		from SCRIBES.cursor import get_cursor_iterator
@@ -233,7 +231,7 @@ class Editor(View):
 		self.__edit_flag = False
 		self.__clear_tags_and_marks()
 		self.__buffer.set_text("")
-		return
+		return False
 
 	def __show_edit_dialog_cb(self, *args):
 		self.__edit_flag = True
@@ -256,4 +254,3 @@ class Editor(View):
 	def __template_selected_cb(self, manager, data):
 		self.__key = data[1]
 		return False
-
