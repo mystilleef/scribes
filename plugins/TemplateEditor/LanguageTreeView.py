@@ -45,6 +45,7 @@ class TreeView(object):
 		self.__sigid3 = self.__editor.connect("renamed-document", self.__generic_cb)
 		self.__sigid4 = self.__treeview.connect("cursor-changed", self.__cursor_changed_cb)
 		self.__sigid5 = manager.connect_after("show-window", self.__show_window_cb)
+		self.__sigid6 = manager.connect("select-langauge", self.__select_language_cb)
 		self.__treeview.set_property("sensitive", True)
 
 	def __init_attributes(self, manager, editor):
@@ -143,6 +144,8 @@ class TreeView(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid4, self.__treeview)
+		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__treeview.destroy()
 		self = None
 		del self
@@ -166,3 +169,7 @@ class TreeView(object):
 	def __generic_cb(self, *args):
 		self.__select_language()
 		return
+
+	def __select_language_cb(self, manager, language):
+		self.__select_language(language)
+		return False

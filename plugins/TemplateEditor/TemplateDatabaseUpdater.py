@@ -50,5 +50,5 @@ class Updater(object):
 	def __update_cb(self, manager, data):
 		self.__update_database(data)
 		language_id = data[-1][0].split("|")[0]
-		self.__manager.emit("language-selected", language_id)
+		self.__manager.emit("select-langauge", language_id)
 		return False

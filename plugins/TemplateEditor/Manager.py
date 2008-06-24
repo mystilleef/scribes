@@ -66,6 +66,7 @@ class Manager(GObject):
 		"valid-xml-templates": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"invalid-xml-templates": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"template-data": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"select-langauge": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -107,17 +108,12 @@ class Manager(GObject):
 		Button(self, editor)
 		from ImportButton import Button
 		Button(self, editor)
-#		EditButton(self, editor)
 #		from ExportButton import ExportButton
 #		ExportButton(self, editor)
-#		from RemoveButton import RemoveButton
-#		RemoveButton(self, editor)
 		from Preview import Preview
 		Preview(self, editor)
 		from DescriptionTreeView import TreeView
 		TreeView(self, editor)
-#		from LanguageTreeView import TemplateLanguageTreeView
-#		TemplateLanguageTreeView(self, editor)
 		from LanguageTreeView import TreeView
 		TreeView(self, editor)
 		from Window import Window
@@ -126,8 +122,6 @@ class Manager(GObject):
 #		LinkButton(self, editor)
 #		from HelpButton import HelpButton
 #		HelpButton(self, editor)
-#		from ImportButton import ImportButton
-#		ImportButton(self, editor)
 
 	def __init_attributes(self, editor):
 		from os.path import join

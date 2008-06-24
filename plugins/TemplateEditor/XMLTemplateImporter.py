@@ -16,8 +16,7 @@ class Importer(object):
 
 	def __get_id_from_entry(self, entry):
 		node = entry.getchildren()[0]
-		id_ = node.attrib.values()[0]
-		return id_
+		return node.attrib.values()[0]
 
 	def __get_trigger_from_entry(self, entry):
 		node = entry.getchildren()[0]
