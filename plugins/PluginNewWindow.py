@@ -35,8 +35,8 @@ version = 0.1
 autoload = True
 class_name = "NewWindowPlugin"
 short_description = "Display a new scribes window."
-long_description = """\
-This plug-in displays a new scribes window when (ctrl - n) is pressed.
+long_description = """This plug-in displays a new scribes window when
+(ctrl - n) is pressed.
 """
 
 class NewWindowPlugin(object):
@@ -45,35 +45,14 @@ class NewWindowPlugin(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize the plug-in object.
-
-		@param self: Reference to the NewWindowPlugin instance.
-		@type self: A NewWindowPlugin object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__trigger = None
 
 	def load(self):
-		"""
-		Initialize the NewWindowPlugin instance.
-
-		@param self: Reference to the NewWindowPlugin instance.
-		@type self: An NewWindowPlugin object.
-		"""
 		from NewWindow.Trigger import NewWindowTrigger
 		self.__trigger = NewWindowTrigger(self.__editor)
 		return
 
 	def unload(self):
-		"""
-		Destroy the NewWindowPlugin instance.
-
-		@param self: Reference to the NewWindowPlugin instance.
-		@type self: An NewWindowPlugin object.
-		"""
 		self.__trigger.emit("destroy")
 		return

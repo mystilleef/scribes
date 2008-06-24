@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Jun 19 10:58:27 2008 -->
+<!--Generated with glade3 3.4.5 on Sat Jun 21 17:49:54 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="Window">
     <property name="sensitive">False</property>
     <property name="border_width">10</property>
     <property name="title" translatable="yes">Template Editor</property>
-    <property name="startup_id">ScribesTemplateEditorID</property>
     <property name="role">ScribesTemplateEditorRole</property>
+    <property name="startup_id">ScribesTemplateEditorID</property>
     <property name="window_position">GTK_WIN_POS_CENTER</property>
     <property name="default_width">640</property>
     <property name="default_height">480</property>

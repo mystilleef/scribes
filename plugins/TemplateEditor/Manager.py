@@ -60,6 +60,12 @@ class Manager(GObject):
 		"remove-templates": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-import-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-import-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"import-selected-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"process-imported-files": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"import-button-clicked": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"valid-xml-templates": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"invalid-xml-templates": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"template-data": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -85,14 +91,20 @@ class Manager(GObject):
 		Button(self, editor)
 		from EditButton import Button
 		Button(self, editor)
+		from TemplateDatabaseUpdater import Updater
+		Updater(self, editor)
+		from XMLTemplateImporter import Importer
+		Importer(self, editor)
+		from XMLTemplateValidator import Validator
+		Validator(self, editor)
+		from ImportDialogImportButton import Button
+		Button(self, editor)
 		from ImportDialogWindow import Window
 		Window(self, editor)
-#		from ImportDialogFileChooser import FileChooser
-#		FileChooser(self, editor)
-#		from ImportDialogImportButton import Button
-#		Button(self, editor)
-#		from ImportDialogCancelButton import Button
-#		Button(self, editor)
+		from ImportDialogFileChooser import FileChooser
+		FileChooser(self, editor)
+		from ImportDialogCancelButton import Button
+		Button(self, editor)
 		from ImportButton import Button
 		Button(self, editor)
 #		EditButton(self, editor)

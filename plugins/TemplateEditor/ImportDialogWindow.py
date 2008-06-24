@@ -51,6 +51,8 @@ class Window(object):
 		return
 
 	def __set_properties(self):
+		window = self.__manager.glade.get_widget("Window")
+		self.__window.set_transient_for(window)
 		return
 
 	def __show_window(self):
