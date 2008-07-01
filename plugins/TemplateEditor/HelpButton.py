@@ -29,68 +29,32 @@ button in the template editor.
 @contact: mystilleef@gmail.com
 """
 
-class HelpButton(object):
+class Button(object):
 	"""
 	This class defines the behavior of the help button.
 	"""
 
 	def __init__(self, manager, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the HelpButton instance.
-		@type self: A HelpButton object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-		"""
 		self.__init_attributes(manager, editor)
-		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = self.__button.connect("clicked", self.__clicked_cb)
+		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = self.__button.connect("clicked", self.__clicked_cb)
+		self.__button.set_property("sensitive", True)
 
 	def __init_attributes(self, manager, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the HelpButton instance.
-		@type self: A HelpButton object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-		"""
 		self.__manager = manager
 		self.__editor = editor
 		self.__button = manager.glade.get_widget("HelpButton")
-		self.__signal_id_1 = self.__signal_id_2 = None
 		return
 
 	def __destroy_cb(self, manager):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the HelpButton instance.
-		@type self: A HelpButton object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__button)
+		self.__editor.disconnect_signal(self.__sigid1, manager)
+		self.__editor.disconnect_signal(self.__sigid2, self.__button)
 		self.__button.destroy()
 		del self
 		self = None
 		return
 
 	def __clicked_cb(self, button):
-		"""
-		Handles callback when the "clicked" signal is emitted.
-
-		@param self: Reference to the HelpButton instance.
-		@type self: A HelpButton object.
-
-		@param button: Reference to the help button.
-		@type button: A gtk.Button object.
-		"""
 		from gnome import help_display
 		help_display("/scribes.xml", "scribes-templates")
 		return

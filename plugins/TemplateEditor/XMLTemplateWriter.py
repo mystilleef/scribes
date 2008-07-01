@@ -32,7 +32,8 @@ class Writer(object):
 		snippet = SubElement(root, "snippet")
 		for data_ in data:
 			self.__add_entry_element(snippet, data_, SubElement)
-		ElementTree(root).write(self.__filename)
+		ElementTree(root).write(self.__filename, "UTF-8")
+		self.__manager.emit("hide-export-window")
 		return False
 
 	def __destroy(self):

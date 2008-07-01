@@ -72,7 +72,6 @@ class FileChooser(object):
 		try:
 			filename = self.__chooser.get_filename().strip(" \t")
 			if filename.endswith("/"): raise AttributeError
-			self.__manager.emit("hide-export-window")
 			self.__manager.emit("export-template-filename", filename)
 			self.__manager.emit("get-selected-templates")
 		except AttributeError:

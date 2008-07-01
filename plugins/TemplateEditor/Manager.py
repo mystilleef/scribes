@@ -125,6 +125,8 @@ class Manager(GObject):
 		FileChooser(self, editor)
 		from ExportDialogWindow import Window
 		Window(self, editor)
+		from HelpButton import Button
+		Button(self, editor)
 		from ExportDialogCancelButton import Button
 		Button(self, editor)
 		from ExportButton import Button
