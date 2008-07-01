@@ -46,6 +46,7 @@ class TreeView(object):
 		self.__sigid7 = manager.connect("process", self.__process_cb)
 		self.__sigid8 = self.__treeview.connect("row-activated", self.__row_activated_cb)
 		self.__sigid9 = self.__treeview.connect("key-press-event", self.__key_press_event_cb)
+		self.__sigid10 = manager.connect("get-selected-templates", self.__get_selected_templates_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -180,6 +181,16 @@ class TreeView(object):
 			triggers.append(trigger)
 		return triggers
 
+	def __get_selections(self):
+		model, paths = self.__treeview.get_selection().get_selected_rows()
+		if not paths: return False
+		get_value = model.get_value
+		get_iter = model.get_iter
+		get_database_key = lambda iterator: get_value(iterator, 2)
+		database_keys = [get_database_key(get_iter(path)) for path in paths]
+		self.__manager.emit("process-templates-for-export", database_keys)
+		return False
+
 	def __process_language(self, language, select=False):
 		self.__language = language
 		from Metadata import get_template_data
@@ -282,6 +293,10 @@ class TreeView(object):
 
 	def __row_activated_cb(self, *args):
 		self.__manager.emit("show-edit-dialog")
+		return False
+
+	def __get_selected_templates_cb(self, *args):
+		self.__get_selections()
 		return False
 
 	def __key_press_event_cb(self, treeview, event):

@@ -42,7 +42,7 @@ def __set_vm_properties():
 		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 	except ImportError:
 		pass
-	global INTERVAL, RECURSIONLIMITMULTIPLIER
+	global RECURSIONLIMITMULTIPLIER, INTERVAL
 	setcheckinterval(INTERVAL)
 	setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
 	return

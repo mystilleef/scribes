@@ -60,13 +60,20 @@ class Manager(GObject):
 		"remove-templates": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-import-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-import-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"show-export-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"hide-export-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"import-selected-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"process-imported-files": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"import-button-clicked": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"export-button-clicked": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"valid-xml-templates": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"invalid-xml-templates": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"template-data": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"select-langauge": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"export-template-filename": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"process-templates-for-export": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"processed-template-data": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"get-selected-templates": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
@@ -108,8 +115,20 @@ class Manager(GObject):
 		Button(self, editor)
 		from ImportButton import Button
 		Button(self, editor)
-#		from ExportButton import ExportButton
-#		ExportButton(self, editor)
+		from TemplateExporter import Exporter
+		Exporter(self, editor)
+		from XMLTemplateWriter import Writer
+		Writer(self, editor)
+		from ExportDialogExportButton import Button
+		Button(self, editor)
+		from ExportDialogFileChooser import FileChooser
+		FileChooser(self, editor)
+		from ExportDialogWindow import Window
+		Window(self, editor)
+		from ExportDialogCancelButton import Button
+		Button(self, editor)
+		from ExportButton import Button
+		Button(self, editor)
 		from Preview import Preview
 		Preview(self, editor)
 		from DescriptionTreeView import TreeView
@@ -129,11 +148,13 @@ class Manager(GObject):
 		glade_file = join(current_folder, "TemplateEditor.glade")
 		dialog_file = join(current_folder, "DialogEditor.glade")
 		import_dialog_file = join(current_folder, "ImportDialog.glade")
+		export_dialog_file = join(current_folder, "ExportDialog.glade")
 		self.__editor = editor
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, "Window", "scribes")
 		self.__dglade = XML(dialog_file, "Window", "scribes")
 		self.__iglade = XML(import_dialog_file, "Window", "scribes")
+		self.__eglade = XML(export_dialog_file, "Window", "scribes")
 		return
 
 	def __get_glade(self):
@@ -145,9 +166,13 @@ class Manager(GObject):
 	def __get_iglade(self):
 		return self.__iglade
 
+	def __get_eglade(self):
+		return self.__eglade
+
 	glade = property(__get_glade)
 	dglade = property(__get_dglade)
 	iglade = property(__get_iglade)
+	eglade = property(__get_eglade)
 
 	def show(self):
 		self.emit("show-window")

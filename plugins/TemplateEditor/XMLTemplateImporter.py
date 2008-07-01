@@ -14,28 +14,25 @@ class Importer(object):
 		self.__manager = manager
 		return
 
-	def __get_id_from_entry(self, entry):
-		node = entry.getchildren()[0]
-		return node.attrib.values()[0]
+	def __get_id_from_entry(self, nodes):
+		return nodes[0].attrib.values()[0]
 
-	def __get_trigger_from_entry(self, entry):
-		node = entry.getchildren()[0]
-		return node.text
+	def __get_trigger_from_entry(self, nodes):
+		return nodes[0].text
 
-	def __get_description_from_entry(self, entry):
-		node = entry.getchildren()[1]
-		return node.text
+	def __get_description_from_entry(self, nodes):
+		return nodes[1].text
 
-	def __get_template_from_entry(self, entry):
-		node = entry.getchildren()[2]
-		return node.text
+	def __get_template_from_entry(self, nodes):
+		return nodes[2].text
 
 	def __get_data_from_entry(self, entry):
 		try:
-			id_ = self.__get_id_from_entry(entry)
-			trigger = self.__get_trigger_from_entry(entry)
-			description = self.__get_description_from_entry(entry)
-			template = self.__get_template_from_entry(entry)
+			nodes = entry.getchildren()
+			id_ = self.__get_id_from_entry(nodes)
+			trigger = self.__get_trigger_from_entry(nodes)
+			description = self.__get_description_from_entry(nodes)
+			template = self.__get_template_from_entry(nodes)
 			key = id_ + "|" + trigger
 			data = key, description, template
 		except:

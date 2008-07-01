@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2007 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -19,46 +19,46 @@
 # USA
 
 """
-This module documents a class that defines the behavior of the remove
-button in the template editor.
+This module documents a class that implements the open button for the
+file chooser
 
 @author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2007 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
+@organization: Scribes
+@copyright: Copyright © 2008 Lateef Alabi-Oki
+@license: GNU GPLv3 or Later
 @contact: mystilleef@gmail.com
 """
 
 class Button(object):
 	"""
-	This class defines the behavior of the export button.
+	This class defines the properties and behavior of the open button on
+	the file chooser.
 	"""
 
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("description-view-sensitivity", self.__sensitivity_cb)
-		self.__sigid2 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid3 = self.__button.connect("clicked", self.__clicked_cb)
+		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = self.__button.connect("clicked", self.__clicked_cb)
+		self.__button.set_property("sensitive", True)
 
 	def __init_attributes(self, manager, editor):
-		self.__manager = manager
 		self.__editor = editor
-		self.__button = manager.glade.get_widget("ExportButton")
+		self.__manager = manager
+		self.__button = manager.eglade.get_widget("ExportButton")
 		return
 
-	def __sensitivity_cb(self, manager, sensitive):
-		self.__button.set_property("sensitive", sensitive)
-		return
-
-	def __destroy_cb(self, manager):
-		self.__editor.disconnect_signal(self.__sigid1, manager)
-		self.__editor.disconnect_signal(self.__sigid2, manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__button)
+	def __destroy(self):
+		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid2, self.__button)
 		self.__button.destroy()
 		del self
 		self = None
 		return
 
-	def __clicked_cb(self, button):
-		self.__manager.emit("show-export-window")
-		return True
+	def __destroy_cb(self, *args):
+		self.__destroy()
+		return
+
+	def __clicked_cb(self, *args):
+		self.__manager.emit("export-button-clicked")
+		return
