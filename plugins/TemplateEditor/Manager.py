@@ -139,10 +139,8 @@ class Manager(GObject):
 		TreeView(self, editor)
 		from Window import Window
 		Window(self, editor)
-#		from LinkButton import LinkButton
-#		LinkButton(self, editor)
-#		from HelpButton import HelpButton
-#		HelpButton(self, editor)
+		from LinkButton import Button
+		Button(self, editor)
 
 	def __init_attributes(self, editor):
 		from os.path import join
