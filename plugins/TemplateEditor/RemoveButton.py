@@ -41,49 +41,16 @@ class Button(object):
 		self.__sigid3 = self.__button.connect("clicked", self.__clicked_cb)
 
 	def __init_attributes(self, manager, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the RemoveButton instance.
-		@type self: A RemoveButton object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__manager = manager
 		self.__editor = editor
 		self.__button = manager.glade.get_widget("RemoveButton")
 		return
 
 	def __sensitivity_cb(self, manager, sensitive):
-		"""
-		Handles callback when the "description-treeview-sensitivity" signal is emitted.
-
-		@param self: Reference to the RemoveButton instance.
-		@type self: A RemoveButton object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-
-		@param sensitive: The sensitivity of the description treeview.
-		@type sensitive: A Boolean object.
-		"""
 		self.__button.set_property("sensitive", sensitive)
 		return
 
 	def __destroy_cb(self, manager):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the RemoveButton instance.
-		@type self: A RemoveButton object.
-
-		@param manager: Reference to the TemplateManager instance.
-		@type manager: A TemplateManager object.
-		"""
 		self.__editor.disconnect_signal(self.__sigid1, manager)
 		self.__editor.disconnect_signal(self.__sigid2, manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__button)
@@ -93,18 +60,6 @@ class Button(object):
 		return
 
 	def __clicked_cb(self, button):
-		"""
-		Handles callback when the "clicked" signal is emitted.
-
-		@param self: Reference to the RemoveButton instance.
-		@type self: A RemoveButton object.
-
-		@param button: Reference to the RemoveButton instance.
-		@type button: A RemoveButton object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		self.__button.set_property("sensitive", False)
 		self.__manager.emit("remove-templates")
 		return True

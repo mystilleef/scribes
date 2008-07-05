@@ -31,8 +31,8 @@ bookmark operations.
 
 name = "Bookmark Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-version = 0.1
-autoload = False
+version = 0.2
+autoload = True
 class_name = "BookmarkPlugin"
 short_description = "Bookmark operations."
 long_description = """This plug-in performs operations to bookmark \
@@ -44,35 +44,14 @@ class BookmarkPlugin(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize the plug-in object.
-
-		@param self: Reference to the BookmarkPlugin instance.
-		@type self: A BookmarkPlugin object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__trigger = None
 
 	def load(self):
-		"""
-		Initialize the BookmarkPlugin instance.
-
-		@param self: Reference to the BookmarkPlugin instance.
-		@type self: An BookmarkPlugin object.
-		"""
-		from Bookmark.Trigger import BookmarkTrigger
-		self.__trigger = BookmarkTrigger(self.__editor)
+		from Bookmark.Trigger import Trigger
+		self.__trigger = Trigger(self.__editor)
 		return
 
 	def unload(self):
-		"""
-		Destroy the BookmarkPlugin instance.
-
-		@param self: Reference to the BookmarkPlugin instance.
-		@type self: An BookmarkPlugin object.
-		"""
-		self.__trigger.emit("destroy")
+		self.__trigger.destroy()
 		return
