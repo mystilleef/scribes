@@ -5,6 +5,9 @@ class Marker(object):
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("toggle-bookmark", self.__toggle_bookmark_cb)
+		self.__sigid3 = editor.connect("loaded-document", self.__restore_cb)
+		self.__sigid4 = editor.connect("renamed-document", self.__restore_cb)
+		self.__sigid5 = manager.connect("remove-all-bookmarks", self.__remove_bookmarks_cb)
 		self.__restore_marks()
 
 	def __init_attributes(self, manager, editor):
@@ -40,31 +43,25 @@ class Marker(object):
 		return
 
 	def __mark(self, line=None):
-		try:
-			iterator = self.__iter_at_line(line)
-			if iterator is None: raise ValueError
-			self.__editor.textbuffer.create_source_mark(None, "scribes_bookmark", iterator)
-		except ValueError:
-			pass
+		iterator = self.__iter_at_line(line)
+		if iterator is None: return
+		self.__editor.textbuffer.create_source_mark(None, "scribes_bookmark", iterator)
 		return
 
 	def __unmark(self, line=None):
-		try:
-			iterator = self.__iter_at_line(line)
-			if iterator is None: raise ValueError
-			end = self.__editor.forward_to_line_end(iterator.copy())
-			self.__editor.textbuffer.remove_source_marks(iterator, end, "scribes_bookmark")
-		except ValueError:
-			pass
+		iterator = self.__iter_at_line(line)
+		if iterator is None: return
+		end = self.__editor.forward_to_line_end(iterator.copy())
+		self.__editor.textbuffer.remove_source_marks(iterator, end, "scribes_bookmark")
 		return
 
-	def __remove_all_marks(self, lines):
-		if not lines: return
-		unmark = self.__unmark
-		[unmark(line) for line in lines]
+	def __remove_all_marks(self):
+		start, end = self.__editor.textbuffer.get_bounds()
+		self.__editor.textbuffer.remove_source_marks(start, end, "scribes_bookmark")
 		return
 
 	def __restore_marks(self):
+		self.__remove_all_marks()
 		uri = self.__editor.uri
 		if uri in (None, ""): return
 		from Metadata import get_value
@@ -94,6 +91,8 @@ class Marker(object):
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		del self
 		self = None
 		return
@@ -104,4 +103,12 @@ class Marker(object):
 
 	def __toggle_bookmark_cb(self, *args):
 		self.__toggle_mark()
+		return False
+
+	def __restore_cb(self, *args):
+		self.__restore_marks()
+		return False
+
+	def __remove_bookmarks_cb(self, *args):
+		self.__remove_all_marks()
 		return False

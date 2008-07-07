@@ -47,9 +47,7 @@ def open_database(flag="c"):
 def get_value(uri):
 	try:
 		database = open_database("r")
-		bookmarks = database[uri]
-	except KeyError:
-		bookmarks = None
+		bookmarks = database[uri] if database.has_key(uri) else None
 	finally:
 		database.close()
 	return bookmarks
@@ -61,9 +59,7 @@ def set_value(uri, data):
 		if data:
 			database[uri] = data
 		else:
-			del database[uri]
-	except:
-		pass
+			if database.has_key(uri): del database[uri]
 	finally:
 		database.close()
 	return

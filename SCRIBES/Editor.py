@@ -80,18 +80,6 @@ class Editor(GObject):
 	}
 
 	def __init__(self, manager, file_uri=None, encoding=None):
-		"""
-		Initialize the object.
-
-		@param self: Reference to this editor instance.
-		@type self: An Editor object.
-
-		@param manager: An object that manages editor instances.
-		@type manager: An EditorManager object.
-
-		@param file_uri: A file to open.
-		@param type: A String object.
-		"""
 		GObject.__init__(self)
 		self.__signal_id_1 = self.connect("initialized-attributes", self.__initialized_attributes_cb)
 		self.__signal_id_2 = self.connect("created-widgets", self.__created_widgets_cb)
@@ -109,9 +97,9 @@ class Editor(GObject):
 		self.__signal_id_14 = self.connect_after("reload-document", self.__reload_document_cb)
 		self.__signal_id_15 = self.connect("started-core-services", self.__started_core_services_cb)
 #		self.connect_after("loaded-document", self.__loaded_document_after_cb)
-		from gobject import idle_add, PRIORITY_HIGH, PRIORITY_LOW
+#		from gobject import idle_add, PRIORITY_HIGH, PRIORITY_LOW
 		self.__init_attributes(manager, file_uri, encoding)
-		idle_add(self.__precompile_methods, priority=5000)
+#		idle_add(self.__precompile_methods, priority=5000)
 
 ########################################################################
 #
@@ -1045,9 +1033,9 @@ class Editor(GObject):
 			pass
 		finally:
 			# Initialize general plugins
-			idle_add(self.__initialize_plugins, priority=5000)
+			idle_add(self.__initialize_plugins, priority=5999)
 			# Initialize language specific plugins
-			idle_add(self.__initialize_language_plugins, priority=5000)
+			idle_add(self.__initialize_language_plugins, priority=9999)
 		return False
 
 	def __initialize_plugins(self):

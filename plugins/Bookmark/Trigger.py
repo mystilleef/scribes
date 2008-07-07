@@ -34,24 +34,30 @@ class Trigger(object):
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.textview.connect_after("populate-popup", self.__popup_cb)
 		self.__sigid2 = self.__trigger1.connect("activate", self.__toggle_bookmark_cb)
+		self.__sigid3 = self.__trigger2.connect("activate", self.__remove_all_bookmarks_cb)
+		self.__sigid4 = self.__trigger3.connect("activate", self.__show_browser_cb)
 
 	def __init_attributes(self, editor):
 		from Manager import Manager
 		self.__manager = Manager(editor)
 		self.__editor = editor
-		self.__trigger1 = self.__create_toggle_bookmark_trigger()
+		self.__trigger1 = self.__create_trigger("toggle-bookmark", "ctrl - d")
+		self.__trigger2 = self.__create_trigger("remove-all-bookmarks", "ctrl - B")
+		self.__trigger3 = self.__create_trigger("show-bookmark-browser", "ctrl - b")
 		return
 
-	def __create_toggle_bookmark_trigger(self):
-		trigger = self.__editor.create_trigger("toggle-bookmark", "ctrl - d")
+	def __create_trigger(self, name, shortcut):
+		trigger = self.__editor.create_trigger(name, shortcut)
 		self.__editor.add_trigger(trigger)
 		return trigger
 
 	def destroy(self):
-		triggers = (self.__trigger1,)
+		triggers = (self.__trigger1, self.__trigger2, self.__trigger3)
 		self.__editor.remove_triggers(triggers)
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor.textview)
 		self.__editor.disconnect_signal(self.__sigid2, self.__trigger1)
+		self.__editor.disconnect_signal(self.__sigid3, self.__trigger2)
+		self.__editor.disconnect_signal(self.__sigid4, self.__trigger3)
 		del self
 		self = None
 		return
@@ -64,4 +70,11 @@ class Trigger(object):
 
 	def __toggle_bookmark_cb(self, *args):
 		self.__manager.toggle_bookmark()
+		return False
+
+	def __remove_all_bookmarks_cb(self, *args):
+		self.__manager.remove_bookmarks()
+		return False
+
+	def __show_browser_cb(self, *args):
 		return False

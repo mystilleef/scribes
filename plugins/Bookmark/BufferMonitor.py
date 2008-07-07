@@ -1,4 +1,4 @@
-class Monitor(object):
+﻿class Monitor(object):
 
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
@@ -11,32 +11,44 @@ class Monitor(object):
 		self.__buffer = editor.textbuffer
 		return
 
-	def __get_marks(self, mark):
+	def __find_first_mark(self):
+		iterator = self.__buffer.get_bounds()[0]
+		marks = self.__buffer.get_source_marks_at_iter(iterator, "scribes_bookmark")
+		if marks: return marks[0]
+		found_mark = self.__buffer.forward_iter_to_source_mark(iterator, "scribes_bookmark")
+		if found_mark is False: raise ValueError
+		marks = self.__buffer.get_source_marks_at_iter(iterator, "scribes_bookmark")
+		return marks[0]
+
+	def __get_all_marks(self, mark):
 		marks = []
-		marks.append(mark)
+		append = marks.append
+		append(mark)
 		while True:
 			mark = mark.next("scribes_bookmark")
-			if not mark: break
-			marks.append(mark)
+			if mark is None: break
+			append(mark)
 		return marks
+
+	def __get_lines_from_marks(self, marks):
+		iter_at_mark = self.__buffer.get_iter_at_mark
+		get_line_from_mark = lambda mark: iter_at_mark(mark).get_line()
+		lines = [get_line_from_mark(mark) for mark in marks]
+		return lines
 
 	def __send_marked_lines(self):
 		try:
-			iterator = self.__buffer.get_bounds()[0]
-			found = self.__buffer.forward_iter_to_source_mark(iterator, "scribes_bookmark")
-			if found is False: raise ValueError
-			mark = self.__buffer.get_source_marks_at_iter(iterator, "scribes_bookmark")[0]
-			marks = self.__get_marks(mark)
-			get_line = lambda iterator: iterator.get_line()
-			get_iter = self.__buffer.get_iter_at_mark
-			data = [get_line(get_iter(mark)) for mark in marks]
+			mark = self.__find_first_mark()
+			marks = self.__get_all_marks(mark)
+			lines = self.__get_lines_from_marks(marks)
 		except ValueError:
-			data = []
-		self.__manager.emit("marked-lines", tuple(data))
-		return False
+			lines = []
+		finally:
+			self.__manager.emit("marked-lines", tuple(lines))
+		return
 
 	def __destroy(self):
-		self.__send_marked_lines()
+#		self.__send_marked_lines()
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__buffer)
 		del self

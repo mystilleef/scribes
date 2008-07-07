@@ -35,17 +35,7 @@ class PluginManager(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the PluginManager instance.
-		@type self: A PluginManager object.
-
-		@param editor: Reference to the editor object.
-		@type editor: A editor object.
-		"""
 		try:
-#			self.__precompile_methods() this is a test file.
 			from Exceptions import PluginFolderNotFoundError
 			self.__init_attributes(editor)
 			self.__check_plugin_folders()
@@ -54,21 +44,10 @@ class PluginManager(object):
 			self.__registration_id = self.__editor.register_object()
 			self.__signal_id_1 = editor.connect("close-document", self.__quit_cb)
 			self.__signal_id_2 = editor.connect("close-document-no-save", self.__quit_cb)
-#			from gobject import idle_add, PRIORITY_LOW
-#			idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		except PluginFolderNotFoundError:
 			print "Error: No plugin folder found"
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the PluginManager instance.
-		@type self: A PluginManager object.
-
-		@param editor: Reference to the editor instance.
-		@type editor: A editor object.
-		"""
 		self.__editor = editor
 		# A set of initialized plugins. Each element in the set is a
 		# tuple with format (plugin_name, plugin_version, plugin_object).
@@ -81,15 +60,6 @@ class PluginManager(object):
 		return
 
 	def __init_module(self, filename, plugin_folder):
-		"""
-		Initialize a plugin module file.
-
-		@param self: Reference to the PluginManager instance.
-		@type self: A PluginManager object.
-
-		@param filename: A possible plugin file.
-		@type filename: A String object.
-		"""
 		from Exceptions import PluginModuleValidationError
 		from Exceptions import DuplicatePluginError, DoNotLoadError
 		try:
@@ -113,18 +83,6 @@ class PluginManager(object):
 		return False
 
 	def __load_plugin(self, PluginClass):
-		"""
-		Initialize a plugin.
-
-		@param self: Reference to the PluginManager instance.
-		@type self: A PluginManager object.
-
-		@param PluginClass: The class object of a plugin.
-		@type PluginClass: A Class object.
-
-		@return: A plugin object.
-		@rtype: A Plugin object.
-		"""
 		plugin_object = PluginClass(self.__editor)
 		plugin_object.load()
 		return plugin_object
@@ -138,52 +96,30 @@ class PluginManager(object):
 		return False
 
 	def __load_plugins(self):
-		"""
-		Initialize plugins found in plugin modules.
-
-		@param self: Reference to the PluginManager instance.
-		@type self: A PluginManager object.
-		"""
 		from os import listdir
 		from gobject import idle_add, PRIORITY_LOW
 		core_files = listdir(self.__editor.core_plugin_folder)
 		#from thread import start_new_thread
 		for filename in core_files:
 		#	start_new_thread(self.__init_module, (filename, self.__editor.core_plugin_folder))
-			idle_add(self.__init_module, filename, self.__editor.core_plugin_folder, priority=PRIORITY_LOW)
+			self.__init_module(filename, self.__editor.core_plugin_folder)#, priority=PRIORITY_LOW)
 		home_files = listdir(self.__editor.home_plugin_folder)
 		for filename in home_files:
 			#start_new_thread(self.__init_module, (filename, self.__editor.home_plugin_folder))
-			idle_add(self.__init_module, filename, self.__editor.home_plugin_folder, priority=PRIORITY_LOW)
+#			idle_add(self.__init_module, filename, self.__editor.home_plugin_folder, priority=PRIORITY_LOW)
+			self.__init_module(filename, self.__editor.home_plugin_folder)
 		return False
 
 	def __unload_plugins(self):
-		"""
-		Unload all plugins.
-
-		@param self: Reference to the PluginManager instance.
-		@type self: A PluginManager object.
-		"""
 		from gobject import idle_add, PRIORITY_LOW
 		#from thread import start_new_thread
 		for plugin_info in self.__plugin_objects.copy():
 			#start_new_thread(self.__unload_plugin, (plugin_info,))
-			idle_add(self.__unload_plugin, plugin_info, priority=PRIORITY_LOW)
+			#idle_add(self.__unload_plugin, plugin_info, priority=PRIORITY_LOW)
+			self.__unload_plugin(plugin_info)
 		return False
 
 	def __get_module_info(self, module):
-		"""
-		Extract metadata from plugin module.
-
-		@param self: Reference to the PluginManager instance.
-		@type self: A PluginManager object.
-
-		@param module: A plugin module.
-		@type module: A Module object.
-
-		@return: plugin name, plugin version and plugin class object
-		@rtype: A Tuple object.
-		"""
 		try:
 			if not hasattr(module, "autoload"):
 				raise Exception
@@ -213,18 +149,6 @@ class PluginManager(object):
 		return plugin_name, plugin_version, PluginClass
 
 	def __unload_duplicate_plugins(self, name, version):
-		"""
-		Unload old duplicate plugin versions to avoid conflict.
-
-		@param self: Reference to the PluginManager instance.
-		@type self: A PluginManager object.
-
-		@param name: Name of a plugin.
-		@type name: A String object.
-
-		@param version: Version of a plugin.
-		@type version: A Float object.
-		"""
 		for info in self.__plugin_objects.copy():
 			if name in info:
 				if (version > info[1]):
@@ -237,15 +161,6 @@ class PluginManager(object):
 		return
 
 	def __check_plugin_folders(self):
-		"""
-		Check plugin folders exist.
-
-		If the plugin folder in ~/.gnome2/Scribes does not exist, create
-		it.
-
-		@param self: Reference to the PluginManager instance.
-		@type self: A PluginManager object.
-		"""
 		from os import makedirs, path
 		from Exceptions import PluginFolderNotFoundError
 		filename = path.join(self.__editor.core_plugin_folder, "__init__.py")
@@ -264,24 +179,12 @@ class PluginManager(object):
 		return
 
 	def __set_plugin_search_path(self):
-		"""
-		Add plug-in folders to Python's search path.
-
-		@param self: Reference to the ScribesPluginManager instance.
-		@type self: A ScribesPluginManager object.
-		"""
 		from sys import path
 		if not (self.__editor.core_plugin_folder in path): path.insert(0, self.__editor.core_plugin_folder)
 		if not (self.__editor.home_plugin_folder in path): path.insert(0, self.__editor.home_plugin_folder)
 		return
 
 	def __destroy(self):
-		"""
-		Destroy this object.
-
-		@param self: Reference to the PluginManager instance.
-		@type self: A PluginManager object.
-		"""
 		self.__plugin_modules.clear()
 		self.__plugin_objects.clear()
 		self.__editor.unregister_object(self.__registration_id)
@@ -301,17 +204,9 @@ class PluginManager(object):
 		return False
 
 	def __quit_cb(self, *args):
-		"""
-		Handles callback when the "close-document" or "close-document-no-save"
-		signal is emitted.
-
-		The function is called when the editor is closing.
-
-		@param self: Reference to the PluginManager instance.
-		@type self: A PluginManager object.
-		"""
 		self.__is_quiting = True
 		# Unload plugins and destroy PluginManager.
-		from gobject import idle_add
-		idle_add(self.__unload_plugins)
+#		from gobject import idle_add
+#		idle_add(self.__unload_plugins)
+		self.__unload_plugins()
 		return

@@ -36,6 +36,7 @@ class Manager(GObject):
 	__gsignals__ = {
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"toggle-bookmark": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"remove-all-bookmarks": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"marked-lines": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
@@ -58,4 +59,8 @@ class Manager(GObject):
 
 	def toggle_bookmark(self):
 		self.emit("toggle-bookmark")
-		return
+		return False
+
+	def remove_bookmarks(self):
+		self.emit("remove-all-bookmarks")
+		return False
