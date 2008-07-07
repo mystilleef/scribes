@@ -35,12 +35,6 @@ scribes_dbus_service = "net.sourceforge.Scribes"
 scribes_dbus_path = "/net/sourceforge/Scribes"
 
 def main(argv=None):
-	"""
-	Main entry point to the program.
-
-	@param argv: Command line arguments.
-	@type argv:	A List object.
-	"""
 	if argv:
 		uris = __get_uris(argv)
 		__open(uris)
@@ -50,29 +44,12 @@ def main(argv=None):
 	return
 
 def __open(uris=None):
-	"""
-	Start a new instance of the text editor.
-
-	@param uris: A list of files to open, or None.
-	@type uris: A List object.
-	"""
 	__open_via_dbus(uris)
 	#__init_threads()
 	__launch_new_editor(uris)
 	return
 
 def __open_via_dbus(uris=None):
-	"""
-	Use a running instance of the text editor to open new windows or
-	files.
-
-	This function prevents the text editor from spawning multiple
-	process. All text editor instances share the same process, python
-	interpreter and main loop.
-
-	@param uris: A list of files to open, or None.
-	@type uris: A List object.
-	"""
 	dbus_service = __get_dbus_service()
 	if not dbus_service: return
 	if not uris: uris = ""
@@ -81,26 +58,11 @@ def __open_via_dbus(uris=None):
 	return
 
 def __launch_new_editor(uris=None):
-	"""
-	Create one or more instances of the text editor.
-
-	If files are passed as arguments, each file is loaded in a new
-	editor window.
-
-	@param uris: A list of files to open, or None.
-	@type uris: A List object.
-
-	@return: False to prevent repeated calls of this function.
-	@rtype: A Boolean object.
-	"""
 	from InstanceManager import EditorManager
 	EditorManager().open_files(uris)
 	return False
 
 def __init_threads():
-	"""
-	Initialize GObject, DBus and GTK/GDK threads.
-	"""
 	from gobject import threads_init
 	threads_init()
 	from dbus.glib import threads_init
@@ -110,12 +72,6 @@ def __init_threads():
 	return
 
 def __get_dbus_service():
-	"""
-	Get a D-Bus object representing a running Scribes process.
-
-	@param return: An object representing a running Scribes process.
-	@param type: #FIXME: ????, or None.
-	"""
 	from info import dbus_iface, session_bus
 	services = dbus_iface.ListNames()
 	if not (scribes_dbus_service in services): return None
@@ -123,14 +79,6 @@ def __get_dbus_service():
 	return proxy_object
 
 def __get_uris(argv):
-	"""
-	Process arguments passed to the text editor.
-
-	This function ends the process if there are no files to open.
-
-	@param return: A list of files to open, if any.
-	@param type: A List object.
-	"""
 	from commandline import CommandLineProcessor
 	arguments = CommandLineProcessor(argv)
 	uris = arguments.uri_list
@@ -138,9 +86,6 @@ def __get_uris(argv):
 	return uris
 
 def __mainloop():
-	"""
-	Initialize the GObject mainloop.
-	"""
 	__fork_scribes()
 	from utils import init_gnome
 	init_gnome()
@@ -149,10 +94,6 @@ def __mainloop():
 	return
 
 def __fork_scribes():
-	"""
-	Detach Scribes from the shell terminal and run it in its own
-	process.
-	"""
 	if not __can_fork(): return
 	from os import fork
 	pid = fork()
@@ -162,17 +103,11 @@ def __fork_scribes():
 	return
 
 def __can_fork():
-	"""
-	Whether or not to detach Scribes from the shell terminal.
-
-	@param return: True to detach Scribes from the shell terminal.
-	@param type: A Boolean object.
-	"""
 	from ForkScribesMetadata import get_value
 	return get_value()
 
-try:
-	from psyco import bind
-	bind(__mainloop)
-except:
-	pass
+#try:
+#	from psyco import bind
+#	bind(__mainloop)
+#except:
+#	pass

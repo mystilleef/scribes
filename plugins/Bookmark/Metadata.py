@@ -46,6 +46,7 @@ def open_database(flag="c"):
 
 def get_value(uri):
 	try:
+		uri = str(uri)
 		database = open_database("r")
 		bookmarks = database[uri] if database.has_key(uri) else None
 	finally:
@@ -56,6 +57,7 @@ def set_value(uri, data):
 	try:
 		if uri in (None, ""): return
 		database = open_database("w")
+		uri = str(uri)
 		if data:
 			database[uri] = data
 		else:

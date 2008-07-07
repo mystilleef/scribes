@@ -98,7 +98,12 @@ class Editor(GObject):
 		self.__signal_id_15 = self.connect("started-core-services", self.__started_core_services_cb)
 #		self.connect_after("loaded-document", self.__loaded_document_after_cb)
 #		from gobject import idle_add, PRIORITY_HIGH, PRIORITY_LOW
-		self.__init_attributes(manager, file_uri, encoding)
+		try:
+			# I know...I know, this is evil. I'll fix it.
+			self.__init_attributes(manager, file_uri, encoding)
+		except:
+			print "Awwww cute! I'm crashing because it is the safest thing to. SORRY! :-D"
+			raise SystemExit
 #		idle_add(self.__precompile_methods, priority=5000)
 
 ########################################################################

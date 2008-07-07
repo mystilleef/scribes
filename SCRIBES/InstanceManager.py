@@ -38,29 +38,17 @@ class EditorManager(object):
 	"""
 
 	def __init__(self):
-		"""
-		Initialize the object.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-		"""
 		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
 		self.__init_attributes()
 		self.__init_i18n()
 		from gobject import idle_add, timeout_add
-		idle_add(self.__precompile_methods, priority=5000)
+#		idle_add(self.__precompile_methods, priority=5000)
 		timeout_add(300000, self.__init_garbage_collector, priority=9999)
 		timeout_add(21000, self.__init_psyco, priority=5555)
 
 	def __init_attributes(self):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-		"""
 		from collections import deque
 		self.__editor_instances = deque([])
 		self.__registration_ids = deque([])
@@ -77,18 +65,6 @@ class EditorManager(object):
 ########################################################################
 
 	def register_editor(self, instance):
-		"""
-		Register successfully created editor instances.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-
-		@param instance: Reference to an Editor instance
-		@type instance: An Editor object.
-
-		@return: Return a unique number (id)
-		@rtype: An Integer object.
-		"""
 		self.__editor_instances.append(instance)
 		from utils import generate_random_number
 		number =  generate_random_number(self.__registration_ids)
@@ -96,22 +72,6 @@ class EditorManager(object):
 		return number
 
 	def unregister_editor(self, instance, number):
-		"""
-		Unregister an editor instance.
-
-		This function removes an editor instance from the managed queue
-		when the instance is no longer in use. When no editor instances
-		exists, the function quits Scribes.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-
-		@param instance: Reference to an Editor instance.
-		@type instance: An Editor object.
-
-		@param number: A unique number associated with an editor instance.
-		@param type: An Integer object.
-		"""
 		try:
 			self.__editor_instances.remove(instance)
 			self.__registration_ids.remove(number)
@@ -149,12 +109,6 @@ class EditorManager(object):
 		return self.__save_process_monitor.get_processor_object()
 
 	def open_window(self):
-		"""
-		Open a new editor window.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-		"""
 		if self.__editor_instances:
 			editor = self.__editor_instances[0]
 			editor.trigger("new_window")
@@ -163,63 +117,30 @@ class EditorManager(object):
 		return False
 
 	def open_files(self, uris=None, encoding="utf-8"):
-		"""
-		Open new files if they are not already open.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-
-		@param uris: A list of files to open.
-		@type uris: A list object.
-		"""
 		if uris:
 			has_uri = lambda x: x in self.get_uris()
 			has_not_uri = lambda x: not (x in self.get_uris())
 			open_file = lambda x: self.__open_file(x, encoding)
 			# Focus respective window if file is already open.
-			map(self.focus_file, filter(has_uri, uris))
+			[self.focus_file(uri) for uri in uris if has_uri(uri)]
+#			map(self.focus_file, filter(has_uri, uris))
 			# Open new file if it's not already open.
-			map(open_file, filter(has_not_uri, uris))
+			[open_file(uri) for uri in uris if has_not_uri(uri)]
+#			map(open_file, filter(has_not_uri, uris))
 		else:
 			self.open_window()
 		return False
 
 	def close_files(self, uris):
-		"""
-		Close files provided as arguments.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-
-		@param uris: A list of files to open.
-		@type uris: A list object.
-		"""
 		if not uris: return False
-		for uri in uris:
-			self.__close_file(uri)
+		[self.__close_file(uri) for uri in uris]
 		return False
 
 	def close_all_windows(self):
-		"""
-		Close all windows.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-		"""
-		for instance in self.__editor_instances:
-			close_file(instance)
+		[close_file(instance) for instance in self.__editor_instances]
 		return False
 
 	def focus_file(self, uri):
-		"""
-		Focus a window associated with a uri.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-
-		@param uri: A URI.
-		@type uri: A String object.
-		"""
 		same = lambda editor: str(editor.uri) == uri
 		found_instance = filter(same, self.__editor_instances)
 		if not found_instance: return False
@@ -235,29 +156,11 @@ class EditorManager(object):
 		return False
 
 	def get_uris(self):
-		"""
-		Return a list of files loaded in editor windows.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-
-		@param return: A list of files loaded in editor windows.
-		@type type: A List object.
-		"""
 		if not self.__editor_instances: return []
 		uris = [str(editor.uri) for editor in self.__editor_instances if editor.uri]
 		return uris
 
 	def get_editor_instances(self):
-		"""
-		Return all editor instances.
-
-		@param self: Reference to the InstanceManager instance.
-		@type self: An InstanceManager object.
-
-		@return: All editor instances.
-		@rtype: A List object.
-		"""
 		return self.__editor_instances
 
 	def init_authentication_manager(self):
@@ -272,15 +175,6 @@ class EditorManager(object):
 ########################################################################
 
 	def __open_file(self, uri, encoding="utf-8"):
-		"""
-		Open a file in an editor window.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-
-		@param uri: A file to open.
-		@type uri: A String object.
-		"""
 		if not uri: return False
 		instances = self.__editor_instances
 		empty_windows = [x for x in instances if x.can_load_file]
@@ -293,15 +187,6 @@ class EditorManager(object):
 		return False
 
 	def __close_file(self, uri):
-		"""
-		Close an editor window containing a file.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-
-		@param uri: A file to close.
-		@type uri: A String object.
-		"""
 		from itertools import ifilter
 		same = lambda editor: editor.uri == uri
 		from gobject import idle_add
@@ -310,26 +195,11 @@ class EditorManager(object):
 		return False
 
 	def __new_editor(self, uri=None, encoding=None):
-		"""
-		Create a new editor instance.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-
-		@param uri: A file to open.
-		@type uri: A String object.
-		"""
 		from Editor import Editor
 		Editor(self, uri, encoding)
 		return False
 
 	def __init_garbage_collector(self):
-		"""
-		Call the Python garbage collector.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: An EditorManager object.
-		"""
 		from gc import collect
 		collect()
 		return True
@@ -345,12 +215,6 @@ class EditorManager(object):
 		return False
 
 	def __init_i18n(self):
-		"""
-		Initialize gettext modules for internationalization
-
-		@param self: Reference to the InstanceManager instance.
-		@type self: An InstanceManager object.
-		"""
 		from info import scribes_data_path
 		from os import path
 		locale_folder = path.join(scribes_data_path, "locale")
@@ -387,12 +251,6 @@ class EditorManager(object):
 		return False
 
 	def __remove_swap_area(self):
-		"""
-		Remove temporary saving area.
-
-		@param self: Reference to the InstanceManager instance.
-		@type self: An InstanceManager object.
-		"""
 		from glob import glob
 		from info import home_folder
 		files = glob(home_folder + "/" + ".Scribes*scribes")
@@ -407,12 +265,6 @@ class EditorManager(object):
 		return
 
 	def __quit(self):
-		"""
-		Quit Scribes.
-
-		@param self: Reference to the EditorManager instance.
-		@type self: A EditorManager object.
-		"""
 		self.__remove_swap_area()
 		self.__save_process_monitor.destroy()
 		raise SystemExit
