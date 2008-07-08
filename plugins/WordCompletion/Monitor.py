@@ -36,18 +36,6 @@ class CompletionMonitor(object):
 	"""
 
 	def __init__(self, manager, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the CompletionMonitor instance.
-		@type self: A CompletionMonitor object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(manager, editor)
 		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = self.__manager.connect("update", self.__update_cb)
@@ -60,22 +48,10 @@ class CompletionMonitor(object):
 		self.__signal_id_9 = editor.textview.connect_after("paste-clipboard", self.__generic_cb)
 		self.__signal_id_10 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_11 = manager.connect("is-visible", self.__is_visible_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the CompletionMonitor instance.
-		@type self: A CompletionMonitor object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__manager = manager
 		self.__match_found = False
@@ -93,20 +69,11 @@ class CompletionMonitor(object):
 ########################################################################
 
 	def __check_buffer(self):
-		"""
-		Check the buffer for words for completion.
-
-		@param self: Reference to the CompletionMonitor instance.
-		@type self: A CompletionMonitor object.
-		"""
 		try:
 			word = self.__editor.get_word_before_cursor()
 			if word:
 				matches = self.__find_matches(word)
-				if matches:
-					self.__emit_match_found(matches)
-				else:
-					self.__emit_no_match_found()
+				self.__emit_match_found(matches) if matches else self.__emit_no_match_found()
 			else:
 				self.__emit_no_match_found()
 		except:
@@ -126,22 +93,6 @@ class CompletionMonitor(object):
 		return
 
 	def __find_matches(self, word):
-		"""
-		Return a list of words that match against keys in the completion
-		dictionary.
-
-		Words found are ranked based on their number of occurrence in
-		the buffer.
-
-		@param self: Reference to the CompletionMonitor instance.
-		@type self: A CompletionMonitor object.
-
-		@param word: Word to match against the completion dictionary.
-		@type word: A String object.
-
-		@return: A list of words that start with word.
-		@rtype: A List object.
-		"""
 		dictionary = self.__dictionary.get_dictionary()
 		if not dictionary: return None
 		match_list = [list(items) for items in dictionary.items() \
@@ -152,25 +103,6 @@ class CompletionMonitor(object):
 		return matches
 
 	def __sort_matches(self, x, y):
-		"""
-		Sort matches based on word length and occurrence.
-
-		Shorter words appear higher on the list. If words have the same
-		length, the word with a higher occurrence appears higher on the
-		list.
-
-		@param self: Reference to the CompletionMonitor instance.
-		@type self: A CompletionMonitor object.
-
-		@param x: First comparison item.
-		@type x: A List object.
-
-		@param y: Second comparison item.
-		@type y: A List object.
-
-		@return: Returns 0, 1, -1 depending on importance
-		@rtype: A Integer object.
-		"""
 		if (len(x[0]) < len(y[0])): return -1
 		if (len(x[0]) > len(y[0])): return 1
 		if (len(x[0]) == len(y[0])):
@@ -200,12 +132,6 @@ class CompletionMonitor(object):
 		return False
 
 	def __create_completion_dictionary(self):
-		"""
-		Create a completion dictionary.
-
-		@param self: Reference to the CompletionMonitor instance.
-		@type self: A CompletionMonitor object.
-		"""
 		try:
 			from SCRIBES.Exceptions import GlobalStoreObjectDoesNotExistError
 			dictionary = self.__editor.get_global_object("WordCompletionDictionary")
@@ -227,15 +153,6 @@ class CompletionMonitor(object):
 ########################################################################
 
 	def __insert_text_cb(self, textbuffer, iterator, text, length):
-		"""
-		Handles callback when the "insert-text" signal is emitted.
-
-		@param self: Reference to the CompletionMonitor instance.
-		@type self: A CompletionMonitor object.
-
-		@param textbuffer: The text editor's buffer
-		@type textbuffer: A ScribesTextBuffer object.
-		"""
 		try:
 			if (length > 1): raise ValueError
 			from gobject import idle_add, source_remove, PRIORITY_LOW, timeout_add
@@ -243,10 +160,10 @@ class CompletionMonitor(object):
 				source_remove(self.__insert_text_id)
 			except:
 				pass
-			if self.__completion_window_is_visible:
-				self.__insert_text_id = idle_add(self.__check_buffer, priority=9999)
-			else:
-				self.__insert_text_id = timeout_add(500, self.__check_buffer, priority=9999)
+#			if self.__completion_window_is_visible:
+			self.__insert_text_id = idle_add(self.__check_buffer, priority=9999)
+#			else:
+#				self.__insert_text_id = idle_add(self.__check_buffer, priority=9999)
 		except ValueError:
 			self.__emit_no_match_found()
 		return False

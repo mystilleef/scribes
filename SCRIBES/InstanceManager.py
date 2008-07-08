@@ -141,8 +141,7 @@ class EditorManager(object):
 		return False
 
 	def focus_file(self, uri):
-		same = lambda editor: str(editor.uri) == uri
-		found_instance = filter(same, self.__editor_instances)
+		found_instance = [editor for editor in self.__editor_instances if str(editor.uri) == uri]
 		if not found_instance: return False
 		editor = found_instance[0]
 		editor.window.set_focus_on_map(True)
@@ -161,7 +160,7 @@ class EditorManager(object):
 		return uris
 
 	def get_editor_instances(self):
-		return self.__editor_instances
+		return self.__editor_instances 
 
 	def init_authentication_manager(self):
 		from gnome.ui import authentication_manager_init
@@ -187,11 +186,8 @@ class EditorManager(object):
 		return False
 
 	def __close_file(self, uri):
-		from itertools import ifilter
 		same = lambda editor: editor.uri == uri
-		from gobject import idle_add
-		for document in ifilter(same, self.__editor_instances):
-			close_file(document)
+		[close_file(editor) for editor in self.__editor_instances if same(editor)]
 		return False
 
 	def __new_editor(self, uri=None, encoding=None):
@@ -255,8 +251,7 @@ class EditorManager(object):
 		from info import home_folder
 		files = glob(home_folder + "/" + ".Scribes*scribes")
 		from shutil import rmtree
-		for file in files:
-			rmtree(file, True)
+		[rmtree(file_, True) for file_ in files]
 		return
 
 	def __kernel_signals_cb(self, *args):

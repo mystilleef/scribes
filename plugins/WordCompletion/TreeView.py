@@ -37,21 +37,6 @@ class CompletionTreeView(TreeView):
 	"""
 
 	def __init__(self, manager, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param completion: Reference to the WordCompletionManager instance.
-		@type completion: A WordCompletionManager object.
-		"""
 		TreeView.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
@@ -64,25 +49,10 @@ class CompletionTreeView(TreeView):
 		self.__signal_id_8 = self.connect("cursor-changed", self.__cursor_changed_cb)
 		self.__signal_id_9 = manager.connect("no-match-found", self.__no_match_found_cb)
 		self.__block_textview()
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param completion: Reference to the WordCompletionManager instance.
-		@type completion: A WordCompletionManager object.
-		"""
 		self.__editor = editor
 		self.__manager = manager
 		self.__model = self.__create_model()
@@ -95,12 +65,6 @@ class CompletionTreeView(TreeView):
 		return
 
 	def __set_properties(self):
-		"""
-		Define the view object's properties.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-		"""
 		self.append_column(self.__column)
 		self.set_headers_visible(False)
 		self.set_property("rules-hint", True)
@@ -122,19 +86,13 @@ class CompletionTreeView(TreeView):
 ########################################################################
 
 	def __populate_model(self, completion_list):
-		"""
-		Populate the view's data model.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-		"""
-
 		if completion_list != self.__word_list:
 			self.set_model(None)
 			self.__word_list = completion_list
 			self.__model.clear()
+			append = self.__model.append
 			for word in self.__word_list:
-				self.__model.append([word])
+				append([word])
 			self.columns_autosize()
 			self.set_model(self.__model)
 		self.__manager.emit("populated-model", self)
