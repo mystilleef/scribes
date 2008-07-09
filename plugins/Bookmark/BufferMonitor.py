@@ -45,10 +45,10 @@
 			lines = []
 		finally:
 			self.__manager.emit("marked-lines", tuple(lines))
+			self.__editor.refresh()
 		return
 
 	def __destroy(self):
-#		self.__send_marked_lines()
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__buffer)
 		del self

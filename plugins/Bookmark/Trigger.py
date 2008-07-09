@@ -44,6 +44,7 @@ class Trigger(object):
 		self.__trigger1 = self.__create_trigger("toggle-bookmark", "ctrl - d")
 		self.__trigger2 = self.__create_trigger("remove-all-bookmarks", "ctrl - B")
 		self.__trigger3 = self.__create_trigger("show-bookmark-browser", "ctrl - b")
+		self.__browser = None
 		return
 
 	def __create_trigger(self, name, shortcut):
@@ -63,9 +64,9 @@ class Trigger(object):
 		return
 
 	def __popup_cb(self, textview, menu):
-#		from PopupMenuItem import BookmarkPopupMenuItem
-#		menu.prepend(BookmarkPopupMenuItem(self.editor, self.__manager))
-#		menu.show_all()
+		from PopupMenuItem import PopupMenuItem
+		menu.prepend(PopupMenuItem(self.__editor))
+		menu.show_all()
 		return False
 
 	def __toggle_bookmark_cb(self, *args):
@@ -77,4 +78,10 @@ class Trigger(object):
 		return False
 
 	def __show_browser_cb(self, *args):
+		try:
+			self.__browser.show()
+		except AttributeError:
+			from GUI.Manager import Manager
+			self.__browser = Manager(self.__manager, self.__editor)
+			self.__browser.show()
 		return False

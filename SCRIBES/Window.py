@@ -69,8 +69,8 @@ class ScribesWindow(Window):
 		self.__signal_id_22 = self.__editor.connect("buffer-created", self.__created_widgets_cb)
 		self.__signal_id_23 = self.__editor.connect("reload-document", self.__reload_document_cb)
 		self.__sigid30 = self.__editor.connect("show-window", self.__show_window_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=5000)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__precompile_methods, priority=5000)
 
 	def __init_attributes(self, editor):
 		"""

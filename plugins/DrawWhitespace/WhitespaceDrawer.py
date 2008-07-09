@@ -52,8 +52,8 @@ class Drawer(object):
 		self.__sig_id2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sig_id3 = manager.connect("color", self.__color_cb)
 		self.__sig_id4 = manager.connect("show", self.__show_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor, manager):
 		"""

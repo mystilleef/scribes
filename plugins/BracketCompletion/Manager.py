@@ -51,8 +51,8 @@ class BracketManager(object):
 		self.__signal_id_1 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_2 = editor.connect("cursor-moved", self.__cursor_moved_cb)
 		self.__signal_id_3 = editor.connect("loaded-document", self.__loaded_document_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__compile_methods, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__compile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor):
 		"""

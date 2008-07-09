@@ -38,10 +38,16 @@ class Manager(GObject):
 		"toggle-bookmark": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"remove-all-bookmarks": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"marked-lines": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"scroll-to-line": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
 		GObject.__init__(self)
+		self.__init_attributes(editor)
+		from MarkNavigator import Navigator
+		Navigator(self, editor)
 		from MarginDisplayer import Displayer
 		Displayer(self, editor)
 		from DatabaseUpdater import Updater
@@ -51,11 +57,25 @@ class Manager(GObject):
 		from BufferMarker import Marker
 		Marker(self, editor)
 
+	def __init_attributes(self, editor):
+		from os.path import join
+		current_folder = editor.get_current_folder(globals())
+		gui_folder = join(current_folder, "GUI")
+		glade_file = join(gui_folder, "Bookmark.glade")
+		from gtk.glade import XML
+		self.__glade = XML(glade_file, "Window", "scribes")
+		return False
+
 	def destroy(self):
 		self.emit("destroy")
 		del self
 		self = None
 		return
+
+	def __get_glade(self):
+		return self.__glade
+
+	glade = property(__get_glade)
 
 	def toggle_bookmark(self):
 		self.emit("toggle-bookmark")

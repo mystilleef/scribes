@@ -35,39 +35,15 @@ class TreeView(object):
 	"""
 
 	def __init__(self, editor, manager):
-		"""
-		Intialize an instance of this class.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-
-		@param manager: Reference to the Manager instance.
-		@type manager: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
 		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = self.__manager.connect("update", self.__update_cb)
 		self.__signal_id_3 = self.__treeview.connect("row-activated", self.__row_activated_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor, manager):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-
-		@param manager: Reference to the BookmarkManager instance.
-		@type manager: A BookmarkManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__manager = manager
 		self.__symbols = None
 		self.__parent = None
@@ -80,40 +56,16 @@ class TreeView(object):
 		return
 
 	def __set_properties(self):
-		"""
-		Define the treeview's properties.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-		"""
 		self.__treeview.append_column(self.__column)
 		return
 
 	def __create_model(self):
-		"""
-		Create model for the treeview.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: An BrowserTreeView object.
-
-		@return: Return a model for the treeview.
-		@rtype: A gtk.ListStore object.
-		"""
 		from gtk import TreeStore
 		from gtk.gdk import Pixbuf
 		model = TreeStore(int, str, str, int, Pixbuf)
 		return model
 
 	def __create_column(self):
-		"""
-		Create column for the treeview.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-
-		@return: A column for the treeview.
-		@rtype: A gtk.TreeViewColumn object.
-		"""
 		from gtk import TreeViewColumn, CellRendererText, CellRendererPixbuf
 		from gtk import TREE_VIEW_COLUMN_FIXED
 		column = TreeViewColumn()
@@ -128,12 +80,6 @@ class TreeView(object):
 		return column
 
 	def __populate_model(self, symbols):
-		"""
-		Populate the model.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-		"""
 		self.__treeview.set_property("sensitive", False)
 		if self.__symbols != symbols:
 			from copy import copy
@@ -227,15 +173,6 @@ class TreeView(object):
 		return False
 
 	def __forward_to_line_end(self, iterator):
-		"""
-		Move an iterator to the end of a line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param iterator: An object that represents a position in a buffer.
-		@type iterator: A gtk.Iter object.
-		"""
 		if iterator.ends_line(): return iterator
 		iterator.forward_to_line_end()
 		return iterator
@@ -251,15 +188,6 @@ class TreeView(object):
 		return False
 
 	def __destroy_cb(self, manager):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-
-		@param manager: Reference to the BookmarkManager instance.
-		@type manager: A BookmarkManager object.
-		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__treeview)
@@ -269,43 +197,15 @@ class TreeView(object):
 		return
 
 	def __row_activated_cb(self, treeview, path, column):
-		"""
-		Handles callback when the "row-activated" signal is emitted.
-
-		@param treeview: The bookmark browser's treeview.
-		@type treeview: A BookmarkBrowserView object.
-
-		@param path: A row in a treeview.
-		@type path: A row object.
-
-		@param column: A column in a treeview.
-		@type column: A gtk.TreeViewColumn object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		iterator = self.__model.get_iter(path)
 		line = self.__model.get_value(iterator, 0)
 		name = self.__model.get_value(iterator, 1)
-		from gobject import idle_add
-		idle_add(self.__select_symbol, line, name)
 		self.__manager.emit("hide-window")
+		self.__select_symbol(line, name)
 		self.__treeview.set_property("sensitive", False)
 		return True
 
 	def __update_cb(self, manager, symbols):
-		"""
-		Handles callback when the "update" signal is emitted.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-
-		@param manager: Reference to the BookmarkManager instance.
-		@type manager: A BookmarkManager object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__populate_model, symbols, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__populate_model, symbols, priority=2222)
 		return False

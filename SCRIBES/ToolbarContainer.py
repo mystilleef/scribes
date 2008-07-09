@@ -37,15 +37,6 @@ class ScribesToolbarContainer(HBox):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize instance of this class.
-
-		@param self: Reference to the ScribesToolbarContainer instance.
-		@type self: A ScribesToolbarContainer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		HBox.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -59,16 +50,6 @@ class ScribesToolbarContainer(HBox):
 		self.__signal_id_8 = editor.connect("disable-fullscreen", self.__disable_fullscreen_cb)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize the text editor's toolbar container and set its default
-		state and properties.
-
-		@param self: Reference to the ScribesToolbarContainer instance.
-		@type self: A ScribesToolbarContainer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__registration_id = editor.register_object()
 		# Initialize the fullscreen button.
@@ -81,22 +62,10 @@ class ScribesToolbarContainer(HBox):
 		return
 
 	def __set_properties(self):
-		"""
-		Set the toolbar container's properties.
-
-		@param self: Reference to the ScribesToolbarContainer instance.
-		@type self: A ScribesToolbarContainer object.
-		"""
 		self.set_property("name", "ScribesToolbarContainer")
 		return
 
 	def __destroy(self):
-		"""
-		Destroy instance of this class.
-
-		@param self: Reference to the Store instance.
-		@type self: A Store object.
-		"""
 		# Disconnect signals.
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
@@ -121,28 +90,10 @@ class ScribesToolbarContainer(HBox):
 		return
 
 	def __show_dialog_cb(self, editor, dialog):
-		"""
-		Handles callback when the "show-dialog" signal is emitted.
-
-		@param self: Reference to the ScribesToolbarContainer instance.
-		@type self: A ScribesToolbarContainer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_property("sensitive", False)
 		return
 
 	def __hide_dialog_cb(self, editor, dialog):
-		"""
-		Handles callback when the "hide-dialog" signal is emitted.
-
-		@param self: Reference to the ScribesToolbarContainer instance.
-		@type self: A ScribesToolbarContainer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_property("sensitive", True)
 		return
 
@@ -155,15 +106,6 @@ class ScribesToolbarContainer(HBox):
 		return
 
 	def __enable_fullscreen_cb(self, editor):
-		"""
-		Handles callback when the "enable-fullscreen" signal is emitted.
-
-		@param self: Reference to the ScribesToolbarContainer instance.
-		@type self: A ScribesToolbarContainer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		from gobject import timeout_add
 		self.__timer = timeout_add(5000, self.__hide_toolbarcontainer)
 		try:
@@ -181,15 +123,6 @@ class ScribesToolbarContainer(HBox):
 		return
 
 	def __disable_fullscreen_cb(self, editor):
-		"""
-		Handles callback when the "disable-fullscreen" signal is emitted.
-
-		@param self: Reference to the ScribesToolbarContainer instance.
-		@type self: A ScribesToolbarContainer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		editor.window.disconnect(self.__handler_id)
 		from gobject import source_remove
 		source_remove(self.__timer)
@@ -202,21 +135,6 @@ class ScribesToolbarContainer(HBox):
 		return
 
 	def __motion_notify_event_cb(self, window, event):
-		"""
-		Handles callback when the "motion-notify-event" signal is emitted.
-
-		@param self: Reference to the ScribesToolbarContainer instance.
-		@type self: A ScribesToolbarContainer object.
-
-		@param window: The window for the text editor.
-		@type window: A ScribesWindow object.
-
-		@param event: An event that occurs when the mouse moves.
-		@type event: A gtk.Event object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		window.window.get_pointer()
 		self.show_all()
 		from gobject import source_remove
@@ -226,14 +144,5 @@ class ScribesToolbarContainer(HBox):
 		return False
 
 	def __hide_toolbarcontainer(self):
-		"""
-		Hide the toolbar container.
-
-		@param self: Reference to the ScribesToolbarContainer instance.
-		@type self: A ScribesToolbarContainer object.
-
-		@return: True to call this function again, False otherwise.
-		@rtype: A Boolean object.
-		"""
 		if self.__editor.window.is_fullscreen: self.hide_all()
 		return False

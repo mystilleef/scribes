@@ -59,8 +59,8 @@ class FeedbackManager(object):
 		self.__signal_id_11 = editor.connect_after("modified-document", self.__changed_cb)
 		self.__signal_id_12 = editor.connect("gui-created", self.__gui_created_cb)
 		self.__signal_id_13 = editor.connect("reload-document", self.__reload_document_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor):
 		"""

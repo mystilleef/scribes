@@ -76,25 +76,10 @@ class Window(object):
 		return
 
 	def __set_properties(self):
-		"""
-		Define the default behavior of the dialog.
-
-		@param self: Reference to the Window instance.
-		@type self: A Window object.
-		"""
-#		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 1.6, 2.5)
-#		self.__window.set_property("default-width", width)
-#		self.__window.set_property("default-height", height)
 		self.__window.set_transient_for(self.__editor.window)
 		return
 
 	def __show(self):
-		"""
-		Show the document browser.
-
-		@param self: Reference to the Window instance.
-		@type self: A Window object.
-		"""
 		self.__editor.emit("show-dialog", self.__window)
 #		from i18n import msg0001
 		message = "Python symbols"
@@ -103,24 +88,12 @@ class Window(object):
 		return False
 
 	def __hide(self):
-		"""
-		Hide the document browser.
-
-		@param self: Reference to the Window instance.
-		@type self: A Window object.
-		"""
 		self.__editor.emit("hide-dialog", self.__window)
 		self.__editor.feedback.unset_modal_message(self.__status_id)
 		self.__window.hide()
 		return False
 
 	def __destroy(self):
-		"""
-		Destroy object.
-
-		@param self: Reference to the Window instance.
-		@type self: A Window object.
-		"""
 		self.__editor.disconnect_signal(self.__sig_id1, self.__manager)
 		self.__editor.disconnect_signal(self.__sig_id2, self.__manager)
 		self.__editor.disconnect_signal(self.__sig_id3, self.__manager)
@@ -132,61 +105,23 @@ class Window(object):
 		return
 
 	def __destroy_cb(self, *args):
-		"""
-		Handles callback when "destroy" signal is emitted.
-
-		@param self: Reference to the Window instance.
-		@type self: An Window object.
-		"""
 		self.__destroy()
 		return
 
 	def __hide_window_cb(self, *args):
-		"""
-		Handles callback when "destroy" signal is emitted.
-
-		@param self: Reference to the Window instance.
-		@type self: An Window object.
-		"""
-		#from thread import start_new_thread
-		#start_new_thread(self.__hide, ())
-		from gobject import idle_add
-		idle_add(self.__hide)
+		self.__hide()
 		return
 
 	def __show_window_cb(self, *args):
-		"""
-		Handles callback when "destroy" signal is emitted.
-
-		@param self: Reference to the Window instance.
-		@type self: An Window object.
-		"""
-	#	from thread import start_new_thread
-	#	start_new_thread(self.__show, ())
-		from gobject import idle_add
-		idle_add(self.__show)
+		self.__show()
 		return
 
 	def __delete_event_cb(self, *args):
-		"""
-		Handles callback when "destroy" signal is emitted.
-
-		@param self: Reference to the Window instance.
-		@type self: An Window object.
-		"""
-		from gobject import idle_add
-		idle_add(self.__hide)
+		self.__hide()
 		return True
 
 	def __key_press_event_cb(self, window, event):
-		"""
-		Handles callback when "destroy" signal is emitted.
-
-		@param self: Reference to the Window instance.
-		@type self: An Window object.
-		"""
 		from gtk import keysyms
 		if event.keyval != keysyms.Escape: return False
-		from gobject import idle_add
-		idle_add(self.__hide)
+		self.__hide()
 		return True

@@ -61,8 +61,8 @@ class ScribesTextBuffer(Buffer):
 		self.__signal_id_11 = editor.connect("reload-document", self.__reload_document_cb)
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monitor_id_1 = monitor_add(self.__theme_database_uri, MONITOR_FILE, self.__theme_changed_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=5000)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__precompile_methods, priority=5000)
 
 	def __init_attributes(self, editor):
 		"""

@@ -51,8 +51,8 @@ class SmartSpace(object):
 		self.__sig_id1 = self.__textview.connect('key-press-event', self.__key_press_event_cb)
 		self.__sig_id2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sig_id3 = manager.connect("activate", self.__activate_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor, manager):
 		"""

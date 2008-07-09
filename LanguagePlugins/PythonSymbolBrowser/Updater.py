@@ -49,8 +49,8 @@ class Updater(object):
 		"""
 		self.__init_attributes(editor, manager)
 		self.__sig_id1 = manager.connect("show-window", self.__show_window_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

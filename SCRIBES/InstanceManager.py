@@ -46,7 +46,7 @@ class EditorManager(object):
 		from gobject import idle_add, timeout_add
 #		idle_add(self.__precompile_methods, priority=5000)
 		timeout_add(300000, self.__init_garbage_collector, priority=9999)
-		timeout_add(21000, self.__init_psyco, priority=5555)
+		timeout_add(11000, self.__init_psyco, priority=5555)
 
 	def __init_attributes(self):
 		from collections import deque
@@ -160,7 +160,7 @@ class EditorManager(object):
 		return uris
 
 	def get_editor_instances(self):
-		return self.__editor_instances 
+		return self.__editor_instances
 
 	def init_authentication_manager(self):
 		from gnome.ui import authentication_manager_init
@@ -202,9 +202,9 @@ class EditorManager(object):
 
 	def __init_psyco(self):
 		try:
-			from psyco import profile #, log
+			from psyco import background#, log #, profile#, log
 #			log("/home/meek/Desktop/psyco-log.log")
-			profile()
+			background()
 			print "Initialized psyco profiling and optimization"
 		except ImportError:
 			pass

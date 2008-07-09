@@ -50,8 +50,8 @@ class Highlighter(object):
 		@type editor: An Editor object.
 		"""
 		self.__init_attributes(editor)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__compile_method, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__compile_method, priority=PRIORITY_LOW)
 		self.__signal_id_1 = editor.connect("cursor-moved", self.__cursor_moved_cb)
 		self.__signal_id_2 = editor.textbuffer.connect("apply-tag", self.__apply_tag_cb)
 		self.__signal_id_3 = editor.textbuffer.connect("remove-tag", self.__remove_tag_cb)

@@ -70,8 +70,8 @@ class FileSaver(object):
 		editor.session_bus.add_signal_receiver(self.__is_ready_cb,
 						signal_name="is_ready",
 						dbus_interface=save_dbus_service)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=500)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__precompile_methods, priority=500)
 
 	def __init_attributes(self, editor):
 		"""
