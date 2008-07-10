@@ -174,14 +174,17 @@ class PluginManager(object):
 
 	def __load_plugins(self):
 		if self.__editor.language is None: return False
+		cl_folder = self.__editor.core_language_plugin_folder
+		hl_folder = self.__editor.home_language_plugin_folder
+		init_module = self.__init_module
 		from os import listdir
-		from gobject import idle_add, PRIORITY_LOW
-		core_files = listdir(self.__editor.core_language_plugin_folder)
+		core_files = listdir(cl_folder)
+		from thread import start_new_thread
 		for filename in core_files:
-			self.__init_module(filename, self.__editor.core_language_plugin_folder)
-		home_files = listdir(self.__editor.home_language_plugin_folder)
+			start_new_thread(init_module, (filename, cl_folder))
+		home_files = listdir(hl_folder)
 		for filename in home_files:
-			self.__init_module(filename, self.__editor.home_language_plugin_folder)
+			start_new_thread(init_module, (filename, hl_folder))
 		return False
 
 	def __unload_plugins(self):

@@ -4,6 +4,7 @@
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = self.__buffer.connect("source-mark-updated", self.__updated_cb)
+		self.__sigid3 = manager.connect("gui-created", self.__updated_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -51,6 +52,7 @@
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__buffer)
+		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		del self
 		self = None
 		return

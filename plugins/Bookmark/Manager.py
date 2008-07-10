@@ -39,6 +39,8 @@ class Manager(GObject):
 		"remove-all-bookmarks": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"marked-lines": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"scroll-to-line": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"populate-model": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"gui-created": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}

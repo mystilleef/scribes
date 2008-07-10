@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Jul  9 17:29:52 2008 -->
+<!--Generated with glade3 3.4.5 on Thu Jul 10 15:19:52 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="Window">
     <property name="sensitive">False</property>
@@ -31,9 +31,10 @@
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="headers_visible">False</property>
-            <property name="reorderable">True</property>
             <property name="rules_hint">True</property>
             <property name="enable_search">False</property>
+            <property name="search_column">0</property>
+            <property name="enable_grid_lines">GTK_TREE_VIEW_GRID_LINES_VERTICAL</property>
           </widget>
         </child>
       </widget>

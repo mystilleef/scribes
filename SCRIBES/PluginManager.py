@@ -96,18 +96,17 @@ class PluginManager(object):
 		return False
 
 	def __load_plugins(self):
+		core_plugin_folder = self.__editor.core_plugin_folder
+		home_plugin_folder = self.__editor.home_plugin_folder
 		from os import listdir
-		from gobject import idle_add, PRIORITY_LOW
-		core_files = listdir(self.__editor.core_plugin_folder)
-		#from thread import start_new_thread
+		core_files = listdir(core_plugin_folder)
+		from thread import start_new_thread
+		init_module = self.__init_module
 		for filename in core_files:
-		#	start_new_thread(self.__init_module, (filename, self.__editor.core_plugin_folder))
-			self.__init_module(filename, self.__editor.core_plugin_folder)#, priority=PRIORITY_LOW)
-		home_files = listdir(self.__editor.home_plugin_folder)
+			start_new_thread(init_module, (filename, core_plugin_folder))
+		home_files = listdir(home_plugin_folder)
 		for filename in home_files:
-			#start_new_thread(self.__init_module, (filename, self.__editor.home_plugin_folder))
-#			idle_add(self.__init_module, filename, self.__editor.home_plugin_folder, priority=PRIORITY_LOW)
-			self.__init_module(filename, self.__editor.home_plugin_folder)
+			start_new_thread(init_module, (filename, home_plugin_folder))
 		return False
 
 	def __unload_plugins(self):

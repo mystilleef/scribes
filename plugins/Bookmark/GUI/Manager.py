@@ -4,7 +4,10 @@ class Manager(object):
 		self.__init_attributes(manager, editor)
 		from Window import Window
 		Window(manager, editor)
+		from TreeView import TreeView
+		TreeView(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		manager.emit("populate-model", [(1, "This is a very very very long test line. Yes, it is very long"), (2, "two"), (3, "three"), (4, "four"), (5000, "five")])
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
