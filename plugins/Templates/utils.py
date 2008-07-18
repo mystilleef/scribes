@@ -198,14 +198,14 @@ def get_template_word(iterator, buffer_):
 		break
 	return buffer_.get_text(begin, iterator)
 
-try:
-	from psyco import bind
-	bind(word_to_cursor)
-	bind(insert_string)
-	bind(get_template_word)
-	bind(remove_trailing_spaces_on_line)
-	bind(get_placeholders)
-	bind(has_placeholders)
-	bind(__indent_string)
-except ImportError:
-	pass
+#try:
+#	from psyco import bind
+#	bind(word_to_cursor)
+#	bind(insert_string)
+#	bind(get_template_word)
+#	bind(remove_trailing_spaces_on_line)
+#	bind(get_placeholders)
+#	bind(has_placeholders)
+#	bind(__indent_string)
+#except ImportError:
+#	pass

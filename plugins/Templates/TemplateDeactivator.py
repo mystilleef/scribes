@@ -42,8 +42,8 @@ class Deactivator(object):
 		self.__sigid5 = manager.connect("last-placeholder", self.__last_placeholder_cb)
 		self.__sigid6 = editor.textbuffer.connect("insert-text", self.__insert_text_cb)
 		self.__block_signal()
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=5000)
+#		from gobject import idle_add
+#		idle_add(self.__precompile_methods, priority=5000)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

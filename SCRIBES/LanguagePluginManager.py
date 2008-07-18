@@ -182,9 +182,11 @@ class PluginManager(object):
 		from thread import start_new_thread
 		for filename in core_files:
 			start_new_thread(init_module, (filename, cl_folder))
+			#init_module(filename, cl_folder)
 		home_files = listdir(hl_folder)
 		for filename in home_files:
 			start_new_thread(init_module, (filename, hl_folder))
+			#init_module(filename, hl_folder)
 		return False
 
 	def __unload_plugins(self):

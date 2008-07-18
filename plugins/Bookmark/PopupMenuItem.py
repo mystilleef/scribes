@@ -74,12 +74,8 @@ class PopupMenuItem(ImageMenuItem):
 		return False
 
 	def __sensitize_menuitem(self, menuitem):
-		from Metadata import get_value
-		if self.__editor.uri in (None, ""): return
-		lines = get_value(self.__editor.uri)
 		if menuitem in (self.__menuitem2, self.__menuitem3):
-			value = True if lines else False
-			menuitem.set_property("sensitive", value)
+			menuitem.set_property("sensitive", self.__editor.textview.get_show_line_marks())
 		else:
 			menuitem.set_property("sensitive", True)
 		return

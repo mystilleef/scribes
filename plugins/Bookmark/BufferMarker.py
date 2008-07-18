@@ -1,5 +1,39 @@
-class Marker(object):
 
+# -*- coding: utf-8 -*-
+# Copyright © 2008 Lateef Alabi-Oki
+#
+# This file is part of Scribes.
+#
+# Scribes is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Scribes is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Scribes; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  
+# USA
+
+"""
+This module documents a class that adds and removes marks in the buffer.
+
+@author: Lateef Alabi-Oki
+@organization: The Scribes Project
+@copyright: Copyright © 2008 Lateef Alabi-Oki
+@license: GNU GPLv3 or Later
+@contact: mystilleef@gmail.com
+"""
+
+class Marker(object):
+	"""
+	This class adds and removes marks in the buffer.
+	"""
+	
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
@@ -46,6 +80,9 @@ class Marker(object):
 		iterator = self.__iter_at_line(line)
 		if iterator is None: return
 		self.__editor.textbuffer.create_source_mark(None, "scribes_bookmark", iterator)
+		from i18n import msg2
+		message = msg2 % (self.__get_line(line) + 1)
+		self.__editor.update_status_message(message, "yes")
 		return
 
 	def __unmark(self, line=None):
@@ -53,6 +90,9 @@ class Marker(object):
 		if iterator is None: return
 		end = self.__editor.forward_to_line_end(iterator.copy())
 		self.__editor.textbuffer.remove_source_marks(iterator, end, "scribes_bookmark")
+		from i18n import msg1
+		message = msg1 % (self.__get_line(line) + 1)
+		self.__editor.update_status_message(message, "yes")
 		return
 
 	def __remove_all_marks(self):

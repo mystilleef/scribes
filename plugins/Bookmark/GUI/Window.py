@@ -47,6 +47,7 @@ class Window(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__window = manager.glade.get_widget("Window")
+		self.__id = None
 		return
 
 	def __set_properties(self):
@@ -54,12 +55,18 @@ class Window(object):
 		return
 
 	def __show_window(self):
+
+		self.__editor.emit("show-dialog", self.__window)
 		self.__window.show_all()
 		self.__window.present()
+		from ..i18n import msg9
+		self.__id = self.__editor.set_message(msg9, "info")
 		return
 
 	def __hide_window(self):
+		self.__editor.emit("hide-dialog", self.__window)
 		self.__window.hide()
+		self.__editor.unset_message(self.__id)
 		return
 
 	def __destroy_cb(self, manager):

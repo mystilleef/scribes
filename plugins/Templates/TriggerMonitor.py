@@ -12,8 +12,8 @@ class Monitor(object):
 		self.__sigid5 = manager.connect("loaded-general-templates", self.__loaded_general_templates_cb)
 		self.__sigid6 = manager.connect("activate-template-mode", self.__activate_template_mode_cb)
 		self.__sigid7 = manager.connect("deactivate-template-mode", self.__deactivate_template_mode_cb)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=9999)
+#		from gobject import idle_add
+#		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

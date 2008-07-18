@@ -137,8 +137,10 @@ class ScribesTextBuffer(Buffer):
 		start, end = self.get_bounds()
 		self.remove_all_tags(start, end)
 		self.remove_source_marks(start, end)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__activate_sytnax_colors, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__activate_sytnax_colors, priority=PRIORITY_LOW)
+		from thread import start_new_thread
+		start_new_thread(self.__activate_sytnax_colors, ())
 		return False
 
 	def __loaded_document_cb(self, *args):
@@ -259,9 +261,11 @@ class ScribesTextBuffer(Buffer):
 
 	def __cursor_position_cb(self, *args):
 		self.__editor.emit("cursor-moved")
-		self.__stop_update_cursor_timer()
-		from gobject import timeout_add, PRIORITY_LOW
-		self.__cursor_update_timer = timeout_add(1000, self.__update_cursor_position, priority=9999)
+#		self.__stop_update_cursor_timer()
+#		from gobject import timeout_add, PRIORITY_LOW
+#		self.__cursor_update_timer = timeout_add(1000, self.__update_cursor_position, priority=9999)
+		from thread import start_new_thread
+		start_new_thread(self.__update_cursor_position, ())
 		return False
 
 ########################################################################

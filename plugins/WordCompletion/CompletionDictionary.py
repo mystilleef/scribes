@@ -43,8 +43,8 @@ class CompletionDictionary(object):
 		@type self: A CompletionDictionary object.
 		"""
 		self.__init_attributes()
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
 		"""
@@ -69,8 +69,10 @@ class CompletionDictionary(object):
 		"""
 		if self.__is_updating: return
 		self.__is_updating = True
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__update, dictionary, priority=2000)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__update, dictionary, priority=2000)
+		from thread import start_new_thread
+		start_new_thread(self.__update, (dictionary,))
 		return
 
 	def __update(self, dictionary):

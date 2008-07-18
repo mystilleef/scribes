@@ -59,6 +59,9 @@ class FeedbackManager(object):
 		self.__signal_id_11 = editor.connect_after("modified-document", self.__changed_cb)
 		self.__signal_id_12 = editor.connect("gui-created", self.__gui_created_cb)
 		self.__signal_id_13 = editor.connect("reload-document", self.__reload_document_cb)
+		self.__signal_id_14 = editor.connect("show-dialog", self.__show_dialog_cb)
+		self.__signal_id_15 = editor.connect("hide-dialog", self.__hide_dialog_cb)
+
 #		from gobject import idle_add, PRIORITY_LOW
 #		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
@@ -111,11 +114,16 @@ class FeedbackManager(object):
 		@rtype: A Boolean object.
 		"""
 		self.__is_busy = True
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__set_message, message, priority=PRIORITY_LOW)
-		idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
-		idle_add(self.__reset, time, priority=PRIORITY_LOW)
-		idle_add(self.__beep, icon, priority=PRIORITY_LOW)
+		from thread import start_new_thread
+		start_new_thread(self.__set_message, (message,))
+		start_new_thread(self.__set_icon, (icon,))
+		start_new_thread(self.__reset, (time,))
+		start_new_thread(self.__beep, (icon,))
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__set_message, message, priority=PRIORITY_LOW)
+#		idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
+#		idle_add(self.__reset, time, priority=PRIORITY_LOW)
+#		idle_add(self.__beep, icon, priority=PRIORITY_LOW)
 		self.__default_message_is_set = False
 		return False
 
@@ -134,9 +142,12 @@ class FeedbackManager(object):
 		"""
 		message_id = self.__editor.generate_random_number(self.__message_stack)
 		self.__message_stack.append((message, icon, message_id))
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__set_message, message, priority=PRIORITY_LOW)
-		idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
+		from thread import start_new_thread
+		start_new_thread(self.__set_message, (message,))
+		start_new_thread(self.__set_icon, (icon,))
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__set_message, message, priority=PRIORITY_LOW)
+#		idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
 		self.__default_message_is_set = False
 		return message_id
 
@@ -161,8 +172,10 @@ class FeedbackManager(object):
 				found = self.__remove_message_from_stack(message_id, feedback)
 				if found: break
 			if reset:
-				from gobject import idle_add, PRIORITY_LOW
-				idle_add(self.__reset_message, priority=PRIORITY_LOW)
+#				from gobject import idle_add, PRIORITY_LOW
+#				idle_add(self.__reset_message, priority=PRIORITY_LOW)
+				from thread import start_new_thread
+				start_new_thread(self.__reset_message, ())
 		except RuntimeError:
 			pass
 		return False
@@ -174,7 +187,9 @@ class FeedbackManager(object):
 		@param self: Reference to the FeedbackManager instance.
 		@type self: A FeedbackManager object.
 		"""
-		self.__spinner.start()
+#		self.__spinner.start()
+		from thread import start_new_thread
+		start_new_thread(self.__spinner.start, ())
 		return False
 
 	def stop_spinner(self):
@@ -184,7 +199,9 @@ class FeedbackManager(object):
 		@param self: Reference to the FeedbackManager instance.
 		@type self: A FeedbackManager object.
 		"""
-		self.__spinner.stop()
+#		self.__spinner.stop()
+		from thread import start_new_thread
+		start_new_thread(self.__spinner.stop, ())
 		return False
 
 	def start_busy_cursor(self):
@@ -516,6 +533,8 @@ class FeedbackManager(object):
 		self.__editor.disconnect_signal(self.__signal_id_11, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_12, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_13, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_14, self.__editor)
+		self.__editor.disconnect_signal(self.__signal_id_15, self.__editor)
 		self.__icon_dictionary.clear()
 		# Unregister object so that editor can quit.
 		self.__spinner.destroy_object()
@@ -721,6 +740,14 @@ class FeedbackManager(object):
 	def __gui_created_cb(self, *args):
 		self.__remove_message()
 		self.__remove_icon()
+		return False
+
+	def __show_dialog_cb(self, *args):
+		self.start_spinner()
+		return False
+
+	def __hide_dialog_cb(self, *args):
+		self.stop_spinner()
 		return False
 
 	def __precompile_methods(self):

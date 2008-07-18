@@ -6,8 +6,10 @@ class Manager(object):
 		Window(manager, editor)
 		from TreeView import TreeView
 		TreeView(manager, editor)
+		from LineProcessor import Processor
+		Processor(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		manager.emit("populate-model", [(1, "This is a very very very long test line. Yes, it is very long"), (2, "two"), (3, "three"), (4, "four"), (5000, "five")])
+		manager.emit("gui-created")
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

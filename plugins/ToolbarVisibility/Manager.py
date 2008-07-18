@@ -68,12 +68,14 @@ class Manager(object):
 		return
 
 	def __hide_cb(self, window, event):
-		if self.__show is False: return False
+		if self.__activate is False: return False
+		if not self.__show: return False
 		window.window.get_pointer()
 		self.__hide_full_view()
 		return False
 
 	def __motion_notify_event_cb(self, window, event):
+		if self.__activate is False: return False
 		self.__show_hide_full_view(window)
 		return False
 
