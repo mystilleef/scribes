@@ -201,20 +201,22 @@ class Deactivator(object):
 
 	def __cursor_moved_cb(self, *args):
 		if self.__enable is False: return False
-		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__cursorid)
-		except AttributeError:
-			pass
-		self.__cursorid = idle_add(self.__check_boundary, priority=9999)
+#		try:
+#			from gobject import idle_add, source_remove
+#			source_remove(self.__cursorid)
+#		except AttributeError:
+#			pass
+#		self.__cursorid = idle_add(self.__check_boundary, priority=9999)
+		self.__check_boundary()
 		return False
 
 	def __insert_text_cb(self, *args):
 		if self.__enable is False: return False
-		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__insertid)
-		except AttributeError:
-			pass
-		self.__insertid = idle_add(self.__check_placeholder_boundary, priority=9999)
+#		try:
+#			from gobject import idle_add, source_remove
+#			source_remove(self.__insertid)
+#		except AttributeError:
+#			pass
+#		self.__insertid = idle_add(self.__check_placeholder_boundary, priority=9999)
+		self.__check_placeholder_boundary()
 		return False

@@ -69,10 +69,8 @@ class CompletionDictionary(object):
 		"""
 		if self.__is_updating: return
 		self.__is_updating = True
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__update, dictionary, priority=2000)
-		from thread import start_new_thread
-		start_new_thread(self.__update, (dictionary,))
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__update, dictionary, priority=9999)
 		return
 
 	def __update(self, dictionary):

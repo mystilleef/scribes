@@ -19,46 +19,46 @@
 # USA
 
 """
-This module documents a class that shows or hides the bookmark margin.
+This module documents a class that performs bookmark operations for the
+text editor.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
-@copyright: Copyright © 2008 Lateef Alabi-Oki
+@copyright: Copyright © 2005 Lateef Alabi-Oki
 @license: GNU GPLv3 or Later
 @contact: mystilleef@gmail.com
 """
 
-class Displayer(object):
-	"""
-	This class shows or hides the bookmark margin as needed.
-	"""
+from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_PYOBJECT
 
-	def __init__(self, manager, editor):
-		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("marked-lines", self.__lines_cb)
+class Manager(GObject):
 
-	def __init_attributes(self, manager, editor):
-		self.__manager = manager
-		self.__editor = editor
+	__gsignals__ = {
+		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"to-unix": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"to-mac": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"to-windows": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+	}
+
+	def __init__(self, editor):
+		GObject.__init__(self)
+		from Converter import Converter
+		Converter(self, editor)
+
+	def to_unix(self):
+		self.emit("to-unix")
 		return
 
-	def __display_margin(self, lines):
-		show = self.__editor.textview.set_show_line_marks
-		show(True) if lines else show(False)
+	def to_mac(self):
+		self.emit("to-mac")
 		return
 
-	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+	def to_windows(self):
+		self.emit("to-windows")
+		return
+
+	def destroy(self):
+		self.emit("destroy")
 		del self
 		self = None
 		return
-
-	def __destroy_cb(self, *args):
-		self.__destroy()
-		return False
-
-	def __lines_cb(self, manager, lines):
-		self.__display_margin(lines)
-		return False

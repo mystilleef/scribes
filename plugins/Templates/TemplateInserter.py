@@ -1,4 +1,3 @@
-
 class Inserter(object):
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)

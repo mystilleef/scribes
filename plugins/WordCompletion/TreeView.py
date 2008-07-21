@@ -93,6 +93,7 @@ class CompletionTreeView(TreeView):
 			append = self.__model.append
 			for word in self.__word_list:
 				append([word])
+			self.__column.queue_resize()
 			self.columns_autosize()
 			self.set_model(self.__model)
 		self.__manager.emit("populated-model", self)
@@ -230,8 +231,9 @@ class CompletionTreeView(TreeView):
 #			pass
 		from collections import deque
 #		self.__populate_id = idle_add(self.__populate_model, deque(completion_list), priority=9999)
-		from thread import start_new_thread
-		start_new_thread(self.__populate_model, (deque(completion_list),))
+#		from thread import start_new_thread
+#		start_new_thread(self.__populate_model, (deque(completion_list),))
+		self.__populate_model(deque(completion_list))
 		return
 
 	def __no_match_found_cb(self, *args):

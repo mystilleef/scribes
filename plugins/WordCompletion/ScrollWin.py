@@ -75,7 +75,6 @@ class CompletionScrollWin(ScrolledWindow):
 		"""
 		from gtk import POLICY_NEVER, POLICY_ALWAYS
 		self.set_policy(POLICY_NEVER, POLICY_NEVER)
-		self.set_property("border-width", 2)
 		return
 
 	def __populated_model_cb(self, manager, view):

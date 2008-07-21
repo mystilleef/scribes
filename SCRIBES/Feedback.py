@@ -61,6 +61,7 @@ class FeedbackManager(object):
 		self.__signal_id_13 = editor.connect("reload-document", self.__reload_document_cb)
 		self.__signal_id_14 = editor.connect("show-dialog", self.__show_dialog_cb)
 		self.__signal_id_15 = editor.connect("hide-dialog", self.__hide_dialog_cb)
+		self.__busyid = editor.connect("busy", self.__busy_cb)
 
 #		from gobject import idle_add, PRIORITY_LOW
 #		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
@@ -114,16 +115,11 @@ class FeedbackManager(object):
 		@rtype: A Boolean object.
 		"""
 		self.__is_busy = True
-		from thread import start_new_thread
-		start_new_thread(self.__set_message, (message,))
-		start_new_thread(self.__set_icon, (icon,))
-		start_new_thread(self.__reset, (time,))
-		start_new_thread(self.__beep, (icon,))
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__set_message, message, priority=PRIORITY_LOW)
-#		idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
-#		idle_add(self.__reset, time, priority=PRIORITY_LOW)
-#		idle_add(self.__beep, icon, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set_message, message, priority=5555)
+		idle_add(self.__set_icon, icon, priority=5555)
+		idle_add(self.__reset, time, priority=5555)
+		idle_add(self.__beep, icon, priority=5555)
 		self.__default_message_is_set = False
 		return False
 
@@ -142,66 +138,34 @@ class FeedbackManager(object):
 		"""
 		message_id = self.__editor.generate_random_number(self.__message_stack)
 		self.__message_stack.append((message, icon, message_id))
-		from thread import start_new_thread
-		start_new_thread(self.__set_message, (message,))
-		start_new_thread(self.__set_icon, (icon,))
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__set_message, message, priority=PRIORITY_LOW)
-#		idle_add(self.__set_icon, icon, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set_message, message, priority=5555)
+		idle_add(self.__set_icon, icon, priority=5555)
 		self.__default_message_is_set = False
 		return message_id
 
 	def unset_modal_message(self, message_id, reset=True):
-		"""
-		Remove feedback data from message stack.
-
-		@param self: Reference to the FeedbackManager instance.
-		@type self: A FeedbackManager object.
-
-		@param message_id: A unique number associated with feedback data.
-		@type message_id: A Integer object.
-
-		@param reset: If True reset the statusbar.
-		@type reset: A Boolean object.
-
-		@return: False to call this function once.
-		@rtype: A Boolean object.
-		"""
 		try:
 			for feedback in self.__message_stack:
 				found = self.__remove_message_from_stack(message_id, feedback)
 				if found: break
 			if reset:
-#				from gobject import idle_add, PRIORITY_LOW
-#				idle_add(self.__reset_message, priority=PRIORITY_LOW)
-				from thread import start_new_thread
-				start_new_thread(self.__reset_message, ())
+				from gobject import idle_add, PRIORITY_LOW
+				idle_add(self.__reset_message, priority=5555)
 		except RuntimeError:
 			pass
 		return False
 
 	def start_spinner(self):
-		"""
-		Start spinning the feedback throbber.
-
-		@param self: Reference to the FeedbackManager instance.
-		@type self: A FeedbackManager object.
-		"""
-#		self.__spinner.start()
-		from thread import start_new_thread
-		start_new_thread(self.__spinner.start, ())
+		self.__spinner.start()
+#		from thread import start_new_thread
+#		start_new_thread(self.__spinner.start, ())
 		return False
 
 	def stop_spinner(self):
-		"""
-		Stop spinning the feedback throbber.
-
-		@param self: Reference to the FeedbackManager instance.
-		@type self: A FeedbackManager object.
-		"""
-#		self.__spinner.stop()
-		from thread import start_new_thread
-		start_new_thread(self.__spinner.stop, ())
+		self.__spinner.stop()
+#		from thread import start_new_thread
+#		start_new_thread(self.__spinner.stop, ())
 		return False
 
 	def start_busy_cursor(self):
@@ -231,6 +195,10 @@ class FeedbackManager(object):
 #						Helper Methods
 #
 ########################################################################
+
+	def __process_busy_signal(self, is_busy):
+		self.start_spinner() if is_busy else self.stop_spinner()
+		return False
 
 	def __set_message(self, message):
 		"""
@@ -535,6 +503,7 @@ class FeedbackManager(object):
 		self.__editor.disconnect_signal(self.__signal_id_13, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_14, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_15, self.__editor)
+		self.__editor.disconnect_signal(self.__busyid, self.__editor)
 		self.__icon_dictionary.clear()
 		# Unregister object so that editor can quit.
 		self.__spinner.destroy_object()
@@ -748,6 +717,10 @@ class FeedbackManager(object):
 
 	def __hide_dialog_cb(self, *args):
 		self.stop_spinner()
+		return False
+
+	def __busy_cb(self, editor, is_busy):
+		self.__process_busy_signal(is_busy)
 		return False
 
 	def __precompile_methods(self):

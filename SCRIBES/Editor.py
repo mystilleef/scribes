@@ -77,6 +77,7 @@ class Editor(GObject):
 		"started-core-services": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"refresh": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-window": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"busy": (SIGNAL_ACTION|SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, manager, file_uri=None, encoding=None):
@@ -589,6 +590,10 @@ class Editor(GObject):
 	def unregister_object(self, object_id):
 		return self.unregister_termination_id(object_id)
 
+	def busy(self, is_busy):
+		self.emit("busy", is_busy)
+		return
+
 	def trigger(self, string):
 		self.__trigger_manager.trigger(string)
 		return
@@ -1037,7 +1042,7 @@ class Editor(GObject):
 		except ValueError:
 			pass
 		finally:
-			idle_add(self.__initialize_plugins, priority=5999)
+			idle_add(self.__initialize_plugins, priority=9999)
 			idle_add(self.__initialize_language_plugins, priority=9999)
 		return False
 

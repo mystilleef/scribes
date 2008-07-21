@@ -79,6 +79,8 @@ class ScribesTextView(View):
 		self.__signal_id_22 = editor.connect("close-document-no-save", self.__close_document_cb)
 		self.__signal_id_25 = editor.connect("reload-document", self.__reload_document_cb)
 		self.__signal_id_99 = editor.connect("refresh", self.__refresh_cb)
+		self.__busyid = editor.connect("busy", self.__busy_cb)
+
 		# GConf notification monitors.
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monitor_id_1 = monitor_add(self.__font_database_uri, MONITOR_FILE, self.__font_changed_cb)
@@ -112,6 +114,7 @@ class ScribesTextView(View):
 		self.__bar = None
 		self.__scroll_id = None
 		self.__move_id = None
+		self.__busy = 0
 		self.__monitor_id_1 =  self.__monitor_id_2 = None
 		# Path to the font database.
 		from os.path import join
@@ -645,6 +648,14 @@ class ScribesTextView(View):
 		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return False
 
+	def __busy_cb(self, editor, is_busy):
+		self.__busy = self.__busy + 1 if is_busy else self.__busy - 1
+		if self.__busy < 0: self.__busy = 0
+		value = False if self.__busy else True
+		self.set_property("sensitive", value)
+		self.grab_focus()
+		return False
+
 	def __make_responsive(self):
 		return False
 
@@ -920,6 +931,7 @@ class ScribesTextView(View):
 		self.__editor.disconnect_signal(self.__signal_id_22, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_25, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_99, self.__editor)
+		self.__editor.disconnect_signal(self.__busyid, self.__editor)
 		from gnomevfs import monitor_cancel
 		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
 		if self.__monitor_id_2: monitor_cancel(self.__monitor_id_2)

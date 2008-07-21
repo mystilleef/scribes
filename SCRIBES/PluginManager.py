@@ -101,14 +101,15 @@ class PluginManager(object):
 		from os import listdir
 		core_files = listdir(core_plugin_folder)
 		init_module = self.__init_module
-		from thread import start_new_thread
+		self.__editor.busy(True)
 		for filename in core_files:
-			start_new_thread(init_module, (filename, core_plugin_folder))
-#			init_module(filename, core_plugin_folder)
+#			start_new_thread(init_module, (filename, core_plugin_folder))
+			init_module(filename, core_plugin_folder)
 		home_files = listdir(home_plugin_folder)
 		for filename in home_files:
-			start_new_thread(init_module, (filename, home_plugin_folder))
-#			init_module(filename, home_plugin_folder)
+#			start_new_thread(init_module, (filename, home_plugin_folder))
+			init_module(filename, home_plugin_folder)
+		self.__editor.busy(False)
 		return False
 
 	def __unload_plugins(self):

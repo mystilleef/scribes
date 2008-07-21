@@ -132,62 +132,23 @@ class Colorer(object):
 ################################################################################
 
 	def __process(self, trigger):
-		"""
-		Color trigger in editing area.
-
-		@param self: Reference to the Colorer instance.
-		@type self: A Colorer object.
-
-		@param trigger: A template trigger.
-		@type trigger: A String object.
-		"""
 		position = self.__get_trigger_position(len(trigger))
 		self.__color_trigger(position)
 		self.__mark_trigger_position(position)
 		return False
 
 	def __get_trigger_position(self, trigger_length):
-		"""
-		Get position of trigger in editing area.
-
-		@param self: Reference to the Colorer instance.
-		@type self: A Colorer object.
-
-		@param trigger_length: Length of trigger
-		@type trigger_length: An Integer object.
-
-		@return: Return position of trigger in editing area.
-		@rtype: A Tuple object.
-		"""
 		cursor = self.__editor.cursor
 		begin = cursor.copy()
 		for count in xrange(trigger_length): begin.backward_char()
 		return begin, cursor
 
 	def __mark_trigger_position(self, position):
-		"""
-		Mark trigger position in buffer.
-
-		@param self: Reference to the Colorer instance.
-		@type self: A Colorer object.
-
-		@param position: Position of trigger in buffer.
-		@type position: A Tuple object.
-		"""
 		self.__buffer.move_mark(self.__lmark, position[0])
 		self.__buffer.move_mark(self.__rmark, position[1])
 		return
 
 	def __color_trigger(self, position):
-		"""
-		Color trigger in editing area (buffer)
-
-		@param self: Reference to the Colorer instance.
-		@type self: A Colorer object.
-
-		@param position: Position of trigger in editing area.
-		@type position: A Tuple object.
-		"""
 		self.__uncolor_trigger()
 		self.__buffer.apply_tag(self.__highlight_tag, position[0], position[1])
 		self.__is_highlighted = True
@@ -195,12 +156,6 @@ class Colorer(object):
 		return False
 
 	def __uncolor_trigger(self):
-		"""
-		Remove trigger color from editing area.
-
-		@param self: Reference to the Colorer instance.
-		@type self: A Colorer object.
-		"""
 		start = self.__buffer.get_iter_at_mark(self.__lmark)
 		end = self.__buffer.get_iter_at_mark(self.__rmark)
 		self.__buffer.remove_tag(self.__highlight_tag, start, end)
@@ -215,49 +170,27 @@ class Colorer(object):
 ################################################################################
 
 	def __destroy_cb(self, *args):
-		"""
-		Handles callback when the destroy signal is emitted.
-
-		@param self: Reference to the Colorer instance.
-		@type self: A Colorer object.
-		"""
 		self.__destroy()
 		return
 
 	def __trigger_found_cb(self, manager, trigger):
-		"""
-		Handles callback when a template trigger is found.
-
-		@param self: Reference to the Colorer instance.
-		@type self: A Colorer object.
-
-		@param manager: Template system manager.
-		@type manager: A Manager object.
-
-		@param trigger: A template trigger
-		@type trigger: A String object.
-		"""
 #		if self.__is_highlighted: return
 		try:
 			from gobject import idle_add, source_remove
 			source_remove(self.__tid)
 		except AttributeError:
 			pass
-		self.__tid = idle_add(self.__process, trigger, priority=9999)
+		finally:
+			self.__tid = idle_add(self.__process, trigger, priority=9999)
 		return
 
 	def __no_trigger_found_cb(self, *args):
-		"""
-		Handles callback when the no trigger is found.
-
-		@param self: Reference to the Colorer instance.
-		@type self: A Colorer object.
-		"""
 		if self.__is_highlighted is False: return
 		try:
 			from gobject import idle_add, PRIORITY_LOW, source_remove
 			source_remove(self.__textid)
 		except AttributeError:
 			pass
-		self.__textid = idle_add(self.__uncolor_trigger)
+		finally:
+			self.__textid = idle_add(self.__uncolor_trigger, priority=9999)
 		return

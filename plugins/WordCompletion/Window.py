@@ -62,8 +62,8 @@ class CompletionWindow(Window):
 		self.__signal_id_8 = manager.connect_after("no-match-found", self.__generic_hide_cb)
 		self.__signal_id_9 = editor.textview.connect("button-press-event", self.__button_press_event_cb)
 		self.__block_signals()
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		"""
@@ -104,6 +104,7 @@ class CompletionWindow(Window):
 		self.set_property("type-hint", WINDOW_TYPE_HINT_MENU)
 		self.set_property("width-request", 200)
 		self.set_property("height-request", 200)
+		self.set_property("border-width", 3)
 		return
 
 ########################################################################
@@ -307,7 +308,7 @@ class CompletionWindow(Window):
 		self.set_property("height-request", height)
 		self.__position_window(width, height)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__show_window, priority=9000)
+		idle_add(self.__show_window, priority=9999)
 #		self.__show_window()
 		return
 
@@ -321,7 +322,6 @@ class CompletionWindow(Window):
 		@param window: Reference to the CompletionWindow instance.
 		@type window: A CompletionWindow object.
 		"""
-		from gobject import idle_add, PRIORITY_LOW
 		if event.keyval in self.__keys: self.__hide_window()
 		return False
 

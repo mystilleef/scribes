@@ -139,8 +139,7 @@ class ScribesTextBuffer(Buffer):
 		self.remove_source_marks(start, end)
 #		from gobject import idle_add, PRIORITY_LOW
 #		idle_add(self.__activate_sytnax_colors, priority=PRIORITY_LOW)
-		from thread import start_new_thread
-		start_new_thread(self.__activate_sytnax_colors, ())
+		self.__activate_sytnax_colors()
 		return False
 
 	def __loaded_document_cb(self, *args):
@@ -261,11 +260,9 @@ class ScribesTextBuffer(Buffer):
 
 	def __cursor_position_cb(self, *args):
 		self.__editor.emit("cursor-moved")
-#		self.__stop_update_cursor_timer()
-#		from gobject import timeout_add, PRIORITY_LOW
-#		self.__cursor_update_timer = timeout_add(1000, self.__update_cursor_position, priority=9999)
-		from thread import start_new_thread
-		start_new_thread(self.__update_cursor_position, ())
+		self.__stop_update_cursor_timer()
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__cursor_update_timer = timeout_add(1000, self.__update_cursor_position, priority=9999)
 		return False
 
 ########################################################################
@@ -327,26 +324,7 @@ class ScribesTextBuffer(Buffer):
 		return False
 
 	def __set_cursor_positon(self):
-		"""
-		Determine where to place the cursor when a file is loaded.
 
-		The editor stores the last cursor position in a database so that
-		when a file is loaded the cursor is placed at the last position in the
-		file.
-
-		However, it is possible that another software program alters the state
-		of the file. Thus making the information in the editor's database
-		obsolete. In such a case, the editor tries to determine where to place
-		the cursor.
-
-		If the changes are too drastic, the editor places the cursor at the
-		begining of the file. If the changes are minor, the editor places the
-		cursor at an approximate position close the the last position the cursor
-		was last seen.
-
-		@param self: Reference to the Loader object.
-		@type self: A Loader object.
-		"""
 		try:
 			from cursor_metadata import get_cursor_position_from_database
 			position = get_cursor_position_from_database(self.__uri)
@@ -396,12 +374,6 @@ class ScribesTextBuffer(Buffer):
 		return False
 
 	def __destroy(self):
-		"""
-		Destroy object.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-		"""
 		from gnomevfs import monitor_cancel
 		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)

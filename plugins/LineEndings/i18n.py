@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2006 Lateef Alabi-Oki
+# Copyright © 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -15,16 +15,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  
 # USA
 
 from gettext import gettext as _
-msg1 = _("Removed bookmark on line %d")
-msg2 = _("Bookmarked line %d")
-msg3 = _("Removed all bookmarks")
-msg4 = _("Moved to bookmark on line %d")
-msg5 = _("_Bookmark")
-msg6 = _("_Toggle Bookmark (ctrl - d)")
-msg7 = _("_Remove All Bookmarks (ctrl - shift - b)")
-msg8 = _("_Show Bookmark Browser (ctrl - b)")
-msg9 = _("Bookmarked Lines")
+msg1 = _("Converted line endings to Unix")
+msg2 = _("Converted line endings to Mac")
+msg3 = _("Converted line endings to Windows")
+msg4 = _("Convert to _Unix (alt - 1)")
+msg5 = _("Convert to _Mac (alt - 2)")
+msg6 = _("Convert to _Windows (alt - 3)")
+msg7 = _("Line En_dings")

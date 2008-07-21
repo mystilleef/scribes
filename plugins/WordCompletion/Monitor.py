@@ -155,15 +155,16 @@ class CompletionMonitor(object):
 	def __insert_text_cb(self, textbuffer, iterator, text, length):
 		try:
 			if (length > 1): raise ValueError
-			from gobject import idle_add, source_remove, PRIORITY_LOW, timeout_add
-			try:
-				source_remove(self.__insert_text_id)
-			except:
-				pass
+#			from gobject import idle_add, source_remove, PRIORITY_LOW, timeout_add
+#			try:
+#				source_remove(self.__insert_text_id)
+#			except:
+#				pass
 #			if self.__completion_window_is_visible:
-			self.__insert_text_id = idle_add(self.__check_buffer, priority=9999)
+#				self.__insert_text_id = idle_add(self.__check_buffer, priority=9999)
 #			else:
 #				self.__insert_text_id = idle_add(self.__check_buffer, priority=9999)
+			self.__check_buffer()
 		except ValueError:
 			self.__emit_no_match_found()
 		return False
