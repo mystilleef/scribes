@@ -106,11 +106,11 @@ class Monitor(object):
 
 	def __cursor_moved_cb(self, *args):
 		try:
-			from gobject import timeout_add, source_remove
+			from gobject import idle_add, source_remove
 			source_remove(self.__cursor_id)
 		except AttributeError:
 			pass
-		self.__cursor_id = timeout_add(100, self.__check_trigger, priority=9999)
+		self.__cursor_id = idle_add(self.__check_trigger, priority=9999)
 		return False
 
 	def __key_press_event_cb(self, view, event):

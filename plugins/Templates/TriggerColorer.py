@@ -176,12 +176,12 @@ class Colorer(object):
 	def __trigger_found_cb(self, manager, trigger):
 #		if self.__is_highlighted: return
 		try:
-			from gobject import idle_add, source_remove
+			from gobject import timeout_add, source_remove
 			source_remove(self.__tid)
 		except AttributeError:
 			pass
 		finally:
-			self.__tid = idle_add(self.__process, trigger, priority=9999)
+			self.__tid = timeout_add(100, self.__process, trigger, priority=9999)
 		return
 
 	def __no_trigger_found_cb(self, *args):

@@ -52,8 +52,8 @@ class Drawer(object):
 		self.__sig_id2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sig_id3 = manager.connect("color", self.__color_cb)
 		self.__sig_id4 = manager.connect("show", self.__show_cb)
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__precompile_method, priority=9999)
 
 	def __init_attributes(self, editor, manager):
 		"""
@@ -154,7 +154,6 @@ class Drawer(object):
 		try:
 			from psyco import bind
 			bind(self.__event_after_cb)
-			bind(self.__check_event_signal)
 			bind(self.__draw_whitespaces)
 			bind(self.__draw_space)
 			bind(self.__draw_tab)

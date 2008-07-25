@@ -121,12 +121,15 @@ class FileSaver(object):
 			self.__check_swap_folder_and_file()
 			self.__save_file()
 		except PermissionError:
-			from internationalization import msg0469			self.__error(msg0469)		except SwapError:
+			from internationalization import msg0469
+			self.__error(msg0469)
+		except SwapError:
 			from internationalization import msg0471
 			self.__error(msg0471)
 		except FileModificationError:
 			print "File has been modified by another program"
-		except DoNothingError:			pass
+		except DoNothingError:
+			pass
 		return False
 
 	def reset_save_flag(self):
@@ -169,7 +172,8 @@ class FileSaver(object):
 						priority=PRIORITY,
 						data=text)
 			except:
-				raise FileCreateError		except FileCreateError:
+				raise FileCreateError
+		except FileCreateError:
 			from internationalization import msg0472
 			self.__error(msg0472)
 		return
@@ -184,7 +188,8 @@ class FileSaver(object):
 		from Exceptions import FileWriteError
 		try:
 			self.__can_save()
-			try:				handle.write(text, self.__close_cb)
+			try:
+				handle.write(text, self.__close_cb)
 			except:
 				handle.cancel()
 				raise FileWriteError
@@ -329,7 +334,8 @@ class FileSaver(object):
 		if self.__should_rename:
 			self.__editor.emit("renamed-document", self.__editor.uri)
 		else:
-			self.__editor.emit("saved-document", self.__editor.uri)		self.__should_rename = False
+			self.__editor.emit("saved-document", self.__editor.uri)
+		self.__should_rename = False
 		if self.__can_quit:
 			self.__destroy()
 		else:
@@ -384,7 +390,8 @@ class FileSaver(object):
 		folder_path = path.dirname(file_path)
 		from Exceptions import PermissionError
 		if is_(access(folder_path, W_OK), False):
-			raise PermissionError		elif is_(access(file_path, W_OK), False):
+			raise PermissionError
+		elif is_(access(file_path, W_OK), False):
 			if path.exists(file_path): raise PermissionError
 		return
 
@@ -457,7 +464,8 @@ class FileSaver(object):
 		"""
 		self.__can_save()
 		if self.__editor.uri: return
-		if is_closing:			# Create a new file and save it if the text editor's buffer
+		if is_closing:
+			# Create a new file and save it if the text editor's buffer
 			# contains a document but there is no document to save.
 			self.__can_quit = True
 			self.__editor.create_new_file()
@@ -503,7 +511,9 @@ class FileSaver(object):
 			if is_(self.__editor.uri.startswith("file:///"), False): return None
 			from gnomevfs import get_file_info
 			fileinfo = get_file_info(self.__editor.uri)
-		except:			return None		return fileinfo
+		except:
+			return None
+		return fileinfo
 
 	def __error(self, message):
 		"""
@@ -858,4 +868,3 @@ class FileSaver(object):
 	def __renamed_document_cb(self, *args):
 		self.__start_monitoring_file()
 		return
-

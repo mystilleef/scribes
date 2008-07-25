@@ -14,12 +14,12 @@ class Converter(object):
 
 	def __convert(self, character):
 		self.__editor.busy(True)
-		lines = self.__editor.get_text().splitlines()
 		offset = self.__editor.cursor.get_offset()
+		lines = self.__editor.get_text().splitlines()
 		self.__editor.textbuffer.set_text(character.join(lines))
 		iterator = self.__editor.textbuffer.get_iter_at_offset(offset)
 		self.__editor.textbuffer.place_cursor(iterator)
-		self.__editor.textview.scroll_to_iter(iterator, 0.5, use_align=True, xalign=1.0)
+		self.__editor.textview.scroll_to_iter(iterator, 0.3, use_align=True, xalign=1.0)
 		self.__editor.busy(False)
 		return False
 
