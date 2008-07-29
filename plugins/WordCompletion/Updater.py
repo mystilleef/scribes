@@ -39,18 +39,6 @@ class CompletionUpdater(object):
 	"""
 
 	def __init__(self, manager, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(manager, editor)
 		from gobject import idle_add, PRIORITY_LOW, timeout_add
 		timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
@@ -73,17 +61,6 @@ class CompletionUpdater(object):
 						dbus_interface=indexer_dbus_service)
 
 	def __init_attributes(self, manager, editor):
-		"""
-		Initialize data attributes.
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		from os.path import join, split
 		self.__indexer_cwd = split(globals()["__file__"])[0]
 		self.__indexer_executable = join(self.__indexer_cwd, "Indexer.py")
@@ -107,12 +84,6 @@ class CompletionUpdater(object):
 ########################################################################
 
 	def __index(self):
-		"""
-		Generate word completion dictionary.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-		"""
 		try:
 			if self.__is_indexing: return False #self.__update_queue()
 			if self.__editor.is_readonly: return False
@@ -129,15 +100,6 @@ class CompletionUpdater(object):
 		return False
 
 	def __generate_dictionary(self):
-		"""
-		Generate word completion dictionary.
-
-		Send text to the indexer, an external process, to generate
-		a list of words for automatic completion.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-		"""
 		try:
 			if self.__is_indexing: return False #self.__update_queue()
 			if not self.__indexer: return False
@@ -326,15 +288,6 @@ class CompletionUpdater(object):
 		return True
 
 	def __update_dictionary(self, dictionary):
-		"""
-		Update the word completion dictionary.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-
-		@param dictionary: Dictionary of words.
-		@type dictionary: A Dictionary object.
-		"""
 		self.__manager.emit("update", dict(dictionary))
 		try:
 			self.__queue.pop()
@@ -344,12 +297,6 @@ class CompletionUpdater(object):
 		return False
 
 	def __send_text(self):
-		"""
-		Send string to word completion indexer for processing.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-		"""
 		try:
 			self.__indexer.process(self.__get_text(), self.__editor.id,
 				dbus_interface=indexer_dbus_service,
@@ -366,15 +313,6 @@ class CompletionUpdater(object):
 ########################################################################
 
 	def __destroy_cb(self, manager):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: An CompletionUpdater object.
-
-		@param manager: Reference to the CompletionManager.
-		@type manager: An CompletionManager object.
-		"""
 		self.__editor.session_bus.remove_signal_receiver(self.__name_change_cb,
 						'NameOwnerChanged',
 						'org.freedesktop.DBus',
@@ -409,12 +347,6 @@ class CompletionUpdater(object):
 ########################################################################
 
 	def __precompile_methods(self):
-		"""
-		Use psyco to precompile methods for performance.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-		"""
 		try:
 			from psyco import bind
 			bind(self.__changed_cb)

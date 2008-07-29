@@ -157,15 +157,13 @@ class FeedbackManager(object):
 		return False
 
 	def start_spinner(self):
-		self.__spinner.start()
-#		from thread import start_new_thread
-#		start_new_thread(self.__spinner.start, ())
+		from thread import start_new_thread
+		start_new_thread(self.__spinner.start, ())
 		return False
 
 	def stop_spinner(self):
-		self.__spinner.stop()
-#		from thread import start_new_thread
-#		start_new_thread(self.__spinner.stop, ())
+		from thread import start_new_thread
+		start_new_thread(self.__spinner.stop, ())
 		return False
 
 	def start_busy_cursor(self):

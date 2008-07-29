@@ -102,14 +102,14 @@ class PluginManager(object):
 		core_files = listdir(core_plugin_folder)
 		init_module = self.__init_module
 		self.__editor.busy(True)
-		from gobject import idle_add
+		from thread import start_new_thread
 		for filename in core_files:
-			idle_add(init_module, filename, core_plugin_folder, priority=9999)
-#			start_new_thread(init_module, (filename, core_plugin_folder))
+#			idle_add(init_module, filename, core_plugin_folder, priority=9999)
+			start_new_thread(init_module, (filename, core_plugin_folder))
 		home_files = listdir(home_plugin_folder)
 		for filename in home_files:
-			idle_add(init_module, filename, home_plugin_folder, priority=9999)
-#			start_new_thread(init_module, (filename, home_plugin_folder))
+#			idle_add(init_module, filename, home_plugin_folder, priority=9999)
+			start_new_thread(init_module, (filename, home_plugin_folder))
 #			init_module(filename, home_plugin_folder)
 		self.__editor.busy(False)
 		return False

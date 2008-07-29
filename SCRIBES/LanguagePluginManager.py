@@ -180,13 +180,14 @@ class PluginManager(object):
 		from os import listdir
 		core_files = listdir(cl_folder)
 		self.__editor.busy(True)
+		from thread import start_new_thread
 		for filename in core_files:
-#			start_new_thread(init_module, (filename, cl_folder))
-			init_module(filename, cl_folder)
+			start_new_thread(init_module, (filename, cl_folder))
+#			init_module(filename, cl_folder)
 		home_files = listdir(hl_folder)
 		for filename in home_files:
-#			start_new_thread(init_module, (filename, hl_folder))
-			init_module(filename, hl_folder)
+			start_new_thread(init_module, (filename, hl_folder))
+#			init_module(filename, hl_folder)
 		self.__editor.busy(False)
 		return False
 

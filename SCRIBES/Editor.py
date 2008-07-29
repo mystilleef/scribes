@@ -1042,8 +1042,8 @@ class Editor(GObject):
 		except ValueError:
 			pass
 		finally:
-			idle_add(self.__initialize_plugins)
-			idle_add(self.__initialize_language_plugins)
+			idle_add(self.__initialize_plugins, priority=9999)
+			idle_add(self.__initialize_language_plugins, priority=9999)
 		return False
 
 	def __initialize_plugins(self):

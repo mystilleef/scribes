@@ -227,8 +227,7 @@ class ScribesTextBuffer(Buffer):
 		@param editor: Reference to the text editor.
 		@type editor: An Editor object.
 		"""
-		from gobject import idle_add
-		idle_add(self.__update_cursor_metadata, self.__uri)
+		self.__update_cursor_metadata(self.__uri)
 		return False
 
 	def __close_document_no_save_cb(self, editor):
