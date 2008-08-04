@@ -36,15 +36,6 @@ class ScribesTextBuffer(Buffer):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to a ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		Buffer.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -65,19 +56,6 @@ class ScribesTextBuffer(Buffer):
 #		idle_add(self.__precompile_methods, priority=5000)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize the attributes of the text editor's buffer.
-
-		This function contains some attributes not available in the
-		gtksourceview.SourceBuffer class. The attributes provided solely for
-		purpose of the text editor.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__uri = None
 		# Register a unique number with the editor's termination queue
@@ -91,12 +69,6 @@ class ScribesTextBuffer(Buffer):
 		return
 
 	def __set_properties(self):
-		"""
-		Set the editor's buffer properties.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-		"""
 		self.begin_not_undoable_action()
 		mgr = self.__editor.style_scheme_manager
 		from ColorThemeMetadata import get_value
@@ -121,16 +93,6 @@ class ScribesTextBuffer(Buffer):
 ################################################################################
 
 	def __checking_document_cb(self, editor, uri):
-		"""
-		Handles callback when the text editor is in the process of loading a
-		document into the text editor's buffer.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param editor: An instance of the text editor's.
-		@type editor: An Editor object.
-		"""
 		self.__uri = uri
 		self.begin_not_undoable_action()
 		self.__undoable_action = True
@@ -139,94 +101,38 @@ class ScribesTextBuffer(Buffer):
 		self.remove_source_marks(start, end)
 #		from gobject import idle_add, PRIORITY_LOW
 #		idle_add(self.__activate_sytnax_colors, priority=PRIORITY_LOW)
-		self.__activate_sytnax_colors()
+		from thread import start_new_thread
+		start_new_thread(self.__activate_sytnax_colors, ())
+#		self.__activate_sytnax_colors()
 		return False
 
 	def __loaded_document_cb(self, *args):
-		"""
-		Handles callback when the text editor has finished loading documents
-		into the text editor's buffer.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		if self.get_modified(): self.set_modified(False)
 		self.end_not_undoable_action()
 		self.__undoable_action = False
-		self.__set_cursor_positon()
+		from thread import start_new_thread
+		start_new_thread(self.__set_cursor_positon, ())
 		return False
 
 	def __saved_document_cb(self, *args):
-		"""
-		Handles callback when the text editor's buffer has finished saving the
-		contents of the text editor's buffer.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param editor: An instance of the text editor's.
-		@type editor: An Editor object.
-		"""
 		if self.get_modified(): self.set_modified(False)
 		return False
 
 	def __enable_readonly_cb(self, editor):
-		"""
-		Handles callback when the text editor is switched to readonly mode.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_highlight_matching_brackets(False)
 		return False
 
 	def __disable_readonly_cb(self, editor):
-		"""
-		Handles callback when the text editor is switched from readonly to
-		readwrite mode.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_highlight_matching_brackets(True)
 		return False
 
 	def __load_error_cb(self, editor, uri):
-		"""
-		Handles callback when the text editor fails to load a document.
-
-		This function resets the buffer to a usable state.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param editor: An instance of the text editor
-		@type editor: An Editor object.
-		"""
 		self.__uri = None
 		if self.__undoable_action: self.end_not_undoable_action()
 		self.__set_properties()
 		return False
 
 	def __close_document_cb(self, editor):
-		"""
-		Handles callback when the "quit" signal is emitted.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__update_cursor_metadata(self.__uri)
 		return False
 
@@ -235,15 +141,6 @@ class ScribesTextBuffer(Buffer):
 		return False
 
 	def __renamed_document_cb(self, editor, uri, *args):
-		"""
-		Handles callback when the name of the document is renamed.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__uri = uri
 		if self.get_modified(): self.set_modified(False)
 		self.set_highlight_matching_brackets(True)
@@ -271,15 +168,6 @@ class ScribesTextBuffer(Buffer):
 ########################################################################
 
 	def __activate_sytnax_colors(self):
-		"""
-		Activate syntax highlight colors for the text editor's buffer.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@return: True to call this function again, False otherwise.
-		@rtype: A Boolean object.
-		"""
 		# Activate syntax highlight for the language.
 		from syntax import activate_syntax_highlight
 		activate_syntax_highlight(self, self.__editor.language)
@@ -306,24 +194,12 @@ class ScribesTextBuffer(Buffer):
 		return False
 
 	def __update_cursor_metadata(self, uri):
-		"""
-		Update the cursor database with information about the cursor position in
-		the text editor's buffer.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param uri: A universal resource identifier representing, or pointing
-			to, a text document.
-		@type uri: A String object.
-		"""
 		self.__stop_update_cursor_timer()
 		self.__update_cursor_position()
 		self.__destroy()
 		return False
 
 	def __set_cursor_positon(self):
-
 		try:
 			from cursor_metadata import get_cursor_position_from_database
 			position = get_cursor_position_from_database(self.__uri)
@@ -355,12 +231,6 @@ class ScribesTextBuffer(Buffer):
 		return False
 
 	def __precompile_methods(self):
-		"""
-		Let psyco perform byte compilation optimizations on methods.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-		"""
 		try:
 			from psyco import bind
 			bind(self.__cursor_position_cb)

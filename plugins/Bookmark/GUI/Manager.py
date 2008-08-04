@@ -27,5 +27,6 @@ class Manager(object):
 		return False
 
 	def show(self):
+		self.__manager.emit("gui-created")
 		self.__manager.emit("show-window")
 		return

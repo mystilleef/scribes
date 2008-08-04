@@ -36,12 +36,6 @@ class ScribesWindow(Window):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the text editor's window instance.
-		@type self: A ScribesWindow object.
-		"""
 		Window.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -73,12 +67,6 @@ class ScribesWindow(Window):
 #		idle_add(self.__precompile_methods, priority=5000)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize the text editor's window attributes.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-		"""
 		self.__editor = editor
 		self.__title = None
 		self.__is_quiting = False
@@ -125,12 +113,6 @@ class ScribesWindow(Window):
 	is_fullscreen = property(__get_is_fullscreen)
 
 	def __set_properties(self):
-		"""
-		Set the default text editor's window properties.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-		"""
 		width, height = self.__editor.calculate_resolution_independence(self, 1.462857143,
 															1.536)
 		from internationalization import msg0025
@@ -162,71 +144,16 @@ class ScribesWindow(Window):
 ########################################################################
 
 	def __delete_event_cb(self, widget, event):
-		"""
-		Handles callback the "delete-event" signal is emitted.
-
-		This function quits the text editor.
-
-		@param self: Reference to the text editor's instance.
-		@type self: A ScribesWindow object.
-
-		@param widget: Reference to the text editor's instance.
-		@type widget: A gtk.Window object.
-
-		@param event: An event to destroy a window object.
-		@type event: A gtk.Event object.
-
-		@param editor: Reference to the text editor instance.
-		@type editor: An Editor object.
-
-		@return: True to prevent propagation of the signal to parent widgets.
-		@rtype: A Boolean object.
-		"""
 		self.__editor.trigger("close_window")
 		return True
 
 	def __map_event_cb(self, widget, event, editor):
-		"""
-		Handles callback when the "map-event" signal is emitted.
-
-		If the text editor's window is displayed for the first time, this
-		function binds the text editor's accelerators to the window and resizes
-		children widgets.
-
-		@param self: Reference to the text editor's instance.
-		@type self: A ScribesWindow object.
-
-		@param widget: Reference to the text editor's instance.
-		@type widget: A gtk.Window object.
-
-		@param event: An event that shows the editor window.
-		@type event: A gtk.Event object.
-
-		@return: True to prevent propagation of the signal to parent widgets.
-		@rtype: A Boolean object.
-		"""
 		self.__is_mapped = True
 		if not self.__is_first_time: return False
 		self.__is_first_time = False
 		return True
 
 	def __focus_out_event_cb(self, window, event):
-		"""
-		Handles callback when the "focus-out-event" signal is emitted.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param window: The text editor's window.
-		@type window: A ScribesWindow object.
-
-		@param event: An event that occurs when the window looses focus.
-		@type event: A gtk.Event object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
-
 		# Save a document when the text editor's window loses focus.
 		if self.__editor.uri and self.__editor.file_is_saved is False and self.__editor.is_readonly is False:
 			self.__editor.trigger("save_file")
@@ -240,23 +167,6 @@ class ScribesWindow(Window):
 		return False
 
 	def __state_event_cb(self, window, event):
-		"""
-		Handles callback when the "window-state-event" is emitted.
-
-		This function keeps track of the state of the window.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param window: Reference to the text editor window.
-		@type window: A gtk.Window object.
-
-		@param event: An event that shows the editor window.
-		@type event: A gtk.Event object.
-
-		@return: True to prevent propagation of the signal to parent widgets.
-		@rtype: A Boolean object.
-		"""
 		from gtk.gdk import WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN
 		from gtk.gdk import WINDOW_STATE_ICONIFIED
 		if (event.new_window_state == WINDOW_STATE_ICONIFIED): return False
@@ -270,16 +180,6 @@ class ScribesWindow(Window):
 		return False
 
 	def __loading_document_cb(self, editor, uri):
-		"""
-		Handles callback when the text editor is in the process of loading a
-		document.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__uri = uri
 		# Set the titlebar to show the file is currently being loaded.
 		self.__determine_title(uri)
@@ -288,37 +188,15 @@ class ScribesWindow(Window):
 		return
 
 	def __loaded_document_cb(self, editor, uri, *args):
-		"""
-		Handles callback when the text editor has finished loading a document.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		#self.__editor.textbuffer.handler_unblock(self.__signal_id_18)
 		self.__editor.handler_unblock(self.__signal_id_18)
 		self.__uri = uri
 		self.set_title(self.__title)
 		self.__is_loaded = True
+		self.present()
 		return
 
 	def __load_error_cb(self, editor, uri):
-		"""
-		Handles callback when the "load-error" signal is emitted.
-
-		This function is called when an error occurs while loading a document.
-		The function quits the text editor, if the an error occurs before the
-		text editor window is displayed. This is done to prevent the text
-		editor's process from running indefinitely.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		#self.__editor.textbuffer.handler_unblock(self.__signal_id_18)
 		self.__editor.handler_unblock(self.__signal_id_18)
 		from internationalization import msg0025
@@ -339,44 +217,15 @@ class ScribesWindow(Window):
 		return
 
 	def __enable_readonly_cb(self, editor):
-		"""
-		Handles callback when the text editor is in readonly mode.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		from internationalization import msg0034
 		self.set_title(self.__title + msg0034)
 		return
 
 	def __disable_readonly_cb(self, editor):
-		"""
-		Handles callback when the "disable-readonly" signal is emitted.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_title(self.__title)
 		return
 
 	def __gui_created_cb(self, editor):
-		"""
-		Handles callback when the "gui-created" signal is emitted.
-
-		This function displays the text editor on the screen.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 #		if self.__editor.will_load_document: return
 #		self.__show_window()
 		return
@@ -392,109 +241,31 @@ class ScribesWindow(Window):
 		return
 
 	def __changed_cb(self, textbuffer):
-		"""
-		Handles callback when the text editor's buffer "changed" signal is
-		emitted.
-
-		This function prepends an asterik to the name of the document in the
-		titebar, when text is entered in the text editor's buffer.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param textbuffer: Reference to the text editor's buffer.
-		@type textbuffer: A gtksourceview.SourceBuffer object.
-
-		@return: True to propagate signals to parent widgets.
-		@rtype: A Boolean object.
-		"""
 		if not self.__uri: return True
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.set_title, "*" + self.__title, priority=PRIORITY_LOW)
 		return True
 
 	def __enable_fullscreen_cb(self, editor):
-		"""
-		Handles callback when the "enable-fullscreen" signal is emitted.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__is_fullscreen = True
 		self.fullscreen()
 		return
 
 	def __disable_fullscreen_cb(self, editor):
-		"""
-		Handles callback when "disable-fullscreen" signal is emitted.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__is_fullscreen = False
 		self.unfullscreen()
 		return
 
 	def __show_bar_cb(self, editor, bar):
-		"""
-		Handles callback when the "show-bar" signal is emitted.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param bar: The bar for the text editor.
-		@type bar: A ScribesBar object.
-		"""
 		self.__bar = bar
 		self.__bar_is_visible = True
 		return
 
 	def __hide_bar_cb(self, editor, bar):
-		"""
-		Handles callback when the "hide-bar" signal is emitted.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param bar: The bar for the text editor.
-		@type bar: A ScribesBar object.
-		"""
 		self.__bar_is_visible = False
 		return
 
 	def __key_press_event_cb(self, window, event):
-		"""
-		Handles callback when the "key-press-event" signal is emitted.
-
-		This function hides the text editor's bar.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param window: The text editor's window.
-		@type window: A ScribesWindow object.
-
-		@param event: An event that happens when the keyboard keys are pressed.
-		@type event: A gtk.Event object.
-
-		@param bar: The bar for the text editor.
-		@type bar: A ScribesBar object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		editor = self.__editor
 		from gtk import keysyms
 		if event.keyval == keysyms.Escape and self.__bar_is_visible:
@@ -510,40 +281,13 @@ class ScribesWindow(Window):
 		return False
 
 	def __show_window(self):
-		"""
-		Show the text editor's window.
-
-		When the text editor is loading a document, the window is shown only
-		after metadata information about the document's most recent window size
-		and position have retrieved from the position database. This information
-		is used to calculate the documents window position and size before
-		displaying it.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@return: True to call this function again, False otherwise.
-		@rtype: A Boolean object.
-		"""
 #		self.__enable_rgba_visual_murrine()
 		self.__position_window()
 		self.show_all()
 		self.present()
-		from gtk.gdk import notify_startup_complete
-		notify_startup_complete()
 		return False
 
 	def __position_window(self):
-		"""
-		Show the text editor's window.
-
-		When the text editor is loading a document, show the window after
-		metadata information about the document's most recent window size and
-		position has been retrieved.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-		"""
 		try:
 			uri = self.__uri if self.__uri else "<EMPTY>"
 			# Get window position from the position database, if possible.
@@ -563,34 +307,11 @@ class ScribesWindow(Window):
 		return False
 
 	def __saved_document_cb(self, *args):
-		"""
-		Handles callback when the contents of the text editor's buffer have
-		been saved.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param editor: An instance of the text editor's buffer.
-		@type editor: An Editor object.
-		"""
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.set_title, self.__title, priority=PRIORITY_LOW)
 		return False
 
 	def __close_document_cb(self, editor):
-		"""
-		Record metadata information about the text editor's window and hide it.
-
-		This function gets the window's position and size, records the
-		information in a metadata database, and then hides the text editor's
-		window.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param editor: An instance of the text editor's buffer.
-		@type editor: An Editor object.
-		"""
 		self.__is_quiting = True
 		self.__editor.disconnect_signal(self.__signal_id_17, self)
 		# Get the text editor's window size and position.
@@ -629,17 +350,6 @@ class ScribesWindow(Window):
 ########################################################################
 
 	def __update_position_metadata(self, is_maximized, xcoordinate, ycoordinate, width, height):
-		"""
-		Update the position database with information about the text editor's
-		window position.
-
-		@param self: Reference to the ScribesWindow instance.
-		@type self: A ScribesWindow object.
-
-		@param uri: A universal resource identifier representing, or pointing
-			to, a text document.
-		@type uri: A String object.
-		"""
 		self.__stop_window_position_timer()
 		self.__update_position(is_maximized, xcoordinate, ycoordinate, width, height)
 		self.__destroy()
@@ -688,12 +398,6 @@ class ScribesWindow(Window):
 		return False
 
 	def __destroy(self):
-		"""
-		Destroy object.
-
-		@param self: Reference to the Window instance.
-		@type self: A Window object.
-		"""
 		self.__editor.disconnect_signal(self.__signal_id_17, self)
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)
