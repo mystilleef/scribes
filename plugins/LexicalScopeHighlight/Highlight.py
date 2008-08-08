@@ -114,12 +114,6 @@ class Highlighter(object):
 ########################################################################
 
 	def __highlight_region(self):
-		"""
-		Highlight region between pair characters.
-
-		@param self: Reference to the Highlighter instance.
-		@type self: A Highlighter object.
-		"""
 		textbuffer = self.__editor.textbuffer
 		if (self.__buffer_is_tagged):
 			begin = textbuffer.get_iter_at_mark(self.__start_mark)
@@ -136,23 +130,6 @@ class Highlighter(object):
 		return False
 
 	def __get_boundary(self, iterator, end):
-		"""
-		Return the region of pair characters.
-
-		@param self: Reference to the Highlighter instance.
-		@type self: A Highlighter object.
-
-		@param citerator: The position of the cursor.
-		@type citerator: A gtk.TextIter object.
-
-		@param iterator: The position of a matching bracket.
-		@type iterator: A gtk.TextIter object.
-
-		@return: A pair of iterators representing the position of matching
-			brackets or nothing.
-		@rtype: A Tuple object.
-		"""
-
 		# The madness going on over here is as a result of the strangeness
 		# of the GtkSourceView API. If your head hurts, kindly move along.
 		if self.__is_start_character(iterator.copy()):
@@ -164,49 +141,16 @@ class Highlighter(object):
 		return iterator, end
 
 	def __is_start_character(self, iterator):
-		"""
-		Whether or not character is an openning pair character.
-
-		@param self: Reference to the Highlighter instance.
-		@type self: A Highlighter object.
-
-		@param character: A character in the buffer.
-		@type character: A String object.
-
-		@return: True if character is an openning pair character.
-		@rtype: A Boolean object.
-		"""
 		if iterator.get_char() in self.__start_characters: return True
 		return False
 
 	def __is_end_character(self, iterator):
-		"""
-		Whether or not character is a closing pair character.
-
-		@param self: Reference to the Highlighter instance.
-		@type self: A Highlighter object.
-
-		@param character: A character in the buffer.
-		@type character: A String object.
-
-		@return: True if character is a closing pair character.
-		@rtype: A Boolean object.
-		"""
 		success = iterator.backward_char()
 		if not success: return False
 		if iterator.get_char() in self.__end_characters: return True
 		return False
 
 	def __create_highlight_tag(self):
-		"""
-		Create the a highlight tag.
-
-		@param self: Reference to the LexicalScopeHighlight instance.
-		@type self: A LexicalScopeHighlight object.
-
-		@return: A region highlight tag.
-		@rtype: A gtk.TextTag object.
-		"""
 		from gtk import TextTag
 		tag = TextTag("lexical_scope_tag")
 		self.__editor.textbuffer.get_tag_table().add(tag)
@@ -216,12 +160,6 @@ class Highlighter(object):
 		return tag
 
 	def __destroy(self):
-		"""
-		Destroy instance of this object.
-
-		@param self: Reference to the Highlighter instance.
-		@type self: A Highlighter object.
-		"""
 		self.__editor.textbuffer.get_tag_table().remove(self.__highlight_tag)
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor.textbuffer)
@@ -244,13 +182,6 @@ class Highlighter(object):
 		return
 
 	def __compile_method(self):
-		"""
-		Use psyco, the Python performance optimization compiler, to
-		compile a method for performance.
-
-		@param self: Reference to the Highlighter instance.
-		@type self: A Highlighter object.
-		"""
 		try:
 			from psyco import bind
 			bind(self.__highlight_region)
@@ -266,46 +197,16 @@ class Highlighter(object):
 ########################################################################
 
 	def __cursor_moved_cb(self, editor):
-		"""
-		Handles callback when the "cursor-moved" signal is emitted.
-
-		@param self: Reference to the Highlighter instance.
-		@type self: A Highlighter object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		if not (self.__can_highlight): return
-		from gobject import source_remove, idle_add
+		from gobject import source_remove, timeout_add
 		try:
 			source_remove(self.__cursor_moved_id)
 		except:
 			pass
-		self.__cursor_moved_id = idle_add(self.__highlight_region, priority=9999)
+		self.__cursor_moved_id = timeout_add(100, self.__highlight_region, priority=9999)
 		return
 
 	def __apply_tag_cb(self, textbuffer, tag, start, end):
-		"""
-		Handles callback when the "apply-tag" signal is emitted.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param textbuffer: The text editor's buffer.
-		@type textbuffer: A ScribesTextBuffer object.
-
-		@param tag: A tag in the text editor's buffer.
-		@type tag: A gtk.TextTag object.
-
-		@param start: The position of the begining of the tag.
-		@type start: A gtk.TextIter object.
-
-		@param end: The position of the end of the tag.
-		@type end: A gtk.TextIter object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		if (tag != self.__highlight_tag): return False
 		textbuffer = self.__editor.textbuffer
 		if self.__start_mark is None: self.__start_mark = textbuffer.create_mark(None, start, True)
@@ -316,56 +217,17 @@ class Highlighter(object):
 		return True
 
 	def __remove_tag_cb(self, textbuffer, tag, start, end):
-		"""
-		Handles callback when the "remove-tag" signal is emitted.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param textbuffer: The text editor's buffer.
-		@type textbuffer: A ScribesTextBuffer object.
-
-		@param tag: A tag in the text editor's buffer.
-		@type tag: A gtk.TextTag object.
-
-		@param start: The position of the begining of the tag.
-		@type start: A gtk.TextIter object.
-
-		@param end: The position of the end of the tag.
-		@type end: A gtk.TextIter object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		if (tag != self.__highlight_tag): return False
 		self.__buffer_is_tagged = False
 		return True
 
 	def __generic_highlight_off_cb(self, *args):
-		"""
-		A generic callback to disable scope highlights.
-
-		@param self: Reference to the Highlighter instance.
-		@type self: A Highlighter object.
-
-		@param *args: Irrelevant arguments.
-		@type *args: A List object.
-		"""
 		self.__can_highlight = False
 		begin, end = self.__editor.textbuffer.get_bounds()
 		self.__editor.textbuffer.remove_tag(self.__highlight_tag, begin, end)
 		return
 
 	def __generic_highlight_on_cb(self, *args):
-		"""
-		A generic callback to enable scope highlights.
-
-		@param self: Reference to the Highlighter instance.
-		@type self: A Highlighter object.
-
-		@param *args: Irrelevant arguments.
-		@type *args: A List object.
-		"""
 		self.__can_highlight = True
 		from gobject import idle_add, source_remove
 		try:
@@ -382,12 +244,6 @@ class Highlighter(object):
 ########################################################################
 
 	def __highlight_cb(self, *args):
-		"""
-		Handles callback #FIXME: yeap
-
-		@param self: Reference to the LexicalScopeHighlight instance.
-		@type self: A LexicalScopeHighlight object.
-		"""
 		textbuffer = self.__editor.textbuffer
 		begin, end = textbuffer.get_bounds()
 		textbuffer.remove_tag(self.__highlight_tag, begin, end)

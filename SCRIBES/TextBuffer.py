@@ -52,8 +52,8 @@ class ScribesTextBuffer(Buffer):
 		self.__signal_id_11 = editor.connect("reload-document", self.__reload_document_cb)
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monitor_id_1 = monitor_add(self.__theme_database_uri, MONITOR_FILE, self.__theme_changed_cb)
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__precompile_methods, priority=5000)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -189,8 +189,10 @@ class ScribesTextBuffer(Buffer):
 		cursor_index = get_cursor_index(self)
 		cursor_position = cursor_line, cursor_index
 #		update_cursor_position_in_database(str(self.__uri), cursor_position)
-		from gobject import idle_add
-		idle_add(update_cursor_position_in_database, str(self.__uri), cursor_position, priority=9999)
+#		from gobject import idle_add
+#		idle_add(update_cursor_position_in_database, str(self.__uri), cursor_position, priority=9999)
+		from thread import start_new_thread
+		start_new_thread(update_cursor_position_in_database, (str(self.__uri), cursor_position))
 		return False
 
 	def __update_cursor_metadata(self, uri):
@@ -231,15 +233,9 @@ class ScribesTextBuffer(Buffer):
 		return False
 
 	def __precompile_methods(self):
-		try:
-			from psyco import bind
-			bind(self.__cursor_position_cb)
-			bind(self.__stop_update_cursor_timer)
-			bind(self.__update_cursor_position)
-		except ImportError:
-			pass
-		except:
-			pass
+		methods = (self.__cursor_position_cb,
+			self.__stop_update_cursor_timer, self.__update_cursor_position)
+		self.__editor.optimize(methods)
 		return False
 
 	def __destroy(self):

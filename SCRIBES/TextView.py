@@ -752,13 +752,6 @@ class ScribesTextView(View):
 		return
 
 	def __spell_check_cb(self, *args):
-		"""
-		Handles callback when spell checking is toggled on or off in the text
-		editor.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		from SpellCheckMetadata import get_value
 		if get_value():
 			from gobject import GError
@@ -773,17 +766,11 @@ class ScribesTextView(View):
 				self.__spell_checker.detach()
 			except AttributeError:
 				pass # For some reason self.__spell_checker is None
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return
 
 	def __themes_cb(self, *args):
-		"""
-		Handles callback when of the text editor's view theme changes.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		# Set the foreground and background color of the text editor's buffer.
 		from UseThemeMetadata import get_value
 		if get_value():

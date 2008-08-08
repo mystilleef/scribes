@@ -38,30 +38,11 @@ class CommandLineProcessor(object):
 	"""
 
 	def __init__(self, argv):
-		"""
-		Initialize the CommandLineProcessor object
-
-		@param self: Reference to the CommandLineProcessor instance.
-		@type self: A CommandLineProcessor object.
-
-		@param argv: Command line arguments or options.
-		@type argv: A List object.
-		"""
 		self._init_attributes(argv)
 		self._process_options()
 		self._process_arguments()
 
 	def _init_attributes(self, argv):
-		"""
-		Initialize key attributes that will be used repeatedly by other
-		components of the CommandLineProcessor instance.
-
-		@param self: Reference to the CommandLineProcessor instance.
-		@type self: A CommandLineProcessor object.
-
-		@param argv: A list that may contain command line options or arguments.
-		@type argv: A List object.
-		"""
 		# True when -n, or --new, is passed as an option to the text editor.
 		self.newfile_flag = False
 
@@ -95,18 +76,6 @@ class CommandLineProcessor(object):
 		return
 
 	def _process_options(self):
-		u"""
-		Parse the options passed to the text editor and process them
-		appropriately.
-
-		This function gets all the options passed to the text editor via the
-		command line. Validates the options to ensure they are valid and not
-		more than one options are being passed at the same time. And then finally
-		processes the option appropriately.
-
-		@param self: Reference to the CommandLineProcessor instance.
-		@type self: A CommandLineProcessor object.
-		"""
 		self.option_list = self._get_command_line_options()
 		if self.option_list:
 			# Options were detected.
@@ -122,17 +91,6 @@ class CommandLineProcessor(object):
 		return
 
 	def _process_arguments(self):
-		"""
-		Analyze the strings passed as file names or URIs to the text editor.
-
-		This function verifies the existence of the file names or URIs passed
-		to the text editor as arguments from the shell terminal. It also
-		converts local file names to URIs. For the text editor to be network
-		tranparent, URIs are the default scheme for opening and saving files.
-
-		@param self: Reference to the CommandLineProcessor instance.
-		@type self: A CommandLineProcessor object.
-		"""
 		self.argument_list = self._get_command_line_arguments()
 		if self.argument_list:
 			self.uri_list = self._convert_arguments_to_uris()
@@ -148,16 +106,6 @@ class CommandLineProcessor(object):
 		return
 
 	def _get_command_line_options(self):
-		u"""
-		Search argv for command line options and place found options in a list.
-
-		@param self: Reference to the CommandLineProcessor instance.
-		@type self: A CommandLineProcessor object.
-
-		@return: A list containing potential command line options or an empty
-			list if no command line options are present.
-		@rtype: A List object.
-		"""
 		option_list = []
 		for options in self.argv:
 			if options.startswith("-"):
@@ -165,21 +113,6 @@ class CommandLineProcessor(object):
 		return option_list
 
 	def _validate_command_line_options(self):
-		"""
-		Ensure options passed to the text editor are valid ones.
-
-		This function performs two basic validations. It checks to see if there
-		are more than one options passed to the text editor as arguments. If
-		there more than one options, validation fails. It also checks to see
-		that the options passed as arguments are supported by the text editor.
-
-		@param self: Reference to the CommandLineProcessor instance.
-		@type self: A CommandLineProcessor object.
-
-		@return: A list containing one valid command line option or an empty
-			list if no valid options are found.
-		@rtype: A List object.
-		"""
 		if len(self.option_list) > 1:
 			# Show an error message when more than one option is passed to the
 			# text editor as arguments.
@@ -203,20 +136,6 @@ class CommandLineProcessor(object):
 		return option_list
 
 	def _process_command_line_options(self):
-		u"""
-		Analyze option passed as an argument to the text editor and act upon it
-		appropriately.
-
-		The text editor supports four options, namely: -v(--version),
-		-h(--help), -n(--newfile) and -r(--readonly). -v prints the current
-		version of the text editor to the shell terminal. -h prints the help
-		guide to the shell terminal. -n creates a new empty file. The name of
-		the file is passed as an argument to the text editor. -r launches the
-		editor in readonly mode.
-
-		@param self: Reference to the CommandLineProcessor instance.
-		@type self: A CommandLineProcessor object.
-		"""
 		option = self.option_list[0]
 		if option in ("-h", "--help"):
 			from usage import help as chelp
@@ -241,40 +160,11 @@ class CommandLineProcessor(object):
 		return
 
 	def _get_command_line_arguments(self):
-		u"""
-		Get all arguments from the command line except options.
-
-		This function filters out options from the command line argument.
-		Options are flags that influence the behavior of the editor. Arguments
-		are just files that need to be opened by the editor.
-
-		@param self: Reference to the CommandLineProcessor instance.
-		@type self: A CommandLineProcessor object.
-
-		@return: A list of possible file names or URIs
-		@rtype: A List object.
-		"""
 		# Filter options from the command line argument list.
 		argument_list = [args for args in self.argv if not args.startswith("-")]
 		return argument_list
 
 	def _convert_arguments_to_uris(self):
-		u"""
-		Convert all file names passed as arguments to the text editor into URIs.
-
-		This function converts arguments passed as filenames to the text editor
-		into URIs. It proceeds to check if the URI exists. If they do the URIs
-		are appended to a uri_list for further processing. If they don't a
-		message is printed to the shell terminal indicating the file does not
-		exists. When files do not exist and the newfile_flag is set to True, a
-		new file is created.
-
-		@param self: Reference to the CommandLineProcessor instance.
-		@type self: A CommandLineProcessor object.
-
-		@return: A list of valid URIs to be opened by the text editor or
-		@rtype: A List object.
-		"""
 		from gnomevfs import make_uri_from_shell_arg, exists, URI
 		uri_list = []
 		for files in self.argument_list:
@@ -318,14 +208,6 @@ class CommandLineProcessor(object):
 		return uri_list
 
 	def _create_new_uri(self, file_uri):
-		u"""
-		Create a new file on the host system.
-
-		This function is called when the "-n" command line option is passed as
-		an argument to the text editor. It creates a new file if the user has
-		write permissions on the file system. GNOME-VFS is used to create the
-		file.
-		"""
 		value = True
 		from gnomevfs import create, OPEN_WRITE
 		try:
@@ -338,12 +220,6 @@ class CommandLineProcessor(object):
 		return value
 
 	def __print_info(self):
-		"""
-		Get necessariy information about system Scribes is running on.
-
-		@param self: Reference to the CommandLineProcessor instance.
-		@type self: A CommandLineProcessor object.
-		"""
 		print "========================================================"
 		import os
 		print "System Info: ", os.uname()
@@ -384,25 +260,8 @@ class CommandLineProcessor(object):
 		return
 
 	def _clean_up(self):
-		u"""
-		Finalize and destroy the CommandLineProcessor instance.
-
-		When exit_flag is true, the text editor is terminated. This may occur
-		when invalid arguments are passed to the text editor or when the -v
-		or -h option is invoked. Their sole purpose is to print a message to
-		the shell terminal and nothing more. Otherwise, the object is merely
-		destroyed to free up memory.
-
-		@param self: Reference to the CommandLineProcessor instance.
-		@type self: A CommandLineProcessor object.
-		"""
+		if self.exit_flag: raise SystemExit
 		from gc import collect
-		if self.exit_flag:
-			del self
-			collect()
-			from sys import exit
-			exit(1)
-		else:
-			del self
-			collect()
+		del self
+		collect()
 		return

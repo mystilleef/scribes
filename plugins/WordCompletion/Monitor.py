@@ -48,8 +48,8 @@ class CompletionMonitor(object):
 		self.__signal_id_9 = editor.textview.connect_after("paste-clipboard", self.__generic_cb)
 		self.__signal_id_10 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_11 = manager.connect("is-visible", self.__is_visible_cb)
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -116,19 +116,9 @@ class CompletionMonitor(object):
 		return 0
 
 	def __precompile_methods(self):
-		try:
-			from psyco import bind
-			bind(self.__check_buffer)
-			bind(self.__find_matches)
-			bind(self.__sort_matches_occurrence_only)
-			bind(self.__insert_text_cb)
-			bind(self.__key_press_event_cb)
-			bind(self.__emit_match_found)
-			bind(self.__emit_no_match_found)
-		except ImportError:
-			pass
-		except:
-			pass
+		methods = (self.__insert_text_cb, self.__key_press_event_cb,
+				self.__emit_no_match_found, self.__emit_match_found)
+		self.__editor.optimize(methods)
 		return False
 
 	def __create_completion_dictionary(self):
@@ -155,16 +145,17 @@ class CompletionMonitor(object):
 	def __insert_text_cb(self, textbuffer, iterator, text, length):
 		try:
 			if (length > 1): raise ValueError
-#			from gobject import idle_add, source_remove, PRIORITY_LOW, timeout_add
-#			try:
-#				source_remove(self.__insert_text_id)
-#			except:
-#				pass
-#			if self.__completion_window_is_visible:
+			from gobject import idle_add, source_remove, PRIORITY_LOW, timeout_add
+			try:
+				source_remove(self.__insert_text_id)
+			except:
+				pass
+			if self.__completion_window_is_visible:
+				self.__check_buffer()
 #				self.__insert_text_id = idle_add(self.__check_buffer, priority=9999)
-#			else:
-#				self.__insert_text_id = idle_add(self.__check_buffer, priority=9999)
-			self.__check_buffer()
+			else:
+				self.__insert_text_id = timeout_add(100, self.__check_buffer, priority=9999)
+#			self.__check_buffer()
 		except ValueError:
 			self.__emit_no_match_found()
 		return False

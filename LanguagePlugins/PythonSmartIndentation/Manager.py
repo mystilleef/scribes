@@ -35,42 +35,15 @@ class Manager(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor)
 		self.__sig_id1 = self.__textview.connect('key-press-event', self.__key_press_event_cb)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__textview = editor.textview
 		return
 
 	def __backward_to_line_begin(self, iterator):
-		"""
-		Move an iterator to the beginning of a line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param iterator: An iterator.
-		@type iterator: A gtk.Iter object.
-		"""
 		if iterator.starts_line(): return iterator
 		while True:
 			iterator.backward_char()
@@ -78,15 +51,6 @@ class Manager(object):
 		return iterator
 
 	def __forward_to_line_end(self, iterator):
-		"""
-		Move an iterator to the end of a line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param iterator: An object that represents a position in a buffer.
-		@type iterator: A gtk.Iter object.
-		"""
 		if iterator.ends_line(): return iterator
 		iterator.forward_to_line_end()
 		return iterator
@@ -198,12 +162,6 @@ class Manager(object):
 		return True
 
 	def destroy(self):
-		"""
-		Destroy object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		self.__editor.disconnect_signal(self.__sig_id1, self.__textview)
 		del self
 		self = None

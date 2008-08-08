@@ -29,15 +29,15 @@ bookmark operations.
 @contact: <mystilleef@gmail.com>
 """
 
-name = "Document Statistics Plugin"
+name = "Document Information Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
 autoload = True
-class_name = "DocumentStatisticsPlugin"
-short_description = "Shows document statistics window."
-long_description = """Shows the document statistics window."""
+class_name = "DocumentInformationPlugin"
+short_description = "Shows document information window."
+long_description = """Shows the document information window."""
 
-class DocumentStatisticsPlugin(object):
+class DocumentInformationPlugin(object):
 	"""
 	This shows the document statistics window.
 	"""
@@ -47,7 +47,7 @@ class DocumentStatisticsPlugin(object):
 		self.__trigger = None
 
 	def load(self):
-		from DocumentStatistics.Trigger import Trigger
+		from DocumentInformation.Trigger import Trigger
 		self.__trigger = Trigger(self.__editor)
 		return
 

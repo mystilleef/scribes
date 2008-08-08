@@ -46,7 +46,8 @@ def main(argv=None):
 def __open(uris=None):
 	__open_via_dbus(uris)
 	#__init_threads()
-	__launch_new_editor(uris)
+	from InstanceManager import EditorManager
+	EditorManager().open_files(uris)
 	return
 
 def __open_via_dbus(uris=None):
@@ -56,11 +57,6 @@ def __open_via_dbus(uris=None):
 	dbus_service.open_files(uris, dbus_interface=scribes_dbus_service)
 	raise SystemExit
 	return
-
-def __launch_new_editor(uris=None):
-	from InstanceManager import EditorManager
-	EditorManager().open_files(uris)
-	return False
 
 def __init_threads():
 	from gobject import threads_init
@@ -94,20 +90,16 @@ def __mainloop():
 	return
 
 def __fork_scribes():
-	if not __can_fork(): return
+	from ForkScribesMetadata import get_value
+	can_fork = get_value()
+	if not can_fork: return
 	from os import fork
 	pid = fork()
-	if pid != 0:
-		from sys import exit as exit_
-		exit_(0)
+	if pid != 0: raise SystemExit
 	return
 
-def __can_fork():
-	from ForkScribesMetadata import get_value
-	return get_value()
-
-#try:
-#	from psyco import bind
-#	bind(__mainloop)
-#except:
-#	pass
+try:
+	from psyco import bind
+	bind(__mainloop)
+except:
+	pass

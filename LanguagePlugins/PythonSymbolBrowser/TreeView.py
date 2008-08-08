@@ -87,8 +87,9 @@ class TreeView(object):
 			self.__treeview.set_model(None)
 			self.__model.clear()
 			indentation = self.__get_indentation_levels(symbols)
+			append = self.__append_symbols
 			for item in symbols:
-				self.__append_symbols(item, indentation)
+				append(item, indentation)
 			self.__treeview.set_model(self.__model)
 		self.__select_row()
 		self.__treeview.set_property("sensitive", True)
@@ -207,5 +208,5 @@ class TreeView(object):
 
 	def __update_cb(self, manager, symbols):
 		from gobject import idle_add
-		idle_add(self.__populate_model, symbols, priority=2222)
+		idle_add(self.__populate_model, symbols, priority=9999)
 		return False

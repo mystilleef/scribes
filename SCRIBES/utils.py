@@ -642,9 +642,6 @@ def find_matching_bracket(iterator):
 	return iterator
 
 def init_gnome():
-	"""
-	Initialize the GNOME libraries.
-	"""
 	# Crashes the save dialog if uncommented.
 	#import gnome.ui
 	from info import version, name, scribes_data_path
@@ -669,8 +666,7 @@ def forward_to_line_end(iterator):
 
 try:
 	from psyco import bind
-	bind(generate_random_number)
-	bind(calculate_completion_window_position)
-	bind(disconnect_signal)
+	bind(find_matching_bracket)
+	bind(__search_for_open_character)
 except ImportError:
 	pass

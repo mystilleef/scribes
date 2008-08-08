@@ -37,15 +37,6 @@ class BracketManager(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor)
 		self.__check_mimetype()
 		self.__signal_id_1 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
@@ -55,15 +46,6 @@ class BracketManager(object):
 #		idle_add(self.__compile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__match = editor.find_matching_bracket
 		self.__monitor_list = []
@@ -90,12 +72,6 @@ class BracketManager(object):
 ########################################################################
 
 	def destroy(self):
-		"""
-		Destroy instance of this class.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-		"""
 		self.__destroy()
 		return
 
@@ -106,15 +82,6 @@ class BracketManager(object):
 ########################################################################
 
 	def __insert_closing_pair_character(self, keyval):
-		"""
-		Insert closing pair characters into the text editor's buffer.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-
-		@param keyval: A value representing a keyboard symbol
-		@type keyval: An Integer object.
-		"""
 		from gtk import keysyms
 		if (keyval == keysyms.quotedbl):
 			self.__insert_pair_characters(keyval, keysyms.quotedbl)
@@ -158,18 +125,6 @@ class BracketManager(object):
 		return
 
 	def __insert_pair_characters(self, open_keyval, close_keyval):
-		"""
-		Insert pair characters into the text editor's buffer.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-
-		@param open_keyval: A value representing the openning character.
-		@type open_keyval: An Integer object.
-
-		@param close_keyval: A value representing the closing character.
-		@type close_keyval: An Integer object.
-		"""
 		self.__editor.block_response()
 		textbuffer = self.__editor.textbuffer
 		from gtk.gdk import keyval_to_unicode
@@ -191,15 +146,6 @@ class BracketManager(object):
 		return
 
 	def __enclose_selection(self, keyval):
-		"""
-		Enclose selection in pair characters.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-
-		@param keyval: The value of a pair character.
-		@type keyval: An Integer object.
-		"""
 		from gtk import keysyms
 		if (keyval == keysyms.quotedbl):
 			self.__insert_enclosed_selection(keysyms.quotedbl, keysyms.quotedbl)
@@ -240,18 +186,6 @@ class BracketManager(object):
 		return
 
 	def __insert_enclosed_selection(self, open_keyval, close_keyval):
-		"""
-		Enclose selected text in pair characters.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-
-		@param open_keyval: An integer representing an open pair character.
-		@type open_keyval: An Integer object.
-
-		@param close_keyval: An integer representing a close pair character.
-		@type close_keyval: An Integer object.
-		"""
 		self.__editor.block_response()
 		textbuffer = self.__editor.textbuffer
 		from gtk.gdk import keyval_to_unicode
@@ -270,12 +204,6 @@ class BracketManager(object):
 		return
 
 	def __move_cursor_out_of_bracket_region(self):
-		"""
-		Move cursor after closing pair character.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-		"""
 		textbuffer = self.__editor.textbuffer
 		end_mark = self.__monitor_list[-1][1][1]
 		iterator = textbuffer.get_iter_at_mark(end_mark)
@@ -284,12 +212,6 @@ class BracketManager(object):
 		return
 
 	def __stop_monitoring(self):
-		"""
-		Stop monitoring the most recently inserted bracket region.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-		"""
 		begin_mark = self.__monitor_list[-1][1][0]
 		end_mark = self.__monitor_list[-1][1][1]
 		if not (begin_mark.get_deleted()):
@@ -300,15 +222,6 @@ class BracketManager(object):
 		return
 
 	def __remove_closing_pair_character(self):
-		"""
-		Remove closing pair character if it was automatically entered.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-
-		@return: True to handle keyboard events.
-		@rtype: A Boolean object.
-		"""
 		textbuffer = self.__editor.textbuffer
 		begin_mark = self.__monitor_list[-1][1][0]
 		end_mark = self.__monitor_list[-1][1][1]
@@ -331,15 +244,6 @@ class BracketManager(object):
 		return True
 
 	def __has_escape_character(self):
-		"""
-		Check for escape character before single or double quote character.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-
-		@return: True if there's an escape character before single or double quote character.
-		@rtype: A Boolean object.
-		"""
 		end_iterator = self.__editor.get_cursor_position()
 		start_iterator = end_iterator.copy()
 		start_iterator.backward_char()
@@ -347,12 +251,6 @@ class BracketManager(object):
 		return False
 
 	def __remove_escape_character(self):
-		"""
-		Remove escape character.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-		"""
 		end_iterator = self.__editor.get_cursor_position()
 		start_iterator = end_iterator.copy()
 		start_iterator.backward_char()
@@ -362,19 +260,6 @@ class BracketManager(object):
 		return
 
 	def __can_insert_apostrophe(self):
-		"""
-		Check whether or not a closing apostrophe can be automatically
-		inserted into the text editor's buffer.
-
-		Automatic completion will not be performed for apostrophes
-		following an alphabet.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-
-		@return: True to insert automatically insert apostrophe.
-		@rtype: A Boolean object.
-		"""
 		iterator = self.__editor.get_cursor_iterator()
 		if (iterator.starts_line()): return True
 		iterator.backward_char()
@@ -383,12 +268,6 @@ class BracketManager(object):
 		return True
 
 	def __insert_apostrophe(self):
-		"""
-		Insert a single apostrophe into the buffer.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-		"""
 		from gtk import keysyms
 		from gtk.gdk import keyval_to_unicode
 		utf8_apostrophe_character = unichr(keyval_to_unicode(keysyms.apostrophe)).encode("utf-8")
@@ -396,13 +275,6 @@ class BracketManager(object):
 		return
 
 	def __check_mimetype(self):
-		"""
-		Check the mimetype of the file and modify completion behavior
-		for LaTeX and markup source code if possible.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-		"""
 		from gnomevfs import get_mime_type
 		from gtk import keysyms
 		markup_mimetype = ["text/html", "application/xml", "text/xml", "application/docbook+xml"]
@@ -418,13 +290,6 @@ class BracketManager(object):
 		return
 
 	def __compile_methods(self):
-		"""
-		Use psyco, the Python performance optimizing compiler to
-		precompile certain methods.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-		"""
 		try:
 			from psyco import bind
 			bind(self.__key_press_event_cb)
@@ -445,12 +310,6 @@ class BracketManager(object):
 		return False
 
 	def __destroy(self):
-		"""
-		Destroy instance of this class.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor.textview)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
@@ -465,24 +324,6 @@ class BracketManager(object):
 ########################################################################
 
 	def __key_press_event_cb(self, textview, event):
-		"""
-		Handles callback when "key-press-event" signal is emitted.
-
-		This function monitors the editing area for pair character
-		insertions.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-
-		@param textview: The text editor's buffer container.
-		@type textview: A ScribesTextView object.
-
-		@param event: An event that occurs when keys on the keyboard are pressed.
-		@type event: A gtk.Event object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		#from gtk.gdk import keyval_name
 		#print keyval_name(event.keyval)
 		selection = self.__editor.textbuffer.get_selection_bounds()
@@ -511,17 +352,8 @@ class BracketManager(object):
 		return False
 
 	def __cursor_moved_cb(self, editor):
-		"""
-		Handles callback when the "cursor-moved" signal is emitted.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__monitor_pair_characters, priority=PRIORITY_LOW)
+		idle_add(self.__monitor_pair_characters, priority=9999)
 		return
 
 	def __monitor_pair_characters(self):
@@ -539,15 +371,6 @@ class BracketManager(object):
 		return False
 
 	def __loaded_document_cb(self, *args):
-		"""
-		Handles callback when the "loaded-document" signal is emitted.
-
-		@param self: Reference to the BracketManager instance.
-		@type self: A BracketManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__check_mimetype, priority=PRIORITY_LOW)
+		idle_add(self.__check_mimetype, priority=9999)
 		return

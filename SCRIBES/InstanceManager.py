@@ -43,10 +43,9 @@ class EditorManager(object):
 		DBusService(self)
 		self.__init_attributes()
 		self.__init_i18n()
-		from gobject import idle_add, timeout_add
-#		idle_add(self.__precompile_methods, priority=5000)
+		from gobject import timeout_add
 		timeout_add(300000, self.__init_garbage_collector, priority=9999)
-		timeout_add(11000, self.__init_psyco, priority=5555)
+		timeout_add(21000, self.__init_psyco, priority=9999)
 
 	def __init_attributes(self):
 		from collections import deque
@@ -152,6 +151,7 @@ class EditorManager(object):
 		editor.window.window.show()
 		editor.window.show_all()
 		editor.window.deiconify()
+		editor.window.present()
 		return False
 
 	def get_uris(self):
@@ -197,14 +197,18 @@ class EditorManager(object):
 
 	def __init_garbage_collector(self):
 		from gc import collect
-		collect()
+		from thread import start_new_thread
+		start_new_thread(collect, ())
+#		collect()
 		return True
 
 	def __init_psyco(self):
 		try:
-			from psyco import background#, log #, profile#, log
+			from psyco import background#, log , profile#, log
 #			log("/home/meek/Desktop/psyco-log.log")
-			background()
+			from thread import start_new_thread
+			start_new_thread(background, ())
+#			background()
 			print "Initialized psyco profiling and optimization"
 		except ImportError:
 			pass
