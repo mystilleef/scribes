@@ -36,15 +36,6 @@ class Manager(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor)
 		self.__sig_id1 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 

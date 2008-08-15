@@ -98,14 +98,14 @@ class Editor(GObject):
 		self.__signal_id_14 = self.connect_after("reload-document", self.__reload_document_cb)
 		self.__signal_id_15 = self.connect("started-core-services", self.__started_core_services_cb)
 #		self.connect_after("loaded-document", self.__loaded_document_after_cb)
-#		from gobject import idle_add, PRIORITY_HIGH, PRIORITY_LOW
 		try:
 			# I know...I know, this is evil. I'll fix it.
 			self.__init_attributes(manager, file_uri, encoding)
 		except:
-			print "Awwww cute! I'm crashing because it is the safest thing to. SORRY! :-D"
+			print "Awwww cute! I'm crashing because it is the safest thing to do. SORRY! :-D"
 			raise SystemExit
-#		idle_add(self.__precompile_methods, priority=5000)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 ########################################################################
 #
@@ -114,51 +114,15 @@ class Editor(GObject):
 ########################################################################
 
 	def __get_error_dialog(self):
-		"""
-		Return the error dialog for the text editor.
-
-		@param self: Reference to the text editor.
-		@type self: An Editor object.
-
-		@return: An error dialog object for the text editor.
-		@rtype: A ScribesErrorDialog object.
-		"""
 		return self.__error_dialog
 
 	def __get_message_dialog(self):
-		"""
-		Return the error dialog for the text editor.
-
-		@param self: Reference to the text editor.
-		@type self: An Editor object.
-
-		@return: An error dialog object for the text editor.
-		@rtype: A ScribesErrorDialog object.
-		"""
 		return self.__message_dialog
 
 	def __get_tooltip(self):
-		"""
-		Return the tooltip object for the text editor.
-
-		@param self: Reference to the Editor instance.
-		@type self: A Editor object.
-
-		@return: A tooltip object.
-		@rtype: A gtk.Tooltip object.
-		"""
 		return self.__tip
 
 	def __get_preference_menu(self):
-		"""
-		Return the preference menu for the toolbar.
-
-		@param self: Reference to the Editor instance.
-		@type self: An Editor object.
-
-		@return: Preference menu for the toolbar.
-		@rtype: A PreferenceMenu object.
-		"""
 		return self.__preference_menu
 
 	def __get_recent_manager(self):
@@ -229,9 +193,6 @@ class Editor(GObject):
 		return self.__contains_document
 
 	def __get_gconf_client(self):
-		"""
-		Function is deprecated.
-		"""
 		# This function is deprecated
 		return None
 
@@ -536,41 +497,12 @@ class Editor(GObject):
 		return self.__encoding_manager
 
 	def register_termination_id(self):
-		"""
-		Register a unique identification with the text editor.
-
-		Objects that need to perform special operations before the text editor
-		quits, need to call this method when they are initially created. This
-		function generates a unique identification number for objects. The
-		identification number should be used as an argument to the
-		unregister_termination_id method after the object has finished performing
-		its special operation, so that the text editor can quit successfully.
-
-		@param self: Reference to the Editor instance.
-		@type self: An Editor object.
-
-		@return: A unique identification number.
-		@rtype: A Float object.
-		"""
 		from utils import generate_random_number
 		termination_id = generate_random_number(self.__termination_queue)
 		self.__termination_queue.add(termination_id)
 		return termination_id
 
 	def unregister_termination_id(self, termination_id):
-		"""
-		Remove unique identification number from the text editor's termination
-		registration queue.
-
-		This function disassociates an object from the text editor so that the
-		editor can proceed to quit successfully.
-
-		@param self: Reference to the Editor instance.
-		@type self: An Editor object.
-
-		@param termination_id: A unique identification number
-		@type termination_id: A Float object.
-		"""
 		if termination_id in self.__termination_queue:
 			self.__termination_queue.remove(termination_id)
 		if not self.__termination_queue:
@@ -853,12 +785,6 @@ class Editor(GObject):
 ########################################################################
 
 	def __create_widgets(self):
-		"""
-		Create visible graphic user interface components.
-
-		@param self: Reference to the Editor instance.
-		@type self: An Editor object.
-		"""
 		from Window import ScribesWindow
 		self.__window = ScribesWindow(self)
 		from MainContainer import ScribesMainContainer
@@ -895,17 +821,6 @@ class Editor(GObject):
 		return False
 
 	def __arrange_widgets(self):
-		"""
-		Arrange text editor widgets then display it.
-
-		After the text editor graphic user interface components are created,
-		this function arranges the widgets by packing them into the editor's
-		main containers. After which, the text editor is displayed. This
-		function is called repeatedly unless its return value is False.
-
-		@param self: Reference to the Editor instance.
-		@type self: An Editor object.
-		"""
 		self.__maincontainer.pack_start(self.__toolbarcontainer, False, False, 0)
 		self.__maincontainer.pack_start(self.__viewcontainer, True, True, 1)
 		self.__maincontainer.pack_start(self.__statuscontainer, False, False, 0)
@@ -968,45 +883,16 @@ class Editor(GObject):
 ########################################################################
 
 	def __initialized_attributes_cb(self, editor):
-		"""
-		Handles callback when the "initialized-attributes" signal is emitted.
-
-		@param self: Reference to this editor instance.
-		@type self: An Editor object.
-		"""
 		self.__create_widgets()
 		return
 
 	def __created_widgets_cb(self, editor):
-		"""
-		Handles callback when the "created-widgets" signal is emitted.
-
-		This function arranges the text editor wigdets after they have
-		been created, initializes the editor's feedback system and
-		GNOME libraries, and loads a file into the editor window if
-		one is passed as an argument to the editor.
-
-		@param self: Reference to the Editor instance.
-		@type self: An Editor object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__manager_registration_id = self.__instance_manager.register_editor(self)
 
 		self.__start_core_services()
 		return
 
 	def __start_core_services(self):
-		"""
-		Initialize key objects before the GUI is displayed.
-
-		This objects need to be initialized immediately after GUI
-		elements are created.
-
-		@param self: Reference to the Editor instance.
-		@type self: A Editor object.
-		"""
 		# Initialize encoding manager.
 		from EncodingManager import EncodingManager
 		self.__encoding_manager = EncodingManager(self)
@@ -1036,12 +922,12 @@ class Editor(GObject):
 	def __started_core_services_cb(self, *args):
 		try:
 			# Load file if any.
-			from gobject import idle_add, PRIORITY_LOW
 			if not self.__file_uri: raise ValueError
 			self.load_uri(self.__file_uri.strip(), self.__encoding)
 		except ValueError:
 			pass
 		finally:
+			from gobject import idle_add
 			idle_add(self.__initialize_plugins, priority=999)
 			idle_add(self.__initialize_language_plugins, priority=999)
 		return False
@@ -1121,18 +1007,6 @@ class Editor(GObject):
 ########################################################################
 
 	def __init_attributes(self, manager, file_uri, encoding):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to this editor instance.
-		@type self: An Editor object.
-
-		@param manager: An object that manages editor instances.
-		@type manager: An EditorManager object.
-
-		@param file_uri: A file to open.
-		@param type: A String object.
-		"""
 		# A function to improve responsiveness.
 		#from utils import response
 		self.__id = id(self)
@@ -1204,14 +1078,7 @@ class Editor(GObject):
 		return False
 
 	def __precompile_methods(self):
-		try:
-			from psyco import bind
-			bind(self.__get_textbuffer)
-			bind(self.__get_textview)
-			bind(self.__get_core_plugin_folder)
-			bind(self.__get_is_readonly)
-			bind(self.__get_uri)
-			bind(self.get_cursor_position)
-		except ImportError:
-			pass
+		methods = (self.__get_textbuffer, self.__get_textview,
+			self.__get_uri, self.get_cursor_position)
+		self.optimize(methods)
 		return False

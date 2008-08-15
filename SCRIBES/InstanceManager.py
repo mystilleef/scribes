@@ -177,17 +177,11 @@ class EditorManager(object):
 		if not uri: return False
 		instances = self.__editor_instances
 		empty_windows = [x for x in instances if x.can_load_file]
-		if empty_windows:
-			# Always load files in empty editor windows first.
-			editor = empty_windows[0]
-			editor.load_uri(uri, encoding)
-		else:
-			self.__new_editor(uri, encoding)
+		empty_windows[0].load_uri(uri, encoding) if empty_windows else self.__new_editor(uri, encoding)
 		return False
 
 	def __close_file(self, uri):
-		same = lambda editor: editor.uri == uri
-		[close_file(editor) for editor in self.__editor_instances if same(editor)]
+		[close_file(editor) for editor in self.__editor_instances if editor.uri == uri]
 		return False
 
 	def __new_editor(self, uri=None, encoding=None):

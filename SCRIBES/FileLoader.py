@@ -34,21 +34,6 @@ class FileLoader(object):
 	"""
 
 	def __init__(self, editor, uri, encoding="utf-8", readonly=False):
-		"""
-		Initialize object.
-
-		@param self: Reference to the FileLoader instance.
-		@type self: A FileLoader object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param uri: A file to open.
-		@type uri: A FileLoader object.
-
-		@param readonly: Toggle readonly.
-		@type readonly: A Boolean object.
-		"""
 		try:
 			editor.emit("checking-document", uri)
 			from Exceptions import PermissionError
@@ -75,21 +60,6 @@ class FileLoader(object):
 			self.__error(msg0483)
 
 	def __init_attributes(self, editor, uri, encoding, readonly):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the FileLoader instance.
-		@type self: A FileLoader object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param uri: A file to open.
-		@type uri: A FileLoader object.
-
-		@param readonly: Toggle readonly.
-		@type readonly: A Boolean object.
-		"""
 		self.__encoding = encoding
 		self.__editor = editor
 		self.__uri = uri
@@ -101,12 +71,6 @@ class FileLoader(object):
 		return
 
 	def __get_file_info(self):
-		"""
-		Get file information for remote files.
-
-		@param self: Reference to the FileLoader instance.
-		@type self: A FileLoader object.
-		"""
 		try:
 			if self.__uri.startswith("file:///"): return
 			self.__editor.init_authentication_manager()
@@ -136,12 +100,6 @@ class FileLoader(object):
 		return
 
 	def __verify_permissions(self):
-		"""
-		Check if user has permission to view the file.
-
-		@param self: Reference to the FileLoader instance.
-		@type self: A FileLoader object.
-		"""
 		if self.__uri.startswith("file:///"):
 			from gnomevfs import get_local_path_from_uri
 			local_path = get_local_path_from_uri(self.__uri)
@@ -160,12 +118,6 @@ class FileLoader(object):
 		return
 
 	def __load_uri(self):
-		"""
-		Load file.
-
-		@param self: Reference to the FileLoader instance.
-		@type self: A FileLoader object.
-		"""
 		self.__editor.emit("loading-document", self.__uri)
 		from gnomevfs import OPEN_READ, URI
 		from gnomevfs.async import open as open_
@@ -177,22 +129,6 @@ class FileLoader(object):
 		return
 
 	def __open_cb(self, handle, result):
-		"""
-		Handles callback to read a URI after it has been opened asynchronously.
-
-		This function reads the contents of a URI. If the URI is local, it reads
-		all its content. If the URI is remote, the contents of the URI is read
-		4096 bytes at a time.
-
-		@param self: Reference to the Loader instance.
-		@type self: A Loader object.
-
-		@param handle: An object pointing to a URI.
-		@type handle: A gnomevfs.Handle object.
-
-		@param result: The result of a read operation.
-		@type result: A gnomevfs.Error object.
-		"""
 		from Exceptions import ReadFileError
 		try:
 			self.__handle = handle
@@ -217,24 +153,6 @@ class FileLoader(object):
 		return
 
 	def __read_cb(self, handle, buffer_, result, bytes):
-		"""
-		Handles callback to insert text into the editor's buffer.
-
-		@param self: Reference to the Loader instance.
-		@type self: A Loader object.
-
-		@param handle:
-		@type handle: A gnomevfs.Handle object.
-
-		@param buffer: An area in memory where text read from a URI is placed.
-		@type buffer: A String object.
-
-		@param result: The result of a read operation.
-		@type result: A gnomevfs.Error object.
-
-		@param bytes: Bytes read.
-		@type bytes: An Integer object.
-		"""
 		try:
 			from Exceptions import CloseFileError, ReadFileError
 			from Exceptions import GnomeVfsError
@@ -272,30 +190,12 @@ class FileLoader(object):
 		return
 
 	def __close_cb(self, *args):
-		"""
-		Close the URI and finalize the editor's buffer for editing.
-
-		@param self: Reference to the Loader instance.
-		@type self: A Loader object.
-		"""
 		self.__editor.emit("loaded-document", self.__uri, self.__encoding)
 		if self.__readonly: self.__editor.emit("enable-readonly")
 		self.__destroy()
 		return
 
 	def __insert_string_to_buffer(self, string, handle=None):
-		"""
-		Insert text into the editor's buffer.
-
-		@param self: Reference to the Loader instance.
-		@type self: A Loader object.
-
-		@param string: Text to insert into the text editor's buffer.
-		@type string: A String object.
-
-		@param handle: An object pointing to a remote URI.
-		@type handle: A gnomevfs.Handle object.
-		"""
 		try:
 			#raise ValueError
 			self.__encoding = self.__determine_encoding()
@@ -340,12 +240,6 @@ class FileLoader(object):
 		return "utf-8"
 
 	def __error(self, message, encoding_error=False):
-		"""
-		Show an error message
-
-		@param message: A message describing an error:
-		@type message: A String object.
-		"""
 		try:
 			if self.__error_flag: return
 			self.__error_flag = True
@@ -366,12 +260,6 @@ class FileLoader(object):
 		return
 
 	def __destroy(self):
-		"""
-		Destroy instance of this class.
-
-		@param self: Reference to the FileLoader instance.
-		@type self: A FileLoader object.
-		"""
 		del self
 		self = None
 		return

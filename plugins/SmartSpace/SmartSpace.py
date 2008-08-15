@@ -51,8 +51,8 @@ class SmartSpace(object):
 		self.__sig_id1 = self.__textview.connect('key-press-event', self.__key_press_event_cb)
 		self.__sig_id2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sig_id3 = manager.connect("activate", self.__activate_cb)
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__precompile_method, priority=9999)
 
 	def __init_attributes(self, editor, manager):
 		"""
@@ -120,7 +120,7 @@ class SmartSpace(object):
 		return True
 
 	def __get_start_position(self, start, cursor_offset):
-		indentation = self.__textview.get_tabs_width()
+		indentation = self.__textview.get_tab_width()
 		moves = cursor_offset % indentation
 		if moves == 0 : moves = indentation
 		for value in xrange(moves):
@@ -141,12 +141,6 @@ class SmartSpace(object):
 		return False
 
 	def __destroy(self):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		self.__editor.disconnect_signal(self.__sig_id1, self.__textview)
 		self.__editor.disconnect_signal(self.__sig_id2, self.__manager)
 		self.__editor.disconnect_signal(self.__sig_id3, self.__manager)

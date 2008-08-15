@@ -45,35 +45,14 @@ class CommentPlugin(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize the plug-in object.
-
-		@param self: Reference to the CommentPlugin instance.
-		@type self: A CommentPlugin object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__trigger = None
 
 	def load(self):
-		"""
-		Initialize the hash comment plugin.
-
-		@param self: Reference to the CommentPlugin instance.
-		@type self: An CommentPlugin object.
-		"""
 		from HashComments.Trigger import Trigger
 		self.__trigger = Trigger(self.__editor)
 		return
 
 	def unload(self):
-		"""
-		Destroy comment plugin.
-
-		@param self: Reference to the CommentPlugin instance.
-		@type self: An CommentPlugin object.
-		"""
 		self.__trigger.destroy()
 		return

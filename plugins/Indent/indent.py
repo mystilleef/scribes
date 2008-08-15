@@ -29,12 +29,6 @@ buffer.
 """
 
 def indent(sourceview):
-	"""
-	Indent line(s) in a text buffer.
-
-	@param sourceview: A container for the text buffer.
-	@type textbuffer: A gtksourceview.SoureView object.
-	"""
 	sourceview.set_property("editable", False)
 	sourcebuffer = sourceview.get_property("buffer")
 	cursor_iterator = sourcebuffer.get_iter_at_mark(sourcebuffer.get_insert())
@@ -70,23 +64,9 @@ def indent(sourceview):
 	return lines_indented
 
 def indent_line(sourceview, line_number):
-	"""
-	Indent a line in the a text buffer.
-
-	This indentation algorithm is based on tab stops. That is a line is indented
-	to the nearest tab stop. During the indentation process all spaces are
-	converted to tab characters. If spaces is used for indentation, then all tab
-	characters are converted to spaces.
-
-	@param sourceview: The container of the text buffer.
-	@type sourceview: A gtksourceview.SoureView object.
-
-	@param line_number: A line in the text buffer.
-	@type line_number: An Integer object.
-	"""
 	sourcebuffer = sourceview.get_property("buffer")
 	use_spaces = sourceview.get_property("insert-spaces-instead-of-tabs")
-	tab_width = sourceview.get_property("tabs-width")
+	tab_width = sourceview.get_property("tab-width")
 	begin_position = sourcebuffer.get_iter_at_line(line_number)
 	transition_position = begin_position.copy()
 	space_list = []

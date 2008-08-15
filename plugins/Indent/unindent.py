@@ -29,15 +29,6 @@ buffer.
 """
 
 def unindent(sourceview):
-	"""
-	Unident lines in a gtksourceview buffer.
-
-	@param sourceview: The container for the gtksourceview buffer.
-	@type textbuffer: A gtksourceview.SoureView object.
-
-	@param lines_unindented: A list of lines unindented
-	@type lines_unindented: A List object.
-	"""
 	lines_unindented = []
 	sourceview.set_property("editable", False)
 	sourcebuffer = sourceview.get_property("buffer")
@@ -76,23 +67,9 @@ def unindent(sourceview):
 	return lines_unindented
 
 def unindent_line(sourceview, line_number):
-	"""
-	Unindent a line in a gtksourceview buffer.
-
-	The unindentation algorithm is based on tab stops. Lines are unidented to
-	the nearest tab stop. During the unindentation process, all spaces are
-	converted to tab characters. If spaces are used for indentation, then all
-	tab characters are converted to spaces.
-
-	@param sourceview: The container of the gtksourceview buffer.
-	@type sourceview: A gtksourceview.SoureView object.
-
-	@return: Return True if line was successfully unindented.
-	@rtype: A Boolean object.
-	"""
 	sourcebuffer = sourceview.get_property("buffer")
 	use_spaces = sourceview.get_property("insert-spaces-instead-of-tabs")
-	tab_width = sourceview.get_property("tabs-width")
+	tab_width = sourceview.get_property("tab-width")
 	begin_position = sourcebuffer.get_iter_at_line(line_number)
 	transition_position = begin_position.copy()
 	space_list = []
