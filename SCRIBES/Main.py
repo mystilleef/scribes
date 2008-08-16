@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2005 Lateef Alabi-Oki
+# Copyright (C) 2008 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
 # Scribes is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 #
 # Scribes is distributed in the hope that it will be useful,
@@ -19,13 +19,12 @@
 # USA
 
 """
-This module contains the function to the main entry point of the
-program.
+This module defines functions that initialize Scribes.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
+@copyright: Copyright © 2008 Lateef Alabi-Oki
+@license: GNU GPLv3 or Later
 @contact: mystilleef@gmail.com
 """
 
