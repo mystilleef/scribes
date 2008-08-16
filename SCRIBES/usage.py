@@ -45,7 +45,7 @@ def help():
 	print "\t-h, --help\t" + msg0127
 	print "\t-v, --version\t" + msg0128
 	print "\t-n, --newfile\t" + msg0129
-	print "\t-r, --readonly\t" + msg0130
+	print "\t-i, --info\t" + msg0130
 	print
 	print "http://scribes.sourceforge.net/"
 	return

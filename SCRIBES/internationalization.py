@@ -116,7 +116,7 @@ msg0126 = _("Options:")#.decode(encoding).encode("utf-8")
 msg0127 = _("display this help screen")#.decode(encoding).encode("utf-8")
 msg0128 = _("output version information of Scribes")#.decode(encoding).encode("utf-8")
 msg0129 = _("create a new file and open the file with Scribes")#.decode(encoding).encode("utf-8")
-msg0130 = _("open file in readonly mode")#.decode(encoding).encode("utf-8")
+msg0130 = _("get debuggin information for scribes")#.decode(encoding).encode("utf-8")
 
 # From error.py
 msg0133 = _("error")#.decode(encoding).encode("utf-8")

@@ -27,7 +27,8 @@ scribes_PYTHON = \
 	BackgroundColorMetadata.py \
 	bar.py \
 	ColorThemeMetadata.py \
-	commandline.py \
+	CommandLineInfo.py \
+	CommandLineProcessor.py \
 	cursor.py \
 	cursor_metadata.py \
 	dialog.py \

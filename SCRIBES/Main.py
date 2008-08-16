@@ -35,15 +35,12 @@ scribes_dbus_service = "net.sourceforge.Scribes"
 scribes_dbus_path = "/net/sourceforge/Scribes"
 
 def main(argv=None):
-	if argv:
-		uris = __get_uris(argv)
-		__open(uris)
-	else:
-		__open()
+	__open(argv)
 	__mainloop()
 	return
 
-def __open(uris=None):
+def __open(argv=None):
+	uris = __get_uris(argv)
 	__open_via_dbus(uris)
 	#__init_threads()
 	from InstanceManager import EditorManager
@@ -53,7 +50,7 @@ def __open(uris=None):
 def __open_via_dbus(uris=None):
 	dbus_service = __get_dbus_service()
 	if not dbus_service: return
-	if not uris: uris = ""
+	uris = uris if uris else ""
 	dbus_service.open_files(uris, dbus_interface=scribes_dbus_service)
 	raise SystemExit
 	return
@@ -75,9 +72,9 @@ def __get_dbus_service():
 	return proxy_object
 
 def __get_uris(argv):
-	from commandline import CommandLineProcessor
-	arguments = CommandLineProcessor(argv)
-	uris = arguments.uri_list
+	if not argv: return None
+	from CommandLineProcessor import get_uris
+	uris = get_uris(argv)
 	if not uris: raise SystemExit
 	return uris
 
@@ -90,9 +87,8 @@ def __mainloop():
 	return
 
 def __fork_scribes():
-	from ForkScribesMetadata import get_value
-	can_fork = get_value()
-	if not can_fork: return
+	from ForkScribesMetadata import get_value as can_fork
+	if not can_fork(): return
 	from os import fork
 	pid = fork()
 	if pid != 0: raise SystemExit
