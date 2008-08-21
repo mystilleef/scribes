@@ -35,18 +35,6 @@ class Window(object):
 	"""
 
 	def __init__(self, editor, manager):
-		"""
-		Initialize an instance of this class.
-
-		@param self: Reference to the BrowserWindow instance.
-		@type self: A BrowserWindow object.
-
-		@param manager: Reference to the Manager instance
-		@type manager: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
 		self.__sig_id1 = self.__manager.connect("destroy", self.__destroy_cb)
@@ -58,18 +46,6 @@ class Window(object):
 		self.__show()
 
 	def __init_attributes(self, editor, manager):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the Window instance.
-		@type self: A Window object.
-
-		@param manager: Reference to the Manager instance
-		@type manager: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__manager = manager
 		self.__editor = editor
 		self.__window = manager.glade.get_widget("Window")
@@ -77,12 +53,6 @@ class Window(object):
 		return
 
 	def __set_properties(self):
-		"""
-		Define the default behavior of the dialog.
-
-		@param self: Reference to the Window instance.
-		@type self: A Window object.
-		"""
 		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 1.6, 2.5)
 		self.__window.set_property("default-width", width)
 		self.__window.set_property("default-height", height)
@@ -90,37 +60,19 @@ class Window(object):
 		return
 
 	def __show(self):
-		"""
-		Show the document browser.
-
-		@param self: Reference to the Window instance.
-		@type self: A Window object.
-		"""
-		self.__editor.emit("show-dialog", self.__window)
+		self.__editor.busy(True)
 		from i18n import msg0001
 		self.__status_id = self.__editor.feedback.set_modal_message(msg0001, "open")
 		self.__window.show_all()
 		return
 
 	def __hide(self):
-		"""
-		Hide the document browser.
-
-		@param self: Reference to the Window instance.
-		@type self: A Window object.
-		"""
-		self.__editor.emit("hide-dialog", self.__window)
-		self.__editor.feedback.unset_modal_message(self.__status_id)
 		self.__window.hide()
+		self.__editor.busy(False)
+		self.__editor.feedback.unset_modal_message(self.__status_id)
 		return
 
 	def __destroy(self):
-		"""
-		Destroy object.
-
-		@param self: Reference to the Window instance.
-		@type self: A Window object.
-		"""
 		self.__editor.disconnect_signal(self.__sig_id1, self.__manager)
 		self.__editor.disconnect_signal(self.__sig_id2, self.__manager)
 		self.__editor.disconnect_signal(self.__sig_id3, self.__manager)
@@ -132,61 +84,23 @@ class Window(object):
 		return
 
 	def __destroy_cb(self, *args):
-		"""
-		Handles callback when "destroy" signal is emitted.
-
-		@param self: Reference to the Window instance.
-		@type self: An Window object.
-		"""
 		self.__destroy()
 		return
 
 	def __hide_window_cb(self, *args):
-		"""
-		Handles callback when "destroy" signal is emitted.
-
-		@param self: Reference to the Window instance.
-		@type self: An Window object.
-		"""
-		#from thread import start_new_thread
-		#start_new_thread(self.__hide, ())
 		self.__hide()
 		return
 
 	def __show_window_cb(self, *args):
-		"""
-		Handles callback when "destroy" signal is emitted.
-
-		@param self: Reference to the Window instance.
-		@type self: An Window object.
-		"""
-	#	from thread import start_new_thread
-	#	start_new_thread(self.__show, ())
 		self.__show()
 		return
 
 	def __delete_event_cb(self, *args):
-		"""
-		Handles callback when "destroy" signal is emitted.
-
-		@param self: Reference to the Window instance.
-		@type self: An Window object.
-		"""
-	#	from thread import start_new_thread
-	#	start_new_thread(self.__hide, ())
 		self.__hide()
 		return True
 
 	def __key_press_event_cb(self, window, event):
-		"""
-		Handles callback when "destroy" signal is emitted.
-
-		@param self: Reference to the Window instance.
-		@type self: An Window object.
-		"""
 		from gtk import keysyms
 		if event.keyval != keysyms.Escape: return False
-	#	from thread import start_new_thread
-	#	start_new_thread(self.__hide, ())
 		self.__hide()
 		return True

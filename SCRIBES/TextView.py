@@ -43,15 +43,6 @@ class ScribesTextView(View):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param editor: Reference to the text editor instance.
-		@type editor: An Editor object.
-		"""
 		View.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -98,15 +89,6 @@ class ScribesTextView(View):
 								MONITOR_FILE, self.__spell_check_cb)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize the buffer container's attributes.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__registration_id = editor.register_object()
 		self.__spell_checker = None
@@ -138,15 +120,6 @@ class ScribesTextView(View):
 		return
 
 	def __set_properties(self):
-		"""
-		Set default properties.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param editor: Reference to the text editor instance.
-		@type editor: An Editor object.
-		"""
 		# Drag and drop setup.
 		targets = [("text/uri-list", 0, 80)]
 		from gtk import DEST_DEFAULT_ALL
@@ -202,113 +175,22 @@ class ScribesTextView(View):
 ################################################################################
 
 	def __map_event_cb(self, widget, event):
-		"""
-		Handles callback when the textview widget is drawn to screen.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param widget: Reference to the text editor's buffer container.
-		@type widget: A gtk.SourceView object.
-
-		@param event: An event that occurs when the widgets are displayed on
-			screen.
-		@type event: A gtk.Event object.
-		"""
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return False
 
 	def __drag_motion_cb(self, textview, context, x, y, time):
-		"""
-		Handles callback when a drag operation begins.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param textview: The text editor's view, or buffer container.
-		@type textview: A gtk.SourceView object.
-
-		@param context: The type of information being dragged.
-		@type context: A gtk.Context object.
-
-		@param x: The xcordinate of the cursor.
-		@type x: An Integer object.
-
-		@param y: The ycordinate of the cursor.
-		@type y: An Integer object.
-
-		@param time: The time the drag operation began.
-		@type time: An Integer object.
-
-		@return: False to propagate signals to parent widgets, True otherwise.
-		@rtype: A Boolean object.
-		"""
 		self.__refresh()
 		if "text/uri-list" in context.targets: return True
 		return False
 
 	def __drag_drop_cb(self, textview, context, x, y, time):
-		"""
-		Handles callback when a drop operation begins.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param textview: The text editor's view, or buffer container.
-		@type textview: A gtk.SourceView object.
-
-		@param context: The type of information being dragged.
-		@type context: A gtk.Context object.
-
-		@param x: The xcordinate of the cursor.
-		@type x: An Integer object.
-
-		@param y: The ycordinate of the cursor.
-		@type y: An Integer object.
-
-		@param time: The time the drag operation began.
-		@type time: An Integer object.
-
-		@return: False to propagate signals to parent widgets, True otherwise.
-		@rtype: A Boolean object.
-		"""
 		self.__refresh()
 		if "text/uri-list" in context.targets: return True
 		return False
 
 	def __drag_data_received_cb(self, textview, context, xcord, ycord,
 								selection_data, info, timestamp):
-		"""
-		Handles callback when a drop operation finishes.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param textview: The text editor's view, or buffer container.
-		@type textview: A gtk.SourceView object.
-
-		@param context: The type of information being dragged.
-		@type context: A gtk.Context object.
-
-		@param xcord: The xcordinate of the cursor.
-		@type xcord: An Integer object.
-
-		@param ycord: The ycordinate of the cursor.
-		@type ycord: An Integer object.
-
-		@param selection_data: A data selection
-		@type selection_data: A gtk.Selection object.
-
-		@param info: ?
-		@type info: ? ? object.
-
-		@param timestamp: The time the drag operation began.
-		@type timestamp: An Integer object.
-
-		@return: False to propagate signals to parent widgets, True otherwise.
-		@rtype: A Boolean object.
-		"""
 		self.__refresh()
 		if not ("text/uri-list" in context.targets): return False
 		if info != 80: return False
@@ -320,30 +202,6 @@ class ScribesTextView(View):
 		return True
 
 	def __drag_data_get_cb(self, textview, context, data, info, time):
-		"""
-		Handles callback when the "drag-data-get" signal is emitted.
-
-		@param self: Reference to the TemplateEditorDescriptionView instance.
-		@type self: A TemplateEditorDescriptionView object.
-
-		@param treeview: Reference to the TemplateEditorDescriptionView
-		@type treeview: A TemplateEditorDescriptionView object.
-
-		@param context: An object representing context data.
-		@type context: A gtk.DragContext object.
-
-		@param data: An object representing selection data.
-		@type data: A gtk.SelectionData object.
-
-		@param info: A unique identification number for the text editor.
-		@type info: An Integer object.
-
-		@param time: The time of the drag and drop operation.
-		@type time: An Integer object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		self.__refresh()
 		selection = self.get_buffer().get_selection_bounds()
 		if not selection: return False
@@ -353,16 +211,6 @@ class ScribesTextView(View):
 		return False
 
 	def __checking_document_cb(self, editor, uri):
-		"""
-		Handles callback when the text editor is loading a document into the
-		text editor's buffer.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_property("editable", False)
 		self.set_property("highlight-current-line", False)
 		self.set_property("cursor-visible", False)
@@ -372,16 +220,6 @@ class ScribesTextView(View):
 		return False
 
 	def __loaded_document_cb(self, *args):
-		"""
-		Handles callback when the text editor has finished loading a document
-		into the text editor's buffer.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_property("sensitive", True)
 		self.set_property("highlight-current-line", True)
 		self.set_property("cursor-visible", True)
@@ -395,16 +233,6 @@ class ScribesTextView(View):
 		return False
 
 	def __load_error_cb(self, editor, uri):
-		"""
-		Handles callback when the text editor has finished loading a document
-		into the text editor's buffer.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_property("sensitive", True)
 		self.set_property("cursor-visible", True)
 		self.set_property("highlight-current-line", True)
@@ -414,15 +242,6 @@ class ScribesTextView(View):
 		return False
 
 	def __enable_readonly_cb(self, editor):
-		"""
-		Handles callback when the text editor is switched to readonly mode.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_property("editable", False)
 		self.set_property("highlight-current-line", False)
 		self.set_property("cursor-visible", False)
@@ -432,16 +251,6 @@ class ScribesTextView(View):
 		return False
 
 	def __disable_readonly_cb(self, editor):
-		"""
-		Handles callback when the text editor is switched from readonly to
-		readwrite mode.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param editor: An instance of the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_property("editable", True)
 		self.set_property("highlight-current-line", True)
 		self.set_property("cursor-visible", True)
@@ -451,15 +260,6 @@ class ScribesTextView(View):
 		return False
 
 	def __renamed_document_cb(self, editor, uri, *args):
-		"""
-		Handles callback when the name of the document is renamed.
-
-		@param self: Reference to the ScribesTextBuffer instance.
-		@type self: A ScribesTextBuffer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_property("cursor-visible", True)
 		self.set_property("editable", True)
 		self.set_property("highlight-current-line", True)
@@ -470,18 +270,6 @@ class ScribesTextView(View):
 		return False
 
 	def __show_bar_cb(self, editor, bar):
-		"""
-		Handles callback when the "hide-bar" signal is emitted.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param bar: The text editor's bar.
-		@type bar: A ScribesBar object.
-		"""
 		self.__bar = bar
 		self.__bar_is_visible = True
 		self.set_property("editable", False)
@@ -490,18 +278,6 @@ class ScribesTextView(View):
 		return False
 
 	def __hide_bar_cb(self, editor, bar):
-		"""
-		Handles callback when the "hide-bar" signal is emitted.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param bar: The text editor's bar.
-		@type bar: A ScribesBar object.
-		"""
 		self.__bar_is_visible = False
 		self.set_property("editable", True)
 		self.set_property("cursor-visible", True)
@@ -511,46 +287,12 @@ class ScribesTextView(View):
 		return False
 
 	def __focus_in_event_cb(self, textview, event):
-		"""
-		Handles callback when the text editor's windows "focus-in-event" signal
-		is emitted.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param window: The text editor's buffer container, or view.
-		@type window: A ScribesTextView object.
-
-		@param event: An event triggered when the text editor's window is focused.
-		@type event: A gtk.Event object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		if self.__bar_is_visible is False: self.grab_focus()
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		return False
 
 	def __button_press_event_cb(self, textview, event):
-		"""
-		Handles callback when the "button-press-event" signal is emitted.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param textview: The text editor's view.
-		@type textview: A ScribesTextView object.
-
-		@param event: An event that occurs when the mouse buttons are pressed.
-		@type event: A gtk.Event object.
-
-		@param bar: The text editor's bar.
-		@type bar: A ScribesBar object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__refresh_view, priority=PRIORITY_LOW)
 		if self.__bar_is_visible:
@@ -559,21 +301,6 @@ class ScribesTextView(View):
 		return False
 
 	def __populate_popup_cb(self, textview, menu):
-		"""
-		Handles callback when the "populate-popup" signal is emitted.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-
-		@param textview: The text editor's buffer container.
-		@type textview: A ScribesTextView object.
-
-		@param menu: The text editor's popup menu.
-		@type menu: A gtk.Menu object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		from gtk import MenuItem, SeparatorMenuItem
 		menu.insert(SeparatorMenuItem(), 0)
 		return False
@@ -625,7 +352,6 @@ class ScribesTextView(View):
 		return False
 
 	def __paste_clipboard_cb(self, textview):
-
 		feedback = self.__editor.feedback
 		if self.__editor.is_readonly:
 			from internationalization import msg0145
@@ -660,15 +386,6 @@ class ScribesTextView(View):
 		return False
 
 	def __close_document_cb(self, editor):
-		"""
-		Handles callback when the "close-document" signal is emitted.
-
-		@param self: Reference to the Store instance.
-		@type self: A Store object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__destroy()
 		return
 
@@ -679,12 +396,6 @@ class ScribesTextView(View):
 ################################################################################
 
 	def __font_changed_cb(self, *args):
-		"""
-		Handles callback when the font of the text editor changes.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		from pango import FontDescription
 		from FontMetadata import get_value
 		new_font = FontDescription(get_value())
@@ -694,12 +405,6 @@ class ScribesTextView(View):
 		return
 
 	def __tab_width_cb(self, *args):
-		"""
-		Handles callback when the tab width of the text editor changes.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		from TabWidthMetadata import get_value
 		self.set_tab_width(get_value())
 		from gobject import idle_add, PRIORITY_LOW
@@ -707,12 +412,6 @@ class ScribesTextView(View):
 		return
 
 	def __text_wrapping_cb(self, *args):
-		"""
-		Handles callback when the text wrapping mode of the text editor changes.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		from gtk import WRAP_NONE, WRAP_WORD_CHAR
 		from TextWrappingMetadata import get_value
 		if get_value():
@@ -724,13 +423,6 @@ class ScribesTextView(View):
 		return
 
 	def __margin_position_cb(self, *args):
-		"""
-		Handles callback when the right margin position of the text editor
-		changes.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		from MarginPositionMetadata import get_value
 		self.set_right_margin(int(get_value()))
 		from gobject import idle_add, PRIORITY_LOW
@@ -738,13 +430,6 @@ class ScribesTextView(View):
 		return
 
 	def __show_margin_cb(self, *args):
-		"""
-		Handles callback when the right margin of the text editor is hidden or
-		displayed.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		from DisplayRightMarginMetadata import get_value
 		self.set_show_right_margin(get_value())
 		from gobject import idle_add, PRIORITY_LOW
@@ -800,12 +485,6 @@ class ScribesTextView(View):
 		return
 
 	def __foreground_cb(self, *args):
-		"""
-		Handles callback when the color text within the text editor changes.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		from gtk.gdk import color_parse
 		from ForegroundColorMetadata import get_value
 		foreground_color = color_parse(get_value())
@@ -816,12 +495,6 @@ class ScribesTextView(View):
 		return
 
 	def __background_cb(self, *args):
-		"""
-		Handles callback when the background color of the text editor changes.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		from gtk.gdk import color_parse
 		from BackgroundColorMetadata import get_value
 		background_color = color_parse(get_value())
@@ -832,12 +505,6 @@ class ScribesTextView(View):
 		return
 
 	def __use_tabs_cb(self, *args):
-		"""
-		Handles callback #FIXME: yeap
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		from UseTabsMetadata import get_value
 		use_tabs = get_value()
 		self.set_insert_spaces_instead_of_tabs(not use_tabs)
@@ -846,12 +513,6 @@ class ScribesTextView(View):
 		return
 
 	def __syntax_cb(self, *args):
-		"""
-		Handles callback #FIXME: yeap
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		from syntax import activate_syntax_highlight
 		from utils import get_language
 		if not self.__editor.language: return
@@ -866,12 +527,6 @@ class ScribesTextView(View):
 		return False
 
 	def __refresh_view(self):
-		"""
-		Redraw elements of the view and its children.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		self.grab_focus()
 		from gobject import idle_add
 		idle_add(self.__refresh, priority=5000)
@@ -888,12 +543,6 @@ class ScribesTextView(View):
 		return False
 
 	def __destroy(self):
-		"""
-		Destroy instance of this class.
-
-		@param self: Reference to the Store instance.
-		@type self: A Store object.
-		"""
 		# Disconnect signals.
 		self.__editor.disconnect_signal(self.__signal_id_1, self)
 		self.__editor.disconnect_signal(self.__signal_id_2, self)

@@ -116,6 +116,7 @@ class ScribesWindow(Window):
 		width, height = self.__editor.calculate_resolution_independence(self, 1.462857143,
 															1.536)
 		from internationalization import msg0025
+		self.set_property("startup-id", str(self.__editor.id))
 		self.set_property("title", msg0025)
 		self.set_property("icon-name", "scribes")
 		self.set_property("default-height", height)
@@ -124,7 +125,6 @@ class ScribesWindow(Window):
 		self.set_property("urgency-hint", True)
 		self.set_property("border-width", 1)
 		self.set_property("name", "EditorWindow")
-		self.set_focus_on_map(True)
 		return
 
 	def __set_window_position_in_database(self):
@@ -133,7 +133,7 @@ class ScribesWindow(Window):
 		is_maximized = self.__is_maximized
 		# Update the metadata database with the size and position of the window.
 		from gobject import idle_add
-		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height, priority=5000)
+		idle_add(self.__update_position, is_maximized, xcoordinate, ycoordinate, width, height, priority=9999)
 #		self.__update_position(is_maximized, xcoordinate, ycoordinate, width, height)
 		return
 
@@ -243,7 +243,7 @@ class ScribesWindow(Window):
 	def __changed_cb(self, textbuffer):
 		if not self.__uri: return True
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.set_title, "*" + self.__title, priority=PRIORITY_LOW)
+		idle_add(self.set_title, "*" + self.__title, priority=9999)
 		return True
 
 	def __enable_fullscreen_cb(self, editor):
@@ -308,7 +308,7 @@ class ScribesWindow(Window):
 
 	def __saved_document_cb(self, *args):
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.set_title, self.__title, priority=PRIORITY_LOW)
+		idle_add(self.set_title, self.__title, priority=9999)
 		return False
 
 	def __close_document_cb(self, editor):

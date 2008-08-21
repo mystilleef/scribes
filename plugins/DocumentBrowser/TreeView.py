@@ -35,40 +35,17 @@ class TreeView(object):
 	"""
 
 	def __init__(self, editor, manager):
-		"""
-		Intialize an instance of this class.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-
-		@param manager: Reference to the BookmarkManager instance.
-		@type manager: A BookmarkManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
 		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = self.__manager.connect("update", self.__update_cb)
 		self.__signal_id_3 = self.__treeview.connect("row-activated", self.__row_activated_cb)
+		self.__signal_id_5 = self.__treeview.connect_after("row-activated", self.__row_activated_after_cb)
 		self.__signal_id_4 = self.__treeview.connect("key-press-event", self.__key_press_event_cb)
 		self.__populate_model()
 		self.__treeview.set_property("sensitive", True)
 
 	def __init_attributes(self, editor, manager):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-
-		@param manager: Reference to the BookmarkManager instance.
-		@type manager: A BookmarkManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__manager = manager
 		self.__editor = editor
 		self.__treeview = manager.glade.get_widget("TreeView")
@@ -154,15 +131,6 @@ class TreeView(object):
 		return column
 
 	def __destroy_cb(self, manager):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-
-		@param manager: Reference to the BookmarkManager instance.
-		@type manager: A BookmarkManager object.
-		"""
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
 		self.__editor.disconnect_signal(self.__signal_id_3, self.__treeview)
@@ -172,18 +140,6 @@ class TreeView(object):
 		return
 
 	def __update_cb(self, manager):
-		"""
-		Handles callback when the "update" signal is emitted.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-
-		@param manager: Reference to the BookmarkManager instance.
-		@type manager: A BookmarkManager object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__populate_model, priority=PRIORITY_LOW)
 		self.__manager.emit("show-window")
@@ -218,21 +174,9 @@ class TreeView(object):
 		return
 
 	def __process_uri(self, uri):
-		"""
-		Split the uri into type, name and pathname.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-
-		@param uri: Reference to a document.
-		@type uri: A String object.
-		"""
 		value = ("", "", "", "")
 		language = self.__editor.language
-		if language:
-			file_type = language.get_name()
-		else:
-			file_type = "Plain Text"
+		file_type = language.get_name() if language else "Plain Text"
 		from gnomevfs import URI, format_uri_for_display
 		uri_object = URI(format_uri_for_display(uri))
 		filename = uri_object.short_name
@@ -241,26 +185,19 @@ class TreeView(object):
 		return file_type, filename, pathname, fileuri
 
 	def __row_activated_cb(self, treeview, path, column):
-		"""
-		Handles callback when the "row-activated" signal is emitted.
+		self.__manager.emit("hide-window")
+		return False
 
-		@param treeview: The bookmark browser's treeview.
-		@type treeview: A BookmarkBrowserView object.
-
-		@param path: A row in a treeview.
-		@type path: A row object.
-
-		@param column: A column in a treeview.
-		@type column: A gtk.TreeViewColumn object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
+	def __row_activated_after_cb(self, treeview, path, column):
 		iterator = self.__model.get_iter(path)
 		uri = self.__model.get_value(iterator, 3)
-		self.__manager.emit("hide-window")
+		from gobject import idle_add
+		idle_add(self.__focus_uri, uri, priority=9999)
+		return False
+
+	def __focus_uri(self, uri):
 		self.__editor.instance_manager.focus_file(uri)
-		return True
+		return False
 
 	def __key_press_event_cb(self, treeview, event):
 		from gtk import keysyms

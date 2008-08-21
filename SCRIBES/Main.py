@@ -42,8 +42,8 @@ def __open(argv=None):
 	uris = __get_uris(argv)
 	__open_via_dbus(uris)
 	#__init_threads()
-	from InstanceManager import EditorManager
-	EditorManager().open_files(uris)
+	from InstanceManager import Manager
+	Manager().open_files(uris)
 	return
 
 def __open_via_dbus(uris=None):

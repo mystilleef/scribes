@@ -31,7 +31,7 @@ It allows editor instances to communicate with each other.
 
 close_file = lambda editor: editor.emit("close-document")
 
-class EditorManager(object):
+class Manager(object):
 	"""
 	This class implements an object that creates new instances of the
 	text editor and manages them.
@@ -48,6 +48,8 @@ class EditorManager(object):
 		timeout_add(21000, self.__init_psyco, priority=9999)
 
 	def __init_attributes(self):
+		from gtk import WindowGroup
+		self.__window_group = WindowGroup()
 		from collections import deque
 		self.__editor_instances = deque([])
 		self.__registration_ids = deque([])
@@ -65,6 +67,7 @@ class EditorManager(object):
 
 	def register_editor(self, instance):
 		self.__editor_instances.append(instance)
+		self.__window_group.add_window(instance.window)
 		from utils import generate_random_number
 		number =  generate_random_number(self.__registration_ids)
 		self.__registration_ids.append(number)
@@ -108,11 +111,8 @@ class EditorManager(object):
 		return self.__save_process_monitor.get_processor_object()
 
 	def open_window(self):
-		if self.__editor_instances:
-			editor = self.__editor_instances[0]
-			editor.trigger("new_window")
-		else:
-			self.__new_editor()
+		instances = self.__editor_instances
+		instances[0].trigger("new_window") if instances else self.__new_editor()
 		return False
 
 	def open_files(self, uris=None, encoding="utf-8"):
@@ -122,10 +122,8 @@ class EditorManager(object):
 			open_file = lambda x: self.__open_file(x, encoding)
 			# Focus respective window if file is already open.
 			[self.focus_file(uri) for uri in uris if has_uri(uri)]
-#			map(self.focus_file, filter(has_uri, uris))
 			# Open new file if it's not already open.
 			[open_file(uri) for uri in uris if has_not_uri(uri)]
-#			map(open_file, filter(has_not_uri, uris))
 		else:
 			self.open_window()
 		return False
@@ -143,15 +141,13 @@ class EditorManager(object):
 		found_instance = [editor for editor in self.__editor_instances if str(editor.uri) == uri]
 		if not found_instance: return False
 		editor = found_instance[0]
-		editor.window.set_focus_on_map(True)
-		xcoordinate, ycoordinate = editor.window.get_position()
-		window_is_maximized = editor.window.is_maximized
+		coordinates = None if editor.window.is_maximized else editor.window.get_position()
 		editor.window.hide()
-		if not window_is_maximized: editor.window.move(xcoordinate, ycoordinate)
+		if coordinates: editor.window.move(coordinates[0], coordinates[1])
 		editor.window.window.show()
 		editor.window.show_all()
-		editor.window.deiconify()
 		editor.window.present()
+		editor.textview.grab_focus()
 		return False
 
 	def get_uris(self):

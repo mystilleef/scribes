@@ -100,40 +100,13 @@ class ScribesViewContainer(HBox):
 		return
 
 	def __close_document_cb(self, editor):
-		"""
-		Handles callback when the "close-document" signal is emitted.
-
-		@param self: Reference to the Store instance.
-		@type self: A Store object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__destroy()
 		return
 
 	def __show_dialog_cb(self, editor, dialog):
-		"""
-		Handles callback when the "show-dialog" signal is emitted.
-
-		@param self: Reference to the ScribesToolbarContainer instance.
-		@type self: A ScribesToolbarContainer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_property("sensitive", False)
 		return
 
 	def __hide_dialog_cb(self, editor, dialog):
-		"""
-		Handles callback when the "hide-dialog" signal is emitted.
-
-		@param self: Reference to the ScribesToolbarContainer instance.
-		@type self: A ScribesToolbarContainer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.set_property("sensitive", True)
 		return
