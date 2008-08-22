@@ -70,32 +70,23 @@ class Updater(object):
 		self.__depth = depth
 		class_flag = False
 		function_flag = False
-		is_func_node = self.__is_function_node
-		is_class_node = self.__is_class_node
-		func_depth = self.__function_depth
-		class_depth = self.__class_depth
-		fpixbuf = self.__manager.function_pixbuf
-		mpixbuf = self.__manager.method_pixbuf
-		cpixbuf = self.__manager.class_pixbuf
-		sappend = self.__symbols.append
-		extract_symbols = self.__extract_symbols
 		for node in nodes:
-			if is_func_node(node):
+			if self.__is_function_node(node):
 				function_flag = True
-				if func_depth:
+				if self.__function_depth:
 					value = "Function"
 				else:
-					value = "Method" if class_depth else "Function"
-				pixbuf = fpixbuf if value == "Function" else mpixbuf
-				sappend((node.lineno, node.name, value, depth, pixbuf))
-				func_depth += 1
-			if is_class_node(node):
+					value = "Method" if self.__class_depth else "Function"
+				pixbuf = self.__manager.function_pixbuf if value == "Function" else self.__manager.method_pixbuf
+				self.__symbols.append((node.lineno, node.name, value, depth, pixbuf))
+				self.__function_depth += 1
+			if self.__is_class_node(node):
 				class_flag = True
-				sappend((node.lineno, node.name, "Class", depth, cpixbuf))
-				class_depth += 1
-			extract_symbols(node.getChildNodes(), depth+1)
-			if class_flag: class_depth -= 1
-			if function_flag: func_depth -= 1
+				self.__symbols.append((node.lineno, node.name, "Class", depth, self.__manager.class_pixbuf))
+				self.__class_depth	+= 1
+			self.__extract_symbols(node.getChildNodes(), depth+1)
+			if class_flag: self.__class_depth -= 1
+			if function_flag: self.__function_depth -= 1
 			class_flag = False
 			function_flag = False
 		return

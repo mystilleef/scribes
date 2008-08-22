@@ -27,15 +27,6 @@ class DBusService(Object):
 	"""
 
 	def __init__(self, manager):
-		"""
-		Initialize the D-Bus service.
-
-		@param self: Reference to the DBusService instance.
-		@type self: A DBusService object.
-
-		@param manager: Reference to an object that manages instances of the editor.
-		@type manager: An EditorManager object.
-		"""
 		from info import session_bus
 		service_name = "net.sourceforge.Scribes"
 		object_path = "/net/sourceforge/Scribes"
@@ -49,5 +40,5 @@ class DBusService(Object):
 
 	@method("net.sourceforge.Scribes")
 	def open_files(self, uris):
-		if not uris: uris = None
+		uris = uris if uris else None
 		return self.__manager.open_files(uris)

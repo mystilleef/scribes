@@ -48,8 +48,6 @@ class Manager(object):
 		timeout_add(21000, self.__init_psyco, priority=9999)
 
 	def __init_attributes(self):
-		from gtk import WindowGroup
-		self.__window_group = WindowGroup()
 		from collections import deque
 		self.__editor_instances = deque([])
 		self.__registration_ids = deque([])
@@ -67,7 +65,6 @@ class Manager(object):
 
 	def register_editor(self, instance):
 		self.__editor_instances.append(instance)
-		self.__window_group.add_window(instance.window)
 		from utils import generate_random_number
 		number =  generate_random_number(self.__registration_ids)
 		self.__registration_ids.append(number)

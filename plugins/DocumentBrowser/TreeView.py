@@ -40,7 +40,6 @@ class TreeView(object):
 		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = self.__manager.connect("update", self.__update_cb)
 		self.__signal_id_3 = self.__treeview.connect("row-activated", self.__row_activated_cb)
-		self.__signal_id_5 = self.__treeview.connect_after("row-activated", self.__row_activated_after_cb)
 		self.__signal_id_4 = self.__treeview.connect("key-press-event", self.__key_press_event_cb)
 		self.__populate_model()
 		self.__treeview.set_property("sensitive", True)
@@ -186,16 +185,8 @@ class TreeView(object):
 
 	def __row_activated_cb(self, treeview, path, column):
 		self.__manager.emit("hide-window")
-		return False
-
-	def __row_activated_after_cb(self, treeview, path, column):
 		iterator = self.__model.get_iter(path)
 		uri = self.__model.get_value(iterator, 3)
-		from gobject import idle_add
-		idle_add(self.__focus_uri, uri, priority=9999)
-		return False
-
-	def __focus_uri(self, uri):
 		self.__editor.instance_manager.focus_file(uri)
 		return False
 
