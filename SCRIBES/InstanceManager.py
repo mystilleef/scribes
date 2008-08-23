@@ -135,7 +135,7 @@ class Manager(object):
 		return False
 
 	def focus_file(self, uri):
-		found_instance = [editor for editor in self.__editor_instances if str(editor.uri) == uri]
+		found_instance = [editor for editor in self.__editor_instances if str(editor.uri) == str(uri)]
 		if not found_instance: return False
 		editor = found_instance[0]
 		coordinates = None if editor.window.is_maximized else editor.window.get_position()
@@ -170,11 +170,11 @@ class Manager(object):
 		if not uri: return False
 		instances = self.__editor_instances
 		empty_windows = [x for x in instances if x.can_load_file]
-		empty_windows[0].load_uri(uri, encoding) if empty_windows else self.__new_editor(uri, encoding)
+		empty_windows[0].load_uri(str(uri), encoding) if empty_windows else self.__new_editor(uri, encoding)
 		return False
 
 	def __close_file(self, uri):
-		[close_file(editor) for editor in self.__editor_instances if editor.uri == uri]
+		[close_file(editor) for editor in self.__editor_instances if str(editor.uri) == str(uri)]
 		return False
 
 	def __new_editor(self, uri=None, encoding=None):

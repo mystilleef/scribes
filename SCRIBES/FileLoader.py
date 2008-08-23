@@ -62,7 +62,7 @@ class FileLoader(object):
 	def __init_attributes(self, editor, uri, encoding, readonly):
 		self.__encoding = encoding
 		self.__editor = editor
-		self.__uri = uri
+		self.__uri = str(uri)
 		self.__readonly = readonly
 		self.__handle = None
 		self.__temp_buffer = ""
@@ -80,7 +80,7 @@ class FileLoader(object):
 			from gnomevfs import FILE_INFO_GET_MIME_TYPE
 			from gnomevfs import FILE_INFO_FORCE_SLOW_MIME_TYPE
 			from gnomevfs import FILE_INFO_FOLLOW_LINKS#, FILE_INFO_GET_ACCESS_RIGHTS
-			fileinfo = get_file_info(self.__uri, FILE_INFO_DEFAULT |
+			fileinfo = get_file_info(str(self.__uri), FILE_INFO_DEFAULT |
 										FILE_INFO_GET_MIME_TYPE |
 										FILE_INFO_FORCE_SLOW_MIME_TYPE |
 										FILE_INFO_FOLLOW_LINKS |

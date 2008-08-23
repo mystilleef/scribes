@@ -41,7 +41,7 @@ def main(argv=None):
 def __open(argv=None):
 	uris = __get_uris(argv)
 	__open_via_dbus(uris)
-	#__init_threads()
+#	__init_threads()
 	from InstanceManager import Manager
 	Manager().open_files(uris)
 	return
@@ -55,6 +55,7 @@ def __open_via_dbus(uris=None):
 	return
 
 def __init_threads():
+	# Enabling threads makes Scribes unstable.
 	from gobject import threads_init
 	threads_init()
 	from dbus.glib import threads_init

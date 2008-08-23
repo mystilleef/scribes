@@ -43,58 +43,12 @@ class Trigger(GObject):
 	}
 
 	def __init__(self, name, accelerator=None, description=None, error=True, removable=True):
-		"""
-		Initialize object.
-
-		@param self: Reference to the Trigger instance.
-		@type self: A Trigger object.
-
-		@param name: A name associated with a trigger.
-		@type name: A String object.
-
-		@param accelerator: An accelerator associated with a trigger.
-		@type accelerator: A String object.
-
-		@param description: A description associated with a trigger.
-		@type description: A String object.
-
-		@param error: If True, print an error message when a duplicate
-			trigger is found. If False, try to remove the duplicate.
-		@type error: A Boolean object.
-
-		@param removable: In the event a duplicate trigger is found, True
-			if this trigger should be removed or destroyed.
-		@type removable: A Boolean object.
-		"""
 		GObject.__init__(self)
 		self.__init_attributes(name, accelerator, description, error, removable)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, name, accelerator, description, error, removable):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the Trigger instance.
-		@type self: A Trigger object.
-
-		@param name: A name associated with a trigger.
-		@type name: A String object.
-
-		@param accelerator: An accelerator associated with a trigger.
-		@type accelerator: A String object.
-
-		@param description: A description associated with a trigger.
-		@type description: A String object.
-
-		@param error: If True, print an error message when a duplicate
-			trigger is found. If False, try to remove the duplicate.
-		@type error: A Boolean object.
-
-		@param removable: In the event a duplicate trigger is found, True
-			if this trigger should be removed or destroyed.
-		@type removable: A Boolean object.
-		"""
 		self.__name = name
 		self.__accelerator = accelerator
 		self.__description = description
@@ -138,25 +92,12 @@ class Trigger(GObject):
 	removable = property(__get_removable)
 
 	def activate(self):
-		"""
-		Activate the trigger.
-
-		Emits a signal to trigger a callback handler connected to this
-		trigger object.
-
-		@param self: Reference to the Trigger instance.
-		@type self: A Trigger object.
-		"""
-		self.emit("activate")
+		from gobject import idle_add
+		idle_add(self.emit, "activate", priority=9999)
+#		self.emit("activate")
 		return
 
 	def destroy(self):
-		"""
-		Destroy object.
-
-		@param self: Reference to the Trigger instance.
-		@type self: A Trigger object.
-		"""
 		del self.__name, self.__description, self.__accelerator, self
 		self = None
 		return
@@ -166,6 +107,7 @@ class Trigger(GObject):
 			from psyco import bind
 			bind(self.__get_name)
 			bind(self.__get_accelerator)
+			bind(self.activate)
 		except ImportError:
 			pass
 		return False

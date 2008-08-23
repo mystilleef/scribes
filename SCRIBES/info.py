@@ -33,7 +33,9 @@ session_bus = SessionBus()
 dbus_proxy_obj = session_bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus')
 dbus_iface = Interface(dbus_proxy_obj, 'org.freedesktop.DBus')
 home_folder = environ["HOME"]
-desktop_folder = home_folder + "/Desktop"
+folder_ = home_folder + "/Desktop"
+from os.path import exists
+desktop_folder = folder_ if exists(folder_) else home_folder
 metadata_folder = home_folder + "/.gnome2/scribes/"
 home_plugin_folder = metadata_folder + "plugins"
 home_language_plugin_folder = metadata_folder + "LanguagePlugins"

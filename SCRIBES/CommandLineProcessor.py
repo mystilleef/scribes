@@ -66,7 +66,7 @@ def __uris_from_arguments(arguments, option):
 	uris = [make_uri_from_shell_arg(arg) for arg in arguments]
 	fake_uris = [uri for uri in uris if not exists(uri)]
 	__create_files(fake_uris) if fake_uris and create_flag else __print_no_exist(fake_uris)
-	uris = [uri for uri in uris if exists(uri)]
+	uris = [str(uri) for uri in uris if exists(uri)]
 	return uris
 
 def __print_info():
