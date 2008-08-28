@@ -35,27 +35,9 @@ class Manager(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__buffer = editor.textbuffer
 		self.__has_selection = False
@@ -69,15 +51,6 @@ class Manager(object):
 		return
 
 	def __backward_to_line_begin(self, iterator):
-		"""
-		Move an iterator to the beginning of a line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param iterator: An iterator.
-		@type iterator: A gtk.Iter object.
-		"""
 		if iterator.starts_line(): return iterator
 		while True:
 			iterator.backward_char()
@@ -85,26 +58,11 @@ class Manager(object):
 		return iterator
 
 	def __forward_to_line_end(self, iterator):
-		"""
-		Move an iterator to the end of a line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param iterator: An object that represents a position in a buffer.
-		@type iterator: A gtk.Iter object.
-		"""
 		if iterator.ends_line(): return iterator
 		iterator.forward_to_line_end()
 		return iterator
 
 	def __get_selection_range(self):
-		"""
-		Get the range of a selection.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		self.__has_selection = True
 		begin, end = self.__buffer.get_selection_bounds()
 		self.__selection_begin_index = begin.get_line_index()
@@ -116,12 +74,6 @@ class Manager(object):
 		return begin_position, end_position
 
 	def __get_range(self):
-		"""
-		Get the range of a line or selection of lines to comment.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		if self.__buffer.get_property("has-selection"): return self.__get_selection_range()
 		iterator = self.__editor.get_cursor_iterator()
 		if iterator.starts_line() and iterator.ends_line(): return None
@@ -130,43 +82,16 @@ class Manager(object):
 		return begin_position, end_position
 
 	def __get_first_nonwhitespace(self, string):
-		"""
-		Get the first non-white space character in a line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param string: A string.
-		@type string: A String object.
-		"""
 		if not string: return None
 		string = string.strip(" \t")
 		if not string: return None
 		return string[0]
 
 	def __line_is_comment(self, line):
-		"""
-		Check if a line is a comment.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param line: A text on a line.
-		@type line: A String object.
-		"""
 		is_comment = True if self.__get_first_nonwhitespace(line) == "#" else False
 		return is_comment
 
 	def __should_comment(self, lines):
-		"""
-		Check whether or not line(s) should be commented.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param lines: A group of lines
-		@type lines: A List object.
-		"""
 		should_comment = True
 		for line in lines:
 			if self.__line_is_comment(line) is False: continue
@@ -175,66 +100,22 @@ class Manager(object):
 		return should_comment
 
 	def __comment_line(self, line):
-		"""
-		Comment a line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param line: A line to be commented.
-		@type line: A String object.
-		"""
 		if self.__line_is_comment(line): return line
 		line = "#" + line
 		return line
 
 	def __uncomment_line(self, line):
-		"""
-		Uncomment a line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param line: A line to be uncommented.
-		@type line: A String object.
-		"""
 		while self.__line_is_comment(line):
 			line = line.replace("#", "", 1)
 		return line
 
 	def __comment_lines(self, lines):
-		"""
-		Comment a group of lines.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param lines: A group of lines
-		@type lines: A List object.
-		"""
-		lines = map(self.__comment_line, lines)
-		return lines
+		return [self.__comment_line(line) for line in lines]
 
 	def __uncomment_lines(self, lines):
-		"""
-		Uncomment a group of lines.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param lines: A group of lines
-		@type lines: A List object.
-		"""
-		lines = map(self.__uncomment_line, lines)
-		return lines
+		return [self.__comment_line(line) for line in lines]
 
 	def __update_feedback_message(self):
-		"""
-		Send feedback message to the status area.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		if self.__readonly:
 			from i18n import msg5
 			message = msg5
@@ -260,24 +141,12 @@ class Manager(object):
 		return
 
 	def __reset_flags(self):
-		"""
-		Reset flags.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		self.__has_selection = False
 		self.__commented = False
 		self.__readonly = False
 		return
 
 	def toggle_comment(self):
-		"""
-		(Un)comment lines in python source code.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		try:
 			from Exceptions import ReadOnlyError
 			if self.__editor.is_readonly: raise ReadOnlyError
@@ -346,12 +215,6 @@ class Manager(object):
 		return end
 
 	def destroy(self):
-		"""
-		Destroy object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		del self
 		self = None
 		return

@@ -109,6 +109,7 @@ class FileChooser(object):
 			from i18n import msg0003
 			self.__chooser.set_current_name(msg0003)
 			try:
+				from os.path import exists
 				self.__chooser.set_current_folder(self.__editor.desktop_folder)
 			except:
 				self.__chooser.set_current_folder(self.__editor.home_folder)

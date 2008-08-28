@@ -37,15 +37,6 @@ class TriggerManager(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-
-		@param window: A window to bind to.
-		@type window: A gtk.Window object.
-		"""
 		self.__init_attributes(editor)
 		self.__signal_id_1 = self.__window.connect("key-press-event", self.__key_press_event_cb)
 		self.__signal_id_2 = self.__editor.connect("show-bar", self.__show_bar_cb)
@@ -53,19 +44,10 @@ class TriggerManager(object):
 		self.__signal_id_4 = self.__editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_5 = self.__editor.connect("close-document-no-save", self.__close_document_no_save_cb)
 		self.__editor.emit("initialized-trigger-manager")
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-
-		@param window: A window to bind to.
-		@type window: A gtk.Window object.
-		"""
 		self.__window = editor.window
 		self.__editor = editor
 		# Precached list of accelerator keys
@@ -88,15 +70,6 @@ class TriggerManager(object):
 ########################################################################
 
 	def add_trigger(self, trigger):
-		"""
-		Add a new trigger object to the manager.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-
-		@param trigger: A trigger.
-		@type trigger: A Trigger object.
-		"""
 		try:
 			from Exceptions import InvalidTriggerNameError
 			from Exceptions import DuplicateTriggerNameError
@@ -119,15 +92,6 @@ class TriggerManager(object):
 		return
 
 	def remove_trigger(self, trigger):
-		"""
-		Remove a new trigger object to the manager.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-
-		@param trigger: A trigger.
-		@type trigger: A Trigger object.
-		"""
 		try:
 			name = trigger.name
 			trigger.destroy()
@@ -141,30 +105,10 @@ class TriggerManager(object):
 		return
 
 	def add_triggers(self, triggers):
-		"""
-		Add a list of triggers to the manager.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-
-		@param trigger: A list of triggers.
-		@type trigger: A List object.
-		"""
-		map(self.add_trigger, triggers)
-		return
+		return [self.add_trigger(trigger) for trigger in triggers]
 
 	def remove_triggers(self, triggers):
-		"""
-		Remove a list of triggers to the manager.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-
-		@param trigger: A list of triggers.
-		@type trigger: A List object.
-		"""
-		map(self.remove_trigger, triggers)
-		return
+		return [self.remove_trigger(trigger) for trigger in triggers]
 
 	def trigger(self, trigger_name):
 		self.__trigger_dictionary[trigger_name][0].activate()
@@ -182,18 +126,6 @@ class TriggerManager(object):
 ########################################################################
 
 	def __validate_trigger(self, trigger, accelerator):
-		"""
-		Check if trigger can be added to manager.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-
-		@param trigger: A trigger.
-		@type trigger: A Trigger object.
-
-		@param accelerator: Internal representation of an accelerator associated with a trigger.
-		@type accelerator: A Tuple object.
-		"""
 		from Exceptions import InvalidTriggerNameError
 		from Exceptions import DuplicateTriggerNameError
 		from Exceptions import DuplicateTriggerRemovalError
@@ -219,21 +151,6 @@ class TriggerManager(object):
 		return
 
 	def __format_accelerator(self, accelerator):
-		"""
-		Format accelerator for easy parsing and internal use.
-
-		Accelerator Format Examples:
-
-			(ctrl - alt -s)
-			(s)
-			(alt - a)
-
-		@param self: Reference to the TriggerManager.
-		@type self: A TriggerManager object.
-
-		@param accelerator: A keyboard shortcut associated with a trigger.
-		@type accelerator: A String object.
-		"""
 		if not (accelerator): return None
 		accel_list = [accel.strip() for accel in accelerator.split("-")]
 		accel = []
@@ -253,15 +170,6 @@ class TriggerManager(object):
 		return tuple(accel)
 
 	def __update_accelerator_info(self):
-		"""
-		Populate the accelerator keyname list.
-
-		The list is used to determine if a key pressed has a trigger
-		or accelerator associated with it.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-		"""
 		modifiers = ("ctrl", "shift", "alt")
 		keyname = set([])
 		accelerators = set([])
@@ -276,15 +184,6 @@ class TriggerManager(object):
 		return
 
 	def __activate_accelerator(self, accelerator):
-		"""
-		Activate trigger associated with an accelerator.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-
-		@param accelerator: An accelerator associated with a trigger.
-		@type accelerator: A List object.
-		"""
 		accelerator.sort()
 		accelerator = tuple(accelerator)
 		if not (accelerator in self.__accelerators): return False
@@ -295,31 +194,12 @@ class TriggerManager(object):
 		return True
 
 	def __precompile_methods(self):
-		"""
-		Use psyco to precompile some methods.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-		"""
-		try:
-			from psyco import bind
-			bind(self.__activate_accelerator)
-			bind(self.__key_press_event_cb)
-			bind(self.__update_accelerator_info)
-			bind(self.__format_accelerator)
-		except ImportError:
-			pass
-		except:
-			pass
+		methods = (self.__key_press_event_cb, self.__activate_accelerator,
+				self.__update_accelerator_info, self.__format_accelerator)
+		self.__editor.optimize(methods)
 		return False
 
 	def __destroy(self):
-		"""
-		Destroy this object.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-		"""
 		self.__accelerator_keyname_list.clear()
 		self.__trigger_dictionary.clear()
 		self.__accelerators.clear()
@@ -340,21 +220,6 @@ class TriggerManager(object):
 ########################################################################
 
 	def __key_press_event_cb(self, window, event):
-		"""
-		Handles callback when the "key-press-event" signal is emitted.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-
-		@param window: A window.
-		@type window: A gtk.Window object.
-
-		@param event: An event that occurs within window.
-		@type event: A gtk.Event object.
-
-		@return: True to handle the event.
-		@rtype: A Boolean object.
-		"""
 		if self.__bar_is_visible: return False
 		from gtk.gdk import CONTROL_MASK, MOD1_MASK, SHIFT_MASK, keyval_name
 		keyname = keyval_name(event.keyval)
@@ -395,23 +260,10 @@ class TriggerManager(object):
 		return self.__activate_accelerator([keyname])
 
 	def __close_document_cb(self, *args):
-		"""
-		Handles callback when the "close-document" signal is emitted.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-		"""
 		self.__is_quiting = True
 		return
 
 	def __close_document_no_save_cb(self, *args):
-		"""
-		Handles callback when the "close-document-no-save" signal is
-		emitted.
-
-		@param self: Reference to the TriggerManager instance.
-		@type self: A TriggerManager object.
-		"""
 		self.__is_quiting = True
 		self.__destroy()
 		return

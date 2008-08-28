@@ -28,8 +28,8 @@ This module defines functions that initialize Scribes.
 @contact: mystilleef@gmail.com
 """
 
-#from dbus.mainloop.glib import DBusGMainLoop
-#DBusGMainLoop(set_as_default=True)
+from dbus.mainloop.glib import DBusGMainLoop
+DBusGMainLoop(set_as_default=True)
 scribes_dbus_service = "net.sourceforge.Scribes"
 scribes_dbus_path = "/net/sourceforge/Scribes"
 
@@ -54,15 +54,15 @@ def __open_via_dbus(uris=None):
 	raise SystemExit
 	return
 
-def __init_threads():
-	# Enabling threads makes Scribes unstable.
-	from gobject import threads_init
-	threads_init()
-	from dbus.glib import threads_init
-	threads_init()
-	from gtk.gdk import threads_init
-	threads_init()
-	return
+#def __init_threads():
+#	 Enabling threads makes Scribes unstable.
+#	from gobject import threads_init
+#	threads_init()
+#	from dbus.glib import threads_init
+#	threads_init()
+#	from gtk.gdk import threads_init
+#	threads_init()
+#	return
 
 def __get_dbus_service():
 	from info import dbus_iface, session_bus
@@ -82,8 +82,10 @@ def __mainloop():
 	__fork_scribes()
 	from utils import init_gnome
 	init_gnome()
-	from gtk import main
-	main()
+	from gobject import MainLoop
+	MainLoop().run()
+#	from gtk import main
+#	main()
 	return
 
 def __fork_scribes():
