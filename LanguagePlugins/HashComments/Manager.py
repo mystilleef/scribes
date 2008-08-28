@@ -113,7 +113,7 @@ class Manager(object):
 		return [self.__comment_line(line) for line in lines]
 
 	def __uncomment_lines(self, lines):
-		return [self.__comment_line(line) for line in lines]
+		return [self.__uncomment_line(line) for line in lines]
 
 	def __update_feedback_message(self):
 		if self.__readonly:
