@@ -14,7 +14,7 @@ hostname = sobmishon
 uname -m = i686
 uname -r = 2.6.24-21-generic
 uname -s = Linux
-uname -v = #1 SMP Tue Aug 12 13:37:22 UTC 2008
+uname -v = #1 SMP Mon Aug 25 17:32:09 UTC 2008
 
 /usr/bin/uname -p = unknown
 /bin/uname -X     = unknown

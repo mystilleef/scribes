@@ -33,19 +33,6 @@ that, optionally, may contain an underscore ("_") or a dash ("-") character.
 """
 
 def starts_word(iterator):
-	"""
-	Check if the iterator is at the beginning of a word.
-
-	For the purpose of this project, a word is a sequence of alphanumeric
-	characters that, optionally, may contain an underscore ("_") or a dash ("-")
-	character.
-
-	@param iterator: A single position in a text buffer.
-	@type iterator: A gtk.TextIter object.
-
-	@return: True if the iterator is at the beginning of a word, false otherwise.
-	@rtype: A Boolean object.
-	"""
 	# If the iterator is at the end of a word or line then it does not start a
 	# word.
 	if iterator.ends_line() or iterator.ends_word(): return False
@@ -73,19 +60,6 @@ def starts_word(iterator):
 	return True
 
 def ends_word(iterator):
-	"""
-	Check if the iterator is at the end of a word in a text buffer.
-
-	For the purpose of this project, a word is a sequence of alphanumeric
-	characters that, optionally, may contain an underscore ("_") or a dash ("-")
-	character.
-
-	@param iterator: A single position in the text buffer.
-	@type iterator: A gtk.TextIter object.
-
-	@return: True if the iterator is at the end of a word, False otherwise.
-	@rtype: A Boolean object.
-	"""
 	if iterator.starts_line(): return False
 	character = iterator.get_char()
 	if character.isalnum() or character in ("-", "_"):
@@ -102,19 +76,6 @@ def ends_word(iterator):
 	return False
 
 def inside_word(iterator):
-	"""
-	Check if the iterator is inside a word.
-
-	For the purpose of this project, a word is a sequence of alphanumeric
-	characters that, optionally, may contain an underscore ("_") or a dash ("-")
-	character.
-
-	@param iterator: A single position in a text buffer.
-	@type iterator: A gtk.TextIter object.
-
-	@return: True if the iterator is inside a word, false otherwise.
-	@rtype: A Boolean object.
-	"""
 	if starts_word(iterator) or ends_word(iterator): return False
 	if iterator.starts_line() or iterator.ends_line(): return False
 	character = iterator.get_char()
@@ -134,19 +95,6 @@ def inside_word(iterator):
 	return True
 
 def get_word_boundary(iterator):
-	"""
-	Retrieve the beginning and ending position of word.
-
-	This function determines if an iterator is at the beginning of, end of, or
-	within a word. If it is, the boundaries of the word are returned, otherwise,
-	nothing is returned.
-
-	@param iterator: A single position in a text buffer.
-	@type iterator: A gtk.TextIter object.
-
-	@return: The position of a word in a text buffer or None.
-	@rtype: A Tuple object containing a pair of gtk.TextIter objects or or None.
-	"""
 	value = None
 	if starts_word(iterator):
 		navigational_iterator = iterator.copy()
@@ -169,53 +117,12 @@ def get_word_boundary(iterator):
 	return value
 
 def get_word(textbuffer, iterator):
-	"""
-	Given a gtk.TextIter, get a word in a text buffer.
-
-	@param textbuffer: A text buffer.
-	@type textbuffer: A gtk.TextBuffer object.
-
-	@param iterator: A single position in a text buffer.
-	@type iterator: A gtk.TextIter object.
-
-	@return: A word around the position specified by a gtk.TextIter, or None if
-		no word was found around the gtk.TextIter.
-	@rtype: A String object.
-
-	"""
 	result = get_word_boundary(iterator)
 	if result: result = textbuffer.get_text(result[0], result[1])
 	return result
 
 def select_word(textbuffer, iterator):
-	"""
-	Given a gtk.TextIter, select a word in a text buffer.
-
-	@param textbuffer: A text buffer.
-	@type textbuffer: A gtk.TextBuffer object.
-
-	@param iterator: A single position in a text buffer.
-	@type iterator: A gtk.TextIter object.
-
-	@return: Return the position of the selected word, or none if no words were
-		found for selection.
-	@rtype: A Tuple object or None
-
-	"""
 	result = None
 	result = get_word_boundary(iterator)
 	if result: textbuffer.select_range(result[0], result[1])
 	return result
-
-#try:
-#	from psyco import bind
-#	bind(ends_word)
-#	bind(get_word)
-#	bind(get_word_boundary)
-#	bind(select_word)
-#	bind(starts_word)
-#	bind(inside_word)
-#except ImportError:
-#	pass
-#except:
-#	pass

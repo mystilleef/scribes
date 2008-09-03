@@ -44,8 +44,8 @@ class TriggerManager(object):
 		self.__signal_id_4 = self.__editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_5 = self.__editor.connect("close-document-no-save", self.__close_document_no_save_cb)
 		self.__editor.emit("initialized-trigger-manager")
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=9999)
+#		from gobject import idle_add
+#		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor):
 		self.__window = editor.window

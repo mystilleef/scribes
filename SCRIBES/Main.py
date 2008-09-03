@@ -84,8 +84,6 @@ def __mainloop():
 	init_gnome()
 	from gobject import MainLoop
 	MainLoop().run()
-#	from gtk import main
-#	main()
 	return
 
 def __fork_scribes():
@@ -95,9 +93,3 @@ def __fork_scribes():
 	pid = fork()
 	if pid != 0: raise SystemExit
 	return
-
-try:
-	from psyco import bind
-	bind(__mainloop)
-except:
-	pass

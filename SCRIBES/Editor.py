@@ -104,8 +104,8 @@ class Editor(GObject):
 		except:
 			print "Awwww cute! I'm crashing because it is the safest thing to do. SORRY! :-D"
 			raise SystemExit
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=9999)
+#		from gobject import idle_add
+#		idle_add(self.__precompile_methods, priority=9999)
 
 ########################################################################
 #
@@ -453,11 +453,11 @@ class Editor(GObject):
 		return
 
 	def optimize(self, functions):
-		try:
-			from psyco import bind
-			map(bind, functions)
-		except ImportError:
-			pass
+#		try:
+#			from psyco import bind
+#			map(bind, functions)
+#		except ImportError:
+#			pass
 		return
 
 	def create_new_file(self):
@@ -828,7 +828,6 @@ class Editor(GObject):
 		from utils import create_scrollwin
 		scrollwin = create_scrollwin()
 		scrollwin.add(self.__textview)
-
 		# Frame that holds the statusbar image.
 		from gtk import SHADOW_IN
 		self.__status_image_frame.set_shadow_type(SHADOW_IN)
@@ -836,7 +835,6 @@ class Editor(GObject):
 		self.__status_image.clear()
 		self.__status_image.hide_all()
 		self.__status_image_frame.hide_all()
-
 		# Pack widgets into the editor's containers.
 		self.__toolbarcontainer.pack_start(self.__toolbar, True, True, 0)
 		self.__viewcontainer.pack_start(scrollwin, True, True, 0)

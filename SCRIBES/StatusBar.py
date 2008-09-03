@@ -37,46 +37,18 @@ class ScribesStatusbar(Statusbar):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize a statusbar objects for the text editor and set its
-		properties.
-
-		@param self: Reference to the ScribesStatusbar instance.
-		@type self: A ScribesStatusbar object.
-
-		@param width: The width size of the statusbar object.
-		@type width: An Integer object.
-
-		@param height: The height size of the statusbar object.
-		@type height: An Integer object.
-		"""
 		Statusbar.__init__(self)
 		self.__init_attributes(editor)
 		self.__signal_id_1 = editor.connect("close-document", self.__close_document_cb)
 		self.__signal_id_2 = editor.connect("close-document-no-save", self.__close_document_cb)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the ScribesMainContainer instance.
-		@type self: A ScribesMainContainer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__registration_id = editor.register_object()
 		self.__signal_id_1 = self.__signal_id_2 = None
 		return
 
 	def __destroy(self):
-		"""
-		Destroy instance of this class.
-
-		@param self: Reference to the Store instance.
-		@type self: A Store object.
-		"""
 		# Disconnect signals.
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
 		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
@@ -89,24 +61,10 @@ class ScribesStatusbar(Statusbar):
 		return
 
 	def __close_document_cb(self, editor):
-		"""
-		Handles callback when the "close-document" signal is emitted.
-
-		@param self: Reference to the Store instance.
-		@type self: A Store object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__destroy()
 		return
 
 class StatusOne(ScribesStatusbar):
-	"""
-	The class instantiates a statusbar object for the text editor that informs
-	the user of the status of the text editor or the operations they are
-	currently performing.
-	"""
 
 	def __init__(self, editor):
 		ScribesStatusbar.__init__(self, editor)
@@ -119,55 +77,16 @@ class StatusOne(ScribesStatusbar):
 		self.connect("text-pushed", self.__statusone_text_pushed_cb)
 
 	def __statusone_text_popped_cb(self, statusbar, context_id, text):
-		"""
-		Handles callback when messages are removed from the statusbar.
-
-		@param self: Reference to the StatusOne instance.
-		@type self: A StatusOne object.
-
-		@param statusbar: The first statusbar object for the text editor.
-		@type statusbar: A gtk.Statusbar object.
-
-		@param context_id: A number associated with a message on the statusbar.
-		@type context_id: An Integer object.
-
-		@param text: The message removed from the statusbar.
-		@type text: A String object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		self.context_id = context_id
 		self.text = text
 		return False
 
 	def __statusone_text_pushed_cb(self, statusbar, context_id, text):
-		"""
-		@param self: Reference to the StatusOne instance.
-		@type self: A StatusOne object.
-
-		@param statusbar: The first statusbar object for the text editor.
-		@type statusbar: A gtk.Statusbar object.
-
-		@param context_id: A number associated with a message on the statusbar.
-		@type context_id: An Integer object.
-
-		@param text: The message removed from the statusbar.
-		@type text: A String object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		self.context_id = context_id
 		self.text = text
 		return False
 
 class StatusTwo(ScribesStatusbar):
-	"""
-	This class instantiates the second statusbar object of the text editor. This
-	statusbar bar displays the position of the cursor in the text editor's
-	buffer in real time.
-	"""
 
 	def __init__(self, editor):
 		ScribesStatusbar.__init__(self, editor)
@@ -183,15 +102,6 @@ class StatusTwo(ScribesStatusbar):
 		self.editor.connect("disable-readonly", self.__statustwo_disable_readonly_cb)
 
 	def __statustwo_gui_created_cb(self, editor):
-		"""
-		Handles callback when the "gui-created" signal is emitted
-
-		@param self: Reference to the StatusTwo instance.
-		@type self: An StatusTwo object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		# Update the cursor position on the statusbar.
 		from gobject import idle_add, PRIORITY_LOW
 		self.__stop_idle_add()
@@ -200,18 +110,6 @@ class StatusTwo(ScribesStatusbar):
 		return
 
 	def __statustwo_cursor_moved_cb(self, editor):
-		"""
-		Handles callback when the editor's buffer's "mark-set" signal is emitted.
-
-		This function updates the cursor position and reflects the changes of
-		the statusbar.
-
-		@param self: Reference to the StatusTwo instance.
-		@type self: A StatusTwo object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		# Update the cursor position on the statusbar.
 		from gobject import idle_add, timeout_add, PRIORITY_LOW
 		self.__stop_idle_add()
@@ -240,45 +138,16 @@ class StatusTwo(ScribesStatusbar):
 		return False
 
 	def __statustwo_enable_readonly_cb(self, editor):
-		"""
-		Handles callback when the "enable-readonly" signal is emitted.
-
-		@param self: Reference to the StatusTwo instance.
-		@type self: A StatusTwo object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.hide_all()
 		return
 
 	def __statustwo_disable_readonly_cb(self, editor):
-		"""
-		Handles callback when the "disable-readonly" signal is emitted.
-
-		@param self: Reference to the StatusTwo instance.
-		@type self: A StatusTwo object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.show_all()
 		return
 
 class StatusThree(ScribesStatusbar):
-	"""
-	This class instantiates the third statusbar object of the text editor. This
-	statusbar indicates whether the text editor is in "insert", or "overwrite"
-	mode.
-	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize the third statusbar object of the text editor.
-
-		@param self: Reference to the StatusThree instance.
-		@type self: A StatusThree object.
-		"""
 		ScribesStatusbar.__init__(self, editor)
 		self.editor = editor
 		self.set_has_resize_grip(True)
@@ -292,32 +161,10 @@ class StatusThree(ScribesStatusbar):
 		self.editor.connect("disable-readonly", self.__statusthree_disable_readonly_cb)
 
 	def __statusthree_gui_created_cb(self, editor):
-		"""
-		Handles callback when the "gui-created" signal is emitted
-
-		@param self: Reference to the StatusTwo instance.
-		@type self: An StatusTwo object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		editor.textview.connect("toggle-overwrite", self.__statusthree_toggle_overwrite_cb)
 		return
 
 	def __statusthree_toggle_overwrite_cb(self, textview):
-		"""
-		Handles callback when the textview's "toggle-overwrite" signal is
-		emitted.
-
-		@param self: Reference to the StatusThree instance.
-		@type self: A StatusThree object.
-
-		@param textview: The text editor's buffer container, view.
-		@type textview: A gtksourceview.SourceView object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		# Set textview overwrite mode
 		if not textview.get_overwrite():
 			from internationalization import msg0355
@@ -332,27 +179,9 @@ class StatusThree(ScribesStatusbar):
 		return False
 
 	def __statusthree_enable_readonly_cb(self, editor):
-		"""
-		Handles callback when the "enable-readonly" signal is emitted.
-
-		@param self: Reference to the StatusThree instance.
-		@type self: A StatusThree object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.hide_all()
 		return
 
 	def __statusthree_disable_readonly_cb(self, editor):
-		"""
-		Handles callback when the "disable-readonly" signal is emitted.
-
-		@param self: Reference to the StatusThree instance.
-		@type self: A StatusThree object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.show_all()
 		return

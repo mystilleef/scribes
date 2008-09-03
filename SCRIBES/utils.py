@@ -30,25 +30,7 @@ mind.
 """
 
 def calculate_resolution_independence(window, width, height):
-	"""
-	Calculate the resolution independent width and height of windows based on
-	the host system's monitor resolution.
-
-	@param window: Any window/dialog object.
-	@type window: A gtk.Window object.
-
-	@param width: An arbitrary ratio used to determine a resolution independent
-		width.
-	@type width: A Float/Integer object.
-
-	@param height: An arbitrary ratio used to determine a resolution independent
-		height.
-	@type height: A Float/Integer object.
-
-	@return: The width and height to set the window objects to.
-	@rtype: A Tuple object containing the suggested width and height to set
-		windows to.
-	"""
+	# Need to deprecate this function.
 	screen = window.get_screen()
 	number = screen.get_number()
 	rectangle = screen.get_monitor_geometry(number)
@@ -57,17 +39,6 @@ def calculate_resolution_independence(window, width, height):
 	return width, height
 
 def create_button(stock_id, string):
-	"""
-	Create a button with a stock icon and a custom label
-
-	@param stock_id: a GTK stock icon identifier
-	@type stock_id: string
-	@param string: text to be displayed on the button
-	@type string: GTK Label
-
-	@return: a stock icon and label
-	@rtype: HBox object
-	"""
 	from gtk import HBox, Image, Label, ICON_SIZE_BUTTON, Alignment
 	alignment = Alignment()
 	alignment.set_property("xalign", 0.5)
@@ -93,12 +64,6 @@ def process_color(color):
 	return color
 
 def create_scrollwin():
-	"""
-	Create a scrollwindow object for the editor
-
-	@return: A scroll window.
-	@rtype:	A gtk.ScrolledWindow object.
-	"""
 	from gtk import ScrolledWindow, RESIZE_PARENT, POLICY_AUTOMATIC
 	from gtk import SHADOW_IN
 	scrollwin = ScrolledWindow()
@@ -118,16 +83,6 @@ def __get_language_for_mime_type(mime):
 	return None
 
 def get_language(uri):
-	"""
-	Determine the source code language for a URI
-
-	@param uri: A universal resource identifier pointing to, or representing, a
-		file.
-	@type uri: A String object.
-
-	@return: An object representing a source code language.
-	@rtype: A gtksourceview.SourceLanguage object.
-	"""
 	try:
 		if uri is None: return None
 		from gnomevfs import get_mime_type
@@ -151,12 +106,6 @@ def create_encoding_box(combobox):
 	return hbox
 
 def generate_encodings():
-	"""
-	Generate a tuple containing supported encodings.
-
-	@return: A tuple containing supported encodings.
-	@rtype: A tuple object.
-	"""
 	from internationalization import msg0208, msg0209, msg0210
 	from internationalization import msg0211, msg0212, msg0213, msg0214, msg0215
 	from internationalization import msg0216, msg0217, msg0218, msg0219, msg0220
@@ -278,18 +227,6 @@ def generate_random_number(sequence):
 	return number
 
 def check_uri_permission(uri):
-	"""
-	Check the permission flags of a URI.
-
-	This function returns True if the URI has read/write permission flags or
-	False if the URI has readonly permission.
-
-	@param uri: An object representing, or pointing to, a document.
-	@type uri: A gnomevfs.URI object.
-
-	@return: True if you URI has read/write permissions, False otherwise
-	@rtype: A Boolean object.
-	"""
 	value = True
 	if uri.startswith("file:///"):
 		from gnomevfs import get_local_path_from_uri
@@ -309,15 +246,6 @@ def check_uri_permission(uri):
 	return value
 
 def get_file_size(uri):
-	"""
-	Get the size of a file.
-
-	@param uri: A URI pointing to a file.
-	@type uri: A String object.
-
-	@return: The size of a file.
-	@rtype: An Integer object.
-	"""
 	size = 0
 	from gnomevfs import get_file_info, FILE_INFO_GET_MIME_TYPE
 	from gnomevfs import FILE_INFO_FORCE_SLOW_MIME_TYPE
@@ -339,18 +267,6 @@ def get_file_size(uri):
 	return size
 
 def create_menuitem(string, stock_id=None):
-	"""
-	Create a generic menu item.
-
-	@param string: A string representing a label for the menu item.
-	@type string: A String object.
-
-	@param stock_id: An image for menu item.
-	@type stock_id: A gtk.STOCK_ID object.
-
-	@return: A menuitem with a label and stock ID.
-	@rtype: A gtk.MenuItem object.
-	"""
 	from gtk import MenuItem, Image, HBox, Label
 	hbox = HBox(spacing=7)
 	hbox.set_property("border-width", 2)
@@ -366,19 +282,6 @@ def create_menuitem(string, stock_id=None):
 	return menuitem
 
 def calculate_completion_window_position(editor, width, height):
-	"""
-	Calculate the position to place the word completion window in the text
-	editor's buffer.
-
-	@param editor: Reference to the editor object.
-	@type editor: An editor object
-
-	@param width: The width of the text editor's completion window.
-	@type width: An integer object.
-
-	@param height: The height of the text editor's completion window.
-	@type height: An integer object.
-	"""
 	# The flag is true when the position of the word completion window needs to
 	# adjusted accross the y-axis.
 	editor.y_coordinate_flag = False
@@ -407,31 +310,12 @@ def calculate_completion_window_position(editor, width, height):
 	return position_x, position_y
 
 def find_file(filename):
-	"""
-	Find a file in Scribes data folder.
-
-	This function looks data files and images in Scribes data folder.
-
-	#TODO: Use a more brute force approach.
-
-	@param filename: The name of the file to find.
-	@type filename: A String object.
-
-	@return: The full path to the file.
-	@rtype: A String object.
-	"""
 	from os import path
 	from info import scribes_data_folder
 	file_path = path.join(scribes_data_folder, filename)
 	return file_path
 
 def create_image(file_path):
-	"""
-	Create an image of a file.
-
-	@param file_path: Path to the image file.
-	@type file_path: A String object.
-	"""
 	image_file = find_file(file_path)
 	from gtk import Image
 	image = Image()
@@ -439,17 +323,7 @@ def create_image(file_path):
 	return image
 
 def __convert_to_string(value):
-	"""
-	Convert an integer to a hexidecimal string.
-
-	@param value: An integer representing a unit of the gtk.gdk.Color
-	@type value: An Integer object.
-
-	@return: A hexidecimal string
-	@rtype: A String object.
-	"""
-	if not value:
-		return "0000"
+	if not value: return "0000"
 	string = str(hex(value)).lstrip("0x")
 	if len(string) < 4:
 		if len(string) == 3:
@@ -461,15 +335,6 @@ def __convert_to_string(value):
 	return string
 
 def convert_color_to_spec(color):
-	"""
-	Convert a color to a string specification.
-
-	@param color: A color.
-	@type color: A gtk.gdk.Color object.
-
-	@return: A hexidecimal representing the gtk.gdk.color
-	@rtype: A String object.
-	"""
 	red = __convert_to_string(color.red)
 	blue = __convert_to_string(color.blue)
 	green = __convert_to_string(color.green)
@@ -477,15 +342,6 @@ def convert_color_to_spec(color):
 	return string
 
 def select_row(treeview, column=0):
-	"""
-	Select a row in a treeview if any.
-
-	This function disables the treeview if it has no rows. Otherwise,
-	it tries to figure out any row to select.
-
-	@param treeview: Reference to a TreeView object.
-	@type self: An gtk.TreeView object.
-	"""
 	selection = treeview.get_selection()
 	model = treeview.get_model()
 	path, iterator = selection.get_selected()
@@ -504,15 +360,6 @@ def select_row(treeview, column=0):
 	return
 
 def disconnect_signal(signal_id, instance):
-	"""
-	Disconnect a signal from an object.
-
-	@param signal_id: A numeric identifier for a signal.
-	@type signal_id: A Integer object.
-
-	@param instance: An object connected to a signal.
-	@type instance: A GObject object.
-	"""
 	try:
 		if signal_id and instance.handler_is_connected(signal_id): instance.disconnect(signal_id)
 	except AttributeError:
@@ -663,10 +510,3 @@ def forward_to_line_end(iterator):
 	if iterator.ends_line(): return iterator
 	iterator.forward_to_line_end()
 	return iterator
-
-try:
-	from psyco import bind
-	bind(find_matching_bracket)
-	bind(__search_for_open_character)
-except ImportError:
-	pass

@@ -55,7 +55,7 @@ class Manager(object):
 	def __show_hide_full_view(self, widget):
 		if self.__activate is False: return False
 		x, y, type_ = widget.window.get_pointer()
-		if y <= 11:
+		if y <= 17:
 			if self.__show is True: return False
 			self.__show_full_view()
 		else:
