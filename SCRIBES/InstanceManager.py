@@ -29,7 +29,7 @@ It allows editor instances to communicate with each other.
 @contact: mystilleef@gmail.com
 """
 
-close_file = lambda editor: editor.emit("close-document")
+close_file = lambda editor: editor.close()
 
 class Manager(object):
 	"""
@@ -42,7 +42,7 @@ class Manager(object):
 		from DBusService import DBusService
 		DBusService(self)
 		self.__init_attributes()
-		self.__init_i18n()
+#		self.__init_i18n()
 		from gobject import timeout_add
 		timeout_add(300000, self.__init_garbage_collector, priority=9999)
 		timeout_add(21000, self.__init_psyco, priority=9999)
@@ -50,11 +50,10 @@ class Manager(object):
 	def __init_attributes(self):
 		from collections import deque
 		self.__editor_instances = deque([])
-		self.__registration_ids = deque([])
-		from GlobalStore import Store
-		self.__store = Store()
-		from SaveProcessMonitor import SaveProcessMonitor
-		self.__save_process_monitor = SaveProcessMonitor()
+#		from GlobalStore import Store
+#		self.__store = Store()
+#		from SaveProcessMonitor import SaveProcessMonitor
+#		self.__save_process_monitor = SaveProcessMonitor()
 		return
 
 ########################################################################
@@ -65,15 +64,11 @@ class Manager(object):
 
 	def register_editor(self, instance):
 		self.__editor_instances.append(instance)
-		from utils import generate_random_number
-		number =  generate_random_number(self.__registration_ids)
-		self.__registration_ids.append(number)
-		return number
+		return False
 
-	def unregister_editor(self, instance, number):
+	def unregister_editor(self, instance):
 		try:
 			self.__editor_instances.remove(instance)
-			self.__registration_ids.remove(number)
 		except ValueError:
 			print "===================================================="
 			print "Scribes Error:"
@@ -81,15 +76,6 @@ class Manager(object):
 			print "Instance not found,", instance
 			print "===================================================="
 		if not self.__editor_instances: self.__quit()
-		return
-
-	def response(self):
-		return False
-
-	def block_response(self):
-		return
-
-	def unblock_response(self):
 		return
 
 	def add_object(self, name, instance):
@@ -202,7 +188,7 @@ class Manager(object):
 		return False
 
 	def __init_i18n(self):
-		from info import scribes_data_path
+		from Globals import scribes_data_path
 		from os import path
 		locale_folder = path.join(scribes_data_path, "locale")
 		# Initialize glade first.
@@ -239,7 +225,7 @@ class Manager(object):
 
 	def __remove_swap_area(self):
 		from glob import glob
-		from info import home_folder
+		from Globals import home_folder
 		files = glob(home_folder + "/" + ".Scribes*scribes")
 		from shutil import rmtree
 		[rmtree(file_, True) for file_ in files]
@@ -252,6 +238,6 @@ class Manager(object):
 
 	def __quit(self):
 		self.__remove_swap_area()
-		self.__save_process_monitor.destroy()
+		#self.__save_process_monitor.destroy()
 		raise SystemExit
 		return

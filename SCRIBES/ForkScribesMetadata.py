@@ -30,13 +30,7 @@ to fork the editor's process.
 """
 
 def open_database(flag="c"):
-	"""
-	Open database.
-
-	@return: A database object.
-	@rtype: A database Shelve object.
-	"""
-	from SCRIBES.info import metadata_folder
+	from Globals import metadata_folder
 	from os.path import exists, join
 	preference_folder = join(metadata_folder, "Preferences")
 	if not exists(preference_folder):
@@ -52,12 +46,6 @@ def open_database(flag="c"):
 	return database
 
 def get_value():
-	"""
-	Get fork value from database.
-
-	@return: True to fork scribes, False otherwise.
-	@rtype: A Boolean object.
-	"""
 	try:
 		value = True
 		database = open_database("r")
@@ -69,12 +57,6 @@ def get_value():
 	return value
 
 def set_value(fork):
-	"""
-	Set fork value in database.
-
-	@param fork: True to fork scribes, False otherwise.
-	@type fork: A Boolean object.
-	"""
 	try:
 		database = open_database("w")
 		database["fork"] = fork

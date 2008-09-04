@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
+# Copyright (C) 2005 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
 #
@@ -17,8 +17,10 @@
 # along with Scribes; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-"""
-Provide syntax highlighting for gtksourceview.Buffer objects.
+u"""
+Command line help manual
+
+This module contains code that generates the command line help manual.
 
 @author: Lateef Alabi-Oki
 @organiation: The Scribes Project
@@ -27,22 +29,20 @@ Provide syntax highlighting for gtksourceview.Buffer objects.
 @contact: mystilleef@gmail.com
 """
 
-def activate_syntax_highlight(textbuffer, language=None):
-	"""
-	Highlight keywords in source code for various programming languages.
 
-	This function can be called via a timeout_add function to it returns False
-	to prevent the function from being called repeatedly.
-
-	@param textbuffer: A buffer object.
-	@type textbuffer: A gtksourceview.SourceBuffer object.
-
-	@param language: An object representing the language for a source code.
-	@type language: A gtksourceview.SourceLanguage object.
-
-	@return: False to terminate the timeout_add function that calls this one.
-	@rtype: A Boolean object.
-	"""
-	if not language: return False
-	textbuffer.set_language(language)
-	return False
+def help():
+	from i18n import msg0124, msg0125, msg0126, msg0127, msg0128
+	from i18n import msg0129, msg0130
+	print msg0124
+	print
+	print msg0125
+	print
+	print msg0126
+	print
+	print "\t-h, --help\t" + msg0127
+	print "\t-v, --version\t" + msg0128
+	print "\t-n, --newfile\t" + msg0129
+	print "\t-i, --info\t" + msg0130
+	print
+	print "http://scribes.sourceforge.net/"
+	return

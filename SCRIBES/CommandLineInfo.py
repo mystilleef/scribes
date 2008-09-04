@@ -7,7 +7,7 @@ def print_info():
 	print "System Byteorder: ", sys.byteorder
 	print "Python Modules: ", sys.builtin_module_names
 	print "========================================================"
-	from info import version
+	from Globals import version
 	print "Scribes Version: ", version
 	import dbus
 	print "Dbus Version: ", dbus.version
@@ -23,14 +23,14 @@ def print_info():
 	except ImportError:
 		print "Psyco Not Installed"
 	print "========================================================"
-	from SCRIBES.info import dbus_iface
+	from Globals import dbus_iface
 	services = dbus_iface.ListNames()
 	service = "net.sourceforge.Scribes"
 	print "Running Instance: ", services.count(service)
 	print "========================================================"
-	from SCRIBES.info import scribes_executable_path
-	from SCRIBES.info import python_path, core_plugin_folder
-	from SCRIBES.info import scribes_data_folder
+	from Globals import scribes_executable_path
+	from Globals import python_path, core_plugin_folder
+	from Globals import scribes_data_folder
 	print "Python Path: ", python_path
 	print "Plugin Path: ", core_plugin_folder
 	print "Data Path: ", scribes_data_folder

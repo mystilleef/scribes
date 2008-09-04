@@ -55,15 +55,15 @@ am__installdirs = "$(DESTDIR)$(scribesdir)"
 scribesPYTHON_INSTALL = $(INSTALL_DATA)
 py_compile = $(top_srcdir)/py-compile
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/meek/scribes-dev/missing --run aclocal-1.9
+ACLOCAL = ${SHELL} /home/meek/scribes-new-dev/missing --run aclocal-1.9
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 ALL_LINGUAS = de fr nl it pt_BR sv zh_CN
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/meek/scribes-dev/missing --run tar
-AUTOCONF = ${SHELL} /home/meek/scribes-dev/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/meek/scribes-dev/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/meek/scribes-dev/missing --run automake-1.9
+AMTAR = ${SHELL} /home/meek/scribes-new-dev/missing --run tar
+AUTOCONF = ${SHELL} /home/meek/scribes-new-dev/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/meek/scribes-new-dev/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/meek/scribes-new-dev/missing --run automake-1.9
 AWK = mawk
 CATALOGS =  de.gmo fr.gmo nl.gmo it.gmo pt_BR.gmo sv.gmo zh_CN.gmo
 CATOBJEXT = .gmo
@@ -128,7 +128,7 @@ LTLIBOBJS =
 MAINT = 
 MAINTAINER_MODE_FALSE = #
 MAINTAINER_MODE_TRUE = 
-MAKEINFO = ${SHELL} /home/meek/scribes-dev/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/meek/scribes-new-dev/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_OPTS = -c
@@ -179,7 +179,7 @@ host_alias =
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = /home/meek/scribes-dev/install-sh
+install_sh = /home/meek/scribes-new-dev/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -208,100 +208,28 @@ edit = sed \
 	-e 's,@VERSION\@,$(VERSION),g'
 
 
-# dnl Generate "info.py" from "info.py.in."
-python_files = info.py
+# dnl Generate "Globals.py" from "Globals.py.in."
+python_files = Globals.py
 python_in_files = $(python_files).in
 scribesdir = $(pythondir)/SCRIBES
 scribes_PYTHON = \
-	info.py \
+	Globals.py \
 	__init__.py \
-	BackgroundColorMetadata.py \
-	bar.py \
-	ColorThemeMetadata.py \
 	CommandLineInfo.py \
 	CommandLineProcessor.py \
-	cursor.py \
-	cursor_metadata.py \
-	dialog.py \
-	dialogfilter.py \
 	DBusService.py \
-	DisplayRightMarginMetadata.py \
-	edialog.py \
-	error.py \
-	escape.py \
 	Editor.py \
-	EncodingManager.py \
-	ErrorDialog.py \
-	EncodedFilesMetadata.py \
-	EncodingComboBox.py \
-	EncodingComboBoxGlade.py \
-	EncodingErrorWindow.py \
-	EncodingMetadata.py \
-	EncodingListMetadata.py \
-	EncodingGuessListMetadata.py \
-	EncodingSelectionWindow.py \
-	Exceptions.py \
-	Feedback.py \
-	FileSaver.py \
-	FileLoader.py \
-	FileModificationMonitor.py \
-	FontMetadata.py \
-	ForegroundColorMetadata.py \
 	ForkScribesMetadata.py \
-	fsbutton.py \
 	GlobalStore.py \
 	InstanceManager.py \
-	internationalization.py \
-	license.py \
-	lines.py \
-	LanguagePluginManager.py \
+	i18n.py \
+	License.py \
 	Main.py \
-	MessageDialog.py \
-	MainContainer.py \
-	MarginPositionMetadata.py \
-	MinimalModeMetadata.py \
-	ModificationDialog.py \
-	NewFileSaver.py \
-	mdialog.py \
-	OutputProcessor.py \
-	OutputWriter.py \
-	popupsubmenu.py \
-	position_metadata.py \
-	PreferenceMenu.py \
-	PluginManager.py \
-	RecentManager.py \
-	RecentMenu.py \
-	sdialog.py \
-	SaveProcessMonitor.py \
-	SaveProcessorDBusService.py \
-	ScribesSaveProcessor.py \
-	StatusContainer.py \
-	SyntaxColorsMetadata.py \
-	syntax.py \
-	SpellCheckMetadata.py \
-	Spinner.py \
-	StatusBar.py \
-	Store.py \
-	TabWidthMetadata.py \
-	TextBuffer.py \
-	TextView.py \
-	TextWrappingMetadata.py \
-	Toolbar.py \
-	ToolbarContainer.py \
-	toolbuttons.py \
-	tooltips.py \
-	Trigger.py \
-	TriggerManager.py \
-	txtutils.py \
-	UseTabsMetadata.py \
-	UseThemeMetadata.py \
-	usage.py \
-	utils.py \
-	ViewContainer.py \
-	Window.py \
-	word.py
+	Usage.py \
+	Utils.py \
+	Window.py
 
-EXTRA_DIST = info.py.in
+EXTRA_DIST = Globals.py.in
 all: all-am
 
 .SUFFIXES:

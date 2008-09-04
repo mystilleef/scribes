@@ -6,8 +6,8 @@ edit = sed \
 	-e 's,@python_path\@,$(pythondir),g' \
 	-e 's,@VERSION\@,$(VERSION),g'
 
-# dnl Generate "info.py" from "info.py.in."
-python_files = info.py
+# dnl Generate "Globals.py" from "Globals.py.in."
+python_files = Globals.py
 python_in_files = $(python_files).in
 scribesdir = $(pythondir)/SCRIBES
 
@@ -22,91 +22,19 @@ $(python_files): Makefile $(python_in_files)
 	fi
 
 scribes_PYTHON = \
-	info.py \
+	Globals.py \
 	__init__.py \
-	BackgroundColorMetadata.py \
-	bar.py \
-	ColorThemeMetadata.py \
 	CommandLineInfo.py \
 	CommandLineProcessor.py \
-	cursor.py \
-	cursor_metadata.py \
-	dialog.py \
-	dialogfilter.py \
 	DBusService.py \
-	DisplayRightMarginMetadata.py \
-	edialog.py \
-	error.py \
-	escape.py \
 	Editor.py \
-	EncodingManager.py \
-	ErrorDialog.py \
-	EncodedFilesMetadata.py \
-	EncodingComboBox.py \
-	EncodingComboBoxGlade.py \
-	EncodingErrorWindow.py \
-	EncodingMetadata.py \
-	EncodingListMetadata.py \
-	EncodingGuessListMetadata.py \
-	EncodingSelectionWindow.py \
-	Exceptions.py \
-	Feedback.py \
-	FileSaver.py \
-	FileLoader.py \
-	FileModificationMonitor.py \
-	FontMetadata.py \
-	ForegroundColorMetadata.py \
 	ForkScribesMetadata.py \
-	fsbutton.py \
 	GlobalStore.py \
 	InstanceManager.py \
-	internationalization.py \
-	license.py \
-	lines.py \
-	LanguagePluginManager.py \
+	i18n.py \
+	License.py \
 	Main.py \
-	MessageDialog.py \
-	MainContainer.py \
-	MarginPositionMetadata.py \
-	MinimalModeMetadata.py \
-	ModificationDialog.py \
-	NewFileSaver.py \
-	mdialog.py \
-	OutputProcessor.py \
-	OutputWriter.py \
-	popupsubmenu.py \
-	position_metadata.py \
-	PreferenceMenu.py \
-	PluginManager.py \
-	RecentManager.py \
-	RecentMenu.py \
-	sdialog.py \
-	SaveProcessMonitor.py \
-	SaveProcessorDBusService.py \
-	ScribesSaveProcessor.py \
-	StatusContainer.py \
-	SyntaxColorsMetadata.py \
-	syntax.py \
-	SpellCheckMetadata.py \
-	Spinner.py \
-	StatusBar.py \
-	Store.py \
-	TabWidthMetadata.py \
-	TextBuffer.py \
-	TextView.py \
-	TextWrappingMetadata.py \
-	Toolbar.py \
-	ToolbarContainer.py \
-	toolbuttons.py \
-	tooltips.py \
-	Trigger.py \
-	TriggerManager.py \
-	txtutils.py \
-	UseTabsMetadata.py \
-	UseThemeMetadata.py \
-	usage.py \
-	utils.py \
-	ViewContainer.py \
-	Window.py \
-	word.py
-EXTRA_DIST = info.py.in
+	Usage.py \
+	Utils.py \
+	Window.py
+EXTRA_DIST = Globals.py.in

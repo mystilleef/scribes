@@ -13,6 +13,7 @@ pixmaps_DATA = scribes.png
 # Process Scribes data files.
 scribesdir = $(datadir)/scribes
 scribes_DATA = \
+	Editor.glade \
 	bookmarks.png \
 	ModificationDialog.glade \
 	EncodingSelectionWindow.glade \

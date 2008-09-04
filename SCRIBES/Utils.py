@@ -106,24 +106,24 @@ def create_encoding_box(combobox):
 	return hbox
 
 def generate_encodings():
-	from internationalization import msg0208, msg0209, msg0210
-	from internationalization import msg0211, msg0212, msg0213, msg0214, msg0215
-	from internationalization import msg0216, msg0217, msg0218, msg0219, msg0220
-	from internationalization import msg0221, msg0222, msg0223, msg0224, msg0225
-	from internationalization import msg0226, msg0227, msg0228, msg0229, msg0230
-	from internationalization import msg0231, msg0232, msg0233, msg0234, msg0235
-	from internationalization import msg0236, msg0237, msg0238, msg0239, msg0240
-	from internationalization import msg0241, msg0242, msg0243, msg0244, msg0245
-	from internationalization import msg0246, msg0247, msg0248, msg0249, msg0250
-	from internationalization import msg0251, msg0252, msg0253, msg0254, msg0255
-	from internationalization import msg0256, msg0257, msg0258, msg0259, msg0260
-	from internationalization import msg0261, msg0262, msg0263, msg0264, msg0265
-	from internationalization import msg0266, msg0267, msg0268, msg0269, msg0270
-	from internationalization import msg0271, msg0272, msg0273, msg0274, msg0275
-	from internationalization import msg0276, msg0277, msg0278, msg0279, msg0280
-	from internationalization import msg0281, msg0282, msg0283, msg0284, msg0285
-	from internationalization import msg0286, msg0287, msg0288, msg0289, msg0290
-	from internationalization import msg0291
+	from i18n import msg0208, msg0209, msg0210
+	from i18n import msg0211, msg0212, msg0213, msg0214, msg0215
+	from i18n import msg0216, msg0217, msg0218, msg0219, msg0220
+	from i18n import msg0221, msg0222, msg0223, msg0224, msg0225
+	from i18n import msg0226, msg0227, msg0228, msg0229, msg0230
+	from i18n import msg0231, msg0232, msg0233, msg0234, msg0235
+	from i18n import msg0236, msg0237, msg0238, msg0239, msg0240
+	from i18n import msg0241, msg0242, msg0243, msg0244, msg0245
+	from i18n import msg0246, msg0247, msg0248, msg0249, msg0250
+	from i18n import msg0251, msg0252, msg0253, msg0254, msg0255
+	from i18n import msg0256, msg0257, msg0258, msg0259, msg0260
+	from i18n import msg0261, msg0262, msg0263, msg0264, msg0265
+	from i18n import msg0266, msg0267, msg0268, msg0269, msg0270
+	from i18n import msg0271, msg0272, msg0273, msg0274, msg0275
+	from i18n import msg0276, msg0277, msg0278, msg0279, msg0280
+	from i18n import msg0281, msg0282, msg0283, msg0284, msg0285
+	from i18n import msg0286, msg0287, msg0288, msg0289, msg0290
+	from i18n import msg0291
 	encodings = (
 #		 Codec		Alias		Language
 		("ISO-8859-1", "iso-8859-1", msg0262),
@@ -311,7 +311,7 @@ def calculate_completion_window_position(editor, width, height):
 
 def find_file(filename):
 	from os import path
-	from info import scribes_data_folder
+	from Globals import scribes_data_folder
 	file_path = path.join(scribes_data_folder, filename)
 	return file_path
 
@@ -490,8 +490,8 @@ def find_matching_bracket(iterator):
 
 def init_gnome():
 	# Crashes the save dialog if uncommented.
-	#import gnome.ui
-	from info import version, name, scribes_data_path
+	import gnome.ui
+	from Globals import version, name, scribes_data_path
 	from gnome import PARAM_APP_DATADIR, program_init, ui
 	properties = {
 		PARAM_APP_DATADIR: scribes_data_path,

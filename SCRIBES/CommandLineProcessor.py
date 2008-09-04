@@ -80,8 +80,8 @@ def __print_help():
 	return
 
 def __print_version():
-	from info import version
-	from internationalization import msg0042
+	from Globals import version
+	from i18n import msg0042
 	from locale import getpreferredencoding
 	encoding = getpreferredencoding(True)
 	print msg0042.decode("utf-8").encode(encoding) % \

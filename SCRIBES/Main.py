@@ -65,7 +65,7 @@ def __open_via_dbus(uris=None):
 #	return
 
 def __get_dbus_service():
-	from info import dbus_iface, session_bus
+	from Globals import dbus_iface, session_bus
 	services = dbus_iface.ListNames()
 	if not (scribes_dbus_service in services): return None
 	proxy_object = session_bus.get_object(scribes_dbus_service, scribes_dbus_path)
@@ -80,7 +80,7 @@ def __get_uris(argv):
 
 def __mainloop():
 	__fork_scribes()
-	from utils import init_gnome
+	from Utils import init_gnome
 	init_gnome()
 	from gobject import MainLoop
 	MainLoop().run()

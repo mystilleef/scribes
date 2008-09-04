@@ -27,7 +27,7 @@ class DBusService(Object):
 	"""
 
 	def __init__(self, manager):
-		from info import session_bus
+		from Globals import session_bus
 		service_name = "net.sourceforge.Scribes"
 		object_path = "/net/sourceforge/Scribes"
 		bus_name = BusName(service_name, bus=session_bus)
