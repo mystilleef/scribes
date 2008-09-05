@@ -218,14 +218,23 @@ scribes_PYTHON = \
 	CommandLineInfo.py \
 	CommandLineProcessor.py \
 	DBusService.py \
+	DisplayRightMarginMetadata.py \
 	Editor.py \
+	FontMetadata.py \
 	ForkScribesMetadata.py \
 	GlobalStore.py \
 	InstanceManager.py \
 	i18n.py \
 	License.py \
 	Main.py \
+	MarginPositionMetadata.py \
+	SpellCheckMetadata.py \
+	PositionMetadata.py \
+	TabWidthMetadata.py \
+	TextWrappingMetadata.py \
+	TextView.py \
 	Usage.py \
+	UseTabsMetadata.py \
 	Utils.py \
 	Window.py
 

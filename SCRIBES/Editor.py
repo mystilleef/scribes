@@ -12,16 +12,23 @@ class Editor(GObject):
 		"quit": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
-	def __init__(self, manager, file_uri=None, encoding=None):
+	def __init__(self, manager, uri=None, encoding=None):
 		GObject.__init__(self)
-		self.__init_attributes(manager)
+		self.__init_attributes(manager, uri)
 		from Window import Window
-		Window(self)
+		Window(self, uri)
+		from TextView import View
+		View(self)
+#		from TextBuffer import Buffer
+#		Buffer(self)
+#		from FileSaver import Saver
+#		Saver(self)
+#		self.__load_file(uri) if uri else self.__init_plugins()
 		# Register with instance manager after a successful editor
 		# initialization.
 		self.__imanager.register_editor(self)
 
-	def __init_attributes(self, manager):
+	def __init_attributes(self, manager, uri):
 		# Reference to instance manager.
 		self.__imanager = manager
 		from collections import deque
@@ -29,14 +36,22 @@ class Editor(GObject):
 		# terminate before proper object cleanup.
 		self.__registered_objects = deque([])
 		from os.path import join
-		glade_file = join(self.scribes_data_folder, "Editor.glade")
+		glade_file = join(self.data_folder, "Editor.glade")
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, "Window", "scribes")
+		self.__uri = uri
+		self.__started_plugins = False
+		self.__contains_document = True if uri else False
+		return False
+
+	def __init_plugins(self):
+		if self.__started_plugins: return False
+		self.__started_plugins = True
 		return False
 
 	def __destroy(self):
-		self.__glade.get_widget("Window").destroy()
 		self.__imanager.unregister_editor(self)
+		self.__glade.get_widget("Window").destroy()
 		del self
 		self = None
 		from gc import collect
@@ -47,12 +62,23 @@ class Editor(GObject):
 	def __get_gui(self):
 		return self.__glade
 
-	def __get_scribes_data_folder(self):
-		from Globals import scribes_data_folder
-		return scribes_data_folder
+	def __get_data_folder(self):
+		from Globals import data_folder
+		return data_folder
 
+	def __get_metadata_folder(self):
+		from Globals import metadata_folder
+		return metadata_folder
+		
 	gui = property(__get_gui)
-	scribes_data_folder = property(__get_scribes_data_folder)
+	data_folder = property(__get_data_folder)
+	window = property(lambda self: self.__glade.get_widget("Window"))
+	id_ = property(lambda self: id(self))
+	uri = property(lambda self: self.__uri)
+	from gnomevfs import URI
+	uri_object = property(lambda self: URI(self.__uri) if self.__uri else None)
+	contains_document = property(lambda self: self.__contains_document)
+	metadata_folder = property(__get_metadata_folder)
 
 	def close(self, save_first=True):
 		self.emit("close", save_first)
@@ -74,3 +100,10 @@ class Editor(GObject):
 	def disconnect_signal(self, sigid, instance):
 		from Utils import disconnect_signal
 		return disconnect_signal(sigid, instance)
+
+	def save_file(self):
+		return
+
+	def load_file(self):
+		self.__contains_document = True
+		return False

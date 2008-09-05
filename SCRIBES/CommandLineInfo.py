@@ -28,12 +28,12 @@ def print_info():
 	service = "net.sourceforge.Scribes"
 	print "Running Instance: ", services.count(service)
 	print "========================================================"
-	from Globals import scribes_executable_path
+	from Globals import executable_path
 	from Globals import python_path, core_plugin_folder
-	from Globals import scribes_data_folder
+	from Globals import data_folder
 	print "Python Path: ", python_path
 	print "Plugin Path: ", core_plugin_folder
-	print "Data Path: ", scribes_data_folder
-	print "Executable Path: ", scribes_executable_path
+	print "Data Path: ", data_folder
+	print "Executable Path: ", executable_path
 	print "========================================================"
 	return

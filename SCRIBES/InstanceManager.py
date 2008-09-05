@@ -50,6 +50,8 @@ class Manager(object):
 	def __init_attributes(self):
 		from collections import deque
 		self.__editor_instances = deque([])
+		from gtk import WindowGroup
+		self.__wingroup = WindowGroup()
 #		from GlobalStore import Store
 #		self.__store = Store()
 #		from SaveProcessMonitor import SaveProcessMonitor
@@ -64,10 +66,12 @@ class Manager(object):
 
 	def register_editor(self, instance):
 		self.__editor_instances.append(instance)
+		self.__wingroup.add_window(instance.window)
 		return False
 
 	def unregister_editor(self, instance):
 		try:
+			self.__wingroup.remove_window(instance.window)
 			self.__editor_instances.remove(instance)
 		except ValueError:
 			print "===================================================="
@@ -188,9 +192,9 @@ class Manager(object):
 		return False
 
 	def __init_i18n(self):
-		from Globals import scribes_data_path
+		from Globals import data_path
 		from os import path
-		locale_folder = path.join(scribes_data_path, "locale")
+		locale_folder = path.join(data_path, "locale")
 		# Initialize glade first.
 		try:
 			from locale import setlocale, LC_ALL, Error, bindtextdomain

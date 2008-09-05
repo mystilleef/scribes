@@ -96,7 +96,7 @@ def get_language(uri):
 	return language
 
 def create_encoding_box(combobox):
-	from internationalization import msg0157
+	from i18n import msg0157
 	from gtk import Label, HBox
 	label = Label(msg0157)
 	label.set_use_underline(True)
@@ -235,7 +235,7 @@ def check_uri_permission(uri):
 		if path.exists(local_path):
 			value = access(local_path, W_OK)
 		else:
-			from info import home_folder
+			from Globals import home_folder
 			if local_path.startswith(home_folder) is False:
 				value = False
 	else:
@@ -311,8 +311,8 @@ def calculate_completion_window_position(editor, width, height):
 
 def find_file(filename):
 	from os import path
-	from Globals import scribes_data_folder
-	file_path = path.join(scribes_data_folder, filename)
+	from Globals import data_folder
+	file_path = path.join(data_folder, filename)
 	return file_path
 
 def create_image(file_path):
@@ -491,10 +491,10 @@ def find_matching_bracket(iterator):
 def init_gnome():
 	# Crashes the save dialog if uncommented.
 	import gnome.ui
-	from Globals import version, name, scribes_data_path
+	from Globals import version, name, data_path
 	from gnome import PARAM_APP_DATADIR, program_init, ui
 	properties = {
-		PARAM_APP_DATADIR: scribes_data_path,
+		PARAM_APP_DATADIR: data_path,
 	}
 	program = program_init(name, version, properties=properties)
 	return
