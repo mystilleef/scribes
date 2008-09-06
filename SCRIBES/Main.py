@@ -79,11 +79,11 @@ def __get_uris(argv):
 	return uris
 
 def __mainloop():
-	__fork_scribes()
+#	__fork_scribes()
 	from Utils import init_gnome
 	init_gnome()
-	from gobject import MainLoop
-	MainLoop().run()
+	from gtk import main
+	main()
 	return
 
 def __fork_scribes():

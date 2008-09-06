@@ -33,8 +33,7 @@ close_file = lambda editor: editor.close()
 
 class Manager(object):
 	"""
-	This class implements an object that creates new instances of the
-	text editor and manages them.
+	This class creates and manages new editor instances.
 	"""
 
 	def __init__(self):
@@ -52,8 +51,6 @@ class Manager(object):
 		self.__editor_instances = deque([])
 		from gtk import WindowGroup
 		self.__wingroup = WindowGroup()
-#		from GlobalStore import Store
-#		self.__store = Store()
 #		from SaveProcessMonitor import SaveProcessMonitor
 #		self.__save_process_monitor = SaveProcessMonitor()
 		return
@@ -65,8 +62,8 @@ class Manager(object):
 ########################################################################
 
 	def register_editor(self, instance):
-		self.__editor_instances.append(instance)
 		self.__wingroup.add_window(instance.window)
+		self.__editor_instances.append(instance)
 		return False
 
 	def unregister_editor(self, instance):
@@ -75,32 +72,21 @@ class Manager(object):
 			self.__editor_instances.remove(instance)
 		except ValueError:
 			print "===================================================="
-			print "Scribes Error:"
-			print "From InstanceManager.py line 118"
-			print "Instance not found,", instance
+			print "Module: InstanceManager.py"
+			print "Class: Manager"
+			print "Method: unregister_editor"
+			print "Exception Type: ValueError"
+			print "Error: Instance not found", instance
 			print "===================================================="
+		# Quit when there are no editor instances.
 		if not self.__editor_instances: self.__quit()
 		return
-
-	def add_object(self, name, instance):
-		return self.__store.add_object(name, instance)
-
-	def remove_object(self, name, object_id):
-		return self.__store.remove_object(name, object_id)
-
-	def get_object(self, name):
-		return self.__store.get_object(name)
 
 	def save_processor_is_ready(self):
 		return self.__save_process_monitor.is_ready()
 
 	def get_save_processor(self):
 		return self.__save_process_monitor.get_processor_object()
-
-	def open_window(self):
-		instances = self.__editor_instances
-		instances[0].trigger("new_window") if instances else self.__new_editor()
-		return False
 
 	def open_files(self, uris=None, encoding="utf-8"):
 		if uris:
@@ -112,7 +98,7 @@ class Manager(object):
 			# Open new file if it's not already open.
 			[open_file(uri) for uri in uris if has_not_uri(uri)]
 		else:
-			self.open_window()
+			self.__new_editor()
 		return False
 
 	def close_files(self, uris):
@@ -125,22 +111,21 @@ class Manager(object):
 		return False
 
 	def focus_file(self, uri):
-		found_instance = [editor for editor in self.__editor_instances if str(editor.uri) == str(uri)]
+		found_instance = [editor for editor in self.__editor_instances if editor.uri == uri]
 		if not found_instance: return False
 		editor = found_instance[0]
-		coordinates = None if editor.window.is_maximized else editor.window.get_position()
+		if editor.window.minimized: editor.window.deiconify()
+		coordinates = None if editor.window.maximized else editor.window.get_position()
 		editor.window.hide()
 		if coordinates: editor.window.move(coordinates[0], coordinates[1])
 		editor.window.window.show()
 		editor.window.show_all()
 		editor.window.present()
-		editor.textview.grab_focus()
 		return False
 
 	def get_uris(self):
 		if not self.__editor_instances: return []
-		uris = [str(editor.uri) for editor in self.__editor_instances if editor.uri]
-		return uris
+		return [editor.uri for editor in self.__editor_instances if editor.uri]
 
 	def get_editor_instances(self):
 		return self.__editor_instances
@@ -159,12 +144,13 @@ class Manager(object):
 	def __open_file(self, uri, encoding="utf-8"):
 		if not uri: return False
 		instances = self.__editor_instances
-		empty_windows = [x for x in instances if x.can_load_file]
-		empty_windows[0].load_uri(str(uri), encoding) if empty_windows else self.__new_editor(uri, encoding)
+		empty_windows = [x for x in instances if not x.contains_document]
+		empty_windows[0].load_file(uri, encoding) if empty_windows else self.__new_editor(uri, encoding)
+		if empty_windows: empty_windows[0].window.present()
 		return False
 
 	def __close_file(self, uri):
-		[close_file(editor) for editor in self.__editor_instances if str(editor.uri) == str(uri)]
+		[close_file(editor) for editor in self.__editor_instances if editor.uri == uri]
 		return False
 
 	def __new_editor(self, uri=None, encoding=None):
@@ -176,16 +162,13 @@ class Manager(object):
 		from gc import collect
 		from thread import start_new_thread
 		start_new_thread(collect, ())
-#		collect()
 		return True
 
 	def __init_psyco(self):
 		try:
-			from psyco import background#, log , profile#, log
-#			log("/home/meek/Desktop/psyco-log.log")
+			from psyco import background
 			from thread import start_new_thread
 			start_new_thread(background, ())
-#			background()
 			print "Initialized psyco profiling and optimization"
 		except ImportError:
 			pass
@@ -213,31 +196,12 @@ class Manager(object):
 		install("scribes", locale_folder, unicode=1)
 		return
 
-	def __precompile_methods(self):
-		try:
-			from psyco import bind
-			bind(self.get_editor_instances)
-			bind(self.open_files)
-			bind(self.close_files)
-			bind(self.get_uris)
-			bind(self.focus_file)
-			bind(self.register_editor)
-			bind(self.unregister_editor)
-		except ImportError:
-			pass
-		return False
-
 	def __remove_swap_area(self):
 		from glob import glob
 		from Globals import home_folder
 		files = glob(home_folder + "/" + ".Scribes*scribes")
 		from shutil import rmtree
 		[rmtree(file_, True) for file_ in files]
-		return
-
-	def __kernel_signals_cb(self, *args):
-		#from gobject import idle_add
-		self.close_all_windows()
 		return
 
 	def __quit(self):

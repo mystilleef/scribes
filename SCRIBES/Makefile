@@ -215,11 +215,16 @@ scribesdir = $(pythondir)/SCRIBES
 scribes_PYTHON = \
 	Globals.py \
 	__init__.py \
+	ColorThemeMetadata.py \
 	CommandLineInfo.py \
 	CommandLineProcessor.py \
 	DBusService.py \
 	DisplayRightMarginMetadata.py \
 	Editor.py \
+	EncodedFilesMetadata.py \
+	EncodingGuessListMetadata.py \
+	Exceptions.py \
+	FileLoader.py \
 	FontMetadata.py \
 	ForkScribesMetadata.py \
 	GlobalStore.py \
@@ -232,6 +237,7 @@ scribes_PYTHON = \
 	PositionMetadata.py \
 	TabWidthMetadata.py \
 	TextWrappingMetadata.py \
+	TextBuffer.py \
 	TextView.py \
 	Usage.py \
 	UseTabsMetadata.py \

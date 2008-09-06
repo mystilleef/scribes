@@ -42,6 +42,10 @@ class Window(object):
 		self.__sigid4 = self.__window.connect("window-state-event", self.__state_event_cb)
 		self.__sigid5 = self.__window.connect("focus-out-event", self.__focus_out_event_cb)
 		self.__sigid6 = self.__window.connect("focus-in-event", self.__focus_in_event_cb)
+		self.__sigid7 = editor.connect("checking-file", self.__checking_file_cb)
+		self.__sigid8 = editor.connect("loaded-file", self.__loaded_file_cb)
+		self.__sigid9 = editor.connect("load-error", self.__load_error_cb)
+		self.__sigid10 = editor.connect("modified-file", self.__modified_file_cb)
 		editor.register_object(self)
 		self.__position_window()
 		self.__window.present()
@@ -56,6 +60,24 @@ class Window(object):
 		self.__is_maximized = False
 		return
 
+	def __destroy(self):
+		self.__window.hide()
+		self.__editor.disconnect_signal(self.__sigid1, self.__window)
+		self.__editor.disconnect_signal(self.__sigid2, self.__window)
+		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid4, self.__window)
+		self.__editor.disconnect_signal(self.__sigid5, self.__window)
+		self.__editor.disconnect_signal(self.__sigid6, self.__window)
+		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid8, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid9, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid10, self.__editor)
+		self.__editor.emit("quit")
+		self.__editor.unregister_object(self)
+		del self
+		self = None
+		return False
+
 	def __set_properties(self):
 		width, height = self.__editor.calculate_resolution_independence(self.__window, 1.462857143, 1.536)
 		self.__window.set_property("default-height", height)
@@ -69,7 +91,7 @@ class Window(object):
 
 	def __set_title(self):
 		from gnomevfs import URI
-		return URI(self.__uri).short_name.encode("utf-8") if self.__uri else None
+		return URI(self.__uri).short_name.encode("utf-8") if self.__uri else _("Unsaved Document")
 
 	def __position_window(self):
 		try:
@@ -97,20 +119,6 @@ class Window(object):
 		update_window_position_in_database(str(uri), window_position)
 		return
 
-	def __destroy(self):
-		self.__window.hide()
-		self.__editor.disconnect_signal(self.__sigid1, self.__window)
-		self.__editor.disconnect_signal(self.__sigid2, self.__window)
-		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid4, self.__window)
-		self.__editor.disconnect_signal(self.__sigid5, self.__window)
-		self.__editor.disconnect_signal(self.__sigid6, self.__window)
-		self.__editor.emit("quit")
-		self.__editor.unregister_object(self)
-		del self
-		self = None
-		return False
-
 ########################################################################
 #
 #					Signal and Event Callback Handlers
@@ -120,6 +128,28 @@ class Window(object):
 	def __delete_event_cb(self, widget, event):
 		self.__editor.close()
 		return True
+
+	def __checking_file_cb(self, editor, uri):
+		self.__uri = uri
+		self.__title = self.__set_title()
+		self.__update_window_title(_('Loading "%s" ...') % self.__title)
+		return False
+
+	def __loaded_file_cb(self, *args):
+		self.__title = self.__set_title()
+		self.__update_window_title(self.__title)
+		return False
+
+	def __load_error_cb(self, *args):
+		self.__uri = None
+		self.__title = self.__set_title()
+		self.__update_window_title(self.__title)
+		return False
+
+	def __modified_file_cb(self, editor, modified):
+		update = self.__update_window_title
+		update("*%s" % self.__title) if modified else update(self.__title)
+		return False
 
 	def __focus_out_event_cb(self, window, event):
 		# Save a document when the text editor's window loses focus.
@@ -150,7 +180,7 @@ class Window(object):
 	def __key_press_event_cb(self, window, event):
 		from gtk.gdk import CONTROL_MASK
 		# We only care when the "Ctrl" modifier is pressed.
-		if not (event.state &CONTROL_MASK): return False
+		if not (event.state & CONTROL_MASK): return False
 		from gtk import keysyms
 		# We only care when "w" key is pressed.
 		if not (event.keyval in (keysyms.W, keysyms.w)): return False
