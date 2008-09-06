@@ -95,17 +95,18 @@ class Buffer(object):
 		return False
 
 	def __checking_file_cb(self, *args):
+		self.__buffer.set_language(self.__editor.language_object)
 		self.__buffer.handler_block(self.__sigid4)
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		return False
 
 	def __loaded_file_cb(self, *args):
-		self.__buffer.set_language(self.__editor.language_object)
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		self.__buffer.handler_unblock(self.__sigid4)
 		return False
 
 	def __load_error_cb(self, *args):
+		self.__buffer.set_language(None)
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		self.__buffer.handler_unblock(self.__sigid4)
 		return False
