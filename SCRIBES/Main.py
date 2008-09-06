@@ -27,7 +27,7 @@ This module defines functions that initialize Scribes.
 @license: GNU GPLv3 or Later
 @contact: mystilleef@gmail.com
 """
-
+# New module
 from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop(set_as_default=True)
 scribes_dbus_service = "net.sourceforge.Scribes"
