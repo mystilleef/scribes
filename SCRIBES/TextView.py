@@ -22,8 +22,11 @@ class View(object):
 								MONITOR_FILE, self.__spell_check_cb)
 		editor.register_object(self)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__view.set_property("sensitive", True)
-		self.__view.grab_focus()
+		self.__sigid2 = editor.connect("ready", self.__ready_cb)
+		self.__sigid3 = editor.connect("checking-file", self.__checking_file_cb)
+		self.__sigid4 = editor.connect("load-error", self.__load_error_cb)
+		self.__sigid5 = self.__view.connect("backspace", self.__backspace_cb)
+		self.__sigid6 = editor.connect("readonly", self.__readonly_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -55,6 +58,11 @@ class View(object):
 	def __destroy(self):
 		from gnomevfs import monitor_cancel
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid5, self.__view)
+		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
 		if self.__monid1: monitor_cancel(self.__monid1)
 		if self.__monid2: monitor_cancel(self.__monid2)
 		if self.__monid3: monitor_cancel(self.__monid3)
@@ -108,6 +116,14 @@ class View(object):
 			pass
 		return False
 
+	def __set_readonly(self, readonly):
+		self.__view.set_property("editable", not readonly)
+		self.__view.set_property("highlight-current-line", not readonly)
+		self.__view.set_property("show-line-numbers", not readonly)
+		self.__view.set_property("cursor-visible", not readonly)
+		self.__refresh()
+		return False
+
 	def __refresh(self):
 		self.__view.queue_draw()
 		self.__view.queue_resize()
@@ -127,6 +143,29 @@ class View(object):
 
 	def __quit_cb(self, *args):
 		self.__destroy()
+		return False
+
+	def __ready_cb(self, *args):
+		self.__view.set_property("sensitive", True)
+		self.__refresh()
+		return False
+
+	def __checking_file_cb(self, *args):
+		self.__view.set_property("sensitive", False)
+		return False
+
+	def __load_error_cb(self, *args):
+		self.__view.set_property("sensitive", True)
+		self.__refresh()
+		return False
+
+	def __readonly_cb(self, editor, readonly, *args):
+		self.__set_readonly(readonly)
+		return False
+
+	def __backspace_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__editor.response)
 		return False
 
 ################################################################################

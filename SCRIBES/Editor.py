@@ -17,6 +17,7 @@ class Editor(GObject):
 		# before exit.
 		"quit": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"cursor-moved": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"ready": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"readonly": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"checking-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"loading-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
@@ -27,6 +28,11 @@ class Editor(GObject):
 
 	def __init__(self, manager, uri=None, encoding=None):
 		GObject.__init__(self)
+		self.__sigid1 = self.connect("modified-file", self.__modified_file_cb)
+		self.__sigid2 = self.connect("checking-file", self.__checking_file_cb)
+		self.__sigid3 = self.connect("load-error", self.__load_error_cb)
+		self.__sigid4 = self.connect_after("loaded-file", self.__loaded_file_cb)
+		self.__sigid5 = self.connect_after("readonly", self.__readonly_cb)
 		self.__init_attributes(manager, uri)
 		from Window import Window
 		Window(self, uri)
@@ -44,7 +50,8 @@ class Editor(GObject):
 	def __init_attributes(self, manager, uri):
 		self.__contains_document = True if uri else False
 		# True if file is saved.
-		self.__file_is_saved = True
+		self.__modified = False
+		self.__processing = False
 		# Reference to instance manager.
 		self.__imanager = manager
 		from collections import deque
@@ -62,6 +69,11 @@ class Editor(GObject):
 		return False
 
 	def __destroy(self):
+		self.disconnect_signal(self.__sigid1, self)
+		self.disconnect_signal(self.__sigid2, self)
+		self.disconnect_signal(self.__sigid3, self)
+		self.disconnect_signal(self.__sigid4, self)
+		self.disconnect_signal(self.__sigid5, self)
 		self.__imanager.unregister_editor(self)
 		self.__glade.get_widget("Window").destroy()
 		del self
@@ -74,6 +86,7 @@ class Editor(GObject):
 	def __init_plugins(self):
 		# FIXME: NOT YET IMPLEMENTED
 		if self.__started_plugins: return False
+		self.emit("ready")
 		self.__started_plugins = True
 		return False
 
@@ -121,9 +134,11 @@ class Editor(GObject):
 	language_objects = property(lambda self: [self.language_manager.get_language(language) for language in self.language_ids])
 	style_scheme_manager = property(__get_style_scheme_manager)
 	readonly = property(lambda self: self.__readonly)
-	file_is_saved = property(lambda self: self.__file_is_saved)
+	modified = property(lambda self: self.__modified)
 	contains_document = property(lambda self: self.__contains_document)
 	encoding_guess_list = property(lambda self: get_encoding_guess_list())
+	# textview and textbuffer information
+	cursor = property(lambda self: self.textbuffer.get_iter_at_offset(self.textbuffer.get_property("cursor_position")))
 	# Global information
 	data_folder = property(lambda self: data_folder)
 	metadata_folder = property(lambda self: metadata_folder)
@@ -190,8 +205,48 @@ class Editor(GObject):
 		from Utils import disconnect_signal
 		return disconnect_signal(sigid, instance)
 
+	def move_view_to_cursor(self):
+		iterator = self.cursor
+		self.textview.scroll_to_iter(iterator, 0.001, use_align=True, xalign=1.0)
+		return False
+	
 	def toggle_readonly(self):
 		self.emit("readonly", False) if self.__readonly else self.emit("readonly", True)
 		return
 
-################################################################
+	def response(self):
+		if self.__processing: return False
+		self.__processing = True
+		from gtk import events_pending, main_iteration
+		while events_pending(): main_iteration(False)
+		self.__processing = False
+		return False
+
+################################################################################
+#
+#								Signal Listener
+#
+################################################################################
+
+	def __readonly_cb(self, editor, readonly):
+		self.__readonly = readonly
+		return False
+
+	def __modified_file_cb(self, editor, modified):
+		self.__modified = modified
+		return False
+
+	def __checking_file_cb(self, editor, uri):
+		self.__contains_document = True
+		self.__uri = uri
+		return False
+
+	def __loaded_file_cb(self, *args):
+		self.__init_plugins()
+		return False
+
+	def __load_error_cb(self, *args):
+		self.__uri = None
+		self.__contains_document = False
+		self.__init_plugins()
+		return False

@@ -29,37 +29,23 @@ database.
 @contact: mystilleef@gmail.com
 """
 
-def open_position_database(flag="c"):
-	from Globals import metadata_folder
-	from os import path
-	if not path.exists(metadata_folder):
-		from os import makedirs
-		makedirs(metadata_folder)
-	database_file = metadata_folder + "position.gdb"
-	from shelve import open
-	from anydbm import error
-	try:
-		database = open(database_file, flag=flag, writeback=False)
-	except error:
-		database = open(database_file, flag="n", writeback=False)
-	return database
-
-def close_position_database(database):
-	database.close()
-	return
+from Utils import open_database
+basepath = "position.gdb"
 
 def get_window_position_from_database(uri):
-	database = open_position_database("r")
 	try:
+		database = open_database(basepath, "r")
 		window_position = database[uri]
-		close_position_database(database)
-	except:
+	except KeyError:
 		window_position = None
-		close_position_database(database)
+	finally:
+		database.close()
 	return window_position
 
 def update_window_position_in_database(uri, data):
-	database = open_position_database("w")
-	database[str(uri)] = data
-	close_position_database(database)
+	try:
+		database = open_database(basepath, "w")
+		database[str(uri)] = data
+	finally:
+		database.close()
 	return

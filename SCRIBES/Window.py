@@ -46,6 +46,7 @@ class Window(object):
 		self.__sigid8 = editor.connect("loaded-file", self.__loaded_file_cb)
 		self.__sigid9 = editor.connect("load-error", self.__load_error_cb)
 		self.__sigid10 = editor.connect("modified-file", self.__modified_file_cb)
+		self.__sigid11 = editor.connect("readonly", self.__readonly_cb)
 		editor.register_object(self)
 		self.__position_window()
 		self.__window.present()
@@ -72,6 +73,7 @@ class Window(object):
 		self.__editor.disconnect_signal(self.__sigid8, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid9, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid10, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid11, self.__editor)
 		self.__editor.emit("quit")
 		self.__editor.unregister_object(self)
 		del self
@@ -92,6 +94,12 @@ class Window(object):
 	def __set_title(self):
 		from gnomevfs import URI
 		return URI(self.__uri).short_name.encode("utf-8") if self.__uri else _("Unsaved Document")
+
+	def __set_readonly(self, readonly):
+		title = self.__set_title()
+		update = self.__update_window_title
+		update("%s [READONLY]" % title) if readonly else update(title)
+		return False
 
 	def __position_window(self):
 		try:
@@ -137,7 +145,8 @@ class Window(object):
 
 	def __loaded_file_cb(self, *args):
 		self.__title = self.__set_title()
-		self.__update_window_title(self.__title)
+		readonly = self.__editor.readonly
+		self.__set_readonly(readonly) if readonly else self.__update_window_title(self.__title)
 		return False
 
 	def __load_error_cb(self, *args):
@@ -175,6 +184,10 @@ class Window(object):
 			self.__is_minimized = True
 		if event.new_window_state in (WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN):
 			self.__is_maximized = True
+		return False
+
+	def __readonly_cb(self, editor, readonly):
+		self.__set_readonly(readonly)
 		return False
 
 	def __key_press_event_cb(self, window, event):

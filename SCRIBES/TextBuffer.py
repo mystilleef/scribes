@@ -61,12 +61,48 @@ class Buffer(object):
 		self.__buffer.end_not_undoable_action()
 		return
 
-	def __response(self):
-		if self.__processing: return False
-		self.__processing = True
-		from gtk import events_pending, main_iteration
-		while events_pending(): main_iteration(False)
-		self.__processing = False
+	def __stop_update_cursor_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__cursor_update_timer)
+		except:
+			pass
+		return
+
+	def __update_cursor_position(self, quit=False):
+		if not (self.__editor.uri): return False
+		cursor = self.__editor.cursor
+		cursor_line = cursor.get_line()
+		cursor_index = cursor.get_line_index()
+		cursor_position = cursor_line, cursor_index
+		from CursorMetadata import set_value
+		if quit:
+			if self.__editor.uri: set_value(str(self.__editor.uri), cursor_position)
+		else:
+			from thread import start_new_thread
+			start_new_thread(set_value, (str(self.__editor.uri), cursor_position))
+		return False
+
+	def __set_cursor_position(self):
+		try:
+			from CursorMetadata import get_value
+			position = get_value(self.__editor.uri)
+			cursor_line, cursor_index = position[0] + 1, position[1]
+		except TypeError:
+			cursor_line, cursor_index = 1, 0
+		start_iterator = self.__buffer.get_start_iter()
+		number_of_lines = self.__buffer.get_line_count()
+		if cursor_line > number_of_lines:
+			self.__buffer.place_cursor(start_iterator)
+			return False
+		iterator = self.__buffer.get_iter_at_line(cursor_line - 1)
+		line_index = iterator.get_bytes_in_line()
+		if cursor_index > line_index:
+			iterator.set_line_index(line_index)
+		else:
+			iterator.set_line_index(cursor_index)
+		self.__buffer.place_cursor(iterator)
+		self.__editor.move_view_to_cursor()
 		return False
 
 ################################################################################
@@ -77,17 +113,16 @@ class Buffer(object):
 
 	def __cursor_position_cb(self, *args):
 		self.__editor.emit("cursor-moved")
-#		self.__stop_update_cursor_timer()
-#		from gobject import timeout_add, PRIORITY_LOW
-#		self.__cursor_update_timer = timeout_add(1000, self.__update_cursor_position, priority=9999)
+		self.__stop_update_cursor_timer()
+		from gobject import timeout_add
+		self.__cursor_update_timer = timeout_add(1000, self.__update_cursor_position, priority=9999)
 		return False
 
 	def __insert_text_cb(self, buffer_, iter, text, length, *args):
 		if length > 1: return False
 		#FIXME: Experimental code, remove if you have problems.
 		from gobject import idle_add
-		idle_add(self.__response)
-#		self.__response()
+		idle_add(self.__editor.response)
 		return False
 
 	def __modified_changed_cb(self, *args):
@@ -101,6 +136,7 @@ class Buffer(object):
 		return False
 
 	def __loaded_file_cb(self, *args):
+		self.__set_cursor_position()
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		self.__buffer.handler_unblock(self.__sigid4)
 		return False
@@ -112,6 +148,8 @@ class Buffer(object):
 		return False
 
 	def __quit_cb(self, *args):
+		self.__stop_update_cursor_timer()
+		self.__update_cursor_position(True)
 		self.__destroy()
 		return False
 

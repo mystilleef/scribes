@@ -19,7 +19,7 @@
 # USA
 
 """
-This module documents functions to store and get the text wrapping 
+This module documents functions to store and get the text wrapping
 properties from the text wrapping database.
 
 @author: Lateef Alabi-Oki
@@ -29,34 +29,24 @@ properties from the text wrapping database.
 @contact: mystilleef@gmail.com
 """
 
-def open_database(flag="c"):
-	from Globals import metadata_folder
-	from os.path import exists, join
-	preference_folder = join(metadata_folder, "Preferences")
-	if not exists(preference_folder):
-		from os import makedirs
-		makedirs(preference_folder)
-	database_file = join(preference_folder, "TextWrapping.gdb")
-	from shelve import open
-	from anydbm import error
-	try:
-		database = open(database_file, flag=flag, writeback=False)
-	except error:
-		database = open(database_file, flag="n", writeback=False)
-	return database
+from Utils import open_database
+basepath = "/Preferences/TextWrapping.gdb"
 
 def get_value():
 	try:
 		value = True
-		database = open_database("r")
+		database = open_database(basepath, "r")
 		value = database["text_wrapping"]
-		database.close()
-	except:
+	except KeyError:
+		pass
+	finally:
 		database.close()
 	return value
 
 def set_value(value):
-	database = open_database("w")
-	database["text_wrapping"] = value
-	database.close()
+	try:
+		database = open_database(basepath, "w")
+		database["text_wrapping"] = value
+	finally:
+		database.close()
 	return

@@ -19,7 +19,7 @@
 # USA
 
 """
-This module documents functions to store and get the use tabs 
+This module documents functions to store and get the use tabs
 properties from the use tabs database.
 
 @author: Lateef Alabi-Oki
@@ -29,34 +29,24 @@ properties from the use tabs database.
 @contact: mystilleef@gmail.com
 """
 
-def open_database(flag="c"):
-	from Globals import metadata_folder
-	from os.path import exists, join
-	preference_folder = join(metadata_folder, "Preferences")
-	if not exists(preference_folder):
-		from os import makedirs
-		makedirs(preference_folder)
-	database_file = join(preference_folder, "UseTabs.gdb")
-	from shelve import open
-	from anydbm import error
-	try:
-		database = open(database_file, flag=flag, writeback=False)
-	except error:
-		database = open(database_file, flag="n", writeback=False)
-	return database
+from Utils import open_database
+basepath = "/Preferences/UseTabs.gdb"
 
 def get_value():
 	try:
 		value = True
-		database = open_database("r")
+		database = open_database(basepath, "r")
 		value = database["use_tabs"]
-		database.close()
-	except:
+	except KeyError:
+		pass
+	finally:
 		database.close()
 	return value
 
 def set_value(value):
-	database = open_database("w")
-	database["use_tabs"] = value
-	database.close()
+	try:
+		database = open_database(basepath, "w")
+		database["use_tabs"] = value
+	finally:
+		database.close()
 	return

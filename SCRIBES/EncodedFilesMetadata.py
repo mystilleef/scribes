@@ -29,26 +29,13 @@ display in the open/save dialog.
 @contact: mystilleef@gmail.com
 """
 
-def open_database(flag="c"):
-	from Globals import metadata_folder
-	from os.path import exists, join
-	preference_folder = join(metadata_folder, "Preferences")
-	if not exists(preference_folder):
-		from os import makedirs
-		makedirs(preference_folder)
-	database_file = join(preference_folder, "EncodedFiles.gdb")
-	from shelve import open
-	from anydbm import error
-	try:
-		database = open(database_file, flag=flag, writeback=False)
-	except error:
-		database = open(database_file, flag="n", writeback=False)
-	return database
+from Utils import open_database
+basepath = "/Preferences/EncodedFiles.gdb"
 
 def get_value(uri):
 	try:
 		value = None
-		database = open_database("r")
+		database = open_database(basepath, "r")
 		value = database[str(uri)]
 	except KeyError:
 		pass
@@ -58,7 +45,7 @@ def get_value(uri):
 
 def set_value(uri, encoding):
 	try:
-		database = open_database("w")
+		database = open_database(basepath, "w")
 		database[str(uri)] = encoding
 	finally:
 		database.close()
@@ -66,7 +53,7 @@ def set_value(uri, encoding):
 
 def remove_value(uri):
 	try:
-		database = open_database("w")
+		database = open_database(basepath, "w")
 		del database[str(uri)]
 	except KeyError:
 		pass

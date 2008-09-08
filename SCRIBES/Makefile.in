@@ -218,6 +218,7 @@ scribes_PYTHON = \
 	ColorThemeMetadata.py \
 	CommandLineInfo.py \
 	CommandLineProcessor.py \
+	CursorMetadata.py \
 	DBusService.py \
 	DisplayRightMarginMetadata.py \
 	Editor.py \

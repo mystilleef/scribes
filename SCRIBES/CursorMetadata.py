@@ -15,12 +15,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 
 """
-This module documents functions to store and get configuration options
-to fork the editor's process.
+This module contains functions that interface with the text editor's cursor
+database. The cursor database contains information about the last position of
+the cursor of each URI opened by the text editor.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
@@ -30,23 +31,24 @@ to fork the editor's process.
 """
 
 from Utils import open_database
-basepath = "/Preferences/ForkScribes.gdb"
+basepath = "cursor.gdb"
 
-def get_value():
+def get_value(uri):
 	try:
-		value = True
+		cursor_position = None
 		database = open_database(basepath, "r")
-		value = database["fork"]
+		cursor_position = database[uri]
 	except KeyError:
 		pass
 	finally:
 		database.close()
-	return value
+	return cursor_position
 
-def set_value(fork):
+def set_value(uri, data):
 	try:
 		database = open_database(basepath, "w")
-		database["fork"] = fork
+		database[str(uri)] = data
 	finally:
 		database.close()
 	return
+

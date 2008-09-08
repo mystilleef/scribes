@@ -29,35 +29,24 @@ property from the database.
 @contact: mystilleef@gmail.com
 """
 
-def open_database(flag="c"):
-	from Globals import metadata_folder
-	from os.path import exists, join
-	preference_folder = join(metadata_folder, "Preferences")
-	if not exists(preference_folder):
-		from os import makedirs
-		makedirs(preference_folder)
-	database_file = join(preference_folder, "SpellCheck.gdb")
-	from shelve import open
-	from anydbm import error
-	try:
-		database = open(database_file, flag=flag, writeback=False)
-	except error:
-		database = open(database_file, flag="n", writeback=False)
-	return database
+from Utils import open_database
+basepath = "/Preferences/SpellCheck.gdb"
 
 def get_value():
 	try:
 		value = False
-		database = open_database("r")
+		database = open_database(basepath, "r")
 		value = database["spell_check"]
-		database.close()
-	except:
+	except KeyError:
+		pass
+	finally:
 		database.close()
 	return value
 
 def set_value(value):
-	database = open_database("w")
-	database["spell_check"] = value
-	database.close()
+	try:
+		database = open_database(basepath, "w")
+		database["spell_check"] = value
+	finally:
+		database.close()
 	return
-

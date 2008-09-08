@@ -510,3 +510,22 @@ def forward_to_line_end(iterator):
 	if iterator.ends_line(): return iterator
 	iterator.forward_to_line_end()
 	return iterator
+
+def open_database(basepath, flag="c"):
+	if not basepath.endswith(".gdb"): raise Exception
+	from Globals import metadata_folder
+	from os.path import exists, join, split
+	database_path = join(metadata_folder, basepath.strip("/"))
+	folder, file_ = split(database_path)
+	if not (folder or file_): raise Exception
+	if not exists(folder):
+		from os import makedirs
+		makedirs(folder)
+	from shelve import open as open_
+	from anydbm import error
+	try:
+		database = open_(database_path, flag=flag, writeback=False)
+	except error:
+		database = open_(database_path, flag="n", writeback=False)
+	return database
+
