@@ -224,6 +224,7 @@ scribes_DATA = \
 	ModificationDialog.glade \
 	EncodingSelectionWindow.glade \
 	EncodingErrorWindow.glade \
+	MessageWindow.glade \
 	throbber-active.gif \
 	throbber-inactive.png
 

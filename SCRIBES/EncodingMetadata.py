@@ -19,8 +19,7 @@
 # USA
 
 """
-This module documents functions to store and get a list of encodings to
-display in the open/save dialog.
+This module documents functions to store and get encoding options.
 
 @author: Lateef Alabi-Oki
 @organization: The Scribes Project
@@ -30,33 +29,23 @@ display in the open/save dialog.
 """
 
 from Utils import open_database
-basepath = "Preferences/EncodedFiles.gdb"
+basepath = "Preferences/Encoding.gdb"
 
-def get_value(uri):
+def get_value():
 	try:
-		value = None
+		value = ["ISO-8859-1", "ISO-8859-15"]
 		database = open_database(basepath, "r")
-		value = database[str(uri)]
+		value = database["encoding"]
 	except KeyError:
 		pass
 	finally:
 		database.close()
 	return value
 
-def set_value(uri, encoding):
+def set_value(encoding_list):
 	try:
 		database = open_database(basepath, "w")
-		database[str(uri)] = encoding
-	finally:
-		database.close()
-	return
-
-def remove_value(uri):
-	try:
-		database = open_database(basepath, "w")
-		del database[str(uri)]
-	except KeyError:
-		pass
+		database["encoding"] = encoding_list
 	finally:
 		database.close()
 	return

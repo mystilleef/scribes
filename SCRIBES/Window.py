@@ -59,6 +59,7 @@ class Window(object):
 		self.__title = self.__set_title()
 		self.__is_minimized = False
 		self.__is_maximized = False
+		self.__positioned = False
 		return
 
 	def __destroy(self):
@@ -74,7 +75,6 @@ class Window(object):
 		self.__editor.disconnect_signal(self.__sigid9, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid10, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid11, self.__editor)
-		self.__editor.emit("quit")
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -103,7 +103,9 @@ class Window(object):
 
 	def __position_window(self):
 		try:
+			self.__window.hide()
 			uri = self.__uri if self.__uri else "<EMPTY>"
+			if uri != "<EMPTY>": self.__positioned = True
 			# Get window position from the position database, if possible.
 			from PositionMetadata import get_window_position_from_database
 			maximize, width, height, xcoordinate, ycoordinate = \
@@ -139,6 +141,7 @@ class Window(object):
 
 	def __checking_file_cb(self, editor, uri):
 		self.__uri = uri
+		if not self.__positioned: self.__position_window()
 		self.__title = self.__set_title()
 		self.__update_window_title(_('Loading "%s" ...') % self.__title)
 		return False

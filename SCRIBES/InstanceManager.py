@@ -51,8 +51,8 @@ class Manager(object):
 		self.__editor_instances = deque([])
 		from gtk import WindowGroup
 		self.__wingroup = WindowGroup()
-#		from SaveProcessMonitor import SaveProcessMonitor
-#		self.__save_process_monitor = SaveProcessMonitor()
+		from SaveProcessMonitor import SaveProcessMonitor
+		self.__save_process_monitor = SaveProcessMonitor()
 		return
 
 ########################################################################
@@ -198,14 +198,18 @@ class Manager(object):
 
 	def __remove_swap_area(self):
 		from glob import glob
-		from Globals import home_folder
+		from Globals import home_folder, metadata_folder
+		from os.path import join
 		files = glob(home_folder + "/" + ".Scribes*scribes")
+		from shutil import rmtree
+		[rmtree(file_, True) for file_ in files]
+		files = glob(join(metadata_folder, "__db*"))
 		from shutil import rmtree
 		[rmtree(file_, True) for file_ in files]
 		return
 
 	def __quit(self):
 		self.__remove_swap_area()
-		#self.__save_process_monitor.destroy()
+		self.__save_process_monitor.destroy()
 		raise SystemExit
 		return

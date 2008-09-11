@@ -224,8 +224,11 @@ scribes_PYTHON = \
 	Editor.py \
 	EncodedFilesMetadata.py \
 	EncodingGuessListMetadata.py \
+	EncodingManager.py \
+	EncodingMetadata.py \
 	Exceptions.py \
 	FileLoader.py \
+	FileSaver.py \
 	FontMetadata.py \
 	ForkScribesMetadata.py \
 	GlobalStore.py \
@@ -234,6 +237,13 @@ scribes_PYTHON = \
 	License.py \
 	Main.py \
 	MarginPositionMetadata.py \
+	MessageWindow.py \
+	OutputProcessor.py \
+	OutputWriter.py \
+	SaveCommunicator.py \
+	SaveProcessMonitor.py \
+	SaveProcessorDBusService.py \
+	ScribesSaveProcessor.py \
 	SpellCheckMetadata.py \
 	PositionMetadata.py \
 	TabWidthMetadata.py \

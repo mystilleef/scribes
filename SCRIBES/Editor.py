@@ -1,9 +1,12 @@
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_BOOLEAN
-from gobject import TYPE_STRING
+from gobject import TYPE_STRING, TYPE_OBJECT, TYPE_PYOBJECT
 from Globals import data_folder, metadata_folder, home_folder, desktop_folder
+from Globals import session_bus
 from gnomevfs import URI
 from gtksourceview2 import language_manager_get_default
 from EncodingGuessListMetadata import get_value as get_encoding_guess_list
+from EncodedFilesMetadata import get_value as get_encoding
+from EncodingMetadata import get_value as get_encoding_list
 from Utils import get_language
 
 class Editor(GObject):
@@ -19,11 +22,23 @@ class Editor(GObject):
 		"cursor-moved": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"ready": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"readonly": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"busy": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"checking-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"loading-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"loaded-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"load-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"show-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_OBJECT, TYPE_BOOLEAN)),
+		"show-info": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_OBJECT, TYPE_BOOLEAN)),
 		"modified-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"new-encoding-list": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"update-encoding-guess-list": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"renamed-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"saved-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"save-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"save-error": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"send-data-to-processor": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"dbus-saved-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"dbus-save-error": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):
@@ -40,8 +55,14 @@ class Editor(GObject):
 		View(self)
 		from TextBuffer import Buffer
 		Buffer(self)
-#		from FileSaver import Saver
-#		Saver(self)
+		from MessageWindow import Window
+		Window(self)
+		from EncodingManager import Manager
+		Manager(self)
+		from SaveCommunicator import Communicator
+		Communicator(self)
+		from FileSaver import Saver
+		Saver(self)
 		# Register with instance manager after a successful editor
 		# initialization.
 		self.__imanager.register_editor(self)
@@ -136,14 +157,19 @@ class Editor(GObject):
 	readonly = property(lambda self: self.__readonly)
 	modified = property(lambda self: self.__modified)
 	contains_document = property(lambda self: self.__contains_document)
+	encoding = property(lambda self:get_encoding(self.uri) if get_encoding(self.uri) else "utf-8")
+	encoding_list = property(lambda self: get_encoding_list())
 	encoding_guess_list = property(lambda self: get_encoding_guess_list())
 	# textview and textbuffer information
 	cursor = property(lambda self: self.textbuffer.get_iter_at_offset(self.textbuffer.get_property("cursor_position")))
+	text = property(lambda self: self.textbuffer.get_text(*(self.textbuffer.get_bounds())))
 	# Global information
 	data_folder = property(lambda self: data_folder)
 	metadata_folder = property(lambda self: metadata_folder)
 	home_folder = property(lambda self: home_folder)
 	desktop_folder = property(lambda self: desktop_folder)
+	session_bus = property(lambda self: session_bus)
+	save_processor = property(lambda self: self.__imanager.get_save_processor())
 
 	def new(self):
 		return self.__imanager.open_files()
@@ -209,7 +235,7 @@ class Editor(GObject):
 		iterator = self.cursor
 		self.textview.scroll_to_iter(iterator, 0.001, use_align=True, xalign=1.0)
 		return False
-	
+
 	def toggle_readonly(self):
 		self.emit("readonly", False) if self.__readonly else self.emit("readonly", True)
 		return
@@ -220,6 +246,20 @@ class Editor(GObject):
 		from gtk import events_pending, main_iteration
 		while events_pending(): main_iteration(False)
 		self.__processing = False
+		return False
+
+	def busy(self, busy=True):
+		self.emit("busy", busy)
+		return False
+
+	def show_error(self, title, message, window=None, busy=False):
+		window = window if window else self.window
+		self.emit("show-error", title, message, window, busy)
+		return False
+
+	def show_info(self, title, message, window=None, busy=False):
+		window = window if window else self.window
+		self.emit("show-info", title, message, window, busy)
 		return False
 
 ################################################################################

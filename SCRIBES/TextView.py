@@ -27,6 +27,11 @@ class View(object):
 		self.__sigid4 = editor.connect("load-error", self.__load_error_cb)
 		self.__sigid5 = self.__view.connect("backspace", self.__backspace_cb)
 		self.__sigid6 = editor.connect("readonly", self.__readonly_cb)
+		self.__sigid7 = self.__view.connect("drag-motion", self.__drag_motion_cb)
+		self.__sigid8 = self.__view.connect("drag-drop", self.__drag_drop_cb)
+		self.__sigid9 = self.__view.connect("drag-data-received", self.__drag_data_received_cb)
+		self.__sigid10 = editor.connect("loaded-file", self.__loaded_file_cb)
+		self.__sigid11 = editor.connect("busy", self.__busy_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -63,6 +68,11 @@ class View(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid5, self.__view)
 		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid7, self.__view)
+		self.__editor.disconnect_signal(self.__sigid8, self.__view)
+		self.__editor.disconnect_signal(self.__sigid9, self.__view)
+		self.__editor.disconnect_signal(self.__sigid10, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid11, self.__editor)
 		if self.__monid1: monitor_cancel(self.__monid1)
 		if self.__monid2: monitor_cancel(self.__monid2)
 		if self.__monid3: monitor_cancel(self.__monid3)
@@ -145,6 +155,10 @@ class View(object):
 		self.__destroy()
 		return False
 
+	def __busy_cb(self, editor, sensitive):
+		self.__view.set_property("sensitive", not sensitive)
+		return False
+
 	def __ready_cb(self, *args):
 		self.__view.set_property("sensitive", True)
 		self.__refresh()
@@ -152,6 +166,11 @@ class View(object):
 
 	def __checking_file_cb(self, *args):
 		self.__view.set_property("sensitive", False)
+		return False
+
+	def __loaded_file_cb(self, *args):
+		self.__view.set_property("sensitive", True)
+		self.__refresh()
 		return False
 
 	def __load_error_cb(self, *args):
@@ -167,6 +186,24 @@ class View(object):
 		from gobject import idle_add
 		idle_add(self.__editor.response)
 		return False
+
+	def __drag_motion_cb(self, textview, context, x, y, time):
+		if "text/uri-list" in context.targets: return True
+		return False
+
+	def __drag_drop_cb(self, textview, context, x, y, time):
+		if "text/uri-list" in context.targets: return True
+		return False
+
+	def __drag_data_received_cb(self, textview, context, xcord, ycord,
+								selection_data, info, timestamp):
+		if not ("text/uri-list" in context.targets): return False
+		if info != 80: return False
+		# Load file
+		uri_list = list(selection_data.get_uris())
+		self.__editor.open_files(uri_list, None)
+		context.finish(True, False, timestamp)
+		return True
 
 ################################################################################
 #

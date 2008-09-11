@@ -13,6 +13,7 @@ class Buffer(object):
 		self.__sigid5 = editor.connect("checking-file", self.__checking_file_cb)
 		self.__sigid6 = editor.connect("loaded-file", self.__loaded_file_cb)
 		self.__sigid7 = editor.connect("load-error", self.__load_error_cb)
+		self.__sigid8 = editor.connect("saved-file", self.__saved_file_cb)
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monid1 = monitor_add(self.__theme_database_uri, MONITOR_FILE, self.__theme_changed_cb)
 		editor.register_object(self)
@@ -26,6 +27,7 @@ class Buffer(object):
 		theme_database_path = join(preference_folder, "ColorTheme.gdb")
 		from gnomevfs import get_uri_from_local_path
 		self.__theme_database_uri = get_uri_from_local_path(theme_database_path)
+		self.__count = 0
 		return False
 
 	def __destroy(self):
@@ -38,6 +40,7 @@ class Buffer(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid8, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -147,6 +150,12 @@ class Buffer(object):
 		self.__buffer.handler_unblock(self.__sigid4)
 		return False
 
+	def __saved_file_cb(self, *args):
+		self.__count += 1
+		print "Save Count: ", self.__count
+		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
+		return False
+		
 	def __quit_cb(self, *args):
 		self.__stop_update_cursor_timer()
 		self.__update_cursor_position(True)

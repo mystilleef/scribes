@@ -27,6 +27,8 @@ This module defines a class that loads a file into the editor's buffer.
 @contact: mystilleef@gmail.com
 """
 
+from gettext import gettext as _
+
 class FileLoader(object):
 	"""
 	This class creates an object that loads a file into the editor's
@@ -44,20 +46,15 @@ class FileLoader(object):
 			self.__verify_permissions()
 			self.__load_uri()
 		except PermissionError:
-			from i18n import msg0479
-			self.__error(msg0479)
+			self.__error(_("Load Error: You do not have permission to view this file."))
 		except AccessDeniedError:
-			from i18n import msg0480
-			self.__error(msg0480)
+			self.__error(_("Load Error: Failed to access remote file for permission reasons."))
 		except FileInfoError:
-			from i18n import msg0481
-			self.__error(msg0481)
+			self.__error(_("Load Error: Failed to get file information for loading. Please try loading the file again."))
 		except NotFoundError:
-			from i18n import msg0482
-			self.__error(msg0482)
+			self.__error(_("Load Error: File does not exist."))
 		except:
-			from i18n import msg0483
-			self.__error(msg0483)
+			self.__error(_("Damn! Unknown Error"))
 
 	def __init_attributes(self, editor, uri, encoding, readonly):
 		self.__encoding = encoding
@@ -124,8 +121,7 @@ class FileLoader(object):
 		try:
 			open_(URI(self.__uri), self.__open_cb, OPEN_READ, 10)
 		except:
-			from i18n import msg0484
-			self.__error(msg0484)
+			self.__error(_("Load Error: Failed to open file for loading."))
 		return
 
 	def __open_cb(self, handle, result):
@@ -148,8 +144,7 @@ class FileLoader(object):
 				except:
 					raise ReadFileError
 		except ReadFileError:
-			from internationalization import msg0485
-			self.__error(msg0485)
+			self.__error(_("Load Error: Failed to read file for loading."))
 		return
 
 	def __read_cb(self, handle, buffer_, result, bytes):
@@ -180,11 +175,9 @@ class FileLoader(object):
 				else:
 					raise GnomeVfsError
 		except CloseFileError:
-			from i18n import msg0486
-			self.__error(msg0486)
+			self.__error(_("Load Error: Failed to close file for loading."))
 		except ReadFileError:
-			from i18n import msg0485
-			self.__error(msg0485)
+			self.__error(_("Load Error: Failed to read file for loading."))
 		except GnomeVfsError:
 			self.__error("GnomeVfsError")
 		return
@@ -220,14 +213,19 @@ class FileLoader(object):
 			utf8_string = unicode_string.encode("utf-8")
 			self.__editor.textbuffer.set_text(utf8_string)
 		except UnicodeDecodeError:
-			from i18n import msg0487
-			self.__error(msg0487, True)
+			self.__error(_("Load Error: Failed to decode file for loading. The file \
+your are loading may not be a text file. If you are sure it is a text \
+file, try to open the file with the correct encoding via the open \
+dialog. Press (control - o) to show the open dialog."), True)
 		except ValueError:
-			from i18n import msg0487
-			self.__error(msg0487, True)
+			self.__error(_("Load Error: Failed to decode file for loading. The file \
+your are loading may not be a text file. If you are sure it is a text \
+file, try to open the file with the correct encoding via the open \
+dialog. Press (control - o) to show the open dialog."), True)
 		except UnicodeEncodeError:
-			from i18n import msg0488
-			self.__error(msg0488)
+			self.__error(_("Load Error: Failed to encode file for loading. Try to \
+open the file with the correct encoding via the open dialog. Press \
+(control - o) to show the open dialog."), True)
 		return
 
 	def __determine_encoding(self):
@@ -245,18 +243,13 @@ class FileLoader(object):
 			self.__error_flag = True
 			if self.__handle: self.__handle.cancel()
 			self.__editor.emit("load-error", self.__uri)
-			from i18n import msg0477, msg0478
 			from gnomevfs import format_uri_for_display
-			title = msg0477 % (format_uri_for_display(self.__uri))
-#			message_id = self.__editor.feedback.set_modal_message(msg0478, "error")
+			title = _("File: %s") % (format_uri_for_display(self.__uri))
 			if encoding_error:
 				print "Error: Load file in another encoding."
 #				self.__editor.show_encoding_error(title, self.__uri)
 			else:
-				print "Error: failed to load file."
-				pass
-#				self.__editor.show_error_message(message, title, self.__editor.window)
-#			self.__editor.feedback.unset_modal_message(message_id)
+				self.__editor.show_error(title, message)
 			self.__destroy()
 		except AttributeError:
 			pass
