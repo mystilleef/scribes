@@ -27,7 +27,6 @@ class Buffer(object):
 		theme_database_path = join(preference_folder, "ColorTheme.gdb")
 		from gnomevfs import get_uri_from_local_path
 		self.__theme_database_uri = get_uri_from_local_path(theme_database_path)
-		self.__count = 0
 		return False
 
 	def __destroy(self):
@@ -151,8 +150,6 @@ class Buffer(object):
 		return False
 
 	def __saved_file_cb(self, *args):
-		self.__count += 1
-		print "Save Count: ", self.__count
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		return False
 		

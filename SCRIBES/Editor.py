@@ -51,21 +51,32 @@ class Editor(GObject):
 		self.__sigid3 = self.connect("load-error", self.__load_error_cb)
 		self.__sigid4 = self.connect_after("loaded-file", self.__loaded_file_cb)
 		self.__sigid5 = self.connect_after("readonly", self.__readonly_cb)
+		self.__sigid6 = self.connect("saved-file", self.__saved_file_cb)
 		self.__init_attributes(manager, uri)
+		# Manages the behavior of the window.
 		from Window import Window
 		Window(self, uri)
+		# Manages he behavior of the buffer's container.
 		from TextView import View
 		View(self)
+		# Manages the behavior of the buffer.
 		from TextBuffer import Buffer
 		Buffer(self)
+		# Manages error and information window.
 		from MessageWindow import Window
 		Window(self)
+		# Manages encoding information.
 		from EncodingManager import Manager
 		Manager(self)
+		# Object responsible for sending data to external process via 
+		# DBus to save files. An external process does the I/O operations.
 		from SaveCommunicator import Communicator
 		Communicator(self)
+		# Object responsible for saving files.
 		from FileSaver import Saver
 		Saver(self)
+		# Object responsible for deciding when to save files 
+		# automatically.
 		from SaveManager import Manager
 		Manager(self)
 		# Register with instance manager after a successful editor
@@ -100,6 +111,7 @@ class Editor(GObject):
 		self.disconnect_signal(self.__sigid3, self)
 		self.disconnect_signal(self.__sigid4, self)
 		self.disconnect_signal(self.__sigid5, self)
+		self.disconnect_signal(self.__sigid6, self)
 		self.__imanager.unregister_editor(self)
 		self.__glade.get_widget("Window").destroy()
 		del self
@@ -294,4 +306,8 @@ class Editor(GObject):
 		self.__uri = None
 		self.__contains_document = False
 		self.__init_plugins()
+		return False
+
+	def __saved_file_cb(self, editor, uri, encoding):
+		self.__uri = uri
 		return False

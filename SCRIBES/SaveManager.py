@@ -1,5 +1,7 @@
+from gettext import gettext as _
 # Save file 7 seconds after modification.
 SAVE_TIMER = 7000  # units in milliseconds (1000th of a second)
+filename = _("Unsaved Document ")
 
 class Manager(object):
 
@@ -45,7 +47,25 @@ class Manager(object):
 		return False
 
 	def __create_unsaved_file(self):
+		uri = self.__create_new_file()
+		self.__save(uri, "utf-8")
 		return False
+
+	def __create_new_file(self):
+		folder = self.__editor.desktop_folder
+		# A count to append to unsaved documents if many unsaved documents
+		# exists in folder.
+		count = 1
+		from dircache import listdir
+		file_list = listdir(folder)
+		# Calculate count to append to unsaved documents.
+		while True:
+			newfile = filename + str(count)
+			if not (newfile in file_list): break
+			count += 1
+		newfile = folder + "/" + newfile
+		from gnomevfs import make_uri_from_shell_arg
+		return make_uri_from_shell_arg(newfile)
 
 	def __remove_timer(self):
 		try:
