@@ -50,6 +50,7 @@ scribes_PYTHON = \
 	OutputProcessor.py \
 	OutputWriter.py \
 	SaveCommunicator.py \
+	SaveManager.py \
 	SaveProcessMonitor.py \
 	SaveProcessorDBusService.py \
 	ScribesSaveProcessor.py \

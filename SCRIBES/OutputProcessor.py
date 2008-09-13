@@ -166,15 +166,11 @@ class OutputProcessor(object):
 		self = None
 		return
 
-	def __error(self, editor_id, error_message, error_id):
-		self.__send_result(editor_id, "", "", error_message, error_id, True)
-		return
-
 	def __saved_cb(self, writer, editor_id, uri, encoding):
 		self.__send_result(editor_id, uri, encoding)
 		return
 
-	def __error_cb(self, writer, editor_id, error_message, error_id):
-		self.__error(editor_id, error_message, error_id)
+	def __error_cb(self, writer, editor_id, uri, encoding, error_message, error_id):
+		self.__send_result(editor_id, uri, encoding, error_message, error_id)
 		return
 

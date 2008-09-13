@@ -42,9 +42,9 @@ class Communicator(object):
 		self = None
 		return False
 
-	def __send(self, encoding):
+	def __send(self, uri, encoding):
 		self.__processor.process(self.__editor.id_, self.__editor.text,
-				self.__editor.uri, encoding,
+				uri, encoding,
 				dbus_interface=save_dbus_service,
 				reply_handler=self.__reply_handler_cb,
 				error_handler=self.__error_handler_cb)
@@ -60,10 +60,11 @@ class Communicator(object):
 		self.__destroy()
 		return False
 
-	def __send_cb(self, editor, encoding):
+	def __send_cb(self, editor, uri, encoding):
 		from gobject import idle_add
-		idle_add(self.__send, encoding, priority=9999)
+		idle_add(self.__send, uri, encoding, priority=9999)
 		return False
+
 ################################################################################
 #
 #							DBus Signal Listeners
@@ -77,12 +78,12 @@ class Communicator(object):
 #		self.__editor.emit("dbus-saved-file", uri, encoding)
 		return False
 
-	def __save_error_cb(self, editor_id, error_message, error_id):
+	def __save_error_cb(self, editor_id, uri, encoding, error_message, error_id):
 		if (self.__editor.id_ != editor_id): return False
 		error_message = error_message + " " + str(error_id)
 		print error_message
-		self.__editor.emit("dbus-save-error")
-		return False 
+		self.__editor.emit("dbus-save-error", uri, encoding, error_message)
+		return False
 
 	def __is_ready_cb(self, *args):
 		self.__processor = self.__editor.save_processor
@@ -92,6 +93,6 @@ class Communicator(object):
 		return False
 
 	def __error_handler_cb(self, error):
-		self.__editor.emit("dbus-save-error")
+#		self.__editor.emit("dbus-save-error")
 		print error
 		return False

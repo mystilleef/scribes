@@ -42,7 +42,7 @@ class OutputWriter(GObject):
 
 	__gsignals__ = {
 		"saved": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT,)),
-		"error": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT)),
+		"error": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT)),
 	}
 
 	def __init__(self):
@@ -138,7 +138,7 @@ class OutputWriter(GObject):
 		return
 
 	def __error(self, error_message, error_id):
-		self.emit("error", self.__id, error_message, error_id)
+		self.emit("error", self.__id, self.__uri, self.__encoding, error_message, error_id)
 		return
 
 	def __get_file_info(self):

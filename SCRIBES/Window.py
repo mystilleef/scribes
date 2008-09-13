@@ -47,6 +47,7 @@ class Window(object):
 		self.__sigid9 = editor.connect("load-error", self.__load_error_cb)
 		self.__sigid10 = editor.connect("modified-file", self.__modified_file_cb)
 		self.__sigid11 = editor.connect("readonly", self.__readonly_cb)
+		self.__sigid12 = self.__window.connect_after("focus-out-event", self.__focus_out_after_event_cb)
 		editor.register_object(self)
 		self.__position_window()
 		self.__window.present()
@@ -75,6 +76,7 @@ class Window(object):
 		self.__editor.disconnect_signal(self.__sigid9, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid10, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid11, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid12, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -161,6 +163,10 @@ class Window(object):
 	def __modified_file_cb(self, editor, modified):
 		update = self.__update_window_title
 		update("*%s" % self.__title) if modified else update(self.__title)
+		return False
+
+	def __focus_out_after_event_cb(self, *args):
+		self.__editor.emit("window-focus-out")
 		return False
 
 	def __focus_out_event_cb(self, window, event):

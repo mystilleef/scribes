@@ -34,11 +34,14 @@ class Editor(GObject):
 		"update-encoding-guess-list": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"renamed-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"saved-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
-		"save-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"save-error": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"send-data-to-processor": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"save-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"private-save-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"save-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_STRING)),
+		"send-data-to-processor": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING
+		)),
 		"dbus-saved-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
-		"dbus-save-error": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"dbus-save-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_STRING)),
+		"window-focus-out": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):
@@ -63,6 +66,8 @@ class Editor(GObject):
 		Communicator(self)
 		from FileSaver import Saver
 		Saver(self)
+		from SaveManager import Manager
+		Manager(self)
 		# Register with instance manager after a successful editor
 		# initialization.
 		self.__imanager.register_editor(self)
@@ -186,7 +191,7 @@ class Editor(GObject):
 		#FIXME: NOT YET IMPLEMENTED
 		return False
 
-	def save_file(self):
+	def save_file(self, uri, encoding="utf-8"):
 		# FIXME: NOT YET IMPLEMENTED
 		return
 

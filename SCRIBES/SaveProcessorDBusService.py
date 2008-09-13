@@ -60,6 +60,5 @@ class DBusService(Object):
 		return
 
 	@signal(dbus_service)
-	def error(self, editor_id, error_message, error_id):
+	def error(self, editor_id, uri, encoding, error_message, error_id):
 		return
-		
