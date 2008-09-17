@@ -60,13 +60,57 @@ class OutputProcessor(object):
 		except ValueError:
 			self.__queue.append((editor_id, text, uri, encoding))
 		except PermissionError:
-			self.__error(editor_id, "Permission Error: No permission to write file.", 1)
+			message = """
+Module: OutputProcessor.py 
+Class: OutputProcessor
+method: process
+Exception: PermissionError
+Error: You do not have permission to save to location.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Please save the file to a location you
+have permission rights to, like your desktop.
+"""
+			self.__send_result(editor_id, uri, encoding, message, 1)
 		except UnicodeEncodeError:
-			self.__error(editor_id, "Encode Error: Error when encoding file.", 2)
+			message = """
+Module: OutputProcessor.py
+Class: OutputProcessor
+method: process
+Exception: UnicodeEncodeError
+Error: Error when encoding file.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. The recommended encoding for saving files
+is "UTF-8". Please save the file using "UTF-8".
+"""
+			self.__send_result(editor_id, uri, encoding, message, 2)
 		except UnicodeDecodeError:
-			self.__error(editor_id, "Decode Error: Error when decoding file.", 3)
+			message = """
+Module: OutputProcessor.py
+Class: OutputProcessor
+method: process
+Exception: UnicodeDecodeError
+Error: Error when decoding file.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. The recommended encoding for saving files
+is "UTF-8". Please save the file using "UTF-8".
+"""
+			self.__send_result(editor_id, uri, encoding, message, 3)
 		except SwapError:
-			self.__error(editor_id, "Swap Error: Error when creating swap area", 4)
+			message = """
+Module: OutputProcessor.py
+Class: OutputProcessor
+method: process
+Exception: SwapError
+Error: Error when creating swap area.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Try saving the file again. Report this
+problem if it persists.
+"""
+			self.__send_result(editor_id, uri, encoding, message, 4)
 		return
 
 	def update(self, editor_id):

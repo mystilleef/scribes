@@ -4,6 +4,13 @@ SAVE_TIMER = 7000  # units in milliseconds (1000th of a second)
 filename = _("Unsaved Document ")
 
 class Manager(object):
+	"""
+	This class decides when to save a file automatically. A file is
+	saved:
+		- approximately 7 seconds after modification;
+		- when the window loses focus;
+		- before a window is closed if it has been modified.
+	"""
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
@@ -41,9 +48,11 @@ class Manager(object):
 			if self.__editor.readonly: raise TypeError
 			self.__editor.emit("private-save-file", uri, encoding)
 		except ValueError:
-			print "NO URI TO SAVE!"
+			message = _("Error: No location or file to save to.")
+			self.__error_message(_("URI NOT FOUND"), message)
 		except TypeError:
-			print "Error: Editor is in readonly mode"
+			message = "Error: Editor is in readonly mode"
+			self.__error_message(_("READONLY ERROR"), message)
 		return False
 
 	def __create_unsaved_file(self):
@@ -67,6 +76,10 @@ class Manager(object):
 		from gnomevfs import make_uri_from_shell_arg
 		return make_uri_from_shell_arg(newfile)
 
+	def __error_message(self, title, message):
+		self.__editor.show_error(title, message, busy=True)
+		return False
+
 	def __remove_timer(self):
 		try:
 			from gobject import source_remove
@@ -75,6 +88,12 @@ class Manager(object):
 			pass
 		return False
 
+########################################################################
+#
+#						Signal Listeners
+#
+########################################################################
+
 	def __save_file_cb(self, editor, uri, encoding):
 		self.__remove_timer()
 		from gobject import idle_add
@@ -82,11 +101,13 @@ class Manager(object):
 		return False
 
 	def __saved_file_cb(self, *args):
+		self.__error = False
 		if self.__quit: self.__destroy()
 		return False
 
 	def __save_error_cb(self, editor, uri, encoding, message):
 		self.__error = True
+		self.__error_message(uri, message)
 		return False
 
 	def __modified_file_cb(self, editor, modified):

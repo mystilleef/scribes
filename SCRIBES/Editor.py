@@ -8,6 +8,7 @@ from EncodingGuessListMetadata import get_value as get_encoding_guess_list
 from EncodedFilesMetadata import get_value as get_encoding
 from EncodingMetadata import get_value as get_encoding_list
 from Utils import get_language
+from SupportedEncodings import get_supported_encodings
 
 class Editor(GObject):
 
@@ -39,9 +40,12 @@ class Editor(GObject):
 		"save-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_STRING)),
 		"send-data-to-processor": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING
 		)),
+		"private-encoding-load-error": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"dbus-saved-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"dbus-save-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_STRING)),
 		"window-focus-out": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"combobox-encoding-data?": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"combobox-encoding-data": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):
@@ -68,16 +72,22 @@ class Editor(GObject):
 		# Manages encoding information.
 		from EncodingManager import Manager
 		Manager(self)
-		# Object responsible for sending data to external process via 
+		# Object responsible for sending data to external process via
 		# DBus to save files. An external process does the I/O operations.
 		from SaveCommunicator import Communicator
 		Communicator(self)
 		# Object responsible for saving files.
 		from FileSaver import Saver
 		Saver(self)
-		# Object responsible for deciding when to save files 
+		# Object responsible for deciding when to save files
 		# automatically.
 		from SaveManager import Manager
+		Manager(self)
+		# Object responsible for showing encoding error window. The window
+		# allows users to load files with the correct encoding.
+		from EncodingErrorManager import Manager
+		Manager(self)
+		from EncodingComboBoxDataManager import Manager
 		Manager(self)
 		# Register with instance manager after a successful editor
 		# initialization.
@@ -103,6 +113,7 @@ class Editor(GObject):
 		self.__started_plugins = False
 		# True if editor is in readonly mode.
 		self.__readonly = False
+		self.__busy = 0
 		return False
 
 	def __destroy(self):
@@ -187,6 +198,7 @@ class Editor(GObject):
 	desktop_folder = property(lambda self: desktop_folder)
 	session_bus = property(lambda self: session_bus)
 	save_processor = property(lambda self: self.__imanager.get_save_processor())
+	supported_encodings = property(lambda self: get_supported_encodings())
 
 	def new(self):
 		return self.__imanager.open_files()
@@ -266,6 +278,9 @@ class Editor(GObject):
 		return False
 
 	def busy(self, busy=True):
+		self.__busy = self.__busy + 1 if busy else self.__busy - 1
+		if self.__busy < 0: self.__busy = 0
+		busy = True if self.__busy else False
 		self.emit("busy", busy)
 		return False
 
@@ -279,11 +294,14 @@ class Editor(GObject):
 		self.emit("show-info", title, message, window, busy)
 		return False
 
-################################################################################
+	def emit_combobox_encodings(self):
+		self.emit("combobox-encoding-data?")
+		return False
+########################################################################
 #
 #								Signal Listener
 #
-################################################################################
+########################################################################
 
 	def __readonly_cb(self, editor, readonly):
 		self.__readonly = readonly

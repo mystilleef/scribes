@@ -75,13 +75,10 @@ class Communicator(object):
 		if (self.__editor.id_ != editor_id): return False
 		from gobject import idle_add
 		idle_add(self.__editor.emit, "dbus-saved-file", uri, encoding, priority=9999)
-#		self.__editor.emit("dbus-saved-file", uri, encoding)
 		return False
 
 	def __save_error_cb(self, editor_id, uri, encoding, error_message, error_id):
 		if (self.__editor.id_ != editor_id): return False
-		error_message = error_message + " " + str(error_id)
-		print error_message
 		self.__editor.emit("dbus-save-error", uri, encoding, error_message)
 		return False
 

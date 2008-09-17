@@ -222,6 +222,9 @@ scribes_PYTHON = \
 	DBusService.py \
 	DisplayRightMarginMetadata.py \
 	Editor.py \
+	EncodingComboBoxDataManager.py \
+	EncodingErrorManager.py \
+	EncodingErrorLoader.py \
 	EncodedFilesMetadata.py \
 	EncodingGuessListMetadata.py \
 	EncodingManager.py \
@@ -246,6 +249,7 @@ scribes_PYTHON = \
 	SaveProcessorDBusService.py \
 	ScribesSaveProcessor.py \
 	SpellCheckMetadata.py \
+	SupportedEncodings.py \
 	PositionMetadata.py \
 	TabWidthMetadata.py \
 	TextWrappingMetadata.py \

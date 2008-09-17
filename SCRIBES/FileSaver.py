@@ -46,7 +46,6 @@ class Saver(object):
 			from gobject import idle_add
 			idle_add(self.__save, uri, encoding, priority=9999)
 		except IndexError:
-			self.__is_saving = False
 			self.__editor.emit("saved-file", uri, encoding)
 		return False
 
@@ -66,10 +65,12 @@ class Saver(object):
 		return False
 
 	def __dbus_saved_file_cb(self, editor, uri, encoding):
+		self.__is_saving = False
 		from gobject import idle_add
 		idle_add(self.__check_queue, uri, encoding, priority=9999)
 		return False
 
 	def __dbus_save_error_cb(self, editor, uri, encoding, message):
+		self.__is_saving = False
 		self.__editor.emit("save-error", uri, encoding, message)
 		return False

@@ -75,7 +75,18 @@ class OutputWriter(GObject):
 					priority=PRIORITY,
 					data=text)
 		except:
-			self.__error("CreateError: Error while opening or creating file.", 11)
+			message = """
+Module: OutputWriter.py 
+Class: OutputWriter
+method: write_file
+Exception: Unknown
+Error: Failed to create or open a file to writing
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Please try saving the file again, preferably
+to a different location like your desktop.
+"""
+			self.__error(message, 11)
 		return
 
 	def __write_cb(self, handle, result, text):
@@ -83,7 +94,18 @@ class OutputWriter(GObject):
 			handle.write(text, self.__close_cb)
 		except:
 			handle.cancel()
-			self.__error("WriteError: Error while writing file.", 12)
+			message = """
+Module: OutputWriter.py 
+Class: OutputWriter
+method: __write_cb
+Exception: Unknown
+Error: Failed to write to file.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Please try saving the file again, preferably
+to a different location like your desktop.
+"""
+			self.__error(message, 12)
 		return
 
 	def __close_cb(self, handle, bytes, result, bytes_requested):
@@ -91,7 +113,18 @@ class OutputWriter(GObject):
 			handle.close(self.__finalize_cb)
 		except:
 			handle.cancel()
-			self.__error("CloseError: Error while closing file", 13)
+			message = """
+Module: OutputWriter.py 
+Class: OutputWriter
+method: __close_cb
+Exception: Unknown
+Error: Failed to close file after writing.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Please try saving the file again, preferably
+to a different location like your desktop.
+"""
+			self.__error(message, 13)
 		return
 
 	def __finalize_cb(self, *args):
@@ -114,7 +147,18 @@ class OutputWriter(GObject):
 					update_callback_data=None,
 					progress_sync_callback=self.__sync_cb)
 		except:
-			self.__error("BegineFileTransferError: Error while trying to transfer file", 14)
+			message = """
+Module: OutputWriter.py 
+Class: OutputWriter
+method: __begin_file_transfer
+Exception: Unknown
+Error: Error while transfering file to save location.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Please try saving the file again, preferably
+to a different location like your desktop.
+"""
+			self.__error(message, 14)
 		return
 
 	def __sync_cb(self, info):
@@ -130,7 +174,18 @@ class OutputWriter(GObject):
 			self.__finish_up()
 		except:
 			handle.cancel()
-			self.__error("FileTransferUpdateError", 15)
+			message = """
+Module: OutputWriter.py 
+Class: OutputWriter
+method: __update_cb
+Exception: Unknown
+Error: Error while transfering file to save location.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Please try saving the file again, preferably
+to a different location like your desktop.
+"""
+			self.__error(message, 15)
 		return True
 
 	def __finish_up(self):
@@ -165,5 +220,3 @@ class OutputWriter(GObject):
 		self.__id, self.__uri, self.__swap_uri, self.__file_info = None, None, None, None
 		self.__endocing = None
 		return
-
-

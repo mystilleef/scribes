@@ -125,7 +125,7 @@ def generate_encodings():
 	from i18n import msg0286, msg0287, msg0288, msg0289, msg0290
 	from i18n import msg0291
 	encodings = (
-#		 Codec		Alias		Language
+#		Codec		   Alias		 Language
 		("ISO-8859-1", "iso-8859-1", msg0262),
 		("ISO-8859-2", "iso-8859-2", msg0263),
 		("ISO-8859-3", "iso-8859-3", msg0264),
