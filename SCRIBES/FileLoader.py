@@ -190,7 +190,7 @@ class FileLoader(object):
 
 	def __insert_string_to_buffer(self, string, handle=None):
 		try:
-			#raise ValueError
+			raise ValueError
 			self.__encoding = self.__determine_encoding()
 			encoding_list = self.__editor.encoding_guess_list
 			if encoding_list:
@@ -246,8 +246,7 @@ open the file with the correct encoding via the open dialog. Press \
 			from gnomevfs import format_uri_for_display
 			title = _("File: %s") % (format_uri_for_display(self.__uri))
 			if encoding_error:
-				print "Error: Load file in another encoding."
-#				self.__editor.show_encoding_error(title, self.__uri)
+				self.__editor.show_load_encoding_error_window()
 			else:
 				self.__editor.show_error(title, message)
 			self.__destroy()

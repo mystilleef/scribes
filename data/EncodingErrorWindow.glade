@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Sep 16 20:05:04 2008 -->
+<!--Generated with glade3 3.4.5 on Thu Sep 18 14:29:57 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="Window">
     <property name="sensitive">False</property>
@@ -43,6 +43,7 @@
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">/dev/null</property>
+                <property name="use_markup">True</property>
                 <property name="selectable">True</property>
                 <property name="ellipsize">PANGO_ELLIPSIZE_END</property>
                 <property name="single_line_mode">True</property>
@@ -99,6 +100,9 @@
               <widget class="GtkComboBox" id="ComboBox">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="is_focus">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
               </widget>
               <packing>
@@ -122,9 +126,6 @@
               <widget class="GtkButton" id="CloseButton">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="has_focus">True</property>
-                <property name="is_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
                 <property name="receives_default">True</property>
@@ -138,8 +139,6 @@
               <widget class="GtkButton" id="OpenButton">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="tooltip" translatable="yes">Open file with selected encoding</property>
                 <property name="label" translatable="yes">gtk-open</property>

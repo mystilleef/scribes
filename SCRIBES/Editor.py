@@ -46,6 +46,7 @@ class Editor(GObject):
 		"window-focus-out": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"combobox-encoding-data?": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"combobox-encoding-data": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"supported-encodings-window": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):
@@ -83,10 +84,14 @@ class Editor(GObject):
 		# automatically.
 		from SaveManager import Manager
 		Manager(self)
+		# Manages window that shows supported encodings.
+		from SupportedEncodingsGUIManager import Manager
+		Manager(self)
 		# Object responsible for showing encoding error window. The window
 		# allows users to load files with the correct encoding.
 		from EncodingErrorManager import Manager
 		Manager(self)
+		# Object that share information for encoding combo box.
 		from EncodingComboBoxDataManager import Manager
 		Manager(self)
 		# Register with instance manager after a successful editor
@@ -284,6 +289,15 @@ class Editor(GObject):
 		self.emit("busy", busy)
 		return False
 
+	def show_load_encoding_error_window(self):
+		self.emit("private-encoding-load-error")
+		return False
+	
+	def show_supported_encodings_window(self, window=None):
+		window = window if window else self.window
+		self.emit("supported-encodings-window", window)
+		return 
+	
 	def show_error(self, title, message, window=None, busy=False):
 		window = window if window else self.window
 		self.emit("show-error", title, message, window, busy)
@@ -297,6 +311,7 @@ class Editor(GObject):
 	def emit_combobox_encodings(self):
 		self.emit("combobox-encoding-data?")
 		return False
+		
 ########################################################################
 #
 #								Signal Listener

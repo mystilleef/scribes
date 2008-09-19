@@ -32,8 +32,13 @@ scribes_PYTHON = \
 	DisplayRightMarginMetadata.py \
 	Editor.py \
 	EncodingComboBoxDataManager.py \
+	EncodingErrorComboBox.py \
 	EncodingErrorManager.py \
+	EncodingErrorOpenButton.py \
+	EncodingErrorCloseButton.py \
 	EncodingErrorLoader.py \
+	EncodingErrorTitleLabel.py \
+	EncodingErrorWindow.py \
 	EncodedFilesMetadata.py \
 	EncodingGuessListMetadata.py \
 	EncodingManager.py \
@@ -59,6 +64,10 @@ scribes_PYTHON = \
 	ScribesSaveProcessor.py \
 	SpellCheckMetadata.py \
 	SupportedEncodings.py \
+	SupportedEncodingsDatabaseManager.py \
+	SupportedEncodingsGUIManager.py \
+	SupportedEncodingsTreeView.py \
+	SupportedEncodingsWindow.py \
 	PositionMetadata.py \
 	TabWidthMetadata.py \
 	TextWrappingMetadata.py \

@@ -2,11 +2,10 @@ class Loader(object):
 
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
+		self.__sigid1 = manager.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("load-error", self.__error_cb)
 		self.__sigid3 = manager.connect("new-encoding", self.__encoding_cb)
 		self.__sigid4 = manager.connect("load", self.__load_cb)
-		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -16,11 +15,10 @@ class Loader(object):
 		return False
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
-		self.__editor.unregister_object(self)
 		del self
 		self = None
 		return

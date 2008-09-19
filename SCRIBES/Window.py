@@ -158,6 +158,8 @@ class Window(object):
 		self.__uri = None
 		self.__title = self.__set_title()
 		self.__update_window_title(self.__title)
+		self.__position_window()
+		self.__window.show_all()
 		return False
 
 	def __modified_file_cb(self, editor, modified):
