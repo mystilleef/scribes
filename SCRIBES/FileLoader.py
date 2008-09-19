@@ -190,7 +190,7 @@ class FileLoader(object):
 
 	def __insert_string_to_buffer(self, string, handle=None):
 		try:
-			raise ValueError
+			#raise ValueError
 			self.__encoding = self.__determine_encoding()
 			encoding_list = self.__editor.encoding_guess_list
 			if encoding_list:

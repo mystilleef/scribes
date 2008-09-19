@@ -86,12 +86,10 @@ def get_language(uri):
 	try:
 		if uri is None: return None
 		from gnomevfs import get_mime_type
-		mimetype = get_mime_type(uri)
-#		print "Mimetype", mimetype
+		mimetype = get_mime_type(uri.strip())
 		language = __get_language_for_mime_type(mimetype)
-#		print "Language", language
 	except RuntimeError:
-		print "Caught runtime error when determining language"
+		print "Caught runtime error when determining mimetype or language"
 		return None
 	return language
 
@@ -104,114 +102,6 @@ def create_encoding_box(combobox):
 	hbox.pack_start(label, False, False, 0)
 	hbox.pack_start(combobox, True, True, 0)
 	return hbox
-
-def generate_encodings():
-	from i18n import msg0208, msg0209, msg0210
-	from i18n import msg0211, msg0212, msg0213, msg0214, msg0215
-	from i18n import msg0216, msg0217, msg0218, msg0219, msg0220
-	from i18n import msg0221, msg0222, msg0223, msg0224, msg0225
-	from i18n import msg0226, msg0227, msg0228, msg0229, msg0230
-	from i18n import msg0231, msg0232, msg0233, msg0234, msg0235
-	from i18n import msg0236, msg0237, msg0238, msg0239, msg0240
-	from i18n import msg0241, msg0242, msg0243, msg0244, msg0245
-	from i18n import msg0246, msg0247, msg0248, msg0249, msg0250
-	from i18n import msg0251, msg0252, msg0253, msg0254, msg0255
-	from i18n import msg0256, msg0257, msg0258, msg0259, msg0260
-	from i18n import msg0261, msg0262, msg0263, msg0264, msg0265
-	from i18n import msg0266, msg0267, msg0268, msg0269, msg0270
-	from i18n import msg0271, msg0272, msg0273, msg0274, msg0275
-	from i18n import msg0276, msg0277, msg0278, msg0279, msg0280
-	from i18n import msg0281, msg0282, msg0283, msg0284, msg0285
-	from i18n import msg0286, msg0287, msg0288, msg0289, msg0290
-	from i18n import msg0291
-	encodings = (
-#		Codec		   Alias		 Language
-		("ISO-8859-1", "iso-8859-1", msg0262),
-		("ISO-8859-2", "iso-8859-2", msg0263),
-		("ISO-8859-3", "iso-8859-3", msg0264),
-		("ISO-8859-4", "iso-8859-4", msg0265),
-		("ISO-8859-5", "iso-8859-5", msg0266),
-		("ISO-8859-6", "iso-8859-6", msg0267),
-		("ISO-8859-7", "iso-8859-7", msg0268),
-		("ISO-8859-8", "iso-8859-8", msg0269),
-		("ISO-8859-9", "iso-8859-9", msg0270),
-		("ISO-8859-10", "iso-8859-10", msg0271),
-		("ISO-8859-13", "iso-8859-13", msg0272),
-		("ISO-8859-14", "iso-8859-14", msg0273),
-		("ISO-8859-15", "iso-8859-15", msg0274),
-		("ISO-2022-JP", "iso2022jp", msg0255),
-		("ISO-2022-jp-1", "iso2022jp-1", msg0256),
-		("ISO-2022-JP-2", "iso2022jp-2", msg0257),
-		("ISO-2022-JP-2004", "iso2022jp-2004", msg0258),
-		("ISO-2022-JP-3", "iso2022jp-3", msg0259),
-		("ISO-2022-JP-EXT", "iso2022jp-ext", msg0260),
-		("ISO-2022-KR", "csiso2022kr", msg0261),
-		("BIG5", "csbig5", msg0209),
-		("BIG5HKSCS", "hkscs", msg0210),
-		("SHIFT-JIS", "sjis", msg0285),
-		("SHIFT-JIS-2004", "sjis2004", msg0286),
-		("SHIFT-JISX0213", "sjisx0213", msg0287),
-		("KOI8-R", "koi8_r", msg0276),
-		("KOI8-U", "koi8_u", msg0277),
-		("CP037", "IBM039", msg0211),
-		("CP424", "IBM424", msg0212),
-		("CP437", "437", msg0213),
-		("CP500", "IBM500", msg0214),
-		("CP737", "cp737", msg0215),
-		("CP775", "IBM775", msg0216),
-		("CP850", "IBM850", msg0217),
-		("CP852", "IBM852", msg0218),
-		("CP855", "IBM855", msg0219),
-		("CP856", "cp856", msg0220),
-		("CP857", "IBM857", msg0221),
-		("CP860", "IBM860", msg0222),
-		("CP861", "IBM861", msg0223),
-		("CP862", "IBM862", msg0224),
-		("CP863", "IBM863", msg0225),
-		("CP864", "IBM864", msg0226),
-		("CP865", "IBM865", msg0227),
-		("CP866", "IBM866", msg0228),
-		("CP869", "IBM869", msg0229),
-		("CP874", "cp874", msg0230),
-		("CP875", "cp875", msg0231),
-		("CP932", "mskanji", msg0232),
-		("CP949", "uhc", msg0233),
-		("CP950", "ms950", msg0234),
-		("CP1006", "cp1006", msg0235),
-		("CP1026", "ibm1026", msg0236),
-		("CP1140", "ibm1140", msg0237),
-		("CP1250", "windows-1250", msg0238),
-		("CP1251", "windows-1251", msg0239),
-		("CP1252", "windows-1252", msg0240),
-		("CP1253", "windows-1253", msg0241),
-		("CP1254", "windows-1254", msg0242),
-		("CP1255", "windows-1255", msg0243),
-		("CP1256", "windows1256", msg0244),
-		("CP1257", "windows-1257", msg0245),
-		("CP1258", "windows-1258", msg0246),
-		("EUC-JP", "ujis", msg0247),
-		("EUC-JIS-2004", "eucjis2004", msg0248),
-		("EUC-JISX0213", "eucjisx0213", msg0249),
-		("EUC-KR", "ksc5601", msg0250),
-		("GB2312",	"euccn", msg0251),
-		("GBK", 	"ms936", msg0252),
-		("GB18030", "gb18030-2000", msg0253),
-		("HZ", "hzgb", msg0254),
-		("JOHAB", "cp1361", msg0275),
-		("MAC-CYRILLIC", "maccyrillic", msg0278),
-		("MAC-GREEK", 	"macgreek", msg0279),
-		("MAC-ICELAND", "maciceland", msg0280),
-		("MAC-LATIN2", "maccentraleurope", msg0281),
-		("MAC-ROMAN", "macroman", msg0282),
-		("MAC-TURKISH", "macturkish", msg0283),
-		("PTCP154", "cp154", msg0284),
-		("UTF-16", "utf16", msg0288),
-		("UTF-16-BE", "UTF-16BE", msg0289),
-		("UTF-16-LE", "UTF-16LE", msg0290),
-		("UTF-7", "U7", msg0291),
-		("ASCII", "us-ascii", msg0208),
-	)
-	return encodings
 
 def generate_random_number(sequence):
 	from random import random

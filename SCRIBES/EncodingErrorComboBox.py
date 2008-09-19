@@ -61,7 +61,7 @@ class ComboBox(object):
 		encoding = self.__model.get_value(iterator, 1)
 		if encoding == "show_encoding_window":
 			self.__combo.set_active(0)
-			self.__editor.show_supported_encodings_window()
+			self.__editor.show_supported_encodings_window(self.__manager.glade.get_widget("Window"))
 		else:
 			self.__manager.emit("new-encoding", encoding)
 		return False

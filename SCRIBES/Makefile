@@ -264,6 +264,19 @@ scribes_PYTHON = \
 	TextWrappingMetadata.py \
 	TextBuffer.py \
 	TextView.py \
+	Toolbar.py \
+	NewToolButton.py \
+	OpenToolButton.py \
+	SaveToolButton.py \
+	PrintToolButton.py \
+	UndoToolButton.py \
+	RedoToolButton.py \
+	GotoToolButton.py \
+	SearchToolButton.py \
+	ReplaceToolButton.py \
+	PreferenceToolButton.py \
+	HelpToolButton.py \
+	Spinner.py \
 	Usage.py \
 	UseTabsMetadata.py \
 	Utils.py \

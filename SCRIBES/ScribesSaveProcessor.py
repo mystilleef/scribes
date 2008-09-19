@@ -115,9 +115,10 @@ if __name__ == "__main__":
 	from sys import argv, path
 	python_path = argv[1]
 	path.insert(0, python_path)
+	from gnome.ui import authentication_manager_init
+	authentication_manager_init()
 	SaveProcessor()
 	__init_psyco()
 	from gobject import MainLoop, threads_init
 	threads_init()
 	MainLoop().run()
-

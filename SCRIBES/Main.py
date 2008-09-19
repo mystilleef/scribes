@@ -41,7 +41,9 @@ def main(argv=None):
 def __open(argv=None):
 	uris = __get_uris(argv)
 	__open_via_dbus(uris)
-#	__init_threads()
+	#__init_threads()
+	from gnome.ui import authentication_manager_init
+	authentication_manager_init()
 	from InstanceManager import Manager
 	Manager().open_files(uris)
 	return
@@ -54,15 +56,15 @@ def __open_via_dbus(uris=None):
 	raise SystemExit
 	return
 
-#def __init_threads():
+def __init_threads():
 #	 Enabling threads makes Scribes unstable.
-#	from gobject import threads_init
-#	threads_init()
-#	from dbus.glib import threads_init
-#	threads_init()
-#	from gtk.gdk import threads_init
-#	threads_init()
-#	return
+	from gobject import threads_init
+	threads_init()
+	from dbus.glib import threads_init
+	threads_init()
+	from gtk.gdk import threads_init
+	threads_init()
+	return
 
 def __get_dbus_service():
 	from Globals import dbus_iface, session_bus

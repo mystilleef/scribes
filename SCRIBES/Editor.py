@@ -47,6 +47,8 @@ class Editor(GObject):
 		"combobox-encoding-data?": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"combobox-encoding-data": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"supported-encodings-window": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
+		"spin-throbber": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
+
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):
@@ -94,6 +96,9 @@ class Editor(GObject):
 		# Object that share information for encoding combo box.
 		from EncodingComboBoxDataManager import Manager
 		Manager(self)
+		# Toolbar object.
+		from Toolbar import Toolbar
+		Toolbar(self)
 		# Register with instance manager after a successful editor
 		# initialization.
 		self.__imanager.register_editor(self)
@@ -205,6 +210,12 @@ class Editor(GObject):
 	save_processor = property(lambda self: self.__imanager.get_save_processor())
 	supported_encodings = property(lambda self: get_supported_encodings())
 
+	def help(self):
+		from gnome import help_display
+		success = True if help_display("/scribes.xml") else False
+		print "Help Launched: %s" % "YES" if success else "NO"
+		return
+
 	def new(self):
 		return self.__imanager.open_files()
 
@@ -292,12 +303,12 @@ class Editor(GObject):
 	def show_load_encoding_error_window(self):
 		self.emit("private-encoding-load-error")
 		return False
-	
+
 	def show_supported_encodings_window(self, window=None):
 		window = window if window else self.window
 		self.emit("supported-encodings-window", window)
-		return 
-	
+		return
+
 	def show_error(self, title, message, window=None, busy=False):
 		window = window if window else self.window
 		self.emit("show-error", title, message, window, busy)
@@ -310,6 +321,10 @@ class Editor(GObject):
 
 	def emit_combobox_encodings(self):
 		self.emit("combobox-encoding-data?")
+		return False
+
+	def spin_throbber(self, spin=True):
+		self.emit("spin-throbber", spin)
 		return False
 		
 ########################################################################
