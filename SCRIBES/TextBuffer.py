@@ -14,6 +14,8 @@ class Buffer(object):
 		self.__sigid6 = editor.connect("loaded-file", self.__loaded_file_cb)
 		self.__sigid7 = editor.connect("load-error", self.__load_error_cb)
 		self.__sigid8 = editor.connect("saved-file", self.__saved_file_cb)
+		self.__sigid9 = editor.connect("undo", self.__undo_cb)
+		self.__sigid10 = editor.connect("redo", self.__redo_cb)
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monid1 = monitor_add(self.__theme_database_uri, MONITOR_FILE, self.__theme_changed_cb)
 		editor.register_object(self)
@@ -40,6 +42,8 @@ class Buffer(object):
 		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid8, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid9, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid10, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -61,6 +65,16 @@ class Buffer(object):
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		self.__buffer.notify("cursor-position")
 		self.__buffer.end_not_undoable_action()
+		return
+
+	def __undo(self):
+		if self.__buffer.can_undo(): return self.__buffer.undo()
+		print "Cannot undo"
+		return False
+
+	def __redo(self):
+		if self.__buffer.can_redo(): return self.__buffer.redo()
+		print "Cannot redo"
 		return
 
 	def __stop_update_cursor_timer(self):
@@ -132,6 +146,7 @@ class Buffer(object):
 		return False
 
 	def __checking_file_cb(self, *args):
+		self.__buffer.begin_not_undoable_action()
 		self.__buffer.set_language(self.__editor.language_object)
 		self.__buffer.handler_block(self.__sigid4)
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
@@ -141,18 +156,28 @@ class Buffer(object):
 		self.__set_cursor_position()
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		self.__buffer.handler_unblock(self.__sigid4)
+		self.__buffer.end_not_undoable_action()
 		return False
 
 	def __load_error_cb(self, *args):
 		self.__buffer.set_language(None)
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		self.__buffer.handler_unblock(self.__sigid4)
+		self.__buffer.end_not_undoable_action()
 		return False
 
 	def __saved_file_cb(self, *args):
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		return False
-		
+
+	def __undo_cb(self, *args):
+		self.__undo()
+		return False
+
+	def __redo_cb(self, *args):
+		self.__redo()
+		return False
+
 	def __quit_cb(self, *args):
 		self.__stop_update_cursor_timer()
 		self.__update_cursor_position(True)

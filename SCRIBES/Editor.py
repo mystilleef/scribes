@@ -48,6 +48,8 @@ class Editor(GObject):
 		"combobox-encoding-data": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"supported-encodings-window": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
 		"spin-throbber": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"undo": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"redo": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 
 	}
 
@@ -179,6 +181,7 @@ class Editor(GObject):
 	window = property(lambda self: self.gui.get_widget("Window"))
 	textview = property(lambda self: self.gui.get_widget("ScrolledWindow").get_child())
 	textbuffer = property(lambda self: self.textview.get_property("buffer"))
+	toolbar = property(lambda self: self.gui.get_widget("Toolbar"))
 	id_ = property(lambda self: id(self))
 	uri = property(lambda self: self.__uri)
 	uris = property(lambda self: self.__imanager.get_uris())
@@ -327,13 +330,21 @@ class Editor(GObject):
 		self.emit("spin-throbber", spin)
 		return False
 		
-	def get_toolbutton(self, name)
+	def get_toolbutton(self, name):
 		toolbutton = None
 		for toolbutton in self.toolbar.get_children():
 			if name != toolbutton.get_property("name"): continue
 			toolbutton = toolbutton
 			break
 		return toolbutton
+	
+	def redo(self):
+		self.emit("redo")
+		return 
+	
+	def undo(self):
+		self.emit("undo")
+		return  
 	
 ########################################################################
 #
