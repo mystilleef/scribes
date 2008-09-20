@@ -327,6 +327,14 @@ class Editor(GObject):
 		self.emit("spin-throbber", spin)
 		return False
 		
+	def get_toolbutton(self, name)
+		toolbutton = None
+		for toolbutton in self.toolbar.get_children():
+			if name != toolbutton.get_property("name"): continue
+			toolbutton = toolbutton
+			break
+		return toolbutton
+	
 ########################################################################
 #
 #								Signal Listener
