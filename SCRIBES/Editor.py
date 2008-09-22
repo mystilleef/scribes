@@ -51,6 +51,8 @@ class Editor(GObject):
 		"update-message": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_INT,)),
 		"set-message": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"unset-message": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"undo": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"redo": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):
@@ -185,6 +187,7 @@ class Editor(GObject):
 	window = property(lambda self: self.gui.get_widget("Window"))
 	textview = property(lambda self: self.gui.get_widget("ScrolledWindow").get_child())
 	textbuffer = property(lambda self: self.textview.get_property("buffer"))
+	toolbar = property(lambda self: self.gui.get_widget("Toolbar"))
 	id_ = property(lambda self: id(self))
 	uri = property(lambda self: self.__uri)
 	uris = property(lambda self: self.__imanager.get_uris())
@@ -341,7 +344,23 @@ class Editor(GObject):
 	def unset_message(self, message, icon_name="scribes"):
 		self.emit("unset-message", message, icon_name)
 		return False
-
+		
+	def get_toolbutton(self, name):
+		toolbutton = None
+		for toolbutton in self.toolbar.get_children():
+			if name != toolbutton.get_property("name"): continue
+			toolbutton = toolbutton
+			break
+		return toolbutton
+	
+	def redo(self):
+		self.emit("redo")
+		return 
+	
+	def undo(self):
+		self.emit("undo")
+		return  
+	
 ########################################################################
 #
 #								Signal Listener

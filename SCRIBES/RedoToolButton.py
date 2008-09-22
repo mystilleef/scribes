@@ -8,6 +8,8 @@ class Button(ToolButton):
 		self.__set_properties()
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
+		self.__sigid3 = self.__editor.connect("redo", self.__redo_cb)
+		self.__sigid4 = self.__editor.connect("undo", self.__redo_cb)
 		editor.register_object(self)
 		self.show()
 
@@ -18,6 +20,8 @@ class Button(ToolButton):
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid2, self)
+		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -34,6 +38,16 @@ class Button(ToolButton):
 		self.__destroy()
 		return False
 
+	def __sensitive(self):
+		sensitive = True if self.__editor.textbuffer.can_redo() else False
+		self.set_property("sensitive", sensitive)
+		return False
+
 	def __clicked_cb(self, *args):
-		print "Not yet implemented"
+		self.__editor.redo()
+		self.__sensitive()
+		return False
+
+	def __redo_cb(self, *args):
+		self.__sensitive()
 		return False
