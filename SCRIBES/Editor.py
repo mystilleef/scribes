@@ -1,5 +1,5 @@
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_BOOLEAN
-from gobject import TYPE_STRING, TYPE_OBJECT, TYPE_PYOBJECT
+from gobject import TYPE_STRING, TYPE_OBJECT, TYPE_PYOBJECT, TYPE_INT
 from Globals import data_folder, metadata_folder, home_folder, desktop_folder
 from Globals import session_bus
 from gnomevfs import URI
@@ -48,7 +48,9 @@ class Editor(GObject):
 		"combobox-encoding-data": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"supported-encodings-window": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
 		"spin-throbber": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
-
+		"update-message": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_INT,)),
+		"set-message": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"unset-message": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):
@@ -99,11 +101,15 @@ class Editor(GObject):
 		# Toolbar object.
 		from Toolbar import Toolbar
 		Toolbar(self)
+		from StatusFeedback import Feedback
+		Feedback(self)
+		from StatusContainer import Container
+		Container(self)
 		# Register with instance manager after a successful editor
 		# initialization.
 		self.__imanager.register_editor(self)
 		self.load_file(uri, encoding) if uri else self.__init_plugins()
-
+ 
 	def __init_attributes(self, manager, uri):
 		self.__contains_document = True if uri else False
 		# True if file is saved.
@@ -256,9 +262,6 @@ class Editor(GObject):
 	def close_files(self, uris):
 		return self.__imanager.close_files(uris)
 
-	def init_authentication_manager(self):
-		return self.__imanager.init_authentication_manager()
-
 	def register_object(self, instance):
 		self.__registered_objects.append(instance)
 		return False
@@ -326,7 +329,19 @@ class Editor(GObject):
 	def spin_throbber(self, spin=True):
 		self.emit("spin-throbber", spin)
 		return False
-		
+
+	def update_message(self, message, icon_name="scribes", time=5):
+		self.emit("update-message", message, icon_name, time)
+		return False
+
+	def set_message(self, message, icon_name="scribes"):
+		self.emit("set-message", message, icon_name)
+		return False
+
+	def unset_message(self, message, icon_name="scribes"):
+		self.emit("unset-message", message, icon_name)
+		return False
+
 ########################################################################
 #
 #								Signal Listener

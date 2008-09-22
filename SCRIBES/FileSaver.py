@@ -7,6 +7,7 @@ class Saver(object):
 		self.__sigid3 = editor.connect("dbus-saved-file", self.__dbus_saved_file_cb)
 		self.__sigid4 = editor.connect("dbus-save-error", self.__dbus_save_error_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

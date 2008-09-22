@@ -35,15 +35,16 @@ scribes_dbus_path = "/net/sourceforge/Scribes"
 
 def main(argv=None):
 	__open(argv)
-	__mainloop()
+	from gtk import main
+	main()
 	return
 
 def __open(argv=None):
 	uris = __get_uris(argv)
 	__open_via_dbus(uris)
 	#__init_threads()
-	from gnome.ui import authentication_manager_init
-	authentication_manager_init()
+	from Utils import init_gnome
+	init_gnome()
 	from InstanceManager import Manager
 	Manager().open_files(uris)
 	return
@@ -79,14 +80,6 @@ def __get_uris(argv):
 	uris = get_uris(argv)
 	if not uris: raise SystemExit
 	return uris
-
-def __mainloop():
-#	__fork_scribes()
-	from Utils import init_gnome
-	init_gnome()
-	from gtk import main
-	main()
-	return
 
 def __fork_scribes():
 	from ForkScribesMetadata import get_value as can_fork

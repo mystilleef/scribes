@@ -44,6 +44,7 @@ class Manager(object):
 		self.__sigid5 = editor.connect("update-encoding-guess-list", self.__update_guess_list_cb)
 		self.__sigid6 = editor.connect("new-encoding-list", self.__new_encoding_list_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

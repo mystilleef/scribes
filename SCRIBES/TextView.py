@@ -32,7 +32,8 @@ class View(object):
 		self.__sigid9 = self.__view.connect("drag-data-received", self.__drag_data_received_cb)
 		self.__sigid10 = editor.connect("loaded-file", self.__loaded_file_cb)
 		self.__sigid11 = editor.connect("busy", self.__busy_cb)
-
+		editor.response()
+		
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		from gtksourceview2 import View, Buffer

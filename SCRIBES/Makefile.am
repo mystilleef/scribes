@@ -86,6 +86,8 @@ scribes_PYTHON = \
 	PreferenceToolButton.py \
 	HelpToolButton.py \
 	Spinner.py \
+	StatusContainer.py \
+	StatusFeedback.py \
 	Usage.py \
 	UseTabsMetadata.py \
 	Utils.py \

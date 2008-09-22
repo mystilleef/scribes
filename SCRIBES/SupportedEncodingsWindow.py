@@ -8,7 +8,8 @@ class Window(object):
 		self.__sigid3 = self.__window.connect("key-press-event", self.__key_press_event_cb)
 		self.__sigid4 = manager.connect("show-window", self.__show_window_cb)
 		self.__window.set_property("sensitive", True)
-
+		editor.response()
+		
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
 		self.__manager = manager

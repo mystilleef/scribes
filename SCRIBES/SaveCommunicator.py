@@ -16,6 +16,7 @@ class Communicator(object):
 						signal_name="is_ready",
 						dbus_interface=save_dbus_service)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

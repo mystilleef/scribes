@@ -6,7 +6,8 @@ class Loader(object):
 		self.__sigid2 = editor.connect("load-error", self.__error_cb)
 		self.__sigid3 = manager.connect("new-encoding", self.__encoding_cb)
 		self.__sigid4 = manager.connect("load", self.__load_cb)
-
+		editor.response()
+		
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor

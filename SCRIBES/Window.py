@@ -51,6 +51,7 @@ class Window(object):
 		editor.register_object(self)
 		self.__position_window()
 		self.__window.present()
+		editor.response()
 		self.__window.set_property("sensitive", True)
 
 	def __init_attributes(self, editor, uri):
@@ -64,7 +65,9 @@ class Window(object):
 		return
 
 	def __destroy(self):
+		self.__editor.response()
 		self.__window.hide()
+		self.__editor.response()
 		self.__editor.disconnect_signal(self.__sigid1, self.__window)
 		self.__editor.disconnect_signal(self.__sigid2, self.__window)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)

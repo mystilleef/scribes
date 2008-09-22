@@ -9,6 +9,7 @@ class Window(object):
 		self.__sigid4 = manager.connect("show-window", self.__show_window_cb)
 		self.__sigid5 = manager.connect("hide-window", self.__hide_window_cb)
 		self.__window.set_property("sensitive", True)
+		editor.response()
 		
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor

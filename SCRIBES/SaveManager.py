@@ -21,6 +21,7 @@ class Manager(object):
 		self.__sigid5 = editor.connect("modified-file", self.__modified_file_cb)
 		self.__sigid6 = editor.connect("window-focus-out", self.__focus_out_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

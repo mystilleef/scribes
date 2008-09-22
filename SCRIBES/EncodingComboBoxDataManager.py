@@ -10,7 +10,8 @@ class Manager(object):
 		self.__monid1 = monitor_add(self.__database_uri, MONITOR_FILE, self.__encoding_cb)
 		editor.register_object(self)
 		self.__emit_encoding_data()
-
+		editor.response()
+		
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__supported_encodings = editor.supported_encodings

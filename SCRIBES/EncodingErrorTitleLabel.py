@@ -4,6 +4,7 @@ class Label(object):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("load-error", self.__load_error_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

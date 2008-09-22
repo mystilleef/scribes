@@ -130,11 +130,6 @@ class Manager(object):
 	def get_editor_instances(self):
 		return self.__editor_instances
 
-	def init_authentication_manager(self):
-		from gnome.ui import authentication_manager_init
-		authentication_manager_init()
-		return
-
 ########################################################################
 #
 #						Helper Methods

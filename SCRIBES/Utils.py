@@ -380,13 +380,14 @@ def find_matching_bracket(iterator):
 
 def init_gnome():
 	# Crashes the save dialog if uncommented.
-	import gnome.ui
 	from Globals import version, name, data_path
 	from gnome import PARAM_APP_DATADIR, program_init, ui
 	properties = {
 		PARAM_APP_DATADIR: data_path,
 	}
 	program = program_init(name, version, properties=properties)
+	from gnome.ui import authentication_manager_init
+	authentication_manager_init()
 	return
 
 def backward_to_line_begin(iterator):
@@ -418,4 +419,3 @@ def open_database(basepath, flag="c"):
 	except error:
 		database = open_(database_path, flag="n", writeback=False)
 	return database
-

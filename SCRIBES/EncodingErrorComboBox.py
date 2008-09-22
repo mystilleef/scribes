@@ -6,6 +6,7 @@ class ComboBox(object):
 		self.__sigid1 = manager.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("combobox-encoding-data", self.__encoding_data_cb)
 		self.__sigid3 = self.__combo.connect("changed", self.__changed_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

@@ -88,6 +88,7 @@ class Toolbar(object):
 
 	def __set_visibility(self):
 		self.__toolbar.show()
+		self.__editor.response()
 		return
 
 	def __quit_cb(self, *args):

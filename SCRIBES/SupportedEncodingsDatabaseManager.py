@@ -7,6 +7,7 @@ class Manager(object):
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monid1 = monitor_add(self.__database_uri, MONITOR_FILE, self.__encoding_cb)
 		self.__emit_encoding_list()
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

@@ -70,7 +70,6 @@ class FileLoader(object):
 	def __get_file_info(self):
 		try:
 			if self.__uri.startswith("file:///"): return
-			self.__editor.init_authentication_manager()
 			FILE_INFO_ACCESS_RIGHTS = 1 << 4
 			from gnomevfs import AccessDeniedError, NotFoundError
 			from gnomevfs import get_file_info, FILE_INFO_DEFAULT

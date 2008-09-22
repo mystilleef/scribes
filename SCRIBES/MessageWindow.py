@@ -11,6 +11,7 @@ class Window(object):
 		self.__sigid5 = editor.connect("show-error", self.__show_error_cb)
 		self.__sigid6 = editor.connect("show-info", self.__show_info_cb)
 		editor.register_object(self)
+		editor.response()
 		
 	def __init_attributes(self, editor):
 		self.__editor = editor

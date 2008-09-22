@@ -9,6 +9,7 @@ class TreeView(object):
 		self.__sigid2 = self.__renderer.connect("toggled", self.__toggled_cb)
 		self.__sigid3 = manager.connect("encoding-list", self.__encoding_cb)
 		self.__populate_model()
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
