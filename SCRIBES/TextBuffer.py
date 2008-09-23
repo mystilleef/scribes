@@ -1,3 +1,5 @@
+from gettext import gettext as _
+
 class Buffer(object):
 	"""
 	This class defines the behavior of the editor's buffer.
@@ -69,13 +71,25 @@ class Buffer(object):
 		return
 
 	def __undo(self):
-		if self.__buffer.can_undo(): return self.__buffer.undo()
-		print "Cannot undo"
+		try:
+			if not self.__buffer.can_undo(): raise ValueError
+			self.__buffer.undo()
+			message = _("Undo last action")
+			self.__editor.update_message(message, "pass")
+		except ValueError:
+			message = _("Cannot undo last action")
+			self.__editor.update_message(message, "fail")
 		return False
 
 	def __redo(self):
-		if self.__buffer.can_redo(): return self.__buffer.redo()
-		print "Cannot redo"
+		try:
+			if not self.__buffer.can_redo(): raise ValueError
+			self.__buffer.redo()
+			message = _("Redo previous action")
+			self.__editor.update_message(message, "pass")
+		except ValueError:
+			message = _("Cannot redo previous action")
+			self.__editor.update_message(message, "fail")
 		return
 
 	def __stop_update_cursor_timer(self):

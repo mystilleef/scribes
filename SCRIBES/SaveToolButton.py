@@ -10,6 +10,7 @@ class Button(ToolButton):
 		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
 		editor.register_object(self)
 		self.show()
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

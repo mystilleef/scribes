@@ -278,6 +278,7 @@ scribes_PYTHON = \
 	HelpToolButton.py \
 	Spinner.py \
 	StatusContainer.py \
+	StatusCursorPosition.py \
 	StatusFeedback.py \
 	StatusImage.py \
 	Usage.py \

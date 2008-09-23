@@ -51,6 +51,7 @@ python_path = "@python_path@"
 version = "@VERSION@"
 author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"Contributors:",
+			"\tIb Lundgren <ib.lundgren@gmail.com>",
 			"\tHerman Polloni <hpolloni@gmail.com>",
 			"\tJames Laver <james.laver@gmail.com>",
 			"\tHugo Madureira <madureira.hugo@gmail.com>",

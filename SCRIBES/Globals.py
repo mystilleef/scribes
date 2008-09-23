@@ -48,9 +48,10 @@ data_folder = data_path + "/scribes"
 core_plugin_folder = data_folder + "/plugins"
 core_language_plugin_folder = data_folder + "/LanguagePlugins"
 python_path = "/usr/lib/python2.5/site-packages"
-version = "0.3.4-dev3"
+version = "0.4-dev-build244"
 author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"Contributors:",
+			"\tIb Lundgren <ib.lundgren@gmail.com>",
 			"\tHerman Polloni <hpolloni@gmail.com>",
 			"\tJames Laver <james.laver@gmail.com>",
 			"\tHugo Madureira <madureira.hugo@gmail.com>",

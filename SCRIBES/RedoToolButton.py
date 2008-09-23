@@ -12,6 +12,7 @@ class Button(ToolButton):
 		self.__sigid4 = self.__editor.connect("undo", self.__redo_cb)
 		editor.register_object(self)
 		self.show()
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

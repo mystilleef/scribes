@@ -47,6 +47,7 @@ class Spinner(ToolItem):
 		self.__sigid6 = editor.connect("load-error", self.__load_error_cb)
 		self.__set_properties()
 		self.show_all()
+		editor.response()
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):

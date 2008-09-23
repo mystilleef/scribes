@@ -100,20 +100,26 @@ class Editor(GObject):
 		# Object that share information for encoding combo box.
 		from EncodingComboBoxDataManager import Manager
 		Manager(self)
-		# Toolbar object.
-		from Toolbar import Toolbar
-		Toolbar(self)
 		from StatusFeedback import Feedback
 		Feedback(self)
 		from StatusImage import Image
 		Image(self)
+		from StatusCursorPosition import Position
+		Position(self)
 		from StatusContainer import Container
 		Container(self)
+		# Toolbar object.
+		from Toolbar import Toolbar
+		Toolbar(self)
 		# Register with instance manager after a successful editor
 		# initialization.
 		self.__imanager.register_editor(self)
+
+		# Load files or initialize plugins. Always load files, if any,
+		# before initializing plugin systems. This should be the last
+		# line in this method.
 		self.load_file(uri, encoding) if uri else self.__init_plugins()
- 
+
 	def __init_attributes(self, manager, uri):
 		self.__contains_document = True if uri else False
 		# True if file is saved.
@@ -346,7 +352,7 @@ class Editor(GObject):
 	def unset_message(self, message, icon_name="scribes"):
 		self.emit("unset-message", message, icon_name)
 		return False
-		
+
 	def get_toolbutton(self, name):
 		toolbutton = None
 		for toolbutton in self.toolbar.get_children():
@@ -354,15 +360,23 @@ class Editor(GObject):
 			toolbutton = toolbutton
 			break
 		return toolbutton
-	
+
 	def redo(self):
 		self.emit("redo")
-		return 
-	
+		return
+
 	def undo(self):
 		self.emit("undo")
-		return  
-	
+		return
+
+	def backward_to_line_begin(self, iterator):
+		from Utils import backward_to_line_begin
+		return backward_to_line_begin(iterator)
+
+	def forward_to_line_end(self, iterator):
+		from Utils import forward_to_line_end
+		return forward_to_line_end(iterator)
+
 ########################################################################
 #
 #								Signal Listener

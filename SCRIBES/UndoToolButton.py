@@ -13,6 +13,7 @@ class Button(ToolButton):
 		self.__sigid5 = self.__editor.connect("modified-file", self.__undo_cb)
 		editor.register_object(self)
 		self.show()
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
