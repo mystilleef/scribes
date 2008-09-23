@@ -88,6 +88,7 @@ scribes_PYTHON = \
 	Spinner.py \
 	StatusContainer.py \
 	StatusCursorPosition.py \
+	StatusInsertionType.py \
 	StatusFeedback.py \
 	StatusImage.py \
 	Usage.py \

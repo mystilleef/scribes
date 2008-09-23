@@ -9,6 +9,7 @@ from EncodedFilesMetadata import get_value as get_encoding
 from EncodingMetadata import get_value as get_encoding_list
 from Utils import get_language
 from SupportedEncodings import get_supported_encodings
+from gettext import gettext as _
 
 class Editor(GObject):
 
@@ -106,6 +107,8 @@ class Editor(GObject):
 		Image(self)
 		from StatusCursorPosition import Position
 		Position(self)
+		from StatusInsertionType import Type
+		Type(self)
 		from StatusContainer import Container
 		Container(self)
 		# Toolbar object.
@@ -230,7 +233,9 @@ class Editor(GObject):
 	def help(self):
 		from gnome import help_display
 		success = True if help_display("/scribes.xml") else False
-		print "Help Launched: %s" % "YES" if success else "NO"
+		message = _("Launching user guide") if success else _("Failed to launch user guide")
+		show = self.update_message
+		show(message, "help", 10) if success else show(message, "fail", 7)
 		return
 
 	def new(self):

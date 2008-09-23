@@ -63,9 +63,10 @@ class Position(object):
 
 	def __quit_cb(self, *args):
 		self.__destroy()
-		return False
+		return False 
 
 	def __moved_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__move, priority=9999)
 		return False
+		
