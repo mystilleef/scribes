@@ -88,6 +88,7 @@ scribes_PYTHON = \
 	Spinner.py \
 	StatusContainer.py \
 	StatusFeedback.py \
+	StatusImage.py \
 	Usage.py \
 	UseTabsMetadata.py \
 	Utils.py \

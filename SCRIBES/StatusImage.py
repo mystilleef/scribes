@@ -1,11 +1,7 @@
-from gettext import gettext as _
-
-COLOR = "#06989A"
-class Feedback(object):
+class Image(object):
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
-		self.__label.set_label("")
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("checking-file", self.__checking_file_cb)
 		self.__sigid3 = editor.connect("loaded-file", self.__loaded_file_cb)
@@ -21,11 +17,16 @@ class Feedback(object):
 		editor.response()
 
 	def __init_attributes(self, editor):
+		from collections import deque
 		self.__editor = editor
 		self.__busy = False
-		from collections import deque
 		self.__queue = deque([])
-		self.__label = editor.gui.get_widget("StatusFeedback")
+		self.__image = editor.gui.get_widget("StatusImage")
+		from gtk import stock_list_ids
+		self.__id_dictionary = self.__map_scribes_ids()
+		self.__stock_ids = stock_list_ids()
+		self.__custom_ids = [name[4:] for name in self.__stock_ids]
+		self.__scribe_ids = ("error", "pass", "fail", "scribes", "busy")
 		return
 
 	def __destroy(self):
@@ -45,120 +46,109 @@ class Feedback(object):
 		self = None
 		return
 
-	def __set_label(self, message=None, bold=False, italic=False, color=None):
+	def __set_image(self, image_name):
 		try:
-			if not message: raise ValueError
-			if color: message = "<span foreground='%s'>" % color + message + "</span>"
-			if bold: message =  "<b>" + message + "</b>"
-			if italic: message = "<i>" + message + "</i>"
-			self.__label.set_label(message)
+			if image_name in self.__custom_ids: raise ValueError
+			if image_name in self.__scribe_ids: raise TypeError
 		except ValueError:
-			self.__label.set_label("")
+			image_name = "gtk-" + image_name
+		except TypeError:
+			image_name = self.__id_dictionary[image_name]
+		finally:
+			from gtk import ICON_SIZE_MENU
+			self.__image.set_from_icon_name(image_name, ICON_SIZE_MENU)
+			self.__image.show()
 		return False
 
-	def __set_default_message(self):
+	def __set_default_image(self):
 		try:
 			if self.__queue: raise ValueError
 			if not self.__editor.uri: raise TypeError
-			filename = self.__get_filename(self.__editor.uri)
-			self.__set_label(filename + _(" [modified]"), italic=True) if self.__editor.modified else self.__set_label(filename, bold=True)
+			self.__set_image("edit") if self.__editor.modified else self.__set_image("new")
 		except ValueError:
-			self.__set_label(self.__queue[-1], True, False, COLOR)
+			self.__set_image(self.__queue[-1])
 		except TypeError:
-			self.__set_label()
+			self.__image.hide()
 		finally:
 			self.__busy = False
 		return False
 
-	def __update_message(self, message, time=5, color=COLOR):
+	def __update_message_image(self, icon_name, time=5):
 		self.__busy = True
-		self.__set_label(message, True, False, color)
+		self.__set_image(icon_name)
 		from gobject import timeout_add
-		timeout_add(time*1000, self.__set_default_message, priority=9999)
+		timeout_add(time*1000, self.__set_default_image, priority=9999)
 		return False
 
-	def __set_message(self, message, color=COLOR):
-		self.__queue.append(message)
-		self.__set_label(message, True, False, color)
+	def __set_message_image(self, icon_name):
+		self.__queue.append(icon_name)
+		self.__set_image(icon_name)
 		return False
 
-	def __unset_message(self, message):
-		self.__queue.remove(message)
+	def __unset_message_image(self, icon_name):
+		self.__queue.remove(icon_name)
 		if self.__busy: return False
 		from gobject import idle_add
-		idle_add(self.__set_default_message, priority=9999)
+		idle_add(self.__set_default_image, priority=9999)
 		return False
 
-	def __get_filename(self, uri):
-		from gnomevfs import get_local_path_from_uri
-		filename = get_local_path_from_uri(uri)
-		filename = filename.replace(self.__editor.home_folder.rstrip("/"), "~")
-		return filename
+	def __map_scribes_ids(self):
+		dictionary = {"error": "gtk-dialog-error", "pass": "gtk-yes", "fail": "gtk-no",
+		"scribes":"scribes", "busy": "gtk-execute"}
+		return dictionary
 
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __checking_file_cb(self, editor, uri, *args):
-		filename = self.__get_filename(uri)
-		message = _("Loading %s") % filename
 		from gobject import idle_add
-		idle_add(self.__set_message, message, priority=9999)
+		idle_add(self.__set_message_image, "busy", priority=9999)
 		return False
 
 	def __loaded_file_cb(self, editor, uri, *args):
-		filename = self.__get_filename(uri)
-		message = _("Loaded %s") % filename
 		from gobject import idle_add
-		idle_add(self.__update_message, message, priority=9999)
-		message = _("Loading %s") % filename
-		idle_add(self.__unset_message, message, priority=9999)
+		idle_add(self.__update_message_image, "gtk-open", priority=9999)
+		idle_add(self.__unset_message_image, "busy", priority=9999)
 		return False
 
 	def __saved_file_cb(self, *args):
 		if self.__busy: return False
-		filename = self.__get_filename(self.__editor.uri)
-		message = _("Saved %s") % filename
 		from gobject import idle_add
-		idle_add(self.__update_message, message, 3, priority=9999)
+		idle_add(self.__update_message_image, "gtk-save", 3, priority=9999)
 		return False
 
 	def __modified_file_cb(self, *args):
 		if self.__busy: return False
 		from gobject import idle_add
-		idle_add(self.__set_default_message, priority=9999)
+		idle_add(self.__set_default_image, priority=9999)
 		return False
 
 	def __save_error_cb(self, editor, uri, *args):
-		filename = self.__get_filename(uri)
-		message = _("Failed to save '%s'") % filename
 		from gobject import idle_add
-		idle_add(self.__update_message, message, 7, "red", priority=9999)
+		idle_add(self.__update_message_image, "error", priority=9999)
 		return False
 
 	def __load_error_cb(self, editor, uri, *args):
-		filename = self.__get_filename(uri)
-		message = _("Failed to load '%s'") % filename
 		from gobject import idle_add
-		idle_add(self.__update_message, message, 7, "red", priority=9999)
+		idle_add(self.__update_message_image, "error", priority=9999)
+		idle_add(self.__unset_message_image, "busy", priority=9999)
 		return False
 
 	def __readonly_cb(self, *args):
 		return False
 
 	def __update_message_cb(self, editor, message, icon_name, time):
-		color = COLOR	
-		if icon_name in ("error", "gtk-dialog-error", "fail",): color = "red"
 		from gobject import idle_add
-		idle_add(self.__update_message, message, time, color, priority=9999)
+		idle_add(self.__update_message_image, icon_name, time, priority=9999)
 		return False
 
 	def __set_message_cb(self, editor, message, icon_name):
 		from gobject import idle_add
-		idle_add(self.__set_message, message, priority=9999)
+		idle_add(self.__set_message_image, icon_name, priority=9999)
 		return False
 
 	def __unset_message_cb(self, editor, message, icon_name):
 		from gobject import idle_add
-		idle_add(self.__unset_message, message, priority=9999)
+		idle_add(self.__unset_message_image, icon_name, priority=9999)
 		return False

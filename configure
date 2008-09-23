@@ -234,7 +234,6 @@ do
 done
 IFS=$as_save_IFS
 
-
       for as_shell in $as_candidate_shells $SHELL; do
 	 # Try only shells that exist, to save several forks.
 	 if { test -f "$as_shell" || test -f "$as_shell.exe"; } &&
@@ -338,7 +337,6 @@ _ASEOF
 fi
 
 fi
-
       done
 
       if test "x$CONFIG_SHELL" != x; then

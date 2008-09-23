@@ -105,6 +105,8 @@ class Editor(GObject):
 		Toolbar(self)
 		from StatusFeedback import Feedback
 		Feedback(self)
+		from StatusImage import Image
+		Image(self)
 		from StatusContainer import Container
 		Container(self)
 		# Register with instance manager after a successful editor

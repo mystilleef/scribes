@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Sep 13 16:40:34 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Sep 23 15:28:21 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="Window">
     <property name="sensitive">False</property>
     <property name="title" translatable="yes">Unsaved Document</property>
-    <property name="startup_id">ScribesWindowID</property>
     <property name="role">ScribesWindowRole</property>
+    <property name="startup_id">ScribesWindowID</property>
     <property name="window_position">GTK_WIN_POS_CENTER</property>
     <property name="default_width">640</property>
     <property name="default_height">480</property>
@@ -60,7 +60,7 @@
             <child>
               <widget class="GtkHBox" id="StatusContainer">
                 <property name="no_show_all">True</property>
-                <property name="spacing">5</property>
+                <property name="spacing">4</property>
                 <child>
                   <widget class="GtkImage" id="StatusImage">
                     <property name="no_show_all">True</property>
@@ -69,6 +69,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
+                    <property name="padding">3</property>
                   </packing>
                 </child>
                 <child>
