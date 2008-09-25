@@ -86,6 +86,8 @@ class Window(object):
 		return False
 
 	def __set_properties(self):
+		from gtk.gdk import KEY_PRESS_MASK
+		self.__window.add_events(KEY_PRESS_MASK)
 		width, height = self.__editor.calculate_resolution_independence(self.__window, 1.462857143, 1.536)
 		self.__window.set_property("default-height", height)
 		self.__window.set_property("default-width", width)

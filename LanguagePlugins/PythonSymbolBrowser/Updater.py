@@ -36,12 +36,11 @@ class Updater(object):
 
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
-		self.__sig_id1 = manager.connect("show-window", self.__show_window_cb)
+		self.__sigid1 = manager.connect("show-window", self.__show_window_cb)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
 		self.__manager = manager
-		self.__sig_id1 = None
 		from collections import deque
 		# symbols has the format [(line_number, name, type), ...]
 		self.__symbols = deque([])
@@ -55,7 +54,7 @@ class Updater(object):
 		try:
 			self.__symbols.clear()
 			from compiler import parse
-			parse_tree = parse(self.__editor.get_text())
+			parse_tree = parse(self.__editor.text)
 			nodes = parse_tree.getChildNodes()
 			self.__extract_symbols(nodes, 0)
 			self.__manager.emit("update", self.__symbols)
@@ -98,15 +97,6 @@ class Updater(object):
 	def __is_class_node(self, node):
 		attributes = set(["name", "bases", "doc", "code"])
 		return attributes.issubset(set(dir(node)))
-
-	def __precompile_method(self):
-		try:
-			from psyco import bind
-			bind(self.__get_symbols)
-			bind(self.__extract_symbols)
-		except ImportError:
-			pass
-		return False
 
 	def __show_window_cb(self, *args):
 		from gobject import idle_add

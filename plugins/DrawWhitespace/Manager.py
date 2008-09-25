@@ -45,15 +45,6 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		from WhitespaceDrawer import Drawer
@@ -64,25 +55,10 @@ class Manager(GObject):
 #		Manager(editor, self)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		return
 
 	def destroy(self):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		self.emit("destroy")
 		del self
 		self = None

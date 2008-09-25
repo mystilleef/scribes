@@ -33,7 +33,7 @@ name = "Navigation and selection plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 languages = ["python"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "NavigationSelectionPlugin"
 short_description = "Navigation and selection for Python source code."
 long_description = """Navigation and selection for Python source code."""
@@ -45,35 +45,14 @@ class NavigationSelectionPlugin(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the NavigationSelectionPlugin instance.
-		@type self: A NavigationSelectionPlugin object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__trigger = None
 
 	def load(self):
-		"""
-		Load navigation and selection plugin.
-
-		@param self: Reference to the NavigationSelectionPlugin instance.
-		@type self: An NavigationSelectionPlugin object.
-		"""
 		from PythonNavigationSelection.Trigger import Trigger
 		self.__trigger = Trigger(self.__editor)
 		return
 
 	def unload(self):
-		"""
-		Unload navigation and selection plugin.
-
-		@param self: Reference to the NavigationSelectionPlugin instance.
-		@type self: An NavigationSelectionPlugin object.
-		"""
 		self.__trigger.destroy()
 		return

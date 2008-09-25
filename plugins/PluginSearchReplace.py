@@ -32,7 +32,7 @@ to perform spaces operations.
 name = "Search and Replace Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "SearchReplacePlugin"
 short_description = "Search and replace operations."
 long_description = """This plug-in performs search and replace operations \

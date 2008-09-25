@@ -52,19 +52,8 @@ class Drawer(object):
 		self.__sig_id2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sig_id3 = manager.connect("color", self.__color_cb)
 		self.__sig_id4 = manager.connect("show", self.__show_cb)
-		from gobject import idle_add
-		idle_add(self.__precompile_method, priority=9999)
 
 	def __init_attributes(self, editor, manager):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__manager = manager
 		self.__textview = editor.textview
@@ -87,7 +76,11 @@ class Drawer(object):
 			elif c == '\302\240':
 				self.__draw_nbsp(cr, start)
 			if not start.forward_char(): break
-		cr.stroke()
+		try:
+			from cairo import Error
+			cr.stroke()
+		except Error:
+			pass
 		return False
 
 	def __draw_tab(self, cr, iterator):
@@ -150,18 +143,6 @@ class Drawer(object):
 		self.__textview.queue_draw()
 		return
 
-	def __precompile_method(self):
-		try:
-			from psyco import bind
-			bind(self.__event_after_cb)
-			bind(self.__draw_whitespaces)
-			bind(self.__draw_space)
-			bind(self.__draw_tab)
-			bind(self.__draw_nbsp)
-		except ImportError:
-			pass
-		return False
-
 	def __event_after_cb(self, textview, event):
 		if self.__show is False: return False
 		from gtk.gdk import EXPOSE
@@ -191,12 +172,6 @@ class Drawer(object):
 		return False
 
 	def __destroy(self):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		self.__editor.disconnect_signal(self.__sig_id1, self.__textview)
 		self.__editor.disconnect_signal(self.__sig_id2, self.__manager)
 		self.__editor.disconnect_signal(self.__sig_id3, self.__manager)

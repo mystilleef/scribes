@@ -32,7 +32,7 @@ select text within pair characters.
 name = "Dynamic Templates Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "TemplatesPlugin"
 short_description = "Dynamic Templates"
 long_description = """This plug-in performs templates operations"""

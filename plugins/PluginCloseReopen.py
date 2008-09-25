@@ -31,7 +31,7 @@ This module documents a class that loads the about plugin.
 name = "CloseReopen Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "CloseReopenPlugin"
 short_description = "Close current window, reopen new one."
 long_description = """Close current window, reopen new one."""

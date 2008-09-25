@@ -32,7 +32,7 @@ plugin.
 name = "Scroll Navigation Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "ScrollNavigationPlugin"
 short_description = "Keyboard Scroll navigation for Scribes."
 long_description = """Keyboard Scroll navigation for Scribes."""

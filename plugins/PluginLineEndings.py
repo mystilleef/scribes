@@ -32,7 +32,7 @@ bookmark operations.
 name = "Line Endings Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "LineEndingsPlugin"
 short_description = "Line ending operations."
 long_description = """This plugin performs operations that changes line

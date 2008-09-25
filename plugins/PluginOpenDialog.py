@@ -32,7 +32,7 @@ show the open dialog.
 name = "Open Dialog Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "OpenDialogPlugin"
 short_description = "Show the open dialog."
 long_description = """This plug-in shows the open dialog."""

@@ -32,7 +32,7 @@ to toggle spell checking.
 name = "Save File Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "SaveFilePlugin"
 short_description = "Save a file."
 long_description = """\

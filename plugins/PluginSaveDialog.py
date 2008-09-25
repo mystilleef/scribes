@@ -32,7 +32,7 @@ show the open dialog.
 name = "Save Dialog Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "SaveDialogPlugin"
 short_description = "Show the save dialog."
 long_description = """This plug-in shows the save dialog."""

@@ -32,7 +32,7 @@ show the about dialog.
 name = "Lexical Scope Highlight Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "LexicalScopeHighlightPlugin"
 short_description = "Highlight region between matching pair characters."
 long_description = """Highlight region between matching pair characters.

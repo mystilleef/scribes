@@ -32,7 +32,7 @@ undoing or redoing text operations.
 name = "Undo/Redo Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "UndoRedoPlugin"
 short_description = "Undo or redo text operations."
 long_description = """Undo or redo text operations"""

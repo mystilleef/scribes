@@ -210,7 +210,9 @@ class FileLoader(object):
 				except TypeError:
 					unicode_string = string.decode("utf-8")
 			utf8_string = unicode_string.encode("utf-8")
+			self.__editor.response()
 			self.__editor.textbuffer.set_text(utf8_string)
+			self.__editor.response()
 		except UnicodeDecodeError:
 			self.__error(_("Load Error: Failed to decode file for loading. The file \
 your are loading may not be a text file. If you are sure it is a text \

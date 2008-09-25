@@ -32,7 +32,7 @@ the document switcher plug-in.
 name = "Document Switcher"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "DocumentSwitcherPlugin"
 short_description = "Use (ctrl - tab) to switch between documents."
 long_description = """\

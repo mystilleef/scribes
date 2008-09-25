@@ -32,7 +32,7 @@ to toggle spell checking.
 name = "Readonly Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "ReadOnlyPlugin"
 short_description = "Toggle readonly mode."
 long_description = """\

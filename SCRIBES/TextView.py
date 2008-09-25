@@ -142,7 +142,9 @@ class View(object):
 			self.__view.window.process_updates(True)
 		except:
 			pass
-		self.__view.grab_focus()
+		finally:
+			self.__view.grab_focus()
+			self.__editor.response()
 		return False
 
 ################################################################################
@@ -157,6 +159,7 @@ class View(object):
 
 	def __busy_cb(self, editor, sensitive):
 		self.__view.set_property("sensitive", not sensitive)
+		if not sensitive: self.__refresh()
 		return False
 
 	def __ready_cb(self, *args):

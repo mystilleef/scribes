@@ -31,7 +31,7 @@ This module documents a class that loads the about plugin.
 name = "About Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "AboutPlugin"
 short_description = "Shows the about dialog."
 long_description = """Shows the about dialog."""

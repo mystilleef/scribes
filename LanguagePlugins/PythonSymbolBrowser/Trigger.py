@@ -36,28 +36,10 @@ class Trigger(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize the trigger.
-
-		@param self: Reference to the Trigger instance.
-		@type self: A Trigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor)
 		self.__signal_id_1 = self.__trigger.connect("activate", self.__show_cb)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize the trigger's attributes.
-
-		@param self: Reference to the Trigger instance.
-		@type self: A Trigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__manager = None
 		self.__trigger = self.__create_trigger()
@@ -66,27 +48,12 @@ class Trigger(object):
 		return
 
 	def __create_trigger(self):
-		"""
-		Create the trigger.
-
-		@param self: Reference to the Trigger instance.
-		@type self: A Trigger object.
-		"""
 		# Trigger to show a symbol browser.
 		self.__trigger = self.__editor.create_trigger("show_python_symbol_browser", "F5")
 		self.__editor.add_trigger(self.__trigger)
 		return self.__trigger
 
 	def __show_cb(self, *args):
-		"""
-		Handles callback when the "activate" signal is emitted.
-
-		@param self: Reference to the Trigger instance.
-		@type self: A Trigger object.
-
-		@param trigger: An object to show the symbol browser.
-		@type trigger: A Trigger object.
-		"""
 		try:
 			self.__manager.show_browser()
 		except AttributeError:
@@ -96,12 +63,6 @@ class Trigger(object):
 		return
 
 	def destroy(self):
-		"""
-		Destroy object.
-
-		@param self: Reference to the Trigger instance.
-		@type self: An Trigger object.
-		"""
 		self.__editor.remove_trigger(self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		if self.__manager: self.__manager.destroy()

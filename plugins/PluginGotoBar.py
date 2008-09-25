@@ -32,7 +32,7 @@ show the about dialog.
 name = "Goto Bar Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "GotoBarPlugin"
 short_description = "Show the goto bar."
 long_description = """This plug-in shows the goto bar"""

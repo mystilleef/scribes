@@ -32,7 +32,7 @@ to perform spaces operations.
 name = "Spaces to tabs Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "SpacesPlugin"
 short_description = "Spaces operations."
 long_description = """This plug-in performs all sorts of spaces \

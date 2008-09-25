@@ -32,7 +32,7 @@ to toggle spell checking.
 name = "Fullscreen Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "FullScreenPlugin"
 short_description = "Toggle fullscreen mode."
 long_description = """Toggle fullscreen mode."""

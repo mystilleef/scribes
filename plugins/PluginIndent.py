@@ -32,7 +32,7 @@ indentation operations.
 name = "Indentation Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "IndentPlugin"
 short_description = "Indent or unindent lines in Scribes."
 long_description = """This plug-in indents or unindents a line or \ 

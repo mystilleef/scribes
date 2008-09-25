@@ -29,40 +29,14 @@ property from the database.
 @contact: mystilleef@gmail.com
 """
 
-def open_database(flag="c"):
-	"""
-	Open the  spell check database.
-
-	@return: A database object representing the spell check database.
-	@rtype: A database Shelve object.
-	"""
-	from SCRIBES.info import metadata_folder
-	from os.path import exists, join
-	preference_folder = join(metadata_folder, "PluginPreferences")
-	if not exists(preference_folder):
-		from os import makedirs
-		makedirs(preference_folder)
-	database_file = join(preference_folder, "DrawWhitespace.gdb")
-	from shelve import open
-	from anydbm import error
-	try:
-		database = open(database_file, flag=flag, writeback=False)
-	except error:
-		database = open(database_file, flag="n", writeback=False)
-	return database
+from SCRIBES.Utils import open_database
+basepath = "/PluginPreferences/DrawWhitespace.gdb"
 
 def get_value():
-	"""
-	Get spell check properties from database.
-
-	@return: A  True/False property
-	@rtype: A Boolean object.
-	"""
 	try:
 		value = False
-		database = open_database("r")
+		database = open_database(basepath, "r")
 		value = database["show"]
-		database.close()
 	except KeyError:
 		pass
 	finally:
@@ -70,13 +44,7 @@ def get_value():
 	return value
 
 def set_value(value):
-	"""
-	Set spell check property in database.
-
-	@param value: A True/False property
-	@type value: A Boolean object.
-	"""
-	database = open_database("w")
+	database = open_database(basepath, "w")
 	database["show"] = value
 	database.close()
 	return

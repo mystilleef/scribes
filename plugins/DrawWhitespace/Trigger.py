@@ -36,28 +36,10 @@ class Trigger(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize the trigger.
-
-		@param self: Reference to the Trigger instance.
-		@type self: A Trigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor)
 		self.__signal_id_1 = self.__trigger.connect("activate", self.__toggle_draw_spaces_cb)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize the trigger's attributes.
-
-		@param self: Reference to the Trigger instance.
-		@type self: A Trigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		from Manager import Manager
 		self.__manager = Manager(editor)
@@ -67,27 +49,12 @@ class Trigger(object):
 		return
 
 	def __create_trigger(self):
-		"""
-		Create the trigger.
-
-		@param self: Reference to the Trigger instance.
-		@type self: A Trigger object.
-		"""
 		# Trigger to toggle white space.
 		self.__trigger = self.__editor.create_trigger("show_white_spaces", "alt - period")
 		self.__editor.add_trigger(self.__trigger)
 		return self.__trigger
 
 	def __toggle_draw_spaces_cb(self, *args):
-		"""
-		Handles callback when the "activate" signal is emitted.
-
-		@param self: Reference to the Trigger instance.
-		@type self: A Trigger object.
-
-		@param trigger: An object to show the symbol browser.
-		@type trigger: A Trigger object.
-		"""
 		from DrawWhitespaceMetadata import get_value, set_value
 		value = False if get_value() else True
 		set_value(value)
@@ -97,16 +64,10 @@ class Trigger(object):
 		else:
 			icon = "no"
 			message = "Hiding whitespace"
-		self.__editor.update_status_message(message, icon, 7)
+		self.__editor.update_message(message, icon, 7)
 		return
 
 	def destroy(self):
-		"""
-		Destroy object.
-
-		@param self: Reference to the Trigger instance.
-		@type self: An Trigger object.
-		"""
 		self.__editor.remove_trigger(self.__trigger)
 		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
 		if self.__manager: self.__manager.destroy()

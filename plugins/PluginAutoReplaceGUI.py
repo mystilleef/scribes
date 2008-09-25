@@ -32,7 +32,7 @@ the automatic word replacement plug-in.
 name = "Automatic Word Replacement Graphic User Interface"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "AutoReplaceGUIPlugin"
 short_description = "GUI for automatic replacement."
 long_description = """\

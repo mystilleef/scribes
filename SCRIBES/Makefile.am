@@ -51,6 +51,7 @@ scribes_PYTHON = \
 	GlobalStore.py \
 	InstanceManager.py \
 	i18n.py \
+	LanguagePluginManager.py \
 	License.py \
 	Main.py \
 	MarginPositionMetadata.py \
@@ -74,9 +75,12 @@ scribes_PYTHON = \
 	TextBuffer.py \
 	TextView.py \
 	Toolbar.py \
+	Trigger.py \
+	TriggerManager.py \
 	NewToolButton.py \
 	OpenToolButton.py \
 	SaveToolButton.py \
+	PluginManager.py \
 	PrintToolButton.py \
 	UndoToolButton.py \
 	RedoToolButton.py \

@@ -10,7 +10,7 @@ class Buffer(object):
 		self.__set_properties()
 		self.__sigid1 = self.__buffer.connect("notify::cursor-position", self.__cursor_position_cb)
 		self.__sigid2 = editor.connect("quit", self.__quit_cb)
-		self.__sigid3 = self.__buffer.connect("insert-text", self.__insert_text_cb)
+		self.__sigid3 = self.__buffer.connect_after("insert-text", self.__insert_text_cb)
 		self.__sigid4 = self.__buffer.connect("modified-changed", self.__modified_changed_cb)
 		self.__sigid5 = editor.connect("checking-file", self.__checking_file_cb)
 		self.__sigid6 = editor.connect("loaded-file", self.__loaded_file_cb)
@@ -18,6 +18,7 @@ class Buffer(object):
 		self.__sigid8 = editor.connect("saved-file", self.__saved_file_cb)
 		self.__sigid9 = editor.connect("undo", self.__undo_cb)
 		self.__sigid10 = editor.connect("redo", self.__redo_cb)
+		self.__sigid11 = editor.connect_after("loaded-file", self.__loaded_file_after_cb)
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monid1 = monitor_add(self.__theme_database_uri, MONITOR_FILE, self.__theme_changed_cb)
 		editor.register_object(self)
@@ -47,6 +48,7 @@ class Buffer(object):
 		self.__editor.disconnect_signal(self.__sigid8, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid9, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid10, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid11, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -133,7 +135,6 @@ class Buffer(object):
 		else:
 			iterator.set_line_index(cursor_index)
 		self.__buffer.place_cursor(iterator)
-		self.__editor.move_view_to_cursor()
 		return False
 
 ################################################################################
@@ -152,8 +153,9 @@ class Buffer(object):
 	def __insert_text_cb(self, buffer_, iter, text, length, *args):
 		if length > 1: return False
 		#FIXME: Experimental code, remove if you have problems.
-		from gobject import idle_add
-		idle_add(self.__editor.response)
+		self.__editor.response()
+		#from gobject import idle_add
+		#idle_add(self.__editor.response, priority=9999)
 		return False
 
 	def __modified_changed_cb(self, *args):
@@ -164,20 +166,28 @@ class Buffer(object):
 		self.__buffer.begin_not_undoable_action()
 		self.__buffer.set_language(self.__editor.language_object)
 		self.__buffer.handler_block(self.__sigid4)
+		self.__buffer.handler_block(self.__sigid1)
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		return False
 
 	def __loaded_file_cb(self, *args):
-		self.__set_cursor_position()
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
+		self.__set_cursor_position()
 		self.__buffer.handler_unblock(self.__sigid4)
+		self.__buffer.handler_unblock(self.__sigid1)
 		self.__buffer.end_not_undoable_action()
+#		from gobject import idle_add
+#		idle_add(self.__set_cursor_position, priority=9999)
 		return False
+
+	def __loaded_file_after_cb(self, *args):
+		return
 
 	def __load_error_cb(self, *args):
 		self.__buffer.set_language(None)
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		self.__buffer.handler_unblock(self.__sigid4)
+		self.__buffer.handler_unblock(self.__sigid1)
 		self.__buffer.end_not_undoable_action()
 		return False
 
@@ -211,4 +221,3 @@ class Buffer(object):
 		if style_scheme: self.__buffer.set_style_scheme(style_scheme)
 		self.__editor.refresh()
 		return False
-

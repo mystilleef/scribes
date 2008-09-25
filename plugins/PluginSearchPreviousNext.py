@@ -31,7 +31,7 @@ This module documents a class that searches the buffer for strings.
 name = "Previous/Next Search Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "SearchPreviousNextPlugin"
 short_description = "Search without the bars."
 long_description = """Search for previously queried strings without

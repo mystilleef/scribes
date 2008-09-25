@@ -32,7 +32,7 @@ to perform spaces operations.
 name = "Case conversion Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "CasePlugin"
 short_description = "Case conversion operations."
 long_description = """This plug-in performs case conversion operations \

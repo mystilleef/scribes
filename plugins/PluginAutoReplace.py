@@ -32,7 +32,7 @@ the automatic word replacement plug-in.
 name = "Automatic Word Replacement"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "AutoReplacePlugin"
 short_description = "Expand abbreviations in the buffer"
 long_description = """\

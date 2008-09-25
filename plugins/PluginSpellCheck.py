@@ -32,7 +32,7 @@ to toggle spell checking.
 name = "Spell Check Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "SpellCheckPlugin"
 short_description = "Plug-in to toggle spell checking."
 long_description = """\

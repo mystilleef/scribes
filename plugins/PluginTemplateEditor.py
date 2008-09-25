@@ -31,7 +31,7 @@ This module documents a class that loads the template editor plugin.
 name = "Template Editor Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "TemplateEditorPlugin"
 short_description = "This plugin shows the template editor."
 long_description = """\

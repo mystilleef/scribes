@@ -31,7 +31,7 @@ This module documents a class that loads the recent menu plugin.
 name = "Recent Menu Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "RecentMenuPlugin"
 short_description = "Show the recent menu."
 long_description = """Press (ctrl - shift- o) to show the recent menu.

@@ -32,7 +32,7 @@ window plugin.
 name = "Advanced configuration plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "AdvancedConfigurationPlugin"
 short_description = "Shows the advanced configuration window."
 long_description = """Shows the advanced configuration window. The

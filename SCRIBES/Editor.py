@@ -1,7 +1,8 @@
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_BOOLEAN
 from gobject import TYPE_STRING, TYPE_OBJECT, TYPE_PYOBJECT, TYPE_INT
 from Globals import data_folder, metadata_folder, home_folder, desktop_folder
-from Globals import session_bus
+from Globals import session_bus, core_plugin_folder, home_plugin_folder
+from Globals import home_language_plugin_folder, core_language_plugin_folder
 from gnomevfs import URI
 from gtksourceview2 import language_manager_get_default
 from EncodingGuessListMetadata import get_value as get_encoding_guess_list
@@ -35,6 +36,7 @@ class Editor(GObject):
 		"new-encoding-list": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"update-encoding-guess-list": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"renamed-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"reload-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"saved-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"save-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"private-save-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
@@ -54,6 +56,11 @@ class Editor(GObject):
 		"unset-message": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"undo": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"redo": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"add-trigger": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"remove-trigger": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"add-triggers": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"remove-triggers": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"trigger": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):
@@ -114,6 +121,8 @@ class Editor(GObject):
 		# Toolbar object.
 		from Toolbar import Toolbar
 		Toolbar(self)
+		from TriggerManager import Manager
+		Manager(self)
 		# Register with instance manager after a successful editor
 		# initialization.
 		self.__imanager.register_editor(self)
@@ -165,6 +174,11 @@ class Editor(GObject):
 		# FIXME: NOT YET IMPLEMENTED
 		if self.__started_plugins: return False
 		self.emit("ready")
+		self.move_view_to_cursor()
+		from PluginManager import Manager
+		Manager(self)
+		from LanguagePluginManager import Manager
+		Manager(self)
 		self.__started_plugins = True
 		return False
 
@@ -226,6 +240,10 @@ class Editor(GObject):
 	metadata_folder = property(lambda self: metadata_folder)
 	home_folder = property(lambda self: home_folder)
 	desktop_folder = property(lambda self: desktop_folder)
+	core_plugin_folder = property(lambda self: core_plugin_folder)
+	home_plugin_folder = property(lambda self: home_plugin_folder)
+	core_language_plugin_folder = property(lambda self: core_language_plugin_folder)
+	home_language_plugin_folder = property(lambda self: home_language_plugin_folder)
 	session_bus = property(lambda self: session_bus)
 	save_processor = property(lambda self: self.__imanager.get_save_processor())
 	supported_encodings = property(lambda self: get_supported_encodings())
@@ -341,6 +359,7 @@ class Editor(GObject):
 	def emit_combobox_encodings(self):
 		self.emit("combobox-encoding-data?")
 		return False
+	
 
 	def spin_throbber(self, spin=True):
 		self.emit("spin-throbber", spin)
@@ -381,6 +400,35 @@ class Editor(GObject):
 	def forward_to_line_end(self, iterator):
 		from Utils import forward_to_line_end
 		return forward_to_line_end(iterator)
+
+	def create_trigger(self, name, accelerator=None, description=None, error=True, removable=True):
+		from Trigger import Trigger
+		trigger = Trigger(name, accelerator, description, error, removable)
+		return trigger
+
+	def trigger(self, name):
+		self.emit("trigger", name)
+		return False
+
+	def add_trigger(self, trigger):
+		self.emit("add-trigger", trigger)
+		return False
+
+	def remove_trigger(self, trigger):
+		self.emit("remove-trigger", trigger)
+		return False
+
+	def add_triggers(self, triggers):
+		self.emit("add-triggers", triggers)
+		return False
+
+	def remove_triggers(self, triggers):
+		self.emit("remove-triggers", triggers)
+		return False
+
+	def select_row(self, treeview):
+		from Utils import select_row
+		return select_row(treeview)
 
 ########################################################################
 #

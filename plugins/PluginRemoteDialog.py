@@ -32,7 +32,7 @@ show the remote dialog.
 name = "Remote Dialog Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "RemoteDialogPlugin"
 short_description = "Show the remote dialog."
 long_description = """This plug-in shows the remote dialog."""

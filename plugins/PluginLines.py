@@ -32,7 +32,7 @@ line operations.
 name = "Line Operations"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "LinesPlugin"
 short_description = "Plug-in to perform line operations."
 long_description = """Plug-in to perform line operations."""

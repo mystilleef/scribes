@@ -90,22 +90,10 @@ class Manager(GObject):
 	method_pixbuf = property(__get_method_pixbuf)
 
 	def show_browser(self):
-		"""
-		Show the document browser.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		self.emit("show-window")
 		return
 
 	def destroy(self):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		self.emit("destroy")
 		del self
 		self = None

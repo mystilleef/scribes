@@ -32,7 +32,7 @@ the document switcher plug-in.
 name = "Document Browser"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "DocumentBrowserPlugin"
 short_description = "Show the document browser."
 long_description = """\

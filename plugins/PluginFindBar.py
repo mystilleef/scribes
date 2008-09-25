@@ -32,7 +32,7 @@ show the find bar.
 name = "Find Bar Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "FindBarPlugin"
 short_description = "Show the find bar."
 long_description = """This plug-in shows the find bar."""

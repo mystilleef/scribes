@@ -32,7 +32,7 @@ to show the color editor.
 name = "Word Completion Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "WordCompletionPlugin"
 short_description = "Automatic word completion for the editor."
 long_description = """Implements automatic word completion for the \

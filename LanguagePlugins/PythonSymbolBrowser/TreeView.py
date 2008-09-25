@@ -37,9 +37,9 @@ class TreeView(object):
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
-		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = self.__manager.connect("update", self.__update_cb)
-		self.__signal_id_3 = self.__treeview.connect("row-activated", self.__row_activated_cb)
+		self.__sigid1 = self.__manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = self.__manager.connect("update", self.__update_cb)
+		self.__sigid3 = self.__treeview.connect("row-activated", self.__row_activated_cb)
 #		from gobject import idle_add, PRIORITY_LOW
 #		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
 
@@ -97,7 +97,7 @@ class TreeView(object):
 		return False
 
 	def __select_row(self):
-		current_line = self.__editor.get_cursor_position().get_line() + 1
+		current_line = self.__editor.cursor.get_line() + 1
 		get_line = lambda x: x[0]
 		lines = map(get_line, self.__symbols)
 		lines.reverse()
@@ -178,20 +178,10 @@ class TreeView(object):
 		iterator.forward_to_line_end()
 		return iterator
 
-	def __precompile_method(self):
-		try:
-			from psyco import bind
-			bind(self.__populate_model)
-			bind(self.__select_row)
-			bind(self.__select_line_in_treeview)
-		except ImportError:
-			pass
-		return False
-
 	def __destroy_cb(self, manager):
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__treeview)
+		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__treeview)
 		self.__treeview.destroy()
 		del self
 		self = None

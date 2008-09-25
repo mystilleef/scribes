@@ -32,7 +32,7 @@ to show the color editor.
 name = "Theme Selector Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "ThemeSelectorPlugin"
 short_description = "Shows the theme selector."
 long_description = """Shows the theme selector."""

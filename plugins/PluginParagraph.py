@@ -31,7 +31,7 @@ This module documents a class that loads the paragraph plugin.
 name = "Paragraph Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "ParagraphPlugin"
 short_description = "Paragraph operations for Scribes."
 long_description = """Paragraph operations for Scribes."""

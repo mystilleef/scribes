@@ -36,7 +36,7 @@ class Manager(object):
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
-		self.__sig_id1 = self.__textview.connect('key-press-event', self.__key_press_event_cb)
+		self.__sigid1 = editor.textview.connect('key-press-event', self.__key_press_event_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -56,7 +56,7 @@ class Manager(object):
 		return iterator
 
 	def __get_line_text(self):
-		iterator = self.__editor.get_cursor_position()
+		iterator = self.__editor.cursor
 		begin = self.__backward_to_line_begin(iterator.copy())
 		end = self.__forward_to_line_end(iterator)
 		text = self.__editor.textbuffer.get_text(begin, end)
@@ -68,7 +68,7 @@ class Manager(object):
 		return value
 
 	def __get_line_indentation(self):
-		iterator = self.__editor.get_cursor_iterator()
+		iterator = self.__editor.cursor
 		begin = self.__backward_to_line_begin(iterator)
 		iterator = begin.copy()
 		while True:
@@ -111,7 +111,7 @@ class Manager(object):
 		return whitespaces
 
 	def __insert_indentation_on_next_line(self, whitespaces):
-		iterator = self.__editor.get_cursor_iterator()
+		iterator = self.__editor.cursor
 		iterator = self.__forward_to_line_end(iterator)
 		self.__editor.textbuffer.place_cursor(iterator)
 		self.__editor.textbuffer.insert_at_cursor("\n" + whitespaces)
@@ -128,14 +128,14 @@ class Manager(object):
 		return
 
 	def __cursor_is_before_colon(self):
-		iterator = self.__editor.get_cursor_iterator()
+		iterator = self.__editor.cursor
 		end = self.__forward_to_line_end(iterator.copy())
 		from gtk import TEXT_SEARCH_TEXT_ONLY
 		if iterator.forward_search(":", TEXT_SEARCH_TEXT_ONLY ,end): return True
 		return False
 
 	def __cursor_is_before_return(self):
-		iterator = self.__editor.get_cursor_iterator()
+		iterator = self.__editor.cursor
 		end = self.__editor.forward_to_line_end(iterator.copy())
 		text = self.__editor.textbuffer.get_text(iterator, end).strip(" \t")
 		if text: return True
@@ -162,7 +162,7 @@ class Manager(object):
 		return True
 
 	def destroy(self):
-		self.__editor.disconnect_signal(self.__sig_id1, self.__textview)
+		self.__editor.disconnect_signal(self.__sigid1, self.__textview)
 		del self
 		self = None
 		return

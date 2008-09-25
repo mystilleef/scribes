@@ -31,7 +31,7 @@ This module documents a class that loads the about plugin.
 name = "Smart Space Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "SmartSpacePlugin"
 short_description = "Smart space plugin."
 long_description = """Smart space plugin."""

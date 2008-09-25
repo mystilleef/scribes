@@ -32,7 +32,7 @@ selection operations.
 name = "Selection Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "SelectionPlugin"
 short_description = "Selection operations."
 long_description = """This plug-in performs operations to select \

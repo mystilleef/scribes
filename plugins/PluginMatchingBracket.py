@@ -32,7 +32,7 @@ show the about dialog.
 name = "Matching Bracket Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "MatchingBracketPlugin"
 short_description = "Find matching brackets."
 long_description = """This plug-in the plug-in finds matching brackets \

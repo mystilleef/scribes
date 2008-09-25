@@ -32,7 +32,7 @@ the automatic word replacement plug-in.
 name = "New Window Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "NewWindowPlugin"
 short_description = "Display a new scribes window."
 long_description = """This plug-in displays a new scribes window when

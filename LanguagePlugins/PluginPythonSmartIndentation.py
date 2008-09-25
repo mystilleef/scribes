@@ -45,35 +45,14 @@ class SmartIndentationPlugin(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the SmartIndentationPlugin instance.
-		@type self: A SmartIndentationPlugin object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__manager = None
 
 	def load(self):
-		"""
-		Load smart indentation plugin.
-
-		@param self: Reference to the SmartIndentationPlugin instance.
-		@type self: An SmartIndentationPlugin object.
-		"""
 		from PythonSmartIndentation.Manager import Manager
 		self.__manager = Manager(self.__editor)
 		return
 
 	def unload(self):
-		"""
-		Destroy smart indentation plugin.
-
-		@param self: Reference to the SmartIndentationPlugin instance.
-		@type self: An SmartIndentationPlugin object.
-		"""
 		self.__manager.destroy()
 		return

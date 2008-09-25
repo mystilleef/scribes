@@ -35,44 +35,19 @@ class Window(object):
 	"""
 
 	def __init__(self, editor, manager):
-		"""
-		Initialize an instance of this class.
-
-		@param self: Reference to the Window instance.
-		@type self: A Window object.
-
-		@param manager: Reference to the Manager instance
-		@type manager: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
-		self.__sig_id1 = self.__manager.connect("destroy", self.__destroy_cb)
-		self.__sig_id2 = self.__manager.connect("show-window", self.__show_window_cb)
-		self.__sig_id3 = self.__manager.connect("hide-window", self.__hide_window_cb)
-		self.__sig_id4 = self.__window.connect("delete-event", self.__delete_event_cb)
-		self.__sig_id5 = self.__window.connect("key-press-event", self.__key_press_event_cb)
+		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = manager.connect("show-window", self.__show_window_cb)
+		self.__sigid3 = manager.connect("hide-window", self.__hide_window_cb)
+		self.__sigid4 = self.__window.connect("delete-event", self.__delete_event_cb)
+		self.__sigid5 = self.__window.connect("key-press-event", self.__key_press_event_cb)
 		self.__window.set_property("sensitive", True)
 
 	def __init_attributes(self, editor, manager):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the Window instance.
-		@type self: A Window object.
-
-		@param manager: Reference to the Manager instance
-		@type manager: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__manager = manager
 		self.__editor = editor
 		self.__window = manager.glade.get_widget("Window")
-		self.__sig_id1 = self.__status_id = None
 		return
 
 	def __set_properties(self):
@@ -80,25 +55,25 @@ class Window(object):
 		return
 
 	def __show(self):
-		self.__editor.emit("show-dialog", self.__window)
-#		from i18n import msg0001
+		self.__editor.busy()
 		message = "Python symbols"
-		self.__status_id = self.__editor.feedback.set_modal_message(message, "yes")
+		self.__editor.set_message(message, "yes")
 		self.__window.show_all()
 		return False
 
 	def __hide(self):
-		self.__editor.emit("hide-dialog", self.__window)
-		self.__editor.feedback.unset_modal_message(self.__status_id)
+		self.__editor.busy(False)
+		message = "Python symbols"
+		self.__editor.unset_message(message, "yes")
 		self.__window.hide()
 		return False
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sig_id1, self.__manager)
-		self.__editor.disconnect_signal(self.__sig_id2, self.__manager)
-		self.__editor.disconnect_signal(self.__sig_id3, self.__manager)
-		self.__editor.disconnect_signal(self.__sig_id4, self.__window)
-		self.__editor.disconnect_signal(self.__sig_id5, self.__window)
+		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid4, self.__window)
+		self.__editor.disconnect_signal(self.__sigid5, self.__window)
 		self.__window.destroy()
 		del self
 		self = None

@@ -32,7 +32,7 @@ bookmark operations.
 name = "Document Information Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = True
+autoload = False
 class_name = "DocumentInformationPlugin"
 short_description = "Shows document information window."
 long_description = """Shows the document information window."""
