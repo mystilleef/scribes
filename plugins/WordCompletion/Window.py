@@ -37,50 +37,21 @@ class CompletionWindow(Window):
 	"""
 
 	def __init__(self, manager, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the CompletionWindow instance.
-		@type self: A CompletionWindow object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		from gtk import WINDOW_POPUP
 		Window.__init__(self, WINDOW_POPUP)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = manager.connect("show-window", self.__show_window_cb)
-		self.__signal_id_3 = manager.connect("hide-window", self.__generic_hide_cb)
-		self.__signal_id_5 = editor.window.connect("key-press-event", self.__key_press_event_cb)
-		self.__signal_id_6 = editor.textview.connect("focus-out-event", self.__generic_hide_cb)
-		self.__signal_id_7 = editor.textbuffer.connect("delete-range", self.__generic_hide_cb)
-		self.__signal_id_8 = manager.connect_after("no-match-found", self.__generic_hide_cb)
-		self.__signal_id_9 = editor.textview.connect("button-press-event", self.__button_press_event_cb)
+		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = manager.connect("show-window", self.__show_window_cb)
+		self.__sigid3 = manager.connect("hide-window", self.__generic_hide_cb)
+		self.__sigid5 = editor.window.connect("key-press-event", self.__key_press_event_cb)
+		self.__sigid6 = editor.textview.connect("focus-out-event", self.__generic_hide_cb)
+		self.__sigid7 = editor.textbuffer.connect("delete-range", self.__generic_hide_cb)
+		self.__sigid8 = manager.connect_after("no-match-found", self.__generic_hide_cb)
+		self.__sigid9 = editor.textview.connect("button-press-event", self.__button_press_event_cb)
 		self.__block_signals()
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the CompletionWindow instance.
-		@type self: A CompletionWindow object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param completion: Reference to the WordCompletionManager instance.
-		@type completion: A WordCompletionManager object.
-		"""
 		self.__editor = editor
 		self.__manager = manager
 		self.__is_visible = False
@@ -94,12 +65,6 @@ class CompletionWindow(Window):
 		return
 
 	def __set_properties(self):
-		"""
-		Define the completion window's default properties.
-
-		@param self: Reference to the CompletionWindow instance.
-		@type self: A CompletionWindow object.
-		"""
 		from gtk.gdk import WINDOW_TYPE_HINT_MENU
 		self.set_property("type-hint", WINDOW_TYPE_HINT_MENU)
 		self.set_property("width-request", 200)
@@ -114,12 +79,6 @@ class CompletionWindow(Window):
 ########################################################################
 
 	def __show_window(self):
-		"""
-		Show the completion window.
-
-		@param self: Reference to the CompletionWindow instance.
-		@type self: A CompletionWindow object.
-		"""
 		self.__manager.emit("is-visible", True)
 		if self.__is_visible: return False
 		if self.__signals_are_blocked: self.__unblock_signals()
@@ -128,12 +87,6 @@ class CompletionWindow(Window):
 		return False
 
 	def __hide_window(self):
-		"""
-		Hide the completion window.
-
-		@param self: Reference to the CompletionWindow instance.
-		@type self: A CompletionWindow object.
-		"""
 		self.__manager.emit("is-visible", False)
 		if not self.__is_visible: return False
 		if not self.__signals_are_blocked: self.__block_signals()
@@ -141,19 +94,30 @@ class CompletionWindow(Window):
 		self.__is_visible = False
 		return False
 
+	def __get_cursor_window_coordinates(self):
+		textview = self.__editor.textview
+		# Get the cursor's buffer coordinates.
+		rectangle = textview.get_iter_location(self.__editor.cursor)
+		# Get the cursor's window coordinates.
+		from gtk import TEXT_WINDOW_TEXT
+		position = textview.buffer_to_window_coords(TEXT_WINDOW_TEXT, rectangle.x,
+												rectangle.y)
+		cursor_x = position[0]
+		cursor_y = position[1]
+		return cursor_x, cursor_y
+
+	def __get_cursor_size(self):
+		# Get the cursor's size via its buffer coordinates.
+		textview = self.__editor.textview
+		rectangle = textview.get_iter_location(self.__editor.cursor)
+		cursor_width = rectangle.width
+		cursor_height = rectangle.height
+		return cursor_width, cursor_height
+
 	def __position_window(self, width, height):
-		"""
-		Position the completion window in the text editor's buffer.
-
-		@param width: The completion window's width.
-		@type width: An Integer object.
-
-		@param height: The completion window's height.
-		@type height: An Integer object.
-		"""
 		# Get the cursor's coordinate and size.
-		cursor_x, cursor_y = self.__editor.get_cursor_window_coordinates()
-		cursor_height = self.__editor.get_cursor_size()[1]
+		cursor_x, cursor_y = self.__get_cursor_window_coordinates()
+		cursor_height = self.__get_cursor_size()[1]
 		# Get the text editor's textview coordinate and size.
 		from gtk import TEXT_WINDOW_TEXT
 		window = self.__editor.textview.get_window(TEXT_WINDOW_TEXT)
@@ -179,18 +143,6 @@ class CompletionWindow(Window):
 		return
 
 	def __calculate_window_width(self, width):
-		"""
-		Calculate the completion window's height.
-
-		@param self: Reference to the CompletionWindow instance.
-		@type self: A CompletionWindow object.
-
-		@param height: The completion window's view's height.
-		@type height: An Integer object.
-
-		@return: The height of the completion window.
-		@rtype: An Integer object.
-		"""
 		if width < 200:
 			width = 200
 		else:
@@ -198,50 +150,26 @@ class CompletionWindow(Window):
 		return width
 
 	def __calculate_window_height(self, height):
-		"""
-		Calculate the completion window's height.
-
-		@param self: Reference to the CompletionWindow instance.
-		@type self: A CompletionWindow object.
-
-		@param height: The completion window's view's height.
-		@type height: An Integer object.
-
-		@return: The height of the completion window.
-		@rtype: An Integer object.
-		"""
 		if height > 200: height = 200
 		return height
 
 	def __block_signals(self):
-		"""
-		Block some signals when the window is hidden.
-
-		@param self: Reference to the CompletionWindow instance.
-		@type self: A CompletionWindow object.
-		"""
-		self.__manager.handler_block(self.__signal_id_1)
-		self.__manager.handler_block(self.__signal_id_3)
-		self.__editor.window.handler_block(self.__signal_id_5)
-		self.__editor.textview.handler_block(self.__signal_id_6)
-		self.__editor.textbuffer.handler_block(self.__signal_id_7)
-		self.__manager.handler_block(self.__signal_id_8)
+		self.__manager.handler_block(self.__sigid1)
+		self.__manager.handler_block(self.__sigid3)
+		self.__editor.window.handler_block(self.__sigid5)
+		self.__editor.textview.handler_block(self.__sigid6)
+		self.__editor.textbuffer.handler_block(self.__sigid7)
+		self.__manager.handler_block(self.__sigid8)
 		self.__signals_are_blocked = True
 		return
 
 	def __unblock_signals(self):
-		"""
-		Unblock signals when window is shown.
-
-		@param self: Reference to the CompletionWindow instance.
-		@type self: A CompletionWindow object.
-		"""
-		self.__manager.handler_unblock(self.__signal_id_1)
-		self.__manager.handler_unblock(self.__signal_id_3)
-		self.__editor.window.handler_unblock(self.__signal_id_5)
-		self.__editor.textview.handler_unblock(self.__signal_id_6)
-		self.__editor.textbuffer.handler_unblock(self.__signal_id_7)
-		self.__manager.handler_unblock(self.__signal_id_8)
+		self.__manager.handler_unblock(self.__sigid1)
+		self.__manager.handler_unblock(self.__sigid3)
+		self.__editor.window.handler_unblock(self.__sigid5)
+		self.__editor.textview.handler_unblock(self.__sigid6)
+		self.__editor.textbuffer.handler_unblock(self.__sigid7)
+		self.__manager.handler_unblock(self.__sigid8)
 		self.__signals_are_blocked = False
 		return
 
@@ -252,54 +180,24 @@ class CompletionWindow(Window):
 ########################################################################
 
 	def __destroy_cb(self, manager):
-		"""
-		Destroy instance of this object.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, manager)
-		self.__editor.disconnect_signal(self.__signal_id_3, manager)
-		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_8, manager)
-		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid1, manager)
+		self.__editor.disconnect_signal(self.__sigid2, manager)
+		self.__editor.disconnect_signal(self.__sigid3, manager)
+		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid8, manager)
+		self.__editor.disconnect_signal(self.__sigid9, self.__editor)
 		self.destroy()
 		del self
 		self = None
 		return
 
 	def __generic_hide_cb(self, *args):
-		"""
-		Generic callback handler to hide the window.
-
-		@param self: Reference to the CompletionWindow instance.
-		@type self: A CompletionWindow object.
-
-		@param args: Irrelevant arguments.
-		@type args: A List object.
-		"""
 		self.__hide_window()
 		return False
 
 	def __show_window_cb(self, manager, view):
-		"""
-		Handles callback when the "show-window" signal is shown.
-
-		@param self: Reference to the CompletionWindow instance.
-		@type self: A CompletionWindow object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-
-		@param view: Reference to the CompletionTreeView instance.
-		@type view: A CompletionTreeView object.
-		"""
 		width, height = view.size_request()
 		width = self.__calculate_window_width(width) + 3
 		height = self.__calculate_window_height(height) + 3
@@ -313,34 +211,9 @@ class CompletionWindow(Window):
 		return
 
 	def __key_press_event_cb(self, window, event):
-		"""
-		Handles callback when the "key-press-event" signal is emitted.
-
-		@param self: Reference to the CompletionWindow instance.
-		@type self: A CompletionWindow object.
-
-		@param window: Reference to the CompletionWindow instance.
-		@type window: A CompletionWindow object.
-		"""
 		if event.keyval in self.__keys: self.__hide_window()
 		return False
 
 	def __button_press_event_cb(self, *args):
-		"""
-		Handles callback when the "button-press-event" signal is emitted.
-
-		@param self: Reference to the ScribesTextView instance.
-		@type self: A ScribesTextView object.
-		"""
 		self.__hide_window()
-		return False
-
-	def __precompile_methods(self):
-		try:
-			from psyco import bind
-			bind(self.__key_press_event_cb)
-			bind(self.__show_window_cb)
-			bind(self.__generic_hide_cb)
-		except ImportError:
-			pass
 		return False

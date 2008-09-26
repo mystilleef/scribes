@@ -43,10 +43,10 @@ class CompletionUpdater(object):
 		from gobject import idle_add, PRIORITY_LOW, timeout_add
 		timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
 #		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
-		self.__signal_id_1 = self.__editor.connect_after("loaded-document", self.__loaded_document_cb)
-		self.__signal_id_2 = self.__editor.textbuffer.connect_after("changed", self.__changed_cb)
-		self.__signal_id_3 = self.__manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_4 = self.__editor.connect_after("renamed-document", self.__loaded_document_cb)
+		self.__sigid1 = self.__editor.connect_after("loaded-file", self.__loaded_document_cb)
+		self.__sigid2 = self.__editor.textbuffer.connect_after("changed", self.__changed_cb)
+		self.__sigid3 = self.__manager.connect("destroy", self.__destroy_cb)
+		self.__sigid4 = self.__editor.connect_after("renamed-file", self.__loaded_document_cb)
 		editor.session_bus.add_signal_receiver(self.__name_change_cb,
 						'NameOwnerChanged',
 						'org.freedesktop.DBus',
@@ -71,8 +71,6 @@ class CompletionUpdater(object):
 		self.__timer = None
 		self.__indexer = None
 		self.__is_indexing = False
-		self.__signal_id_1 = self.__signal_id_2 = None
-		self.__signal_id_3 = self.__signal_id_4 = None
 		from collections import deque
 		self.__queue = deque([])
 		return
@@ -86,7 +84,7 @@ class CompletionUpdater(object):
 	def __index(self):
 		try:
 			if self.__is_indexing: return False #self.__update_queue()
-			if self.__editor.is_readonly: return False
+			if self.__editor.readonly: return False
 			if self.__indexer is None:
 				from gobject import idle_add, PRIORITY_LOW, timeout_add
 				timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
@@ -113,15 +111,9 @@ class CompletionUpdater(object):
 		return False
 
 	def __start_indexer(self):
-		"""
-		Start the word completion indexer and get a reference to it.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-		"""
 		try:
 			from dbus import DBusException
-			from SCRIBES.info import dbus_iface, session_bus, python_path
+			from SCRIBES.Globals import dbus_iface, session_bus, python_path
 			services = dbus_iface.ListNames()
 			self.__indexer = None
 			if indexer_dbus_service in services:
@@ -148,28 +140,10 @@ class CompletionUpdater(object):
 		return False
 
 	def __get_text(self):
-		"""
-		Get text from all editors.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-
-		@return: text to index.
-		@rtype: A String object.
-		"""
-		#self.__editor.block_response()
-		get_text = lambda editor: editor.get_text()
-		all_text = map(get_text, self.__editor.get_editor_instances())
-		#self.__editor.unblock_response()
+		all_text = [editor.text for editor in self.__editor.instances]
 		return " ".join(all_text)
 
 	def __remove_timer(self):
-		"""
-		Remove timer assocated with a time out function callback.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-		"""
 		try:
 			from gobject import source_remove
 			source_remove(self.__timer)
@@ -178,14 +152,6 @@ class CompletionUpdater(object):
 		return
 
 	def __update_queue(self):
-		"""
-		Update the queue.
-
-		If queue is empty, there's no need to index.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-		"""
 		if self.__queue: raise ValueError
 		self.__queue.append(1)
 		return
@@ -197,15 +163,6 @@ class CompletionUpdater(object):
 ########################################################################
 
 	def __changed_cb(self, textbuffer):
-		"""
-		Handles callback when the "changed" signal is emitted.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-
-		@param textbuffer: Reference to the text editor's buffer.
-		@type textbuffer: A ScribesTextBuffer object.
-		"""
 		from gobject import timeout_add, idle_add, PRIORITY_LOW
 		try:
 			source_remove(self.__index_timer)
@@ -216,15 +173,6 @@ class CompletionUpdater(object):
 		return False
 
 	def __loaded_document_cb(self, *args):
-		"""
-		Handles callback when the "loaded-document" signal is emitted.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		from gobject import idle_add, PRIORITY_LOW
 		try:
 			source_remove(self.__index_timer)
@@ -234,47 +182,19 @@ class CompletionUpdater(object):
 		return
 
 	def __name_change_cb(self, *args):
-		"""
-		Callback when the indexing process dies.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-
-		@param *args: Useless arguments.
-		@type *args: A List object.
-		"""
 		from gobject import idle_add, PRIORITY_LOW, timeout_add
 		timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
 		return
 
 	def __reply_handler_cb(self, *args):
-		"""
-		Successful message from the indexer
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-
-		@param dictionary: Word completion dictionary.
-		@type dictionary: A Dict object.
-		"""
 		return
 
 	def __error_handler_cb(self, error):
-		"""
-		Handles callback when an error message is received from the
-		indexer.
-
-		@param self: Reference to the CompletionUpdater instance.
-		@type self: A CompletionUpdater object.
-
-		@param error: An error message.
-		@type error: A String object.
-		"""
 		self.__is_indexing = False
 		return
 
 	def __finished_indexing_cb(self, editor_id, dictionary):
-		if editor_id != self.__editor.id: return True
+		if editor_id != self.__editor.id_: return True
 		from thread import start_new_thread
 		start_new_thread(self.__update_dictionary, (dictionary,))
 #		from gobject import idle_add, PRIORITY_LOW
@@ -282,7 +202,7 @@ class CompletionUpdater(object):
 		return True
 
 	def __busy_cb(self, editor_id):
-		if editor_id != self.__editor.id: return True
+		if editor_id != self.__editor.id_: return True
 		self.__queue.clear()
 		self.__is_indexing = False
 		return True
@@ -298,7 +218,7 @@ class CompletionUpdater(object):
 
 	def __send_text(self):
 		try:
-			self.__indexer.process(self.__get_text(), self.__editor.id,
+			self.__indexer.process(self.__get_text(), self.__editor.id_,
 				dbus_interface=indexer_dbus_service,
 				reply_handler=self.__reply_handler_cb,
 				error_handler=self.__error_handler_cb)
@@ -332,33 +252,10 @@ class CompletionUpdater(object):
 			source_remove(self.__index_timer)
 		except Exception:
 			pass
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor.textbuffer)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__manager)
-		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid2, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		del self
 		self = None
 		return
-
-########################################################################
-#
-#					Optimize Methods with Psyco
-#
-########################################################################
-
-	def __precompile_methods(self):
-		try:
-			from psyco import bind
-			bind(self.__changed_cb)
-			bind(self.__index)
-			bind(self.__update_queue)
-			bind(self.__send_text)
-			bind(self.__generate_dictionary)
-			bind(self.__update_dictionary)
-			bind(self.__start_indexer)
-			bind(self.__get_text)
-		except ImportError:
-			pass
-		except:
-			pass
-		return False

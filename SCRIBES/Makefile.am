@@ -98,5 +98,6 @@ scribes_PYTHON = \
 	Usage.py \
 	UseTabsMetadata.py \
 	Utils.py \
-	Window.py
+	Window.py \
+	Word.py
 EXTRA_DIST = Globals.py.in

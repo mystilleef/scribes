@@ -32,7 +32,7 @@ to show the color editor.
 name = "Word Completion Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = False
+autoload = True
 class_name = "WordCompletionPlugin"
 short_description = "Automatic word completion for the editor."
 long_description = """Implements automatic word completion for the \
@@ -44,35 +44,14 @@ class WordCompletionPlugin(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize the plug-in object.
-
-		@param self: Reference to the WordCompletionPlugin instance.
-		@type self: A WordCompletionPlugin object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__manager = None
 
 	def load(self):
-		"""
-		Initialize the WordCompletionPlugin instance.
-
-		@param self: Reference to the WordCompletionPlugin instance.
-		@type self: An WordCompletionPlugin object.
-		"""
 		from WordCompletion.Manager import CompletionManager
 		self.__manager = CompletionManager(self.__editor)
 		return
 
 	def unload(self):
-		"""
-		Destroy the WordCompletionPlugin instance.
-
-		@param self: Reference to the WordCompletionPlugin instance.
-		@type self: An WordCompletionPlugin object.
-		"""
 		self.__manager.emit("destroy")
 		return

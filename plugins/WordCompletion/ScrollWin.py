@@ -37,60 +37,22 @@ class CompletionScrollWin(ScrolledWindow):
 	"""
 
 	def __init__(self, manager):
-		"""
-		Initialize the scrolled window container object.
-
-		@param self: Reference to the CompletionScrolledWindow instance.
-		@type self: A CompletionScrolledWindow object.
-
-		@param completion_view: The completion window's view.
-		@type completion_view: A CompletionView object.
-		"""
 		ScrolledWindow.__init__(self)
 		self.__init_attributes(manager)
 		self.__set_properties()
-		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = manager.connect("populated-model", self.__populated_model_cb)
+		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = manager.connect("populated-model", self.__populated_model_cb)
 
 	def __init_attributes(self, manager):
-		"""
-		Initialize the scrolled window container object.
-
-		@param self: Reference to the CompletionScrolledWindow instance.
-		@type self: A CompletionScrolledWindow object.
-
-		@param completion_view: The completion window's view.
-		@type completion_view: A CompletionView object.
-		"""
 		self.__manager = manager
-		self.__signal_id_1 = self.__signal_id_2 = None
 		return
 
 	def __set_properties(self):
-		"""
-		Define the scrolled window's default properties.
-
-		@param self: Reference to the CompletionScrolledWindow instance.
-		@type self: A CompletionScrolledWindow object.
-		"""
 		from gtk import POLICY_NEVER, POLICY_ALWAYS
 		self.set_policy(POLICY_NEVER, POLICY_NEVER)
 		return
 
 	def __populated_model_cb(self, manager, view):
-		"""
-		Handles callback when the "populated-model" signal is emitted.
-
-		This function determines what policy to use when showing the
-		scrolled window depending on the size of the completion window's
-		view.
-
-		@param self: Reference to the CompletionScrolledWindow instance.
-		@type self: A CompletionScrolledWindow object.
-
-		@param view: The completion window's view.
-		@type view: A CompletionView object.
-		"""
 		from gtk import POLICY_NEVER, POLICY_ALWAYS
 		width, height = view.size_request()
 		if width < 200 and height < 200:
@@ -105,18 +67,9 @@ class CompletionScrollWin(ScrolledWindow):
 		return
 
 	def __destroy_cb(self, manager):
-		"""
-		Destroy instance of this object.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-		"""
-		from SCRIBES.utils import disconnect_signal
-		disconnect_signal(self.__signal_id_1, manager)
-		disconnect_signal(self.__signal_id_2, manager)
+		from SCRIBES.Utils import disconnect_signal
+		disconnect_signal(self.__sigid1, manager)
+		disconnect_signal(self.__sigid2, manager)
 		self.destroy()
 		del self
 		self = None

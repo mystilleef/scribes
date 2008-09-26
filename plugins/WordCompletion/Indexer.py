@@ -42,17 +42,11 @@ class CompletionIndexer(object):
 	"""
 
 	def __init__(self):
-		"""
-		Initialize object.
-
-		@param self: Reference to the CompletionIndexer instance.
-		@type self: A CompletionIndexer object.
-		"""
 		self.__start_up_check()
 		from DBusService import DBusService
 		dbus = DBusService(self)
 		self.__init_attributes(dbus)
-		from SCRIBES.info import session_bus
+		from SCRIBES.Globals import session_bus
 		session_bus.add_signal_receiver(self.__name_change_cb,
 						'NameOwnerChanged',
 						'org.freedesktop.DBus',
@@ -66,12 +60,6 @@ class CompletionIndexer(object):
 		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, dbus):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the CompletionIndexer instance.
-		@type self: A CompletionIndexer object.
-		"""
 		self.__is_busy = False
 		from collections import deque
 		self.__queue = deque([])
@@ -86,18 +74,6 @@ class CompletionIndexer(object):
 		return
 
 	def process(self, text, id):
-		"""
-		Index text.
-
-		@param self: Reference to the CompletionIndexer instance.
-		@type self: A CompletionIndexer object.
-
-		@param text: Text to be indexed for word completion.
-		@type text: A String object.
-
-		@return: A dictionary of words for automatic completion.
-		@rtype: A Dict object.
-		"""
 		try:
 			if self.__is_busy: raise ValueError
 			self.__is_busy = True
@@ -125,18 +101,6 @@ class CompletionIndexer(object):
 		return False
 
 	def __generate_completion_list(self, text):
-		"""
-		Generate list of words for automatic completion.
-
-		@param self: Reference to the CompletionIndexer instance.
-		@type self: A CompletionIndexer object.
-
-		@param text: Text to be indexed for word completion.
-		@type text: A String object.
-
-		@param return: A list of words for automatic completion.
-		@type return: A List object.
-		"""
 		if not text: return None
 		from re import split
 		completion_list = split(self.__pattern, text)#.decode("utf-8"))
@@ -144,18 +108,6 @@ class CompletionIndexer(object):
 		return completions
 
 	def __generate_completion_dictionary(self, completions):
-		"""
-		Rank the occurence of a list of words in a dictionary.
-
-		@param self: Reference to the CompletionIndexer instance.
-		@type self: A CompletionIndexer object.
-
-		@param completions: A list of words for automatic completion.
-		@type completions: A List object.
-
-		@return: A dictionary of words ranked by occurence.
-		@rtype: A Dict object.
-		"""
 		if not completions: return self.__empty_dict
 		dictionary = {}
 		# Index strings based on their occurence in the editor's
@@ -169,18 +121,6 @@ class CompletionIndexer(object):
 		return dictionary
 
 	def __filter(self, string):
-		"""
-		Filter out word that do not meet the criteria for completion.
-
-		Words for completion need to be more than three alphanumeric
-		characters long.
-
-		@param self: Reference to the CompletionIndexer instance.
-		@type self: A CompletionIndexer object.
-
-		@param string: A string to check.
-		@type string: A String object.
-		"""
 		if len(string) < 4: return False
 		if string.startswith("---") or string.startswith("___"): return False
 		return True
@@ -191,10 +131,6 @@ class CompletionIndexer(object):
 
 	def __precompile_methods(self):
 		try:
-			from psyco import bind, full
-			bind(self.__generate_completion_list)
-			bind(self.__generate_completion_dictionary)
-			bind(self.__filter)
 			full()
 		except ImportError:
 			pass
@@ -203,44 +139,29 @@ class CompletionIndexer(object):
 		return False
 
 	def __name_change_cb(self, *args):
-		"""
-		Quit when the Scribes process dies.
-
-		@param self: Reference to the CompletionIndexer instance.
-		@type self: A CompletionIndexer object.
-		"""
 		from os import _exit
 		_exit(0)
 		return
 
 	def __start_up_check(self):
-		from SCRIBES.info import dbus_iface
+		from SCRIBES.Globals import dbus_iface
 		services = dbus_iface.ListNames()
 		if not (indexer_dbus_service in services): return
-#		print "Ooops! Found another completion indexer, killing this one."
+		print "Ooops! Found another completion indexer, killing this one."
 		from os import _exit
 		_exit(0)
 		return
 
 	def __check_instances(self):
-		"""
-		Periodically check for other instances.
-
-		@param self: Reference to the CompletionIndexer instance.
-		@type self: A CompletionIndexer object.
-		"""
-		from SCRIBES.info import dbus_iface
+		from SCRIBES.Globals import dbus_iface
 		services = dbus_iface.ListNames()
 		if services.count(indexer_dbus_service) == 1: return True
-#		print "Ooops! Found another completion indexer, killing this one."
+		print "Ooops! Found another completion indexer, killing this one."
 		from os import _exit
 		_exit(0)
 		return True
 
 def __set_vm_properties():
-	"""
-	Set virtual machine's (Python) system properties.
-	"""
 	from sys import setcheckinterval, getrecursionlimit
 	from sys import setrecursionlimit, setdlopenflags
 	try:

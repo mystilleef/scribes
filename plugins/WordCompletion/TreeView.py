@@ -40,14 +40,14 @@ class CompletionTreeView(TreeView):
 		TreeView.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = manager.connect("match-found", self.__match_found_cb)
-		self.__signal_id_3 = self.connect("row-activated", self.__row_activated_cb)
-		self.__signal_id_4 = self.connect("button-press-event", self.__button_press_event)
-		self.__signal_id_5 = manager.connect("is-visible", self.__is_visible_cb)
-		self.__signal_id_7 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
-		self.__signal_id_8 = self.connect("cursor-changed", self.__cursor_changed_cb)
-		self.__signal_id_9 = manager.connect("no-match-found", self.__no_match_found_cb)
+		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = manager.connect("match-found", self.__match_found_cb)
+		self.__sigid3 = self.connect("row-activated", self.__row_activated_cb)
+		self.__sigid4 = self.connect("button-press-event", self.__button_press_event)
+		self.__sigid5 = manager.connect("is-visible", self.__is_visible_cb)
+		self.__sigid7 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
+		self.__sigid8 = self.connect("cursor-changed", self.__cursor_changed_cb)
+		self.__sigid9 = manager.connect("no-match-found", self.__no_match_found_cb)
 		self.__block_textview()
 #		from gobject import idle_add, PRIORITY_LOW
 #		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
@@ -100,24 +100,25 @@ class CompletionTreeView(TreeView):
 		self.get_selection().select_path(0)
 		return False
 
+	def __get_word_to_cursor(self):
+		from SCRIBES.Word import ends_word, get_word
+		if not ends_word(self.__editor.cursor): return None
+		word = get_word(self.__editor.textbuffer, self.__editor.cursor)
+		return word
+
+	def __get_word_before_cursor(self):
+		word = self.__get_word_to_cursor()
+		if word and len(word) > 2: return word
+		return None
+
 	def __insert_word_completion(self, path):
-		"""
-		Insert items selected in the completion window into the text editor's
-		buffer.
-
-		@param path: The selected row in the completion window.
-		@type path: A gtk.TreeRow object.
-
-		@param editor: Reference to the editor object.
-		@type editor: An editor object.
-		"""
 		# Get the database containing potential completion string matches.
 		model = self.__model
 		# Get the selected completion string.
 		completion_string = model[path[0]][0].decode("utf8")
 		# Index to split completion string for insertion into the text editor's
 		# buffer. Encode to utf8 before insertion.
-		index = len(self.__editor.get_word_before_cursor().decode("utf8"))
+		index = len(self.__get_word_before_cursor().decode("utf8"))
 		string = completion_string[index:]
 		# Split completion_string at the right index and insert into the editor's
 		# buffer.
@@ -127,20 +128,8 @@ class CompletionTreeView(TreeView):
 		self.__manager.emit("no-match-found")
 		# Feedback to the status bar indicating word completion occurred.
 		from i18n import msg0001
-		self.__editor.feedback.update_status_message(msg0001, "succeed")
+		self.__editor.update_message(msg0001, "pass")
 		return
-
-	def __precompile_methods(self):
-		try:
-			from psyco import bind
-			bind(self.__populate_model)
-			bind(self.__insert_word_completion)
-			bind(self.__key_press_event_cb)
-			bind(self.__match_found_cb)
-			bind(self.__no_match_found_cb)
-		except ImportError:
-			pass
-		return False
 
 ########################################################################
 #
@@ -149,34 +138,16 @@ class CompletionTreeView(TreeView):
 ########################################################################
 
 	def __create_model(self):
-		"""
-		Create the view's model, or database.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-		"""
 		from gtk import ListStore
 		model = ListStore(str)
 		return model
 
 	def __create_renderer(self):
-		"""
-		Create the view's text renderer.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-		"""
 		from gtk import CellRendererText
 		renderer = CellRendererText()
 		return renderer
 
 	def __create_column(self):
-		"""
-		Create the view's column.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-		"""
 		from gtk import TreeViewColumn
 		column = TreeViewColumn("", self.__renderer, text=0)
 		column.set_expand(False)
@@ -189,41 +160,20 @@ class CompletionTreeView(TreeView):
 ########################################################################
 
 	def __destroy_cb(self, manager):
-		"""
-		Destroy instance of this object.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, manager)
-		self.__editor.disconnect_signal(self.__signal_id_3, self)
-		self.__editor.disconnect_signal(self.__signal_id_4, self)
-		self.__editor.disconnect_signal(self.__signal_id_5, manager)
-		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_8, self)
-		self.__editor.disconnect_signal(self.__signal_id_9, manager)
+		self.__editor.disconnect_signal(self.__sigid1, manager)
+		self.__editor.disconnect_signal(self.__sigid2, manager)
+		self.__editor.disconnect_signal(self.__sigid3, self)
+		self.__editor.disconnect_signal(self.__sigid4, self)
+		self.__editor.disconnect_signal(self.__sigid5, manager)
+		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid8, self)
+		self.__editor.disconnect_signal(self.__sigid9, manager)
 		self.destroy()
 		del self
 		self = None
 		return
 
 	def __match_found_cb(self, completion, completion_list):
-		"""
-		Handles callback when the "match-found" signal is emitted.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-
-		@param completion: Reference to the WordCompletionManager instance.
-		@type completion: A WordCompletionManager object.
-
-		@param completion_list: A list of words for completion.
-		@type completion_list: A List object.
-		"""
 #		try:
 #			from gobject import source_remove, idle_add
 #			source_remove(self.__populate_id)
@@ -245,24 +195,6 @@ class CompletionTreeView(TreeView):
 		return
 
 	def __row_activated_cb(self, treeview, path, column):
-		"""
-		Handles callback when the "row-activated" signal is emitted.
-
-		@param self: Reference to the CompletionView instance.
-		@type self: A CompletionView object.
-
-		@param treeview: The text editor's completion window's view.
-		@type treeview: A CompletionView object.
-
-		@param path: An object representing a row in the view.
-		@type path: A Path object.
-
-		@param column: The text editor's completion window's view's column.
-		@type column: A gtk.TreeViewColumn object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		try:
 			self.__is_visible = False
 			self.__insert_word_completion(path)
@@ -273,21 +205,6 @@ class CompletionTreeView(TreeView):
 		return True
 
 	def __button_press_event(self, treeview, event):
-		"""
-		Handles callback when the "button-press-event" signal is emitted.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-
-		@param treeview: The text editor's completion window's view.
-		@type treeview: A CompletionTreeView object.
-
-		@param event: An event that occurs when the right mouse button is pressed.
-		@type event: A gtk.Event object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		# Get the selected item on the completion window.
 		selection = treeview.get_selection()
 		# Get the model and iterator of the selected item.
@@ -300,24 +217,6 @@ class CompletionTreeView(TreeView):
 		return True
 
 	def __key_press_event_cb(self, treeview, event):
-		"""
-		Handles callback when the "key-press-event" signal is emitted.
-
-		This function allows the "Up" and "Down" arrow keys to work in
-		the word completion window.
-
-		@param self: Reference to the CompletionView instance.
-		@type self: A CompletionView object.
-
-		@param treeview: The text editor's completion view.
-		@type treeview: A CompletionView object.
-
-		@param event: An event that occurs when keys are pressed.
-		@type event: A gtk.Event object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
 		if not self.__is_visible: return False
 		# Get the selected item on the completion window.
 		selection = self.get_selection()
@@ -362,18 +261,6 @@ class CompletionTreeView(TreeView):
 		return True
 
 	def __is_visible_cb(self, manager, is_visible):
-		"""
-		Handles callback when the "is-visible" signal is emitted.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-
-		@param manager: Reference to the CompletionManager instance.
-		@type manager: A CompletionManager object.
-
-		@param is_visible: Whether or not the word completion window is visible.
-		@type is_visible: A Boolean object.
-		"""
 		if is_visible:
 			self.__is_visible = True
 			self.columns_autosize()
@@ -385,29 +272,14 @@ class CompletionTreeView(TreeView):
 		return
 
 	def __unblock_textview(self):
-		"""
-		Unblock textview's "key-press-event" signal.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-		"""
 		if not self.__is_blocked: return
-		self.__editor.textview.handler_unblock(self.__signal_id_7)
+		self.__editor.textview.handler_unblock(self.__sigid7)
 		self.__is_blocked = False
 		return
 
 	def __block_textview(self):
-		"""
-		Block textview's "key-press-event" signal.
-
-		The "key-press-event" signal is only useful when the word
-		completion window is visible.
-
-		@param self: Reference to the CompletionTreeView instance.
-		@type self: A CompletionTreeView object.
-		"""
 		if self.__is_blocked: return
-		self.__editor.textview.handler_block(self.__signal_id_7)
+		self.__editor.textview.handler_block(self.__sigid7)
 		self.__is_blocked = True
 		return
 

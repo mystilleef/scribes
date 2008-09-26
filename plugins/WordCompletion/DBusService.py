@@ -39,31 +39,13 @@ class DBusService(Object):
 	"""
 
 	def __init__(self, indexer):
-		"""
-		Initialize the D-Bus service.
-
-		@param self: Reference to the DBusService instance.
-		@type self: A DBusService object.
-
-		@param indexer: Reference to word completion indexer.
-		@type indexer: An CompletionIndexer object.
-		"""
-		from SCRIBES.info import session_bus
+		from SCRIBES.Globals import session_bus
 		bus_name = BusName(indexer_dbus_service, bus=session_bus)
 		Object.__init__(self, bus_name, indexer_dbus_path)
 		self.__indexer = indexer
 
 	@method(indexer_dbus_service)
 	def process(self, text, id):
-		"""
-		Index text for automatic word completion.
-
-		@param self: Reference to the DBusService instance.
-		@type self: A DBusService object.
-
-		@return: A dictionary of words ranked by occurrence.
-		@rtype: A Dict object.
-		"""
 		return self.__indexer.process(text, id)
 
 	@signal(indexer_dbus_service)

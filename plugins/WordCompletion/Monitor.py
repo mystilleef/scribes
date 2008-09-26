@@ -37,29 +37,25 @@ class CompletionMonitor(object):
 
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
-		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = self.__manager.connect("update", self.__update_cb)
-		self.__signal_id_3 = editor.textbuffer.connect_after("insert-text", self.__insert_text_cb)
-		self.__signal_id_4 = editor.textview.connect("undo", self.__generic_cb)
-		self.__signal_id_5 = editor.textview.connect("redo", self.__generic_cb)
-		self.__signal_id_6 = editor.textview.connect("paste-clipboard", self.__generic_cb)
-		self.__signal_id_7 = editor.textview.connect_after("undo", self.__generic_cb)
-		self.__signal_id_8 = editor.textview.connect_after("redo", self.__generic_cb)
-		self.__signal_id_9 = editor.textview.connect_after("paste-clipboard", self.__generic_cb)
-		self.__signal_id_10 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
-		self.__signal_id_11 = manager.connect("is-visible", self.__is_visible_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=9999)
+		self.__sigid1 = self.__manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = self.__manager.connect("update", self.__update_cb)
+		self.__sigid3 = editor.textbuffer.connect_after("insert-text", self.__insert_text_cb)
+		self.__sigid4 = editor.textview.connect("undo", self.__generic_cb)
+		self.__sigid5 = editor.textview.connect("redo", self.__generic_cb)
+		self.__sigid6 = editor.textview.connect("paste-clipboard", self.__generic_cb)
+		self.__sigid7 = editor.textview.connect_after("undo", self.__generic_cb)
+		self.__sigid8 = editor.textview.connect_after("redo", self.__generic_cb)
+		self.__sigid9 = editor.textview.connect_after("paste-clipboard", self.__generic_cb)
+		self.__sigid10 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
+		self.__sigid11 = manager.connect("is-visible", self.__is_visible_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
 		self.__manager = manager
 		self.__match_found = False
 		self.__completion_window_is_visible = False
-		self.__dictionary = self.__create_completion_dictionary()
-		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
-		self.__signal_id_4 = self.__signal_id_5 = self.__signal_id_6 = None
-		self.__signal_id_7 = self.__signal_id_8 = self.__signal_id_9 = None
+		from CompletionDictionary import CompletionDictionary
+		self.__dictionary = CompletionDictionary()
 		return
 
 ########################################################################
@@ -67,10 +63,20 @@ class CompletionMonitor(object):
 #						Helper Methods
 #
 ########################################################################
+	def __get_word_to_cursor(self):
+		from SCRIBES.Word import ends_word, get_word
+		if not ends_word(self.__editor.cursor): return None
+		word = get_word(self.__editor.textbuffer, self.__editor.cursor)
+		return word
+
+	def __get_word_before_cursor(self):
+		word = self.__get_word_to_cursor()
+		if word and len(word) > 2: return word
+		return None
 
 	def __check_buffer(self):
 		try:
-			word = self.__editor.get_word_before_cursor()
+			word = self.__get_word_before_cursor()
 			if word:
 				matches = self.__find_matches(word)
 				self.__emit_match_found(matches) if matches else self.__emit_no_match_found()
@@ -115,22 +121,6 @@ class CompletionMonitor(object):
 		if (x[1] > y[1]): return -1
 		return 0
 
-	def __precompile_methods(self):
-		methods = (self.__insert_text_cb, self.__key_press_event_cb,
-				self.__emit_no_match_found, self.__emit_match_found)
-		self.__editor.optimize(methods)
-		return False
-
-	def __create_completion_dictionary(self):
-		try:
-			from SCRIBES.Exceptions import GlobalStoreObjectDoesNotExistError
-			dictionary = self.__editor.get_global_object("WordCompletionDictionary")
-		except GlobalStoreObjectDoesNotExistError:
-			from CompletionDictionary import CompletionDictionary
-			self.__editor.add_global_object("WordCompletionDictionary", CompletionDictionary())
-			dictionary = self.__editor.get_global_object("WordCompletionDictionary")
-		return dictionary
-
 	def __update_dictionary(self, dictionary):
 		if (self.__dictionary.get_dictionary() == dictionary): return False
 		self.__dictionary.update(dictionary)
@@ -161,15 +151,6 @@ class CompletionMonitor(object):
 		return False
 
 	def __generic_cb(self, *args):
-		"""
-		A generic callback method.
-
-		@param self: Reference to the CompletionMonitor instance.
-		@type self: A CompletionMonitor object.
-
-		@param *args: Irrelevant arguments.
-		@type *args: A List object.
-		"""
 		self.__manager.emit("no-match-found")
 		from gobject import source_remove
 		try:
@@ -179,15 +160,6 @@ class CompletionMonitor(object):
 		return False
 
 	def __update_cb(self, manager, dictionary):
-		"""
-		Handles callback when the "update" signal is emitted.
-
-		@param self: Reference to the CompletionMonitor instance.
-		@type self: An CompletionMonitor object.
-
-		@param manager: Reference to the CompletionManager.
-		@type manager: An CompletionManager object.
-		"""
 		try:
 			from gobject import timeout_add, PRIORITY_LOW, source_remove
 			source_remove(self.__dictionary_timer)
@@ -197,15 +169,6 @@ class CompletionMonitor(object):
 		return
 
 	def __key_press_event_cb(self, textview, event):
-		"""
-		Handles callback when the "key-press-event" is emitted.
-
-		@param self: Reference to the CompletionMonitor instance.
-		@type self: A CompletionMonitor object.
-
-		@param textview: The text editor's buffer container.
-		@type textview: A textview object.
-		"""
 		from gtk import keysyms
 		hide_keys = (keysyms.BackSpace, keysyms.space, keysyms.Tab, keysyms.Escape)
 		if  event.keyval in hide_keys: self.__emit_no_match_found()
@@ -216,25 +179,16 @@ class CompletionMonitor(object):
 		return False
 
 	def __destroy_cb(self, manager):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the CompletionMonitor instance.
-		@type self: An CompletionMonitor object.
-
-		@param manager: Reference to the CompletionManager.
-		@type manager: An CompletionManager object.
-		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor.textbuffer)
-		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor.textview)
-		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor.textview)
-		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor.textview)
-		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor.textview)
-		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor.textview)
-		self.__editor.disconnect_signal(self.__signal_id_9, self.__editor.textview)
-		self.__editor.disconnect_signal(self.__signal_id_10, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__sigid4, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__sigid5, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__sigid6, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__sigid7, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__sigid8, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__sigid9, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__sigid10, self.__editor.textview)
 		del self
 		self = None
 		return

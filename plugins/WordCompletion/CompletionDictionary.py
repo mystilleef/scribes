@@ -36,37 +36,16 @@ class CompletionDictionary(object):
 	"""
 
 	def __init__(self):
-		"""
-		Initialize dictionary object.
-
-		@param self: Reference to the CompletionDictionary instance.
-		@type self: A CompletionDictionary object.
-		"""
 		self.__init_attributes()
 #		from gobject import idle_add, PRIORITY_LOW
 #		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the CompletionDictionary instance.
-		@type self: A CompletionDictionary object.
-		"""
 		self.__is_updating = False
 		self.__dictionary = {}
 		return
 
 	def update(self, dictionary):
-		"""
-		Update completion dictionary.
-
-		@param self: Reference to the CompletionDictionary instance.
-		@type self: A CompletionDictionary object.
-
-		@param dictionary: Dictionary of words
-		@type dictionary: A Dictionary object.
-		"""
 		if self.__is_updating: return
 		self.__is_updating = True
 #		from gobject import idle_add, PRIORITY_LOW
@@ -76,15 +55,6 @@ class CompletionDictionary(object):
 		return
 
 	def __update(self, dictionary):
-		"""
-		Update completion dictionary
-
-		@param self: Reference to the CompletionDictionary instance.
-		@type self: A CompletionDictionary object.
-
-		@param dictionary: Dictionary of words
-		@type dictionary: A Dictionary object.
-		"""
 		self.__dictionary.clear()
 		self.__dictionary.update(dictionary)
 		self.__is_updating = False
@@ -92,13 +62,3 @@ class CompletionDictionary(object):
 
 	def get_dictionary(self):
 		return self.__dictionary
-
-	def __precompile_methods(self):
-		try:
-			from psyco import bind
-			bind(self.__update)
-			bind(self.update)
-			bind(self.get_dictionary)
-		except ImportError:
-			pass
-		return False

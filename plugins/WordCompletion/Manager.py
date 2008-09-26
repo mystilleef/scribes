@@ -50,30 +50,12 @@ class CompletionManager(GObject):
 	}
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the CompletionManager instance.
-		@type self: A CompletionManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		self.__arrange_widgets()
-		self.__signal_id_1 = self.connect("destroy", self.__destroy_cb)
+		self.__sigid1 = self.connect("destroy", self.__destroy_cb)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the CompletionManager instance.
-		@type self: A CompletionManager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		from Monitor import CompletionMonitor
 		self.__monitor = CompletionMonitor(self, editor)
@@ -85,31 +67,15 @@ class CompletionManager(GObject):
 		self.__textview = CompletionTreeView(self, editor)
 		from ScrollWin import CompletionScrollWin
 		self.__scrollwin = CompletionScrollWin(self)
-		self.__signal_id_1 = None
 		return
 
 	def __arrange_widgets(self):
-		"""
-		Arrange widgets in the word completion window.
-
-		@param self: Reference to the CompletionManager instance.
-		@type self: A CompletionManager object.
-		"""
 		self.__scrollwin.add(self.__textview)
 		self.__window.add(self.__scrollwin)
 		return
 
 	def __destroy_cb(self, manager):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the CompletionManager instance.
-		@type self: An CompletionManager object.
-
-		@param manager: Reference to the CompletionManager.
-		@type manager: An CompletionManager object.
-		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, self)
+		self.__editor.disconnect_signal(self.__sigid1, self)
 		del self
 		self = None
 		return

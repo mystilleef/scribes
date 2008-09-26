@@ -83,12 +83,10 @@ class Manager(object):
 		return False
 
 	def __load_plugin(self, PluginClass):
-		self.__editor.busy()
 		self.__editor.response()
 		plugin_object = PluginClass(self.__editor)
 		plugin_object.load()
-#		self.__editor.refresh()
-		self.__editor.busy(False)
+		self.__editor.refresh()
 		self.__editor.response()
 		return plugin_object
 

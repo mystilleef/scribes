@@ -74,7 +74,7 @@ CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
 DATADIRNAME = share
-DEFS = -DPACKAGE_NAME=\"scribes\" -DPACKAGE_TARNAME=\"scribes\" -DPACKAGE_VERSION=\"0.4-dev-build247\" -DPACKAGE_STRING=\"scribes\ 0.4-dev-build247\" -DPACKAGE_BUGREPORT=\"\<mystilleef@gmail.com\>\" -DPACKAGE=\"scribes\" -DVERSION=\"0.4-dev-build247\" -DGETTEXT_PACKAGE=\"scribes\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LOCALE_H=1 -DHAVE_LC_MESSAGES=1 -DHAVE_BIND_TEXTDOMAIN_CODESET=1 -DHAVE_GETTEXT=1 -DHAVE_DCGETTEXT=1 -DENABLE_NLS=1
+DEFS = -DPACKAGE_NAME=\"scribes\" -DPACKAGE_TARNAME=\"scribes\" -DPACKAGE_VERSION=\"0.4-dev-build248\" -DPACKAGE_STRING=\"scribes\ 0.4-dev-build248\" -DPACKAGE_BUGREPORT=\"\<mystilleef@gmail.com\>\" -DPACKAGE=\"scribes\" -DVERSION=\"0.4-dev-build248\" -DGETTEXT_PACKAGE=\"scribes\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LOCALE_H=1 -DHAVE_LC_MESSAGES=1 -DHAVE_BIND_TEXTDOMAIN_CODESET=1 -DHAVE_GETTEXT=1 -DHAVE_DCGETTEXT=1 -DENABLE_NLS=1
 DEPDIR = .deps
 DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper 
 DOC_USER_FORMATS = 
@@ -138,9 +138,9 @@ OMF_DIR = ${datadir}/omf
 PACKAGE = scribes
 PACKAGE_BUGREPORT = <mystilleef@gmail.com>
 PACKAGE_NAME = scribes
-PACKAGE_STRING = scribes 0.4-dev-build247
+PACKAGE_STRING = scribes 0.4-dev-build248
 PACKAGE_TARNAME = scribes
-PACKAGE_VERSION = 0.4-dev-build247
+PACKAGE_VERSION = 0.4-dev-build248
 PATH_SEPARATOR = :
 PKG_CONFIG = /usr/bin/pkg-config
 POFILES =  de.po fr.po nl.po it.po pt_BR.po sv.po zh_CN.po
@@ -157,7 +157,7 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = 
 USE_NLS = yes
-VERSION = 0.4-dev-build247
+VERSION = 0.4-dev-build248
 XGETTEXT = /usr/bin/xgettext
 YELP = /usr/bin/yelp
 ac_ct_CC = gcc
@@ -289,7 +289,8 @@ scribes_PYTHON = \
 	Usage.py \
 	UseTabsMetadata.py \
 	Utils.py \
-	Window.py
+	Window.py \
+	Word.py
 
 EXTRA_DIST = Globals.py.in
 all: all-am
