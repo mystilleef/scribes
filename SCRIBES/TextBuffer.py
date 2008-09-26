@@ -151,7 +151,7 @@ class Buffer(object):
 		return False
 
 	def __insert_text_cb(self, buffer_, iter, text, length, *args):
-		if length > 1: return False
+		if length > 1 or text in ("\n", "\r", "\r\n"): return False
 		#FIXME: Experimental code, remove if you have problems.
 		self.__editor.response()
 		#from gobject import idle_add

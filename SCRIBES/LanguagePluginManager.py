@@ -163,14 +163,17 @@ class Manager(object):
 		self.__editor.response()
 		plugin_object = PluginClass(self.__editor)
 		plugin_object.load()
+#		self.__editor.refresh()
 		self.__editor.busy(False)
 		self.__editor.response()
 		return plugin_object
 
 	def __unload_plugin(self, plugin_info):
+		self.__editor.response()
 		plugin_object = plugin_info[2]
 		plugin_object.unload()
 		self.__plugin_objects.remove(plugin_info)
+		self.__editor.response()
 		return False
 
 	def __load_plugins(self):

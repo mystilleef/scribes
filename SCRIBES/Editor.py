@@ -61,6 +61,7 @@ class Editor(GObject):
 		"add-triggers": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"remove-triggers": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"trigger": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"refresh": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):

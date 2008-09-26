@@ -20,7 +20,6 @@ class View(object):
 								MONITOR_FILE, self.__margin_position_cb)
 		self.__monid7 = monitor_add(self.__spell_check_database_uri,
 								MONITOR_FILE, self.__spell_check_cb)
-		editor.register_object(self)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("ready", self.__ready_cb)
 		self.__sigid3 = editor.connect("checking-file", self.__checking_file_cb)
@@ -32,7 +31,9 @@ class View(object):
 		self.__sigid9 = self.__view.connect("drag-data-received", self.__drag_data_received_cb)
 		self.__sigid10 = editor.connect("loaded-file", self.__loaded_file_cb)
 		self.__sigid11 = editor.connect("busy", self.__busy_cb)
-		
+		self.__sigid12 = editor.connect("refresh", self.__refresh_cb)
+		editor.register_object(self)
+				
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		from gtksourceview2 import View, Buffer
@@ -58,6 +59,7 @@ class View(object):
 		spell_check_database_path = join(preference_folder, "SpellCheck.gdb")
 		self.__spell_check_database_uri = get_uri_from_local_path(spell_check_database_path)
 		self.__count = 0
+		self.__scrollwin = self.__editor.gui.get_widget("ScrolledWindow")
 		return
 
 	def __destroy(self):
@@ -73,6 +75,7 @@ class View(object):
 		self.__editor.disconnect_signal(self.__sigid9, self.__view)
 		self.__editor.disconnect_signal(self.__sigid10, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid11, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid12, self.__editor)
 		if self.__monid1: monitor_cancel(self.__monid1)
 		if self.__monid2: monitor_cancel(self.__monid2)
 		if self.__monid3: monitor_cancel(self.__monid3)
@@ -86,9 +89,8 @@ class View(object):
 		return False
 
 	def __set_properties(self):
-		scrollwin = self.__editor.gui.get_widget("ScrolledWindow")
-		scrollwin.add(self.__view)
-		self.__view.set_property("sensitive", False)
+		self.__view.set_property("sensitive", True)
+		self.__scrollwin.add(self.__view)
 		targets = [("text/uri-list", 0, 80)]
 		from gtk import DEST_DEFAULT_ALL
 		from gtk.gdk import ACTION_COPY, BUTTON1_MASK, ACTION_DEFAULT
@@ -113,8 +115,7 @@ class View(object):
 		from TextWrappingMetadata import get_value as wrap_mode_bool
 		wrap_mode = self.__view.set_wrap_mode
 		wrap_mode(WRAP_WORD_CHAR) if wrap_mode_bool() else wrap_mode(WRAP_NONE)
-		scrollwin.set_property("sensitive", True)
-		scrollwin.show_all()
+		self.__scrollwin.show_all()
 		from SpellCheckMetadata import get_value as spell_check
 		if not spell_check(): return False
 		try:
@@ -127,19 +128,24 @@ class View(object):
 		return False
 
 	def __set_readonly(self, readonly):
-		self.__view.set_property("editable", not readonly)
-		self.__view.set_property("highlight-current-line", not readonly)
-		self.__view.set_property("show-line-numbers", not readonly)
-		self.__view.set_property("cursor-visible", not readonly)
+		self.__view.props.editable = not readonly
+		self.__view.props.highlight_current_line = not readonly
+		self.__view.props.show_line_numbers = not readonly
+		self.__view.props.cursor_visible = not readonly
 		self.__refresh()
 		return False
 
+	def __sensitive(self, sensitive):
+		self.__scrollwin.props.sensitive = sensitive
+		self.__view.props.sensitive = sensitive
+		return False
+	
 	def __refresh(self):
-		self.__view.queue_draw()
-		self.__view.queue_resize()
-		self.__view.resize_children()
 		try:
-			self.__view.window.process_updates(True)
+			self.__view.queue_draw()
+			self.__view.queue_resize()
+			self.__view.resize_children()
+#			self.__view.window.process_updates(True)
 		except:
 			pass
 		finally:
@@ -158,26 +164,26 @@ class View(object):
 		return False
 
 	def __busy_cb(self, editor, sensitive):
-		self.__view.set_property("sensitive", not sensitive)
+		self.__sensitive(not sensitive)
 		if not sensitive: self.__refresh()
 		return False
 
 	def __ready_cb(self, *args):
-		self.__view.set_property("sensitive", True)
+		self.__sensitive(True)
 		self.__refresh()
 		return False
 
 	def __checking_file_cb(self, *args):
-		self.__view.set_property("sensitive", False)
+		self.__editor.busy()
 		return False
 
 	def __loaded_file_cb(self, *args):
-		self.__view.set_property("sensitive", True)
+		self.__editor.busy(False)
 		self.__refresh()
 		return False
 
 	def __load_error_cb(self, *args):
-		self.__view.set_property("sensitive", True)
+		self.__editor.busy(False)
 		self.__refresh()
 		return False
 
@@ -186,8 +192,7 @@ class View(object):
 		return False
 
 	def __backspace_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__editor.response)
+		self.__editor.response()
 		return False
 
 	def __drag_motion_cb(self, textview, context, x, y, time):
@@ -207,6 +212,10 @@ class View(object):
 		self.__editor.open_files(uri_list, None)
 		context.finish(True, False, timestamp)
 		return True
+
+	def __refresh_cb(self, *args):
+		self.__refresh()
+		return False
 
 ################################################################################
 #
