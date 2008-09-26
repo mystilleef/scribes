@@ -17,6 +17,12 @@ class Inserter(object):
 		return
 
 	def __destroy(self):
+		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		del self
 		self = None
 		return
@@ -27,10 +33,10 @@ class Inserter(object):
 		return
 
 	def __remove_trigger(self):
-		iterator = self.__editor.cursor_position
+		iterator = self.__editor.cursor
 		from utils import remove_trailing_spaces_on_line
 		remove_trailing_spaces_on_line(self.__editor.textview, iterator.get_line())
-		iterator = self.__editor.cursor_position
+		iterator = self.__editor.cursor
 		temp_iter = iterator.copy()
 		for character in xrange(len(self.__trigger)): temp_iter.backward_char()
 		self.__editor.textbuffer.delete(iterator, temp_iter)
@@ -61,7 +67,7 @@ class Inserter(object):
 			buffer_.place_cursor(begin)
 			buffer_.delete(begin, end_)
 			nplaceholder = replace_special_placeholder(placeholder)
-			cursor_position = self.__editor.cursor_position
+			cursor_position = self.__editor.cursor
 			buffer_.move_mark(mark, cursor_position)
 			buffer_.insert_at_cursor(nplaceholder)
 			start = buffer_.get_iter_at_mark(mark)
@@ -100,7 +106,7 @@ class Inserter(object):
 				buffer_.place_cursor(begin)
 				buffer_.delete(begin, end_)
 			placeholder_marks.append(pmark)
-			cursor_position = self.__editor.cursor_position
+			cursor_position = self.__editor.cursor
 			buffer_.move_mark(mark, cursor_position)
 			buffer_.insert_at_cursor(nplaceholder)
 			self.__manager.emit("tag-placeholder", pmark)
@@ -117,7 +123,7 @@ class Inserter(object):
 		if self.__trigger is None: return None
 		general = "General" + self.__trigger
 		language = None
-		if self.__editor.language: language = self.__editor.language.get_id() + self.__trigger
+		if self.__editor.language: language = self.__editor.language + self.__trigger
 		if language and self.__language_dictionary.has_key(language):
 			return self.__language_dictionary[language]
 		if self.__general_dictionary.has_key(general):

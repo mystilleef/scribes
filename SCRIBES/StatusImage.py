@@ -86,7 +86,10 @@ class Image(object):
 		return False
 
 	def __unset_message_image(self, icon_name):
-		self.__queue.remove(icon_name)
+		try:
+			self.__queue.remove(icon_name)
+		except ValueError:
+			pass
 		if self.__busy: return False
 		from gobject import idle_add
 		idle_add(self.__set_default_image, priority=9999)

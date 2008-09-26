@@ -32,7 +32,7 @@ select text within pair characters.
 name = "Dynamic Templates Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-autoload = False
+autoload = True
 class_name = "TemplatesPlugin"
 short_description = "Dynamic Templates"
 long_description = """This plug-in performs templates operations"""
@@ -43,35 +43,14 @@ class TemplatesPlugin(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize the plug-in object.
-
-		@param self: Reference to the TemplatesPlugin instance.
-		@type self: A TemplatesPlugin object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__manager = None
 
 	def load(self):
-		"""
-		Initialize the TemplatesPlugin instance.
-
-		@param self: Reference to the TemplatesPlugin instance.
-		@type self: An TemplatesPlugin object.
-		"""
 		from Templates.Manager import Manager
 		self.__manager = Manager(self.__editor)
 		return
 
 	def unload(self):
-		"""
-		Destroy the TemplatesPlugin instance.
-
-		@param self: Reference to the TemplatesPlugin instance.
-		@type self: An TemplatesPlugin object.
-		"""
 		self.__manager.destroy()
 		return

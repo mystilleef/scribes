@@ -431,6 +431,24 @@ class Editor(GObject):
 		from Utils import select_row
 		return select_row(treeview)
 
+	def mark(self, iterator, alignment="right"):
+		value = False if alignment == "right" else True
+		mark = self.textbuffer.create_mark(None, iterator, value)
+		return mark
+
+	def create_left_mark(self, iterator=None):
+		if iterator: return self.mark(iterator, "left")
+		return self.mark(self.cursor, "left")
+
+	def create_right_mark(self, iterator=None):
+		if iterator: return self.mark(iterator, "right")
+		return self.mark(self.cursor, "right")
+
+	def delete_mark(self, mark):
+		if mark.get_deleted(): return
+		self.textbuffer.delete_mark(mark)
+		return
+
 ########################################################################
 #
 #								Signal Listener

@@ -80,7 +80,7 @@ class Monitor(object):
 
 	def __loaded_language_templates_cb(self, manager, dictionary):
 		try:
-			language = self.__editor.language.get_id()
+			language = self.__editor.language
 			get_trigger = lambda key: key[len(language):]
 			keys = [get_trigger(key) for key in dictionary.keys()]
 			from collections import deque
@@ -127,3 +127,4 @@ class Monitor(object):
 			self.__manager.emit("previous-placeholder")
 			result = True
 		return result
+

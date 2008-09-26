@@ -29,21 +29,14 @@ triggers.
 @contact: mystilleef@gmail.com
 """
 
+message = "Template trigger highlighted"
+
 class Colorer(object):
 	"""
 	This class creates an object that colors template triggers.
 	"""
 
 	def __init__(self, editor, manager):
-		"""
-		Initialize object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param manager: The template manager.
-		@type manager: A Manager object.
-		"""
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("trigger-found", self.__trigger_found_cb)
@@ -52,18 +45,6 @@ class Colorer(object):
 #		idle_add(self.__precompile_methods, priority=9000)
 
 	def __init_attributes(self, editor, manager):
-		"""
-		Initialize attributes.
-
-		@param self: Reference to the Colorer instance.
-		@type self: A Colorer object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-
-		@param manager: The template manager
-		@type manager: A Manager object.
-		"""
 		self.__manager = manager
 		self.__editor = editor
 		self.__buffer = editor.textbuffer
@@ -76,12 +57,6 @@ class Colorer(object):
 		return
 
 	def __destroy(self):
-		"""
-		Destroy colorer.
-
-		@param self: Reference to the Colorer instance.
-		@type self: A Colorer object.
-		"""
 		self.__editor.delete_mark(self.__lmark)
 		self.__editor.delete_mark(self.__rmark)
 		self.__buffer.get_tag_table().remove(self.__highlight_tag)
@@ -93,12 +68,6 @@ class Colorer(object):
 		return
 
 	def __precompile_methods(self):
-		"""
-		Precompile methods.
-
-		@param self: Reference to the Colorer instance.
-		@type self: A Colorer object.
-		"""
 		methods = [self.__trigger_found_cb, self.__no_trigger_found_cb,
 				self.__color_trigger, self.__uncolor_trigger, self.__process,
 				self.__get_trigger_position, self.__mark_trigger_position,
@@ -107,15 +76,6 @@ class Colorer(object):
 		return False
 
 	def __create_highlight_tag(self):
-		"""
-		Create trigger highlight tag.
-
-		@param self: Reference to the Colorer instance.
-		@type self: A Colorer object.
-
-		@return: A color tag
-		@rtype: A gtk.TextTag object.
-		"""
 		from gtk import TextTag
 		tag = TextTag("template-trigger")
 		self.__editor.textbuffer.get_tag_table().add(tag)
@@ -152,7 +112,7 @@ class Colorer(object):
 		self.__uncolor_trigger()
 		self.__buffer.apply_tag(self.__highlight_tag, position[0], position[1])
 		self.__is_highlighted = True
-		self.__status_id = self.__editor.feedback.set_modal_message("Template trigger highlighted", "info")
+		self.__editor.set_message(message, "info")
 		return False
 
 	def __uncolor_trigger(self):
@@ -160,7 +120,7 @@ class Colorer(object):
 		end = self.__buffer.get_iter_at_mark(self.__rmark)
 		self.__buffer.remove_tag(self.__highlight_tag, start, end)
 		self.__is_highlighted = False
-		self.__editor.feedback.unset_modal_message(self.__status_id)
+		self.__editor.unset_message(message, "info")
 		return False
 
 ################################################################################

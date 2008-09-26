@@ -60,15 +60,6 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		GObject.__init__(self)
 		from TriggerColorer import Colorer
 		Colorer(editor, self)
@@ -86,23 +77,11 @@ class Manager(GObject):
 		Loader(editor, self)
 
 	def __destroy(self):
-		"""
-		Destroy this object and subordinate objects it manages.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		self.emit("destroy")
 		del self
 		self = None
 		return
 
 	def destroy(self):
-		"""
-		Destroy object and subordinate objects it manages.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		self.__destroy()
 		return

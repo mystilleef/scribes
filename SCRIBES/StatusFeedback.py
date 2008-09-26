@@ -83,7 +83,10 @@ class Feedback(object):
 		return False
 
 	def __unset_message(self, message):
-		self.__queue.remove(message)
+		try:
+			self.__queue.remove(message)
+		except ValueError:
+			pass
 		if self.__busy: return False
 		from gobject import idle_add
 		idle_add(self.__set_default_message, priority=9999)
