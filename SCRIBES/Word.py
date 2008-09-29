@@ -32,97 +32,38 @@ that, optionally, may contain an underscore ("_") or a dash ("-") character.
 @contact: mystilleef@gmail.com
 """
 
-def starts_word(iterator):
-	# If the iterator is at the end of a word or line then it does not start a
-	# word.
-	if iterator.ends_line() or iterator.ends_word(): return False
+def starts_word(iterator, pattern):
+	iterator = iterator.copy()
 	character = iterator.get_char()
-	# If the the word in front of the iterator is not alphanumeric or is not
-	# an underscore or a dash, then it does not start a word.
-	if character.isalnum() is False:
-		if character in ("-", "_"):
-			pass
-		else:
-			return False
-	# At this point there is a valid alphanumeric character in front of the
-	# iterator. So if the iterator begins a line, then it is at the start of a
-	# word.
+	if not pattern.match(character): return False
 	if iterator.starts_line(): return True
-	# Move the iterator back one character to determine if there is a non-
-	# alphanumeric character before the real iterator position.
 	iterator.backward_char()
 	character = iterator.get_char()
-	iterator.forward_char()
-	# If there is an alphanumeric character, or an underscore, or a bash character
-	# before the iterator, then the it does not start a word. Otherwise, it
-	# does.
-	if character.isalnum() or character in ("-", "_"): return False
+	if pattern.match(character): return False
 	return True
 
-def ends_word(iterator):
+def ends_word(iterator, pattern):
+	iterator = iterator.copy()
 	if iterator.starts_line(): return False
 	character = iterator.get_char()
-	if character.isalnum() or character in ("-", "_"):
-		# There is a character in front of the iterator that is alphanumeric.
-		return False
+	if pattern.match(character): return False
 	iterator.backward_char()
 	character = iterator.get_char()
-	iterator.forward_char()
-	if character.isalnum() or character in ("-", "_"):
-		# There is a no alphanumeric character in front of the iterator, but
-		# there is one before it. Iterator is likely at the end of a word.
-		return True
-	# If all else fails, return False.
+	if pattern.match(character): return True
 	return False
 
-def inside_word(iterator):
-	if starts_word(iterator) or ends_word(iterator): return False
-	if iterator.starts_line() or iterator.ends_line(): return False
+def inside_word(iterator, pattern):
+	iterator = iterator.copy()
+	if starts_word(iterator, pattern) or ends_word(iterator, pattern): return True
 	character = iterator.get_char()
-	if character.isalnum() is False:
-		if character in ("-", "_"):
-			pass
-		else:
-			return False
-	iterator.backward_char()
-	character = iterator.get_char()
-	iterator.forward_char()
-	if character.isalnum() is False:
-		if character in ("-", "_"):
-			pass
-		else:
-			return False
-	return True
+	if pattern.match(character): return True
+	return False
 
-def get_word_boundary(iterator):
-	value = None
-	if starts_word(iterator):
-		navigational_iterator = iterator.copy()
-		while ends_word(navigational_iterator) is False:
-			navigational_iterator.forward_char()
-		value = iterator, navigational_iterator
-	elif inside_word(iterator):
-		begin_iterator = iterator.copy()
-		end_iterator = iterator.copy()
-		while starts_word(begin_iterator) is False:
-			begin_iterator.backward_char()
-		while ends_word(end_iterator) is False:
-			end_iterator.forward_char()
-		value = begin_iterator, end_iterator
-	elif ends_word(iterator):
-		navigational_iterator = iterator.copy()
-		while starts_word(navigational_iterator) is False:
-			navigational_iterator.backward_char()
-		value = navigational_iterator, iterator
-	return value
-
-def get_word(textbuffer, iterator):
-	result = get_word_boundary(iterator)
-	if result: result = textbuffer.get_text(result[0], result[1])
-	return result
-
-def select_word(textbuffer, iterator):
-	result = None
-	result = get_word_boundary(iterator)
-	if result: textbuffer.select_range(result[0], result[1])
-	return result
+def get_word_boundary(iterator, pattern):
+	start = iterator.copy()
+	end = iterator.copy()
+	while starts_word(start, pattern) is False:
+		start.backward_char()
+	while ends_word(end, pattern) is False:
+		end.forward_char()
+	return start, end

@@ -152,6 +152,8 @@ class Editor(GObject):
 		# True if editor is in readonly mode.
 		self.__readonly = False
 		self.__busy = 0
+		from re import UNICODE, compile as compile_
+		self.__word_pattern = compile_("\w+|[-]", UNICODE)
 		return False
 
 	def __destroy(self):
@@ -192,6 +194,14 @@ class Editor(GObject):
 		from os.path import join, exists
 		path_ = join(self.home_folder, base_path)
 		return path_ if exists(path_) else None
+
+	def __get_word_pattern(self):
+		return self.__word_pattern
+	
+	def __set_word_pattern(self, pattern):
+		from re import UNICODE, compile as compile_
+		self.__word_pattern = compile_(pattern, UNICODE)
+		return
 
 	def __update_manager_search_path(self, manager, home_folder):
 		gedit_path = self.__get_style_path(".gnome2/gedit/styles")
@@ -247,6 +257,7 @@ class Editor(GObject):
 	session_bus = property(lambda self: session_bus)
 	save_processor = property(lambda self: self.__imanager.get_save_processor())
 	supported_encodings = property(lambda self: get_supported_encodings())
+	word_pattern = property(__get_word_pattern, __set_word_pattern)
 
 	def help(self):
 		from gnome import help_display
@@ -447,6 +458,18 @@ class Editor(GObject):
 		if mark.get_deleted(): return
 		self.textbuffer.delete_mark(mark)
 		return
+
+	def inside_word(self, iterator=None, pattern=None):
+		if iterator is None: iterator = self.cursor
+		if pattern is None: pattern = self.word_pattern
+		from Word import inside_word
+		return inside_word(iterator, pattern)
+
+	def get_word_boundary(self, iterator=None, pattern=None):
+		if iterator is None: iterator = self.cursor
+		if pattern is None: pattern = self.word_pattern
+		from Word import get_word_boundary
+		return get_word_boundary(iterator, pattern)
 
 ########################################################################
 #

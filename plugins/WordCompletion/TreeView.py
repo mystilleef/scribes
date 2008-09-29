@@ -100,15 +100,10 @@ class CompletionTreeView(TreeView):
 		self.get_selection().select_path(0)
 		return False
 
-	def __get_word_to_cursor(self):
-		from SCRIBES.Word import ends_word, get_word
-		if not ends_word(self.__editor.cursor): return None
-		word = get_word(self.__editor.textbuffer, self.__editor.cursor)
-		return word
-
 	def __get_word_before_cursor(self):
-		word = self.__get_word_to_cursor()
-		if word and len(word) > 2: return word
+		if self.__editor.inside_word() is False: return None
+		word = self.__editor.textbuffer.get_text(*(self.__editor.get_word_boundary()))
+		if len(word) > 2: return word
 		return None
 
 	def __insert_word_completion(self, path):

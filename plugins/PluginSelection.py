@@ -31,8 +31,8 @@ selection operations.
 
 name = "Selection Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-version = 0.1
-autoload = False
+version = 0.2
+autoload = True
 class_name = "SelectionPlugin"
 short_description = "Selection operations."
 long_description = """This plug-in performs operations to select \
@@ -44,35 +44,14 @@ class SelectionPlugin(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize the plug-in object.
-
-		@param self: Reference to the SelectionPlugin instance.
-		@type self: A SelectionPlugin object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__trigger = None
 
 	def load(self):
-		"""
-		Initialize the SelectionPlugin instance.
-
-		@param self: Reference to the SelectionPlugin instance.
-		@type self: An SelectionPlugin object.
-		"""
-		from Selection.Trigger import SelectionTrigger
-		self.__trigger = SelectionTrigger(self.__editor)
+		from Selection.Trigger import Trigger
+		self.__trigger = Trigger(self.__editor)
 		return
 
 	def unload(self):
-		"""
-		Destroy the SelectionPlugin instance.
-
-		@param self: Reference to the SelectionPlugin instance.
-		@type self: An SelectionPlugin object.
-		"""
-		self.__trigger.emit("destroy")
+		self.__trigger.destroy()
 		return

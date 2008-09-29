@@ -70,8 +70,9 @@ class CompletionMonitor(object):
 		return word
 
 	def __get_word_before_cursor(self):
-		word = self.__get_word_to_cursor()
-		if word and len(word) > 2: return word
+		if self.__editor.inside_word(self.__editor.cursor) is False: return None
+		word = self.__editor.textbuffer.get_text(*(self.__editor.get_word_boundary(self.__editor.cursor)))
+		if len(word) > 2: return word
 		return None
 
 	def __check_buffer(self):

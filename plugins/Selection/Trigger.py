@@ -29,203 +29,67 @@ operations.
 @contact: mystilleef@gmail.com
 """
 
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE
-
-class SelectionTrigger(GObject):
+class Trigger(object):
 	"""
-	This class creates an object, a trigger, that allows users to
-	perform selection operations.
+	Creates triggers that perform selection operations. Triggers map 
+	keyboard shortcuts to operations.
 	"""
-
-	__gsignals__ = {
-		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	}
 
 	def __init__(self, editor):
-		"""
-		Initialize the trigger.
-
-		@param self: Reference to the SelectionTrigger instance.
-		@type self: A SelectionTrigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
-		GObject.__init__(self)
 		self.__init_attributes(editor)
-		self.__create_trigger()
-		self.__signal_id_1 = self.__select_word_trigger.connect("activate", self.__select_word_cb)
-		self.__signal_id_2 = self.connect("destroy", self.__destroy_cb)
-		self.__signal_id_3 = self.__select_sentence_trigger.connect("activate", self.__select_sentence_cb)
-		self.__signal_id_4 = self.__select_line_trigger.connect("activate", self.__select_line_cb)
-		self.__signal_id_6 = self.__editor.textview.connect_after("populate-popup", self.__popup_cb)
+		self.__sigid1 = self.__trigger1.connect("activate", self.__word_cb)
+		self.__sigid2 = self.__trigger2.connect("activate", self.__statement_cb)
+		self.__sigid3 = self.__trigger3.connect("activate", self.__line_cb)
+		self.__sigid4 = self.__trigger4.connect("activate", self.__paragraph_cb)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize the trigger's attributes.
-
-		@param self: Reference to the SelectionTrigger instance.
-		@type self: A SelectionTrigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
-		self.__select_word_trigger = None
-		self.__select_sentence_trigger = None
-		self.__select_line_trigger = None
-		self.__select_paragraph_trigger = None
-		self.__signal_id_2 = None
-		self.__signal_id_1 = None
-		self.__signal_id_3 = None
-		self.__signal_id_4 = None
-		self.__signal_id_6 = None
+		self.__manager = None
+		self.__trigger1 = self.__create_trigger("select_word", "alt - w")
+		self.__trigger2 = self.__create_trigger("select_statement", "alt - s")
+		self.__trigger3 = self.__create_trigger("select_line", "alt - l")
+		self.__trigger4 = self.__create_trigger("select_paragraph", "alt - p")
 		return
 
-	def __create_trigger(self):
-		"""
-		Create the trigger.
+	def __get_manager(self):
+		if self.__manager: return self.__manager
+		from Manager import Manager
+		self.__manager = Manager(self.__editor)
+		return self.__manager
 
-		@param self: Reference to the SelectionTrigger instance.
-		@type self: A SelectionTrigger object.
-		"""
-		# Trigger to select a word.
-		self.__select_word_trigger = self.__editor.create_trigger("select_word", "alt - w")
-		self.__editor.add_trigger(self.__select_word_trigger)
+	def __create_trigger(self, name, shortcut):
+		trigger = self.__editor.create_trigger(name, shortcut)
+		self.__editor.add_trigger(trigger)
+		return trigger
 
-		# Trigger to select a sentence.
-		self.__select_sentence_trigger = self.__editor.create_trigger("select_sentence", "alt - s")
-		self.__editor.add_trigger(self.__select_sentence_trigger)
+	def __word_cb(self, *args):
+		self.__get_manager().select_word()
+		return False
 
-		# Trigger to select a line.
-		self.__select_line_trigger = self.__editor.create_trigger("select_line", "alt - l")
-		self.__editor.add_trigger(self.__select_line_trigger)
-		return
+	def __statement_cb(self, *args):
+		self.__get_manager().select_statement()
+		return False
 
-	def __select_word_cb(self, trigger):
-		"""
-		Handles callback when the "activate" signal is emitted.
+	def __line_cb(self, *args):
+		self.__get_manager().select_line()
+		return False
 
-		@param self: Reference to the SelectionTrigger instance.
-		@type self: A SelectionTrigger object.
+	def __paragraph_cb(self, *args):
+		self.__get_manager().select_paragraph()
+		return False
 
-		@param trigger: An object to show the document browser.
-		@type trigger: A Trigger object.
-		"""
-		# Prevent this action from occurring when the text editor is in
-		# readonly mode.
-		if self.__editor.is_readonly:
-			# Feedback to the status bar indicating the operation cannot
-			# be performed.
-			from i18n import msg0001
-			self.__editor.feedback.update_status_message(msg0001, "fail")
-			return
-		iterator = self.__editor.get_cursor_iterator()
-		from word import select_word
-		result = select_word(self.__editor.textbuffer, iterator)
-		if result:
-			from i18n import msg0002
-			self.__editor.feedback.update_status_message(msg0002, "succeed")
-		else:
-			from i18n import msg0003
-			self.__editor.feedback.update_status_message(msg0003, "fail")
-		return
-
-	def __select_sentence_cb(self, trigger):
-		"""
-		Handles callback when the "activate" signal is emitted.
-
-		@param self: Reference to the SelectionTrigger instance.
-		@type self: A SelectionTrigger object.
-
-		@param trigger: An object that selects a sentence.
-		@type trigger: A Trigger object.
-		"""
-		# Prevent this action from occurring when the text editor is in
-		# readonly mode.
-		if self.__editor.is_readonly:
-			# Feedback to the status bar indicating the operation cannot be
-			# performed.
-			from i18n import msg0001
-			self.__editor.feedback.update_status_message(msg0001, "fail")
-			return
-		from sentence import select_sentence
-		result = select_sentence(self.__editor.textbuffer)
-		if result:
-			from i18n import msg0004
-			self.__editor.feedback.update_status_message(msg0004, "succeed")
-		else:
-			from i18n import msg0005
-			self.__editor.feedback.update_status_message(msg0005, "fail")
-		return
-
-	def __select_line_cb(self, trigger):
-		"""
-		Handles callback when the "activate" signal is emitted.
-
-		@param self: Reference to the SelectionTrigger instance.
-		@type self: A SelectionTrigger object.
-
-		@param trigger: An object that selects a line.
-		@type trigger: A Trigger object.
-		"""
-		# Prevent this action from occurring when the text editor is in readonly
-		# mode.
-		if self.__editor.is_readonly:
-			# Feedback to the status bar indicating the operation cannot be
-			# performed.
-			from i18n import msg0001
-			self.__editor.feedback.update_status_message(msg0001, "fail")
-			return
-		cursor_line = self.__editor.get_cursor_line()
-		from lines import select_line
-		result = select_line(self.__editor.textbuffer)
-		if result:
-			from i18n import msg0007
-			message = msg0007 % (cursor_line + 1)
-			self.__editor.feedback.update_status_message(message, "succeed")
-		else:
-			from i18n import msg0006
-			message = msg0006 % (cursor_line + 1)
-			self.__editor.feedback.update_status_message(message, "fail")
-		return
-
-	def __destroy_cb(self, trigger):
-		"""
-		Handles callback when the "activate" signal is emitted.
-
-		@param self: Reference to the SelectionTrigger instance.
-		@type self: An SelectionTrigger object.
-
-		@param trigger: Reference to the SelectionTrigger instance.
-		@type trigger: A SelectionTrigger object.
-		"""
-		self.__editor.triggermanager.remove_trigger(self.__select_word_trigger)
-		self.__editor.triggermanager.remove_trigger(self.__select_sentence_trigger)
-		self.__editor.triggermanager.remove_trigger(self.__select_line_trigger)
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__select_word_trigger)
-		self.__editor.disconnect_signal(self.__signal_id_2, self)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__select_sentence_trigger)
-		self.__editor.disconnect_signal(self.__signal_id_4, self.__select_line_trigger)
-		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor.textview)
+	def __destroy(self):
+		if self.__manager: self.__manager.destroy()
+		self.__editor.remove_triggers((self.__trigger1, self.__trigger2,
+		self.__trigger3, self.__trigger4))
+		self.__editor.disconnect_signal(self.__sigid1, self.__trigger1)
+		self.__editor.disconnect_signal(self.__sigid2, self.__trigger2)
+		self.__editor.disconnect_signal(self.__sigid3, self.__trigger3)
+		self.__editor.disconnect_signal(self.__sigid4, self.__trigger4)
 		del self
 		self = None
 		return
 
-	def __popup_cb(self, textview, menu):
-		"""
-		Handles callback when the "populate-popup" signal is emitted.
-
-		@param self: Reference to the SelectionTrigger instance.
-		@type self: An SelectionTrigger object.
-
-		@param textview: Reference to the editor's textview.
-		@type textview: A ScribesTextView object.
-
-		@param menu: Reference to the editor's popup menu.
-		@type menu: A gtk.Menu object.
-		"""
-		from PopupMenuItem import SelectionPopupMenuItem
-		menu.prepend(SelectionPopupMenuItem(self.__editor))
-		menu.show_all()
+	def destroy(self):
+		self.__destroy()
 		return False
