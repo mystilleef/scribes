@@ -137,7 +137,7 @@ class View(object):
 
 	def __sensitive(self, sensitive):
 		self.__scrollwin.props.sensitive = sensitive
-		self.__view.props.sensitive = sensitive
+#		self.__view.props.sensitive = sensitive
 		return False
 	
 	def __refresh(self):
@@ -174,10 +174,12 @@ class View(object):
 		return False
 
 	def __checking_file_cb(self, *args):
+		self.__view.freeze_child_notify()
 		self.__editor.busy()
 		return False
 
 	def __loaded_file_cb(self, *args):
+		self.__view.thaw_child_notify()
 		self.__editor.busy(False)
 		self.__refresh()
 		return False

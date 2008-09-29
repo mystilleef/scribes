@@ -10,7 +10,7 @@ class Buffer(object):
 		self.__set_properties()
 		self.__sigid1 = self.__buffer.connect("notify::cursor-position", self.__cursor_position_cb)
 		self.__sigid2 = editor.connect("quit", self.__quit_cb)
-		self.__sigid3 = self.__buffer.connect_after("insert-text", self.__insert_text_cb)
+		self.__sigid3 = self.__buffer.connect("insert-text", self.__insert_text_cb)
 		self.__sigid4 = self.__buffer.connect("modified-changed", self.__modified_changed_cb)
 		self.__sigid5 = editor.connect("checking-file", self.__checking_file_cb)
 		self.__sigid6 = editor.connect("loaded-file", self.__loaded_file_cb)

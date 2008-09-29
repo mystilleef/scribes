@@ -29,137 +29,45 @@ text operations.
 @contact: mystilleef@gmail.com
 """
 
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE
-
-class UndoRedoTrigger(GObject):
+class Trigger(object):
 	"""
 	This class creates an object, a trigger, that undoes or redoes text
 	operations.
 	"""
 
-	__gsignals__ = {
-		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	}
-
 	def __init__(self, editor):
-		"""
-		Initialize the trigger.
-
-		@param self: Reference to the UndoRedoTrigger instance.
-		@type self: A UndoRedoTrigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
-		GObject.__init__(self)
 		self.__init_attributes(editor)
-		self.__create_trigger()
-		self.__signal_id_1 = self.__undo_trigger.connect("activate", self.__undo_cb)
-		self.__signal_id_3 = self.__redo_trigger.connect("activate", self.__redo_cb)
-		self.__signal_id_2 = self.connect("destroy", self.__destroy_cb)
+		self.__sigid1 = self.__trigger1.connect("activate", self.__undo_cb)
+		self.__sigid2 = self.__trigger2.connect("activate", self.__redo_cb)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize the trigger's attributes.
-
-		@param self: Reference to the UndoRedoTrigger instance.
-		@type self: A UndoRedoTrigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
-		self.__undo_trigger = None
-		self.__signal_id_2 = None
-		self.__signal_id_1 = None
-		self.__signal_id_3 = None
+		self.__trigger1 = self.__create_trigger("undo", "ctrl - z")
+		self.__trigger2 = self.__create_trigger("redo", "ctrl - shift - z")
 		return
 
-	def __create_trigger(self):
-		"""
-		Create the trigger.
+	def __create_trigger(self, name, shortcut):
+		trigger = self.__editor.create_trigger(name, shortcut)
+		self.__editor.add_trigger(trigger)
+		return trigger
 
-		@param self: Reference to the UndoRedoTrigger instance.
-		@type self: A UndoRedoTrigger object.
-		"""
-		# Trigger to undo a text operation.
-		self.__undo_trigger = self.__editor.create_trigger("undo_action", "ctrl - z")
-		self.__editor.add_trigger(self.__undo_trigger)
+	def __undo_cb(self, *args):
+		self.__editor.undo()
+		return False
 
-		# Trigger to redo a text operation.
-		self.__redo_trigger = self.__editor.create_trigger("redo_action", "ctrl - Z")
-		self.__editor.add_trigger(self.__redo_trigger)
+	def __redo_cb(self, *args):
+		self.__editor.redo()
 		return
 
-	def __undo_cb(self, trigger):
-		"""
-		Handles callback when the "activate" signal is emitted.
-
-		@param self: Reference to the UndoRedoTrigger instance.
-		@type self: A UndoRedoTrigger object.
-
-		@param trigger: An object to show the document browser.
-		@type trigger: A Trigger object.
-		"""
-		if self.__editor.is_readonly:
-			# Prevent save operations when the text editor is in readonly mode.
-			from i18n import msg0001
-			self.__editor.feedback.update_status_message(msg0001, "fail")
-			return
-		self.__editor.block_response()
-		if self.__editor.textbuffer.can_undo():
-			self.__editor.textbuffer.undo()
-			from i18n import msg0002
-			self.__editor.feedback.update_status_message(msg0002, "undo")
-			self.__editor.move_view_to_cursor()
-		else:
-			from i18n import msg0003
-			self.__editor.feedback.update_status_message(msg0003, "fail")
-		self.__editor.unblock_response()
-		return
-
-	def __redo_cb(self, trigger):
-		"""
-		Handles callback when the "activate" signal is emitted.
-
-		@param self: Reference to the UndoRedoTrigger instance.
-		@type self: A UndoRedoTrigger object.
-
-		@param trigger: An object to show the document browser.
-		@type trigger: A Trigger object.
-		"""
-		if self.__editor.is_readonly:
-			#  Prevent save operations when the text editor is in readonly mode.
-			from i18n import msg0001
-			self.__editor.feedback.update_status_message(msg0001, "fail")
-			return
-		self.__editor.block_response()
-		if self.__editor.textbuffer.can_redo():
-			self.__editor.textbuffer.redo()
-			from i18n import msg0004
-			self.__editor.feedback.update_status_message(msg0004, "redo")
-			self.__editor.move_view_to_cursor()
-		else:
-			from i18n import msg0005
-			self.__editor.feedback.update_status_message(msg0005, "fail")
-		self.__editor.unblock_response()
-		return
-
-	def __destroy_cb(self, trigger):
-		"""
-		Handles callback when the "activate" signal is emitted.
-
-		@param self: Reference to the UndoRedoTrigger instance.
-		@type self: An UndoRedoTrigger object.
-
-		@param trigger: Reference to the UndoRedoTrigger instance.
-		@type trigger: A UndoRedoTrigger object.
-		"""
-		self.__editor.remove_trigger(self.__undo_trigger)
-		self.__editor.remove_trigger(self.__redo_trigger)
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__undo_trigger)
-		self.__editor.disconnect_signal(self.__signal_id_2, self)
-		self.__editor.disconnect_signal(self.__signal_id_3, self)
+	def __destroy(self):
+		self.__editor.remove_trigger(self.__trigger1)
+		self.__editor.remove_trigger(self.__trigger2)
+		self.__editor.disconnect_signal(self.__sigid1, self.__trigger1)
+		self.__editor.disconnect_signal(self.__sigid2, self.__trigger2)
 		del self
 		self = None
 		return
+
+	def destroy(self):
+		self.__destroy()
+		return False

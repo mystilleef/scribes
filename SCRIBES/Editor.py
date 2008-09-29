@@ -127,7 +127,6 @@ class Editor(GObject):
 		# Register with instance manager after a successful editor
 		# initialization.
 		self.__imanager.register_editor(self)
-
 		# Load files or initialize plugins. Always load files, if any,
 		# before initializing plugin systems. This should be the last
 		# line in this method.
@@ -324,11 +323,11 @@ class Editor(GObject):
 		return
 
 	def response(self):
-		if self.__processing: return False
-		self.__processing = True
+		#if self.__processing: return False
+		#self.__processing = True
 		from gtk import events_pending, main_iteration
 		while events_pending(): main_iteration(False)
-		self.__processing = False
+		#self.__processing = False
 		return False
 
 	def busy(self, busy=True):
