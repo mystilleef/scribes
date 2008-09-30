@@ -404,13 +404,15 @@ class Editor(GObject):
 		self.emit("undo")
 		return
 
-	def backward_to_line_begin(self, iterator):
+	def backward_to_line_begin(self, iterator=None):
+		if iterator is None: iterator = self.cursor
 		from Utils import backward_to_line_begin
-		return backward_to_line_begin(iterator)
+		return backward_to_line_begin(iterator.copy())
 
-	def forward_to_line_end(self, iterator):
+	def forward_to_line_end(self, iterator=None):
+		if iterator is None: iterator = self.cursor
 		from Utils import forward_to_line_end
-		return forward_to_line_end(iterator)
+		return forward_to_line_end(iterator.copy())
 
 	def create_trigger(self, name, accelerator=None, description=None, error=True, removable=True):
 		from Trigger import Trigger
@@ -464,6 +466,15 @@ class Editor(GObject):
 		if pattern is None: pattern = self.word_pattern
 		from Word import inside_word
 		return inside_word(iterator, pattern)
+
+	def is_empty_line(self, iterator=None):
+		if iterator is None: iterator = self.cursor
+		start = self.backward_to_line_begin(iterator)
+		if start.ends_line(): return True
+		end = self.forward_to_line_end(iterator)
+		text = self.textbuffer.get_text(start, end).strip(" \t\n\r")
+		if text: return False
+		return True
 
 	def get_word_boundary(self, iterator=None, pattern=None):
 		if iterator is None: iterator = self.cursor
