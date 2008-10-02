@@ -1,19 +1,19 @@
-name = "Line Operations"
+name = "Shutdown Scribes"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-version = 0.2
+version = 0.1
 autoload = True
-class_name = "LinesPlugin"
-short_description = "Plug-in to perform line operations."
-long_description = """Plug-in to perform line operations."""
+class_name = "ShutdownPlugin"
+short_description = "Plug-in to shutdown Scribes."
+long_description = """Plug-in to shutdown Scribes."""
 
-class LinesPlugin(object):
+class ShutdownPlugin(object):
 
 	def __init__(self, editor):
 		self.__editor = editor
 		self.__trigger = None
 
 	def load(self):
-		from Lines.Trigger import Trigger
+		from Shutdown.Trigger import Trigger
 		self.__trigger = Trigger(self.__editor)
 		return
 

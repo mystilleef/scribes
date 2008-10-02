@@ -45,6 +45,14 @@ class Feedback(object):
 		self = None
 		return
 
+	def __remove_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		return False
+
 	def __set_label(self, message=None, bold=False, italic=False, color=None):
 		try:
 			if not message: raise ValueError
@@ -113,7 +121,7 @@ class Feedback(object):
 		filename = self.__get_filename(uri)
 		message = _("Loaded %s") % filename
 		from gobject import idle_add
-		idle_add(self.__update_message, message, priority=9999)
+		self.__timer = idle_add(self.__update_message, message, priority=9999)
 		message = _("Loading %s") % filename
 		idle_add(self.__unset_message, message, priority=9999)
 		return False
@@ -123,13 +131,14 @@ class Feedback(object):
 		filename = self.__get_filename(self.__editor.uri)
 		message = _("Saved %s") % filename
 		from gobject import idle_add
-		idle_add(self.__update_message, message, 3, priority=9999)
+		self.__remove_timer()
+		self.__timer = idle_add(self.__update_message, message, 3, priority=9999)
 		return False
 
 	def __modified_file_cb(self, *args):
 		if self.__busy: return False
 		from gobject import idle_add
-		idle_add(self.__set_default_message, priority=9999)
+		self.__timer = idle_add(self.__set_default_message, priority=9999)
 		return False
 
 	def __save_error_cb(self, editor, uri, *args):
@@ -152,8 +161,9 @@ class Feedback(object):
 	def __update_message_cb(self, editor, message, icon_name, time):
 		color = COLOR	
 		if icon_name in ("error", "gtk-dialog-error", "fail",): color = "red"
+		self.__remove_timer()
 		from gobject import idle_add
-		idle_add(self.__update_message, message, time, color, priority=9999)
+		self.__timer = idle_add(self.__update_message, message, time, color, priority=9999)
 		return False
 
 	def __set_message_cb(self, editor, message, icon_name):

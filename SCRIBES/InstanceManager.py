@@ -107,7 +107,8 @@ class Manager(object):
 		return False
 
 	def close_all_windows(self):
-		[close_file(instance) for instance in self.__editor_instances]
+		from copy import copy
+		[close_file(instance) for instance in copy(self.__editor_instances)]
 		return False
 
 	def focus_file(self, uri):
@@ -145,7 +146,8 @@ class Manager(object):
 		return False
 
 	def __close_file(self, uri):
-		[close_file(editor) for editor in self.__editor_instances if editor.uri == uri]
+		from copy import copy
+		[close_file(editor) for editor in copy(self.__editor_instances) if editor.uri == uri]
 		return False
 
 	def __new_editor(self, uri=None, encoding=None):
@@ -161,9 +163,9 @@ class Manager(object):
 
 	def __init_psyco(self):
 		try:
-			from psyco import background
+			from psyco import background, profile
 			from thread import start_new_thread
-			start_new_thread(background, ())
+		#	start_new_thread(profile, ())
 			print "Initialized psyco profiling and optimization"
 		except ImportError:
 			pass

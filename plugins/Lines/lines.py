@@ -32,12 +32,6 @@ gtk.TextBuffer.
 newlines = ["\n", "\x00", "\r\n", "\x0D\x0A", "\r"]
 
 def duplicate_line(textbuffer):
-	"""
-	Duplicate line or selected lines.
-
-	@param textbuffer: Reference to a buffer.
-	@type textbuffer: A gtk.TextBuffer object.
-	"""
 	from SCRIBES.cursor import get_cursor_iterator
 	iterator = get_cursor_iterator(textbuffer)
 	cursor_offset = iterator.get_line_offset()
@@ -224,15 +218,6 @@ def join_line(textbuffer):
 	return True
 
 def free_line_above(textbuffer):
-	"""
-	Shift the text on current line to the next one.
-
-	@param textbuffer: The text buffer to operate on.
-	@type textbuffer: A gtk.TextBuffer object.
-
-	@return: Return the line freed.
-	@rtype: A Integer object.
-	"""
 	string = None
 	spaces = get_beginning_spaces(textbuffer)
 	if spaces: string = "".join(spaces)
@@ -248,15 +233,6 @@ def free_line_above(textbuffer):
 	return get_cursor_line(textbuffer)
 
 def free_line_below(textbuffer):
-	"""
-	Free the line below the current one.
-
-	@param textbuffer: The text buffer to operate on.
-	@type textbuffer: A gtk.TextBuffer object.
-
-	@return: Return the line freed.
-	@rtype: A Integer object.
-	"""
 	string = None
 	spaces = get_beginning_spaces(textbuffer)
 	if spaces: string = "".join(spaces)
@@ -302,7 +278,7 @@ def delete_cursor_to_line_end(textbuffer):
 	if cursor_position.ends_line(): return False
 	textbuffer.begin_user_action()
 	textbuffer.delete(cursor_position, end_position)
-	textbuffer.end_user_action()
+	textbuffer.end_user_action() 
 	return True
 
 def delete_cursor_to_line_begin(textbuffer):
@@ -313,20 +289,5 @@ def delete_cursor_to_line_begin(textbuffer):
 	if cursor_position.equal(begin_position): return False
 	textbuffer.begin_user_action()
 	textbuffer.delete(begin_position, cursor_position)
-	textbuffer.end_user_action()
+	textbuffer.end_user_action() 
 	return True
-
-try:
-	from psyco import bind
-	bind(delete_cursor_to_line_begin)
-	bind(delete_cursor_to_line_end)
-	bind(select_line)
-	bind(delete_line)
-	bind(duplicate_line)
-	bind(free_line_below)
-	bind(free_line_above)
-	bind(join_line)
-	bind(get_text_on_line)
-	bind(get_beginning_spaces)
-except ImportError:
-	pass

@@ -92,9 +92,7 @@ class Trigger(GObject):
 	removable = property(__get_removable)
 
 	def activate(self):
-		from gobject import idle_add
-		idle_add(self.emit, "activate", priority=9999)
-#		self.emit("activate")
+		self.emit("activate")
 		return
 
 	def destroy(self):

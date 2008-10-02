@@ -176,7 +176,7 @@ class Editor(GObject):
 		# FIXME: NOT YET IMPLEMENTED
 		if self.__started_plugins: return False
 		self.emit("ready")
-		self.move_view_to_cursor()
+		self.move_view_to_cursor(True)
 		from PluginManager import Manager
 		Manager(self)
 		from LanguagePluginManager import Manager
@@ -212,6 +212,10 @@ class Editor(GObject):
 		manager.force_rescan()
 		return
 
+	def __get_selection_range(self):
+		if self.textbuffer.props.has_selection is False: return 0
+		start, end = self.textbuffer.get_selection_bounds()
+		return (end.get_line() - start.get_line()) + 1
 ################################################################
 #
 #						Public APIs
@@ -258,7 +262,8 @@ class Editor(GObject):
 	save_processor = property(lambda self: self.__imanager.get_save_processor())
 	supported_encodings = property(lambda self: get_supported_encodings())
 	word_pattern = property(__get_word_pattern, __set_word_pattern)
-
+	selection_range = property(__get_selection_range)
+	
 	def help(self):
 		from gnome import help_display
 		success = True if help_display("/scribes.xml") else False
@@ -324,9 +329,9 @@ class Editor(GObject):
 		from Utils import disconnect_signal
 		return disconnect_signal(sigid, instance)
 
-	def move_view_to_cursor(self):
+	def move_view_to_cursor(self, align=False):
 		iterator = self.cursor
-		self.textview.scroll_to_iter(iterator, 0.001, use_align=True, xalign=1.0)
+		self.textview.scroll_to_iter(iterator, 0.001, use_align=align, xalign=1.0)
 		return False
 
 	def toggle_readonly(self):
@@ -334,11 +339,11 @@ class Editor(GObject):
 		return
 
 	def response(self):
-		#if self.__processing: return False
-		#self.__processing = True
+		if self.__processing: return False
+		self.__processing = True
 		from gtk import events_pending, main_iteration
-		while events_pending(): main_iteration(False)
-		#self.__processing = False
+		while events_pending(): main_iteration(True)#
+		self.__processing = False
 		return False
 
 	def busy(self, busy=True):
@@ -366,11 +371,10 @@ class Editor(GObject):
 		window = window if window else self.window
 		self.emit("show-info", title, message, window, busy)
 		return False
-
+	
 	def emit_combobox_encodings(self):
 		self.emit("combobox-encoding-data?")
 		return False
-	
 
 	def spin_throbber(self, spin=True):
 		self.emit("spin-throbber", spin)
@@ -395,6 +399,14 @@ class Editor(GObject):
 			toolbutton = toolbutton
 			break
 		return toolbutton
+
+	def get_indentation(self, iterator=None):
+		if iterator is None: iterator = self.cursor.copy()
+		start = self.backward_to_line_begin(iterator.copy())
+		if start.is_end() or start.ends_line(): return ""
+		end = start.copy()
+		while end.get_char() in (" ", "\t"): end.forward_char()
+		return self.textbuffer.get_text(start, end)
 
 	def redo(self):
 		self.emit("redo")

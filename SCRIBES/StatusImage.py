@@ -46,6 +46,14 @@ class Image(object):
 		self = None
 		return
 
+	def __remove_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		return 
+
 	def __set_image(self, image_name):
 		try:
 			if image_name in self.__custom_ids: raise ValueError
@@ -117,14 +125,15 @@ class Image(object):
 
 	def __saved_file_cb(self, *args):
 		if self.__busy: return False
+		self.__remove_timer()
 		from gobject import idle_add
-		idle_add(self.__update_message_image, "gtk-save", 3, priority=9999)
+		self.__timer = idle_add(self.__update_message_image, "gtk-save", 3, priority=9999)
 		return False
 
 	def __modified_file_cb(self, *args):
 		if self.__busy: return False
 		from gobject import idle_add
-		idle_add(self.__set_default_image, priority=9999)
+		self.__timer = idle_add(self.__set_default_image, priority=9999)
 		return False
 
 	def __save_error_cb(self, editor, uri, *args):
@@ -142,8 +151,9 @@ class Image(object):
 		return False
 
 	def __update_message_cb(self, editor, message, icon_name, time):
+		self.__remove_timer()
 		from gobject import idle_add
-		idle_add(self.__update_message_image, icon_name, time, priority=9999)
+		self.__timer = idle_add(self.__update_message_image, icon_name, time, priority=9999)
 		return False
 
 	def __set_message_cb(self, editor, message, icon_name):
