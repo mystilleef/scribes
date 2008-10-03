@@ -164,8 +164,9 @@ class Manager(object):
 	def __init_psyco(self):
 		try:
 			from psyco import background, profile
-			from thread import start_new_thread
-		#	start_new_thread(profile, ())
+			profile()
+#			from thread import start_new_thread
+#			start_new_thread(background, ())
 			print "Initialized psyco profiling and optimization"
 		except ImportError:
 			pass

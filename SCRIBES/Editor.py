@@ -345,7 +345,7 @@ class Editor(GObject):
 		#if self.__processing: return False
 		#self.__processing = True
 		from gtk import events_pending, main_iteration
-		while events_pending(): main_iteration(True)#
+		while events_pending(): main_iteration(False)#
 		#self.__processing = False
 		return False
 
