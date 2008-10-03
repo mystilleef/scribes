@@ -306,7 +306,7 @@ class Editor(GObject):
 	def open_files(self, uris, encoding="utf8"):
 		return self.__imanager.open_files(uris, encoding)
 
-	def focus_file(self, save_first=True):
+	def focus_file(self, uri):
 		return self.__imanager.focus_file(uri)
 
 	def close_file(self, uri):

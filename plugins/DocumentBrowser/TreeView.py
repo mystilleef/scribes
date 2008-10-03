@@ -37,12 +37,10 @@ class TreeView(object):
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
-		self.__signal_id_1 = self.__manager.connect("destroy", self.__destroy_cb)
-		self.__signal_id_2 = self.__manager.connect("update", self.__update_cb)
-		self.__signal_id_3 = self.__treeview.connect("row-activated", self.__row_activated_cb)
-		self.__signal_id_4 = self.__treeview.connect("key-press-event", self.__key_press_event_cb)
-		self.__populate_model()
-		self.__treeview.set_property("sensitive", True)
+		self.__sigid1 = self.__manager.connect("destroy", self.__destroy_cb)
+		self.__sigid2 = self.__manager.connect("update", self.__update_cb)
+		self.__sigid3 = self.__treeview.connect("row-activated", self.__row_activated_cb)
+		self.__sigid4 = self.__treeview.connect("key-press-event", self.__key_press_event_cb)
 
 	def __init_attributes(self, editor, manager):
 		self.__manager = manager
@@ -57,16 +55,9 @@ class TreeView(object):
 		self.__name_column = self.__create_column(msg0004, self.__name_renderer, 0, False, True)
 		self.__type_column = self.__create_column(msg0003, self.__type_renderer, 1, False, True)
 		self.__path_column = self.__create_column(msg0005, self.__path_renderer, 2, False, True)
-		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		return
 
 	def __set_properties(self):
-		"""
-		Define the treeview's properties.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-		"""
 		self.__treeview.set_property("model", self.__model)
 		self.__treeview.set_property("rules-hint", True)
 		self.__treeview.set_property("search-column", 0)
@@ -78,47 +69,16 @@ class TreeView(object):
 		return
 
 	def __create_model(self):
-		"""
-		Create model for the treeview.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: An BrowserTreeView object.
-
-		@return: Return a model for the treeview.
-		@rtype: A gtk.ListStore object.
-		"""
-		# The model has four columns. One for the file type.
-		# Another for the file name. Yet another for the full path name.
-		# And the last for the file URI. Only the firt tree columns are
-		# visible to users.
 		from gtk import ListStore
 		model = ListStore(str, str, str, str)
 		return model
 
 	def __create_renderer(self):
-		"""
-		Create the renderer for the treeview's columns.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-
-		@return: A renderer for treeview's columns.
-		@rtype: A gtk.CellRendererText object.
-		"""
 		from gtk import CellRendererText
 		renderer = CellRendererText()
 		return renderer
 
 	def __create_column(self, title, renderer, text=0, expand=False, indicator=False):
-		"""
-		Create column for the treeview.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-
-		@return: A column for the treeview.
-		@rtype: A gtk.TreeViewColumn object.
-		"""
 		from gtk import TREE_VIEW_COLUMN_AUTOSIZE, SORT_DESCENDING
 		from gtk import TreeViewColumn
 		column = TreeViewColumn(title, renderer, text=text)
@@ -130,64 +90,36 @@ class TreeView(object):
 		return column
 
 	def __destroy_cb(self, manager):
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__manager)
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__treeview)
+		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__treeview)
 		self.__treeview.destroy()
 		del self
 		self = None
 		return
 
-	def __update_cb(self, manager):
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__populate_model, priority=PRIORITY_LOW)
-		self.__manager.emit("show-window")
+	def __update_cb(self, manager, data):
+		from gobject import idle_add
+		idle_add(self.__populate_model, data, priority=9999)
 		return False
 
-	def __populate_model(self):
-		"""
-		Populate the model.
-
-		@param self: Reference to the BrowserTreeView instance.
-		@type self: A BrowserTreeView object.
-		"""
-		uris = self.__editor.instance_manager.get_uris()
-		if not (uris):
-			from i18n import msg0006
-			self.__editor.feedback.update_status_message(msg0006, "warning")
-			return	False
-		uris.sort()
-		self.__uri_list.sort()
-		if uris == self.__uri_list: return
+	def __populate_model(self, data):
 		self.__treeview.set_property("sensitive", False)
-		self.__uri_list = uris
 		self.__treeview.set_model(None)
 		self.__model.clear()
-		for uri in self.__uri_list:
-			file_type, filename, pathname, fileuri= self.__process_uri(uri)
-			self.__model.append([filename, file_type, pathname, fileuri])
+		for type_, name, path, uri in data:
+			self.__model.append([name, type_, path, uri])
 		self.__treeview.set_model(self.__model)
 		self.__editor.select_row(self.__treeview)
 		self.__treeview.set_property("sensitive", True)
 		self.__treeview.grab_focus()
 		return
 
-	def __process_uri(self, uri):
-		value = ("", "", "", "")
-		language = self.__editor.language
-		file_type = language.get_name() if language else "Plain Text"
-		from gnomevfs import URI, format_uri_for_display
-		uri_object = URI(format_uri_for_display(uri))
-		filename = uri_object.short_name
-		pathname = uri_object.path.replace(self.__editor.home_folder, "~")
-		fileuri = uri
-		return file_type, filename, pathname, fileuri
-
 	def __row_activated_cb(self, treeview, path, column):
 		self.__manager.emit("hide-window")
 		iterator = self.__model.get_iter(path)
 		uri = self.__model.get_value(iterator, 3)
-		self.__editor.instance_manager.focus_file(uri)
+		self.__editor.focus_file(uri)
 		return False
 
 	def __key_press_event_cb(self, treeview, event):
@@ -199,5 +131,5 @@ class TreeView(object):
 		uri = model.get_value(iterator, 3)
 		model.remove(iterator)
 		self.__editor.select_row(self.__treeview)
-		self.__editor.instance_manager.close_files([uri])
+		self.__editor.close_file(uri)
 		return False

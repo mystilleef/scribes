@@ -96,6 +96,8 @@ class Window(object):
 
 	def __update_window_title(self, title):
 		self.__window.set_property("title", title)
+		self.__window.set_data("minimized", self.__is_minimized)
+		self.__window.set_data("maximized", self.__is_maximized)
 		return False
 
 	def __set_title(self):
@@ -193,13 +195,11 @@ class Window(object):
 	def __state_event_cb(self, window, event):
 		from gtk.gdk import WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN
 		from gtk.gdk import WINDOW_STATE_ICONIFIED
-		self.__is_minimized = False
-		self.__is_maximized = False
-		if not (event.new_window_state in (WINDOW_STATE_ICONIFIED, WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN)): return False
-		if (event.new_window_state == WINDOW_STATE_ICONIFIED):
-			self.__is_minimized = True
-		if event.new_window_state in (WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN):
-			self.__is_maximized = True
+		state = event.new_window_state
+		MINIMIZED = state & WINDOW_STATE_ICONIFIED
+		MAXIMIZED = (state & WINDOW_STATE_MAXIMIZED) or (state & WINDOW_STATE_FULLSCREEN)
+		self.__is_minimized = True if MINIMIZED else False
+		self.__is_maximized = True if MAXIMIZED else False
 		return False
 
 	def __readonly_cb(self, editor, readonly):
@@ -222,8 +222,3 @@ class Window(object):
 		if save_file: self.__set_window_position_in_database()
 		self.__destroy()
 		return False
-
-	# Public APIs
-
-	maximized = property(lambda self: self.__is_maximized)
-	minimized = property(lambda self: self.__is_minimized)
