@@ -17,8 +17,3 @@
 # along with Scribes; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
 # USA
-
-from gettext import gettext as _
-msg0001 = _("Pair character completion occurred")
-msg0002 = _("Enclosed selected text")
-msg0003 = _("Removed pair character completion")

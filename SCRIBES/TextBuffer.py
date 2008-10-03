@@ -76,6 +76,7 @@ class Buffer(object):
 		try:
 			if not self.__buffer.can_undo(): raise ValueError
 			self.__buffer.undo()
+			self.__editor.move_view_to_cursor()
 			message = _("Undo last action")
 			self.__editor.update_message(message, "pass")
 		except ValueError:
@@ -87,6 +88,7 @@ class Buffer(object):
 		try:
 			if not self.__buffer.can_redo(): raise ValueError
 			self.__buffer.redo()
+			self.__editor.move_view_to_cursor()
 			message = _("Redo previous action")
 			self.__editor.update_message(message, "pass")
 		except ValueError:

@@ -1,33 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2007 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that performs bracket completion operations
-for the text editor.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2007 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
+from gettext import gettext as _
 
 class BracketManager(object):
 	"""
@@ -39,9 +10,9 @@ class BracketManager(object):
 	def __init__(self, editor):
 		self.__init_attributes(editor)
 		self.__check_mimetype()
-		self.__signal_id_1 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
-		self.__signal_id_2 = editor.connect("cursor-moved", self.__cursor_moved_cb)
-		self.__signal_id_3 = editor.connect("loaded-document", self.__loaded_document_cb)
+		self.__sigid1 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
+		self.__sigid2 = editor.connect("cursor-moved", self.__cursor_moved_cb)
+		self.__sigid3 = editor.connect("loaded-file", self.__loaded_document_cb)
 #		from gobject import idle_add, PRIORITY_LOW
 #		idle_add(self.__compile_methods, priority=PRIORITY_LOW)
 
@@ -61,8 +32,6 @@ class BracketManager(object):
 			keysyms.botleftparens, keysyms.botleftsqbracket,
 			keysyms.apostrophe]
 		self.__open_pair_characters_for_enclosement = self.__open_pair_characters + [keysyms.less, keysyms.apostrophe]
-		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
-		self.__signal_id_4 = None
 		return
 
 ########################################################################
@@ -125,24 +94,22 @@ class BracketManager(object):
 		return
 
 	def __insert_pair_characters(self, open_keyval, close_keyval):
-		self.__editor.block_response()
 		textbuffer = self.__editor.textbuffer
 		from gtk.gdk import keyval_to_unicode
 		utf8_open_character = unichr(keyval_to_unicode(open_keyval)).encode("utf-8")
 		utf8_closing_character = unichr(keyval_to_unicode(close_keyval)).encode("utf-8")
-		cursor_position = self.__editor.get_cursor_iterator()
+		cursor_position = self.__editor.cursor
 		begin_mark = textbuffer.create_mark(None, cursor_position, True)
 		textbuffer.begin_user_action()
 		textbuffer.insert_at_cursor(utf8_open_character+utf8_closing_character)
 		textbuffer.end_user_action()
-		cursor_position = self.__editor.get_cursor_iterator()
+		cursor_position = self.__editor.cursor
 		end_mark = textbuffer.create_mark(None, cursor_position, False)
 		cursor_position.backward_char()
 		textbuffer.place_cursor(cursor_position)
 		self.__monitor_list.append((close_keyval, (begin_mark, end_mark)))
-		from i18n import msg0001
-		self.__editor.feedback.update_status_message(msg0001, "succeed")
-		self.__editor.unblock_response()
+		message = _("Pair character completion occurred")
+		self.__editor.update_message(message, "pass")
 		return
 
 	def __enclose_selection(self, keyval):
@@ -186,7 +153,6 @@ class BracketManager(object):
 		return
 
 	def __insert_enclosed_selection(self, open_keyval, close_keyval):
-		self.__editor.block_response()
 		textbuffer = self.__editor.textbuffer
 		from gtk.gdk import keyval_to_unicode
 		utf8_open_character = unichr(keyval_to_unicode(open_keyval)).encode("utf-8")
@@ -198,9 +164,8 @@ class BracketManager(object):
 		textbuffer.delete(selection[0], selection[1])
 		textbuffer.insert_at_cursor(text)
 		textbuffer.end_user_action()
-		from i18n import msg0002
-		self.__editor.feedback.update_status_message(msg0002, "succeed")
-		self.__editor.unblock_response()
+		message = _("Enclosed selected text")
+		self.__editor.update_message(message, "pass")
 		return
 
 	def __move_cursor_out_of_bracket_region(self):
@@ -214,10 +179,8 @@ class BracketManager(object):
 	def __stop_monitoring(self):
 		begin_mark = self.__monitor_list[-1][1][0]
 		end_mark = self.__monitor_list[-1][1][1]
-		if not (begin_mark.get_deleted()):
-			self.__editor.textbuffer.delete_mark(begin_mark)
-		if not (end_mark.get_deleted()):
-			self.__editor.textbuffer.delete_mark(end_mark)
+		self.__editor.delete_mark(begin_mark)
+		self.__editor.delete_mark(end_mark)
 		del self.__monitor_list[-1]
 		return
 
@@ -235,32 +198,28 @@ class BracketManager(object):
 		if (begin.get_char() != character): return False
 		begin.backward_char()
 		textbuffer.begin_user_action()
-		self.__editor.block_response()
 		textbuffer.delete(begin, end)
-		self.__editor.unblock_response()
 		textbuffer.end_user_action()
-		from i18n import msg0003
-		self.__editor.feedback.update_status_message(msg0003, "succeed")
+		message = _("Removed pair character")
+		self.__editor.update_message(message, "pass")
 		return True
 
 	def __has_escape_character(self):
-		end_iterator = self.__editor.get_cursor_position()
+		end_iterator = self.__editor.cursor
 		start_iterator = end_iterator.copy()
 		start_iterator.backward_char()
 		if (start_iterator.get_char() == self.__escape_character): return True
 		return False
 
 	def __remove_escape_character(self):
-		end_iterator = self.__editor.get_cursor_position()
+		end_iterator = self.__editor.cursor
 		start_iterator = end_iterator.copy()
 		start_iterator.backward_char()
-		self.__editor.block_response()
 		self.__editor.textbuffer.delete(start_iterator, end_iterator)
-		self.__editor.unblock_response()
 		return
 
 	def __can_insert_apostrophe(self):
-		iterator = self.__editor.get_cursor_iterator()
+		iterator = self.__editor.cursor
 		if (iterator.starts_line()): return True
 		iterator.backward_char()
 		character = iterator.get_char()
@@ -289,30 +248,10 @@ class BracketManager(object):
 			self.__open_pair_characters.append(keysyms.less)
 		return
 
-	def __compile_methods(self):
-		try:
-			from psyco import bind
-			bind(self.__key_press_event_cb)
-			bind(self.__cursor_moved_cb)
-			bind(self.__insert_pair_characters)
-			bind(self.__insert_closing_pair_character)
-			bind(self.__insert_enclosed_selection)
-			bind(self.__insert_apostrophe)
-			bind(self.__enclose_selection)
-			bind(self.__check_mimetype)
-			bind(self.__remove_closing_pair_character)
-			bind(self.__stop_monitoring)
-			bind(self.__move_cursor_out_of_bracket_region)
-			bind(self.__can_insert_apostrophe)
-			bind(self.__monitor_pair_characters)
-		except ImportError:
-			pass
-		return False
-
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor.textview)
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid1, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self = None
 		del self
 		return
@@ -326,8 +265,7 @@ class BracketManager(object):
 	def __key_press_event_cb(self, textview, event):
 		#from gtk.gdk import keyval_name
 		#print keyval_name(event.keyval)
-		selection = self.__editor.textbuffer.get_selection_bounds()
-		if selection and (event.keyval in self.__open_pair_characters_for_enclosement):
+		if self.__editor.has_selection and (event.keyval in self.__open_pair_characters_for_enclosement):
 			self.__enclose_selection(event.keyval)
 			return True
 		if (self.__monitor_list):
@@ -363,7 +301,7 @@ class BracketManager(object):
 		end_mark = self.__monitor_list[-1][1][1]
 		begin = textbuffer.get_iter_at_mark(begin_mark)
 		end = textbuffer.get_iter_at_mark(end_mark)
-		cursor_position = self.__editor.get_cursor_iterator()
+		cursor_position = self.__editor.cursor
 		if (cursor_position.equal(begin)) or (cursor_position.equal(end)):
 			self.__stop_monitoring()
 		elif not (cursor_position.in_range(begin, end)):

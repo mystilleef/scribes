@@ -120,11 +120,13 @@ class Manager(object):
 	def __indent_next_line(self):
 		whitespaces = self.__get_indentation_for_next_line()
 		self.__insert_indentation_on_next_line(whitespaces)
+		self.__editor.move_view_to_cursor()
 		return
 
 	def __dedent_next_line(self):
 		whitespaces = self.__get_dedentation_for_next_line()
 		self.__insert_indentation_on_next_line(whitespaces)
+		self.__editor.move_view_to_cursor()
 		return
 
 	def __cursor_is_before_colon(self):

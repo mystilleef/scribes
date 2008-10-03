@@ -263,6 +263,9 @@ class Editor(GObject):
 	supported_encodings = property(lambda self: get_supported_encodings())
 	word_pattern = property(__get_word_pattern, __set_word_pattern)
 	selection_range = property(__get_selection_range)
+	selection_bounds = property(lambda self: self.textbuffer.get_selection_bounds())
+	selected_text = property(lambda self: self.textbuffer.get_text(*(self.selection_bounds)))
+	has_selection = property(lambda self: self.textbuffer.props.has_selection)
 	
 	def help(self):
 		from gnome import help_display
@@ -339,11 +342,11 @@ class Editor(GObject):
 		return
 
 	def response(self):
-		if self.__processing: return False
-		self.__processing = True
+		#if self.__processing: return False
+		#self.__processing = True
 		from gtk import events_pending, main_iteration
 		while events_pending(): main_iteration(True)#
-		self.__processing = False
+		#self.__processing = False
 		return False
 
 	def busy(self, busy=True):
@@ -488,12 +491,27 @@ class Editor(GObject):
 		if text: return False
 		return True
 
+	def get_line_bounds(self, iterator=None):
+		if iterator is None: iterator = self.cursor
+		start = self.backward_to_line_begin(iterator)
+		end = self.forward_to_line_end(iterator)
+		return start, end 
+	
+	def get_line_text(self, iterator=None):
+		if iterator is None: iterator = self.cursor
+		return self.textbuffer.get_text(*(self.get_line_bounds))
+
 	def get_word_boundary(self, iterator=None, pattern=None):
 		if iterator is None: iterator = self.cursor
 		if pattern is None: pattern = self.word_pattern
 		from Word import get_word_boundary
 		return get_word_boundary(iterator, pattern)
 
+	def find_matching_bracket(self, iterator=None):
+		if iterator is None: iterator = self.cursor
+		from Utils import find_matching_bracket
+		return find_matching_bracket(iterator)
+	
 ########################################################################
 #
 #								Signal Listener
