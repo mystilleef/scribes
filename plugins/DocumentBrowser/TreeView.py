@@ -46,7 +46,7 @@ class TreeView(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__treeview = manager.glade.get_widget("TreeView")
-		self.__uri_list = []
+		self.__data = None
 		self.__model = self.__create_model()
 		self.__name_renderer = self.__create_renderer()
 		self.__type_renderer = self.__create_renderer()
@@ -99,6 +99,9 @@ class TreeView(object):
 		return
 
 	def __update_cb(self, manager, data):
+		if self.__data == data: return False
+		from copy import copy
+		self.__data = copy(data)
 		from gobject import idle_add
 		idle_add(self.__populate_model, data, priority=9999)
 		return False
