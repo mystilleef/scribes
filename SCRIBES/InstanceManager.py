@@ -115,13 +115,12 @@ class Manager(object):
 		found_instance = [editor for editor in self.__editor_instances if editor.uri == uri]
 		if not found_instance: return False
 		editor = found_instance[0]
-		#if editor.window.get_data("minimized"): editor.window.deiconify()
+		if editor.window.get_data("minimized"): editor.window.deiconify()
 		coordinates = None if editor.window.get_data("maximized") else editor.window.get_position()
 		editor.window.hide()
 		if coordinates: editor.window.move(coordinates[0], coordinates[1])
-		editor.window.window.show()
-		editor.window.show_all()
 		editor.window.present()
+		editor.textview.grab_focus()
 		return False
 
 	def get_uris(self):
