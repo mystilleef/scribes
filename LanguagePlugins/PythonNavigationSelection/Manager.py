@@ -1,35 +1,3 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2008 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-#FIXME: THIS MODULE NEEDS MAJOR REFACTORING.
-This module documents a class that implements functions that provide
-navigation and selection functions for Python source code.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2008 Lateef Alabi-Oki
-@license: GNU GPLv3 or Later
-@contact: mystilleef@gmail.com
-"""
-
 class Manager(object):
 	"""
 	This class implements methods that provide navigation and selection
@@ -37,27 +5,9 @@ class Manager(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__buffer = editor.textbuffer
 		self.__textview = editor.textview
@@ -207,12 +157,6 @@ class Manager(object):
 		return iterator
 
 	def __find_end_block(self, iterator):
-		"""
-		Find the end of a block.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		indentation = iterator.get_line_offset()
 		while True:
 			success = iterator.forward_line()
@@ -225,15 +169,6 @@ class Manager(object):
 		return iterator
 
 	def __find_start_block(self, iterator):
-		"""
-		Find the start of a block.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param iterator: A position in the buffer to start searching from.
-		@type iterator: A gtk.Iter object.
-		"""
 		if self.__is_block_begin(iterator.copy()):
 			iterator = self.__move_to_indented_character(iterator.copy())
 		else:
@@ -241,17 +176,6 @@ class Manager(object):
 		return iterator
 
 	def __get_pivot_iterator(self):
-		"""
-		The position to start searching for the start and end of a
-		block.
-
-		This iterator must not be an empty line. The iterator must be
-		moved to the beginning of the the first non-empty line so that
-		indentation can be calculated.
-
-		@return: Position to start searching from
-		@rtype: A gtk.Iter object.
-		"""
 		iterator = self.__editor.cursor
 		# Search for non-empty lines.
 		empty_or_comment = lambda x: self.__editor.is_empty_line(x) or self.__is_comment_line(x) or self.__line_starts_with_secondary_block_keyword(x)
@@ -351,10 +275,14 @@ class Manager(object):
 			end_block_iterator = self.__find_end_block(start_block_iterator.copy())
 			self.__editor.textbuffer.select_range(start_block_iterator, end_block_iterator)
 			message = "Selected block"
-			self.__editor.update_status_message(message, "yes")
-		except ValueError, TypeError:
+			self.__editor.update_message(message, "yes")
+			self.__editor.move_view_to_cursor()
+		except ValueError:
 			message = "Block not found"
-			self.__editor.update_status_message(message, "no")
+			self.__editor.update_message(message, "no")
+		except TypeError:
+			message = "Block not found"
+			self.__editor.update_message(message, "no")
 		return True
 
 	def next_block(self):
@@ -362,12 +290,15 @@ class Manager(object):
 			iterator = self.__get_pivot_iterator()
 			iterator = self.__move_to_next_block(iterator.copy())
 			self.__editor.textbuffer.place_cursor(iterator)
-			self.__editor.move_view_to_cursor()
+			self.__editor.move_view_to_cursor(True)
 			message = "Moved cursor to next block"
-			self.__editor.update_status_message(message, "yes")
-		except ValueError, TypeError:
+			self.__editor.update_message(message, "yes")
+		except ValueError:
 			message = "Next block not found"
-			self.__editor.update_status_message(message, "no")
+			self.__editor.update_message(message, "no")
+		except TypeError:
+			message = "Next block not found"
+			self.__editor.update_message(message, "no")
 		return
 
 	def previous_block(self):
@@ -375,12 +306,15 @@ class Manager(object):
 			iterator = self.__get_pivot_iterator()
 			iterator = self.__move_to_previous_block(iterator.copy())
 			self.__editor.textbuffer.place_cursor(iterator)
-			self.__editor.move_view_to_cursor()
+			self.__editor.move_view_to_cursor(True)
 			message = "Move cursor to previous block"
-			self.__editor.update_status_message(message, "yes")
-		except ValueError, TypeError:
+			self.__editor.update_message(message, "yes")
+		except ValueError:
 			message = "Previous block not found"
-			self.__editor.update_status_message(message, "no")
+			self.__editor.update_message(message, "no")
+		except TypeError:
+			message = "Previous block not found"
+			self.__editor.update_message(message, "no")
 		return
 
 	def select_class(self):
@@ -394,10 +328,13 @@ class Manager(object):
 			if end_line < current_line: raise TypeError
 			self.__buffer.select_range(start, end)
 			message = "Selected class block"
-			self.__editor.update_status_message(message, "yes")
-		except ValueError, TypeError:
+			self.__editor.update_message(message, "yes")
+		except ValueError:
 			message = "Out of class block range"
-			self.__editor.update_status_message(message, "no")
+			self.__editor.update_message(message, "no")
+		except TypeError:
+			message = "Out of class block range"
+			self.__editor.update_message(message, "no")
 		return
 
 	def select_function(self):
@@ -411,10 +348,13 @@ class Manager(object):
 			if end_line < current_line: raise TypeError
 			self.__buffer.select_range(start, end)
 			message = "Selected function block"
-			self.__editor.update_status_message(message, "yes")
-		except ValueError, TypeError:
+			self.__editor.update_message(message, "yes")
+		except ValueError:
 			message = "Out of function range"
-			self.__editor.update_status_message(message, "no")
+			self.__editor.update_message(message, "no")
+		except TypeError:
+			message = "Out of function range"
+			self.__editor.update_message(message, "no")
 		return
 
 	def end_of_block(self):
@@ -424,21 +364,18 @@ class Manager(object):
 			start_block_iterator = self.__find_start_block(iterator)
 			end_block_iterator = self.__find_end_block(start_block_iterator.copy())
 			self.__editor.textbuffer.place_cursor(end_block_iterator)
-			self.__editor.move_view_to_cursor()
+			self.__editor.move_view_to_cursor(True)
 			message = "Move cursor to end of block"
-			self.__editor.update_status_message(message, "yes")
-		except ValueError, TypeError:
+			self.__editor.update_message(message, "yes")
+		except ValueError:
 			message = "End block not found"
-			self.__editor.update_status_message(message, "no")
+			self.__editor.update_message(message, "no")
+		except TypeError:
+			message = "End block not found"
+			self.__editor.update_message(message, "no")
 		return
 
 	def destroy(self):
-		"""
-		Destroy object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		del self
 		self = None
 		return

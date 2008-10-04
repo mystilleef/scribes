@@ -507,7 +507,7 @@ class Editor(GObject):
 	
 	def get_line_text(self, iterator=None):
 		if iterator is None: iterator = self.cursor
-		return self.textbuffer.get_text(*(self.get_line_bounds))
+		return self.textbuffer.get_text(*(self.get_line_bounds(iterator)))
 
 	def get_word_boundary(self, iterator=None, pattern=None):
 		if iterator is None: iterator = self.cursor

@@ -160,7 +160,7 @@ class Feedback(object):
 
 	def __update_message_cb(self, editor, message, icon_name, time):
 		color = COLOR	
-		if icon_name in ("error", "gtk-dialog-error", "fail",): color = "red"
+		if icon_name in ("error", "gtk-dialog-error", "fail", "no",): color = "red"
 		self.__remove_timer()
 		from gobject import idle_add
 		self.__timer = idle_add(self.__update_message, message, time, color, priority=9999)
