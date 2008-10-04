@@ -1,34 +1,3 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2008 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that (un)comments lines in several source
-code
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2008 Lateef Alabi-Oki
-@license: GNU GPLv3 or Later
-@contact: mystilleef@gmail.com
-"""
-
 class Manager(object):
 	"""
 	This class (un)comments lines in several source code.
@@ -43,7 +12,7 @@ class Manager(object):
 		self.__has_selection = False
 		self.__commented = False
 		self.__readonly = False
-		iterator = editor.get_cursor_iterator()
+		iterator = editor.cursor
 		self.__selection_begin_index = None
 		self.__selection_begin_line = None
 		self.__selection_end_index = None
@@ -75,7 +44,7 @@ class Manager(object):
 
 	def __get_range(self):
 		if self.__buffer.get_property("has-selection"): return self.__get_selection_range()
-		iterator = self.__editor.get_cursor_iterator()
+		iterator = self.__editor.cursor
 		if iterator.starts_line() and iterator.ends_line(): return None
 		end_position = self.__forward_to_line_end(iterator.copy())
 		begin_position = self.__backward_to_line_begin(iterator)
@@ -119,14 +88,14 @@ class Manager(object):
 		if self.__readonly:
 			from i18n import msg5
 			message = msg5
-			self.__editor.feedback.update_status_message(message, "no", 5)
+			self.__editor.update_message(message, "fail")
 		else:
 			if self.__commented:
 				if self.__has_selection:
 					from i18n import msg1
 					message = msg1
 				else:
-					line = self.__editor.get_cursor_iterator().get_line() + 1
+					line = self.__editor.cursor.get_line() + 1
 					from i18n import msg2
 					message = msg2 % line
 			else:
@@ -134,10 +103,10 @@ class Manager(object):
 					from i18n import msg3
 					message = msg3
 				else:
-					line = self.__editor.get_cursor_iterator().get_line() + 1
+					line = self.__editor.cursor.get_line() + 1
 					from i18n import msg4
 					message = msg4 % line
-			self.__editor.feedback.update_status_message(message, "yes", 5)
+			self.__editor.update_message(message, "pass")
 		return
 
 	def __reset_flags(self):
@@ -149,8 +118,8 @@ class Manager(object):
 	def toggle_comment(self):
 		try:
 			from Exceptions import ReadOnlyError
-			if self.__editor.is_readonly: raise ReadOnlyError
-			offset = self.__editor.get_cursor_iterator().get_offset()
+			if self.__editor.readonly: raise ReadOnlyError
+			offset = self.__editor.cursor.get_offset()
 			begin, end = self.__get_range()
 			text = self.__buffer.get_text(begin, end)
 			lines = text.split("\n")
