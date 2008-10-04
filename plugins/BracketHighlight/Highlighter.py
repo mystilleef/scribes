@@ -1,37 +1,3 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2007 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that highlights regions within pair
-bracket characters. Characters currently affected are "(", ")", "[", "]"
-"<", ">", "{" and "}". More pair characters will be added if the need
-arises.
-
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2007 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
 class Highlighter(object):
 	"""
 	The class implements and object that highlights regions within pair
@@ -40,40 +6,19 @@ class Highlighter(object):
 	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the Highlighter instance.
-		@type self: A Highlighter object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor)
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__compile_method, priority=PRIORITY_LOW)
-		self.__signal_id_1 = editor.connect("cursor-moved", self.__cursor_moved_cb)
-		self.__signal_id_2 = editor.textbuffer.connect("apply-tag", self.__apply_tag_cb)
-		self.__signal_id_3 = editor.textbuffer.connect("remove-tag", self.__remove_tag_cb)
-		self.__signal_id_4 = editor.connect("loading-document", self.__generic_highlight_off_cb)
-		self.__signal_id_5 = editor.connect("loaded-document", self.__generic_highlight_on_cb)
-		self.__signal_id_6 = editor.connect("enable-readonly", self.__generic_highlight_off_cb)
-		self.__signal_id_7 = editor.connect("disable-readonly", self.__generic_highlight_on_cb)
-		self.__signal_id_8 = editor.connect("load-error", self.__generic_highlight_on_cb)
+		self.__sigid1 = editor.connect("cursor-moved", self.__cursor_moved_cb)
+		self.__sigid2 = editor.textbuffer.connect("apply-tag", self.__apply_tag_cb)
+		self.__sigid3 = editor.textbuffer.connect("remove-tag", self.__remove_tag_cb)
+		self.__sigid5 = editor.connect("loaded-file", self.__generic_highlight_on_cb)
+		self.__sigid6 = editor.connect("readonly", self.__generic_highlight_off_cb)
+		self.__sigid8 = editor.connect("load-error", self.__generic_highlight_on_cb)
 		from gnomevfs import monitor_add, MONITOR_FILE
-		self.__monitor_id_1 = monitor_add(self.__database_uri, MONITOR_FILE,
+		self.__monid1 = monitor_add(self.__database_uri, MONITOR_FILE,
 					self.__highlight_cb)
+		self.__highlight_region()
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the Highlighter instance.
-		@type self: A Highlighter object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__can_highlight = True
 		self.__buffer_is_tagged = False
@@ -83,7 +28,6 @@ class Highlighter(object):
 		self.__end_mark = None
 		self.__start_characters = ("(", "[", "<", "{")
 		self.__end_characters = (")", "]", ">", "}")
-		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		from os.path import join
 		preference_folder = join(editor.metadata_folder, "PluginPreferences")
 		database_path = join(preference_folder, "LexicalScopeHighlight.gdb")
@@ -98,12 +42,6 @@ class Highlighter(object):
 ########################################################################
 
 	def destroy(self):
-		"""
-		Destroy instance of this class.
-
-		@param self: Reference to the Highlighter instance.
-		@type self: A Highlighter object.
-		"""
 		self.__destroy()
 		return
 
@@ -161,34 +99,19 @@ class Highlighter(object):
 
 	def __destroy(self):
 		self.__editor.textbuffer.get_tag_table().remove(self.__highlight_tag)
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__editor.textbuffer)
-		self.__editor.disconnect_signal(self.__signal_id_3, self.__editor.textbuffer)
-		self.__editor.disconnect_signal(self.__signal_id_4, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_5, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_6, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_7, self.__editor)
-		self.__editor.disconnect_signal(self.__signal_id_8, self.__editor)
-		if (self.__start_mark):
-			if (self.__start_mark.get_deleted()):
-				self.__editor.textbuffer.delete_mark(self.__start_mark)
-		if (self.__end_mark):
-			if (self.__end_mark.get_deleted()):
-				self.__editor.textbuffer.delete_mark(self.__end_mark)
+		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid2, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__sigid3, self.__editor.textbuffer)
+		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid8, self.__editor)
+		if self.__start_mark: self.__editor.delete_mark(self.__start_mark)
+		if self.__end_mark: self.__editor.delete_mark(self.__end_mark)
 		from gnomevfs import monitor_cancel
-		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
+		if self.__monid1: monitor_cancel(self.__monid1)
 		self = None
 		del self
 		return
-
-	def __compile_method(self):
-		try:
-			from psyco import bind
-			bind(self.__highlight_region)
-			bind(self.__get_boundary)
-		except:
-			pass
-		return False
 
 ########################################################################
 #

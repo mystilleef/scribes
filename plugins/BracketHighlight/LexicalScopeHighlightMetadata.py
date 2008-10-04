@@ -29,38 +29,13 @@ color.
 @contact: mystilleef@gmail.com
 """
 
-def open_database(flag="c"):
-	"""
-	Open database.
-
-	@return: A database object.
-	@rtype: A database Shelve object.
-	"""
-	from SCRIBES.info import metadata_folder
-	from os.path import exists, join
-	preference_folder = join(metadata_folder, "PluginPreferences")
-	if not exists(preference_folder):
-		from os import makedirs
-		makedirs(preference_folder)
-	database_file = join(preference_folder, "LexicalScopeHighlight.gdb")
-	from shelve import open
-	from anydbm import error
-	try:
-		database = open(database_file, flag=flag, writeback=False)
-	except error:
-		database = open(database_file, flag="n", writeback=False)
-	return database
+from SCRIBES.Utils import open_database
+basepath = "PluginPreferences/LexicalScopeHighlight.gdb"
 
 def get_value():
-	"""
-	Get color value from database.
-
-	@return: Lexical highlight color.
-	@rtype: A String object.
-	"""
 	try:
 		value = "orange"
-		database = open_database("r")
+		database = open_database(basepath, "r")
 		value = database["color"]
 	except KeyError:
 		pass
@@ -69,14 +44,8 @@ def get_value():
 	return value
 
 def set_value(color):
-	"""
-	Set color value in database.
-
-	@param color: Lexical highligt color
-	@type color: A String object.
-	"""
 	try:
-		database = open_database("w")
+		database = open_database(basepath, "w")
 		database["color"] = color
 	finally:
 		database.close()
