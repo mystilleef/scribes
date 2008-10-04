@@ -161,14 +161,14 @@ class Manager(object):
 		return True
 
 	def __init_psyco(self):
-#		try:
-#			from psyco import background, profile
+		try:
+			from psyco import background, profile
 #			profile()
-#			from thread import start_new_thread
-#			start_new_thread(background, ())
-#			print "Initialized psyco profiling and optimization"
-#		except ImportError:
-#			pass
+			from thread import start_new_thread
+			start_new_thread(profile, ())
+			print "Initialized psyco profiling and optimization"
+		except ImportError:
+			pass
 		return False
 
 	def __init_i18n(self):

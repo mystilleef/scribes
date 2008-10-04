@@ -350,10 +350,11 @@ class Editor(GObject):
 		return
 
 	def response(self):
+		#FIXME: This function is EVIL. Disabling for now.
 		#if self.__processing: return False
 		#self.__processing = True
-		from gtk import events_pending, main_iteration
-		while events_pending(): main_iteration(False)#
+		#from gtk import events_pending, main_iteration
+		#while events_pending(): main_iteration(False)#
 		#self.__processing = False
 		return False
 
