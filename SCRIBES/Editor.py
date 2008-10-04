@@ -266,7 +266,15 @@ class Editor(GObject):
 	selection_bounds = property(lambda self: self.textbuffer.get_selection_bounds())
 	selected_text = property(lambda self: self.textbuffer.get_text(*(self.selection_bounds)))
 	has_selection = property(lambda self: self.textbuffer.props.has_selection)
-	
+
+	def optimize(self, functions):
+		try:
+			from psyco import bind
+			[bind(function) for function in functions]
+		except ImportError:
+			pass
+		return False
+
 	def help(self):
 		from gnome import help_display
 		success = True if help_display("/scribes.xml") else False

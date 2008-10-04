@@ -40,8 +40,8 @@ class TreeView(object):
 		self.__sigid1 = self.__manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = self.__manager.connect("update", self.__update_cb)
 		self.__sigid3 = self.__treeview.connect("row-activated", self.__row_activated_cb)
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__precompile_method, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__precompile_method, priority=9999)
 
 	def __init_attributes(self, editor, manager):
 		self.__manager = manager
@@ -52,7 +52,6 @@ class TreeView(object):
 		self.__model = self.__create_model()
 		self.__column = self.__create_column()
 		self.__depth_level_iter = None
-		self.__signal_id_1 = self.__signal_id_2 = self.__signal_id_3 = None
 		return
 
 	def __set_properties(self):
@@ -99,7 +98,7 @@ class TreeView(object):
 	def __select_row(self):
 		current_line = self.__editor.cursor.get_line() + 1
 		get_line = lambda x: x[0]
-		lines = map(get_line, self.__symbols)
+		lines = [get_line(symbol) for symbol in self.__symbols]
 		lines.reverse()
 		found_line = False
 		for line in lines:
@@ -141,7 +140,7 @@ class TreeView(object):
 
 	def __get_indentation_levels(self, symbols):
 		get_indentation = lambda x: x[-2]
-		indentations = map(get_indentation, symbols)
+		indentations = [get_indentation(symbol) for symbol in symbols]
 		indentation_levels = list(set(indentations))
 		indentation_levels.sort()
 		return indentation_levels
@@ -166,11 +165,11 @@ class TreeView(object):
 
 	def __select_symbol(self, line, name):
 		begin = self.__editor.textbuffer.get_iter_at_line(line - 1)
-		end = self.__forward_to_line_end(begin.copy())
+		end = self.__editor.forward_to_line_end(begin.copy())
 		from gtk import TEXT_SEARCH_TEXT_ONLY
 		x, y = begin.forward_search(name, TEXT_SEARCH_TEXT_ONLY, end)
 		self.__editor.textbuffer.select_range(x, y)
-		self.__editor.move_view_to_cursor()
+		self.__editor.move_view_to_cursor(True)
 		return False
 
 	def __forward_to_line_end(self, iterator):
@@ -189,9 +188,9 @@ class TreeView(object):
 
 	def __row_activated_cb(self, treeview, path, column):
 		iterator = self.__model.get_iter(path)
+		self.__manager.emit("hide-window")
 		line = self.__model.get_value(iterator, 0)
 		name = self.__model.get_value(iterator, 1)
-		self.__manager.emit("hide-window")
 		self.__select_symbol(line, name)
 		self.__treeview.set_property("sensitive", False)
 		return True
@@ -199,4 +198,10 @@ class TreeView(object):
 	def __update_cb(self, manager, symbols):
 		from gobject import idle_add
 		idle_add(self.__populate_model, symbols, priority=9999)
+		return False
+
+	def __precompile_method(self):
+		methods = [self.__select_symbol, self.__row_activated_cb,
+			self.__populate_model]
+		self.__editor.optimize(methods)
 		return False
