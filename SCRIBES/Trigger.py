@@ -91,8 +91,15 @@ class Trigger(GObject):
 	error = property(__get_error)
 	removable = property(__get_removable)
 
+	def __response(self):
+		from gtk import events_pending, main_iteration
+		while events_pending(): main_iteration(False)
+		return False
+
 	def activate(self):
+		self.__response()
 		self.emit("activate")
+		self.__response()
 		return
 
 	def destroy(self):
