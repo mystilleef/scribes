@@ -3,7 +3,7 @@ from gobject import TYPE_STRING, TYPE_OBJECT, TYPE_PYOBJECT, TYPE_INT
 from Globals import data_folder, metadata_folder, home_folder, desktop_folder
 from Globals import session_bus, core_plugin_folder, home_plugin_folder
 from Globals import home_language_plugin_folder, core_language_plugin_folder
-from gnomevfs import URI
+from gnomevfs import URI, get_uri_from_local_path
 from gtksourceview2 import language_manager_get_default
 from EncodingGuessListMetadata import get_value as get_encoding_guess_list
 from EncodedFilesMetadata import get_value as get_encoding
@@ -266,6 +266,8 @@ class Editor(GObject):
 	selection_bounds = property(lambda self: self.textbuffer.get_selection_bounds())
 	selected_text = property(lambda self: self.textbuffer.get_text(*(self.selection_bounds)))
 	has_selection = property(lambda self: self.textbuffer.props.has_selection)
+	pwd = property(lambda self: str(URI(self.uri).parent.path) if self.uri else self.desktop_folder)
+	pwd_uri = property(lambda self: str(URI(self.uri).parent) if self.uri else get_uri_from_local_path(self.desktop_folder))
 
 	def optimize(self, functions):
 		try:
@@ -323,6 +325,10 @@ class Editor(GObject):
 	def close_files(self, uris):
 		return self.__imanager.close_files(uris)
 
+	def create_uri(self, uri, exclusive=True):
+		from Utils import create_uri
+		return create_uri(uri, exclusive)
+
 	def register_object(self, instance):
 		self.__registered_objects.append(instance)
 		return False
@@ -350,13 +356,7 @@ class Editor(GObject):
 		return
 
 	def response(self):
-		#FIXME: This function is EVIL. Disabling for now.
-		#if self.__processing: return False
-		#self.__processing = True
-		#from gtk import events_pending, main_iteration
-		#while events_pending(): main_iteration(False)#
-		#self.__processing = False
-		return False
+		return self.__imanager.response()
 
 	def busy(self, busy=True):
 		self.__busy = self.__busy + 1 if busy else self.__busy - 1

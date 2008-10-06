@@ -52,6 +52,8 @@ class Drawer(object):
 		self.__sig_id2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sig_id3 = manager.connect("color", self.__color_cb)
 		self.__sig_id4 = manager.connect("show", self.__show_cb)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
@@ -142,6 +144,12 @@ class Drawer(object):
 			self.__block_event_after_signal()
 		self.__textview.queue_draw()
 		return
+
+	def __precompile_methods(self):
+		methods = (self.__event_after_cb, self.__draw_whitespaces,
+			self.__draw_tab, self.__draw_space)
+		self.__editor.optimize(methods)
+		return False
 
 	def __event_after_cb(self, textview, event):
 		if self.__show is False: return False

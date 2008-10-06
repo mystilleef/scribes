@@ -37,6 +37,8 @@ class Updater(object):
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("show-window", self.__show_window_cb)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
@@ -97,6 +99,11 @@ class Updater(object):
 	def __is_class_node(self, node):
 		attributes = set(["name", "bases", "doc", "code"])
 		return attributes.issubset(set(dir(node)))
+
+	def __precompile_methods(self):
+		methods = (self.__extract_symbols, self.__get_symbols,)
+		self.__editor.optimize(methods)
+		return False
 
 	def __show_window_cb(self, *args):
 		from gobject import idle_add

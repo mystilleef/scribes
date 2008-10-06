@@ -11,6 +11,7 @@ class Buffer(object):
 		self.__sigid1 = self.__buffer.connect("notify::cursor-position", self.__cursor_position_cb)
 		self.__sigid2 = editor.connect("quit", self.__quit_cb)
 		self.__sigid3 = self.__buffer.connect("insert-text", self.__insert_text_cb)
+		self.__sigid12 = self.__buffer.connect_after("insert-text", self.__insert_text_cb)
 		self.__sigid4 = self.__buffer.connect("modified-changed", self.__modified_changed_cb)
 		self.__sigid5 = editor.connect("checking-file", self.__checking_file_cb)
 		self.__sigid6 = editor.connect("loaded-file", self.__loaded_file_cb)
@@ -49,6 +50,7 @@ class Buffer(object):
 		self.__editor.disconnect_signal(self.__sigid9, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid10, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid11, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid12, self.__buffer)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -153,9 +155,9 @@ class Buffer(object):
 		return False
 
 	def __insert_text_cb(self, buffer_, iter, text, length, *args):
-#		if length > 1 or text in ("\n", "\r", "\r\n"): return False
+		if length > 1 or text in ("\n", "\r", "\r\n"): return False
 		#FIXME: Experimental code, remove if you have problems.
-#		self.__editor.response()
+		self.__editor.response()
 		#from gobject import idle_add
 		#idle_add(self.__editor.response, priority=9999)
 		return False

@@ -419,3 +419,16 @@ def open_database(basepath, flag="c"):
 	except error:
 		database = open_(database_path, flag="n", writeback=False)
 	return database
+
+def response():
+	count = 0
+	from gtk import events_pending, main_iteration
+	while events_pending(): 
+		main_iteration(False)
+		count += 1
+	return count
+
+def create_uri(uri, exclusive=True):
+	from gnomevfs import create  
+	create(uri, exclusive=exclusive)
+	return
