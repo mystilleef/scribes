@@ -120,6 +120,8 @@ class Editor(GObject):
 		Type(self)
 		from StatusContainer import Container
 		Container(self)
+		from RecentManager import Manager
+		Manager(self)
 		# Toolbar object.
 		from Toolbar import Toolbar
 		Toolbar(self)

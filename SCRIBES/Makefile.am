@@ -87,6 +87,8 @@ scribes_PYTHON = \
 	RedoToolButton.py \
 	GotoToolButton.py \
 	SearchToolButton.py \
+	RecentManager.py \
+	RecentMenu.py \
 	ReplaceToolButton.py \
 	PreferenceToolButton.py \
 	HelpToolButton.py \

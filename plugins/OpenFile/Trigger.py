@@ -5,6 +5,7 @@ class Trigger(object):
 		self.__sigid1 = self.__trigger1.connect("activate", self.__open_dialog_cb)
 		self.__sigid2 = self.__trigger2.connect("activate", self.__remote_dialog_cb)
 		self.__sigid3 = self.__trigger3.connect("activate", self.__newfile_dialog_cb)
+		editor.get_toolbutton("OpenToolButton").props.sensitive = True
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

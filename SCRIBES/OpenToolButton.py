@@ -1,9 +1,10 @@
-from gtk import ToolButton
+from gtk import MenuToolButton
 
-class Button(ToolButton):
+class Button(MenuToolButton):
 
 	def __init__(self, editor):
-		ToolButton.__init__(self)
+		from gtk import STOCK_OPEN
+		MenuToolButton.__init__(self, STOCK_OPEN)
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
@@ -25,10 +26,14 @@ class Button(ToolButton):
 		return
 
 	def __set_properties(self):
-		from gtk import STOCK_OPEN
-		self.set_property("stock-id", STOCK_OPEN)
+#		from gtk import STOCK_OPEN
+#		self.set_property("stock-id", STOCK_OPEN)
 		self.set_property("name", "OpenToolButton")
 		self.set_property("sensitive", False)
+		#self.set_tooltip(editor.tip, open_button_tip)
+		from RecentMenu import RecentMenu
+		self.set_menu(RecentMenu(self.__editor))
+#		self.set_arrow_tooltip(editor.tip, recent_menu_tip, recent_menu_tip)
 		return
 
 	def __quit_cb(self, *args):
@@ -36,5 +41,5 @@ class Button(ToolButton):
 		return False
 
 	def __clicked_cb(self, *args):
-		print "Not yet implemented"
+		self.__editor.trigger("show_open_dialog")
 		return False
