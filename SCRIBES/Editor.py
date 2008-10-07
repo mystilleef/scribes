@@ -4,6 +4,7 @@ from Globals import data_folder, metadata_folder, home_folder, desktop_folder
 from Globals import session_bus, core_plugin_folder, home_plugin_folder
 from Globals import home_language_plugin_folder, core_language_plugin_folder
 from gnomevfs import URI, get_uri_from_local_path
+from DialogFilters import create_filter_list
 from gtksourceview2 import language_manager_get_default
 from EncodingGuessListMetadata import get_value as get_encoding_guess_list
 from EncodedFilesMetadata import get_value as get_encoding
@@ -254,6 +255,8 @@ class Editor(GObject):
 	metadata_folder = property(lambda self: metadata_folder)
 	home_folder = property(lambda self: home_folder)
 	desktop_folder = property(lambda self: desktop_folder)
+	home_folder_uri = property(lambda self: get_uri_from_local_path(self.home_folder))
+	desktop_folder_uri = property(lambda self: get_uri_from_local_path(self.desktop_folder))
 	core_plugin_folder = property(lambda self: core_plugin_folder)
 	home_plugin_folder = property(lambda self: home_plugin_folder)
 	core_language_plugin_folder = property(lambda self: core_language_plugin_folder)
@@ -268,6 +271,7 @@ class Editor(GObject):
 	has_selection = property(lambda self: self.textbuffer.props.has_selection)
 	pwd = property(lambda self: str(URI(self.uri).parent.path) if self.uri else self.desktop_folder)
 	pwd_uri = property(lambda self: str(URI(self.uri).parent) if self.uri else get_uri_from_local_path(self.desktop_folder))
+	dialog_filters = property(lambda self: create_filter_list())
 
 	def optimize(self, functions):
 		try:
@@ -520,6 +524,11 @@ class Editor(GObject):
 		if iterator is None: iterator = self.cursor
 		from Utils import find_matching_bracket
 		return find_matching_bracket(iterator)
+
+	def get_current_folder(self, globals_):
+		from os.path import split
+		folder = split(globals_["__file__"])[0]
+		return folder
 	
 ########################################################################
 #

@@ -92,7 +92,10 @@ class Trigger(GObject):
 	removable = property(__get_removable)
 
 	def activate(self):
+		from Utils import response
+		response()
 		self.emit("activate")
+		response()
 		return
 
 	def destroy(self):

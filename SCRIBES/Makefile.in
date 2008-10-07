@@ -220,6 +220,7 @@ scribes_PYTHON = \
 	CommandLineProcessor.py \
 	CursorMetadata.py \
 	DBusService.py \
+	DialogFilters.py \
 	DisplayRightMarginMetadata.py \
 	Editor.py \
 	EncodingComboBoxDataManager.py \
