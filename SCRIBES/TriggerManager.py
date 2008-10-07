@@ -15,6 +15,8 @@ class Manager(object):
 		self.__sigid7 = editor.connect("remove-triggers", self.__remove_triggers_cb)
 		editor.register_object(self)
 		editor.response()
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -37,6 +39,12 @@ class Manager(object):
 		self = None
 		return
 
+	def __precompile_methods(self):
+		methods = (self.__precompile_methods, self.__process_event,
+			self.__is_shortcut, self.__get_modifier, self.__get_shortcut,
+			self.__activate)
+		self.__editor.optimize(methods)
+		return False
 ########################################################################
 #
 #							Public API
