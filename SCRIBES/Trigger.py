@@ -42,13 +42,14 @@ class Trigger(GObject):
 		"activate": (SIGNAL_RUN_LAST, TYPE_NONE, ())
 	}
 
-	def __init__(self, name, accelerator=None, description=None, error=True, removable=True):
+	def __init__(self, editor, name, accelerator=None, description=None, error=True, removable=True):
 		GObject.__init__(self)
-		self.__init_attributes(name, accelerator, description, error, removable)
-#		from gobject import idle_add
-#		idle_add(self.__precompile_methods, priority=9999)
+		self.__init_attributes(editor, name, accelerator, description, error, removable)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
-	def __init_attributes(self, name, accelerator, description, error, removable):
+	def __init_attributes(self, editor, name, accelerator, description, error, removable):
+		self.__editor = editor
 		self.__name = name
 		self.__accelerator = accelerator
 		self.__description = description
@@ -92,10 +93,9 @@ class Trigger(GObject):
 	removable = property(__get_removable)
 
 	def activate(self):
-		from Utils import response
-		response()
+		self.__editor.response()
 		self.emit("activate")
-		response()
+		self.__editor.response()
 		return
 
 	def destroy(self):
@@ -104,11 +104,7 @@ class Trigger(GObject):
 		return
 
 	def __precompile_methods(self):
-		try:
-			from psyco import bind
-			bind(self.__get_name)
-			bind(self.__get_accelerator)
-			bind(self.activate)
-		except ImportError:
-			pass
+		methods = (self.activate, self.__get_name, self.__get_accelerator)
+		self.__editor.optimize(methods)
 		return False
+

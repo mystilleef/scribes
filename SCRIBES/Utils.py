@@ -421,14 +421,20 @@ def open_database(basepath, flag="c"):
 	return database
 
 def response():
-	count = 0
 	from gtk import events_pending, main_iteration
 	while events_pending(): 
 		main_iteration(False)
-		count += 1
-	return count
+	return
 
 def create_uri(uri, exclusive=True):
-	from gnomevfs import create  
-	create(uri, exclusive=exclusive)
+	from gnomevfs import create, OPEN_WRITE  
+	create(uri, OPEN_WRITE, exclusive)
 	return
+
+
+try:
+	from psyco import bind
+	bind(response)
+except ImportError:
+	pass
+

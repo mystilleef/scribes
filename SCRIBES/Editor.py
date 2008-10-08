@@ -446,7 +446,7 @@ class Editor(GObject):
 
 	def create_trigger(self, name, accelerator=None, description=None, error=True, removable=True):
 		from Trigger import Trigger
-		trigger = Trigger(name, accelerator, description, error, removable)
+		trigger = Trigger(self, name, accelerator, description, error, removable)
 		return trigger
 
 	def trigger(self, name):

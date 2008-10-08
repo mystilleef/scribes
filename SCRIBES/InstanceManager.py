@@ -55,10 +55,6 @@ class Manager(object):
 		self.__wingroup = WindowGroup()
 		from SaveProcessMonitor import SaveProcessMonitor
 		self.__save_process_monitor = SaveProcessMonitor()
-		self.__busy_count = 0
-		self.__response_count = 0
-		self.__process_count = 0
-		self.__noprocess_count = 0
 		self.__busy = False
 		return
 
@@ -138,15 +134,11 @@ class Manager(object):
 		return self.__editor_instances
 
 	def response(self):
-		if self.__busy: self.__busy_count += 1
 		if self.__busy: return False
 		self.__busy = True
 		from Utils import response
-		count = response()
+		response()
 		self.__busy = False
-		if count > self.__process_count: self.__process_count = count
-		if not count: self.__noprocess_count += 1
-		self.__response_count += 1
 		return False
 
 ########################################################################
@@ -226,11 +218,5 @@ class Manager(object):
 	def __quit(self):
 		self.__remove_swap_area()
 		self.__save_process_monitor.destroy()
-		print "********************************************************"
-		print "* Number of successful response calls: %d" % self.__response_count
-		print "* Number of ignored response calls: %d" % self.__busy_count
-		print "* Highest number of pending events: %d" % self.__process_count
-		print "* Number of times no pending events found: %d" % self.__noprocess_count
-		print "********************************************************"
 		raise SystemExit
 		return

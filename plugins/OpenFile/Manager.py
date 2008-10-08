@@ -14,6 +14,13 @@ class Manager(GObject):
 		"load-files": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"open-encoding": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"validate": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"validation-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"validation-pass": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"create": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"create-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"creation-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"creation-pass": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
