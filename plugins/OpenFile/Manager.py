@@ -8,6 +8,7 @@ class Manager(GObject):
 		"hide-open-dialog-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-remote-dialog-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-newfile-dialog-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"hide-newfile-dialog-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"open-files": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING)),
 		"open-button-sensitivity": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"load-files": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
@@ -28,12 +29,15 @@ class Manager(GObject):
 		file_ = join(pwd, "OpenDialogGUI/OpenDialog.glade")
 		from gtk.glade import XML
 		self.__oglade = XML(file_, "Window", "scribes")
+		file_ = join(pwd, "NewFileDialogGUI/NewFileDialog.glade")
+		self.__nglade = XML(file_, "Window", "scribes")
 		self.__open_manager = None
 		self.__remote_manager = None
 		self.__newfile_manager = None
 		return False
 
 	open_gui = property(lambda self: self.__oglade)
+	new_gui = property(lambda self: self.__nglade)
 
 	def show_open_dialog(self):
 		try:
@@ -49,7 +53,12 @@ class Manager(GObject):
 		return 
 
 	def show_newfile_dialog(self):
-		self.emit("show-newfile-dialog-window")
+		try:
+			self.__new_manager.show()
+		except AttributeError:
+			from NewFileDialogGUI.Manager import Manager
+			self.__new_manager = Manager(self, self.__editor)
+			self.__new_manager.show()
 		return
 
 	def destroy(self):
