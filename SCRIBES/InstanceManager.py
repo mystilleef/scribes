@@ -42,7 +42,6 @@ class Manager(object):
 		DBusService(self)
 		self.__init_attributes()
 #		timeout_add(21000, self.__init_psyco, priority=9999)
-#		self.__init_psyco()
 #		self.__init_i18n()
 		from gobject import timeout_add
 		timeout_add(300000, self.__init_garbage_collector, priority=9999)
@@ -175,7 +174,7 @@ class Manager(object):
 		try:
 			from psyco import background, profile, log
 			log("/home/meek/Desktop/scribes.log")
-			profile()
+#			profile()
 			print "Initialized psyco profiling and optimization"
 		except ImportError:
 			pass

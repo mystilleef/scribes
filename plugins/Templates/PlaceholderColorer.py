@@ -12,8 +12,8 @@ class Colorer(object):
 		self.__sigid5 = manager.connect("deactivate-template-mode", self.__deactivate_template_mode_cb)
 		self.__sigid6 = editor.connect("cursor-moved", self.__cursor_moved_cb)
 		self.__block_signal()
-#		from gobject import idle_add
-#		idle_add(self.__precompile_methods, priority=9999)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

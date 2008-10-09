@@ -42,8 +42,8 @@ class Deactivator(object):
 		self.__sigid5 = manager.connect("last-placeholder", self.__last_placeholder_cb)
 		self.__sigid6 = editor.textbuffer.connect("insert-text", self.__insert_text_cb)
 		self.__block_signal()
-#		from gobject import idle_add
-#		idle_add(self.__precompile_methods, priority=5000)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=5000)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
@@ -66,11 +66,11 @@ class Deactivator(object):
 		return
 
 	def __precompile_methods(self):
-		methods = [self.__cursor_moved_cb, self.__insert_text_cb,
+		methods = (self.__cursor_moved_cb, self.__insert_text_cb,
 			self.__is_within_range, self.__is_inside_range,
 			self.__check_boundary, self.__check_placeholder_boundary,
 			self.__deactivate_template_mode_cb, self.__block_signal,
-			self.__unblock_signal]
+			self.__unblock_signal)
 		self.__editor.optimize(methods)
 		return False
 

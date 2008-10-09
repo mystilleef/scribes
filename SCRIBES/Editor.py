@@ -274,6 +274,7 @@ class Editor(GObject):
 	pwd = property(lambda self: str(URI(self.uri).parent.path) if self.uri else self.desktop_folder)
 	pwd_uri = property(lambda self: str(URI(self.uri).parent) if self.uri else get_uri_from_local_path(self.desktop_folder))
 	dialog_filters = property(lambda self: create_filter_list())
+	recent_manager = property(lambda self: self.get_data("RecentManager"))
 
 	def optimize(self, functions):
 		try:

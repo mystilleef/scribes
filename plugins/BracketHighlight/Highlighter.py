@@ -17,6 +17,8 @@ class Highlighter(object):
 		self.__monid1 = monitor_add(self.__database_uri, MONITOR_FILE,
 					self.__highlight_cb)
 		self.__highlight_region()
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -34,6 +36,13 @@ class Highlighter(object):
 		from gnomevfs import get_uri_from_local_path
 		self.__database_uri = get_uri_from_local_path(database_path)
 		return
+
+	def __precompile_methods(self):
+		methods = (self.__cursor_moved_cb, self.__apply_tag_cb,
+			self.__remove_tag_cb, self.__highlight_region, 
+			self.__highlight_cb,)
+		self.__editor.optimize(methods)
+		return False
 
 ########################################################################
 #

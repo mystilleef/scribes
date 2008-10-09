@@ -53,6 +53,8 @@ class Window(object):
 		self.__window.present()
 		editor.response()
 		self.__window.set_property("sensitive", True)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor, uri):
 		self.__editor = editor
@@ -137,6 +139,13 @@ class Window(object):
 		from PositionMetadata import update_window_position_in_database
 		update_window_position_in_database(str(uri), window_position)
 		return
+
+	def __precompile_methods(self):
+		methods = (self.__key_press_event_cb, self.__focus_in_event_cb,
+			self.__focus_out_event_cb, self.__focus_out_after_event_cb,
+			self.__state_event_cb, self.__modified_file_cb)
+		self.__editor.optimize(methods)
+		return False
 
 ########################################################################
 #

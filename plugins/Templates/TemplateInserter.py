@@ -7,7 +7,9 @@ class Inserter(object):
 		self.__sigid4 = manager.connect("expand-trigger", self.__expand_trigger_cb)
 		self.__sigid5 = manager.connect("trigger-found", self.__trigger_found)
 		self.__sigid6 = manager.connect("no-trigger-found", self.__no_trigger_found_cb)
-
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
+		
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
 		self.__manager = manager
@@ -26,6 +28,12 @@ class Inserter(object):
 		del self
 		self = None
 		return
+
+	def __precompile_methods(self):
+		methods = (self.__trigger_found, self.__no_trigger_found_cb,
+			self.__expand_trigger_cb)
+		self.__editor.optimize(methods)
+		return False
 
 	def __insert_template(self, template):
 		from utils import insert_string

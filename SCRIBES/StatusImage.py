@@ -15,7 +15,9 @@ class Image(object):
 		self.__sigid11 = editor.connect("unset-message", self.__unset_message_cb)
 		editor.register_object(self)
 		editor.response()
-
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
+		
 	def __init_attributes(self, editor):
 		from collections import deque
 		self.__editor = editor
@@ -46,6 +48,12 @@ class Image(object):
 		self = None
 		return
 
+	def __precompile_methods(self):
+		methods = (self.__update_message_cb, self.__unset_message_cb,
+			self.__set_message_cb, self.__modified_file_cb,
+			self.__saved_file_cb)
+		self.__editor.optimize(methods)
+		return False
 	def __remove_timer(self):
 		try:
 			from gobject import source_remove

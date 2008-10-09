@@ -41,8 +41,8 @@ class Navigator(object):
 		self.__sigid4 = manager.connect("template-boundaries", self.__template_boundaries_cb)
 		self.__sigid5 = manager.connect("placeholders", self.__placeholders_cb)
 		self.__sigid6 = manager.connect("deactivate-template-mode", self.__deactivate_template_mode_cb)
-#		from gobject import idle_add
-#		idle_add(self.__precompile_method, priority=9999)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
@@ -62,7 +62,7 @@ class Navigator(object):
 		self = None
 		return
 
-	def __precompile_method(self):
+	def __precompile_methods(self):
 		methods = (self.__select_placeholder, self.__next_placeholder,
 			self.__next_placeholder_cb, self.__previous_placeholder_cb,
 			self.__previous_placeholder, self.__placeholders_cb,

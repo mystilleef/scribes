@@ -40,11 +40,13 @@ def main(argv=None):
 	return
 
 def __open(argv=None):
+	from Utils import init_gnome, set_vm_interval
+	set_vm_interval(False)
 	uris = __get_uris(argv)
 	__open_via_dbus(uris)
 	#__init_threads()
-	from Utils import init_gnome
 	init_gnome()
+	set_vm_interval(True)
 	from InstanceManager import Manager
 	Manager().open_files(uris)
 	return

@@ -29,21 +29,16 @@ This module initializes the text editor's server.
 """
 
 # The Python library path is generated at build time.
-INTERVAL = -1
 RECURSIONLIMITMULTIPLIER = 1000000
 
 def __set_vm_properties():
-	"""
-	Set virtual machine's (Python) system properties.
-	"""
-	from sys import setcheckinterval, getrecursionlimit, setrecursionlimit, setdlopenflags
+	from sys import getrecursionlimit, setrecursionlimit, setdlopenflags
 	try:
 		from dl import RTLD_LAZY, RTLD_GLOBAL
 		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 	except ImportError:
 		pass
-	global RECURSIONLIMITMULTIPLIER, INTERVAL
-	setcheckinterval(INTERVAL)
+	global RECURSIONLIMITMULTIPLIER
 	setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
 	return
 

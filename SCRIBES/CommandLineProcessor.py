@@ -75,7 +75,7 @@ def __print_info():
 	return
 
 def __print_help():
-	from usage import help as chelp
+	from Usage import help as chelp
 	chelp()
 	return
 

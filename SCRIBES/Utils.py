@@ -431,6 +431,11 @@ def create_uri(uri, exclusive=True):
 	create(uri, OPEN_WRITE, exclusive)
 	return
 
+def set_vm_interval(response=True):
+	from sys import setcheckinterval, maxint
+	interval = -1 if response else maxint
+	setcheckinterval(interval)
+	return False
 
 try:
 	from psyco import bind

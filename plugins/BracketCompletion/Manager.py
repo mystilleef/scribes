@@ -13,8 +13,8 @@ class BracketManager(object):
 		self.__sigid1 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 		self.__sigid2 = editor.connect("cursor-moved", self.__cursor_moved_cb)
 		self.__sigid3 = editor.connect("loaded-file", self.__loaded_document_cb)
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__compile_methods, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -34,6 +34,10 @@ class BracketManager(object):
 		self.__open_pair_characters_for_enclosement = self.__open_pair_characters + [keysyms.less, keysyms.apostrophe]
 		return
 
+	def __precompile_methods(self):
+		methods = (self.__key_press_event_cb, self.__cursor_moved_cb)
+		self.__editor.optimize(methods)
+		return False
 ########################################################################
 #
 #							Public Methods

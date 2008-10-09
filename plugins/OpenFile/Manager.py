@@ -7,13 +7,17 @@ class Manager(GObject):
 		"show-open-dialog-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-open-dialog-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-remote-dialog-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"hide-remote-dialog-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-newfile-dialog-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-newfile-dialog-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"open-files": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING)),
 		"open-button-sensitivity": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"remote-button-sensitivity": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"load-files": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"load-remote-file": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"open-encoding": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"remote-encoding": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"validate": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"validation-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"validation-pass": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
@@ -38,6 +42,8 @@ class Manager(GObject):
 		self.__oglade = XML(file_, "Window", "scribes")
 		file_ = join(pwd, "NewFileDialogGUI/NewFileDialog.glade")
 		self.__nglade = XML(file_, "Window", "scribes")
+		file_ = join(pwd, "RemoteDialogGUI/RemoteDialog.glade")
+		self.__rglade = XML(file_, "Window", "scribes")
 		self.__open_manager = None
 		self.__remote_manager = None
 		self.__newfile_manager = None
@@ -45,6 +51,7 @@ class Manager(GObject):
 
 	open_gui = property(lambda self: self.__oglade)
 	new_gui = property(lambda self: self.__nglade)
+	remote_gui = property(lambda self: self.__rglade)
 
 	def show_open_dialog(self):
 		try:
@@ -56,7 +63,12 @@ class Manager(GObject):
 		return
 
 	def show_remote_dialog(self):
-		self.emit("show-remote-dialog-window")
+		try:
+			self.__remote_manager.show()
+		except AttributeError:
+			from RemoteDialogGUI.Manager import Manager
+			self.__remote_manager = Manager(self, self.__editor)
+			self.__remote_manager.show()
 		return 
 
 	def show_newfile_dialog(self):

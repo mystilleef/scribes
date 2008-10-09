@@ -24,6 +24,8 @@ class Buffer(object):
 		self.__monid1 = monitor_add(self.__theme_database_uri, MONITOR_FILE, self.__theme_changed_cb)
 		editor.register_object(self)
 		editor.response()
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -141,6 +143,10 @@ class Buffer(object):
 		self.__buffer.place_cursor(iterator)
 		return False
 
+	def __precompile_methods(self):
+		methods = (self.__insert_text_cb, self.__cursor_position_cb)
+		self.__editor.optimize(methods)
+		return False
 ################################################################################
 #
 #							Signal Listeners

@@ -10,6 +10,8 @@ class Position(object):
 		self.__update()
 		editor.register_object(self)
 		editor.response()
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -25,6 +27,11 @@ class Position(object):
 		self = None
 		return
 
+	def __precompile_methods(self):
+		methods = (self.__moved_cb, self.__update, self.__update_label,)
+		self.__editor.optimize(methods)
+		return False
+	
 	def __update_label(self, line, column):
 		self.__label.set_label(_("<b>Ln</b> %s <b>Col</b> %s") % (str(line), str(column)))
 		self.__busy = False
@@ -69,4 +76,3 @@ class Position(object):
 		from gobject import idle_add
 		idle_add(self.__move, priority=9999)
 		return False
-		

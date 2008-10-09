@@ -86,7 +86,6 @@ class Manager(object):
 		self.__editor.response()
 		plugin_object = PluginClass(self.__editor)
 		plugin_object.load()
-		self.__editor.refresh()
 		self.__editor.response()
 		return plugin_object
 
