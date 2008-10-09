@@ -49,6 +49,8 @@ class Spinner(ToolItem):
 		self.show_all()
 		editor.response()
 		editor.register_object(self)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -75,6 +77,13 @@ class Spinner(ToolItem):
 		del self
 		self = None
 		return
+
+	def __precompile_methods(self):
+		methods = (self.__busy_cb, self.__spin_throbber_cb, 
+			self.__start, self.__stop, self.__start_private,
+			self.__stop_private,)
+		self.__editor.optimize(methods)
+		return False
 
 	def __set_properties(self):
 		self.add(self.__image)
