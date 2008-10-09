@@ -48,6 +48,8 @@ class CompletionMonitor(object):
 		self.__sigid9 = editor.textview.connect_after("paste-clipboard", self.__generic_cb)
 		self.__sigid10 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 		self.__sigid11 = manager.connect("is-visible", self.__is_visible_cb)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -58,6 +60,16 @@ class CompletionMonitor(object):
 		self.__dictionary = CompletionDictionary()
 		return
 
+	def __precompile_methods(self):
+		methods = (self.__key_press_event_cb, self.__insert_text_cb,
+			self.__generic_cb, self.__is_visible_cb, 
+			self.__update_cb, self.__get_word_to_cursor,
+			self.__get_word_before_cursor, self.__emit_no_match_found,
+			self.__emit_match_found, self.__find_matches,
+			self.__sort_matches_occurrence_only, self.__sort_matches,
+			self.__check_buffer)
+		self.__editor.optimize(methods)
+		return False
 ########################################################################
 #
 #						Helper Methods

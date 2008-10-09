@@ -42,7 +42,6 @@ class CompletionUpdater(object):
 		self.__init_attributes(manager, editor)
 		from gobject import idle_add, PRIORITY_LOW, timeout_add
 		timeout_add(2000, self.__start_indexer, priority=PRIORITY_LOW)
-#		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 		self.__sigid1 = self.__editor.connect_after("loaded-file", self.__loaded_document_cb)
 		self.__sigid2 = self.__editor.textbuffer.connect_after("changed", self.__changed_cb)
 		self.__sigid3 = self.__manager.connect("destroy", self.__destroy_cb)
@@ -59,7 +58,8 @@ class CompletionUpdater(object):
 		editor.session_bus.add_signal_receiver(self.__busy_cb,
 						signal_name="busy",
 						dbus_interface=indexer_dbus_service)
-
+		idle_add(self.__precompile_methods, priority=9999)
+		
 	def __init_attributes(self, manager, editor):
 		from os.path import join, split
 		self.__indexer_cwd = split(globals()["__file__"])[0]
@@ -74,6 +74,13 @@ class CompletionUpdater(object):
 		from collections import deque
 		self.__queue = deque([])
 		return
+	
+	def __precompile_methods(self):
+		methods = (self.__changed_cb, self.__index, 
+			self.__generate_dictionary, self.__get_text,
+			self.__send_text)
+		self.__editor.optimize(methods)
+		return False
 
 ########################################################################
 #

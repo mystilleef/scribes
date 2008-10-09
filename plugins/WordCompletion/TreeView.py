@@ -49,8 +49,8 @@ class CompletionTreeView(TreeView):
 		self.__sigid8 = self.connect("cursor-changed", self.__cursor_changed_cb)
 		self.__sigid9 = manager.connect("no-match-found", self.__no_match_found_cb)
 		self.__block_textview()
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -63,6 +63,13 @@ class CompletionTreeView(TreeView):
 		from collections import deque
 		self.__word_list = deque([])
 		return
+
+	def __precompile_methods(self):
+		methods = (self.__populate_model, self.__key_press_event_cb,
+		 	self.__cursor_changed_cb, self.__no_match_found_cb,
+		 	self.__match_found_cb, self.__is_visible_cb)
+		self.__editor.optimize(methods)
+		return False
 
 	def __set_properties(self):
 		self.append_column(self.__column)

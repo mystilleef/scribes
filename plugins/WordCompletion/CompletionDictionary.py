@@ -37,8 +37,6 @@ class CompletionDictionary(object):
 
 	def __init__(self):
 		self.__init_attributes()
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self):
 		self.__is_updating = False
