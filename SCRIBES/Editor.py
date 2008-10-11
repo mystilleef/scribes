@@ -533,6 +533,10 @@ class Editor(GObject):
 		folder = split(globals_["__file__"])[0]
 		return folder
 	
+	def uri_is_folder(self, uri):
+		from Utils import uri_is_folder
+		return uri_is_folder(uri)
+
 ########################################################################
 #
 #								Signal Listener

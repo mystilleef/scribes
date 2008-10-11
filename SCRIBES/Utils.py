@@ -431,6 +431,13 @@ def create_uri(uri, exclusive=True):
 	create(uri, OPEN_WRITE, exclusive)
 	return
 
+def uri_is_folder(uri):
+	if not uri: return False
+	from gnomevfs import get_file_info
+	info = get_file_info(uri)
+	if info.type == 2: return True
+	return False
+
 def set_vm_interval(response=True):
 	from sys import setcheckinterval, maxint
 	interval = -1 if response else maxint
