@@ -8,7 +8,6 @@ class Manager(GObject):
 		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"encoding": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"rename": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
@@ -17,12 +16,12 @@ class Manager(GObject):
 		self.__init_attributes(editor)
 		from ComboBox import ComboBox
 		ComboBox(self, editor)
-#		from SaveButton import Button
-#		Button(editor, self)
+		from SaveButton import Button
+		Button(editor, self)
 		from FileChooser import FileChooser
 		FileChooser(editor, self)
-#		from CancelButton import Button
-#		Button(editor, self)
+		from CancelButton import Button
+		Button(editor, self)
 		from Window import Window
 		Window(editor, self)
 

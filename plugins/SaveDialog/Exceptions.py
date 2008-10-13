@@ -1,0 +1,2 @@
+class DialogError(Exception):
+	pass

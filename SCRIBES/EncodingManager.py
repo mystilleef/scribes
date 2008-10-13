@@ -124,8 +124,8 @@ class Manager(object):
 	def __renamed_file_cb(self, editor, uri, encoding):
 		encoding = "utf-8" if encoding is None else self.__format_encoding(encoding)
 		from thread import start_new_thread
-		start_new_thread(self.__map_encoding_to_file, (uri, self.__encoding))
-		start_new_thread(self.__set_guess_list, (self.__encoding,))
+		start_new_thread(self.__map_encoding_to_file, (uri, encoding))
+		start_new_thread(self.__set_guess_list, (encoding,))
 		return
 
 	def __update_guess_list_cb(self, editor, encoding):

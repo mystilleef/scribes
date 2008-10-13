@@ -37,6 +37,7 @@ class Editor(GObject):
 		"new-encoding-list": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"update-encoding-guess-list": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"renamed-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"rename-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"reload-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"saved-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"save-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
@@ -308,8 +309,12 @@ class Editor(GObject):
 		return False
 
 	def save_file(self, uri, encoding="utf-8"):
-		# FIXME: NOT YET IMPLEMENTED
+		self.emit("save-file", uri, encoding)
 		return
+
+	def rename_file(self, uri, encoding="utf-8"):
+		self.emit("rename-file", uri, encoding)
+		return 
 
 	def load_file(self, uri, encoding, readonly=False):
 		self.__contains_document = True

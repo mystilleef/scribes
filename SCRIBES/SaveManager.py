@@ -20,6 +20,7 @@ class Manager(object):
 		self.__sigid4 = editor.connect("save-error", self.__save_error_cb)
 		self.__sigid5 = editor.connect("modified-file", self.__modified_file_cb)
 		self.__sigid6 = editor.connect("window-focus-out", self.__focus_out_cb)
+		self.__sigid7 = editor.connect("rename-file", self.__rename_file_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -27,6 +28,7 @@ class Manager(object):
 		self.__editor = editor
 		self.__quit = False
 		self.__error = False
+		self.__rename = False
 		return
 
 	def __destroy(self):
@@ -36,6 +38,7 @@ class Manager(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
 		self.__editor.unregister_object(self)
 		self.__editor.emit("quit")
 		del self
@@ -100,10 +103,19 @@ class Manager(object):
 		from gobject import idle_add
 		idle_add(self.__save, uri, encoding, priority=9999)
 		return False
+	
+	def __rename_file_cb(self, editor, uri, encoding):
+		self.__rename = True
+		self.__remove_timer()
+		from gobject import idle_add
+		idle_add(self.__save, uri, encoding, priority=9999)
+		return False
 
 	def __saved_file_cb(self, *args):
 		self.__error = False
 		if self.__quit: self.__destroy()
+		if self.__rename: self.__editor.emit("renamed-file", self.__editor.uri, self.__editor.encoding)
+		self.__rename = False
 		return False
 
 	def __save_error_cb(self, editor, uri, encoding, message):

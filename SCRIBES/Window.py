@@ -48,6 +48,7 @@ class Window(object):
 		self.__sigid10 = editor.connect("modified-file", self.__modified_file_cb)
 		self.__sigid11 = editor.connect("readonly", self.__readonly_cb)
 		self.__sigid12 = self.__window.connect_after("focus-out-event", self.__focus_out_after_event_cb)
+		self.__sigid13 = editor.connect("renamed-file", self.__renamed_file_cb)
 		editor.register_object(self)
 		self.__position_window()
 		self.__window.present()
@@ -82,6 +83,7 @@ class Window(object):
 		self.__editor.disconnect_signal(self.__sigid10, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid11, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid12, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid13, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -179,8 +181,9 @@ class Window(object):
 		return False
 
 	def __modified_file_cb(self, editor, modified):
-		update = self.__update_window_title
-		update("*%s" % self.__title) if modified else update(self.__title)
+		title = str(self.__editor.uri_object.short_name) if self.__editor.uri else _("Unsaved Document")
+		set_title = self.__window.set_title
+		set_title("*%s" % title) if modified else set_title(title)
 		return False
 
 	def __focus_out_after_event_cb(self, *args):
@@ -213,6 +216,11 @@ class Window(object):
 
 	def __readonly_cb(self, editor, readonly):
 		self.__set_readonly(readonly)
+		return False
+
+	def __renamed_file_cb(self, editor, uri, *args):
+		from gnomevfs import URI
+		self.__window.set_title(URI(uri).short_name)
 		return False
 
 	def __key_press_event_cb(self, window, event):
