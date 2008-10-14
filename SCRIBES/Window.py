@@ -162,6 +162,7 @@ class Window(object):
 	def __checking_file_cb(self, editor, uri):
 		self.__uri = uri
 		if not self.__positioned: self.__position_window()
+		if not self.__positioned: self.__window.present()
 		self.__title = self.__set_title()
 		self.__update_window_title(_('Loading "%s" ...') % self.__title)
 		return False
@@ -177,7 +178,7 @@ class Window(object):
 		self.__title = self.__set_title()
 		self.__update_window_title(self.__title)
 		self.__position_window()
-		self.__window.show_all()
+		self.__window.present()
 		return False
 
 	def __modified_file_cb(self, editor, modified):
@@ -195,13 +196,17 @@ class Window(object):
 #		if self.__editor.uri and self.__editor.file_is_saved is False and self.__editor.is_readonly is False:
 #			self.__editor.save_file()
 #		if self.__is_quiting: return False
+		self.__editor.response()
 		self.__window.grab_remove()
 		self.__set_window_position_in_database()
+		self.__editor.response()
 		return False
 
 	def __focus_in_event_cb(self, *args):
+		self.__editor.response()
 		self.__window.grab_add()
 		self.__set_window_position_in_database()
+		self.__editor.response()
 		return False
 
 	def __state_event_cb(self, window, event):
@@ -212,6 +217,7 @@ class Window(object):
 		MAXIMIZED = (state & WINDOW_STATE_MAXIMIZED) or (state & WINDOW_STATE_FULLSCREEN)
 		self.__is_minimized = True if MINIMIZED else False
 		self.__is_maximized = True if MAXIMIZED else False
+		self.__editor.response()
 		return False
 
 	def __readonly_cb(self, editor, readonly):

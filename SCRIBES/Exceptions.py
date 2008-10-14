@@ -93,3 +93,9 @@ class GlobalStoreObjectExistsError(Error):
 
 class GlobalStoreObjectDoesNotExistError(Error):
 	pass
+
+class BarBoxAddError(Error):
+	pass
+
+class BarBoxInvalidObjectError(Error):
+	pass

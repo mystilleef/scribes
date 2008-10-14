@@ -542,6 +542,22 @@ class Editor(GObject):
 		from Utils import uri_is_folder
 		return uri_is_folder(uri)
 
+	def add_bar_object(self, instance):
+		container = self.gui.get_widget("BarBox")
+		from Exceptions import BarBoxAddError
+		if container.get_children(): raise BarBoxAddError
+		container.add(instance)
+		container.show_all()
+		return  
+	
+	def remove_bar_object(self, instance):
+		container = self.gui.get_widget("BarBox")
+		from Exceptions import BarBoxInvalidObjectError
+		if not (instance in container.get_children()): raise BarBoxInvalidObjectError
+		container.hide()
+		container.remove(instance)
+		return  
+
 ########################################################################
 #
 #								Signal Listener

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Sep 23 19:33:02 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Oct 14 13:50:05 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="Window">
     <property name="sensitive">False</property>
     <property name="title" translatable="yes">Unsaved Document</property>
-    <property name="startup_id">ScribesWindowID</property>
     <property name="role">ScribesWindowRole</property>
+    <property name="startup_id">ScribesWindowID</property>
     <property name="window_position">GTK_WIN_POS_CENTER</property>
     <property name="default_width">640</property>
     <property name="default_height">480</property>
@@ -49,12 +49,24 @@
               </packing>
             </child>
             <child>
+              <widget class="GtkHBox" id="BarBox">
+                <child>
+                  <placeholder/>
+                </child>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
               <widget class="GtkHSeparator" id="hseparator1">
                 <property name="no_show_all">True</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -119,7 +131,7 @@
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="padding">1</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
           </widget>
