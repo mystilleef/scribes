@@ -202,6 +202,7 @@ class Manager(object):
 		return None
 
 	def __process_event(self, event): 
+		if self.__editor.bar_is_active: return False
 		shortcut = self.__is_shortcut(event)
 		if shortcut is None: return False
 		self.__editor.window.emit_stop_by_name("key-press-event")

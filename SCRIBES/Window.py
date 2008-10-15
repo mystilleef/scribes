@@ -51,7 +51,6 @@ class Window(object):
 		self.__sigid13 = editor.connect("renamed-file", self.__renamed_file_cb)
 		editor.register_object(self)
 		self.__position_window()
-		self.__window.present()
 		editor.response()
 		self.__window.set_property("sensitive", True)
 		from gobject import idle_add
@@ -130,6 +129,8 @@ class Window(object):
 				self.__window.move(xcoordinate, ycoordinate)
 		except TypeError:
 			pass
+		finally:
+			self.__window.present()
 		return False
 
 	def __set_window_position_in_database(self):
@@ -162,7 +163,6 @@ class Window(object):
 	def __checking_file_cb(self, editor, uri):
 		self.__uri = uri
 		if not self.__positioned: self.__position_window()
-		if not self.__positioned: self.__window.present()
 		self.__title = self.__set_title()
 		self.__update_window_title(_('Loading "%s" ...') % self.__title)
 		return False
@@ -196,17 +196,13 @@ class Window(object):
 #		if self.__editor.uri and self.__editor.file_is_saved is False and self.__editor.is_readonly is False:
 #			self.__editor.save_file()
 #		if self.__is_quiting: return False
-		self.__editor.response()
 		self.__window.grab_remove()
 		self.__set_window_position_in_database()
-		self.__editor.response()
 		return False
 
 	def __focus_in_event_cb(self, *args):
-		self.__editor.response()
 		self.__window.grab_add()
 		self.__set_window_position_in_database()
-		self.__editor.response()
 		return False
 
 	def __state_event_cb(self, window, event):
@@ -217,7 +213,6 @@ class Window(object):
 		MAXIMIZED = (state & WINDOW_STATE_MAXIMIZED) or (state & WINDOW_STATE_FULLSCREEN)
 		self.__is_minimized = True if MINIMIZED else False
 		self.__is_maximized = True if MAXIMIZED else False
-		self.__editor.response()
 		return False
 
 	def __readonly_cb(self, editor, readonly):
@@ -230,6 +225,7 @@ class Window(object):
 		return False
 
 	def __key_press_event_cb(self, window, event):
+		if self.__editor.bar_is_active: return False
 		from gtk.gdk import CONTROL_MASK
 		# We only care when the "Ctrl" modifier is pressed.
 		if not (event.state & CONTROL_MASK): return False

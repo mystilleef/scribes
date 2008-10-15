@@ -151,7 +151,6 @@ class Manager(object):
 		instances = self.__editor_instances
 		empty_windows = [x for x in instances if not x.contains_document]
 		empty_windows[0].load_file(uri, encoding) if empty_windows else self.__new_editor(uri, encoding)
-#		if empty_windows: empty_windows[0].window.present()
 		return False
 
 	def __close_file(self, uri):

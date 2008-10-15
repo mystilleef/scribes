@@ -54,6 +54,7 @@ class Image(object):
 			self.__saved_file_cb)
 		self.__editor.optimize(methods)
 		return False
+
 	def __remove_timer(self):
 		try:
 			from gobject import source_remove

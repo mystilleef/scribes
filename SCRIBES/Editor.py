@@ -158,6 +158,7 @@ class Editor(GObject):
 		self.__busy = 0
 		from re import UNICODE, compile as compile_
 		self.__word_pattern = compile_("\w+|[-]", UNICODE)
+		self.__bar_is_active = False
 		return False
 
 	def __destroy(self):
@@ -177,10 +178,9 @@ class Editor(GObject):
 		return False
 
 	def __init_plugins(self):
-		# FIXME: NOT YET IMPLEMENTED
+		self.move_view_to_cursor(True)
 		if self.__started_plugins: return False
 		self.emit("ready")
-		self.move_view_to_cursor(True)
 		from PluginManager import Manager
 		Manager(self)
 		from LanguagePluginManager import Manager
@@ -276,6 +276,7 @@ class Editor(GObject):
 	pwd_uri = property(lambda self: str(URI(self.uri).parent) if self.uri else get_uri_from_local_path(self.desktop_folder))
 	dialog_filters = property(lambda self: create_filter_list())
 	recent_manager = property(lambda self: self.get_data("RecentManager"))
+	bar_is_active = property(lambda self: self.__bar_is_active)
 
 	def optimize(self, functions):
 		try:
@@ -546,16 +547,18 @@ class Editor(GObject):
 		container = self.gui.get_widget("BarBox")
 		from Exceptions import BarBoxAddError
 		if container.get_children(): raise BarBoxAddError
-		container.add(instance)
+		container.add(instance) if instance.parent is None else instance.reparent(container)
 		container.show_all()
+		self.__bar_is_active = True
 		return  
-	
+
 	def remove_bar_object(self, instance):
 		container = self.gui.get_widget("BarBox")
 		from Exceptions import BarBoxInvalidObjectError
 		if not (instance in container.get_children()): raise BarBoxInvalidObjectError
 		container.hide()
 		container.remove(instance)
+		self.__bar_is_active = False
 		return  
 
 ########################################################################

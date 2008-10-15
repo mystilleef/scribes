@@ -12,23 +12,29 @@ class Manager(GObject):
 	def __init__(self, editor):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
+		from LineJumper import Jumper
+		Jumper(self, editor)
+		from GUI.Manager import Manager
+		Manager(self, editor)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = None
-		return 
+		from os.path import join
+		folder = editor.get_current_folder(globals())
+		file_ = join(folder, "GUI/GotoBar.glade")
+		from gtk.glade import XML
+		self.__glade = XML(file_, "Window", "scribes")
+		return
+
+	gui = property(lambda self: self.__glade)
 
 	def destroy(self):
 		self.emit("destroy")
 		del self
 		self = None
-		return 
+		return
 
 	def show(self):
-		try:
-			self.__manager.show()
-		except AttributeError:
-			from GUI.Manager import Manager
-			self.__manager = Manager(self, self.__editor)
-			self.__manager.show()
+		self.emit("show-bar")
 		return

@@ -36,5 +36,5 @@ class Button(ToolButton):
 		return False
 
 	def __clicked_cb(self, *args):
-		print "Not yet implemented"
+		self.__editor.trigger("show_gotobar")
 		return False

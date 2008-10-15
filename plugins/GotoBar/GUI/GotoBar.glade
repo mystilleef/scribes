@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Oct 13 19:29:42 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Oct 14 17:13:53 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="Window">
     <property name="type">GTK_WINDOW_POPUP</property>
@@ -10,9 +10,8 @@
     <property name="decorated">False</property>
     <property name="deletable">False</property>
     <child>
-      <widget class="GtkHBox" id="hbox1">
+      <widget class="GtkHBox" id="HBox">
         <property name="visible">True</property>
-        <property name="spacing">10</property>
         <child>
           <widget class="GtkLabel" id="label1">
             <property name="visible">True</property>
@@ -25,6 +24,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
+            <property name="padding">5</property>
           </packing>
         </child>
         <child>
@@ -53,6 +53,7 @@
             <property name="use_markup">True</property>
           </widget>
           <packing>
+            <property name="padding">5</property>
             <property name="position">2</property>
           </packing>
         </child>

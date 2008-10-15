@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Oct 14 13:50:05 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Oct 14 15:51:04 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="Window">
     <property name="sensitive">False</property>
@@ -62,7 +62,7 @@
             </child>
             <child>
               <widget class="GtkHSeparator" id="hseparator1">
-                <property name="no_show_all">True</property>
+                <property name="visible">True</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
