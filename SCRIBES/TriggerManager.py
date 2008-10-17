@@ -13,6 +13,7 @@ class Manager(object):
 		self.__sigid5 = editor.connect("remove-trigger", self.__remove_trigger_cb)
 		self.__sigid6 = editor.connect("add-triggers", self.__add_triggers_cb)
 		self.__sigid7 = editor.connect("remove-triggers", self.__remove_triggers_cb)
+		self.__sigid8 = editor.connect("bar-is-active", self.__active_cb)
 		editor.register_object(self)
 		editor.response()
 		from gobject import idle_add
@@ -24,6 +25,7 @@ class Manager(object):
 		self.__shortcuts = set([])
 		# A mapping of the format: {trigger_name: (trigger_object, shortcut)}
 		self.__trigger_dictionary = {}
+		self.__bar_is_active = False
 		return
 
 	def __destroy(self):
@@ -91,6 +93,7 @@ class Manager(object):
 		return [self.__remove_trigger(trigger) for trigger in triggers]
 
 	def __trigger(self, trigger_name):
+		if self.__bar_is_active: return 
 		self.__trigger_dictionary[trigger_name][0].activate()
 		return
 
@@ -202,7 +205,7 @@ class Manager(object):
 		return None
 
 	def __process_event(self, event): 
-		if self.__editor.bar_is_active: return False
+		if self.__bar_is_active: return False
 		shortcut = self.__is_shortcut(event)
 		if shortcut is None: return False
 		self.__editor.window.emit_stop_by_name("key-press-event")
@@ -232,6 +235,10 @@ class Manager(object):
 		self.__remove_triggers(triggers)
 		return False
 
+	def __active_cb(self, editor, active):
+		self.__bar_is_active = active
+		return False
+	
 	def __trigger_cb(self, editor, name):
 		self.__trigger(name)
 		return False

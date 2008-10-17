@@ -8,9 +8,10 @@ class Button(ToolButton):
 		self.__set_properties()
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
-		self.__sigid3 = self.__editor.connect("undo", self.__undo_cb)
-		self.__sigid4 = self.__editor.connect("redo", self.__undo_cb)
-		self.__sigid5 = self.__editor.connect("modified-file", self.__undo_cb)
+		self.__sigid3 = editor.connect("undo", self.__undo_cb)
+		self.__sigid4 = editor.connect("redo", self.__undo_cb)
+		self.__sigid5 = editor.connect("modified-file", self.__undo_cb)
+		self.__sigid6 = editor.connect("bar-is-active", self.__active_cb)
 		editor.register_object(self)
 		self.show()
 		editor.response()
@@ -25,6 +26,7 @@ class Button(ToolButton):
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -53,4 +55,8 @@ class Button(ToolButton):
 
 	def __undo_cb(self, *args):
 		self.__sensitive()
+		return False
+
+	def __active_cb(self, editor, active):
+		self.set_property("sensitive", False) if active else self.__sensitive()
 		return False

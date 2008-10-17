@@ -423,7 +423,7 @@ def open_database(basepath, flag="c"):
 def response():
 	from gtk import events_pending, main_iteration
 	while events_pending(): 
-		main_iteration(False)
+		main_iteration(True)
 	return
 
 def create_uri(uri, exclusive=True):

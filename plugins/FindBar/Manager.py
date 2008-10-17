@@ -33,25 +33,12 @@ from gtk import SHRINK, FILL, EXPAND
 from gobject import SIGNAL_RUN_LAST, TYPE_NONE
 
 class FindBar(ScribesBar):
-	"""
-	This class creates a findbar object. The findbar allows users to move the
-	cursor to a specific line in the document contained by the text editor.
-	"""
 
 	__gsignals__ = {
 		"delete": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
-		"""
-		Initialize the findbar object.
-
-		@param self: Reference to the FindBar instance.
-		@type self: A FindBar object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		ScribesBar.__init__(self, editor)
 		self.__init_attributes(editor)
 		self.__set_properties()

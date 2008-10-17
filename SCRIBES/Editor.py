@@ -53,6 +53,7 @@ class Editor(GObject):
 		"combobox-encoding-data": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"supported-encodings-window": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_OBJECT,)),
 		"spin-throbber": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"bar-is-active": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"update-message": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_INT,)),
 		"set-message": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"unset-message": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
@@ -550,7 +551,8 @@ class Editor(GObject):
 		container.add(instance) if instance.parent is None else instance.reparent(container)
 		container.show_all()
 		self.__bar_is_active = True
-		return  
+		self.emit("bar-is-active", True)
+		return
 
 	def remove_bar_object(self, instance):
 		container = self.gui.get_widget("BarBox")
@@ -559,7 +561,8 @@ class Editor(GObject):
 		container.hide()
 		container.remove(instance)
 		self.__bar_is_active = False
-		return  
+		self.emit("bar-is-active", False)
+		return
 
 ########################################################################
 #
