@@ -5,3 +5,9 @@ class Manager(object):
 		Bar(manager, editor)
 		from Entry import Entry
 		Entry(manager, editor)
+		from ComboBox import ComboBox
+		ComboBox(manager, editor)
+		from MenuButton import Button
+		Button(manager, editor)
+		from PopupMenu import PopupMenu
+		PopupMenu(manager, editor)

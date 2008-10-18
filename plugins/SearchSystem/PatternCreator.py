@@ -10,7 +10,7 @@ class Creator(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__string = None
-		self.__regex_mode = False
+		self.__regex_mode = True
 		self.__match_word = True
 		return False
 	
@@ -27,9 +27,9 @@ class Creator(object):
 			if self.__regex_mode: raise ValueError
 			from re import escape
 			pattern = escape(self.__string)
-			if self.__match_word: pattern = r"\b" + pattern + r"\b"
+			if self.__match_word: pattern = r"\b%s\b" % pattern
 		except ValueError:
-			pattern = copy(self.__string)
+			pattern = r"%s" % self.__string
 		finally:
 			self.__manager.emit("new-pattern", pattern)
 		return 

@@ -15,11 +15,17 @@ class Manager(GObject):
 		"focus-entry": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"found-matches": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"marked-matches": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"mapped-matches": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"search-mode": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
+		"popup-menu": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"hide-menu": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
+		from MatchMapper import Mapper
+		Mapper(self, editor)
 		from MatchColorer import Colorer
 		Colorer(self, editor)
 		from Marker import Marker
