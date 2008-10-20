@@ -17,7 +17,7 @@ class Manager(GObject):
 		"marked-matches": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"mapped-matches": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"search-mode": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"popup-menu": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"popup-menu": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-menu": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
@@ -49,9 +49,11 @@ class Manager(GObject):
 		file_ = join(folder, "GUI/FindBar.glade")
 		from gtk.glade import XML
 		self.__glade = XML(file_, "Window", "scribes")
+		self.__mglade = XML(file_, "MenuWindow", "scribes")
 		return
 
 	gui = property(lambda self: self.__glade)
+	menu_gui = property(lambda self: self.__mglade)
 
 	def destroy(self):
 		self.emit("destroy")

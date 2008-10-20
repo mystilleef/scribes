@@ -8,6 +8,7 @@ class Entry(object):
 		self.__sigid4 = self.__entry.connect("activate", self.__activate_cb)
 		self.__sigid5 = self.__entry.connect("key-press-event", self.__key_press_event_cb)
 		self.__sigid6 = self.__manager.connect("focus-entry", self.__focus_entry_cb)
+		self.__sigid7 = self.__manager.connect("hide-menu", self.__focus_entry_cb)
 		self.__entry.props.sensitive = True
 		
 	def __init_attributes(self, manager, editor):
@@ -23,6 +24,7 @@ class Entry(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__entry)
 		self.__editor.disconnect_signal(self.__sigid5, self.__entry)
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		self.__entry.destroy()
 		del self
 		self = None
@@ -35,12 +37,12 @@ class Entry(object):
 	def __show_cb(self, *args):
 		self.__entry.grab_focus()
 		return False
-	
+
 	def __changed_cb(self, *args):
 		text = self.__entry.get_text()
 		self.__manager.emit("search-string", text)
 		return False
-	
+
 	def __activate_cb(self, *args):
 		if not self.__entry.get_text(): return False
 		self.__manager.emit("search")
