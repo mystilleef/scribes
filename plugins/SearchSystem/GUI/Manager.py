@@ -11,3 +11,13 @@ class Manager(object):
 		Button(manager, editor)
 		from PopupMenu import PopupMenu
 		PopupMenu(manager, editor)
+		from MatchCaseButton import Button
+		Button(manager, editor)
+		from MatchWordButton import Button
+		Button(manager, editor)
+		from NormalButton import Button
+		Button(manager, editor)
+		from ForwardButton import Button
+		Button(manager, editor)
+		from BackwardButton import Button
+		Button(manager, editor)

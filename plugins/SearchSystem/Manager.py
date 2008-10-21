@@ -19,6 +19,7 @@ class Manager(GObject):
 		"search-mode": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"popup-menu": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-menu": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"database-update": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
@@ -39,6 +40,9 @@ class Manager(GObject):
 		from RegexCreator import Creator
 		Creator(self, editor)
 		from GUI.Manager import Manager
+		Manager(self, editor)
+		
+		from ConfigurationManager import Manager
 		Manager(self, editor)
 
 	def __init_attributes(self, editor):
