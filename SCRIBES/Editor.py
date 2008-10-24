@@ -360,8 +360,8 @@ class Editor(GObject):
 		from Utils import disconnect_signal
 		return disconnect_signal(sigid, instance)
 
-	def move_view_to_cursor(self, align=False):
-		iterator = self.cursor
+	def move_view_to_cursor(self, align=False, iterator=None):
+		if iterator is None: iterator = self.cursor
 		self.textview.scroll_to_iter(iterator, 0.001, use_align=align, xalign=1.0)
 		return False
 

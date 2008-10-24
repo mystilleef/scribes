@@ -60,6 +60,7 @@ class ComboBox(object):
 		search_mode = self.__model.get_value(iterator, 1)
 		from ..SearchModeMetadata import set_value
 		set_value(search_mode)
+		self.__manager.emit("reset")
 		self.__manager.emit("focus-entry")
 		return False
 

@@ -1,5 +1,5 @@
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_INT
-from gobject import TYPE_STRING, TYPE_PYOBJECT
+from gobject import TYPE_STRING, TYPE_PYOBJECT, SIGNAL_RUN_FIRST
 
 class Manager(GObject):
 
@@ -11,7 +11,8 @@ class Manager(GObject):
 		"new-pattern": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"new-regex": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"search-boundary": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"search": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"search": (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
+		"search-complete": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"focus-entry": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"found-matches": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"marked-matches": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
@@ -20,11 +21,19 @@ class Manager(GObject):
 		"popup-menu": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-menu": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"database-update": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"reset": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"next": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"previous": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"navigator-is-ready": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"current-match": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"selected-mark": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
+		from GUI.Manager import Manager
+		Manager(self, editor)
 		from MatchMapper import Mapper
 		Mapper(self, editor)
 		from MatchColorer import Colorer
@@ -39,9 +48,10 @@ class Manager(GObject):
 		Creator(self, editor)
 		from RegexCreator import Creator
 		Creator(self, editor)
-		from GUI.Manager import Manager
-		Manager(self, editor)
-		
+		from MatchNavigator import Navigator
+		Navigator(self, editor)
+		from SelectionMatchColorer import Colorer
+		Colorer(self, editor)
 		from ConfigurationManager import Manager
 		Manager(self, editor)
 

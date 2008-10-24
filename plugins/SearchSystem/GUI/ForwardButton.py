@@ -38,6 +38,7 @@ class Button(object):
 		return False
 
 	def __toggled_cb(self, manager, *args):
+		self.__manager.emit("reset")
 		self.__update_database()
 		return False
 

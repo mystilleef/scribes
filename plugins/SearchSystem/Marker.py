@@ -6,6 +6,7 @@ class Marker(object):
 		self.__sigid2 = manager.connect("mapped-matches", self.__found_matches_cb)
 		self.__sigid3 = manager.connect("hide-bar", self.__clear_cb)
 		self.__sigid4 = manager.connect("search-string", self.__clear_cb)
+		self.__sigid5 = manager.connect("reset", self.__clear_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -18,6 +19,7 @@ class Marker(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		del self
 		self = None
 		return 

@@ -422,8 +422,7 @@ def open_database(basepath, flag="c"):
 
 def response():
 	from gtk import events_pending, main_iteration
-	while events_pending(): 
-		main_iteration(True)
+	while events_pending(): main_iteration(False)
 	return
 
 def create_uri(uri, exclusive=True):
@@ -440,7 +439,7 @@ def uri_is_folder(uri):
 
 def set_vm_interval(response=True):
 	from sys import setcheckinterval, maxint
-	interval = -1 if response else maxint
+	interval = 1000 if response else maxint
 	setcheckinterval(interval)
 	return False
 

@@ -31,7 +31,7 @@ class Mapper(object):
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
-	
+
 	def __matches_cb(self, manager, matches):
 		self.__map_matches(matches)
 		return False

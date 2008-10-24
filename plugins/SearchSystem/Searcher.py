@@ -10,7 +10,7 @@ class Searcher(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__text = None
-		return  
+		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
@@ -24,7 +24,8 @@ class Searcher(object):
 		iterator = regex_object.finditer(self.__text)
 		matches = [(match.start(), match.end()) for match in iterator]
 		self.__manager.emit("found-matches", matches)
-		return 
+		if not matches: self.__manager.emit("search-complete")
+		return
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
