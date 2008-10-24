@@ -8,6 +8,7 @@ class Button(object):
 		self.__sigid4 = manager.connect("match-index", self.__index_cb)
 		self.__sigid5 = manager.connect("reset", self.__reset_cb)
 		self.__sigid6 = manager.connect("found-matches", self.__found_cb)
+		self.__manager.set_data("activate_button", self.__button)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -38,6 +39,7 @@ class Button(object):
 
 	def __clicked_cb(self, *args):
 		self.__manager.emit("search")
+		self.__manager.emit("focus-entry")
 		return False
 
 	def __search_string_cb(self, manager, string):
@@ -51,6 +53,7 @@ class Button(object):
 
 	def __reset_cb(self, *args):
 		self.__button.props.sensitive = True
+		self.__manager.set_data("activate_button", self.__button)
 		return False
 
 	def __found_cb(self, manager, matches):

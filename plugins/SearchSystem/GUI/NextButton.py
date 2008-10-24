@@ -35,6 +35,7 @@ class Button(object):
 
 	def __clicked_cb(self, *args):
 		self.__manager.emit("next")
+		self.__manager.emit("focus-entry")
 		return False
 
 	def __index_cb(self, manager, index):
@@ -44,5 +45,3 @@ class Button(object):
 	def __reset_cb(self, *args):
 		self.__button.props.sensitive = False
 		return False
-	
-

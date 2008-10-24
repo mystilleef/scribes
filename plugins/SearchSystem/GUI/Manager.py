@@ -21,6 +21,8 @@ class Manager(object):
 		Button(manager, editor)
 		from BackwardButton import Button
 		Button(manager, editor)
+		from EntryActivator import Activator
+		Activator(manager, editor)
 		from ButtonSwitcher import Switcher
 		Switcher(manager, editor)
 		from PreviousButton import Button

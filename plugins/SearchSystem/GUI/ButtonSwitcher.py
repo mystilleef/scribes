@@ -48,6 +48,7 @@ class Switcher(object):
 		self.__editor.response()
 		self.__hide_buttons()
 		button.show()
+		self.__manager.set_data("activate_button", button)
 		self.__editor.response()
 		return False
 

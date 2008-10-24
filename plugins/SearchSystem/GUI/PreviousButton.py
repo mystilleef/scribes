@@ -35,6 +35,7 @@ class Button(object):
 
 	def __clicked_cb(self, *args):
 		self.__manager.emit("previous")
+		self.__manager.emit("focus-entry")
 		return False
 
 	def __index_cb(self, manager, index):

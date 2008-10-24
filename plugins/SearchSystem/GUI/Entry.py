@@ -45,7 +45,7 @@ class Entry(object):
 
 	def __activate_cb(self, *args):
 		if not self.__entry.get_text(): return False
-		self.__manager.emit("search")
+		self.__manager.emit("entry-activated")
 		return True
 
 	def __key_press_event_cb(self, entry, event):

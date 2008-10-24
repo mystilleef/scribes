@@ -73,4 +73,5 @@ class Bar(object):
 
 	def __hide_signal_cb(self, *args):
 		self.__manager.emit("hide-bar")
+		self.__manager.emit("reset")
 		return False
