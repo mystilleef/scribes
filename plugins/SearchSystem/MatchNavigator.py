@@ -1,3 +1,5 @@
+from gettext import gettext as _
+
 class Navigator(object):
 
 	def __init__(self, manager, editor):
@@ -23,18 +25,28 @@ class Navigator(object):
 		return 
 
 	def __process_next(self):
-		self.__prev_queue.appendleft(self.__current_match)
-		match = self.__next_queue.popleft()
-		self.__current_match = match
-		self.__manager.emit("current-match", match)
+		try:
+			if not self.__next_queue: raise ValueError
+			self.__prev_queue.appendleft(self.__current_match)
+			match = self.__next_queue.popleft()
+			self.__current_match = match
+			self.__manager.emit("current-match", match)
+		except ValueError:
+			message = _("No next match found")
+			self.__editor.update_message(message, "fail", 10)
 		return False
 
 	def __process_previous(self):
-		self.__next_queue.appendleft(self.__current_match)
-		match = self.__prev_queue.popleft()
-		self.__current_match = match
-		self.__manager.emit("current-match", match)
-		return 
+		try:
+			if not self.__prev_queue: raise ValueError
+			self.__next_queue.appendleft(self.__current_match)
+			match = self.__prev_queue.popleft()
+			self.__current_match = match
+			self.__manager.emit("current-match", match)
+		except ValueError:
+			message = _("No previous match found")
+			self.__editor.update_message(message, "fail", 10)
+		return
 
 	def __process(self, matches):
 		self.__clear()
@@ -43,7 +55,6 @@ class Navigator(object):
 		match = self.__next_queue.popleft()
 		self.__current_match = match
 		self.__manager.emit("current-match", match)
-		self.__manager.emit("navigator-is-ready")
 		return False
 
 	def __destroy(self):

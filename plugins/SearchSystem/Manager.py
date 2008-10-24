@@ -27,6 +27,7 @@ class Manager(GObject):
 		"navigator-is-ready": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"current-match": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"selected-mark": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"match-index": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -48,6 +49,8 @@ class Manager(GObject):
 		Creator(self, editor)
 		from RegexCreator import Creator
 		Creator(self, editor)
+		from MatchIndexer import Indexer
+		Indexer(self, editor)
 		from MatchNavigator import Navigator
 		Navigator(self, editor)
 		from SelectionMatchColorer import Colorer
