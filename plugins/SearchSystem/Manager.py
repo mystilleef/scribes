@@ -29,6 +29,8 @@ class Manager(GObject):
 		"selected-mark": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"match-index": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"entry-activated": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"back-button": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"select-match": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
@@ -36,6 +38,8 @@ class Manager(GObject):
 		self.__init_attributes(editor)
 		from GUI.Manager import Manager
 		Manager(self, editor)
+		from MatchSelector import Selector
+		Selector(self, editor)
 		from MatchMapper import Mapper
 		Mapper(self, editor)
 		from MatchColorer import Colorer
@@ -66,7 +70,7 @@ class Manager(GObject):
 		folder = editor.get_current_folder(globals())
 		file_ = join(folder, "GUI/FindBar.glade")
 		from gtk.glade import XML
-		self.__glade = XML(file_, "Window", "scribes")
+		self.__glade = XML(file_, "BarWindow", "scribes")
 		self.__mglade = XML(file_, "MenuWindow", "scribes")
 		return
 

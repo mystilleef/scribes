@@ -15,7 +15,7 @@ class Bar(object):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__container = manager.gui.get_widget("HBox")
+		self.__container = manager.gui.get_widget("Table")
 		return
 
 	def __destroy(self):
@@ -72,6 +72,7 @@ class Bar(object):
 		return False
 
 	def __hide_signal_cb(self, *args):
-		self.__manager.emit("hide-bar")
+		self.__manager.emit("select-match")
 		self.__manager.emit("reset")
+		self.__manager.emit("hide-bar")
 		return False

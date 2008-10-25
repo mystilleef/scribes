@@ -12,7 +12,7 @@ class PopupMenu(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__button = manager.gui.get_widget("MenuButton")
-		self.__hbox = manager.gui.get_widget("HBox")
+		self.__container = manager.gui.get_widget("Table")
 		self.__window = manager.menu_gui.get_widget("MenuWindow")
 		return 
 
@@ -36,7 +36,7 @@ class PopupMenu(object):
 
 	def __position(self):
 		winx, winy = self.__editor.window.window.get_origin()
-		hbox_y = winy + self.__hbox.allocation.y
+		hbox_y = winy + self.__container.allocation.y
 		hbox_x = winx + self.__button.allocation.x
 		y = hbox_y - self.__window.size_request()[1]
 		self.__window.move(hbox_x, y)

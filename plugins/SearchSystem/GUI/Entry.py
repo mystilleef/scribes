@@ -36,6 +36,8 @@ class Entry(object):
 
 	def __show_cb(self, *args):
 		self.__entry.grab_focus()
+		text = self.__entry.get_text()
+		self.__manager.emit("search-string", text)
 		return False
 
 	def __changed_cb(self, *args):
@@ -49,9 +51,14 @@ class Entry(object):
 		return True
 
 	def __key_press_event_cb(self, entry, event):
-		from gtk import keysyms
-		if event.keyval != keysyms.Escape: return False
-		self.__manager.emit("hide-bar")
+		from gtk.gdk import keyval_name, SHIFT_MASK
+		keyname = keyval_name(event.keyval)
+		ShiftKey = (event.state & SHIFT_MASK)
+		Return = (keyname == "Return")
+		Escape = (keyname == "Escape")
+		if ShiftKey: 
+			if Return: self.__manager.emit("back-button")
+		if Escape: self.__manager.emit("hide-bar")
 		return False
 
 	def __focus_entry_cb(self, *args):
