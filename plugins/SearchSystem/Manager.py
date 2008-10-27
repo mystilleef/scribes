@@ -36,10 +36,10 @@ class Manager(GObject):
 	def __init__(self, editor):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		from GUI.Manager import Manager
-		Manager(self, editor)
 		from MatchSelector import Selector
 		Selector(self, editor)
+		from GUI.Manager import Manager
+		Manager(self, editor)
 		from MatchMapper import Mapper
 		Mapper(self, editor)
 		from MatchColorer import Colorer
