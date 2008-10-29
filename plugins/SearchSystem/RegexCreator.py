@@ -4,7 +4,7 @@ class Creator(object):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("new-pattern", self.__pattern_cb)
-		self.__sigid3 = manager.connect("database-update", self.__update_cb)
+		self.__sigid3 = manager.connect("match-case-flag", self.__update_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -19,11 +19,6 @@ class Creator(object):
 		del self
 		self = None
 		return 
-
-	def __update_flags(self):
-		from MatchCaseMetadata import get_value
-		self.__ignore_case = not get_value()
-		return
 
 	def __regex_object(self, pattern):
 		from re import I, U, M, compile as compile_
@@ -40,6 +35,6 @@ class Creator(object):
 		self.__regex_object(pattern)
 		return False
 
-	def __update_cb(self, *args):
-		self.__update_flags()
+	def __update_cb(self, manager, match_case):
+		self.__ignore_case = not match_case
 		return False

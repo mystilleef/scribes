@@ -4,7 +4,7 @@ class Button(object):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = self.__button.connect("toggled", self.__toggled_cb)
-		self.__sigid3 = manager.connect("database-update", self.__update_cb)
+		self.__sigid3 = manager.connect("match-word-flag", self.__update_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -26,10 +26,9 @@ class Button(object):
 		set_value(self.__button.props.active)
 		return
 
-	def __set_active(self):
+	def __set_active(self, match_word):
 		self.__button.handler_block(self.__sigid2)
-		from ..MatchWordMetadata import get_value
-		self.__button.props.active = get_value()
+		self.__button.props.active = match_word
 		self.__button.handler_unblock(self.__sigid2)
 		return 
 
@@ -42,6 +41,6 @@ class Button(object):
 		self.__update_database()
 		return False
 
-	def __update_cb(self, *args):
-		self.__set_active()
+	def __update_cb(self, manager, match_word):
+		self.__set_active(match_word)
 		return False

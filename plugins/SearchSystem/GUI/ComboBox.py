@@ -9,7 +9,7 @@ class ComboBox(object):
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__quit_cb)
 		self.__sigid2 = self.__combo.connect("changed", self.__changed_cb)
-		self.__sigid3 = manager.connect("database-update", self.__update_cb)
+		self.__sigid3 = manager.connect("search-mode-flag", self.__update_cb)
 		self.__populate_model(data)
 
 	def __init_attributes(self, manager, editor):
@@ -64,12 +64,10 @@ class ComboBox(object):
 		self.__manager.emit("focus-entry")
 		return False
 
-	def __update_combo(self):
+	def __update_combo(self, search_mode):
 		self.__combo.handler_block(self.__sigid2)
-		from ..SearchModeMetadata import get_value
-		mode = get_value()
 		dictionary = {"default": 0, "regex": 1, "findasyoutype": 2}
-		self.__combo.set_active(dictionary[mode])
+		self.__combo.set_active(dictionary[search_mode])
 		self.__combo.handler_unblock(self.__sigid2)
 		return 
 
@@ -81,6 +79,6 @@ class ComboBox(object):
 		self.__emit_new_mode()
 		return False
 
-	def __update_cb(self, *args):
-		self.__update_combo()
+	def __update_cb(self, manager, search_mode):
+		self.__update_combo(search_mode)
 		return False

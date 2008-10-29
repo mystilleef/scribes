@@ -1,6 +1,8 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
+		from ButtonSwitcher import Switcher
+		Switcher(manager, editor)
 		from Bar import Bar
 		Bar(manager, editor)
 		from Entry import Entry
@@ -23,8 +25,6 @@ class Manager(object):
 		Button(manager, editor)
 		from EntryActivator import Activator
 		Activator(manager, editor)
-		from ButtonSwitcher import Switcher
-		Switcher(manager, editor)
 		from PreviousButton import Button
 		Button(manager, editor)
 		from NextButton import Button

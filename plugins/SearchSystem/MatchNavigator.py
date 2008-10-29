@@ -9,6 +9,7 @@ class Navigator(object):
 		self.__sigid3 = manager.connect("next", self.__next_cb)
 		self.__sigid4 = manager.connect("previous", self.__previous_cb)
 		self.__sigid5 = manager.connect("reset", self.__clear_cb)
+		self.__sigid6 = manager.connect("search-type-flag", self.__search_type_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -17,6 +18,7 @@ class Navigator(object):
 		self.__next_queue = deque([])
 		self.__prev_queue = deque([])
 		self.__current_match = None
+		self.__backward_flag = False
 		return 
 
 	def __clear(self):
@@ -51,8 +53,14 @@ class Navigator(object):
 	def __process(self, matches):
 		self.__clear()
 		from collections import deque
-		self.__next_queue = deque(matches)
-		match = self.__next_queue.popleft()
+		if self.__backward_flag:
+			match = matches[-1]
+			matches = matches[:-1]
+			matches.reverse()
+			self.__prev_queue = deque(matches)
+		else:
+			self.__next_queue = deque(matches)
+			match = self.__next_queue.popleft()
 		self.__current_match = match
 		self.__manager.emit("current-match", match)
 		return False
@@ -63,6 +71,7 @@ class Navigator(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		del self
 		self = None
 		return 
@@ -85,4 +94,8 @@ class Navigator(object):
 
 	def __clear_cb(self, *args):
 		self.__clear()
+		return False
+
+	def __search_type_cb(self, manager, search_type):
+		self.__backward_flag = True if search_type == "backward" else False
 		return False

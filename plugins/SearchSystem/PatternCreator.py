@@ -5,7 +5,8 @@ class Creator(object):
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("search-string", self.__search_string_cb)
 		self.__sigid3 = manager.connect("search", self.__search_cb)
-		self.__sigid4 = manager.connect("database-update", self.__update_cb)
+		self.__sigid4 = manager.connect("search-mode-flag", self.__search_mode_cb)
+		self.__sigid5 = manager.connect("match-word-flag", self.__match_word_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -20,9 +21,10 @@ class Creator(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		del self
 		self = None
-		return 
+		return
 
 	def __create_pattern(self):
 		try:
@@ -34,13 +36,6 @@ class Creator(object):
 			pattern = r"%s" % self.__string
 		finally:
 			self.__manager.emit("new-pattern", pattern)
-		return 
-
-	def __update_flags(self):
-		from SearchModeMetadata import get_value
-		self.__regex_mode = True if get_value() == "regex" else False
-		from MatchWordMetadata import get_value
-		self.__match_word = True if get_value() else False
 		return 
 
 	def __destroy_cb(self, *args):
@@ -55,6 +50,10 @@ class Creator(object):
 		self.__create_pattern()
 		return False
 
-	def __update_cb(self, *args):
-		self.__update_flags()
+	def __search_mode_cb(self, manager, search_mode):
+		self.__regex_mode = True if search_mode == "regex" else False
+		return False
+
+	def __match_word_cb(self, manager, match_word):
+		self.__match_word = match_word
 		return False

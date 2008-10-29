@@ -22,6 +22,5 @@ class Activator(object):
 		return False
 
 	def __activate_cb(self, *args):
-#		self.__manager.get_data("activate_button").clicked()
 		self.__manager.get_data("activate_button").activate()
 		return False

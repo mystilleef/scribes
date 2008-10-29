@@ -27,7 +27,14 @@ class Manager(object):
 		return
 
 	def __emit_change_signal(self):
-		self.__manager.emit("database-update")
+		from MatchCaseMetadata import get_value
+		self.__manager.emit("match-case-flag", get_value())
+		from MatchWordMetadata import get_value
+		self.__manager.emit("match-word-flag", get_value())
+		from SearchModeMetadata import get_value
+		self.__manager.emit("search-mode-flag", get_value())
+		from SearchTypeMetadata import get_value
+		self.__manager.emit("search-type-flag", get_value())
 		return
 
 	def __destroy(self):

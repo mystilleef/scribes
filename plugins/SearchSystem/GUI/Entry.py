@@ -35,6 +35,7 @@ class Entry(object):
 		return False
 
 	def __show_cb(self, *args):
+		if self.__editor.selection_range > 1: self.__manager.emit("selection-bounds", self.__editor.selection_bounds)
 		self.__entry.grab_focus()
 		text = self.__entry.get_text()
 		self.__manager.emit("search-string", text)
