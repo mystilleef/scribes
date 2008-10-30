@@ -48,9 +48,9 @@ class Button(object):
 		return False
 
 	def __search_cb(self, *args):
-		self.__button.props.active = False
+		self.__button.props.sensitive = False
 		return False
 
 	def __search_complete_cb(self, *args):
-		self.__button.props.active = True
+		self.__button.props.sensitive = True
 		return False

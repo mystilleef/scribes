@@ -88,9 +88,9 @@ class ComboBox(object):
 		return False
 
 	def __search_cb(self, *args):
-		self.__combo.props.active = False
+		self.__combo.props.sensitive = False
 		return False
 
 	def __search_complete_cb(self, *args):
-		self.__combo.props.active = True
+		self.__combo.props.sensitive = True
 		return False
