@@ -1,3 +1,6 @@
+from gettext import gettext as _
+message = _("No matches found")
+
 class Searcher(object):
 
 	def __init__(self, manager, editor):
@@ -25,6 +28,7 @@ class Searcher(object):
 		matches = [(match.start(), match.end()) for match in iterator]
 		self.__manager.emit("found-matches", matches)
 		if not matches: self.__manager.emit("search-complete")
+		if not matches: self.__editor.update_message(message, "fail", 10)
 		return
 
 	def __destroy_cb(self, *args):

@@ -9,6 +9,8 @@ class Entry(object):
 		self.__sigid5 = self.__entry.connect("key-press-event", self.__key_press_event_cb)
 		self.__sigid6 = self.__manager.connect("focus-entry", self.__focus_entry_cb)
 		self.__sigid7 = self.__manager.connect("hide-menu", self.__focus_entry_cb)
+		self.__sigid8 = self.__manager.connect("search", self.__search_cb)
+		self.__sigid9 = self.__manager.connect("search-complete", self.__search_complete_cb)
 		self.__entry.props.sensitive = True
 
 	def __init_attributes(self, manager, editor):
@@ -25,6 +27,8 @@ class Entry(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__entry)
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid9, self.__manager)
 		self.__entry.destroy()
 		del self
 		self = None
@@ -57,7 +61,7 @@ class Entry(object):
 		ShiftKey = (event.state & SHIFT_MASK)
 		Return = (keyname == "Return")
 		Escape = (keyname == "Escape")
-		if ShiftKey: 
+		if ShiftKey:
 			if Return: self.__manager.emit("back-button")
 		if Escape: self.__manager.emit("hide-bar")
 		return False
@@ -65,3 +69,12 @@ class Entry(object):
 	def __focus_entry_cb(self, *args):
 		self.__entry.grab_focus()
 		return False
+
+	def __search_cb(self, *args):
+		self.__entry.props.sensitive = False
+		return False
+
+	def __search_complete_cb(self, *args):
+		self.__entry.props.sensitive = True
+		return False
+

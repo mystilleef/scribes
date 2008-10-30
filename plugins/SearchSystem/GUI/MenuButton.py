@@ -6,6 +6,8 @@ class Button(object):
 		self.__sigid2 = self.__button.connect("toggled", self.__toggled_cb)
 		self.__sigid3 = manager.connect("hide-menu", self.__hide_cb)
 		self.__sigid4 = manager.connect("hide-bar", self.__hide_cb)
+		self.__sigid5 = manager.connect("search", self.__search_cb)
+		self.__sigid6 = manager.connect("search-complete", self.__search_complete_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -18,6 +20,8 @@ class Button(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__button)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		self.__button.destroy()
 		del self
 		self = None
@@ -41,4 +45,12 @@ class Button(object):
 
 	def __hide_cb(self, *args):
 		if self.__button.props.active: self.__button.props.active = False
+		return False
+
+	def __search_cb(self, *args):
+		self.__button.props.active = False
+		return False
+
+	def __search_complete_cb(self, *args):
+		self.__button.props.active = True
 		return False
