@@ -9,7 +9,7 @@ ChangeLog for Version 0.3.3
 	- fix crasher bug after saves
 	- Addressed bugs: 1837941 1834492 1833757 1832650 1829035 1813341 
 	1813334 1808136 1777273 1740190
-	
+
 ChangeLog for Version 0.3.2.9
 =============================
 	- New Editor API

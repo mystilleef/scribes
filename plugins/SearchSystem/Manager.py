@@ -46,6 +46,7 @@ class Manager(GObject):
 		"focus-replace-entry": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"replace-string": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"replaced-mark": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"regex-flags": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):

@@ -439,7 +439,7 @@ def uri_is_folder(uri):
 
 def set_vm_interval(response=True):
 	from sys import setcheckinterval, maxint
-	interval = 1000 if response else maxint
+	interval = -1 if response else maxint
 	setcheckinterval(interval)
 	return False
 
