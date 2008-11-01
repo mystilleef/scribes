@@ -9,6 +9,7 @@ class Indexer(object):
 		self.__sigid3 = manager.connect("current-match", self.__current_match_cb)
 		self.__sigid4 = manager.connect("reset", self.__reset_cb)
 		self.__sigid5 = manager.connect("hide-bar", self.__reset_cb)
+		self.__sigid6 = manager.connect("replaced-mark", self.__replaced_mark_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -23,6 +24,7 @@ class Indexer(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		del self
 		self = None
 		return
@@ -58,4 +60,8 @@ class Indexer(object):
 
 	def __reset_cb(self, *args):
 		self.__matches.clear()
+		return False
+
+	def __replaced_mark_cb(self, manager, mark):
+		if mark in self.__matches: self.__matches.remove(mark)
 		return False

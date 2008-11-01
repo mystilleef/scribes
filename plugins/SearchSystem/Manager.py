@@ -45,6 +45,7 @@ class Manager(GObject):
 		"replace-entry-activated": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"focus-replace-entry": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"replace-string": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"replaced-mark": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -75,6 +76,10 @@ class Manager(GObject):
 		from MatchNavigator import Navigator
 		Navigator(self, editor)
 		from ConfigurationManager import Manager
+		Manager(self, editor)
+		from ReplaceMatchColorer import Colorer
+		Colorer(self, editor)
+		from ReplaceManager import Manager
 		Manager(self, editor)
 
 	def __init_attributes(self, editor):

@@ -10,6 +10,7 @@ class Navigator(object):
 		self.__sigid4 = manager.connect("previous", self.__previous_cb)
 		self.__sigid5 = manager.connect("reset", self.__clear_cb)
 		self.__sigid6 = manager.connect("search-type-flag", self.__search_type_cb)
+		self.__sigid7 = manager.connect("replaced-mark", self.__replaced_mark_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -29,7 +30,7 @@ class Navigator(object):
 	def __process_next(self):
 		try:
 			if not self.__next_queue: raise ValueError
-			self.__prev_queue.appendleft(self.__current_match)
+			if self.__current_match: self.__prev_queue.appendleft(self.__current_match)
 			match = self.__next_queue.popleft()
 			self.__current_match = match
 			self.__manager.emit("current-match", match)
@@ -41,7 +42,7 @@ class Navigator(object):
 	def __process_previous(self):
 		try:
 			if not self.__prev_queue: raise ValueError
-			self.__next_queue.appendleft(self.__current_match)
+			if self.__current_match: self.__next_queue.appendleft(self.__current_match)
 			match = self.__prev_queue.popleft()
 			self.__current_match = match
 			self.__manager.emit("current-match", match)
@@ -72,6 +73,7 @@ class Navigator(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		del self
 		self = None
 		return 
@@ -98,4 +100,10 @@ class Navigator(object):
 
 	def __search_type_cb(self, manager, search_type):
 		self.__backward_flag = True if search_type == "backward" else False
+		return False
+
+	def __replaced_mark_cb(self, manager, mark):
+		if mark in self.__next_queue: self.__next_queue.remove(mark)
+		if mark in self.__prev_queue: self.__prev_queue.remove(mark)
+		if mark == self.__current_match: self.__current_match = None
 		return False

@@ -7,6 +7,7 @@ class Selector(object):
 		self.__sigid3 = manager.connect("search-string", self.__clear_cb)
 		self.__sigid4 = manager.connect("found-matches", self.__clear_cb)
 		self.__sigid5 = manager.connect("hide-bar", self.__select_cb)
+		self.__sigid6 = manager.connect("replaced-mark", self.__current_match_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -20,6 +21,7 @@ class Selector(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		del self
 		self = None
 		return 
