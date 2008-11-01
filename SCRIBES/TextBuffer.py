@@ -20,6 +20,7 @@ class Buffer(object):
 		self.__sigid9 = editor.connect("undo", self.__undo_cb)
 		self.__sigid10 = editor.connect("redo", self.__redo_cb)
 		self.__sigid11 = editor.connect_after("loaded-file", self.__loaded_file_after_cb)
+		self.__sigid13 = self.__buffer.connect("highlight-updated", self.__highlit_updated_cb)
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monid1 = monitor_add(self.__theme_database_uri, MONITOR_FILE, self.__theme_changed_cb)
 		editor.register_object(self)
@@ -36,6 +37,7 @@ class Buffer(object):
 		theme_database_path = join(preference_folder, "ColorTheme.gdb")
 		from gnomevfs import get_uri_from_local_path
 		self.__theme_database_uri = get_uri_from_local_path(theme_database_path)
+		self.__count = 0
 		return False
 
 	def __destroy(self):
@@ -53,6 +55,7 @@ class Buffer(object):
 		self.__editor.disconnect_signal(self.__sigid10, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid11, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid12, self.__buffer)
+		self.__editor.disconnect_signal(self.__sigid13, self.__buffer)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -161,9 +164,9 @@ class Buffer(object):
 		return False
 
 	def __insert_text_cb(self, buffer_, iter, text, length, *args):
-		if length > 1 or text in ("\n", "\r", "\r\n"): return False
+#		if length > 1 or text in ("\n", "\r", "\r\n"): return False
 		#FIXME: Experimental code, remove if you have problems.
-		self.__editor.response()
+#		self.__editor.response() # self.__editor.response()
 		#from gobject import idle_add
 		#idle_add(self.__editor.response, priority=9999)
 		return False
@@ -217,6 +220,10 @@ class Buffer(object):
 		self.__stop_update_cursor_timer()
 		self.__update_cursor_position(True)
 		self.__destroy()
+		return False
+
+	def __highlit_updated_cb(self, *args):
+#		self.__editor.response()
 		return False
 
 ################################################################################

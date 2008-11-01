@@ -218,7 +218,7 @@ ChangeLog for Version 0.2.4
 
 	- Windows and dialogs are now resolution independent
 
-	- Improved line operation behavior
+	- Improved line function behavior
 
 	- Fixed preferences bugs
 
@@ -367,7 +367,7 @@ ChangeLog for Version 0.2
 	menu.
 
 	- You can now find matching brackets by pressing
-	(Ctrl - b). The command for this function is also
+	(Ctrl - b). The command for this operation is also
 	available in the popup menu.
 
 	- You can now delete a line by pressing (Alt - d).
