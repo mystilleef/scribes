@@ -10,6 +10,7 @@ class Manager(GObject):
 	__gsignals__ = {
 		"destroy": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"show-bar": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"show-replacebar": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"hide-bar": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"search-string": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"new-pattern": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
@@ -39,6 +40,11 @@ class Manager(GObject):
 		"search-type-flag": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"search-mode-flag": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"selection-bounds": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"replace": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"replace-all": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"replace-entry-activated": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"focus-replace-entry": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"replace-string": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
 	}
 
 	def __init__(self, editor):
@@ -92,5 +98,10 @@ class Manager(GObject):
 		return
 
 	def show(self):
+		self.emit("show-bar")
+		return
+
+	def show_replacebar(self):
+		self.emit("show-replacebar")
 		self.emit("show-bar")
 		return

@@ -11,6 +11,7 @@ class Entry(object):
 		self.__sigid7 = self.__manager.connect("hide-menu", self.__focus_entry_cb)
 		self.__sigid8 = self.__manager.connect("search", self.__search_cb)
 		self.__sigid9 = self.__manager.connect("search-complete", self.__search_complete_cb)
+		self.__sigid10 = self.__entry.connect("button-press-event", self.__button_press_event_cb)
 		self.__entry.props.sensitive = True
 
 	def __init_attributes(self, manager, editor):
@@ -29,6 +30,7 @@ class Entry(object):
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid9, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid10, self.__entry)
 		self.__entry.destroy()
 		del self
 		self = None
@@ -78,3 +80,6 @@ class Entry(object):
 		self.__entry.props.sensitive = True
 		return False
 
+	def __button_press_event_cb(self, *args):
+		self.__manager.emit("hide-menu")
+		return False

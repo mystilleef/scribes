@@ -29,3 +29,11 @@ class Manager(object):
 		Button(manager, editor)
 		from FindButton import Button
 		Button(manager, editor)
+		from ReplaceWidgetDisplayer import Displayer
+		Displayer(manager, editor)
+		from ReplaceEntry import Entry 
+		Entry(manager, editor)
+		from ReplaceButton import Button
+		Button(manager, editor)
+		from ReplaceAllButton import Button
+		Button(manager, editor)

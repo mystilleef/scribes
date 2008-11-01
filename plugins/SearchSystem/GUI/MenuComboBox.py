@@ -47,7 +47,7 @@ class ComboBox(object):
 		self.__combo.set_property("sensitive", False)
 		self.__combo.set_model(None)
 		self.__model.clear()
-		for search_mode, alias in data:
+		for search_mode, alias in data: 
 			self.__model.append([search_mode, alias])
 		self.__combo.set_model(self.__model)
 		self.__combo.set_active(0)
