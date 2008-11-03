@@ -9,6 +9,8 @@ class Searcher(object):
 		self.__sigid2 = manager.connect("search-boundary", self.__boundary_cb)
 		self.__sigid3 = manager.connect("new-regex", self.__regex_cb)
 		self.__sigid4 = manager.connect("regex-flags", self.__regex_flags_cb)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -48,4 +50,9 @@ class Searcher(object):
 
 	def __regex_flags_cb(self, manager, flags):
 		self.__regex_flags = flags
+		return False
+
+	def __precompile_methods(self):
+		methods = (self.__find_matches,)
+		self.__editor.optimize(methods)
 		return False

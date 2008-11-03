@@ -1,3 +1,5 @@
+from gettext import gettext as _
+
 class Manager(object):
 
 	def __init__(self, manager, editor):
@@ -9,8 +11,10 @@ class Manager(object):
 		self.__sigid5 = manager.connect("replace-all", self.__replace_all_cb)
 		self.__sigid6 = manager.connect("reset", self.__reset_cb)
 		self.__sigid7 = manager.connect("hide-bar", self.__reset_cb)
-		self.__sigid8 = manager.connect("search-string", self.__reset_cb)
+		self.__sigid8 = manager.connect("search-string", self.__search_string_cb)
 		self.__sigid9 = manager.connect("replace-string", self.__replace_string_cb)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -18,6 +22,7 @@ class Manager(object):
 		self.__selected_mark = None
 		self.__marks = None
 		self.__string = None
+		self.__search_string = None
 		return
 
 	def __destroy(self, *args):
@@ -45,10 +50,14 @@ class Manager(object):
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
 		self.__editor.textbuffer.insert(start, self.__string)
 		self.__manager.emit("replaced-mark", marks)
+		message = _("Replaced '%s' with '%s'") % (self.__search_string, self.__string)
+		self.__editor.update_message(message, "pass", 10)
 		return 
 
 	def __replace_all(self):
 		[self.__replace(mark) for mark in self.__marks]
+		message = _("Replaced all occurrences of '%s' with '%s'") % (self.__search_string, self.__string)
+		self.__editor.update_message(message, "pass", 10)
 		return False
 
 	def __destroy_cb(self, *args):
@@ -77,4 +86,13 @@ class Manager(object):
 
 	def __replace_string_cb(self, manager, string):
 		self.__string = string
+		return False
+
+	def __search_string_cb(self, manager, string):
+		self.__search_string = string
+		return False
+
+	def __precompile_methods(self):
+		methods = (self.__replace,)
+		self.__editor.optimize(methods)
 		return False

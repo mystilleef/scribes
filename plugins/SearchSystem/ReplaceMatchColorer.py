@@ -7,6 +7,8 @@ class Colorer(object):
 		self.__sigid3 = manager.connect("search-string", self.__clear_cb)
 		self.__sigid4 = manager.connect("hide-bar", self.__clear_cb)
 		self.__sigid5 = manager.connect("reset", self.__clear_cb)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -54,4 +56,9 @@ class Colorer(object):
 
 	def __clear_cb(self, *args):
 		self.__clear()
+		return False
+
+	def __precompile_methods(self):
+		methods = (self.__tag_mark,)
+		self.__editor.optimize(methods)
 		return False
