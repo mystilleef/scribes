@@ -176,7 +176,6 @@ class CompletionUpdater(object):
 		except Exception:
 			pass
 		self.__index_timer = timeout_add(500, self.__index, priority=9999)
-		#self.__index_timer = idle_add(self.__index, priority=PRIORITY_LOW)
 		return False
 
 	def __loaded_document_cb(self, *args):

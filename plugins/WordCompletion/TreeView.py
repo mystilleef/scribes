@@ -176,16 +176,14 @@ class CompletionTreeView(TreeView):
 		return
 
 	def __match_found_cb(self, completion, completion_list):
-#		try:
-#			from gobject import source_remove, idle_add
-#			source_remove(self.__populate_id)
-#		except AttributeError:
-#			pass
-		from collections import deque
-#		self.__populate_id = idle_add(self.__populate_model, deque(completion_list), priority=9999)
-#		from thread import start_new_thread
-#		start_new_thread(self.__populate_model, (deque(completion_list),))
-		self.__populate_model(deque(completion_list))
+		try:
+			from gobject import source_remove, timeout_add
+			source_remove(self.__populate_id)
+		except AttributeError:
+			pass
+		finally:
+			from collections import deque
+			self.__populate_id = timeout_add(100, self.__populate_model, deque(completion_list), priority=9999)
 		return
 
 	def __no_match_found_cb(self, *args):

@@ -52,17 +52,27 @@ class Entry(object):
 		self.__manager.emit("search-string", text)
 		return False
 
-	def __changed_cb(self, *args):
+	def __change_timeout(self):
 		text = self.__entry.get_text()
 		self.__manager.emit("search-string", text)
 		if self.__findasyoutype is False: return False
-		self.__editor.response()
 		self.__manager.emit("search")
-		self.__editor.response()
+		return False
+
+	def __changed_cb(self, *args):
+		try:
+			from gobject import source_remove, timeout_add
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = timeout_add(500, self.__change_timeout, priority=9999)
 		return False
 
 	def __activate_cb(self, *args):
-		if not self.__entry.get_text(): return False
+		text = self.__entry.get_text()
+		if not text: return False
+		self.__manager.emit("search-string", text)
 		self.__manager.emit("entry-activated")
 		return True
 
