@@ -9,8 +9,8 @@ class Trigger(object):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__trigger1 = self.__create_trigger("show_findbar", "ctrl - f")
-		self.__trigger2 = self.__create_trigger("show_replacebar", "ctrl - r")
+		self.__trigger1 = self.__create_trigger("show_findbar", "ctrl+f")
+		self.__trigger2 = self.__create_trigger("show_replacebar", "ctrl+r")
 		self.__manager = None
 		return
 

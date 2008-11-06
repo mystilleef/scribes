@@ -10,9 +10,9 @@ class Trigger(object):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = None
-		self.__trigger1 = self.__create_trigger("show_open_dialog", "ctrl - o")
-		self.__trigger2 = self.__create_trigger("show_remote_dialog", "ctrl - l")
-		self.__trigger3 = self.__create_trigger("show_newfile_dialog", "ctrl - shift - o")
+		self.__trigger1 = self.__create_trigger("show_open_dialog", "ctrl+o")
+		self.__trigger2 = self.__create_trigger("show_remote_dialog", "ctrl+l")
+		self.__trigger3 = self.__create_trigger("show_newfile_dialog", "ctrl+shift+o")
 		return
 
 	def __destroy(self):

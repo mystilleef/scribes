@@ -89,15 +89,15 @@ class SpacesTrigger(GObject):
 		@type self: A SpacesTrigger object.
 		"""
 		# Trigger to convert spaces to tabs
-		self.__spaces_trigger = self.__editor.create_trigger("spaces_to_tabs", "alt - t")
+		self.__spaces_trigger = self.__editor.create_trigger("spaces_to_tabs", "alt+t")
 		self.__editor.add_trigger(self.__spaces_trigger)
 
 		# Trigger to convert tabs to spaces.
-		self.__tabs_trigger = self.__editor.create_trigger("tabs_to_spaces", "alt - T")
+		self.__tabs_trigger = self.__editor.create_trigger("tabs_to_spaces", "alt+shift+t")
 		self.__editor.add_trigger(self.__tabs_trigger)
 
 		# Trigger to remove trailing spaces.
-		self.__remove_trigger = self.__editor.create_trigger("removes_trailing_space", "alt - r")
+		self.__remove_trigger = self.__editor.create_trigger("removes_trailing_space", "alt+r")
 		self.__editor.add_trigger(self.__remove_trigger)
 		return
 

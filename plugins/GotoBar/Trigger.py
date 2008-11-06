@@ -7,7 +7,7 @@ class Trigger(object):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__trigger = self.__create_trigger("show_gotobar", "ctrl - i")
+		self.__trigger = self.__create_trigger("show_gotobar", "ctrl+i")
 		self.__manager = None
 		return
 

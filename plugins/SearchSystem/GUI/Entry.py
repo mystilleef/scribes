@@ -72,7 +72,7 @@ class Entry(object):
 	def __activate_cb(self, *args):
 		text = self.__entry.get_text()
 		if not text: return False
-		self.__manager.emit("search-string", text)
+#		self.__manager.emit("search-string", text)
 		self.__manager.emit("entry-activated")
 		return True
 

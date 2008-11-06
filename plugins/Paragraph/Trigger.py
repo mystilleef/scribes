@@ -88,19 +88,19 @@ class Trigger(object):
 		@type self: A Trigger object.
 		"""
 		# Trigger to select paragraph.
-		self.__select_paragraph_trigger = self.__editor.create_trigger("select_paragraph", "alt - p")
+		self.__select_paragraph_trigger = self.__editor.create_trigger("select_paragraph", "alt+p")
 		self.__editor.add_trigger(self.__select_paragraph_trigger)
 
 		# Trigger to move cursor to next paragraph.
-		self.__next_paragraph_trigger = self.__editor.create_trigger("next_paragraph", "alt - Down")
+		self.__next_paragraph_trigger = self.__editor.create_trigger("next_paragraph", "alt+Down")
 		self.__editor.add_trigger(self.__next_paragraph_trigger)
 
 		# Trigger to move cursor to previous paragraph.
-		self.__previous_paragraph_trigger = self.__editor.create_trigger("previous_paragraph", "alt -Up")
+		self.__previous_paragraph_trigger = self.__editor.create_trigger("previous_paragraph", "alt+Up")
 		self.__editor.add_trigger(self.__previous_paragraph_trigger)
 
 		# Trigger to reflow paragraph.
-		self.__reflow_paragraph_trigger = self.__editor.create_trigger("reflow_paragraph", "alt - q")
+		self.__reflow_paragraph_trigger = self.__editor.create_trigger("reflow_paragraph", "alt+q")
 		self.__editor.add_trigger(self.__reflow_paragraph_trigger)
 		return
 

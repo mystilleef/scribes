@@ -1,5 +1,6 @@
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_BOOLEAN
 from gobject import TYPE_STRING, TYPE_OBJECT, TYPE_PYOBJECT, TYPE_INT
+from gobject import SIGNAL_ACTION, type_register
 from Globals import data_folder, metadata_folder, home_folder, desktop_folder
 from Globals import session_bus, core_plugin_folder, home_plugin_folder
 from Globals import home_language_plugin_folder, core_language_plugin_folder
@@ -12,8 +13,9 @@ from EncodingMetadata import get_value as get_encoding_list
 from Utils import get_language
 from SupportedEncodings import get_supported_encodings
 from gettext import gettext as _
+from gtk import Widget
 
-class Editor(GObject):
+class Editor(Widget):
 
 	__gsignals__ = {
 		# Nobody should listen to this signal. For internal use only.
@@ -68,7 +70,10 @@ class Editor(GObject):
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):
-		GObject.__init__(self)
+		Widget.__init__(self)
+		type_register(Editor)
+		from gtk.gdk import ALL_EVENTS_MASK
+		self.set_events(ALL_EVENTS_MASK)
 		self.__sigid1 = self.connect("modified-file", self.__modified_file_cb)
 		self.__sigid2 = self.connect("checking-file", self.__checking_file_cb)
 		self.__sigid3 = self.connect("load-error", self.__load_error_cb)

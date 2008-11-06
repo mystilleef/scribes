@@ -70,11 +70,13 @@ class CompletionMonitor(object):
 			self.__check_buffer)
 		self.__editor.optimize(methods)
 		return False
+
 ########################################################################
 #
 #						Helper Methods
 #
 ########################################################################
+
 	def __get_word_to_cursor(self):
 		from SCRIBES.Word import ends_word, get_word
 		if not ends_word(self.__editor.cursor): return None
@@ -138,6 +140,16 @@ class CompletionMonitor(object):
 		if (self.__dictionary.get_dictionary() == dictionary): return False
 		self.__dictionary.update(dictionary)
 		return False
+	
+	def __check_buffer_cb(self):
+		try:
+			from gobject import source_remove, idle_add
+			source_remove(self.__check_buffer_timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__check_buffer_timer = idle_add(self.__check_buffer, priority=9999)
+		return False
 
 ########################################################################
 #
@@ -155,10 +167,8 @@ class CompletionMonitor(object):
 				pass
 			if self.__completion_window_is_visible:
 				self.__check_buffer()
-#				self.__insert_text_id = idle_add(self.__check_buffer, priority=9999)
 			else:
-				self.__insert_text_id = timeout_add(100, self.__check_buffer, priority=9999)
-#			self.__check_buffer()
+				self.__insert_text_id = timeout_add(100, self.__check_buffer_cb, priority=9999)
 		except ValueError:
 			self.__emit_no_match_found()
 		return False

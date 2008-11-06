@@ -92,6 +92,12 @@ class Window(object):
 		return False
 
 	def __set_properties(self):
+		# Add new signal to window.
+		from gobject import signal_new, signal_query, SIGNAL_RUN_LAST
+		from gobject import TYPE_STRING, TYPE_BOOLEAN, SIGNAL_ACTION
+		from gtk import Window
+		if signal_query("scribes-key-event", Window) is None:
+			signal_new("scribes-key-event", Window, SIGNAL_RUN_LAST|SIGNAL_ACTION, TYPE_BOOLEAN, (TYPE_STRING,))
 		from gtk.gdk import KEY_PRESS_MASK
 		self.__window.add_events(KEY_PRESS_MASK)
 		width, height = self.__editor.calculate_resolution_independence(self.__window, 1.462857143, 1.536)

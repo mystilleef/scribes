@@ -7,7 +7,7 @@ class Trigger(object):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = None
-		self.__trigger1 = self.__create_trigger("shutdown", "ctrl - shift - q")
+		self.__trigger1 = self.__create_trigger("shutdown", "ctrl+shift+q")
 		return
 
 	def __destroy(self):

@@ -78,15 +78,15 @@ class Trigger(object):
 		@type self: A Trigger object.
 		"""
 		# Trigger to scroll up.
-		self.__up_trigger = self.__editor.create_trigger("scroll_up", "ctrl - Up")
+		self.__up_trigger = self.__editor.create_trigger("scroll_up", "ctrl+Up")
 		self.__editor.add_trigger(self.__up_trigger)
 
 		# Trigger to scroll down.
-		self.__down_trigger = self.__editor.create_trigger("scroll_down", "ctrl - Down")
+		self.__down_trigger = self.__editor.create_trigger("scroll_down", "ctrl+Down")
 		self.__editor.add_trigger(self.__down_trigger)
 
 		# Trigger to center current line.
-		self.__middle_trigger = self.__editor.create_trigger("center", "alt - m")
+		self.__middle_trigger = self.__editor.create_trigger("center", "alt+m")
 		self.__editor.add_trigger(self.__middle_trigger)
 		return
 

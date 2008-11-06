@@ -73,7 +73,7 @@ class RecentMenuTrigger(object):
 		@type self: A RecentMenuTrigger object.
 		"""
 		# Trigger to show the recent menu.
-		self.__trigger = self.__editor.create_trigger("show_recent_menu", "ctrl - O")
+		self.__trigger = self.__editor.create_trigger("show_recent_menu", "ctrl+shift+o")
 		self.__editor.add_trigger(self.__trigger)
 		return
 

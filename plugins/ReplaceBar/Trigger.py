@@ -80,7 +80,7 @@ class ReplaceBarTrigger(GObject):
 		@type self: A FindBarTrigger object.
 		"""
 		# Trigger to show the replace bar.
-		self.__trigger = self.__editor.create_trigger("show_replacebar", "ctrl - r")
+		self.__trigger = self.__editor.create_trigger("show_replacebar", "ctrl+r")
 		self.__editor.add_trigger(self.__trigger)
 		return
 

@@ -81,7 +81,7 @@ class NewWindowTrigger(GObject):
 		@type self: A NewWindowTrigger object.
 		"""
 		# Trigger to show the a new Scribes window.
-		self.__trigger = self.__editor.create_trigger("new_window", "ctrl - n")
+		self.__trigger = self.__editor.create_trigger("new_window", "ctrl+n")
 		self.__editor.add_trigger(self.__trigger)
 		return
 

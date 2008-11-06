@@ -446,5 +446,6 @@ def set_vm_interval(response=True):
 try:
 	from psyco import bind
 	bind(response)
+	bind(open_database)
 except ImportError:
 	pass

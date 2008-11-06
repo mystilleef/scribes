@@ -87,11 +87,11 @@ class IndentTrigger(GObject):
 		@type self: A IndentTrigger object.
 		"""
 		# Trigger to indent lines.
-		self.__trigger = self.__editor.create_trigger("indent_line", "ctrl - t")
+		self.__trigger = self.__editor.create_trigger("indent_line", "ctrl+t")
 		self.__editor.add_trigger(self.__trigger)
 
 		# Trigger to unindent lines.
-		self.__unindent_trigger = self.__editor.create_trigger("unindent_line", "ctrl - T")
+		self.__unindent_trigger = self.__editor.create_trigger("unindent_line", "ctrl+shift+t")
 		self.__editor.add_trigger(self.__unindent_trigger)
 		return
 

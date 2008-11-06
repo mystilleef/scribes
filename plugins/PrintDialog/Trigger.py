@@ -82,7 +82,7 @@ class PrintTrigger(GObject):
 		@type self: A PrintTrigger object.
 		"""
 		# Trigger to show the print dialog.
-		self.__trigger = self.__editor.create_trigger("show_print_dialog", "ctrl - p")
+		self.__trigger = self.__editor.create_trigger("show_print_dialog", "ctrl+p")
 		self.__editor.add_trigger(self.__trigger)
 		return
 

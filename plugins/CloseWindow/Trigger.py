@@ -84,11 +84,11 @@ class CloseWindowTrigger(GObject):
 		@type self: A CloseWindowTrigger object.
 		"""
 		# Trigger to close a Scribes window.
-		self.__close_window_trigger = self.__editor.create_trigger("close_window", "ctrl - w")
+		self.__close_window_trigger = self.__editor.create_trigger("close_window", "ctrl+w")
 		self.__editor.add_trigger(self.__close_window_trigger)
 
 		# Trigger to close all Scribes windows.
-		self.__close_all_windows_trigger = self.__editor.create_trigger("close_all_windows", "ctrl - Q")
+		self.__close_all_windows_trigger = self.__editor.create_trigger("close_all_windows", "ctrl+shift+q")
 		self.__editor.add_trigger(self.__close_all_windows_trigger)
 		return
 

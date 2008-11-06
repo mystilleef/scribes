@@ -78,7 +78,7 @@ class MatchingBracketTrigger(GObject):
 		@param self: Reference to the MatchingBracketTrigger instance.
 		@type self: A MatchingBracketTrigger object.
 		"""
-		self.__trigger = self.__editor.create_trigger("find_matching_bracket", "alt - B")
+		self.__trigger = self.__editor.create_trigger("find_matching_bracket", "alt+shift+b")
 		self.__editor.add_trigger(self.__trigger)
 		return
 

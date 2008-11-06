@@ -73,7 +73,7 @@ class RemoteDialogTrigger(object):
 		@type self: A RemoteDialogTrigger object.
 		"""
 		# Trigger to show the remote dialog.
-		self.__trigger = self.__editor.create_trigger("show_remote_dialog", "ctrl - l")
+		self.__trigger = self.__editor.create_trigger("show_remote_dialog", "ctrl+l")
 		self.__editor.add_trigger(self.__trigger)
 		return
 

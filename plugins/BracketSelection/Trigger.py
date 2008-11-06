@@ -92,7 +92,7 @@ class BracketSelectionTrigger(object):
 		@param self: Reference to the BracketSelectionTrigger instance.
 		@type self: A BracketSelectionTrigger object.
 		"""
-		self.__trigger = self.__editor.create_trigger("select_text_within_characters", "alt - b")
+		self.__trigger = self.__editor.create_trigger("select_text_within_characters", "alt+b")
 		self.__editor.add_trigger(self.__trigger)
 		return
 

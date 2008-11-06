@@ -93,7 +93,7 @@ class CaseTrigger(GObject):
 		@type self: A CaseTrigger object.
 		"""
 		# Trigger to convert selected text to uppercase.
-		self.__uppercase_trigger = self.__editor.create_trigger("uppercase", "alt - u")
+		self.__uppercase_trigger = self.__editor.create_trigger("uppercase", "alt+u")
 		self.__editor.add_trigger(self.__uppercase_trigger)
 
 		# Trigger to convert selected text to lowercase.
@@ -101,11 +101,11 @@ class CaseTrigger(GObject):
 		self.__editor.add_trigger(self.__lowercase_trigger)
 
 		# Trigger to title the case of selected text.
-		self.__titlecase_trigger = self.__editor.create_trigger("titlecase", "alt - U")
+		self.__titlecase_trigger = self.__editor.create_trigger("titlecase", "alt+shift+u")
 		self.__editor.add_trigger(self.__titlecase_trigger)
 
 		# Trigger to swap the case of selected text.
-		self.__swapcase_trigger = self.__editor.create_trigger("swapcase", "alt - L")
+		self.__swapcase_trigger = self.__editor.create_trigger("swapcase", "alt+shift+L")
 		self.__editor.add_trigger(self.__swapcase_trigger)
 		return
 

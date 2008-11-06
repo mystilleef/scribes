@@ -41,9 +41,9 @@ class Trigger(object):
 		from Manager import Manager
 		self.__manager = Manager(editor)
 		self.__editor = editor
-		self.__trigger1 = self.__create_trigger("toggle-bookmark", "ctrl - d")
-		self.__trigger2 = self.__create_trigger("remove-all-bookmarks", "ctrl - B")
-		self.__trigger3 = self.__create_trigger("show-bookmark-browser", "ctrl - b")
+		self.__trigger1 = self.__create_trigger("toggle-bookmark", "ctrl+d")
+		self.__trigger2 = self.__create_trigger("remove-all-bookmarks", "ctrl+shift+b")
+		self.__trigger3 = self.__create_trigger("show-bookmark-browser", "ctrl+b")
 		self.__browser = None
 		return
 

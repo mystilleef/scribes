@@ -72,7 +72,7 @@ class Trigger(object):
 		@type self: A Trigger object.
 		"""
 		# Trigger to show the color editor.
-		trigger = self.__editor.create_trigger("show_theme_selector", "alt - shift - F12")
+		trigger = self.__editor.create_trigger("show_theme_selector", "alt+shift+F12")
 		self.__editor.add_trigger(trigger)
 		return trigger
 

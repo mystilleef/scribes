@@ -80,7 +80,7 @@ class SaveFileTrigger(GObject):
 		@type self: A SaveFileTrigger object.
 		"""
 		# Trigger to save a file.
-		self.__trigger = self.__editor.create_trigger("save_file", "ctrl - s")
+		self.__trigger = self.__editor.create_trigger("save_file", "ctrl+s")
 		self.__editor.add_trigger(self.__trigger)
 		return
 

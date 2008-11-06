@@ -83,7 +83,7 @@ class ToggleTrigger(GObject):
 		@type self: A ToggleTrigger object.
 		"""
 		# Trigger to show or hide toolbar.
-		self.__trigger = self.__editor.create_trigger("toggle_minimal_interface", "ctrl - alt - m")
+		self.__trigger = self.__editor.create_trigger("toggle_minimal_interface", "ctrl+alt+m")
 		self.__editor.add_trigger(self.__trigger)
 		return
 
