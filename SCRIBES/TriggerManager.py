@@ -1,3 +1,5 @@
+#FIXME: Implement keyboard shortcut validation.
+
 class Manager(object):
 	"""
 	This class manages and activates triggers. Triggers map keyboard

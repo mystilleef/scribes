@@ -19,7 +19,7 @@
 
 GETTEXT_PACKAGE = scribes
 PACKAGE = scribes
-VERSION = 0.4-dev-build304
+VERSION = 0.4-dev-build306
 
 SHELL = /bin/sh
 

@@ -24,8 +24,10 @@ class Updater(object):
 		get_mime = lambda uri: mime_get_description(get_mime_type(uri)).split()[0].capitalize() 
 		get_filename = lambda uri: URI(uri).short_name
 		get_path = lambda uri: URI(uri).path
-#		get_data = lambda uri: get_mime(uri), get_filename(uri), get_path(uri), uri
-		def get_data(uri): return get_mime(uri), get_filename(uri), get_path(uri), uri
+#		get_data = lambda uri: get_mime(uri), get_filename(uri), get_path(uri), uri	
+		hfolder = self.__editor.home_folder
+		format = lambda filename: filename.replace(hfolder, "~") if filename.startswith(hfolder) else filename
+		def get_data(uri): return get_mime(uri), get_filename(uri), format(get_path(uri)), uri
 		data = [get_data(uri) for uri in uris]
 		self.__manager.emit("update", data)
 		return False
