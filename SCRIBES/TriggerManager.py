@@ -60,8 +60,10 @@ class Manager(object):
 		if not shortcut: return False
 		keyval = self.__get_keyval(shortcut)
 		modifier = self.__get_modifier(shortcut)
-		from gtk import binding_entry_add_signal as bind 
+		if (keyval, modifier) in self.__editor.get_shortcuts(): return False
+		from gtk import binding_entry_add_signal as bind
 		bind(self.__editor.window, keyval, modifier, "scribes-key-event", str, shortcut)
+		self.__editor.add_shortcut((keyval, modifier))
 		return False
 
 	def __precompile_methods(self):
@@ -172,9 +174,9 @@ class Manager(object):
 		return False
 
 	def __scribes_key_event_cb(self, editor, shortcut):
-		if self.__bar_is_active: return False
+		if self.__bar_is_active: return True
 		self.__activate(shortcut)
-		return False
+		return True
 
 	def __add_trigger_cb(self, editor, trigger):
 		self.__add_trigger(trigger)

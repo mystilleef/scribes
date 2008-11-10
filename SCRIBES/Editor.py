@@ -4,6 +4,9 @@ from gobject import SIGNAL_ACTION, type_register
 from Globals import data_folder, metadata_folder, home_folder, desktop_folder
 from Globals import session_bus, core_plugin_folder, home_plugin_folder
 from Globals import home_language_plugin_folder, core_language_plugin_folder
+from Globals import version, author, documenters, artists, website
+from Globals import copyrights, translators
+from License import license_string
 from gnomevfs import URI, get_uri_from_local_path
 from DialogFilters import create_filter_list
 from gtksourceview2 import language_manager_get_default
@@ -13,37 +16,37 @@ from EncodingMetadata import get_value as get_encoding_list
 from Utils import get_language
 from SupportedEncodings import get_supported_encodings
 from gettext import gettext as _
-from gtk import Widget
+SSIGNAL = SIGNAL_RUN_LAST|SIGNAL_ACTION
 
-class Editor(Widget):
+class Editor(GObject):
 
 	__gsignals__ = {
 		# Nobody should listen to this signal. For internal use only.
-		"close": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"close": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		# QUIT signal to all core objects. This signal is emitted only after
 		# a file has been properly saved. For internal use only. PlEASE NEVER
 		# EMIT THIS SIGNAL. This is the signal to listen to for proper cleanup
 		# before exit.
-		"quit": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"cursor-moved": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"ready": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"readonly": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
-		"busy": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
-		"checking-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"loading-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"loaded-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
-		"load-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"show-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_OBJECT, TYPE_BOOLEAN)),
-		"show-info": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_OBJECT, TYPE_BOOLEAN)),
-		"modified-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
-		"new-encoding-list": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"update-encoding-guess-list": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"renamed-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
-		"rename-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
-		"reload-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
-		"saved-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
-		"save-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
-		"private-save-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"quit": (SSIGNAL, TYPE_NONE, ()),
+		"cursor-moved": (SSIGNAL, TYPE_NONE, ()),
+		"ready": (SSIGNAL, TYPE_NONE, ()),
+		"readonly": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"busy": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"checking-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"loading-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"loaded-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"load-error": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"show-error": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_OBJECT, TYPE_BOOLEAN)),
+		"show-info": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_OBJECT, TYPE_BOOLEAN)),
+		"modified-file": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"new-encoding-list": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"update-encoding-guess-list": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"renamed-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"rename-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"reload-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"saved-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"save-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"private-save-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"save-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_STRING)),
 		"send-data-to-processor": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING, TYPE_STRING
 		)),
@@ -67,13 +70,11 @@ class Editor(Widget):
 		"remove-triggers": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"trigger": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"refresh": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"add-to-popup": (SIGNAL_RUN_LAST|SIGNAL_ACTION, TYPE_NONE, (TYPE_OBJECT,)),
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):
-		Widget.__init__(self)
-		type_register(Editor)
-		from gtk.gdk import ALL_EVENTS_MASK
-		self.set_events(ALL_EVENTS_MASK)
+		GObject.__init__(self)
 		self.__sigid1 = self.connect("modified-file", self.__modified_file_cb)
 		self.__sigid2 = self.connect("checking-file", self.__checking_file_cb)
 		self.__sigid3 = self.connect("load-error", self.__load_error_cb)
@@ -132,6 +133,8 @@ class Editor(Widget):
 		# Toolbar object.
 		from Toolbar import Toolbar
 		Toolbar(self)
+		from PopupMenuManager import Manager
+		Manager(self)
 		from TriggerManager import Manager
 		Manager(self)
 		# Register with instance manager after a successful editor
@@ -271,6 +274,14 @@ class Editor(Widget):
 	core_language_plugin_folder = property(lambda self: core_language_plugin_folder)
 	home_language_plugin_folder = property(lambda self: home_language_plugin_folder)
 	session_bus = property(lambda self: session_bus)
+	version = property(lambda self: version)
+	copyrights = property(lambda self: copyrights)
+	license = property(lambda self: license_string)
+	translators = property(lambda self: translators)
+	documenters = property(lambda self: documenters)
+	artists = property(lambda self: artists)
+	author = property(lambda self: author)
+	website = property(lambda self: website)
 	save_processor = property(lambda self: self.__imanager.get_save_processor())
 	supported_encodings = property(lambda self: get_supported_encodings())
 	word_pattern = property(__get_word_pattern, __set_word_pattern)
@@ -568,6 +579,19 @@ class Editor(Widget):
 		self.__bar_is_active = False
 		self.emit("bar-is-active", False)
 		return
+
+	def add_shortcut(self, shortcut):
+		return self.__imanager.add_shortcut(shortcut)
+	
+	def remove_shortcut(self, shortcut):
+		return self.__imanager.remove_shortcut(shortcut)
+	
+	def get_shortcuts(self):
+		return self.__imanager.get_shortcuts()
+
+	def add_to_popup(self, menuitem):
+		self.emit("add-to-popup", menuitem)
+		return False
 
 ########################################################################
 #

@@ -55,6 +55,7 @@ class Manager(object):
 		from SaveProcessMonitor import SaveProcessMonitor
 		self.__save_process_monitor = SaveProcessMonitor()
 		self.__busy = False
+		self.__shortcut_list = []
 		return
 
 ########################################################################
@@ -131,6 +132,15 @@ class Manager(object):
 
 	def get_editor_instances(self):
 		return self.__editor_instances
+
+	def add_shortcut(self, shortcut):
+		return self.__shortcut_list.append(shortcut)
+
+	def remove_shortcut(self, shortcut):
+		return self.__shortcut_list.remove(shortcut)
+
+	def get_shortcuts(self):
+		return self.__shortcut_list
 
 	def response(self):
 		if self.__busy: return False

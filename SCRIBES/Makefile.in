@@ -273,6 +273,7 @@ scribes_PYTHON = \
 	OpenToolButton.py \
 	SaveToolButton.py \
 	PluginManager.py \
+	PopupMenuManager.py \
 	PrintToolButton.py \
 	UndoToolButton.py \
 	RedoToolButton.py \

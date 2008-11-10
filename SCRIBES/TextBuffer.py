@@ -223,7 +223,7 @@ class Buffer(object):
 		return False
 
 	def __highlit_updated_cb(self, *args):
-#		self.__editor.response()
+		self.__editor.response()
 		return False
 
 ################################################################################

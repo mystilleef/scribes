@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--Generated with glade3 3.4.5 on Mon Nov 10 15:40:02 2008 -->
+<glade-interface>
+  <widget class="GtkAboutDialog" id="AboutDialog">
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">About Scribes</property>
+    <property name="role">AboutScribesRole</property>
+    <property name="startup_id">AboutScribesID</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="icon_name">scribes</property>
+    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="urgency_hint">True</property>
+    <property name="has_separator">False</property>
+    <property name="program_name">Scribes</property>
+    <property name="version">0.4-dev-build</property>
+    <property name="comments" translatable="yes">Scribes is an extensible text editor for GNOME 
+that combines simplicity with power.</property>
+    <property name="website">http://scribes.sf.net/</property>
+    <property name="website_label" translatable="yes">Scribes Website</property>
+    <property name="logo_icon_name">scribes</property>
+    <property name="wrap_license">True</property>
+    <child internal-child="vbox">
+      <widget class="GtkVBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="spacing">2</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child internal-child="action_area">
+          <widget class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="layout_style">GTK_BUTTONBOX_END</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">GTK_PACK_END</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</glade-interface>
