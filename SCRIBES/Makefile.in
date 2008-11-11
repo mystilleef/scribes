@@ -283,6 +283,7 @@ scribes_PYTHON = \
 	RecentMenu.py \
 	ReplaceToolButton.py \
 	PreferenceToolButton.py \
+	PreferenceMenuManager.py \
 	HelpToolButton.py \
 	Spinner.py \
 	StatusContainer.py \

@@ -71,6 +71,8 @@ class Editor(GObject):
 		"trigger": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"refresh": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"add-to-popup": (SIGNAL_RUN_LAST|SIGNAL_ACTION, TYPE_NONE, (TYPE_OBJECT,)),
+		"add-to-pref-menu": (SIGNAL_RUN_LAST|SIGNAL_ACTION, TYPE_NONE, (TYPE_OBJECT,)),
+		"remove-from-pref-menu": (SIGNAL_RUN_LAST|SIGNAL_ACTION, TYPE_NONE, (TYPE_OBJECT,)),
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):
@@ -592,6 +594,18 @@ class Editor(GObject):
 	def add_to_popup(self, menuitem):
 		self.emit("add-to-popup", menuitem)
 		return False
+
+	def add_to_pref_menu(self, menuitem):
+		self.emit("add-to-pref-menu", menuitem)
+		return False
+
+	def remove_from_pref_menu(self, menuitem):
+		self.emit("remove-from-pref-menu", menuitem)
+		return False
+
+	def create_menuitem(self, name, stock=None):
+		from Utils import create_menuitem
+		return create_menuitem(name, stock)
 
 ########################################################################
 #

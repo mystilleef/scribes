@@ -223,7 +223,9 @@ class Buffer(object):
 		return False
 
 	def __highlit_updated_cb(self, *args):
-		self.__editor.response()
+#		self.__editor.response()
+#		self.__count += 1
+#		print "Syntax Update Count: %d" % self.__count
 		return False
 
 ################################################################################

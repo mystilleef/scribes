@@ -1,11 +1,14 @@
-from gtk import ToolButton
+from gtk import MenuToolButton
 
-class Button(ToolButton):
+class Button(MenuToolButton):
 
 	def __init__(self, editor):
-		ToolButton.__init__(self)
+		from gtk import STOCK_PREFERENCES
+		MenuToolButton.__init__(self, STOCK_PREFERENCES)
 		self.__init_attributes(editor)
 		self.__set_properties()
+		from PreferenceMenuManager import Manager
+		Manager(editor, self.get_menu())
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
 		editor.register_object(self)
@@ -25,10 +28,10 @@ class Button(ToolButton):
 		return
 
 	def __set_properties(self):
-		from gtk import STOCK_PREFERENCES
-		self.set_property("stock-id", STOCK_PREFERENCES)
 		self.set_property("name", "PreferenceToolButton")
 		self.set_property("sensitive", False)
+		from gtk import Menu
+		self.set_property("menu", Menu())
 		return
 
 	def __quit_cb(self, *args):
