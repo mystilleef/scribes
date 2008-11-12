@@ -39,5 +39,5 @@ class Button(MenuToolButton):
 		return False
 
 	def __clicked_cb(self, *args):
-		print "Not yet implemented"
+		self.__editor.trigger("show_preference_dialog")
 		return False

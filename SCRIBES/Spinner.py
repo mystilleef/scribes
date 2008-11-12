@@ -80,8 +80,7 @@ class Spinner(ToolItem):
 
 	def __precompile_methods(self):
 		methods = (self.__busy_cb, self.__spin_throbber_cb, 
-			self.__start, self.__stop, self.__start_private,
-			self.__stop_private,)
+			self.__start, self.__stop) 
 		self.__editor.optimize(methods)
 		return False
 
@@ -89,16 +88,16 @@ class Spinner(ToolItem):
 		self.add(self.__image)
 		return
 
-	def __start_private(self):
+	def __start(self):
 		self.__call_count += 1
 		if self.__is_spinning: return
 		self.__is_spinning = True
 		self.__image.clear()
 		self.__image.set_from_animation(self.__animation)
-		#self.__editor.response()
+		self.__editor.response()
 		return
-	
-	def __stop_private(self):
+
+	def __stop(self):
 		if self.__is_spinning is False: return
 		self.__call_count -= 1
 		if self.__call_count: return
@@ -106,27 +105,17 @@ class Spinner(ToolItem):
 		self.__call_count = 0
 		self.__image.clear()
 		self.__image.set_from_pixbuf(self.__pixbuf)
-		#self.__editor.response()
-		return	
-	
-	def __start(self):
-		from thread import start_new_thread
-		start_new_thread(self.__start_private, ())
-		return
-
-	def __stop(self):
-		from thread import start_new_thread
-		start_new_thread(self.__stop_private, ())
+		self.__editor.response()
 		return
 
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
-		
+
 	def __busy_cb(self, editor, busy):
 		self.__start() if busy else self.__stop()
 		return False
-		
+
 	def __spin_throbber_cb(self, editor, spin):
 		self.__start() if spin else self.__stop()
 		return False
@@ -134,7 +123,7 @@ class Spinner(ToolItem):
 	def __checking_file_cb(self, *args):
 		self.__start()
 		return False
-		
+
 	def __loaded_file_cb(self, *args):
 		self.__stop()
 		return False
@@ -142,4 +131,3 @@ class Spinner(ToolItem):
 	def __load_error_cb(self, *args):
 		self.__stop()
 		return False
-		

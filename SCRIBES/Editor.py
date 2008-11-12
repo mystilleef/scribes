@@ -607,6 +607,14 @@ class Editor(GObject):
 		from Utils import create_menuitem
 		return create_menuitem(name, stock)
 
+	def get_glade_object(self, globals_, basepath, object_name):
+		from os.path import join
+		folder = self.get_current_folder(globals_)
+		file_ = join(folder, basepath)
+		from gtk.glade import XML
+		glade = XML(file_, object_name, "scribes")
+		return glade
+
 ########################################################################
 #
 #								Signal Listener
