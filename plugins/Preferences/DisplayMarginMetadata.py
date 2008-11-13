@@ -1,11 +1,11 @@
 from SCRIBES.Utils import open_database
-basepath = "Preferences/TextWrapping.gdb"
+basepath = "Preferences/DisplayRightMargin.gdb"
 
 def get_value():
 	try:
 		value = True
 		database = open_database(basepath, "r")
-		value = database["text_wrapping"]
+		value = database["display_right"]
 	except KeyError:
 		pass
 	finally:
@@ -15,7 +15,7 @@ def get_value():
 def set_value(value):
 	try:
 		database = open_database(basepath, "w")
-		database["text_wrapping"] = value
+		database["display_right"] = value
 	finally:
 		database.close()
 	return

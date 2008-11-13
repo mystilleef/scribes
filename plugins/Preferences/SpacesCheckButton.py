@@ -10,7 +10,7 @@ class Button(object):
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
 		self.__manager = manager
-		self.__button = manager.gui.get_widget("WrapCheckButton")
+		self.__button = manager.gui.get_widget("SpacesCheckButton")
 		return
 
 	def __destroy(self):
@@ -24,15 +24,16 @@ class Button(object):
 
 	def __update(self):
 		self.__button.handler_block(self.__sigid1)
-		from TextWrappingMetadata import get_value as can_wrap
-		self.__button.set_active(can_wrap())
+		from UseTabsMetadata import get_value
+		use_tabs = get_value()
+		self.__button.set_active(not use_tabs)
 		self.__button.handler_unblock(self.__sigid1)
 		return 
 
 	def __set(self):
-		wrap = self.__button.get_active()
-		from TextWrappingMetadata import set_value
-		set_value(wrap)
+		use_spaces = self.__button.get_active()
+		from UseTabsMetadata import set_value
+		set_value(not use_spaces)
 		return 
 
 	def __set_properties(self):

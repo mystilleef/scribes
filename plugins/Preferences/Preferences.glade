@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Nov 11 19:59:47 2008 -->
+<!--Generated with glade3 3.4.5 on Wed Nov 12 19:39:19 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="Window">
     <property name="border_width">10</property>
@@ -9,6 +9,7 @@
     <property name="startup_id">PreferencesID</property>
     <property name="modal">True</property>
     <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
+    <property name="default_width">350</property>
     <property name="destroy_with_parent">True</property>
     <property name="icon_name">scribes</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
@@ -41,7 +42,7 @@
                   <widget class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
-                    <property name="label" translatable="yes">Fo_nt:</property>
+                    <property name="label" translatable="yes">_Font:</property>
                     <property name="use_markup">True</property>
                     <property name="use_underline">True</property>
                     <property name="mnemonic_widget">FontButton</property>
@@ -56,6 +57,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip" translatable="yes">Change font style and size in editing area</property>
                     <property name="response_id">0</property>
                     <property name="use_font">True</property>
                     <property name="use_size">True</property>
@@ -96,9 +98,10 @@
                   <widget class="GtkLabel" id="label4">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
-                    <property name="label" translatable="yes">Tab _Width:</property>
+                    <property name="label" translatable="yes">_Tab Width:</property>
                     <property name="use_markup">True</property>
                     <property name="use_underline">True</property>
+                    <property name="mnemonic_widget">TabSpinButton</property>
                     <property name="single_line_mode">True</property>
                   </widget>
                   <packing>
@@ -110,6 +113,7 @@
                   <widget class="GtkSpinButton" id="TabSpinButton">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip" translatable="yes">Change indentation width in editing area</property>
                     <property name="xalign">1</property>
                     <property name="adjustment">0 0 100 1 10 0</property>
                     <property name="numeric">True</property>
@@ -137,6 +141,7 @@
               <widget class="GtkCheckButton" id="SpacesCheckButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip" translatable="yes">Use space instead of tab character for indentation in editing area</property>
                 <property name="label" translatable="yes">_Use spaces instead of tabs</property>
                 <property name="use_underline">True</property>
                 <property name="response_id">0</property>
@@ -166,9 +171,10 @@
             <property name="visible">True</property>
             <property name="left_padding">25</property>
             <child>
-              <widget class="GtkCheckButton" id="TextWrappingCheckButton">
+              <widget class="GtkCheckButton" id="WrapCheckButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip" translatable="yes">Enable text wrapping in editing area</property>
                 <property name="label" translatable="yes">Enable text _wrapping</property>
                 <property name="use_underline">True</property>
                 <property name="response_id">0</property>
@@ -201,6 +207,7 @@
               <widget class="GtkCheckButton" id="MarginCheckButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip" translatable="yes">Show right margin in editing area</property>
                 <property name="label" translatable="yes">Show right _margin</property>
                 <property name="use_underline">True</property>
                 <property name="response_id">0</property>
@@ -227,6 +234,7 @@
                     <property name="label" translatable="yes">_Right margin position:</property>
                     <property name="use_markup">True</property>
                     <property name="use_underline">True</property>
+                    <property name="mnemonic_widget">MarginSpinButton</property>
                     <property name="single_line_mode">True</property>
                   </widget>
                   <packing>
@@ -237,7 +245,9 @@
                 <child>
                   <widget class="GtkSpinButton" id="MarginSpinButton">
                     <property name="visible">True</property>
+                    <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip" translatable="yes">Changed right margin position in editing area</property>
                     <property name="xalign">1</property>
                     <property name="adjustment">0 0 100 1 10 0</property>
                     <property name="numeric">True</property>
@@ -273,9 +283,10 @@
             <property name="visible">True</property>
             <property name="left_padding">25</property>
             <child>
-              <widget class="GtkCheckButton" id="SpellCheckbutton">
+              <widget class="GtkCheckButton" id="SpellCheckButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip" translatable="yes">Enable spell checking in editing area</property>
                 <property name="label" translatable="yes">_Enable spell checking</property>
                 <property name="use_underline">True</property>
                 <property name="response_id">0</property>

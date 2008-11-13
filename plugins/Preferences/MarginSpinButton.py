@@ -1,177 +1,69 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that creates the margin spin button for the
-text editor's preference dialog.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
-from gtk import SpinButton
-
-class MarginSpinButton(SpinButton):
-	"""
-	This class creates a spin button for the text editor's preference
-	dialog. The spin button allows users to set the position of the
-	right margin in the buffer.
-	"""
+class Button(object):
 
 	def __init__(self, manager, editor):
-		"""
-		Initialize the spin button.
-
-		@param self: Reference to the MarginSpinButton instance.
-		@type self: A MarginSpinButton object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
-		SpinButton.__init__(self)
 		self.__init_attributes(manager, editor)
+		self.__sigid1 = self.__button.connect("value-changed", self.__changed_cb)
+		self.__sigid2 = self.__manager.connect("destroy", self.__destroy_cb)
+		self.__sigid3 = self.__manager.connect("database-update", self.__update_cb)
+		self.__sigid4 = self.__manager.connect("margin-display", self.__display_cb)
 		self.__set_properties()
-		self.__signal_id_1 = self.connect("value-changed", self.__value_changed_cb)
-		self.__signal_id_2 = self.__manager.connect("destroy", self.__destroy_cb)
-		from gnomevfs import monitor_add, MONITOR_FILE
-		self.__monitor_id_1 = monitor_add(self.__database_uri, MONITOR_FILE,
-					self.__margin_changed_cb)
-		self.__monitor_id_2 = monitor_add(self.__display_database_uri, MONITOR_FILE,
-					self.__margin_cb)
 
 	def __init_attributes(self, manager, editor):
-		"""
-		Initialize the button's data attributes.
-
-		@param self: Reference to the MarginSpinButton instance.
-		@type self: A MarginSpinButton object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__manager = manager
-		self.__signal_id_1 = self.__signal_id_2 = None
-		from os.path import join
-		preference_folder = join(editor.metadata_folder, "Preferences")
-		database_path = join(preference_folder, "MarginPosition.gdb")
-		from gnomevfs import get_uri_from_local_path
-		self.__database_uri = get_uri_from_local_path(database_path)
-		display_database_path = join(preference_folder, "DisplayRightMargin.gdb")
-		self.__display_database_uri = get_uri_from_local_path(display_database_path)
+		self.__button = manager.gui.get_widget("MarginSpinButton")
 		return
 
-	def __set_properties(self):
-		"""
-		Define the default behavior of the button.
-
-		@param self: Reference to the MarginSpinButton instance.
-		@type self: A MarginSpinButton object.
-		"""
-		from MarginPositionMetadata import get_value
-		margin_position = get_value()
-		from DisplayRightMarginMetadata import get_value
-		show_margin = get_value()
-		self.set_property("sensitive", show_margin)
-		self.set_max_length(3)
-		self.set_width_chars(3)
-		self.set_digits(0)
-		self.set_increments(1, 5)
-		self.set_range(1, 200)
-		from gtk import UPDATE_ALWAYS
-		self.set_update_policy(UPDATE_ALWAYS)
-		self.set_numeric(True)
-		self.set_snap_to_ticks(True)
-		self.set_value(margin_position)
-		from SCRIBES.tooltips import margin_spin_button_tip
-		self.__editor.tip.set_tip(self, margin_spin_button_tip)
-		return
-
-	def __margin_changed_cb(self, *args):
-		"""
-		Handles callback when tab size changes.
-
-		@param self: Reference to the MarginSpinButton instance.
-		@type self: A MarginSpinButton object.
-		"""
-		from MarginPositionMetadata import get_value
-		margin_position = get_value()
-		if int(margin_position) != int(self.get_value()):
-			self.set_value(int(margin_position))
-		return
-
-	def __margin_cb(self, *args):
-		"""
-		Handles callback when tab size changes.
-
-		@param self: Reference to the MarginSpinButton instance.
-		@type self: A MarginSpinButton object.
-		"""
-		from DisplayRightMarginMetadata import get_value
-		show_margin = get_value()
-		if show_margin is False:
-			self.set_property("sensitive", False)
-		else:
-			self.set_property("sensitive", True)
-		return
-
-	def __value_changed_cb(self, button):
-		"""
-		Handles callback when the "value-changed" signal is emitted.
-
-		@param self: Reference to the MarginSpinButton instance.
-		@type self: A MarginSpinButton object.
-
-		@param button: Reference to the MarginSpinButton.
-		@type button: A MarginSpinButton object.
-
-		@return: True to propagate signals to parent widgets.
-		@type: A Boolean Object.
-		"""
-		margin_position = int(self.get_value())
-		from MarginPositionMetadata import set_value
-		set_value(margin_position)
-		from i18n import msg0025
-		message = msg0025 % margin_position
-		self.__editor.feedback.update_status_message(message, "succeed", 5)
-		return True
-
-	def __destroy_cb(self, manager):
-		"""
-		Handles callback when the "destroy" signal is emitted.
-
-		@param self: Reference to the MarginSpinButton instance.
-		@type self: A MarginSpinButton object.
-
-		@param manager: Reference to the PreferencesManager instance.
-		@type manager: A PreferencesManager object.
-		"""
-		self.__editor.disconnect_signal(self.__signal_id_1, self)
-		self.__editor.disconnect_signal(self.__signal_id_2, self.__manager)
-		self.destroy()
-		from gnomevfs import monitor_cancel
-		if self.__monitor_id_1: monitor_cancel(self.__monitor_id_1)
-		if self.__monitor_id_2: monitor_cancel(self.__monitor_id_2)
+	def __destroy(self):
+		self.__editor.disconnect_signal(self.__sigid1, self.__button)
+		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.__button.destroy()
 		del self
 		self = None
+		return False
+
+	def __set(self):
+		from MarginPositionMetadata import set_value
+		set_value(int(self.__button.get_value()))
+		return False
+
+	def __update(self):
+		from MarginPositionMetadata import get_value
+		self.__button.handler_block(self.__sigid1)
+		self.__button.set_value(get_value())
+		self.__button.handler_unblock(self.__sigid1)
+		return False
+
+	def __set_properties(self):
+		self.__button.props.sensitive = False
+		self.__button.handler_block(self.__sigid1)
+		self.__button.set_max_length(3)
+		self.__button.set_width_chars(3)
+		self.__button.set_digits(0)
+		self.__button.set_increments(1, 5)
+		self.__button.set_range(1, 120)
+		from gtk import UPDATE_ALWAYS
+		self.__button.set_update_policy(UPDATE_ALWAYS)
+		self.__button.set_numeric(True)
+		self.__button.set_snap_to_ticks(True)
+		self.__button.handler_unblock(self.__sigid1)
+		self.__update()
 		return
+
+	def __changed_cb(self, *args):
+		self.__set()
+		return True
+
+	def __update_cb(self, *args):
+		self.__update()
+		return False
+
+	def __destroy_cb(self, *args):
+		self.__destroy()
+		return False
+
+	def __display_cb(self, manager, sensitive):
+		self.__button.props.sensitive = sensitive
+		return False

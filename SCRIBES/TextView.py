@@ -246,12 +246,12 @@ class View(object):
 
 	def __margin_position_cb(self, *args):
 		from MarginPositionMetadata import get_value
-		self.__view.set_right_margin(int(get_value()))
+		self.__view.set_property("right-margin-position", get_value())
 		return
 
 	def __show_margin_cb(self, *args):
 		from DisplayRightMarginMetadata import get_value
-		self.__view.set_show_right_margin(get_value())
+		self.__view.set_property("show-right-margin", get_value())
 		return
 
 	def __spell_check_cb(self, *args):
@@ -261,7 +261,7 @@ class View(object):
 			try:
 				from gtkspell import Spell
 				from locale import getdefaultlocale
-				self.__spell_checker = Spell(self, getdefaultlocale()[0])
+				self.__spell_checker = Spell(self.__view, getdefaultlocale()[0])
 			except GError:
 				pass
 		else:
