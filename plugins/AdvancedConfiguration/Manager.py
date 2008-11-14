@@ -20,11 +20,7 @@ class Manager(GObject):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		from os.path import join, split
-		current_folder = editor.get_current_folder(globals())
-		glade_file = join(current_folder, "AdvancedConfigurationWindow.glade")
-		from gtk.glade import XML
-		self.__glade = XML(glade_file, "Window", "scribes")
+		self.__glade = editor.get_glade_object(globals(), "AdvancedConfigurationWindow.glade", "Window")
 		return
 
 	def __destroy(self):

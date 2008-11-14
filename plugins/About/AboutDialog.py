@@ -9,11 +9,7 @@ class Dialog(object):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		from os.path import join
-		current_folder = editor.get_current_folder(globals())
-		glade_file = join(current_folder, "AboutDialog.glade")
-		from gtk.glade import XML
-		gui = XML(glade_file, "AboutDialog", "scribes")
+		gui = editor.get_glade_object(globals(), "AboutDialog.glade", "AboutDialog")
 		self.__dialog = gui.get_widget("AboutDialog")
 		return
 

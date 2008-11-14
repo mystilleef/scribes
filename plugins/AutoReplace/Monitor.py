@@ -1,57 +1,12 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2006 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that monitors the editor's buffer for
-abbreviations for automatic replacement.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2006 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_PYOBJECT
 
 class AutoReplaceMonitor(GObject):
-	"""
-	This class creates an object that monitors string in the buffer for
-	automatic replacement. When a string eligible for replacement is
-	found, an signal is emitted.
-	"""
 
 	__gsignals__ = {
 		"abbreviation-found": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, manager, editor):
-		"""
-		Initialize the monitor object.
-
-		@param self: Reference to the AutoReplaceMonitor instance.
-		@type self: An AutoReplaceMonitor object.
-
-		@param manager: Reference to the AutoReplaceManager.
-		@type manager: An AutoReplaceManager object.
-		"""
 		GObject.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__signal_id_1 = self.__manager.connect("abbreviations-updated", self.__manager_abbreviations_updated_cb)
