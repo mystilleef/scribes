@@ -1,3 +1,6 @@
+from gettext import gettext as _
+message = _("Expanded abbreviation")
+
 class Inserter(object):
 
 	def __init__(self, manager, editor):
@@ -25,19 +28,36 @@ class Inserter(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__editor.textview)
 		del self
 		self = None
-		return 
+		return
 
 	def __insert(self, delimeter):
+		if delimeter == "\n": indentation = self.__indent()
 		end = self.__editor.cursor.copy()
 		start = self.__editor.cursor.copy()
 		for item in xrange(len(self.__word)): start.backward_char()
+		from copy import copy
+		word = copy(self.__word)
 		self.__editor.textbuffer.delete(start, end)
-		text = self.__dictionary[self.__word] + delimeter
+		text = self.__dictionary[word] + delimeter
 		self.__editor.textbuffer.insert_at_cursor(text)
+		if delimeter == "\n": self.__editor.textbuffer.insert_at_cursor(indentation)
+		self.__editor.move_view_to_cursor()
+		self.__editor.update_message(message, "pass")
 		return False
 
+	def __indent(self):
+		start = self.__editor.backward_to_line_begin()
+		text = self.__editor.textbuffer.get_text(start.copy(), self.__editor.cursor.copy())
+		if not text: return ""
+		if not (text[0] in (" ", "\t")): return ""
+		indentation = ""
+		for character in text:
+			if not (character in (" ", "\t")): break
+			indentation += character
+		return indentation
+
 	def __precompile_methods(self):
-		methods = (self.__event_cb, self.__insert)
+		methods = (self.__event_cb, self.__insert, self.__indent)
 		self.__editor.optimize(methods)
 		return False
 

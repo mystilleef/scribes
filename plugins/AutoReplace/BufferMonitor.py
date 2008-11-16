@@ -3,7 +3,7 @@ class Monitor(object):
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = editor.textbuffer.connect_after("insert-text", self.__insert_cb)
+		self.__sigid2 = editor.connect("cursor-moved", self.__insert_cb)
 		self.__sigid3 = manager.connect("dictionary", self.__dictionary_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
@@ -24,7 +24,7 @@ class Monitor(object):
 		return False
 
 	def __get_word(self):
-		if not (self.__editor.cursor.get_char() in (" ", "\t", "\n")): return None
+		if not (self.__editor.cursor.get_char() in (" ", "\t", "\n", "\x00")): return None
 		start = self.__editor.backward_to_line_begin()
 		text = self.__editor.textbuffer.get_text(start, self.__editor.cursor)
 		if not text: return None

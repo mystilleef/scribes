@@ -10,13 +10,19 @@ class Manager(GObject):
 		"no-match-found": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"dictionary": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"database-update": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"show-window": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"hide-window": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
+		from GUI.Manager import Manager
+		Manager(self, editor)
 		from TextInserter import Inserter
 		Inserter(self, editor)
+		from TextColorer import Colorer
+		Colorer(self, editor)
 		from BufferMonitor import Monitor
 		Monitor(self, editor)
 		from DictionaryManager import Manager
@@ -32,6 +38,10 @@ class Manager(GObject):
 		self.emit("destroy")
 		del self
 		self = None
+		return False
+
+	def show(self):
+		self.emit("show-window")
 		return False
 
 	def destroy(self):

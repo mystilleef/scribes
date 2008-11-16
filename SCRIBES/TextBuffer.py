@@ -157,7 +157,9 @@ class Buffer(object):
 ################################################################################
 
 	def __cursor_position_cb(self, *args):
-		self.__editor.emit("cursor-moved")
+		from gobject import idle_add
+		idle_add(self.__editor.emit, "cursor-moved", priority=99999)
+#		self.__editor.emit("cursor-moved")
 		self.__stop_update_cursor_timer()
 		from gobject import timeout_add
 		self.__cursor_update_timer = timeout_add(1000, self.__update_cursor_position, priority=9999)
