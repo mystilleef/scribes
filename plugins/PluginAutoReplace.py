@@ -16,13 +16,13 @@ class AutoReplacePlugin(object):
 
 	def __init__(self, editor):
 		self.__editor = editor
-		self.__manager = None
+		self.__trigger = None
 
 	def load(self):
-		from AutoReplace.Manager import Manager
-		self.__manager = Manager(self.__editor)
+		from AutoReplace.Trigger import Trigger
+		self.__trigger = Trigger(self.__editor)
 		return
 
 	def unload(self):
-		self.__manager.destroy()
+		self.__trigger.destroy()
 		return

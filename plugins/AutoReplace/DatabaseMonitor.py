@@ -5,8 +5,6 @@ class Monitor(object):
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monid = monitor_add(self.__uri, MONITOR_FILE, self.__update_cb)
-		from Metadata import set_value
-		set_value({"teh":"the", "abc":"This is a test file"})
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

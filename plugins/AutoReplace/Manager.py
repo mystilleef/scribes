@@ -1,5 +1,6 @@
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_STRING
 from gobject import SIGNAL_NO_RECURSE, SIGNAL_ACTION, TYPE_PYOBJECT
+from gobject import TYPE_BOOLEAN
 SCRIBES_SIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 
 class Manager(GObject):
@@ -9,9 +10,14 @@ class Manager(GObject):
 		"match-found": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"no-match-found": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"dictionary": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"update-dictionary": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"database-update": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"show-window": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"hide-window": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"edit-row": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"add-row": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"delete-row": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"sensitive": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 	}
 
 	def __init__(self, editor):
@@ -32,6 +38,7 @@ class Manager(GObject):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
+		self.__glade = editor.get_glade_object(globals(), "GUI/Window.glade", "Window")
 		return
 
 	def __destroy(self):
@@ -39,6 +46,8 @@ class Manager(GObject):
 		del self
 		self = None
 		return False
+
+	gui = property(lambda self: self.__glade)
 
 	def show(self):
 		self.emit("show-window")

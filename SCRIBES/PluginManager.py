@@ -103,19 +103,16 @@ class Manager(object):
 		from os import listdir
 		core_files = listdir(core_plugin_folder)
 		init_module = self.__init_module
-		from thread import start_new_thread
+		from gobject import idle_add
 		for filename in core_files:
-#			idle_add(init_module, filename, core_plugin_folder, priority=9999)
-			start_new_thread(init_module, (filename, core_plugin_folder))
+			idle_add(init_module, filename, core_plugin_folder, priority=9999)
 		home_files = listdir(home_plugin_folder)
 		for filename in home_files:
-#			idle_add(init_module, filename, home_plugin_folder, priority=9999)
-			start_new_thread(init_module, (filename, home_plugin_folder))
-#			init_module(filename, home_plugin_folder)
+			idle_add(init_module, filename, home_plugin_folder, priority=9999)
 		return False
 
 	def __unload_plugins(self):
-		from gobject import idle_add, PRIORITY_LOW
+#		from gobject import idle_add, PRIORITY_LOW
 		#from thread import start_new_thread
 		for plugin_info in self.__plugin_objects.copy():
 			#start_new_thread(self.__unload_plugin, (plugin_info,))
