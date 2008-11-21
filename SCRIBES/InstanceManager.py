@@ -45,7 +45,6 @@ class Manager(object):
 		timeout_add(21000, self.__init_psyco, priority=9999)
 		self.__init_i18n()
 		timeout_add(300000, self.__init_garbage_collector, priority=9999)
-		
 
 	def __init_attributes(self):
 		from collections import deque
@@ -118,12 +117,18 @@ class Manager(object):
 		found_instance = [editor for editor in self.__editor_instances if editor.uri == uri]
 		if not found_instance: return False
 		editor = found_instance[0]
+		editor.response()
 		if editor.window.get_data("minimized"): editor.window.deiconify()
 		coordinates = None if editor.window.get_data("maximized") else editor.window.get_position()
+		editor.response()
 		editor.window.hide()
+		editor.response()
 		if coordinates: editor.window.move(coordinates[0], coordinates[1])
+		editor.response()
 		editor.window.present()
+		editor.response()
 		editor.textview.grab_focus()
+		editor.response()
 		return False
 
 	def get_uris(self):
@@ -175,8 +180,7 @@ class Manager(object):
 
 	def __init_garbage_collector(self):
 		from gc import collect
-		from thread import start_new_thread
-		start_new_thread(collect, ())
+		collect()
 		return True
 
 	def __init_psyco(self):

@@ -97,6 +97,8 @@ class Manager(object):
 		except DuplicateTriggerRemovalError:
 			print "Error: Duplicate trigger could not be forcefully removed"
 			print "Error: %s will not be loaded" % trigger.name
+		finally:
+			self.__editor.response()
 		return
 
 	def __remove_trigger(self, trigger):
@@ -107,6 +109,8 @@ class Manager(object):
 			del self.__trigger_dictionary[name]
 		except KeyError:
 			print "Error: Trigger named %s not found" % name
+		finally:
+			self.__editor.response()
 		return
 
 	def __add_triggers(self, triggers):
@@ -157,9 +161,12 @@ class Manager(object):
 		return
 
 	def __activate(self, shortcut):
+		
 		for trigger, accel in self.__trigger_dictionary.values():
 			if accel != shortcut: continue
+			self.__editor.response()
 			trigger.activate()
+			self.__editor.response()
 			break
 		return False
 

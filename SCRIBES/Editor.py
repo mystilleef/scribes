@@ -339,24 +339,41 @@ class Editor(GObject):
 
 	def load_file(self, uri, encoding, readonly=False):
 		self.__contains_document = True
+		self.response()
 		from FileLoader import FileLoader
 		FileLoader(self, uri, encoding, readonly)
+		self.response()
 		return False
 
 	def open_file(self, uri, encoding="utf8"):
-		return self.__imanager.open_files([uri], encoding)
+		self.response()
+		self.__imanager.open_files([uri], encoding)
+		self.response()
+		return
 
 	def open_files(self, uris, encoding="utf8"):
-		return self.__imanager.open_files(uris, encoding)
+		self.response()
+		self.__imanager.open_files(uris, encoding)
+		self.response()
+		return
 
 	def focus_file(self, uri):
-		return self.__imanager.focus_file(uri)
+		self.response()
+		self.__imanager.focus_file(uri)
+		self.response()
+		return
 
 	def close_file(self, uri):
-		return self.__imanager.close_files([uri])
+		self.response()
+		self.__imanager.close_files([uri])
+		self.response()
+		return
 
 	def close_files(self, uris):
-		return self.__imanager.close_files(uris)
+		self.response()
+		self.__imanager.close_files(uris)
+		self.response()
+		return
 
 	def create_uri(self, uri, exclusive=True):
 		from Utils import create_uri

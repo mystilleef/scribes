@@ -9,13 +9,13 @@ class TreeView(object):
 		self.__sigid4 = self.__abvrenderer.connect("edited", self.__abvedited_cb)
 		self.__sigid5 = self.__rplrenderer.connect("edited", self.__rpledited_cb)
 		self.__sigid6 = self.__model.connect("row-changed", self.__row_changed_cb)
-		self.__block_row_changed_signal()
 		self.__sigid7 = manager.connect("show-window", self.__show_cb)
 		self.__sigid8 = manager.connect("hide-window", self.__hide_cb)
 		self.__sigid9 = self.__treeview.connect("key-press-event", self.__event_cb)
 		self.__sigid10 = manager.connect("add-row", self.__add_row_cb)
 		self.__sigid11 = manager.connect("edit-row", self.__edit_row_cb)
 		self.__sigid12 = manager.connect("delete-row", self.__delete_row_cb)
+		self.__block_row_changed_signal()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -54,7 +54,7 @@ class TreeView(object):
 
 	def __exists(self, text):
 		for row in self.__model:
-			if text == self.__model.get_value(row.iter, 0) : return True
+			if text == self.__model.get_value(row.iter, 0): return True
 		return False
 
 	def __validate(self, text):
@@ -80,18 +80,20 @@ class TreeView(object):
 
 	def __process_abvrenderer(self, path, text):
 		try:
+			from Exceptions import DeleteError
+			if not text: raise DeleteError
 			string = self.__get_string(path, 0)
 			self.__validate(text)
 			self.__model[path][0] = text
 			self.__edit(path, 1)
-#			self.__set_string(text)
 		except ValueError:
-			pass
+			self.__edit(path, 0)
+		except DeleteError:
+			self.__delete()
 		return False
 
 	def __process_rplrenderer(self, path, text):
 		self.__model[path][1] = text
-#		self.__set_string(self.__model[path][0])
 		return False
 
 	def __set_string(self, string=None):
@@ -114,6 +116,7 @@ class TreeView(object):
 		return model.get_path(iterator)
 
 	def __add(self):
+		self.__manager.emit("add-button-sensitivity", False)
 		self.__sensitive(True)
 		iterator = self.__model.append()
 		path = self.__model.get_path(iterator)
@@ -122,6 +125,7 @@ class TreeView(object):
 
 	def __edit(self, path=None, column=0):
 		try:
+			self.__manager.emit("add-button-sensitivity", False)
 			path = path if path else self.__get_path()
 			column = self.__treeview.get_column(column)
 			self.__treeview.set_cursor(path, column, start_editing=True)
@@ -133,24 +137,42 @@ class TreeView(object):
 		if not len(self.__model): raise ValueError
 		return self.__model[-1].iter
 
-	def __delete(self):
+	def __get_selected_iterator(self):
 		try:
 			selection = self.__treeview.get_selection()
 			model, iterator = selection.get_selected()
+		except TypeError:
+			iterator = None
+		return iterator
+
+	def __delete(self, path=None):
+		try:
+			from Exceptions import NoSelectionFoundError
+			model = self.__model
+			iterator = model.get_iter(path) if path else self.__get_selected_iterator()
+			if not iterator: raise NoSelectionFoundError
 			key = model.get_value(iterator, 0)
 			value = model.get_value(iterator, 1)
 			is_valid = model.remove(iterator)
-			self.__update = False
-			self.__manager.emit("update-dictionary", (key, value, False))
+			if key: self.__update = False
+			if key: self.__manager.emit("update-dictionary", (key, value, False))
 			if is_valid is False: iterator =  self.__get_last_iterator()
-			selection.select_iter(iterator)
+			self.__treeview.get_selection().select_iter(iterator)
+			path = self.__model.get_path(iterator)
+			self.__treeview.set_cursor(path, self.__abvcolumn)
 			self.__treeview.grab_focus()
-		except TypeError:
+		except NoSelectionFoundError:
 			from gettext import gettext as _
 			print _("No selection found")
 		except ValueError:
-			sensitive = True if len(self.__model) else False
-			self.__sensitive(sensitive)
+			self.__check_sensitivity()
+		finally:
+			self.__manager.emit("add-button-sensitivity", True)
+		return False
+
+	def __check_sensitivity(self):
+		sensitive = True if len(self.__model) else False
+		self.__sensitive(sensitive)
 		return False
 
 	def __sensitive(self, sensitive=True):
@@ -236,8 +258,11 @@ class TreeView(object):
 
 	def __row_changed_cb(self, model, path, iterator, *args):
 		get_value = lambda column: model.get_value(iterator, column)
-		self.__manager.emit("update-dictionary", (get_value(0), get_value(1), True))
+		key, value = get_value(0), get_value(1)
+		self.__manager.emit("update-dictionary", (key, value, True))
 		self.__update = False
+		self.__manager.emit("add-button-sensitivity", True)
+		self.__check_sensitivity()
 		return False
 
 	def __show_cb(self, *args):

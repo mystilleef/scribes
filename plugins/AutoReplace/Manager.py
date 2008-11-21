@@ -18,6 +18,7 @@ class Manager(GObject):
 		"add-row": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"delete-row": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"sensitive": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"add-button-sensitivity": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 	}
 
 	def __init__(self, editor):
