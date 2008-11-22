@@ -65,7 +65,7 @@ class TreeView(object):
 	def __validate(self, text):
 		message = None
 		from gettext import gettext as _
-		if text.isspace(): message = _("Error: Abbreviation must not contain whitespace")
+		if (" " in text) or ("\t" in text): message = _("Error: Abbreviation must not contain whitespace")
 		if self.__exists(text): message = _("Error: '%s' already exists") % text
 		if message is None: return False
 		self.__manager.emit("error", message)

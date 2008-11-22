@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Nov 17 13:59:55 2008 -->
+<!--Generated with glade3 3.4.5 on Sat Nov 22 18:13:55 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="Window">
     <property name="border_width">10</property>
@@ -20,22 +20,42 @@
         <property name="visible">True</property>
         <property name="spacing">10</property>
         <child>
-          <widget class="GtkScrolledWindow" id="scrolledwindow1">
+          <widget class="GtkVBox" id="vbox2">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-            <property name="shadow_type">GTK_SHADOW_IN</property>
+            <property name="spacing">5</property>
             <child>
-              <widget class="GtkTreeView" id="TreeView">
+              <widget class="GtkScrolledWindow" id="scrolledwindow1">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
-                <property name="headers_clickable">False</property>
-                <property name="rules_hint">True</property>
-                <property name="search_column">0</property>
-                <property name="enable_tree_lines">True</property>
+                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="shadow_type">GTK_SHADOW_IN</property>
+                <child>
+                  <widget class="GtkTreeView" id="TreeView">
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="headers_clickable">False</property>
+                    <property name="rules_hint">True</property>
+                    <property name="search_column">0</property>
+                    <property name="enable_tree_lines">True</property>
+                  </widget>
+                </child>
               </widget>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="ErrorLabel">
+                <property name="no_show_all">True</property>
+                <property name="xalign">0</property>
+                <property name="use_markup">True</property>
+                <property name="use_underline">True</property>
+                <property name="single_line_mode">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </widget>
         </child>

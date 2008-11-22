@@ -11,3 +11,5 @@ class Manager(object):
 		TreeView(manager, editor)
 		from AddButton import Button
 		Button(manager, editor)
+		from ErrorLabel import Label
+		Label(manager, editor)
