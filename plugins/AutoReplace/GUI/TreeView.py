@@ -5,16 +5,19 @@ class TreeView(object):
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("dictionary", self.__dictionary_cb)
-		self.__sigid3 = self.__treeview.connect("cursor-changed", self.__changed_cb)
-		self.__sigid4 = self.__abvrenderer.connect("edited", self.__abvedited_cb)
-		self.__sigid5 = self.__rplrenderer.connect("edited", self.__rpledited_cb)
-		self.__sigid6 = self.__model.connect("row-changed", self.__row_changed_cb)
-		self.__sigid7 = manager.connect("show-window", self.__show_cb)
-		self.__sigid8 = manager.connect("hide-window", self.__hide_cb)
-		self.__sigid9 = self.__treeview.connect("key-press-event", self.__event_cb)
-		self.__sigid10 = manager.connect("add-row", self.__add_row_cb)
-		self.__sigid11 = manager.connect("edit-row", self.__edit_row_cb)
-		self.__sigid12 = manager.connect("delete-row", self.__delete_row_cb)
+		self.__sigid3 = self.__abvrenderer.connect("edited", self.__abvedited_cb)
+		self.__sigid4 = self.__rplrenderer.connect("edited", self.__rpledited_cb)
+		self.__sigid5 = self.__model.connect("row-changed", self.__row_changed_cb)
+		self.__sigid6 = manager.connect("show-window", self.__show_cb)
+		self.__sigid7 = manager.connect("hide-window", self.__hide_cb)
+		self.__sigid8 = self.__treeview.connect("key-press-event", self.__event_cb)
+		self.__sigid9 = manager.connect("add-row", self.__add_row_cb)
+		self.__sigid10 = manager.connect("edit-row", self.__edit_row_cb)
+		self.__sigid11 = manager.connect("delete-row", self.__delete_row_cb)
+		self.__sigid12 = self.__treeview.connect("button-press-event", self.__button_press_event_cb)
+		self.__sigid13 = self.__abvrenderer.connect("editing-started", self.__editing_started_cb)
+		self.__sigid14 = self.__rplrenderer.connect("editing-started", self.__editing_started_cb)
+		self.__sigid15 = self.__abvrenderer.connect("editing-canceled", self.__editing_canceled_cb)
 		self.__block_row_changed_signal()
 
 	def __init_attributes(self, manager, editor):
@@ -26,23 +29,25 @@ class TreeView(object):
 		self.__rplrenderer = self.__create_renderer()
 		self.__abvcolumn = self.__create_abbreviation_column()
 		self.__rplcolumn = self.__create_replacement_column()
-		self.__string = None
 		self.__update = True
 		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__treeview)
-		self.__editor.disconnect_signal(self.__sigid4, self.__abvrenderer)
-		self.__editor.disconnect_signal(self.__sigid5, self.__rplrenderer)
-		self.__editor.disconnect_signal(self.__sigid6, self.__model)
+		self.__editor.disconnect_signal(self.__sigid3, self.__abvrenderer)
+		self.__editor.disconnect_signal(self.__sigid4, self.__rplrenderer)
+		self.__editor.disconnect_signal(self.__sigid5, self.__model)
+		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid9, self.__treeview)
+		self.__editor.disconnect_signal(self.__sigid8, self.__treeview)
+		self.__editor.disconnect_signal(self.__sigid9, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid10, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid11, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid12, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid12, self.__treeview)
+		self.__editor.disconnect_signal(self.__sigid13, self.__abvrenderer)
+		self.__editor.disconnect_signal(self.__sigid14, self.__rplrenderer)
+		self.__editor.disconnect_signal(self.__sigid15, self.__abvrenderer)
 		self.__treeview.destroy()
 		del self
 		self = None
@@ -60,29 +65,27 @@ class TreeView(object):
 	def __validate(self, text):
 		message = None
 		from gettext import gettext as _
-		if not text: message = _("Abbreviation must contain text")
-		if text in (" ", "\t"): message = _("Invalid abbreviation")
-		if " " in text: message = _("Abbreviation must not contain whitespace")
-		if "\t" in text: message = _("Abbreviation must not be space")
-		if self.__exists(text): message = _("%s already exists") % text
+		if text.isspace(): message = _("Error: Abbreviation must not contain whitespace")
+		if self.__exists(text): message = _("Error: '%s' already exists") % text
 		if message is None: return False
-		print message
+		self.__manager.emit("error", message)
 		raise ValueError
 		return False
 
 	def __block_row_changed_signal(self):
-		self.__model.handler_block(self.__sigid6)
+		self.__model.handler_block(self.__sigid5)
 		return False
 
 	def __unblock_row_changed_signal(self):
-		self.__model.handler_unblock(self.__sigid6)
+		self.__model.handler_unblock(self.__sigid5)
 		return False
 
 	def __process_abvrenderer(self, path, text):
 		try:
-			from Exceptions import DeleteError
+			from Exceptions import DeleteError, DoNothingError
 			if not text: raise DeleteError
 			string = self.__get_string(path, 0)
+			if string == text: raise DoNothingError
 			self.__validate(text)
 			self.__model[path][0] = text
 			self.__edit(path, 1)
@@ -90,22 +93,42 @@ class TreeView(object):
 			self.__edit(path, 0)
 		except DeleteError:
 			self.__delete()
+		except DoNothingError:
+			self.__manager.emit("add-button-sensitivity", True)
+			self.__check_sensitivity()
 		return False
 
 	def __process_rplrenderer(self, path, text):
 		self.__model[path][1] = text
 		return False
 
-	def __set_string(self, string=None):
+	def __process_row(self, path, iterator):
 		try:
-			if string: raise ValueError
-			model, iterator = self.__treeview.get_selection().get_selected()
-			self.__string = model.get_value(iterator, 0)
+			model = self.__model
+			get_value = lambda column: model.get_value(iterator, column)
+			key, value = get_value(0), get_value(1)
+			from Exceptions import EmptyKeyError
+			if not key: raise EmptyKeyError
+			self.__manager.emit("update-dictionary", (key, value, True))
+			self.__update = False
+		except EmptyKeyError:
+			self.__delete(path)
+		finally:
+			self.__manager.emit("add-button-sensitivity", True)
+			self.__check_sensitivity()
+		return False
+
+	def __select_row_at_mouse(self, event):
+		try:
+			x, y = self.__treeview.widget_to_tree_coords(int(event.x), int(event.y))
+			path = self.__treeview.get_path_at_pos(x, y)[0]
+			selection = self.__treeview.get_selection()
+			selection.select_iter(self.__model.get_iter(path))
+			self.__treeview.set_cursor(path, self.__abvcolumn)
+			self.__treeview.grab_focus()
 		except TypeError:
-			self.__string = None
-		except ValueError:
-			self.__string = string
-		return
+			pass
+		return False
 
 	def __get_path(self):
 		try:
@@ -173,6 +196,7 @@ class TreeView(object):
 	def __check_sensitivity(self):
 		sensitive = True if len(self.__model) else False
 		self.__sensitive(sensitive)
+		if sensitive: self.__treeview.grab_focus()
 		return False
 
 	def __sensitive(self, sensitive=True):
@@ -187,18 +211,14 @@ class TreeView(object):
 		return
 
 	def __populate_model(self, dictionary):
-		self.__treeview.handler_block(self.__sigid3)
 		self.__sensitive(False)
 		self.__treeview.set_model(None)
 		self.__model.clear()
 		for abbreviation, text in dictionary.items():
 			self.__model.append([abbreviation, text])
 		self.__treeview.set_model(self.__model)
-		self.__editor.select_row(self.__treeview)
-		sensitive = True if len(self.__model) else False
-		self.__sensitive(sensitive)
-		if sensitive: self.__treeview.grab_focus()
-		self.__treeview.handler_unblock(self.__sigid3)
+		if len(self.__model): self.__editor.select_row(self.__treeview)
+		self.__check_sensitivity()
 		return
 
 	def __create_model(self):
@@ -244,10 +264,6 @@ class TreeView(object):
 		self.__update = True
 		return False
 
-	def __changed_cb(self, *args):
-		self.__set_string()
-		return False
-
 	def __abvedited_cb(self, renderer, path, text, *args):
 		self.__process_abvrenderer(path, text)
 		return False
@@ -257,12 +273,7 @@ class TreeView(object):
 		return False
 
 	def __row_changed_cb(self, model, path, iterator, *args):
-		get_value = lambda column: model.get_value(iterator, column)
-		key, value = get_value(0), get_value(1)
-		self.__manager.emit("update-dictionary", (key, value, True))
-		self.__update = False
-		self.__manager.emit("add-button-sensitivity", True)
-		self.__check_sensitivity()
+		self.__process_row(path, iterator)
 		return False
 
 	def __show_cb(self, *args):
@@ -291,4 +302,16 @@ class TreeView(object):
 
 	def __delete_row_cb(self, *args):
 		self.__delete()
+		return False
+
+	def __button_press_event_cb(self, treeview, event, *args):
+		self.__select_row_at_mouse(event)
+		return True
+
+	def __editing_started_cb(self, *args):
+		self.__manager.emit("add-button-sensitivity", False)
+		return False
+
+	def __editing_canceled_cb(self, *args):
+		self.__process_row(self.__get_path(), self.__get_selected_iterator())
 		return False

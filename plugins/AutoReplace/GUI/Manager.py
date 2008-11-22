@@ -5,6 +5,8 @@ class Manager(object):
 		Window(manager, editor)
 		from EditButton import Button
 		Button(manager, editor)
+		from RemoveButton import Button
+		Button(manager, editor)
 		from TreeView import TreeView
 		TreeView(manager, editor)
 		from AddButton import Button

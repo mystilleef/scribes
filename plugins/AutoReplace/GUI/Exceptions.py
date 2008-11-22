@@ -3,3 +3,9 @@ class DeleteError(Exception):
 
 class NoSelectionFoundError(Exception):
 	pass
+
+class DoNothingError(Exception):
+	pass
+
+class EmptyKeyError(Exception):
+	pass
