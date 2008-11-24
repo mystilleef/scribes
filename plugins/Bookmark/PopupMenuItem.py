@@ -1,33 +1,10 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
+from gettext import gettext as _
 from gtk import ImageMenuItem
 
 class PopupMenuItem(ImageMenuItem):
-	"""
-	This class creates the bookmarks popup menu for the text editor.
-	"""
 
 	def __init__(self, editor):
-		from i18n import msg5
-		ImageMenuItem.__init__(self, msg5)
+		ImageMenuItem.__init__(self, _("Bookmark"))
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__sigid1 = self.__menuitem1.connect("activate", self.__activate_cb)
@@ -46,13 +23,13 @@ class PopupMenuItem(ImageMenuItem):
 		current_folder = self.__editor.get_current_folder(globals())
 		image = join(current_folder, "bookmarks.png")
 		self.__image = self.__editor.create_image(image)
-		from i18n import msg6, msg7, msg8
-		self.__menuitem1 = self.__editor.create_menuitem(msg6)
-		self.__menuitem2 = self.__editor.create_menuitem(msg7)
-		self.__menuitem3 = self.__editor.create_menuitem(msg8)
+		self.__menuitem1 = self.__editor.create_menuitem(_("_Toggle Bookmark (ctrl - d)"))
+		self.__menuitem2 = self.__editor.create_menuitem(_("_Remove All Bookmarks (ctrl - shift - b)"))
+		self.__menuitem3 = self.__editor.create_menuitem(_("_Show Bookmark Browser (ctrl - b)"))
 		return
 
 	def __set_properties(self):
+		self.set_property("name", "Bookmarks Popup Menuitem")
 		self.set_image(self.__image)
 		self.set_submenu(self.__menu)
 		self.__menu.append(self.__menuitem1)

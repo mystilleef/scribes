@@ -2,7 +2,7 @@ class Trigger(object):
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
-		self.__sigid1 = editor.textview.connect_after("populate-popup", self.__popup_cb)
+		self.__sigid1 = editor.textview.connect("populate-popup", self.__popup_cb)
 		self.__sigid2 = self.__trigger1.connect("activate", self.__toggle_bookmark_cb)
 		self.__sigid3 = self.__trigger2.connect("activate", self.__remove_all_bookmarks_cb)
 		self.__sigid4 = self.__trigger3.connect("activate", self.__show_browser_cb)
@@ -25,6 +25,8 @@ class Trigger(object):
 	def destroy(self):
 		triggers = (self.__trigger1, self.__trigger2, self.__trigger3)
 		self.__editor.remove_triggers(triggers)
+		if self.__manager: self.__manager.destroy()
+		if self.__browser: self.__browser.destroy()
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor.textview)
 		self.__editor.disconnect_signal(self.__sigid2, self.__trigger1)
 		self.__editor.disconnect_signal(self.__sigid3, self.__trigger2)
@@ -35,8 +37,7 @@ class Trigger(object):
 
 	def __popup_cb(self, textview, menu):
 		from PopupMenuItem import PopupMenuItem
-		menu.prepend(PopupMenuItem(self.__editor))
-		menu.show_all()
+		self.__editor.add_to_popup(PopupMenuItem(self.__editor))
 		return False
 
 	def __toggle_bookmark_cb(self, *args):

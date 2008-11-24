@@ -379,6 +379,10 @@ class Editor(GObject):
 		from Utils import create_uri
 		return create_uri(uri, exclusive)
 
+	def create_image(self, path):
+		from Utils import create_image
+		return create_image(path)
+
 	def register_object(self, instance):
 		self.__registered_objects.append(instance)
 		return False

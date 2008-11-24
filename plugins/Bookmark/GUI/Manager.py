@@ -8,7 +8,6 @@ class Manager(object):
 		TreeView(manager, editor)
 		from LineProcessor import Processor
 		Processor(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		manager.emit("gui-created")
 
 	def __init_attributes(self, manager, editor):
@@ -17,12 +16,11 @@ class Manager(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		del self
 		self = None
 		return
 
-	def __destroy_cb(self, *args):
+	def destroy(self):
 		self.__destroy()
 		return False
 

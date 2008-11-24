@@ -30,8 +30,10 @@ class Manager(object):
 			if menuitem.props.name == "AboutMenuitem":
 				menu.append(SeparatorMenuItem())
 				menu.append(menuitem)
+				menuitem.show()
 			else:
 				menu.prepend(menuitem)
+				menuitem.show()
 		menu.show_all()
 		return False
 

@@ -14,7 +14,7 @@ class TreeView(object):
 		self.__model = self.__create_model()
 		self.__line_column = self.__create_column(True, 0)
 		self.__text_column = self.__create_column(False, 1)
-		self.__treeview = manager.glade.get_widget("TreeView")
+		self.__treeview = manager.gui.get_widget("TreeView")
 		return
 
 	def __set_properties(self):
@@ -89,8 +89,8 @@ class TreeView(object):
 		return False
 
 	def __populate_cb(self, manager, data):
-		from thread import start_new_thread
-		start_new_thread(self.__populate_model, (data,))
+		from gobject import idle_add
+		idle_add(self.__populate_model, data, priority=9999)
 		return False
 
 	def __show_window_cb(self, *args):

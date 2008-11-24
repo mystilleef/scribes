@@ -1,32 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2008 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  
-# USA
-
-"""
-This module documents a class that jumps to bookmarked lines.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2008 Lateef Alabi-Oki
-@license: GNU GPLv3 or Later
-@contact: mystilleef@gmail.com
-"""
+from gettext import gettext as _
 
 class Navigator(object):
 	"""
@@ -47,9 +19,8 @@ class Navigator(object):
 		iterator = self.__editor.textbuffer.get_iter_at_line(line)
 		self.__editor.textbuffer.place_cursor(iterator)
 		self.__editor.textview.scroll_to_iter(iterator, 0.001, use_align=True, xalign=1.0)
-		from i18n import msg4
-		message = msg4 % line
-		self.__editor.update_status_message(message, "yes")
+		message = _("Moved to bookmark on line %d") % line
+		self.__editor.update_message(message, "yes")
 		return False
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)

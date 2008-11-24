@@ -1,33 +1,4 @@
-
-# -*- coding: utf-8 -*-
-# Copyright © 2008 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  
-# USA
-
-"""
-This module documents a class that adds and removes marks in the buffer.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2008 Lateef Alabi-Oki
-@license: GNU GPLv3 or Later
-@contact: mystilleef@gmail.com
-"""
+from gettext import gettext as _
 
 class Marker(object):
 	"""
@@ -39,8 +10,8 @@ class Marker(object):
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("toggle-bookmark", self.__toggle_bookmark_cb)
-		self.__sigid3 = editor.connect("loaded-document", self.__restore_cb)
-		self.__sigid4 = editor.connect("renamed-document", self.__restore_cb)
+		self.__sigid3 = editor.connect("loaded-file", self.__restore_cb)
+		self.__sigid4 = editor.connect("renamed-file", self.__restore_cb)
 		self.__sigid5 = manager.connect("remove-all-bookmarks", self.__remove_bookmarks_cb)
 		self.__restore_marks()
 
@@ -56,7 +27,7 @@ class Marker(object):
 		return
 
 	def __get_line(self, line=None):
-		if line is None: return self.__editor.get_cursor_line()
+		if line is None: return self.__editor.cursor.get_line()
 		return line if self.__line_exists(line) else None
 
 	def __create_pixbuf(self):
@@ -80,9 +51,8 @@ class Marker(object):
 		iterator = self.__iter_at_line(line)
 		if iterator is None: return
 		self.__editor.textbuffer.create_source_mark(None, "scribes_bookmark", iterator)
-		from i18n import msg2
-		message = msg2 % (self.__get_line(line) + 1)
-		self.__editor.update_status_message(message, "yes")
+		message = _("Bookmarked line %d") % (self.__get_line(line) + 1)
+		self.__editor.update_message(message, "yes")
 		return
 
 	def __unmark(self, line=None):
@@ -90,9 +60,8 @@ class Marker(object):
 		if iterator is None: return
 		end = self.__editor.forward_to_line_end(iterator.copy())
 		self.__editor.textbuffer.remove_source_marks(iterator, end, "scribes_bookmark")
-		from i18n import msg1
-		message = msg1 % (self.__get_line(line) + 1)
-		self.__editor.update_status_message(message, "yes")
+		message = _("Removed bookmark on line %d") % (self.__get_line(line) + 1)
+		self.__editor.update_message(message, "yes")
 		return
 
 	def __remove_all_marks(self):
@@ -114,7 +83,7 @@ class Marker(object):
 	def __iter_at_line(self, line=None):
 		get_iter = self.__editor.textbuffer.get_iter_at_line
 		if line: return get_iter(line) if self.__line_exists(line) else None
-		return get_iter(self.__editor.get_cursor_line())
+		return get_iter(self.__editor.cursor.get_line())
 
 	def __line_exists(self, line):
 		iterator = self.__editor.textbuffer.get_bounds()[1]
