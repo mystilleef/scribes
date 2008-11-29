@@ -8,6 +8,7 @@ class Manager(object):
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
+		self.__init_window_bindings()
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.window.connect("scribes-key-event", self.__scribes_key_event_cb)
 		self.__sigid3 = editor.connect("trigger", self.__trigger_cb)
@@ -16,6 +17,8 @@ class Manager(object):
 		self.__sigid6 = editor.connect("add-triggers", self.__add_triggers_cb)
 		self.__sigid7 = editor.connect("remove-triggers", self.__remove_triggers_cb)
 		self.__sigid8 = editor.connect("bar-is-active", self.__active_cb)
+		self.__sigid9 = editor.window.connect("scribes-close-window", self.__close_window_cb)
+		self.__sigid10 = editor.window.connect("scribes-close-window-nosave", self.__close_window_nosave_cb)
 		editor.response()
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
@@ -37,10 +40,17 @@ class Manager(object):
 		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid8, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid9, self.__editor.window)
+		self.__editor.disconnect_signal(self.__sigid10, self.__editor.window)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
 		return
+
+	def __init_window_bindings(self):
+		self.__bind_shortcut("ctrl+w", "scribes-close-window")
+		self.__bind_shortcut("ctrl+shift+w", "scribes-close-window-nosave")
+		return False
 
 	def __get_keyval(self, shortcut):
 		keyname = shortcut.split("+")[-1]
@@ -56,13 +66,13 @@ class Manager(object):
 		if "shift" in modifiers: mask |= SHIFT_MASK
 		return mask
 
-	def __bind_shortcut(self, shortcut):
+	def __bind_shortcut(self, shortcut, event_name="scribes-key-event"):
 		if not shortcut: return False
 		keyval = self.__get_keyval(shortcut)
 		modifier = self.__get_modifier(shortcut)
 		if (keyval, modifier) in self.__editor.get_shortcuts(): return False
 		from gtk import binding_entry_add_signal as bind
-		bind(self.__editor.window, keyval, modifier, "scribes-key-event", str, shortcut)
+		bind(self.__editor.window, keyval, modifier, event_name, str, shortcut)
 		self.__editor.add_shortcut((keyval, modifier))
 		return False
 
@@ -161,7 +171,6 @@ class Manager(object):
 		return
 
 	def __activate(self, shortcut):
-		
 		for trigger, accel in self.__trigger_dictionary.values():
 			if accel != shortcut: continue
 			self.__editor.response()
@@ -207,4 +216,14 @@ class Manager(object):
 
 	def __trigger_cb(self, editor, name):
 		self.__trigger(name)
+		return False
+
+	def __close_window_cb(self, *args):
+		if self.__bar_is_active: return True
+		self.__editor.close()
+		return False
+
+	def __close_window_nosave_cb(self, *args):
+		if self.__bar_is_active: return True
+		self.__editor.close(False)
 		return False

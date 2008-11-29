@@ -39,7 +39,7 @@ class Window(object):
 		self.__init_attributes(editor, uri)
 		self.__set_properties()
 		self.__sigid1 = self.__window.connect("delete-event", self.__delete_event_cb)
-		self.__sigid2 = self.__window.connect("key-press-event", self.__key_press_event_cb)
+#		self.__sigid2 = self.__window.connect("key-press-event", self.__key_press_event_cb)
 		self.__sigid3 = editor.connect("close", self.__close_cb)
 		self.__sigid4 = self.__window.connect("window-state-event", self.__state_event_cb)
 		self.__sigid5 = self.__window.connect("focus-out-event", self.__focus_out_event_cb)
@@ -75,7 +75,7 @@ class Window(object):
 		self.__window.hide()
 		self.__editor.response()
 		self.__editor.disconnect_signal(self.__sigid1, self.__window)
-		self.__editor.disconnect_signal(self.__sigid2, self.__window)
+#		self.__editor.disconnect_signal(self.__sigid2, self.__window)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid4, self.__window)
 		self.__editor.disconnect_signal(self.__sigid5, self.__window)
@@ -102,6 +102,8 @@ class Window(object):
 		from gtk import Window
 		if signal_query("scribes-key-event", Window) is None:
 			signal_new("scribes-key-event", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
+			signal_new("scribes-close-window", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
+			signal_new("scribes-close-window-nosave", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
 			type_register(type(self.__window))
 		from gtk.gdk import KEY_PRESS_MASK
 		self.__window.add_events(KEY_PRESS_MASK)
@@ -239,17 +241,17 @@ class Window(object):
 		return False
 
 	def __key_press_event_cb(self, window, event):
-		if self.__bar_is_active: return False
-		from gtk.gdk import CONTROL_MASK
-		# We only care when the "Ctrl" modifier is pressed.
-		if not (event.state & CONTROL_MASK): return False
-		from gtk import keysyms
-		# We only care when "w" key is pressed.
-		if not (event.keyval in (keysyms.W, keysyms.w)): return False
-		# Ctrl - w will save window position in database.
-		# Ctrl - Shift - W will not save window position in database.
-		self.__editor.close(False) if event.keyval == keysyms.W else self.__editor.close()
-		return True
+#		if self.__bar_is_active: return False
+#		from gtk.gdk import CONTROL_MASK
+#		 We only care when the "Ctrl" modifier is pressed.
+#		if not (event.state & CONTROL_MASK): return False
+#		from gtk import keysyms
+#		 We only care when "w" key is pressed.
+#		if not (event.keyval in (keysyms.W, keysyms.w)): return False
+#		 Ctrl - w will save window position in database.
+#		 Ctrl - Shift - W will not save window position in database.
+#		self.__editor.close(False) if event.keyval == keysyms.W else self.__editor.close()
+		return False
 
 	def __close_cb(self, editor, save_file):
 		if save_file: self.__set_window_position_in_database()
