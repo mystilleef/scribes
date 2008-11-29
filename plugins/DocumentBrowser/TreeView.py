@@ -1,33 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2006 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that implements a treeview for the
-document browser.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2006 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
+from gettext import gettext as _
 
 class TreeView(object):
 	"""
@@ -51,10 +22,9 @@ class TreeView(object):
 		self.__name_renderer = self.__create_renderer()
 		self.__type_renderer = self.__create_renderer()
 		self.__path_renderer = self.__create_renderer()
-		from i18n import msg0003, msg0004, msg0005
-		self.__name_column = self.__create_column(msg0004, self.__name_renderer, 0, False, True)
-		self.__type_column = self.__create_column(msg0003, self.__type_renderer, 1, False, True)
-		self.__path_column = self.__create_column(msg0005, self.__path_renderer, 2, False, True)
+		self.__name_column = self.__create_column(_("File _Name"), self.__name_renderer, 0, False, True)
+		self.__type_column = self.__create_column(_("File _Type"), self.__type_renderer, 1, False, True)
+		self.__path_column = self.__create_column(_("File _Path"), self.__path_renderer, 2, False, True)
 		return
 
 	def __set_properties(self):
