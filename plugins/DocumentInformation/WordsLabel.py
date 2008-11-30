@@ -16,7 +16,7 @@ class Label(object):
 
 	def __set_label(self, fileinfo):
 		from re import split
-		words = split(self.__pattern, self.__editor.get_text())
+		words = split(self.__pattern, self.__editor.text)
 		is_word = lambda word: not (word in ("", " "))
 		words = [word for word in words if is_word(word)]
 		self.__label.set_text(str(len(words)))

@@ -1,42 +1,14 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2008 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that implements smart indentation for
-Python source code.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2008 Lateef Alabi-Oki
-@license: GNU GPLv3 or Later
-@contact: mystilleef@gmail.com
-"""
+from gobject import signal_query, signal_new, SIGNAL_ACTION
+from gobject import TYPE_BOOLEAN, TYPE_STRING, SIGNAL_NO_RECURSE
+from gobject import SIGNAL_RUN_LAST, type_register
+SIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
+from gtksourceview2 import View
 
 class Manager(object):
-	"""
-	This class implements smart indentation for Python source code.
-	"""
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
-		self.__sigid1 = editor.textview.connect('key-press-event', self.__key_press_event_cb)
+		self.__sigid1 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -149,9 +121,13 @@ class Manager(object):
 		if text.startswith("return"): return True
 		return False
 
-	def __key_press_event_cb(self, textview, event):
-		from gtk.keysyms import Return
-		if event.keyval != Return: return False
+	def __key_press_event_cb(self, widget, event):
+		from gtk.gdk import SHIFT_MASK, MOD1_MASK, CONTROL_MASK
+		from gtk.gdk import keyval_name
+		if event.state & SHIFT_MASK: return False
+		if event.state & MOD1_MASK: return False
+		if event.state & CONTROL_MASK: return False
+		if keyval_name(event.keyval) != "Return": return False
 		ends_with_colon = self.__line_ends_with_colon()
 		if ends_with_colon:
 			if self.__cursor_is_before_colon(): return False

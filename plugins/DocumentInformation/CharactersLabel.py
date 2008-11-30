@@ -10,8 +10,8 @@ class Label(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__label = manager.glade.get_widget("CharactersLabel")
-		from re import UNICODE, compile
-		self.__pattern = compile(r"[^-\w]", UNICODE)
+#		from re import UNICODE, compile
+#		self.__pattern = compile(r"[^-\w]", UNICODE)
 		return
 
 	def __set_label(self, fileinfo):
