@@ -363,6 +363,12 @@ class Editor(GObject):
 		self.response()
 		return
 
+	def focus_by_id(self, id_):
+		self.response()
+		self.__imanager.focus_by_id(id_)
+		self.response()
+		return
+
 	def close_file(self, uri):
 		self.response()
 		self.__imanager.close_files([uri])

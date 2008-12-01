@@ -117,18 +117,13 @@ class Manager(object):
 		found_instance = [editor for editor in self.__editor_instances if editor.uri == uri]
 		if not found_instance: return False
 		editor = found_instance[0]
-		editor.response()
-		if editor.window.get_data("minimized"): editor.window.deiconify()
-		coordinates = None if editor.window.get_data("maximized") else editor.window.get_position()
-		editor.response()
-		editor.window.hide()
-		editor.response()
-		if coordinates: editor.window.move(coordinates[0], coordinates[1])
-		editor.response()
-		editor.window.present()
-		editor.response()
-		editor.textview.grab_focus()
-		editor.response()
+		self.__focus(editor)
+		return False
+
+	def focus_by_id(self, id_):
+		instance = [instance for instance in self.__editor_instances if instance.id_ == id_]
+		editor = instance[0]
+		self.__focus(editor)
 		return False
 
 	def get_uris(self):
@@ -176,6 +171,21 @@ class Manager(object):
 	def __new_editor(self, uri=None, encoding=None):
 		from Editor import Editor
 		Editor(self, uri, encoding)
+		return False
+
+	def __focus(self, editor):
+		editor.response()
+		if editor.window.get_data("minimized"): editor.window.deiconify()
+		coordinates = None if editor.window.get_data("maximized") else editor.window.get_position()
+		editor.response()
+		editor.window.hide()
+		editor.response()
+		if coordinates: editor.window.move(coordinates[0], coordinates[1])
+		editor.response()
+		editor.window.present()
+		editor.response()
+		editor.textview.grab_focus()
+		editor.response()
 		return False
 
 	def __init_garbage_collector(self):

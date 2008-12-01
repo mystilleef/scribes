@@ -1,92 +1,37 @@
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE
-
-class DocumentSwitcherTrigger(GObject):
-	"""
-	This class creates an object, a trigger, that allows users to show
-	a automatic replacement dialog.
-	"""
-
-	__gsignals__ = {
-		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	}
+class Trigger(object):
 
 	def __init__(self, editor):
-		"""
-		Initialize the trigger.
-
-		@param self: Reference to the DocumentSwitcherTrigger instance.
-		@type self: A DocumentSwitcherTrigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
-		GObject.__init__(self)
 		self.__init_attributes(editor)
-		self.__create_trigger()
-		self.__signal_id_1 = self.__trigger.connect("activate", self.__switch_window_cb)
-		self.__signal_id_2 = self.connect("destroy", self.__destroy_cb)
+		self.__sigid1 = self.__trigger.connect("activate", self.__activate_cb)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize the trigger's attributes.
-
-		@param self: Reference to the DocumentSwitcherTrigger instance.
-		@type self: A DocumentSwitcherTrigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
-		self.__switcher = None
-		self.__trigger = None
-		self.__signal_id_2 = None
-		self.__signal_id_1 = None
+		self.__manager = None
+		self.__trigger = self.__create_trigger()
 		return
 
-	def __create_trigger(self):
-		"""
-		Create the trigger.
-
-		@param self: Reference to the DocumentSwitcherTrigger instance.
-		@type self: A DocumentSwitcherTrigger object.
-		"""
-		# Trigger to show the automatic replacement dialog.
-		self.__trigger = self.__editor.create_trigger("switch_document_window", "ctrl+Tab")
-		self.__editor.add_trigger(self.__trigger)
-		return
-
-	def __switch_window_cb(self, trigger):
-		"""
-		Handles callback when the "activate" signal is emitted.
-
-		@param self: Reference to the DocumentSwitcherTrigger instance.
-		@type self: A DocumentSwitcherTrigger object.
-
-		@param trigger: An object to show the document browser.
-		@type trigger: A Trigger object.
-		"""
-		try:
-			self.__switcher.switch_window()
-		except AttributeError:
-			from switcher import DocumentSwitcher
-			self.__switcher = DocumentSwitcher(self.__editor)
-			self.__switcher.switch_window()
-		return
-
-	def __destroy_cb(self, trigger):
-		"""
-		Handles callback when the "activate" signal is emitted.
-
-		@param self: Reference to the DocumentSwitcherTrigger instance.
-		@type self: An DocumentSwitcherTrigger object.
-
-		@param trigger: Reference to the DocumentSwitcherTrigger instance.
-		@type trigger: A DocumentSwitcherTrigger object.
-		"""
+	def __destroy(self):
 		self.__editor.remove_trigger(self.__trigger)
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
-		self.__editor.disconnect_signal(self.__signal_id_2, self)
-		if self.__switcher: self.__switcher.emit("destroy")
+		self.__editor.disconnect_signal(self.__sigid1, self.__trigger)
+		if self.__manager: self.__manager.destroy()
 		del self
 		self = None
+		return False
+
+	def __create_trigger(self):
+		trigger = self.__editor.create_trigger("switch_document_window", "ctrl+F9")
+		self.__editor.add_trigger(trigger)
+		return trigger
+
+	def __activate_cb(self, *args):
+		try:
+			self.__manager.switch()
+		except AttributeError:
+			from Manager import Manager
+			self.__manager = Manager(self.__editor)
+			self.__manager.switch()
 		return
+
+	def destroy(self):
+		self.__destroy()
+		return False
