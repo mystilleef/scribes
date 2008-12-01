@@ -19,6 +19,7 @@ class Manager(object):
 		self.__sigid8 = editor.connect("bar-is-active", self.__active_cb)
 		self.__sigid9 = editor.window.connect("scribes-close-window", self.__close_window_cb)
 		self.__sigid10 = editor.window.connect("scribes-close-window-nosave", self.__close_window_nosave_cb)
+		self.__sigid11 = editor.window.connect("shutdown", self.__shutdown_cb)
 		editor.response()
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
@@ -42,6 +43,7 @@ class Manager(object):
 		self.__editor.disconnect_signal(self.__sigid8, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid9, self.__editor.window)
 		self.__editor.disconnect_signal(self.__sigid10, self.__editor.window)
+		self.__editor.disconnect_signal(self.__sigid11, self.__editor.window)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -50,6 +52,7 @@ class Manager(object):
 	def __init_window_bindings(self):
 		self.__bind_shortcut("ctrl+w", "scribes-close-window")
 		self.__bind_shortcut("ctrl+shift+w", "scribes-close-window-nosave")
+		self.__bind_shortcut("ctrl+shift+q", "shutdown")
 		return False
 
 	def __get_keyval(self, shortcut):
@@ -226,4 +229,8 @@ class Manager(object):
 	def __close_window_nosave_cb(self, *args):
 		if self.__bar_is_active: return True
 		self.__editor.close(False)
+		return False
+
+	def __shutdown_cb(self, *args):
+		self.__editor.shutdown()
 		return False

@@ -104,6 +104,7 @@ class Window(object):
 			signal_new("scribes-key-event", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
 			signal_new("scribes-close-window", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
 			signal_new("scribes-close-window-nosave", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
+			signal_new("shutdown", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
 			type_register(type(self.__window))
 		from gtk.gdk import KEY_PRESS_MASK
 		self.__window.add_events(KEY_PRESS_MASK)
