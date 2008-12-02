@@ -33,6 +33,7 @@ class View(object):
 		self.__sigid11 = editor.connect("busy", self.__busy_cb)
 		self.__sigid12 = editor.connect("refresh", self.__refresh_cb)
 		self.__sigid13 = self.__view.connect("move-focus", self.__move_focus_cb)
+		self.__sigid14 = editor.connect("fullscreen", self.__fullscreen_cb)
 		editor.register_object(self)
 				
 	def __init_attributes(self, editor):
@@ -78,6 +79,7 @@ class View(object):
 		self.__editor.disconnect_signal(self.__sigid11, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid12, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid13, self.__view)
+		self.__editor.disconnect_signal(self.__sigid14, self.__editor)
 		if self.__monid1: monitor_cancel(self.__monid1)
 		if self.__monid2: monitor_cancel(self.__monid2)
 		if self.__monid3: monitor_cancel(self.__monid3)
@@ -281,3 +283,8 @@ class View(object):
 	def __move_focus_cb(self, *args):
 		self.__view.stop_emission("move-focus")
 		return True
+
+	def __fullscreen_cb(self, *args):
+		self.__refresh()
+		return False
+

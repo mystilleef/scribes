@@ -52,6 +52,7 @@ class Window(object):
 		self.__sigid12 = self.__window.connect_after("focus-out-event", self.__focus_out_after_event_cb)
 		self.__sigid13 = editor.connect("renamed-file", self.__renamed_file_cb)
 		self.__sigid14 = editor.connect("bar-is-active", self.__active_cb)
+		self.__sigid15 = editor.connect("fullscreen", self.__fullscreen_cb)
 		editor.register_object(self)
 		self.__position_window()
 		editor.response()
@@ -88,6 +89,7 @@ class Window(object):
 		self.__editor.disconnect_signal(self.__sigid12, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid13, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid14, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid15, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -105,6 +107,7 @@ class Window(object):
 			signal_new("scribes-close-window", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
 			signal_new("scribes-close-window-nosave", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
 			signal_new("shutdown", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
+			signal_new("fullscreen", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
 			type_register(type(self.__window))
 		from gtk.gdk import KEY_PRESS_MASK
 		self.__window.add_events(KEY_PRESS_MASK)
@@ -242,16 +245,6 @@ class Window(object):
 		return False
 
 	def __key_press_event_cb(self, window, event):
-#		if self.__bar_is_active: return False
-#		from gtk.gdk import CONTROL_MASK
-#		 We only care when the "Ctrl" modifier is pressed.
-#		if not (event.state & CONTROL_MASK): return False
-#		from gtk import keysyms
-#		 We only care when "w" key is pressed.
-#		if not (event.keyval in (keysyms.W, keysyms.w)): return False
-#		 Ctrl - w will save window position in database.
-#		 Ctrl - Shift - W will not save window position in database.
-#		self.__editor.close(False) if event.keyval == keysyms.W else self.__editor.close()
 		return False
 
 	def __close_cb(self, editor, save_file):
@@ -262,3 +255,9 @@ class Window(object):
 	def __active_cb(self, editor, active):
 		self.__bar_is_active = active
 		return False
+
+	def __fullscreen_cb(self, manager, fullscreen):
+		self.__editor.response()
+		self.__window.fullscreen() if fullscreen else self.__window.unfullscreen()
+		self.__editor.response()
+		return True

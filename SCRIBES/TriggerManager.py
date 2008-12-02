@@ -20,6 +20,7 @@ class Manager(object):
 		self.__sigid9 = editor.window.connect("scribes-close-window", self.__close_window_cb)
 		self.__sigid10 = editor.window.connect("scribes-close-window-nosave", self.__close_window_nosave_cb)
 		self.__sigid11 = editor.window.connect("shutdown", self.__shutdown_cb)
+		self.__sigid12 = editor.window.connect("fullscreen", self.__fullscreen_cb)
 		editor.response()
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
@@ -44,6 +45,7 @@ class Manager(object):
 		self.__editor.disconnect_signal(self.__sigid9, self.__editor.window)
 		self.__editor.disconnect_signal(self.__sigid10, self.__editor.window)
 		self.__editor.disconnect_signal(self.__sigid11, self.__editor.window)
+		self.__editor.disconnect_signal(self.__sigid12, self.__editor.window)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -53,6 +55,7 @@ class Manager(object):
 		self.__bind_shortcut("ctrl+w", "scribes-close-window")
 		self.__bind_shortcut("ctrl+shift+w", "scribes-close-window-nosave")
 		self.__bind_shortcut("ctrl+shift+q", "shutdown")
+		self.__bind_shortcut("F11", "fullscreen")
 		return False
 
 	def __get_keyval(self, shortcut):
@@ -233,4 +236,8 @@ class Manager(object):
 
 	def __shutdown_cb(self, *args):
 		self.__editor.shutdown()
+		return False
+
+	def __fullscreen_cb(self, *args):
+		self.__editor.toggle_fullscreen()
 		return False

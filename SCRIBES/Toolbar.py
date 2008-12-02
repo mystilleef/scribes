@@ -4,6 +4,7 @@ class Toolbar(object):
 		self.__init_attributes(editor)
 		self.__add_toolbuttons()
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
+		self.__sigid2 = editor.connect("fullscreen", self.__fullscreen_cb)
 		self.__set_visibility()
 		self.__toolbar.set_property("sensitive", True)
 		editor.register_object(self)
@@ -15,6 +16,7 @@ class Toolbar(object):
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -86,6 +88,18 @@ class Toolbar(object):
 		self.__toolbar.insert(Spinner(self.__editor), 16)
 		return
 
+	def __show(self):
+		self.__editor.response()
+		self.__toolbar.show()
+		self.__editor.response()
+		return 
+
+	def __hide(self):
+		self.__editor.response()
+		self.__toolbar.hide()
+		self.__editor.response()
+		return 
+
 	def __set_visibility(self):
 		self.__toolbar.show()
 		self.__editor.response()
@@ -93,4 +107,8 @@ class Toolbar(object):
 
 	def __quit_cb(self, *args):
 		self.__destroy()
+		return False
+
+	def __fullscreen_cb(self, editor, fullscreen):
+		self.__hide() if fullscreen else self.__show()
 		return False

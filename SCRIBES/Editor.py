@@ -74,6 +74,7 @@ class Editor(GObject):
 		"add-to-popup": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
 		"add-to-pref-menu": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
 		"remove-from-pref-menu": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
+		"fullscreen": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 	}
 
 	def __init__(self, manager, uri=None, encoding=None):
@@ -171,6 +172,7 @@ class Editor(GObject):
 		from re import UNICODE, compile as compile_
 		self.__word_pattern = compile_("\w+|[-]", UNICODE)
 		self.__bar_is_active = False
+		self.__fullscreen = False
 		return False
 
 	def __destroy(self):
@@ -325,8 +327,18 @@ class Editor(GObject):
 		self.emit("close", save_first)
 		return False
 
+	def fullscreen(self, value=True):
+		self.emit("fullscreen", value)
+		self.__fullscreen = value
+		return
+
+	def toggle_fullscreen(self):
+		value = False if self.__fullscreen else True
+		self.fullscreen(value)
+		return False
+
 	def refresh(self):
-		#FIXME: NOT YET IMPLEMENTED
+		self.emit("refresh")
 		return False
 
 	def save_file(self, uri, encoding="utf-8"):
