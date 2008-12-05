@@ -153,7 +153,7 @@ class View(object):
 		except:
 			pass
 		finally:
-			self.__view.grab_focus()
+#			self.__view.grab_focus()
 			self.__editor.response()
 		return False
 

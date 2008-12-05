@@ -102,10 +102,10 @@ def indent_line(sourceview, line_number):
 					space_list.append(" " * tab_width)
 					new_spaces = space_list
 		else:
-			new_spaces.append(" " * tab_width)
-		if number_of_tabs:
-			new_spaces.append(" " * (number_of_tabs * tab_width))
-		string = "".join(new_spaces)
+				new_spaces.append(" " * tab_width)
+				if number_of_tabs:
+				new_spaces.append(" " * (number_of_tabs * tab_width))
+			string = "".join(new_spaces)
 	else:
 		if not number_of_spaces:
 			tab_list.append("\t")
@@ -114,11 +114,11 @@ def indent_line(sourceview, line_number):
 				tab_list.append("\t")
 			else:
 				if number_of_spaces % tab_width:
-					tab_list.append("\t")
-				tab_stops = number_of_spaces / tab_width
-				if tab_stops:
+				tab_list.append("\t")
+			tab_stops = number_of_spaces / tab_width
+			if tab_stops:
 					tab_list.append("\t" * tab_stops)
-		string = "".join(tab_list)
+	string = "".join(tab_list)
 	sourcebuffer.delete(begin_position, transition_position)
 	begin_position = sourcebuffer.get_iter_at_line(line_number)
 	sourcebuffer.insert(begin_position, string)
