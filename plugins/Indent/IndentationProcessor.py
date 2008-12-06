@@ -26,6 +26,7 @@ class Processor(object):
 		lines = text.splitlines()
 		indented_lines = [(self.__character + line) for line in lines]
 		text = "\n".join(indented_lines)
+		self.__manager.emit("iprocessed-text", text)
 		self.__manager.emit("processed-text", text)
 		return False
 

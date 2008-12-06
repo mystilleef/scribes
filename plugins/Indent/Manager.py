@@ -9,9 +9,12 @@ class Manager(GObject):
 		"indent": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"unindent": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"marks": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"offsets": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"indentation": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"complete": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"extracted-text": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"processed-text": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"iprocessed-text": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"inserted-text": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"character": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
 	}
@@ -22,6 +25,8 @@ class Manager(GObject):
 		Selector(self, editor)
 		from TextInserter import Inserter
 		Inserter(self, editor)
+		from SelectionProcessor import Processor
+		Processor(self, editor)
 		from IndentationProcessor import Processor
 		Processor(self, editor)
 		from IndentationCharacter import Character
@@ -30,6 +35,8 @@ class Manager(GObject):
 		Extractor(self, editor)
 		from Marker import Marker
 		Marker(self, editor)
+		from OffsetExtractor import Extractor
+		Extractor(self, editor)
 
 	def indent(self):
 		self.emit("indent")

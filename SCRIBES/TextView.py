@@ -146,6 +146,7 @@ class View(object):
 	
 	def __refresh(self):
 		try:
+			self.__editor.response()
 			self.__view.queue_draw()
 			self.__view.queue_resize()
 			self.__view.resize_children()
@@ -153,7 +154,7 @@ class View(object):
 		except:
 			pass
 		finally:
-#			self.__view.grab_focus()
+			self.__view.grab_focus()
 			self.__editor.response()
 		return False
 

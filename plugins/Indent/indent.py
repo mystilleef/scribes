@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*-on f -
 # Copyright © 2005 Lateef Alabi-Oki
 #
 # This file is part of Scribes.
@@ -74,14 +74,14 @@ def indent_line(sourceview, line_number):
 	while True:
 		if transition_position.get_char() in (" "):
 			space_list.append(" ")
-		elif transition_position.get_char() in ("\t"):
-			tab_list.append("\t")
+				elif transition_position.get_char() in ("\t"):
+				tab_list.append("\t")
 		else:
 			break
-		transition_position.forward_char()
-	if transition_position.equal(begin_position):
-		if use_spaces:
-			sourcebuffer.insert(begin_position, " " * tab_width)
+			transition_position.forward_char()
+		if transition_position.equal(begin_position):
+			if use_spaces:
+				sourcebuffer.insert(begin_position, " " * tab_width)
 		else:
 			sourcebuffer.insert(begin_position, "\t")
 		return
@@ -93,7 +93,7 @@ def indent_line(sourceview, line_number):
 			if 0 < number_of_spaces < tab_width:
 				new_spaces.append(" " * tab_width)
 			else:
-				if number_of_spaces % tab_width:
+							if number_of_spaces % tab_width:
 					new_spaces.append(" " * tab_width)
 					tab_stops = number_of_spaces / tab_width
 					if tab_stops:
@@ -103,7 +103,7 @@ def indent_line(sourceview, line_number):
 					new_spaces = space_list
 		else:
 				new_spaces.append(" " * tab_width)
-				if number_of_tabs:
+					if number_of_tabs:
 				new_spaces.append(" " * (number_of_tabs * tab_width))
 			string = "".join(new_spaces)
 	else:
