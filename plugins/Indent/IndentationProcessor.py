@@ -1,3 +1,5 @@
+from gettext import gettext as _
+
 class Processor(object):
 
 	def __init__(self, manager, editor):
@@ -58,10 +60,14 @@ class Processor(object):
 		return self.__function(number_of_characters, indentation_width, remainder)
 
 	def __indent(self, number_of_characters, indentation_width, remainder):
+		message = _("Indented line(s)")
+		self.__editor.update_message(message, "pass")
 		if number_of_characters == 0: return " " * indentation_width
 		return " " * (number_of_characters + (indentation_width - remainder))
 
 	def __dedent(self, number_of_characters, indentation_width, remainder):
+		message = _("Dedented line(s)")
+		self.__editor.update_message(message, "pass")
 		if number_of_characters == 0: return ""
 		dedent = remainder if remainder else indentation_width
 		return " " * (number_of_characters - dedent)

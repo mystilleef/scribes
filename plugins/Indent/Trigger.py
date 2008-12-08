@@ -43,6 +43,8 @@ class Trigger(object):
 		return False
 
 	def __popup_cb(self, *args):
+		from PopupMenuItem import PopupMenuItem
+		self.__editor.add_to_popup(PopupMenuItem(self.__editor))
 		return False
 
 	def destroy(self):
