@@ -27,6 +27,7 @@ class Inserter(object):
 		end = self.__editor.textbuffer.get_iter_at_mark(self.__marks[1])
 		self.__editor.textbuffer.delete(start, end)
 		self.__editor.textbuffer.insert_at_cursor(text)
+		self.__editor.refresh()
 		self.__manager.emit("inserted-text")
 		return False
 

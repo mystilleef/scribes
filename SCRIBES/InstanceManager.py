@@ -196,8 +196,8 @@ class Manager(object):
 	def __init_psyco(self):
 		try:
 			from psyco import background, profile, log
-			background()
-			print "Initialized psyco profiling and optimization"
+		#	background()
+		#	print "Initialized psyco profiling and optimization"
 		except ImportError:
 			print "psyco not found"
 		return False
