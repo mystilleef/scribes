@@ -23,9 +23,9 @@ class PopupMenuItem(ImageMenuItem):
 		current_folder = self.__editor.get_current_folder(globals())
 		image = join(current_folder, "bookmarks.png")
 		self.__image = self.__editor.create_image(image)
-		self.__menuitem1 = self.__editor.create_menuitem(_("_Toggle Bookmark (ctrl - d)"))
-		self.__menuitem2 = self.__editor.create_menuitem(_("_Remove All Bookmarks (ctrl - shift - b)"))
-		self.__menuitem3 = self.__editor.create_menuitem(_("_Show Bookmark Browser (ctrl - b)"))
+		self.__menuitem1 = self.__editor.create_menuitem(_("_Toggle Bookmark (ctrl + d)"))
+		self.__menuitem2 = self.__editor.create_menuitem(_("_Remove All Bookmarks (ctrl + shift + b)"))
+		self.__menuitem3 = self.__editor.create_menuitem(_("_Show Bookmark Browser (ctrl + b)"))
 		return
 
 	def __set_properties(self):

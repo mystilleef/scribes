@@ -17,8 +17,8 @@ class PopupMenuItem(ImageMenuItem):
 		self.__image = Image()
 		self.__menu = Menu()
 		self.__textview = editor.textview
-		self.__menuitem1 = editor.create_menuitem(_("Shift _Right"), STOCK_INDENT)
-		self.__menuitem2 = editor.create_menuitem(_("Shift _Left"), STOCK_UNINDENT)
+		self.__menuitem1 = editor.create_menuitem(_("Shift _Right (ctrl + t)"), STOCK_INDENT)
+		self.__menuitem2 = editor.create_menuitem(_("Shift _Left (ctrl + shift + t)"), STOCK_UNINDENT)
 		return
 
 	def __set_properties(self):

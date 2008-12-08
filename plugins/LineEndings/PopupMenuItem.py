@@ -1,33 +1,10 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
 from gtk import MenuItem
+from gettext import gettext as _
 
 class PopupMenuItem(MenuItem):
-	"""
-	This class creates the bookmarks popup menu for the text editor.
-	"""
 
 	def __init__(self, editor):
-		from i18n import msg7
-		MenuItem.__init__(self, msg7)
+		MenuItem.__init__(self, _("Line En_dings"))
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__sigid1 = self.__menuitem1.connect("activate", self.__activate_cb)
@@ -39,13 +16,13 @@ class PopupMenuItem(MenuItem):
 		self.__editor = editor
 		from gtk import Menu
 		self.__menu = Menu()
-		from i18n import msg4, msg5, msg6
-		self.__menuitem1 = self.__editor.create_menuitem(msg4)
-		self.__menuitem2 = self.__editor.create_menuitem(msg5)
-		self.__menuitem3 = self.__editor.create_menuitem(msg6)
+		self.__menuitem1 = self.__editor.create_menuitem(_("Convert to _Unix (alt + 1)"))
+		self.__menuitem2 = self.__editor.create_menuitem(_("Convert to _Mac (alt + 2)"))
+		self.__menuitem3 = self.__editor.create_menuitem(_("Convert to _Windows (alt + 3)"))
 		return
 
 	def __set_properties(self):
+		self.set_property("name", "Line Endings Popup MenuItem")
 		self.set_submenu(self.__menu)
 		self.__menu.append(self.__menuitem1)
 		self.__menu.append(self.__menuitem2)
@@ -66,9 +43,6 @@ class PopupMenuItem(MenuItem):
 		self.__editor.disconnect_signal(self.__sigid2, self.__menuitem2)
 		self.__editor.disconnect_signal(self.__sigid3, self.__menuitem3)
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor.textview)
-		self.__menuitem1.destroy()
-		self.__menuitem2.destroy()
-		self.__menuitem3.destroy()
 		self.__menu.destroy()
 		self.destroy()
 		del self

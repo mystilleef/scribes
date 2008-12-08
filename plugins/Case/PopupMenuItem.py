@@ -21,9 +21,9 @@ class PopupMenuItem(ImageMenuItem):
 		self.__image.set_property("stock", STOCK_SORT_DESCENDING)
 		self.__editor = editor
 		self.__menu = Menu()
-		self.__menuitem1 = editor.create_menuitem(_("_Togglecase"))
-		self.__menuitem2 = editor.create_menuitem(_("_Titlecase"))
-		self.__menuitem3 = editor.create_menuitem(_("_Swapcase"))
+		self.__menuitem1 = editor.create_menuitem(_("_Togglecase (alt + u)"))
+		self.__menuitem2 = editor.create_menuitem(_("_Titlecase (alt + shift + u)"))
+		self.__menuitem3 = editor.create_menuitem(_("_Swapcase  (alt + shift + l)"))
 		return
 
 	def __set_properties(self):

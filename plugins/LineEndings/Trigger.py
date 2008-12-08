@@ -1,39 +1,8 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2008 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that creates triggers to perform line ending
-operations (i.e converting line endings to unix/mac/windows).
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2008 Lateef Alabi-Oki
-@license: GNU GPLv3 or Later
-@contact: mystilleef@gmail.com
-"""
-
 class Trigger(object):
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
-		self.__sigid1 = editor.textview.connect_after("populate-popup", self.__popup_cb)
+		self.__sigid1 = editor.textview.connect("populate-popup", self.__popup_cb)
 		self.__sigid2 = self.__trigger1.connect("activate", self.__to_unix_cb)
 		self.__sigid3 = self.__trigger2.connect("activate", self.__to_mac_cb)
 		self.__sigid4 = self.__trigger3.connect("activate", self.__to_windows_cb)
@@ -65,8 +34,7 @@ class Trigger(object):
 
 	def __popup_cb(self, textview, menu):
 		from PopupMenuItem import PopupMenuItem
-		menu.prepend(PopupMenuItem(self.__editor))
-		menu.show_all()
+		self.__editor.add_to_popup(PopupMenuItem(self.__editor))
 		return False
 
 	def __to_unix_cb(self, *args):
