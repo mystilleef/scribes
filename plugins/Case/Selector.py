@@ -23,7 +23,9 @@ class Selector(object):
 	def __select(self):
 		start = self.__editor.textbuffer.get_iter_at_mark(self.__marks[0])
 		end = self.__editor.textbuffer.get_iter_at_mark(self.__marks[1])
+		self.__editor.response()
 		self.__editor.textbuffer.select_range(start, end)
+		self.__editor.response()
 		self.__manager.emit("complete")
 		self.__marks = None
 		return False

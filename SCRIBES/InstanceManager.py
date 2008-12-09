@@ -174,7 +174,7 @@ class Manager(object):
 		return False
 
 	def __focus(self, editor):
-		editor.response()
+		editor.refresh()
 		if editor.window.get_data("minimized"): editor.window.deiconify()
 		coordinates = None if editor.window.get_data("maximized") else editor.window.get_position()
 		editor.response()
@@ -183,9 +183,7 @@ class Manager(object):
 		if coordinates: editor.window.move(coordinates[0], coordinates[1])
 		editor.response()
 		editor.window.present()
-		editor.response()
-		editor.textview.grab_focus()
-		editor.response()
+		editor.refresh()
 		return False
 
 	def __init_garbage_collector(self):

@@ -150,7 +150,7 @@ class View(object):
 			self.__view.queue_draw()
 			self.__view.queue_resize()
 			self.__view.resize_children()
-#			self.__view.window.process_updates(True)
+			self.__view.window.process_updates(True)
 		except:
 			pass
 		finally:

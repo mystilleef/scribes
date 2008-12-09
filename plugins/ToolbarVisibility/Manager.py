@@ -1,50 +1,29 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that manages the minimal view mode.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
 class Manager(object):
-	"""
-	Creates object that manages minimal view mode.
-	"""
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
-		self.__sig_id_1 = editor.textview.connect("motion-notify-event", self.__motion_notify_event_cb)
-		self.__sig_id_2	= editor.window.connect("leave-notify-event", self.__hide_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__monitor_mouse, priority=PRIORITY_LOW)
+		self.__sigid1 = editor.textview.connect("motion-notify-event", self.__motion_notify_event_cb)
+		self.__sigid2 = editor.window.connect("leave-notify-event", self.__hide_cb)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monid1 = monitor_add(self.__uri, MONITOR_FILE, self.__changed_cb)
+		from gobject import idle_add
+		idle_add(self.__monitor_mouse, priority=9999)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__activate = False
 		self.__show = None
+		self.__uri = self.__get_database_uri(editor)
 		return
+
+	def __get_database_uri(self, editor):
+		# Path to the font database.
+		from os.path import join
+		folder = join(editor.metadata_folder, "Preferences")
+		file_path = join(folder, "MinimalMode.gdb")
+		from gnomevfs import get_uri_from_local_path as get_uri
+		uri = get_uri(file_path)
+		return uri
 
 	def __monitor_mouse(self):
 		self.__disable_mouse_monitor()
@@ -55,7 +34,7 @@ class Manager(object):
 	def __show_hide_full_view(self, widget):
 		if self.__activate is False: return False
 		x, y, type_ = widget.window.get_pointer()
-		if y <= 17:
+		if y <= 21:
 			if self.__show is True: return False
 			self.__show_full_view()
 		else:
@@ -80,36 +59,30 @@ class Manager(object):
 		return False
 
 	def __show_full_view(self):
-		self.__editor.toolbar.set_no_show_all(False)
-		self.__editor.statuscontainer.set_no_show_all(False)
-		self.__editor.toolbar.show_all()
-		self.__editor.toolbarcontainer.show_all()
-		self.__editor.statuscontainer.show_all()
-		self.__editor.statuscontainer.set_no_show_all(True)
-		self.__editor.toolbar.set_no_show_all(True)
+		self.__editor.refresh(False)
+		self.__editor.toolbar.show()
+		self.__editor.statusbar.show()
+		self.__editor.refresh(False)
 		self.__show = True
 		return False
 
 	def __hide_full_view(self):
-		self.__editor.toolbar.set_no_show_all(False)
-		self.__editor.statuscontainer.set_no_show_all(False)
+		self.__editor.refresh()
 		self.__editor.toolbar.hide()
-		self.__editor.toolbarcontainer.hide()
-		self.__editor.statuscontainer.hide()
-		self.__editor.statuscontainer.set_no_show_all(True)
-		self.__editor.toolbar.set_no_show_all(True)
+		self.__editor.statusbar.hide()
+		self.__editor.refresh()
 		self.__show = False
 		return False
 
 	def __disable_mouse_monitor(self):
-		self.__editor.textview.handler_block(self.__sig_id_1)
-		self.__editor.window.handler_block(self.__sig_id_2)
+		self.__editor.textview.handler_block(self.__sigid1)
+		self.__editor.window.handler_block(self.__sigid2)
 		self.__activate = False
 		return
 
 	def __enable_mouse_monitor(self):
-		self.__editor.textview.handler_unblock(self.__sig_id_1)
-		self.__editor.window.handler_unblock(self.__sig_id_2)
+		self.__editor.textview.handler_unblock(self.__sigid1)
+		self.__editor.window.handler_unblock(self.__sigid2)
 		self.__activate = True
 		return
 
@@ -125,8 +98,14 @@ class Manager(object):
 		return
 
 	def destroy(self):
-		self.__editor.disconnect_signal(self.__sig_id_1, self.__editor.textview)
-		self.__editor.disconnect_signal(self.__sig_id_2, self.__editor.window)
+		from gnomevfs import monitor_cancel
+		monitor_cancel(self.__monid1)
+		self.__editor.disconnect_signal(self.__sigid1, self.__editor.textview)
+		self.__editor.disconnect_signal(self.__sigid2, self.__editor.window)
 		del self
 		self = None
 		return
+
+	def __changed_cb(self, *args):
+		self.__monitor_mouse()
+		return False

@@ -1,4 +1,4 @@
-from SCRIBES.Utils import open_database
+from Utils import open_database
 basepath = "Preferences/MinimalMode.gdb"
 
 def get_value():

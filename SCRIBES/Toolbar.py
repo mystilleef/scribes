@@ -8,13 +8,24 @@ class Toolbar(object):
 		self.__set_visibility()
 		self.__toolbar.set_property("sensitive", True)
 		editor.register_object(self)
+		from gnomevfs import monitor_add, MONITOR_FILE
+		self.__monid1 = monitor_add(self.__uri, MONITOR_FILE, self.__changed_cb)
+
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__toolbar = editor.gui.get_widget("Toolbar")
+		# Path to the font database.
+		from os.path import join
+		folder = join(editor.metadata_folder, "Preferences")
+		file_path = join(folder, "MinimalMode.gdb")
+		from gnomevfs import get_uri_from_local_path as get_uri
+		self.__uri = get_uri(file_path)
 		return
 
 	def __destroy(self):
+		from gnomevfs import monitor_cancel
+		monitor_cancel(self.__monid1)
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.unregister_object(self)
@@ -89,20 +100,20 @@ class Toolbar(object):
 		return
 
 	def __show(self):
-		self.__editor.response()
+		self.__editor.refresh()
 		self.__toolbar.show()
-		self.__editor.response()
+		self.__editor.refresh()
 		return 
 
 	def __hide(self):
-		self.__editor.response()
+		self.__editor.refresh()
 		self.__toolbar.hide()
-		self.__editor.response()
+		self.__editor.refresh()
 		return 
 
 	def __set_visibility(self):
-		self.__toolbar.show()
-		self.__editor.response()
+		from MinimalModeMetadata import get_value as minimal_mode
+		self.__hide() if minimal_mode() else self.__show()
 		return
 
 	def __quit_cb(self, *args):
@@ -110,5 +121,9 @@ class Toolbar(object):
 		return False
 
 	def __fullscreen_cb(self, editor, fullscreen):
-		self.__hide() if fullscreen else self.__show()
+		self.__hide() if fullscreen else self.__set_visibility()
+		return False
+
+	def __changed_cb(self, *args):
+		self.__set_visibility()
 		return False
