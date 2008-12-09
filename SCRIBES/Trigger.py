@@ -94,7 +94,9 @@ class Trigger(GObject):
 
 	def activate(self):
 		self.__editor.response()
+		self.__editor.refresh()
 		self.emit("activate")
+		self.__editor.refresh()
 		self.__editor.response()
 		return
 

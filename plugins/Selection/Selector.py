@@ -27,22 +27,20 @@ class Selector(object):
 
 	def __select_word(self):
 		try:
-			self.__editor.busy()
 			if self.__editor.inside_word() is False: raise ValueError
 			start, end = self.__editor.get_word_boundary()
+			self.__editor.response()
 			self.__editor.textbuffer.select_range(start, end)
+			self.__editor.response()
 			line = start.get_line() + 1
 			message = _("Selected word on line %d") % line
 			self.__editor.update_message(message, "pass")
 		except ValueError:
 			self.__editor.update_message(_("No word to select"), "fail")
-		finally:
-			self.__editor.busy(False)
 		return False
 
 	def __select_statement(self):
 		try:
-			self.__editor.busy()
 			start = self.__editor.backward_to_line_begin()
 			if start.ends_line(): raise ValueError
 			cursor = self.__editor.cursor.copy()
@@ -52,37 +50,35 @@ class Selector(object):
 			while start.starts_sentence() is False: start.backward_char()
 			end = self.__editor.cursor.copy()
 			while end.ends_sentence() is False: end.forward_char()
+			self.__editor.response()
 			self.__editor.textbuffer.select_range(start, end)
+			self.__editor.response()
 			line = start.get_line() + 1   
 			message = _("Selected statement on line %d") % line
 			self.__editor.update_message(message, "pass")
 		except ValueError:
 			message = _("No text to select")
 			self.__editor.update_message(message, "fail")
-		finally:
-			self.__editor.busy(False)
 		return False
 
 	def __select_line(self):
 		try:
-			self.__editor.busy()
 			start = self.__editor.backward_to_line_begin()
 			if start.ends_line(): raise ValueError
 			end = self.__editor.forward_to_line_end()
+			self.__editor.response()
 			self.__editor.textbuffer.select_range(start, end)
+			self.__editor.response()
 			line = start.get_line() + 1
 			message = _("Selected line %d") % line
 			self.__editor.update_message(message, "pass")
 		except ValueError:
 			message = _("No text to select")
 			self.__editor.update_message(message, "fail")
-		finally:
-			self.__editor.busy(False)
 		return False
 
 	def __select_paragraph(self):
 		try:
-			self.__editor.busy()
 			if self.__editor.is_empty_line(): raise ValueError
 			start = self.__editor.cursor.copy()
 			while True:
@@ -95,14 +91,14 @@ class Selector(object):
 				if self.__editor.is_empty_line(end): break
 				success = end.forward_line()
 				if success is False: break
+			self.__editor.response()
 			self.__editor.textbuffer.select_range(start, end)
+			self.__editor.response()
 			message = _("Selected paragraph")
 			self.__editor.update_message(message, "pass")
 		except ValueError:
 			message = _("No text to select")
 			self.__editor.update_message(message, "fail")
-		finally:
-			self.__editor.busy(False)
 		return False
 
 	def __select_word_cb(self, *args):

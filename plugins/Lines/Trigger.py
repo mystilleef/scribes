@@ -9,6 +9,7 @@ class Trigger(object):
 		self.__sigid5 = self.__trigger5.connect("activate", self.__cursor_to_end_cb)
 		self.__sigid6 = self.__trigger6.connect("activate", self.__cursor_to_start_cb)
 		self.__sigid7 = self.__trigger7.connect("activate", self.__duplicate_line_cb)
+		self.__sigid8 = editor.textview.connect("populate-popup", self.__popup_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -34,6 +35,7 @@ class Trigger(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__trigger5)
 		self.__editor.disconnect_signal(self.__sigid6, self.__trigger6)
 		self.__editor.disconnect_signal(self.__sigid7, self.__trigger7)
+		self.__editor.disconnect_signal(self.__sigid8, self.__editor.textview)
 		del self
 		self = None
 		return False
@@ -76,6 +78,11 @@ class Trigger(object):
 	def __cursor_to_start_cb(self, *args):
 		self.__get_manager().delete_cursor_to_start()
 		return
+
+	def __popup_cb(self, *args):
+		from PopupMenuItem import PopupMenuItem
+		self.__editor.add_to_popup(PopupMenuItem(self.__editor))
+		return False
 
 	def destroy(self):
 		self.__destroy()

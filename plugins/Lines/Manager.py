@@ -1,16 +1,18 @@
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE
+from gobject import SIGNAL_NO_RECURSE, SIGNAL_ACTION
+SCRIBES_SIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 
 class Manager(GObject):
 
 	__gsignals__ = {
-	"delete-line": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	"join-line": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	"duplicate-line": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	"delete-cursor-to-end": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	"delete-cursor-to-start": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	"free-line-below": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	"free-line-above": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+	"delete-line": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+	"join-line": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+	"duplicate-line": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+	"delete-cursor-to-end": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+	"delete-cursor-to-start": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+	"free-line-below": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+	"free-line-above": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+	"destroy": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	}
 	
 	def __init__(self, editor):

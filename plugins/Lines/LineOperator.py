@@ -169,14 +169,12 @@ class Operator(object):
 
 	def __delete_line(self):
 		try:
-			self.__editor.busy()
 			self.__editor.textbuffer.begin_user_action()
 			self.__delete_single_line()
 			self.__editor.textbuffer.end_user_action()
 			message = _("Deleted line %d") % (self.__editor.cursor.get_line() + 1)
 			self.__editor.update_message(message, "pass")
 		finally:
-			self.__editor.busy(False)
 			self.__editor.move_view_to_cursor()
 		return 
 	
@@ -205,7 +203,6 @@ class Operator(object):
 
 	def __delete_last_line(self):
 		try:
-			self.__editor.busy()
 			self.__editor.textbuffer.begin_user_action()
 			self.__delete_single_line()
 			iterator = self.__editor.cursor.copy()
@@ -217,7 +214,6 @@ class Operator(object):
 			self.__editor.textbuffer.end_user_action()
 			self.__editor.update_message(_("Deleted last line"), "pass")
 		finally:
-			self.__editor.busy(False)
 			self.__editor.move_view_to_cursor()
 		return 
 
