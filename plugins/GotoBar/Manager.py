@@ -1,12 +1,14 @@
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_INT
+from gobject import SIGNAL_NO_RECURSE, SIGNAL_ACTION
+SCRIBES_SIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 
 class Manager(GObject):
 
 	__gsignals__ = {
-		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"show-bar": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"hide-bar": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"line-number": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_INT,)),
+		"destroy": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"show-bar": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"hide-bar": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"line-number": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_INT,)),
 	}
 
 	def __init__(self, editor):

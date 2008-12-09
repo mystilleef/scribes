@@ -70,7 +70,7 @@ class Editor(GObject):
 		"add-triggers": (SACTION, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"remove-triggers": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"trigger": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
-		"refresh": (SSIGNAL, TYPE_NONE, ()),
+		"refresh": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"add-to-popup": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
 		"add-to-pref-menu": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
 		"remove-from-pref-menu": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
@@ -187,8 +187,7 @@ class Editor(GObject):
 		del self
 		self = None
 		from gc import collect
-		from thread import start_new_thread
-		start_new_thread(collect, ())
+		collect()
 		return False
 
 	def __init_plugins(self):
@@ -337,8 +336,8 @@ class Editor(GObject):
 		self.fullscreen(value)
 		return False
 
-	def refresh(self):
-		self.emit("refresh")
+	def refresh(self, grab_focus=True):
+		self.emit("refresh", grab_focus)
 		return False
 
 	def save_file(self, uri, encoding="utf-8"):

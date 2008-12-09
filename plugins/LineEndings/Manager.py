@@ -5,10 +5,10 @@ SCRIBES_SIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 class Manager(GObject):
 
 	__gsignals__ = {
-		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"to-unix": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"to-mac": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"to-windows": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"destroy": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"to-unix": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"to-mac": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"to-windows": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):

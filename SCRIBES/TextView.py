@@ -144,7 +144,7 @@ class View(object):
 #		self.__view.props.sensitive = sensitive
 		return False
 	
-	def __refresh(self):
+	def __refresh(self, grab_focus=True):
 		try:
 			self.__editor.response()
 			self.__view.queue_draw()
@@ -154,7 +154,7 @@ class View(object):
 		except:
 			pass
 		finally:
-			self.__view.grab_focus()
+			if grab_focus: self.__view.grab_focus()
 			self.__editor.response()
 		return False
 
@@ -220,8 +220,8 @@ class View(object):
 		context.finish(True, False, timestamp)
 		return True
 
-	def __refresh_cb(self, *args):
-		self.__refresh()
+	def __refresh_cb(self, editor, grab_focus):
+		self.__refresh(grab_focus)
 		return False
 
 ################################################################################

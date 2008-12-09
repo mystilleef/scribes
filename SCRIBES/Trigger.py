@@ -93,11 +93,9 @@ class Trigger(GObject):
 	removable = property(__get_removable)
 
 	def activate(self):
-		self.__editor.response()
 		self.__editor.refresh()
 		self.emit("activate")
-		self.__editor.refresh()
-		self.__editor.response()
+		self.__editor.refresh(False)
 		return
 
 	def destroy(self):
