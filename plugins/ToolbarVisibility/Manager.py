@@ -8,6 +8,7 @@ class Manager(object):
 		self.__monid1 = monitor_add(self.__uri, MONITOR_FILE, self.__changed_cb)
 		from gobject import idle_add
 		idle_add(self.__monitor_mouse, priority=9999)
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -108,4 +109,10 @@ class Manager(object):
 
 	def __changed_cb(self, *args):
 		self.__monitor_mouse()
+		return False
+
+	def __precompile_methods(self):
+		methods= (self.__show_hide_full_view, self.__show_full_view,
+			self.__hide_full_view, self.__motion_notify_event_cb)
+		self.__editor.optimize(methods)
 		return False
