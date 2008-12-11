@@ -10,9 +10,9 @@ class Trigger(object):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__view = editor.textview
-		self.__manager = None
-		self.__trigger1 = self.__create_trigger("next_paragraph", "ctrl+Down")
-		self.__trigger2 = self.__create_trigger("previous_paragraph", "ctrl+Up")
+		self.__manager = None 
+		self.__trigger1 = self.__create_trigger("next_paragraph", "alt+Right")
+		self.__trigger2 = self.__create_trigger("previous_paragraph", "alt+Left")
 		self.__trigger3 = self.__create_trigger("reflow_paragraph", "alt+q")
 		return
 

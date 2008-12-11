@@ -47,7 +47,7 @@ class Trigger(object):
 		self.__manager = None
 		self.__trigger1 = self.__create_trigger("select_word", "alt+w")
 		self.__trigger2 = self.__create_trigger("select_statement", "alt+s")
-		self.__trigger3 = self.__create_trigger("select_line", "al+l")
+		self.__trigger3 = self.__create_trigger("select_line", "alt+l")
 		self.__trigger4 = self.__create_trigger("select_paragraph", "alt+p")
 		return
 
