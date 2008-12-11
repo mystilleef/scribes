@@ -1,194 +1,93 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2007 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that implements paragraph operations.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2007 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
+from gettext import gettext as _
 
 class Manager(object):
-	"""
-	This class implements paragraph operations.
-	"""
 
 	def __init__(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__buffer = editor.textbuffer
-		self.__feedback = editor.feedback
 		return
 
-########################################################################
-#
-#							Public Methods
-#
-########################################################################
-
 	def previous_paragraph(self):
-		"""
-		Move cursor to previous paragraph.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
-		cursor_iterator = self.__editor.get_cursor_iterator()
+		cursor_iterator = self.__editor.cursor
 		current_line = cursor_iterator.get_line()
 		try:
 			if current_line == 0: raise RuntimeError
 			line = self.__find_empty_line(cursor_iterator)
 			if line is None: raise ValueError
 			self.__jump_to_line(line)
-			from i18n import msg0003
-			self.__feedback.update_status_message(msg0003, "yes", 5)
+			message = _("Moved to previous paragraph")
+			self.__editor.update_message(message, "pass")
 		except RuntimeError:
-			from i18n import msg0004
-			self.__feedback.update_status_message(msg0004, "warning", 5)
+			message = _("No previous paragraph")
+			self.__editor.update_message(message, "fail")
 		except ValueError:
 			self.__jump_to_line(0)
 		return
 
 	def next_paragraph(self):
-		"""
-		Move cursor to next paragraph.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		number_of_lines = self.__buffer.get_line_count()
-		cursor_iterator = self.__editor.get_cursor_iterator()
+		cursor_iterator = self.__editor.cursor
 		current_line = cursor_iterator.get_line()
 		try:
 			if current_line == number_of_lines-1: raise RuntimeError
 			line = self.__find_empty_line(cursor_iterator, False)
 			if line is None: raise ValueError
 			self.__jump_to_line(line)
-			from i18n import msg0005
-			self.__feedback.update_status_message(msg0005, "yes", 5)
+			message = _("Moved to next paragraph")
+			self.__editor.update_message(message, "pass")
 		except RuntimeError:
-			from i18n import msg0006
-			self.__feedback.update_status_message(msg0006, "warning", 5)
+			message = _("No next paragraph")
+			self.__editor.update_message(message, "fail")
 		except ValueError:
 			self.__jump_to_line(number_of_lines-1)
 		return
 
 	def select_paragraph(self):
-		"""
-		Select a paragraph.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		try:
 			begin, end = self.__get_paragraph_position()
 			self.__buffer.select_range(begin, end)
-			from i18n import msg0007
-			self.__feedback.update_status_message(msg0007, "yes", 5)
+			message = _("Selected paragraph")
+			self.__editor.update_message(message, "pass")
 		except RuntimeError:
-			from i18n import msg0001
-			self.__feedback.update_status_message(msg0001, "warning", 5)
+			message = _("No paragraph found")
+			self.__editor.update_message(message, "fail")
 		return
 
 	def reflow_paragraph(self):
-		"""
-		Reflow paragraph based on right margin position.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		if self.__is_readonly(): return
 		try:
 			start, end = self.__get_paragraph_position()
 		except RuntimeError:
-			from i18n import msg0001
-			self.__feedback.update_status_message(msg0001, "warning", 5)
+			message = _("No paragraph found")
+			self.__editor.update_message(message, "fail")
 			return
 		text = start.get_text(end)
 		try:
 			text = self.__reflow_text(text)
 		except RuntimeError:
-			from i18n import msg0002
-			self.__feedback.update_status_message(msg0002, "warning", 5)
+			message = _("No text found")
+			self.__editor.update_message(message, "fail")
 			return
 		self.__buffer.begin_user_action()
 		self.__buffer.delete(start, end)
 		self.__buffer.insert_at_cursor(text)
 		self.__buffer.end_user_action()
-		from i18n import msg0009
-		message = msg0009
-		self.__feedback.update_status_message(message, "yes", 5)
+		message = _("Reflowed paragraph")
+		self.__editor.update_message(message, "pass")
 		return
 
 	def destroy(self):
-		"""
-		Destroy object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		del self
 		self = None
 		return
 
-################################################################################
-#
-#						Paragraph Helper Methods
-#
-################################################################################
 
 	def __get_paragraph_position(self):
-		"""
-		Get start and end paragraph positions.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@return: The position of a paragraph.
-		@rtype: A Tuple object.
-		"""
 		iterator = self.__get_current_line_iterator()
 		if iterator.is_start() and iterator.is_end(): raise RuntimeError
 		if self.__is_empty_line(iterator): raise RuntimeError
@@ -208,33 +107,12 @@ class Manager(object):
 		return begin, end
 
 	def __get_current_line_iterator(self):
-		"""
-		Get iterator at start of current line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@return: Return the iterator at start of current line.
-		@rtype: A gtk.TextIter object.
-		"""
-		iterator = self.__editor.get_cursor_iterator()
+		iterator = self.__editor.cursor
 		if iterator.starts_line(): return iterator
 		line = iterator.get_line()
 		return self.__buffer.get_iter_at_line(line)
 
 	def __find_empty_line(self, iterator, backwards=True):
-		"""
-		Search backwards for empty lines.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param iterator: The cursor position
-		@type iterator: A gtk.TextIter object.
-
-		@return: Line number of empty line or None
-		@rtype: An Integer or None object.
-		"""
 		while True:
 			if backwards:
 				if not iterator.backward_line(): return None
@@ -244,18 +122,6 @@ class Manager(object):
 		return None
 
 	def __is_empty_line(self, iterator):
-		"""
-		Whether or not a line is empty.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param iterator: Reference a position in the buffer.
-		@type iterator: A gtk.TextIter object.
-
-		@return: True if line is empty.
-		@rtype: A Boolean object.
-		"""
 		if iterator.ends_line(): return True
 		temporary_iterator = iterator.copy()
 		temporary_iterator.forward_to_line_end()
@@ -265,40 +131,12 @@ class Manager(object):
 		return False
 
 	def __jump_to_line(self, line):
-		"""
-		Move cursor to a specific line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param line: Line to jump to.
-		@type line: An Integer object.
-		"""
 		iterator = self.__buffer.get_iter_at_line(line)
 		self.__buffer.place_cursor(iterator)
 		self.__editor.move_view_to_cursor()
 		return
 
-########################################################################
-#
-#					Paragraph Reflow Helper Methods
-#
-########################################################################
-
 	def __reflow_text(self, text):
-		"""
-		Realign lines in text such that is line is not more than a
-		specified character long.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param text: Text to reflow.
-		@type text: A String object.
-
-		@return: Realigned text.
-		@rtype: A String object.
-		"""
 		if not text or text.isspace(): raise RuntimeError
 		text_lines = text.split("\n")
 		indentation = self.__get_indentation(text_lines[0])
@@ -322,22 +160,6 @@ class Manager(object):
 		return "\n".join(indented_reflowed_lines)
 
 	def __shorten_line(self, line, wrap_width):
-		"""
-		Shorten a line to a specified wrap width.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param line: Line to shorten.
-		@type line: A String object.
-
-		@param wrap_width: How long the line should be.
-		@type wrap_width: An Integer object.
-
-		@return: The shortened line and other strings that exceed the
-			specified wrap width.
-		@rtype: A Tuple object.
-		"""
 		from textwrap import wrap
 		line = line.strip()
 		new_lines = wrap(line, wrap_width, expand_tabs=False, replace_whitespace=False)
@@ -346,36 +168,12 @@ class Manager(object):
 		return new_line.strip(), remainder.strip()
 
 	def __indent_lines(self, reflowed_lines, indentation):
-		"""
-		Perform automatic indentation on each line, if necessary.
-
-		Automatic indentation is based on the indentation of the first
-		line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param reflowed_lines: Realigned lines for indentation.
-		@type reflowed_lines: A List object.
-
-		@return: A list of indented lines.
-		@rtype: A List object.
-		"""
 		if len(reflowed_lines) < 2: return reflowed_lines
 		indent_line = lambda x: indentation + x.strip()
 		indented_lines = map(indent_line, reflowed_lines)
 		return indented_lines
 
 	def __get_indentation(self, line):
-		"""
-		Determine the indentation of a line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param line: A line to check for indentation.
-		@type line: A String object.
-		"""
 		indentation_list = []
 		for char in line:
 			if not (char in [" ", "\t"]): break
@@ -383,18 +181,6 @@ class Manager(object):
 		return "".join(indentation_list)
 
 	def __respace_line(self, line):
-		"""
-		Remove duplicate spaces in a line.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param line: A line to remove duplicate spaces from.
-		@type line: A String object.
-
-		@return: A new line with single spaces.
-		@rtype: A String object.
-		"""
 		line = line.split(" ")
 		while True:
 			try:
@@ -404,21 +190,6 @@ class Manager(object):
 		return " ".join(line)
 
 	def __calculate_wrap_width(self, indentation):
-		"""
-		Determine wrap width.
-
-		This function calculates the wrap width paying attention to
-		automatic indentation.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param indentation: An indentation strings.
-		@type indentation: A String object.
-
-		@return: wrap width.
-		@rtype: An Integer object.
-		"""
 		width = self.__get_right_margin_width()
 		if not indentation: return width
 		tab_width = self.__get_tab_width()
@@ -428,55 +199,18 @@ class Manager(object):
 		return width
 
 	def __get_tab_width(self):
-		"""
-		Get tab width from GConf.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@return: Tab width.
-		@rtype: An Integer object.
-		"""
-		from TabWidthMetadata import get_value
-		tab_width = get_value()
-		return tab_width
+		return self.__editor.textview.get_tab_width()
 
 	def __is_readonly(self):
-		"""
-		Check if editor is in readonly mode.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@return: True if editor is in readonly mode.
-		@rtype: A Boolean object.
-		"""
-		if not (self.__editor.is_readonly): return False
-		from i18n import msg0010
-		self.__editor.feedback.update_status_message(msg0010, "warning", 7)
+		if not (self.__editor.readonly): return False
+		message = _("Editor is in readonly mode")
+		self.__editor.update_message(message, "fail")
 		return True
 
 	def __get_right_margin_width(self):
-		"""
-		Get margin or wrap width from Gconf.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@return: Margin/wrap width.
-		@rtype: An Integer object.
-		"""
-		from MarginPositionMetadata import get_value
-		margin_position = get_value()
-		return margin_position
+		return self.__editor.textview.get_right_margin_position()
 
 	def __precompile_methods(self):
-		"""
-		Optimize methods using Psyco.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-		"""
 		try:
 			from psyco import bind
 			bind(self.reflow_paragraph)

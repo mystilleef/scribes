@@ -10,7 +10,7 @@ class Manager(object):
 		self.__init_attributes(editor)
 		self.__init_window_bindings()
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.window.connect("scribes-key-event", self.__scribes_key_event_cb)
+		self.__sigid2 = self.__accelgroup.connect("accel-activate", self.__accel_activate_cb)
 		self.__sigid3 = editor.connect("trigger", self.__trigger_cb)
 		self.__sigid4 = editor.connect("add-trigger", self.__add_trigger_cb)
 		self.__sigid5 = editor.connect("remove-trigger", self.__remove_trigger_cb)
@@ -30,12 +30,15 @@ class Manager(object):
 		self.__editor = editor
 		# A mapping of the format: {trigger_name: (trigger_object, shortcut)}
 		self.__trigger_dictionary = {}
+		self.__accel_dictionary = {}
+		from gtk import accel_groups_from_object
+		self.__accelgroup = accel_groups_from_object(self.__editor.window)[0]
 		self.__bar_is_active = False
 		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor.window)
+		self.__editor.disconnect_signal(self.__sigid2, self.__accelgroup)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
@@ -82,8 +85,19 @@ class Manager(object):
 		self.__editor.add_shortcut((keyval, modifier))
 		return False
 
+	def __btest(self, shortcut, trigger):
+		if not shortcut: return False
+		keyval = self.__get_keyval(shortcut)
+		modifier = self.__get_modifier(shortcut)
+		add = self.__editor.window.add_accelerator
+		from gtk import ACCEL_LOCKED
+		add("scribes-key-event", self.__accelgroup, keyval, modifier, ACCEL_LOCKED)
+		self.__accel_dictionary[(keyval, modifier)] = trigger
+		return False
+
+
 	def __precompile_methods(self):
-		methods = (self.__scribes_key_event_cb, self.__activate)
+		methods = (self.__accel_activate_cb, self.__activate)
 		self.__editor.optimize(methods)
 		return False
 
@@ -102,7 +116,7 @@ class Manager(object):
 			shortcut = trigger.accelerator #self.__format_accelerator(trigger.accelerator)
 			self.__validate_trigger(trigger, shortcut)
 			self.__trigger_dictionary[trigger.name] = trigger, shortcut
-			self.__bind_shortcut(shortcut)
+			self.__btest(shortcut, trigger)
 		except InvalidTriggerNameError:
 			print "Error: %s is not a valid trigger name." % trigger.name
 		except DuplicateTriggerNameError:
@@ -179,9 +193,7 @@ class Manager(object):
 	def __activate(self, shortcut):
 		for trigger, accel in self.__trigger_dictionary.values():
 			if accel != shortcut: continue
-			self.__editor.response()
 			trigger.activate()
-			self.__editor.response()
 			break
 		return False
 
@@ -195,9 +207,9 @@ class Manager(object):
 		self.__destroy()
 		return False
 
-	def __scribes_key_event_cb(self, editor, shortcut):
+	def __accel_activate_cb(self, accelgroup, window, keyval, mod, *args):
 		if self.__bar_is_active: return True
-		self.__activate(shortcut)
+		self.__accel_dictionary[(keyval, mod)].activate()	
 		return True
 
 	def __add_trigger_cb(self, editor, trigger):
@@ -241,3 +253,4 @@ class Manager(object):
 	def __fullscreen_cb(self, *args):
 		self.__editor.toggle_fullscreen()
 		return False
+	

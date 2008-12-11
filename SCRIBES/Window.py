@@ -103,12 +103,14 @@ class Window(object):
 		SIGNAL = SIGNAL_ACTION|SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE
 		from gtk import Window
 		if signal_query("scribes-key-event", Window) is None:
-			signal_new("scribes-key-event", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
+			signal_new("scribes-key-event", Window, SIGNAL_ACTION, None, ())
 			signal_new("scribes-close-window", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
 			signal_new("scribes-close-window-nosave", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
 			signal_new("shutdown", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
 			signal_new("fullscreen", Window, SIGNAL, TYPE_BOOLEAN, (TYPE_STRING,))
 			type_register(type(self.__window))
+		from gtk import AccelGroup
+		self.__window.add_accel_group(AccelGroup())
 		from gtk.gdk import KEY_PRESS_MASK
 		self.__window.add_events(KEY_PRESS_MASK)
 		width, height = self.__editor.calculate_resolution_independence(self.__window, 1.462857143, 1.536)
