@@ -1,69 +1,14 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2008 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that smartly unindents text indented with
-white spaces. This is a port of Gedit's smart space plugin. All credit
-goes to
-
-Copyright (C) 2007 - Steve Frécinaux
-
-@author: Lateef Alabi-Oki, Paolo Borelli, Steve Frécinaux
-@organization: The Scribes Project
-@copyright: Copyright © 2008 Lateef Alabi-Oki
-@license: GNU GPLv3 or Later
-@contact: mystilleef@gmail.com
-"""
-
 class SmartSpace(object):
-	"""
-	This class draws white spaces in the buffer.
-	"""
 
 	def __init__(self, editor, manager):
-		"""
-		Initialize object.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__init_attributes(editor, manager)
-		self.__sig_id1 = self.__textview.connect('key-press-event', self.__key_press_event_cb)
-		self.__sig_id2 = manager.connect("destroy", self.__destroy_cb)
-		self.__sig_id3 = manager.connect("activate", self.__activate_cb)
+		self.__sigid1 = self.__textview.connect('key-press-event', self.__key_press_event_cb)
+		self.__sigid2 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid3 = manager.connect("activate", self.__activate_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_method, priority=9999)
 
 	def __init_attributes(self, editor, manager):
-		"""
-		Initialize data attributes.
-
-		@param self: Reference to the Manager instance.
-		@type self: A Manager object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
 		self.__manager = manager
 		self.__textview = editor.textview
@@ -74,13 +19,13 @@ class SmartSpace(object):
 
 	def __block_event_after_signal(self):
 		if self.__blocked: return
-		self.__textview.handler_block(self.__sig_id1)
+		self.__textview.handler_block(self.__sigid1)
 		self.__blocked = True
 		return
 
 	def __unblock_event_after_signal(self):
 		if self.__blocked is False: return
-		self.__textview.handler_unblock(self.__sig_id1)
+		self.__textview.handler_unblock(self.__sigid1)
 		self.__blocked = False
 		return
 
@@ -89,15 +34,12 @@ class SmartSpace(object):
 			self.__unblock_event_after_signal()
 		else:
 			self.__block_event_after_signal()
-		self.__textview.queue_draw()
+		self.__editor.refresh()
 		return
 
 	def __precompile_method(self):
-		try:
-			from psyco import bind
-			bind(self.__key_press_event_cb)
-		except ImportError:
-			pass
+		methods = (self.__key_press_event_cb,)
+		self.__editor.optimize(methods)
 		return False
 
 	def __key_press_event_cb(self, textview, event):
@@ -105,7 +47,7 @@ class SmartSpace(object):
 		from gtk.keysyms import BackSpace
 		if event.keyval != BackSpace: return False
 		if self.__buffer.get_has_selection(): return False
-		iterator = self.__editor.get_cursor_iterator()
+		iterator = self.__editor.cursor
 		if iterator.starts_line(): return False
 		start = iterator.copy()
 		while True:
@@ -135,15 +77,15 @@ class SmartSpace(object):
 		self.__destroy()
 		return False
 
-	def __activate_cb(self, manager, use_tabs):
-		self.__activate = not use_tabs
+	def __activate_cb(self, manager, use_spaces):
+		self.__activate = use_spaces
 		self.__check_event_signal()
 		return False
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sig_id1, self.__textview)
-		self.__editor.disconnect_signal(self.__sig_id2, self.__manager)
-		self.__editor.disconnect_signal(self.__sig_id3, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid1, self.__textview)
+		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		del self
 		self = None
 		return

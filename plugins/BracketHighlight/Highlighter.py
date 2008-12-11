@@ -65,13 +65,17 @@ class Highlighter(object):
 		if (self.__buffer_is_tagged):
 			begin = textbuffer.get_iter_at_mark(self.__start_mark)
 			end = textbuffer.get_iter_at_mark(self.__end_mark)
+			self.__editor.refresh(False)
 			textbuffer.remove_tag(self.__highlight_tag, begin, end)
+			self.__editor.refresh(False)
 		iterator = self.__editor.cursor
 		match = self.__match(iterator.copy())
 		if not match: return False
 		try:
 			start, end = self.__get_boundary(iterator, match)
+			self.__editor.refresh(False)
 			textbuffer.apply_tag(self.__highlight_tag, start, end)
+			self.__editor.refresh(False)
 		except:
 			pass
 		return False
