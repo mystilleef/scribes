@@ -1,46 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-"""
-This module contains a set of functions responsible for performing text
-operations relating to space and tab characters.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
 def convert_spaces_to_tabs(sourceview):
-	"""
-	Convert beginning space characters in a gtksourceview buffer to tab characters.
-
-	The function converts space characters to tab characters and then indents
-	lines to the earliest tab stop.
-
-	@param sourceview: The gtksourceview buffer's container
-	@type sourceview: A gtksourceview.SourceView object.
-
-	@return: A list of converted lines if any.
-	@rtype: A List object.
-	"""
 	converted_lines = []
 	sourcebuffer = sourceview.get_property("buffer")
 	begin, end = sourcebuffer.get_bounds()
@@ -55,18 +13,6 @@ def convert_spaces_to_tabs(sourceview):
 	return converted_lines
 
 def convert_spaces_to_tabs_on_line(sourceview, line_number):
-	"""
-	Convert beginning space characters to tab characters on a line.
-
-	@param sourceview: The gtksourceview buffer's container
-	@type sourceview: A gtksourceview.SourceView object.
-
-	@param line_number: The line to perform conversion operation on.
-	@type line_number: An Integer object.
-
-	@return: True if the line was converted.
-	@rtype: An Boolean object.
-	"""
 	sourcebuffer = sourceview.get_property("buffer")
 	tab_width = sourceview.get_property("tab-width")
 	begin_position = sourcebuffer.get_iter_at_line(line_number)
@@ -99,18 +45,6 @@ def convert_spaces_to_tabs_on_line(sourceview, line_number):
 	return True
 
 def convert_tabs_to_spaces(sourceview):
-	"""
-	Convert beginning tab characters in a gtksourceview buffer to space characters.
-
-	The function converts tab characters to space characters and then indents
-	lines to the earliest tab stop.
-
-	@param sourceview: The gtksourceview buffer's container
-	@type sourceview: A gtksourceview.SourceView object.
-
-	@return: A list of converted lines if any.
-	@rtype: A List object.
-	"""
 	converted_lines = []
 	sourcebuffer = sourceview.get_property("buffer")
 	begin, end = sourcebuffer.get_bounds()
@@ -124,18 +58,6 @@ def convert_tabs_to_spaces(sourceview):
 	return converted_lines
 
 def convert_tabs_to_spaces_on_line(sourceview, line_number):
-	"""
-	Convert beginning tab characters to space characters on a line.
-
-	@param sourceview: The gtksourceview buffer's container
-	@type sourceview: A gtksourceview.SourceView object.
-
-	@param line_number: The line to perform conversion operation on.
-	@type line_number: An Integer object.
-
-	@return: True if the line was converted.
-	@rtype: An Boolean object.
-	"""
 	sourcebuffer = sourceview.get_property("buffer")
 	tab_width = sourceview.get_property("tab-width")
 	begin_position = sourcebuffer.get_iter_at_line(line_number)
@@ -169,15 +91,6 @@ def convert_tabs_to_spaces_on_line(sourceview, line_number):
 	return True
 
 def remove_trailing_spaces(sourceview):
-	"""
-	Remove spaces at the end of lines in a gtksourceview buffer.
-
-	@param sourceview: The gtksourceview buffer's container
-	@type sourceview: A gtksourceview.SourceView object.
-
-	@return: A list of lines operated upon, if any.
-	@rtype: A List object.
-	"""
 	affected_lines = []
 	sourcebuffer = sourceview.get_property("buffer")
 	begin, end = sourcebuffer.get_bounds()
@@ -192,18 +105,6 @@ def remove_trailing_spaces(sourceview):
 	return affected_lines
 
 def remove_trailing_spaces_on_line(sourceview, line_number):
-	"""
-	Convert beginning tab characters to space characters on a line.
-
-	@param sourceview: The gtksourceview buffer's container
-	@type sourceview: A gtksourceview.SourceView object.
-
-	@param line_number: The line to perform conversion operation on.
-	@type line_number: An Integer object.
-
-	@return: True if the line was converted.
-	@rtype: An Boolean object.
-	"""
 	sourcebuffer = sourceview.get_property("buffer")
 	begin_position = sourcebuffer.get_iter_at_line(line_number)
 	transition_position = begin_position.copy()
