@@ -17,7 +17,7 @@ class Trigger(object):
 		return
 
 	def __destroy(self):
-		if not self.__manager: self.__manager.destroy()
+		if self.__manager: self.__manager.destroy()
 		self.__editor.disconnect_signal(self.__sigid1, self.__trigger1)
 		self.__editor.disconnect_signal(self.__sigid2, self.__trigger2)
 		self.__editor.disconnect_signal(self.__sigid3, self.__trigger3)
