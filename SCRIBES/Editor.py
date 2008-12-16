@@ -434,7 +434,9 @@ class Editor(GObject):
 		self.__busy = self.__busy + 1 if busy else self.__busy - 1
 		if self.__busy < 0: self.__busy = 0
 		busy = True if self.__busy else False
+		self.refresh(False)
 		self.emit("busy", busy)
+		self.refresh(False)
 		return False
 
 	def show_load_encoding_error_window(self):

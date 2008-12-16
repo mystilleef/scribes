@@ -4,6 +4,7 @@ placeholder_pattern = compile_("\$\{[^${}]*\}", UNICODE)
 special_placeholders = ("${time}", "${timestring}", "${timestamp}",
 					"${date}", "${day}", "${month}", "${year}", "${author}")
 
+
 def replace_special_placeholder(placeholder):
 	if placeholder == "${day}":
 		from time import localtime

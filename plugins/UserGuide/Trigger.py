@@ -1,122 +1,27 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2006 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that creates a trigger that shows Scribes'
-user guide.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2006 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE
-
-class UserGuideTrigger(GObject):
-	"""
-	This class creates an object, a trigger, that shows Scribes user
-	guide.
-	"""
-
-	__gsignals__ = {
-		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	}
+class Trigger(object):
 
 	def __init__(self, editor):
-		"""
-		Initialize the trigger.
-
-		@param self: Reference to the UserGuideTrigger instance.
-		@type self: A UserGuideTrigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
-		GObject.__init__(self)
 		self.__init_attributes(editor)
-		self.__create_trigger()
-		self.__signal_id_1 = self.__trigger.connect("activate", self.__show_user_guide_cb)
-		self.__signal_id_2 = self.connect("destroy", self.__destroy_cb)
+		self.__sigid1 = self.__trigger.connect("activate", self.__activate_cb)
 
 	def __init_attributes(self, editor):
-		"""
-		Initialize the trigger's attributes.
-
-		@param self: Reference to the UserGuideTrigger instance.
-		@type self: A UserGuideTrigger object.
-
-		@param editor: Reference to the text editor.
-		@type editor: An Editor object.
-		"""
 		self.__editor = editor
-		self.__trigger = None
-		self.__signal_id_2 = None
-		self.__signal_id_1 = None
+		self.__trigger = self.__create_trigger()
 		return
 
 	def __create_trigger(self):
-		"""
-		Create the trigger.
-
-		@param self: Reference to the UserGuideTrigger instance.
-		@type self: A UserGuideTrigger object.
-		"""
 		# Trigger to user guide.
-		self.__trigger = self.__editor.create_trigger("show_user_guide", "F1")
-		self.__editor.add_trigger(self.__trigger)
+		trigger = self.__editor.create_trigger("show_user_guide", "F1")
+		self.__editor.add_trigger(trigger)
+		return trigger
+
+	def __activate_cb(self, *args):
+		self.__editor.help()
 		return
 
-	def __show_user_guide_cb(self, trigger):
-		"""
-		Handles callback when the "activate" signal is emitted.
-
-		@param self: Reference to the UserGuideTrigger instance.
-		@type self: A UserGuideTrigger object.
-
-		@param trigger: An object to show the document browser.
-		@type trigger: A Trigger object.
-		"""
-		from gnome import help_display
-		if help_display("/scribes.xml"):
-			from i18n import msg0001
-			self.__editor.feedback.update_status_message(msg0001, "help", 10)
-		else:
-			from i18n import msg0002
-			self.__editor.feedback.update_status_message(msg0002, "fail", 10)
-		return
-
-	def __destroy_cb(self, trigger):
-		"""
-		Handles callback when the "activate" signal is emitted.
-
-		@param self: Reference to the UserGuideTrigger instance.
-		@type self: An UserGuideTrigger object.
-
-		@param trigger: Reference to the UserGuideTrigger instance.
-		@type trigger: A UserGuideTrigger object.
-		"""
+	def destroy(self):
 		self.__editor.remove_trigger(self.__trigger)
-		self.__editor.disconnect_signal(self.__signal_id_1, self.__trigger)
-		self.__editor.disconnect_signal(self.__signal_id_2, self)
+		self.__editor.disconnect_signal(self.__sigid1, self.__trigger)
 		del self
 		self = None
 		return
