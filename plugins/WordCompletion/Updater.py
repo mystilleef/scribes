@@ -109,10 +109,10 @@ class CompletionUpdater(object):
 			if self.__is_indexing: return False #self.__update_queue()
 			if not self.__indexer: return False
 			self.__is_indexing = True
-#			from gobject import idle_add, PRIORITY_LOW
-#			idle_add(self.__send_text, priority=PRIORITY_LOW)
-			from thread import start_new_thread
-			start_new_thread(self.__send_text, ())
+			from gobject import idle_add
+			idle_add(self.__send_text, priority=9999)
+#			from thread import start_new_thread
+#			start_new_thread(self.__send_text, ())
 		except ValueError:
 			return False
 		return False
@@ -201,10 +201,10 @@ class CompletionUpdater(object):
 
 	def __finished_indexing_cb(self, editor_id, dictionary):
 		if editor_id != self.__editor.id_: return True
-		from thread import start_new_thread
-		start_new_thread(self.__update_dictionary, (dictionary,))
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__update_dictionary, dictionary, priority=PRIORITY_LOW)
+#		from thread import start_new_thread
+#		start_new_thread(self.__update_dictionary, (dictionary,))
+		from gobject import idle_add
+		idle_add(self.__update_dictionary, dictionary, priority=9999)
 		return True
 
 	def __busy_cb(self, editor_id):

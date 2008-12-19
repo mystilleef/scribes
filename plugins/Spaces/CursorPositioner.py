@@ -36,6 +36,7 @@ class Positioner(object):
 		iterator = get_iter(line, new_offset)
 		self.__editor.textbuffer.place_cursor(iterator)
 		self.__editor.move_view_to_cursor(True)
+		self.__editor.refresh()
 		self.__data = None
 		self.__old_text = None
 		return False

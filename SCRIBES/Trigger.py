@@ -94,7 +94,10 @@ class Trigger(GObject):
 
 	def activate(self):
 		self.__editor.refresh()
+		from Utils import set_vm_interval
+		set_vm_interval(False)
 		self.emit("activate")
+		set_vm_interval(True)
 		self.__editor.refresh(False)
 		return
 

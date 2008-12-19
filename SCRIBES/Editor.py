@@ -192,6 +192,7 @@ class Editor(GObject):
 
 	def __init_plugins(self):
 		self.move_view_to_cursor(True)
+		self.refresh()
 		if self.__started_plugins: return False
 		self.emit("ready")
 		from PluginManager import Manager
@@ -656,6 +657,10 @@ class Editor(GObject):
 		from gtk.glade import XML
 		glade = XML(file_, object_name, "scribes")
 		return glade
+
+	def set_vm_interval(self, response=True):
+		from Utils import set_vm_interval
+		return set_vm_interval(response)
 
 ########################################################################
 #

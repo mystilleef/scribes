@@ -213,6 +213,8 @@ class FileLoader(object):
 					unicode_string = string.decode("utf-8")
 			utf8_string = unicode_string.encode("utf-8")
 			self.__editor.refresh()
+			from Utils import set_vm_interval
+			set_vm_interval(False)
 			self.__editor.textbuffer.set_text(utf8_string)
 			self.__editor.refresh()
 		except UnicodeDecodeError:

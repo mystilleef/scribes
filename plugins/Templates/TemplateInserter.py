@@ -51,6 +51,7 @@ class Inserter(object):
 		return
 
 	def __place_template_in_buffer(self):
+		self.__editor.set_vm_interval(False)
 		template = self.__get_template()
 		self.__remove_trigger()
 		start = self.__editor.create_left_mark()
@@ -58,6 +59,7 @@ class Inserter(object):
 		self.__insert_template(template)
 		self.__expand_special_placeholders(template, start, end)
 		self.__mark_placeholders(template, start, end)
+		self.__editor.set_vm_interval(True)
 		return
 
 	def __expand_special_placeholders(self, template, mstart, end):

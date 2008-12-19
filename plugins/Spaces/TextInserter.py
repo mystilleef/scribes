@@ -19,10 +19,10 @@ class Inserter(object):
 
 	def __insert(self, text):
 		self.__editor.busy()
+		sbar = self.__editor.gui.get_widget("ScrolledWindow")
 		self.__editor.textbuffer.begin_user_action()
 		self.__editor.refresh()
 		self.__editor.textbuffer.set_text(text)
-		self.__editor.refresh()
 		self.__editor.textbuffer.end_user_action()
 		self.__editor.busy(False)
 		self.__manager.emit("inserted-text")
