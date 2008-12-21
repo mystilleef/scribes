@@ -5,9 +5,10 @@ class TreeView(object):
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = self.__treeview.connect("row-activated", self.__row_activated_cb)
-		self.__sigid3 = self.__treeview.connect("cursor-changed", self.__cursor_changed_cb)
+		self.__sigid3 = self.__treeview.connect_after("cursor-changed", self.__cursor_changed_cb)
 		self.__sigid4 = manager.connect("treeview-data", self.__treeview_data_cb)
-		self.__sigid5 = manager.connect("select-scheme", self.__select_scheme_cb)
+		self.__sigid5 = manager.connect("current-scheme", self.__current_scheme_cb)
+		self.__sigid6 = self.__treeview.connect("key-press-event", self.__key_press_event_cb)
 
 	def __init_attributes(self, editor, manager):
 		self.__manager = manager
@@ -18,6 +19,7 @@ class TreeView(object):
 		self.__selection = self.__treeview.get_selection()
 		self.__current_scheme = None
 		self.__can_change_theme = True
+		self.__can_populate = True
 		return
 
 	def __destroy(self):
@@ -26,6 +28,7 @@ class TreeView(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__treeview)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid6, self.__treeview)
 		self.__treeview.destroy()
 		del self
 		self = None
@@ -52,21 +55,47 @@ class TreeView(object):
 		return column
 
 	def __populate_model(self, data):
-		self.__can_change_theme = False
-		self.__sensitive(False)
-		self.__treeview.handler_block(self.__sigid3)
-		self.__treeview.set_model(None)
-		for description, scheme in data:
-			self.__model.append([description, scheme])
-		self.__treeview.set_model(self.__model)
-		self.__treeview.handler_unblock(self.__sigid3)
-		from gobject import timeout_add
-		timeout_add(100, self.__sensitive, True)
-		self.__manager.emit("populated-model")
+		try:
+			if self.__can_populate is False: raise ValueError
+			self.__can_change_theme = False
+			self.__sensitive(False)
+			self.__treeview.handler_block(self.__sigid3)
+			self.__treeview.set_model(None)
+			for description, scheme in data:
+				self.__model.append([description, scheme])
+			self.__treeview.set_model(self.__model)
+			self.__treeview.handler_unblock(self.__sigid3)
+			from gobject import timeout_add
+			timeout_add(100, self.__sensitive, True)
+			self.__manager.emit("populated-model")
+		except ValueError:
+			self.__can_populate = True
 		return False
 
 	def __sensitive(self, sensitive=True):
 		self.__treeview.set_property("sensitive", sensitive)
+		return False
+
+	def __remove(self):
+		try:
+			self.__sensitive(False)
+			self.__can_populate = False
+			model, iterator = self.__selection.get_selected()
+			scheme = model.get_value(iterator, 1)
+			success = model.remove(iterator)
+			self.__manager.emit("remove-scheme", scheme)
+			if not len(model): raise ValueError
+			iterator = iterator if success else model[-1].iter
+			scheme = model.get_value(iterator, 1)
+			self.__select(scheme)
+			self.__sensitive(True)
+			self.__treeview.grab_focus()
+		except TypeError:
+			self.__can_populate = True
+			self.__sensitive(True)
+		except ValueError:
+			self.__can_populate = True
+			self.__sensitive(False)
 		return False
 
 	def __set_theme_async(self):
@@ -93,18 +122,24 @@ class TreeView(object):
 			self.__can_change_theme = True
 		return False
 
-	def __select(self, scheme):
-		selection_row = None
-		for row in self.__model:
-			if row[1] != scheme: continue
-			selection_row = row
+	def __get_scheme_row(self, scheme):
+		row = None
+		for _row in self.__model:
+			if _row[1].get_id() != scheme.get_id(): continue
+			row = _row
 			break
-		self.__selection.select_iter(selection_row.iter)
-		self.__treeview.set_cursor(selection_row.path, self.__column)
+		return row
+
+	def __select(self, scheme):
+		row = self.__get_scheme_row(scheme)
+		self.__selection.select_iter(row.iter)
+		self.__treeview.grab_focus()
+		self.__treeview.set_cursor(row.path, self.__column)
+		self.__treeview.scroll_to_cell(row.path, None, True, 0.5, 0.5)
 		self.__treeview.grab_focus()
 		return False
 
-	def __destroy_cb(self, manager):
+	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
@@ -121,6 +156,12 @@ class TreeView(object):
 		self.__populate_model(data)
 		return False
 
-	def __select_scheme_cb(self, manager, scheme):
+	def __current_scheme_cb(self, manager, scheme):
 		self.__select(scheme)
 		return False
+
+	def __key_press_event_cb(self, treeview, event):
+		from gtk import keysyms
+		if event.keyval != keysyms.Delete: return False
+		self.__remove()
+		return True

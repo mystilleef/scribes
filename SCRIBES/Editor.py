@@ -234,6 +234,7 @@ class Editor(GObject):
 		if self.textbuffer.props.has_selection is False: return 0
 		start, end = self.textbuffer.get_selection_bounds()
 		return (end.get_line() - start.get_line()) + 1
+
 ################################################################
 #
 #						Public APIs

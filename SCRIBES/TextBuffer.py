@@ -65,7 +65,8 @@ class Buffer(object):
 		self.__buffer.begin_not_undoable_action()
 		mgr = self.__editor.style_scheme_manager
 		from ColorThemeMetadata import get_value
-		style_scheme = mgr.get_scheme(get_value())
+		scheme_id = get_value()
+		style_scheme = mgr.get_scheme(scheme_id)
 		if style_scheme: self.__buffer.set_style_scheme(style_scheme)
 		self.__buffer.set_property("highlight-syntax", True)
 		self.__buffer.set_property("highlight-matching-brackets", False)
@@ -242,7 +243,8 @@ class Buffer(object):
 
 	def __theme_changed_cb(self, *args):
 		from ColorThemeMetadata import get_value
-		style_scheme = self.__editor.style_scheme_manager.get_scheme(get_value())
+		scheme_id = get_value()
+		style_scheme = self.__editor.style_scheme_manager.get_scheme(scheme_id)
 		if style_scheme: self.__buffer.set_style_scheme(style_scheme)
 		self.__editor.refresh()
 		return False

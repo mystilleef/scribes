@@ -10,8 +10,9 @@ class Manager(GObject):
 		"populated-model": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"schemes": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"treeview-data": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"select-scheme": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"current-scheme": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"new-scheme": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"remove-scheme": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -21,6 +22,10 @@ class Manager(GObject):
 #		RemoveButton(editor, self)
 #		from AddButton import AddButton
 #		AddButton(editor, self)
+		from SchemeChanger import Changer
+		Changer(editor, self)
+		from CurrentSchemeMonitor import Monitor
+		Monitor(editor, self)
 		from Window import Window
 		Window(editor, self)
 		from TreeView import TreeView
@@ -29,11 +34,7 @@ class Manager(GObject):
 		Generator(editor, self)
 		from SchemeDispatcher import Dispatcher
 		Dispatcher(editor, self)
-#		from CurrentSchemeMonitor import Monitor
-#		Monitor(editor, self)
 		self.emit("scan-schemes")
-#		from SchemeMonitor import Monitor
-#		Monitor(editor, self)
 
 	def __init_attributes(self, editor):
 		self.__glade = editor.get_glade_object(globals(), "SyntaxColorThemes.glade", "Window")
