@@ -28,7 +28,9 @@ class Validator(object):
 			if not filenames: raise ValueError
 			self.__manager.emit("valid-scheme-files", filenames)
 		except ValueError:
-			print "No valid scheme file found"
+			from gettext import gettext as _
+			message = _("No valid scheme file found")
+			self.__manager.emit("error-message", message)
 		return False
 
 	def __is_xml(self, _file):

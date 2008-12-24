@@ -1,3 +1,6 @@
+from gettext import gettext as _
+NO_SELECTION_FOUND_ERROR = _("ERROR: No selection found")
+
 class TreeView(object):
 
 	def __init__(self, editor, manager):
@@ -86,7 +89,7 @@ class TreeView(object):
 			self.__can_populate = False
 			model, iterator = self.__selection.get_selected()
 			can_remove = model.get_value(iterator, 2)
-			if can_remove is False: raise TypeError
+			if can_remove is False: raise StandardError
 			scheme = model.get_value(iterator, 1)
 			success = model.remove(iterator)
 			self.__manager.emit("remove-scheme", scheme)
@@ -95,9 +98,15 @@ class TreeView(object):
 			scheme = model.get_value(iterator, 1)
 			self.__select(scheme)
 			self.__sensitive(True)
+		except StandardError:
+			self.__can_populate = True
+			self.__sensitive(True)
+			message = _("ERROR: Cannot remove builtin scheme.")
+			self.__manager.emit("error-message", message)
 		except TypeError:
 			self.__can_populate = True
 			self.__sensitive(True)
+			self.__manager.emit("error-message", NO_SELECTION_FOUND_ERROR)
 		except ValueError:
 			self.__can_populate = True
 			self.__sensitive(False)
@@ -117,6 +126,7 @@ class TreeView(object):
 			can_remove = model.get_value(iterator, 2)
 			self.__manager.emit("remove-button-sensitivity", can_remove)
 		except TypeError:
+			self.__manager.emit("error-message", NO_SELECTION_FOUND_ERROR)
 			pass
 		return False
 
@@ -139,7 +149,7 @@ class TreeView(object):
 		except ValueError:
 			pass
 		except TypeError:
-			print "ERROR: No selection found"
+			self.__manager.emit("error-message", NO_SELECTION_FOUND_ERROR)
 		finally:
 			self.__can_change_theme = True
 			self.__focus_treeview()

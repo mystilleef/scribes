@@ -1,5 +1,5 @@
 from gobject import SIGNAL_RUN_LAST, TYPE_NONE, GObject, TYPE_PYOBJECT
-from gobject import TYPE_BOOLEAN
+from gobject import TYPE_BOOLEAN, TYPE_STRING
 
 class Manager(GObject):
 
@@ -19,6 +19,7 @@ class Manager(GObject):
 		"activate-chooser": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"remove-button-sensitivity": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"valid-selection": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"error-message": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"remove-row": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"show-add-schemes-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"hide-add-schemes-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
@@ -27,6 +28,8 @@ class Manager(GObject):
 	def __init__(self, editor):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
+		from ErrorLabel import Label
+		Label(editor, self)
 		from SchemeFileInstaller import Installer
 		Installer(editor, self)
 		from SchemeFileValidator import Validator
