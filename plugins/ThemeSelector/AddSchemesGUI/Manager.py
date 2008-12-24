@@ -1,29 +1,28 @@
-class Button(object):
+class Manager(object):
 
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
+		from Window import Window
+		Window(editor, manager)
+		from AddButton import Button
+		Button(editor, manager)
+		from FileChooser import FileChooser
+		FileChooser(editor, manager)
+		from CancelButton import Button
+		Button(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = self.__button.connect("clicked", self.__clicked_cb)
-		self.__button.set_property("sensitive", True)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
 		self.__manager = manager
-		self.__button = manager.gui.get_widget("AddButton")
 		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__button)
-		self.__button.destroy()
 		del self
 		self = None
-		return
+		return False
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
-		return True
-
-	def __clicked_cb(self, *args):
-		self.__manager.emit("show-add-schemes-window")
-		return True
+		return False

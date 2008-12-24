@@ -93,10 +93,12 @@ class CompletionTreeView(TreeView):
 		string = completion_string[index:]
 		# Split completion_string at the right index and insert into the editor's
 		# buffer.
+		self.__editor.set_vm_interval(False)
 		self.__editor.textbuffer.begin_user_action()
 		self.__editor.textbuffer.insert_at_cursor(string)
 		self.__editor.textbuffer.end_user_action()
 		self.__manager.emit("no-match-found")
+		self.__editor.set_vm_interval(True)
 		# Feedback to the status bar indicating word completion occurred.
 		from i18n import msg0001
 		self.__editor.update_message(msg0001, "pass")

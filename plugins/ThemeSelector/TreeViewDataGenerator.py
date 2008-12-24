@@ -18,8 +18,9 @@ class Generator(object):
 		return False
 
 	def __send_treeview_data(self, schemes):
+		can_remove = lambda scheme: scheme.get_filename().startswith(self.__editor.home_folder)
 		get_description = lambda scheme: (scheme.get_name() + " - " + scheme.get_description())
-		format = lambda scheme: (get_description(scheme), scheme)
+		format = lambda scheme: (get_description(scheme), scheme, can_remove(scheme))
 		data = [format(scheme) for scheme in schemes]
 		self.__manager.emit("treeview-data", data)
 		return False

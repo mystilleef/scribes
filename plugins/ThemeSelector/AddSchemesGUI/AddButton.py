@@ -2,14 +2,14 @@ class Button(object):
 
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("remove-button-sensitivity", self.__remove_cb)
+		self.__sigid1 = manager.connect("valid-selection", self.__valid_selection_cb)
+		self.__sigid2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid3 = self.__button.connect("clicked", self.__clicked_cb)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
 		self.__manager = manager
-		self.__button = manager.gui.get_widget("RemoveButton")
+		self.__button = manager.dialog_gui.get_widget("AddButton")
 		return
 
 	def __destroy(self):
@@ -19,16 +19,16 @@ class Button(object):
 		self.__button.destroy()
 		del self
 		self = None
-		return False
-
-	def __remove_cb(self, manager, can_remove):
-		self.__button.set_property("sensitive", can_remove)
-		return True
-
-	def __clicked_cb(self, *args):
-		self.__manager.emit("remove-row")
-		return True
+		return
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
-		return True
+		return
+
+	def __valid_selection_cb(self, manager, value):
+		self.__button.set_property("sensitive", value)
+		return
+
+	def __clicked_cb(self, *args):
+		self.__manager.emit("activate-chooser")
+		return

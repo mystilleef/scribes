@@ -9,6 +9,7 @@ class TreeView(object):
 		self.__sigid4 = manager.connect("treeview-data", self.__treeview_data_cb)
 		self.__sigid5 = manager.connect("current-scheme", self.__current_scheme_cb)
 		self.__sigid6 = self.__treeview.connect("key-press-event", self.__key_press_event_cb)
+		self.__sigid7 = manager.connect("remove-row", self.__remove_row_cb)
 
 	def __init_attributes(self, editor, manager):
 		self.__manager = manager
@@ -29,6 +30,7 @@ class TreeView(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid6, self.__treeview)
+		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		self.__treeview.destroy()
 		del self
 		self = None
@@ -41,7 +43,7 @@ class TreeView(object):
 	def __create_model(self):
 		from gtk import ListStore
 		from gobject import TYPE_OBJECT
-		model = ListStore(str, TYPE_OBJECT)
+		model = ListStore(str, TYPE_OBJECT, bool)
 		return model
 
 	def __create_column(self):
@@ -61,8 +63,9 @@ class TreeView(object):
 			self.__sensitive(False)
 			self.__treeview.handler_block(self.__sigid3)
 			self.__treeview.set_model(None)
-			for description, scheme in data:
-				self.__model.append([description, scheme])
+			self.__model.clear()
+			for description, scheme, can_remove in data:
+				self.__model.append([description, scheme, can_remove])
 			self.__treeview.set_model(self.__model)
 			self.__treeview.handler_unblock(self.__sigid3)
 			from gobject import timeout_add
@@ -74,6 +77,7 @@ class TreeView(object):
 
 	def __sensitive(self, sensitive=True):
 		self.__treeview.set_property("sensitive", sensitive)
+		self.__focus_treeview()
 		return False
 
 	def __remove(self):
@@ -81,6 +85,8 @@ class TreeView(object):
 			self.__sensitive(False)
 			self.__can_populate = False
 			model, iterator = self.__selection.get_selected()
+			can_remove = model.get_value(iterator, 2)
+			if can_remove is False: raise TypeError
 			scheme = model.get_value(iterator, 1)
 			success = model.remove(iterator)
 			self.__manager.emit("remove-scheme", scheme)
@@ -89,13 +95,29 @@ class TreeView(object):
 			scheme = model.get_value(iterator, 1)
 			self.__select(scheme)
 			self.__sensitive(True)
-			self.__treeview.grab_focus()
 		except TypeError:
 			self.__can_populate = True
 			self.__sensitive(True)
 		except ValueError:
 			self.__can_populate = True
 			self.__sensitive(False)
+		finally:
+			self.__focus_treeview()
+		return False
+
+	def __process_cursor_change(self):
+		self.__set_theme_async()
+		self.__emit_can_remove_signal()
+		self.__focus_treeview()
+		return False
+
+	def __emit_can_remove_signal(self):
+		try:
+			model, iterator = self.__selection.get_selected()
+			can_remove = model.get_value(iterator, 2)
+			self.__manager.emit("remove-button-sensitivity", can_remove)
+		except TypeError:
+			pass
 		return False
 
 	def __set_theme_async(self):
@@ -120,6 +142,7 @@ class TreeView(object):
 			print "ERROR: No selection found"
 		finally:
 			self.__can_change_theme = True
+			self.__focus_treeview()
 		return False
 
 	def __get_scheme_row(self, scheme):
@@ -136,7 +159,12 @@ class TreeView(object):
 		self.__treeview.grab_focus()
 		self.__treeview.set_cursor(row.path, self.__column)
 		self.__treeview.scroll_to_cell(row.path, None, True, 0.5, 0.5)
-		self.__treeview.grab_focus()
+		self.__focus_treeview()
+		return False
+
+	def __focus_treeview(self):
+		tv = self.__treeview
+		if len(self.__model) and tv.props.sensitive: tv.grab_focus()
 		return False
 
 	def __destroy_cb(self, *args):
@@ -149,7 +177,7 @@ class TreeView(object):
 		return True
 
 	def __cursor_changed_cb(self, *args):
-		self.__set_theme_async()
+		self.__process_cursor_change()
 		return True
 
 	def __treeview_data_cb(self, manager, data):
@@ -165,3 +193,7 @@ class TreeView(object):
 		if event.keyval != keysyms.Delete: return False
 		self.__remove()
 		return True
+
+	def __remove_row_cb(self, *args):
+		self.__remove()
+		return False

@@ -1,10 +1,3 @@
-def remove_theme(filename):
-	from os.path import exists
-	if not exists(filename): return
-	from os import remove
-	remove(filename)
-	return
-
 def __get_scheme_data(manager, id_, home_folder):
 	scheme = manager.get_scheme(id_)
 	name = scheme.get_name() + " - " + scheme.get_description()

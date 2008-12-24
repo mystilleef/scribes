@@ -93,11 +93,10 @@ class Trigger(GObject):
 	removable = property(__get_removable)
 
 	def activate(self):
-		self.__editor.refresh()
-		from Utils import set_vm_interval
-		set_vm_interval(False)
+		self.__editor.refresh(False)
+		self.__editor.set_vm_interval(False)
 		self.emit("activate")
-		set_vm_interval(True)
+		self.__editor.set_vm_interval(True)
 		self.__editor.refresh(False)
 		return
 

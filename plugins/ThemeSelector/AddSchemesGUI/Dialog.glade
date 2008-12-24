@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.2 on Thu May  1 17:35:29 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Dec 23 18:04:46 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="Window">
     <property name="sensitive">False</property>
     <property name="border_width">10</property>
     <property name="title" translatable="yes">Add Color Theme</property>
-    <property name="role">AddColorTheme</property>
     <property name="startup_id">AddColorThemeID</property>
+    <property name="role">AddColorTheme</property>
     <property name="modal">True</property>
     <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
     <property name="default_width">640</property>
@@ -34,10 +34,9 @@
               <widget class="GtkButton" id="CancelButton">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
                 <property name="label" translatable="yes">gtk-cancel</property>
                 <property name="use_stock">True</property>
+                <property name="focus_on_click">False</property>
                 <property name="response_id">0</property>
               </widget>
             </child>
@@ -46,6 +45,8 @@
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="response_id">0</property>
                 <child>

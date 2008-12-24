@@ -9,7 +9,7 @@ class Button(object):
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
 		self.__manager = manager
-		self.__button = manager.gui.get_widget("AddButton")
+		self.__button = manager.dialog_gui.get_widget("CancelButton")
 		return
 
 	def __destroy(self):
@@ -22,8 +22,8 @@ class Button(object):
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
-		return True
+		return
 
 	def __clicked_cb(self, *args):
-		self.__manager.emit("show-add-schemes-window")
-		return True
+		self.__manager.emit("hide-add-schemes-window")
+		return
