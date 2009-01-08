@@ -5,7 +5,7 @@ from Globals import data_folder, metadata_folder, home_folder, desktop_folder
 from Globals import session_bus, core_plugin_folder, home_plugin_folder
 from Globals import home_language_plugin_folder, core_language_plugin_folder
 from Globals import version, author, documenters, artists, website
-from Globals import copyrights, translators
+from Globals import copyrights, translators, python_path, dbus_iface
 from License import license_string
 from gnomevfs import URI, get_uri_from_local_path
 from DialogFilters import create_filter_list
@@ -281,6 +281,8 @@ class Editor(GObject):
 	core_language_plugin_folder = property(lambda self: core_language_plugin_folder)
 	home_language_plugin_folder = property(lambda self: home_language_plugin_folder)
 	session_bus = property(lambda self: session_bus)
+	python_path = property(lambda self: python_path)
+	dbus_iface = property(lambda self: dbus_iface)
 	version = property(lambda self: version)
 	copyrights = property(lambda self: copyrights)
 	license = property(lambda self: license_string)

@@ -94,6 +94,7 @@ def __set_vm_properties():
 	from sys import setcheckinterval, getrecursionlimit
 	from sys import setrecursionlimit, setdlopenflags
 	try:
+		setcheckinterval(1000)
 		from dl import RTLD_LAZY, RTLD_GLOBAL
 		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
 	except ImportError:

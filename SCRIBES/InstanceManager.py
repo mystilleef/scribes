@@ -174,6 +174,7 @@ class Manager(object):
 		return False
 
 	def __focus(self, editor):
+		editor.set_vm_interval(False)
 		editor.refresh()
 		if editor.window.get_data("minimized"): editor.window.deiconify()
 		coordinates = None if editor.window.get_data("maximized") else editor.window.get_position()
@@ -184,6 +185,7 @@ class Manager(object):
 		editor.response()
 		editor.window.present()
 		editor.refresh()
+		editor.set_vm_interval(True)
 		return False
 
 	def __init_garbage_collector(self):

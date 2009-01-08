@@ -1,81 +1,58 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2007 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
+from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_PYOBJECT
+from gobject import SIGNAL_NO_RECURSE, SIGNAL_ACTION, TYPE_STRING
+SCRIBES_SIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 
-"""
-This module documents a class that implements automatic word completion
-for the text editor.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2007 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_PYOBJECT, TYPE_OBJECT
-
-class CompletionManager(GObject):
-	"""
-	This class creates an object that manages objects that provide
-	specialized services for word completion and allows the objects
-	to communicate with each other via signals.
-	"""
+class Manager(GObject):
 
 	__gsignals__ = {
-		"update": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"match-found": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"no-match-found": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"populated-model": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"is-visible": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"destroy": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"start-indexing": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"finished-indexing": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"extracted-text": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"updated-dictionary": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"dictionary": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"match-found": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"no-match-found": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"valid-string": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"invalid-string": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"hide-window": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"show-window": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"found-indexer-process": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"treeview-size": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"insert-text": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
 	}
 
 	def __init__(self, editor):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		self.__arrange_widgets()
-		self.__sigid1 = self.connect("destroy", self.__destroy_cb)
+		from GUI.Manager import Manager
+		Manager(self, editor)
+		from TextInserter import Inserter
+		Inserter(self, editor)
+		from IndexerProcessManager import Manager
+		Manager(self, editor)
+		from MatchMonitor import Monitor
+		Monitor(self, editor)
+		from DictionaryManager import Manager
+		Manager(self, editor)
+		from ProcessCommunicator import Communicator
+		Communicator(self, editor)
+		from TextExtractor import Extractor
+		Extractor(self, editor)
+		from BufferMonitor import Monitor
+		Monitor(self, editor)
+		from InsertedTextMonitor import Monitor
+		Monitor(self, editor)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		from Monitor import CompletionMonitor
-		self.__monitor = CompletionMonitor(self, editor)
-		from Updater import CompletionUpdater
-		self.__updater = CompletionUpdater(self, editor)
-		from Window import CompletionWindow
-		self.__window = CompletionWindow(self, editor)
-		from TreeView import CompletionTreeView
-		self.__textview = CompletionTreeView(self, editor)
-		from ScrollWin import CompletionScrollWin
-		self.__scrollwin = CompletionScrollWin(self)
+		self.__glade = editor.get_glade_object(globals(), "GUI/GUI.glade", "Window")
 		return
 
-	def __arrange_widgets(self):
-		self.__scrollwin.add(self.__textview)
-		self.__window.add(self.__scrollwin)
-		return
+	gui = property(lambda self: self.__glade)
 
-	def __destroy_cb(self, manager):
-		self.__editor.disconnect_signal(self.__sigid1, self)
+	def destroy(self):
+		self.emit("destroy")
 		del self
 		self = None
-		return
+		return False

@@ -35,6 +35,6 @@ class Installer(object):
 		self.__destroy()
 		return False
 
-	def __valid_cb(self, manager, filenames):
+	def q__valid_cb(self, manager, filenames):
 		self.__install(filenames)
 		return False
