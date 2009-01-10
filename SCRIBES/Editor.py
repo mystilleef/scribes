@@ -662,8 +662,7 @@ class Editor(GObject):
 		return glade
 
 	def set_vm_interval(self, response=True):
-		from Utils import set_vm_interval
-		return set_vm_interval(response)
+		return self.__imanager.set_vm_interval(response)
 
 ########################################################################
 #

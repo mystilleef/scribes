@@ -1,40 +1,6 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2006 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301
-# USA
-
-"""
-This module documents a class that manages instances of the text editor.
-It allows editor instances to communicate with each other.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2006 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
 close_file = lambda editor: editor.close()
 
 class Manager(object):
-	"""
-	This class creates and manages new editor instances.
-	"""
 
 	def __init__(self):
 		# Expose Scribes' service to D-Bus.
@@ -54,6 +20,7 @@ class Manager(object):
 		from SaveProcessMonitor import SaveProcessMonitor
 		self.__save_process_monitor = SaveProcessMonitor()
 		self.__busy = False
+		self.__interval = 0
 		self.__shortcut_list = []
 		return
 
@@ -148,6 +115,13 @@ class Manager(object):
 		from Utils import response
 		response()
 		self.__busy = False
+		return False
+
+	def set_vm_interval(self, response=True):
+		self.__interval = self.__interval + 1 if response else self.__interval - 1
+		if self.__interval < 0: self.__interval = 0
+		from Utils import set_vm_interval
+		set_vm_interval(True) if self.__interval else set_vm_interval(False)
 		return False
 
 ########################################################################
