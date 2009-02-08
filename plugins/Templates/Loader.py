@@ -11,9 +11,16 @@ class Loader(object):
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
 		self.__manager = manager
-		from Metadata import get_value
-		self.__dictionary = get_value()
+		self.__dictionary = {}
 		return
+
+	def __get_dictionary(self):
+		from Metadata import get_value
+		return get_value()
+
+	def __update_dictionary(self):
+		self.__dictionary = self.__get_dictionary()
+		return False
 
 	def __load_general_templates(self):
 		general = {}
@@ -40,8 +47,7 @@ class Loader(object):
 		return
 
 	def __load_templates(self):
-		from Metadata import get_value
-		self.__dictionary = get_value()
+		self.__update_dictionary()
 		self.__load_general_templates()
 		self.__load_language_templates()
 		return
