@@ -1,4 +1,5 @@
 class Inserter(object):
+
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)

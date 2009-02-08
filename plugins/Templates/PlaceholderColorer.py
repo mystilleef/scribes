@@ -1,7 +1,4 @@
 class Colorer(object):
-	"""
-	This class creates an object that colors placeholders.
-	"""
 
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)

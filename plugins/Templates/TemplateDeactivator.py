@@ -41,12 +41,6 @@ class Deactivator(object):
 		self.__editor.optimize(methods)
 		return False
 
-################################################################################
-#
-#						Placeholder Manipulation Methods.
-#
-################################################################################
-
 	def __iter_at_marks(self, marks):
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
 		end = self.__editor.textbuffer.get_iter_at_mark(marks[1])
@@ -118,12 +112,6 @@ class Deactivator(object):
 		self.__placeholder_dictionary[key] = boundary
 		return False
 
-################################################################################
-#
-#						Block and Unblock Signals
-#
-################################################################################
-
 	def __block_signal(self):
 		if self.__block: return
 		self.__editor.handler_block(self.__sigid4)
@@ -137,12 +125,6 @@ class Deactivator(object):
 		self.__editor.textbuffer.handler_unblock(self.__sigid6)
 		self.__block = False
 		return
-
-################################################################################
-#
-#						Event and Signal Handler
-#
-################################################################################
 
 	def __destroy_cb(self, *args):
 		self.__destroy()

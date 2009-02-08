@@ -1,18 +1,18 @@
 from gettext import gettext as _
 
 class Processor(object):
-	
+
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("extracted-text", self.__extract_cb)
 		self.__sigid3 = manager.connect("case", self.__case_cb)
-		
+
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
 		self.__case_type = None
-		return 
+		return
 
 	def __send_string(self, string):
 		if self.__case_type == "toggle": self.__case_type = "lower" if string.isupper() else "upper"
@@ -43,7 +43,7 @@ class Processor(object):
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
-	
+
 	def __extract_cb(self, manager, string):
 		self.__send_string(string)
 		return False

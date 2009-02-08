@@ -1,37 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2008 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that selects and navigates to placeholders.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2008 Lateef Alabi-Oki
-@license: GNU GPLv3 or Later
-@contact: mystilleef@gmail.com
-"""
-
 class Navigator(object):
-	"""
-	This class creates an object that selects and navigates to placeholders.
-	"""
 
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
@@ -213,12 +180,6 @@ class Navigator(object):
 		marks = self.__boundaries_dictionary[key]
 		del self.__boundaries_dictionary[key]
 		return False
-
-################################################################################
-#
-#							Event/Signal Handlers
-#
-################################################################################
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
