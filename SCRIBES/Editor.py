@@ -182,8 +182,8 @@ class Editor(GObject):
 		self.disconnect_signal(self.__sigid4, self)
 		self.disconnect_signal(self.__sigid5, self)
 		self.disconnect_signal(self.__sigid6, self)
-		self.__glade.get_widget("Window").destroy()
 		self.__imanager.unregister_editor(self)
+		self.__glade.get_widget("Window").destroy()
 		del self
 		self = None
 		from gc import collect
