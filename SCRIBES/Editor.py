@@ -182,8 +182,8 @@ class Editor(GObject):
 		self.disconnect_signal(self.__sigid4, self)
 		self.disconnect_signal(self.__sigid5, self)
 		self.disconnect_signal(self.__sigid6, self)
-		self.__imanager.unregister_editor(self)
 		self.__glade.get_widget("Window").destroy()
+		self.__imanager.unregister_editor(self)
 		del self
 		self = None
 		from gc import collect
@@ -662,7 +662,8 @@ class Editor(GObject):
 		return glade
 
 	def set_vm_interval(self, response=True):
-		return self.__imanager.set_vm_interval(response)
+		#FIXME: This function is deprecated!
+		return
 
 ########################################################################
 #

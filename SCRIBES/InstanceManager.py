@@ -117,7 +117,7 @@ class Manager(object):
 		return False
 
 	def set_vm_interval(self, response=True):
-		#FIXME: This function is deprecated! DO NOT USE!
+		#FIXME: This function is deprecated!
 		return False
 
 ########################################################################
@@ -144,7 +144,6 @@ class Manager(object):
 		return False
 
 	def __focus(self, editor):
-		editor.set_vm_interval(False)
 		editor.refresh()
 		if editor.window.get_data("minimized"): editor.window.deiconify()
 		coordinates = None if editor.window.get_data("maximized") else editor.window.get_position()
@@ -155,7 +154,6 @@ class Manager(object):
 		editor.response()
 		editor.window.present()
 		editor.refresh()
-		editor.set_vm_interval(True)
 		return False
 
 	def __init_garbage_collector(self):
@@ -165,9 +163,9 @@ class Manager(object):
 
 	def __init_psyco(self):
 		try:
-			from psyco import background, profile, log
-		#	background()
-		#	print "Initialized psyco profiling and optimization"
+			from psyco import background#, profile, log
+			background()
+			print "Initialized psyco profiling and optimization"
 		except ImportError:
 			print "psyco not found"
 		return False
