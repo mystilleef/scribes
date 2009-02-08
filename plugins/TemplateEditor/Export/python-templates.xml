@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<scribes version="0.1"><snippet><entry><trigger id="python">bcmt</trigger><description>Block Comment</description><template>################################################################################
+#
+#	${cursor}
+#
+################################################################################
+
+</template></entry><entry><trigger id="python">cmt</trigger><description>python Comment</description><template># ${comment}</template></entry><entry><trigger id="python">del</trigger><description>Instance Destructor</description><template>def __del__(self):
+	${statement}
+	from gc import collect
+	collect()</template></entry></snippet></scribes>

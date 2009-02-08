@@ -6,6 +6,7 @@ class Loader(object):
 		self.__signal_id_2 = editor.connect("loaded-file", self.__loaded_document_cb)
 		self.__signal_id_3 = editor.connect("renamed-file", self.__loaded_document_cb)
 		self.__signal_id_4 = manager.connect("database-update", self.__changed_cb)
+		self.__load_templates()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
