@@ -3,7 +3,6 @@ close_file = lambda editor: editor.close()
 class Manager(object):
 
 	def __init__(self):
-		# Expose Scribes' service to D-Bus.
 		from DBusService import DBusService
 		DBusService(self)
 		self.__init_attributes()
@@ -118,10 +117,7 @@ class Manager(object):
 		return False
 
 	def set_vm_interval(self, response=True):
-		self.__interval = self.__interval + 1 if response else self.__interval - 1
-		if self.__interval < 0: self.__interval = 0
-		from Utils import set_vm_interval
-		set_vm_interval(True) if self.__interval else set_vm_interval(False)
+		#FIXME: This function is deprecated! DO NOT USE!
 		return False
 
 ########################################################################
