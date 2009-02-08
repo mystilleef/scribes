@@ -1,72 +1,11 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright (C) 2005 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-"""
-This module initializes the text editor's server.
-
-@author: Lateef Alabi-Oki
-@organiation: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
-# The Python library path is generated at build time.
-RECURSIONLIMITMULTIPLIER = 1000000
-
-def __set_vm_properties():
-	from sys import getrecursionlimit, setrecursionlimit, setdlopenflags
-	try:
-		from dl import RTLD_LAZY, RTLD_GLOBAL
-		setdlopenflags(RTLD_LAZY|RTLD_GLOBAL)
-	except ImportError:
-		pass
-	global RECURSIONLIMITMULTIPLIER
-	setrecursionlimit(getrecursionlimit() * RECURSIONLIMITMULTIPLIER)
-	return
-
-from sys import argv, path, settrace
-__set_vm_properties()
+from sys import argv, path
 python_path = "/usr/lib/python2.5/site-packages"
 path.insert(0, python_path)
 from SCRIBES.Main import main
 
-#def traceit(frame, event, arg):
-#	if (event != "line"): return traceit
-#	try:
-#		lineno = frame.f_lineno
-#		filename = frame.f_globals["__file__"]
-#		if filename.endswith(".pyc") or filename.endswith(".pyo"):
-#			filename = filename[:-1]
-#		name = frame.f_globals["__name__"]
-#		if name.startswith("sre_") or name.startswith("posixpath") or name.startswith("gettext") \
-#			or name.startswith("locale") or name.startswith("re") or name.startswith("encoding") \
-#			or name.startswith("opcode") or name.startswith("token") or name.startswith("tokenize") \
-#			or name.startswith("UserDict") or name.startswith#("problem_report"): return traceit
-#		from linecache import getline
-#		line = getline(filename, lineno)
-#		print "%s:%s: %s" % (name, lineno, line.rstrip())
-#	except KeyError:
-#		print "Keyerror"
-#	return traceit
-
 if __name__ == "__main__":
-	#settrace(traceit)
+	# Start scribes.
 	main(argv[1:])
