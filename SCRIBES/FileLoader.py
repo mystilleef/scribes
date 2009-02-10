@@ -1,39 +1,6 @@
-﻿# -*- coding: utf-8 -*-
-# Copyright © 2007 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-"""
-This module defines a class that loads a file into the editor's buffer.
-
-@author: Lateef Alabi-Oki
-@organiation: The Scribes Project
-@copyright: Copyright © 2007 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
 from gettext import gettext as _
 
 class FileLoader(object):
-	"""
-	This class creates an object that loads a file into the editor's
-	buffer.
-	"""
 
 	def __init__(self, editor, uri, encoding="utf-8", readonly=False):
 		try:
@@ -213,8 +180,6 @@ class FileLoader(object):
 					unicode_string = string.decode("utf-8")
 			utf8_string = unicode_string.encode("utf-8")
 			self.__editor.refresh()
-			from Utils import set_vm_interval
-			set_vm_interval(False)
 			self.__editor.textbuffer.set_text(utf8_string)
 			self.__editor.refresh()
 		except UnicodeDecodeError:

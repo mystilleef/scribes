@@ -1,7 +1,4 @@
 class View(object):
-	"""
-	This class defines the behavior of the buffer's container.
-	"""
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)

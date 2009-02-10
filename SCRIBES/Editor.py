@@ -186,8 +186,8 @@ class Editor(GObject):
 		self.__glade.get_widget("Window").destroy()
 		del self
 		self = None
-		from gc import collect
-		collect()
+#		from gc import collect
+#		collect()
 		return False
 
 	def __init_plugins(self):

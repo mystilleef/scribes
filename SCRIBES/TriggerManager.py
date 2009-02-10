@@ -95,17 +95,10 @@ class Manager(object):
 		self.__accel_dictionary[(keyval, modifier)] = trigger
 		return False
 
-
 	def __precompile_methods(self):
 		methods = (self.__accel_activate_cb, self.__activate)
 		self.__editor.optimize(methods)
 		return False
-
-########################################################################
-#
-#							Public API
-#
-########################################################################
 
 	def __add_trigger(self, trigger):
 		try:

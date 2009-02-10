@@ -1,5 +1,3 @@
-close_file = lambda editor: editor.close()
-
 class Manager(object):
 
 	def __init__(self):
@@ -46,8 +44,9 @@ class Manager(object):
 			print "Exception Type: ValueError"
 			print "Error: Instance not found", instance
 			print "===================================================="
-		# Quit when there are no editor instances.
-		if not self.__editor_instances: self.__quit()
+		finally:
+			# Quit when there are no editor instances.
+			if not self.__editor_instances: self.__quit()
 		return
 
 	def save_processor_is_ready(self):
@@ -57,7 +56,8 @@ class Manager(object):
 		return self.__save_process_monitor.get_processor_object()
 
 	def open_files(self, uris=None, encoding="utf-8"):
-		if uris:
+		try:
+			if not uris: raise ValueError
 			has_uri = lambda x: x in self.get_uris()
 			has_not_uri = lambda x: not (x in self.get_uris())
 			open_file = lambda x: self.__open_file(x, encoding)
@@ -65,7 +65,7 @@ class Manager(object):
 			[self.focus_file(uri) for uri in uris if has_uri(uri)]
 			# Open new file if it's not already open.
 			[open_file(uri) for uri in uris if has_not_uri(uri)]
-		else:
+		except ValueError:
 			self.__new_editor()
 		return False
 
@@ -76,7 +76,7 @@ class Manager(object):
 
 	def close_all_windows(self):
 		from copy import copy
-		[close_file(instance) for instance in copy(self.__editor_instances)]
+		[instance.close() for instance in copy(self.__editor_instances)]
 		return False
 
 	def focus_file(self, uri):
@@ -120,12 +120,6 @@ class Manager(object):
 		#FIXME: This function is deprecated!
 		return False
 
-########################################################################
-#
-#						Helper Methods
-#
-########################################################################
-
 	def __open_file(self, uri, encoding="utf-8"):
 		if not uri: return False
 		instances = self.__editor_instances
@@ -135,7 +129,7 @@ class Manager(object):
 
 	def __close_file(self, uri):
 		from copy import copy
-		[close_file(editor) for editor in copy(self.__editor_instances) if editor.uri == uri]
+		[editor.close() for editor in copy(self.__editor_instances) if editor.uri == uri]
 		return False
 
 	def __new_editor(self, uri=None, encoding=None):
@@ -159,13 +153,13 @@ class Manager(object):
 	def __init_garbage_collector(self):
 		from gc import collect
 		collect()
+		print "Garbage collection!"
 		return True
 
 	def __init_psyco(self):
 		try:
-			from psyco import background#, profile, log
+			from psyco import background
 			background()
-			print "Initialized psyco profiling and optimization"
 		except ImportError:
 			print "psyco not found"
 		return False
