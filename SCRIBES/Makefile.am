@@ -27,6 +27,7 @@ scribes_PYTHON = \
 	ColorThemeMetadata.py \
 	CommandLineInfo.py \
 	CommandLineProcessor.py \
+	ContentDetector.py \
 	CursorMetadata.py \
 	DBusService.py \
 	DialogFilters.py \

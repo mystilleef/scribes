@@ -80,12 +80,12 @@ class Editor(GObject):
 	def __init__(self, manager, uri=None, encoding=None):
 		GObject.__init__(self)
 		self.__sigid1 = self.connect("modified-file", self.__modified_file_cb)
-		self.__sigid2 = self.connect("checking-file", self.__checking_file_cb)
-		self.__sigid3 = self.connect("load-error", self.__load_error_cb)
-		self.__sigid4 = self.connect_after("loaded-file", self.__loaded_file_cb)
-		self.__sigid5 = self.connect_after("readonly", self.__readonly_cb)
-		self.__sigid6 = self.connect("saved-file", self.__saved_file_cb)
+		self.__sigid2 = self.connect("load-error", self.__load_error_cb)
+		self.__sigid3 = self.connect_after("loaded-file", self.__loaded_file_cb)
+		self.__sigid4 = self.connect_after("readonly", self.__readonly_cb)
 		self.__init_attributes(manager, uri)
+		from ContentDetector import Detector
+		Detector(self, uri)
 		from URIManager import Manager
 		Manager(self, uri)
 		# Manages the behavior of the window.
@@ -152,7 +152,6 @@ class Editor(GObject):
 		self.load_file(uri, encoding) if uri else self.__init_plugins()
 
 	def __init_attributes(self, manager, uri):
-		self.__contains_document = True if uri else False
 		# True if file is saved.
 		self.__modified = False
 		self.__processing = False
@@ -181,14 +180,10 @@ class Editor(GObject):
 		self.disconnect_signal(self.__sigid2, self)
 		self.disconnect_signal(self.__sigid3, self)
 		self.disconnect_signal(self.__sigid4, self)
-		self.disconnect_signal(self.__sigid5, self)
-		self.disconnect_signal(self.__sigid6, self)
 		self.__imanager.unregister_editor(self)
 		self.__glade.get_widget("Window").destroy()
 		del self
 		self = None
-#		from gc import collect
-#		collect()
 		return False
 
 	def __init_plugins(self):
@@ -254,8 +249,8 @@ class Editor(GObject):
 	# All editor instances
 	objects = instances = property(lambda self: self.__imanager.get_editor_instances())
 	uri_object = property(lambda self: self.get_data("uri_object"))
-	name = property(lambda self: URI(self.__uri).short_name if self.__uri else None)
-	language_object = property(lambda self: get_language(self.__uri))
+	name = property(lambda self: self.uri_object.short_name if self.uri else None)
+	language_object = property(lambda self: get_language(self.uri))
 	language = property(lambda self: self.language_object.get_id() if self.language_object else None)
 	language_manager = property(lambda self: language_manager_get_default())
 	language_ids = property(lambda self: self.language_manager.get_language_ids())
@@ -263,7 +258,7 @@ class Editor(GObject):
 	style_scheme_manager = property(__get_style_scheme_manager)
 	readonly = property(lambda self: self.__readonly)
 	modified = property(lambda self: self.__modified)
-	contains_document = property(lambda self: self.__contains_document)
+	contains_document = property(lambda self: self.get_data("contains_document"))
 	encoding = property(lambda self:get_encoding(self.uri) if get_encoding(self.uri) else "utf-8")
 	encoding_list = property(lambda self: get_encoding_list())
 	encoding_guess_list = property(lambda self: get_encoding_guess_list())
@@ -680,21 +675,10 @@ class Editor(GObject):
 		self.__modified = modified
 		return False
 
-	def __checking_file_cb(self, editor, uri):
-		self.__contains_document = True
-		self.__uri = uri
-		return False
-
 	def __loaded_file_cb(self, *args):
 		self.__init_plugins()
 		return False
 
 	def __load_error_cb(self, *args):
-		self.__uri = None
-		self.__contains_document = False
 		self.__init_plugins()
-		return False
-
-	def __saved_file_cb(self, editor, uri, encoding):
-		self.__uri = uri
 		return False
