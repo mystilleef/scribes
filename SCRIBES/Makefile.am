@@ -79,6 +79,7 @@ scribes_PYTHON = \
 	Toolbar.py \
 	Trigger.py \
 	TriggerManager.py \
+	URIManager.py \
 	NewToolButton.py \
 	OpenToolButton.py \
 	SaveToolButton.py \

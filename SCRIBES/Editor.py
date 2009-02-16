@@ -86,6 +86,8 @@ class Editor(GObject):
 		self.__sigid5 = self.connect_after("readonly", self.__readonly_cb)
 		self.__sigid6 = self.connect("saved-file", self.__saved_file_cb)
 		self.__init_attributes(manager, uri)
+		from URIManager import Manager
+		Manager(self, uri)
 		# Manages the behavior of the window.
 		from Window import Window
 		Window(self, uri)
@@ -164,7 +166,6 @@ class Editor(GObject):
 		glade_file = join(self.data_folder, "Editor.glade")
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, "Window", "scribes")
-		self.__uri = uri
 		self.__started_plugins = False
 		# True if editor is in readonly mode.
 		self.__readonly = False
@@ -248,11 +249,11 @@ class Editor(GObject):
 	toolbar = property(lambda self: self.gui.get_widget("Toolbar"))
 	statusbar = property(lambda self: self.gui.get_widget("StatusContainer"))
 	id_ = property(lambda self: id(self))
-	uri = property(lambda self: self.__uri)
+	uri = property(lambda self: self.get_data("uri"))
 	uris = property(lambda self: self.__imanager.get_uris())
 	# All editor instances
 	objects = instances = property(lambda self: self.__imanager.get_editor_instances())
-	uri_object = property(lambda self: URI(self.__uri) if self.__uri else None)
+	uri_object = property(lambda self: self.get_data("uri_object"))
 	name = property(lambda self: URI(self.__uri).short_name if self.__uri else None)
 	language_object = property(lambda self: get_language(self.__uri))
 	language = property(lambda self: self.language_object.get_id() if self.language_object else None)
