@@ -79,9 +79,7 @@ class Editor(GObject):
 
 	def __init__(self, manager, uri=None, encoding=None):
 		GObject.__init__(self)
-		self.__sigid1 = self.connect("load-error", self.__load_error_cb)
-		self.__sigid2 = self.connect_after("loaded-file", self.__loaded_file_cb)
-		self.__sigid3 = self.connect_after("readonly", self.__readonly_cb)
+		self.__sigid1 = self.connect_after("readonly", self.__readonly_cb)
 		self.__init_attributes(manager, uri)
 		from ContentDetector import Detector
 		Detector(self, uri)
@@ -150,7 +148,9 @@ class Editor(GObject):
 		# Load files or initialize plugins. Always load files, if any,
 		# before initializing plugin systems. This should be the last
 		# line in this method.
-		self.load_file(uri, encoding) if uri else self.__init_plugins()
+		from PluginSystemInitializer import Initializer
+		Initializer(self, uri)
+		if uri: self.load_file(uri, encoding)
 
 	def __init_attributes(self, manager, uri):
 		self.__processing = False
@@ -164,7 +164,6 @@ class Editor(GObject):
 		glade_file = join(self.data_folder, "Editor.glade")
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, "Window", "scribes")
-		self.__started_plugins = False
 		# True if editor is in readonly mode.
 		self.__readonly = False
 		self.__busy = 0
@@ -176,24 +175,10 @@ class Editor(GObject):
 
 	def __destroy(self):
 		self.disconnect_signal(self.__sigid1, self)
-		self.disconnect_signal(self.__sigid2, self)
-		self.disconnect_signal(self.__sigid3, self)
 		self.__imanager.unregister_editor(self)
 		self.__glade.get_widget("Window").destroy()
 		del self
 		self = None
-		return False
-
-	def __init_plugins(self):
-		self.move_view_to_cursor(True)
-		self.refresh()
-		if self.__started_plugins: return False
-		self.emit("ready")
-		from PluginManager import Manager
-		Manager(self)
-		from LanguagePluginManager import Manager
-		Manager(self)
-		self.__started_plugins = True
 		return False
 
 	def __get_style_scheme_manager(self):
@@ -667,12 +652,4 @@ class Editor(GObject):
 
 	def __readonly_cb(self, editor, readonly):
 		self.__readonly = readonly
-		return False
-
-	def __loaded_file_cb(self, *args):
-		self.__init_plugins()
-		return False
-
-	def __load_error_cb(self, *args):
-		self.__init_plugins()
 		return False

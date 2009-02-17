@@ -73,6 +73,7 @@ scribes_PYTHON = \
 	SupportedEncodingsGUIManager.py \
 	SupportedEncodingsTreeView.py \
 	SupportedEncodingsWindow.py \
+	PluginSystemInitializer.py \
 	PositionMetadata.py \
 	TabWidthMetadata.py \
 	TextWrappingMetadata.py \
