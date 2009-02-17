@@ -47,6 +47,7 @@ scribes_PYTHON = \
 	EncodingMetadata.py \
 	Exceptions.py \
 	FileLoader.py \
+	FileModificationMonitor.py \
 	FileSaver.py \
 	FontMetadata.py \
 	ForkScribesMetadata.py \

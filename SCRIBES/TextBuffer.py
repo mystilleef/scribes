@@ -175,7 +175,8 @@ class Buffer(object):
 		return False
 
 	def __modified_changed_cb(self, *args):
-		self.__editor.emit("modified-file", self.__buffer.get_modified())
+		modified = self.__buffer.get_modified()
+		self.__editor.emit("modified-file", modified)
 		return False
 
 	def __checking_file_cb(self, *args):

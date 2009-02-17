@@ -79,13 +79,14 @@ class Editor(GObject):
 
 	def __init__(self, manager, uri=None, encoding=None):
 		GObject.__init__(self)
-		self.__sigid1 = self.connect("modified-file", self.__modified_file_cb)
-		self.__sigid2 = self.connect("load-error", self.__load_error_cb)
-		self.__sigid3 = self.connect_after("loaded-file", self.__loaded_file_cb)
-		self.__sigid4 = self.connect_after("readonly", self.__readonly_cb)
+		self.__sigid1 = self.connect("load-error", self.__load_error_cb)
+		self.__sigid2 = self.connect_after("loaded-file", self.__loaded_file_cb)
+		self.__sigid3 = self.connect_after("readonly", self.__readonly_cb)
 		self.__init_attributes(manager, uri)
 		from ContentDetector import Detector
 		Detector(self, uri)
+		from FileModificationMonitor import Monitor
+		Monitor(self)
 		from URIManager import Manager
 		Manager(self, uri)
 		# Manages the behavior of the window.
@@ -152,8 +153,6 @@ class Editor(GObject):
 		self.load_file(uri, encoding) if uri else self.__init_plugins()
 
 	def __init_attributes(self, manager, uri):
-		# True if file is saved.
-		self.__modified = False
 		self.__processing = False
 		# Reference to instance manager.
 		self.__imanager = manager
@@ -179,7 +178,6 @@ class Editor(GObject):
 		self.disconnect_signal(self.__sigid1, self)
 		self.disconnect_signal(self.__sigid2, self)
 		self.disconnect_signal(self.__sigid3, self)
-		self.disconnect_signal(self.__sigid4, self)
 		self.__imanager.unregister_editor(self)
 		self.__glade.get_widget("Window").destroy()
 		del self
@@ -257,7 +255,7 @@ class Editor(GObject):
 	language_objects = property(lambda self: [self.language_manager.get_language(language) for language in self.language_ids])
 	style_scheme_manager = property(__get_style_scheme_manager)
 	readonly = property(lambda self: self.__readonly)
-	modified = property(lambda self: self.__modified)
+	modified = property(lambda self: self.get_data("modified"))
 	contains_document = property(lambda self: self.get_data("contains_document"))
 	encoding = property(lambda self:get_encoding(self.uri) if get_encoding(self.uri) else "utf-8")
 	encoding_list = property(lambda self: get_encoding_list())
@@ -669,10 +667,6 @@ class Editor(GObject):
 
 	def __readonly_cb(self, editor, readonly):
 		self.__readonly = readonly
-		return False
-
-	def __modified_file_cb(self, editor, modified):
-		self.__modified = modified
 		return False
 
 	def __loaded_file_cb(self, *args):
