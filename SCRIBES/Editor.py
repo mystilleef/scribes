@@ -32,6 +32,7 @@ class Editor(GObject):
 		"cursor-moved": (SSIGNAL, TYPE_NONE, ()),
 		"ready": (SSIGNAL, TYPE_NONE, ()),
 		"readonly": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"toggle-readonly": (SSIGNAL, TYPE_NONE, ()),
 		"busy": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"checking-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"loading-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
@@ -79,7 +80,6 @@ class Editor(GObject):
 
 	def __init__(self, manager, uri=None, encoding=None):
 		GObject.__init__(self)
-		self.__sigid1 = self.connect_after("readonly", self.__readonly_cb)
 		self.__init_attributes(manager, uri)
 		from ContentDetector import Detector
 		Detector(self, uri)
@@ -142,6 +142,8 @@ class Editor(GObject):
 		Manager(self)
 		from TriggerManager import Manager
 		Manager(self)
+		from ReadonlyManager import Manager
+		Manager(self)
 		# Register with instance manager after a successful editor
 		# initialization.
 		self.__imanager.register_editor(self)
@@ -164,8 +166,6 @@ class Editor(GObject):
 		glade_file = join(self.data_folder, "Editor.glade")
 		from gtk.glade import XML
 		self.__glade = XML(glade_file, "Window", "scribes")
-		# True if editor is in readonly mode.
-		self.__readonly = False
 		self.__busy = 0
 		from re import UNICODE, compile as compile_
 		self.__word_pattern = compile_("\w+|[-]", UNICODE)
@@ -174,7 +174,6 @@ class Editor(GObject):
 		return False
 
 	def __destroy(self):
-		self.disconnect_signal(self.__sigid1, self)
 		self.__imanager.unregister_editor(self)
 		self.__glade.get_widget("Window").destroy()
 		del self
@@ -239,7 +238,7 @@ class Editor(GObject):
 	language_ids = property(lambda self: self.language_manager.get_language_ids())
 	language_objects = property(lambda self: [self.language_manager.get_language(language) for language in self.language_ids])
 	style_scheme_manager = property(__get_style_scheme_manager)
-	readonly = property(lambda self: self.__readonly)
+	readonly = property(lambda self: self.get_data("readonly"))
 	modified = property(lambda self: self.get_data("modified"))
 	contains_document = property(lambda self: self.get_data("contains_document"))
 	encoding = property(lambda self:get_encoding(self.uri) if get_encoding(self.uri) else "utf-8")
@@ -318,6 +317,10 @@ class Editor(GObject):
 	def toggle_fullscreen(self):
 		value = False if self.__fullscreen else True
 		self.fullscreen(value)
+		return False
+
+	def toggle_readonly(self):
+		self.emit("toggle-readonly")
 		return False
 
 	def refresh(self, grab_focus=True):
@@ -405,10 +408,6 @@ class Editor(GObject):
 		if iterator is None: iterator = self.cursor
 		self.textview.scroll_to_iter(iterator, 0.001, use_align=align, xalign=1.0)
 		return False
-
-	def toggle_readonly(self):
-		self.emit("readonly", False) if self.__readonly else self.emit("readonly", True)
-		return
 
 	def response(self):
 		return self.__imanager.response()
@@ -643,13 +642,3 @@ class Editor(GObject):
 	def set_vm_interval(self, response=True):
 		#FIXME: This function is deprecated!
 		return
-
-########################################################################
-#
-#								Signal Listener
-#
-########################################################################
-
-	def __readonly_cb(self, editor, readonly):
-		self.__readonly = readonly
-		return False

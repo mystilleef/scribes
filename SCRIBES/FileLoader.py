@@ -27,7 +27,6 @@ class FileLoader(object):
 		self.__encoding = encoding
 		self.__editor = editor
 		self.__uri = str(uri)
-		self.__readonly = readonly
 		self.__handle = None
 		self.__temp_buffer = ""
 		self.__error_flag = False
@@ -65,21 +64,12 @@ class FileLoader(object):
 		return
 
 	def __verify_permissions(self):
-		if self.__uri.startswith("file:///"):
-			from gnomevfs import get_local_path_from_uri
-			local_path = get_local_path_from_uri(self.__uri)
-			from os import access, W_OK, R_OK
-			if access(local_path, R_OK):
-				if not access(local_path, W_OK):
-					self.__readonly = True
-			else:
-				from Exceptions import PermissionError
-				raise PermissionError
-		else:
-			from gnomevfs import get_uri_scheme
-			scheme = get_uri_scheme(self.__uri)
-			if not scheme in self.__writable_vfs_schemes:
-				self.__readonly = True
+		if not self.__uri.startswith("file:///"): return
+		from gnomevfs import get_local_path_from_uri
+		local_path = get_local_path_from_uri(self.__uri)
+		from os import access, R_OK
+		from Exceptions import PermissionError
+		if not access(local_path, R_OK): raise PermissionError
 		return
 
 	def __load_uri(self):
@@ -152,7 +142,6 @@ class FileLoader(object):
 
 	def __close_cb(self, *args):
 		self.__editor.emit("loaded-file", self.__uri, self.__encoding)
-		if self.__readonly: self.__editor.emit("readonly", self.__readonly)
 		self.__destroy()
 		return
 

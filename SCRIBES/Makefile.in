@@ -280,6 +280,7 @@ scribes_PYTHON = \
 	RedoToolButton.py \
 	GotoToolButton.py \
 	SearchToolButton.py \
+	ReadonlyManager.py \
 	RecentManager.py \
 	RecentMenu.py \
 	ReplaceToolButton.py \
