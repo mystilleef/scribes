@@ -6,6 +6,7 @@ edit = sed \
 	-e 's,@python_path\@,$(pythondir),g' \
 	-e 's,@VERSION\@,$(VERSION),g'
 
+
 # dnl Generate "Globals.py" from "Globals.py.in."
 python_files = Globals.py
 python_in_files = $(python_files).in
@@ -20,6 +21,8 @@ $(python_files): Makefile $(python_in_files)
 		rm -rf $(scribesdir) ;\
 		echo "removed " $(scribesdir) ;\
 	fi
+
+SUBDIRS = . URILoader
 
 scribes_PYTHON = \
 	Globals.py \
@@ -111,4 +114,8 @@ scribes_PYTHON = \
 	Utils.py \
 	Window.py \
 	Word.py
-EXTRA_DIST = Globals.py.in
+
+clean-local:
+	rm -rf *.pyc *.pyo
+
+EXTRA_DIST = Globals.py.in 

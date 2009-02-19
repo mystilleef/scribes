@@ -6723,7 +6723,7 @@ fi
 
 
 
-ac_config_files="$ac_config_files po/Makefile.in Makefile help/Makefile SCRIBES/Makefile data/Makefile"
+ac_config_files="$ac_config_files po/Makefile.in Makefile help/Makefile SCRIBES/Makefile SCRIBES/URILoader/Makefile data/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -7350,6 +7350,7 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "help/Makefile") CONFIG_FILES="$CONFIG_FILES help/Makefile" ;;
     "SCRIBES/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/Makefile" ;;
+    "SCRIBES/URILoader/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/URILoader/Makefile" ;;
     "data/Makefile") CONFIG_FILES="$CONFIG_FILES data/Makefile" ;;
     "po/stamp-it") CONFIG_COMMANDS="$CONFIG_COMMANDS po/stamp-it" ;;
 

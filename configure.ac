@@ -38,6 +38,7 @@ po/Makefile.in
 Makefile
 help/Makefile
 SCRIBES/Makefile
+SCRIBES/URILoader/Makefile
 data/Makefile]
 )
 
