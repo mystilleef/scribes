@@ -4,6 +4,8 @@ uriloader_PYTHON = \
 	Manager.py \
 	StateNotifier.py \
 	URITypeChecker.py \
+	LocalURIPermissionChecker.py \
+	ErrorManager.py \
 	Initializer.py
 
 TAGS_FILES = $(uriloader_PYTHON)
