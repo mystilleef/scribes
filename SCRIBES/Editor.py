@@ -37,6 +37,7 @@ class Editor(GObject):
 		"checking-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"loading-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"loaded-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"load-file": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
 		"load-error": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"show-error": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_OBJECT, TYPE_BOOLEAN)),
 		"show-info": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_OBJECT, TYPE_BOOLEAN)),
@@ -338,11 +339,7 @@ class Editor(GObject):
 		return 
 
 	def load_file(self, uri, encoding, readonly=False):
-		self.__contains_document = True
-		self.response()
-		from FileLoader import FileLoader
-		FileLoader(self, uri, encoding, readonly)
-		self.response()
+		self.emit("load-file", uri, encoding)
 		return False
 
 	def open_file(self, uri, encoding="utf8"):

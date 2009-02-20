@@ -1,9 +1,12 @@
 uriloaderdir = $(pythondir)/SCRIBES/URILoader
 uriloader_PYTHON = \
 	__init__.py \
-	Manager.py
+	Manager.py \
+	StateNotifier.py \
+	URITypeChecker.py \
+	Initializer.py
 
-TAGS_FILES = $(scribes_PYTHON)
+TAGS_FILES = $(uriloader_PYTHON)
 
 clean-local:
 	rm -rf *.pyc *.pyo
