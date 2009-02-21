@@ -36,8 +36,6 @@ class FileLoader(object):
 	def __get_file_info(self):
 		try:
 			if self.__uri.startswith("file:///"): return
-#			from gnome.ui import authentication_manager_init
-#			authentication_manager_init()
 			FILE_INFO_ACCESS_RIGHTS = 1 << 4
 			from gnomevfs import AccessDeniedError, NotFoundError
 			from gnomevfs import get_file_info, FILE_INFO_DEFAULT

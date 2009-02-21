@@ -14,6 +14,7 @@ class Manager(object):
 			1: _("ERROR: You do not have permission to view %s"),
 			2: _("ERROR: You do not have access to %s"),
 			3: _("ERROR: Cannot find file information object for %s"),
+			4: _("ERROR: %s does not exist"),
 		}
 		return
 

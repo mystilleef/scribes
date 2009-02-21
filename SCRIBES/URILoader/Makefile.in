@@ -202,6 +202,7 @@ uriloader_PYTHON = \
 	StateNotifier.py \
 	URITypeChecker.py \
 	LocalURIPermissionChecker.py \
+	RemoteURIPermissionChecker.py \
 	ErrorManager.py \
 	Initializer.py
 
