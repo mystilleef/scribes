@@ -44,7 +44,7 @@ class Manager(object):
 	def __error_cb(self, manager, uri, error_code):
 		self.__show(uri, error_code)
 		return False
-		
+
 	def __encoding_error_cb(self, *args):
 		self.__editor.show_load_encoding_error_window()
 		return False
