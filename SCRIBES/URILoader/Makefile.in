@@ -208,6 +208,7 @@ uriloader_PYTHON = \
 	ErrorManager.py \
 	TextInserter.py \
 	EncodingProcessor.py \
+	Destroyer.py \
 	Initializer.py
 
 TAGS_FILES = $(uriloader_PYTHON)

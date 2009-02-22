@@ -8,6 +8,8 @@ class Manager(GObject):
 	__gsignals__ = {
 		"init-loading": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"process-encoding": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"insertion-error": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"load-success": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"insert-text": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_STRING)),
 		"check-local-uri": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"check-remote-uri": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
@@ -19,10 +21,14 @@ class Manager(GObject):
 
 	def __init__(self, editor, uri, encoding):
 		GObject.__init__(self)
+		from Destroyer import Destroyer
+		Destroyer(self, editor)
 		from StateNotifier import Notifier
 		Notifier(self, editor)
 		from ErrorManager import Manager
 		Manager(self, editor)
+		from TextInserter import Inserter
+		Inserter(self, editor)
 		from EncodingProcessor import Processor
 		Processor(self, editor)
 		from LocalURIReader import Reader
@@ -35,4 +41,4 @@ class Manager(GObject):
 		Checker(self, editor)
 		from Initializer import Initializer
 		Initializer(self, editor, uri, encoding)
-		
+

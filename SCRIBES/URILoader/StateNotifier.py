@@ -7,6 +7,7 @@ class Notifier(object):
 		self.__sigid3 = manager.connect("error", self.__error_cb)
 		self.__sigid4 = manager.connect("read-uri", self.__read_uri_cb)
 		self.__sigid5 = manager.connect("encoding-error", self.__encoding_error_cb)
+		self.__sigid6 = manager.connect("load-success", self.__load_success_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -19,6 +20,7 @@ class Notifier(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		del self
 		self = None
 		return False
@@ -38,8 +40,11 @@ class Notifier(object):
 	def __read_uri_cb(self, manager, uri):
 		self.__editor.emit("loading-file", uri)
 		return False
-		
+
 	def __encoding_error_cb(self, manager, uri):
 		self.__editor.emit("load-error", uri)
 		return False
 
+	def __load_success_cb(self, manager, uri, encoding):
+		self.__editor.emit("loaded-file", uri, encoding)
+		return False
