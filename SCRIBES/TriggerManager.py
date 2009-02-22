@@ -57,7 +57,7 @@ class Manager(object):
 	def __init_window_bindings(self):
 		self.__bind_shortcut("ctrl+w", "scribes-close-window")
 		self.__bind_shortcut("ctrl+shift+w", "scribes-close-window-nosave")
-		self.__bind_shortcut("ctrl+shift+q", "shutdown")
+		self.__bind_shortcut("ctrl+q", "shutdown")
 		self.__bind_shortcut("F11", "fullscreen")
 		return False
 

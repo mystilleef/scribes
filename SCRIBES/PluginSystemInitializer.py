@@ -2,7 +2,7 @@ class Initializer(object):
 
 	def __init__(self, editor, uri):
 		self.__init_attributes(editor)
-		self.__sigid1 = editor.connect("loaded-file", self.__loaded_cb)
+		self.__sigid1 = editor.connect_after("loaded-file", self.__loaded_cb)
 		self.__sigid2 = editor.connect("load-error", self.__loaded_cb)
 		if not uri: self.__init_plugins()
 
@@ -18,6 +18,7 @@ class Initializer(object):
 		return
 
 	def __init_plugins(self):
+		self.__editor.refresh()
 		self.__editor.move_view_to_cursor(True)
 		self.__editor.refresh()
 		self.__editor.emit("ready")

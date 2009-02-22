@@ -153,7 +153,6 @@ class Editor(GObject):
 		# line in this method.
 		from PluginSystemInitializer import Initializer
 		Initializer(self, uri)
-		if uri: self.load_file(uri, encoding)
 		from URILoader.Manager import Manager
 		Manager(self, uri, encoding)
 

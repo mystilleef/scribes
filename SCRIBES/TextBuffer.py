@@ -145,6 +145,7 @@ class Buffer(object):
 		else:
 			iterator.set_line_index(cursor_index)
 		self.__buffer.place_cursor(iterator)
+		self.__editor.move_view_to_cursor(True)
 		return False
 
 	def __precompile_methods(self):
@@ -193,8 +194,6 @@ class Buffer(object):
 		self.__buffer.handler_unblock(self.__sigid4)
 		self.__buffer.handler_unblock(self.__sigid1)
 		self.__buffer.end_not_undoable_action()
-		from Utils import set_vm_interval
-		set_vm_interval(True)
 #		from gobject import idle_add
 #		idle_add(self.__set_cursor_position, priority=9999)
 		return False
