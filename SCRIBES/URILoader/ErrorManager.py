@@ -6,6 +6,7 @@ class Manager(object):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect_after("error", self.__error_cb)
+		self.__sigid3 = manager.connect_after("encoding-error", self.__encoding_error_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -24,6 +25,7 @@ class Manager(object):
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		del self
 		self = None
 		return False
@@ -41,4 +43,8 @@ class Manager(object):
 
 	def __error_cb(self, manager, uri, error_code):
 		self.__show(uri, error_code)
+		return False
+		
+	def __encoding_error_cb(self, *args):
+		self.__editor.show_load_encoding_error_window()
 		return False
