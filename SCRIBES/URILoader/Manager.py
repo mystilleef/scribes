@@ -31,6 +31,8 @@ class Manager(GObject):
 		Inserter(self, editor)
 		from EncodingProcessor import Processor
 		Processor(self, editor)
+		from RemoteURIReader import Reader
+		Reader(self, editor)
 		from LocalURIReader import Reader
 		Reader(self, editor)
 		from RemoteURIPermissionChecker import Checker
@@ -41,4 +43,3 @@ class Manager(GObject):
 		Checker(self, editor)
 		from Initializer import Initializer
 		Initializer(self, editor, uri, encoding)
-

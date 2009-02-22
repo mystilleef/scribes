@@ -49,7 +49,6 @@ class Reader(object):
 		return False
 
 	def __close_cb(self, *args):
-		#print args
 		return False
 
 	def __destroy_cb(self, *args):
