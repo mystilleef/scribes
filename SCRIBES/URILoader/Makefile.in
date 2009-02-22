@@ -203,7 +203,10 @@ uriloader_PYTHON = \
 	URITypeChecker.py \
 	LocalURIPermissionChecker.py \
 	RemoteURIPermissionChecker.py \
+	LocalURIReader.py \
+	RemoteURIReader.py \
 	ErrorManager.py \
+	TextInserter.py \
 	Initializer.py
 
 TAGS_FILES = $(uriloader_PYTHON)

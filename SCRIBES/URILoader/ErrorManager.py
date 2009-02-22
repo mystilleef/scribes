@@ -15,6 +15,9 @@ class Manager(object):
 			2: _("ERROR: You do not have access to %s"),
 			3: _("ERROR: Cannot find file information object for %s"),
 			4: _("ERROR: %s does not exist"),
+			5: _("ERROR: Failed to open %s for loading"),
+			6: _("ERROR: Failed to read %s for loading"),
+			7: _("ERROR: Failed to close %s for loading"),
 		}
 		return
 

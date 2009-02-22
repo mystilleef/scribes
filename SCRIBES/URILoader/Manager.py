@@ -20,6 +20,8 @@ class Manager(GObject):
 		Notifier(self, editor)
 		from ErrorManager import Manager
 		Manager(self, editor)
+		from LocalURIReader import Reader
+		Reader(self, editor)
 		from RemoteURIPermissionChecker import Checker
 		Checker(self, editor)
 		from LocalURIPermissionChecker import Checker

@@ -9,6 +9,7 @@ uriloader_PYTHON = \
 	LocalURIReader.py \
 	RemoteURIReader.py \
 	ErrorManager.py \
+	TextInserter.py \
 	Initializer.py
 
 TAGS_FILES = $(uriloader_PYTHON)

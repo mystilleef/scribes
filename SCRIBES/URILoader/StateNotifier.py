@@ -5,6 +5,7 @@ class Notifier(object):
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("init-loading", self.__init_loading_cb)
 		self.__sigid3 = manager.connect("error", self.__error_cb)
+		self.__sigid4 = manager.connect("read-uri", self.__read_uri_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -15,6 +16,7 @@ class Notifier(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		del self
 		self = None
 		return False
@@ -29,4 +31,8 @@ class Notifier(object):
 
 	def __error_cb(self, manager, uri, error_code):
 		self.__editor.emit("load-error", uri)
+		return False
+
+	def __read_uri_cb(self, manager, uri):
+		self.__editor.emit("loading-file", uri)
 		return False
