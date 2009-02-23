@@ -56,6 +56,7 @@ scribes_PYTHON = \
 	GlobalStore.py \
 	InstanceManager.py \
 	i18n.py \
+	LanguageManager.py \
 	LanguagePluginManager.py \
 	License.py \
 	Main.py \
@@ -68,6 +69,7 @@ scribes_PYTHON = \
 	SaveManager.py \
 	SaveProcessMonitor.py \
 	SaveProcessorDBusService.py \
+	SchemeManager.py \
 	ScribesSaveProcessor.py \
 	SpellCheckMetadata.py \
 	SupportedEncodings.py \

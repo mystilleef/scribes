@@ -88,6 +88,10 @@ class Editor(GObject):
 		Monitor(self)
 		from URIManager import Manager
 		Manager(self, uri)
+		from LanguageManager import Manager
+		Manager(self, uri)
+		from SchemeManager import Manager
+		Manager(self)
 		# Manages the behavior of the window.
 		from Window import Window
 		Window(self, uri)
@@ -182,32 +186,12 @@ class Editor(GObject):
 		self = None
 		return False
 
-	def __get_style_scheme_manager(self):
-		from gtksourceview2 import style_scheme_manager_get_default
-		manager = style_scheme_manager_get_default()
-		self.__update_manager_search_path(manager, self.home_folder)
-		return manager
-
-	def __get_style_path(self, base_path):
-		from os.path import join, exists
-		path_ = join(self.home_folder, base_path)
-		return path_ if exists(path_) else None
-
 	def __get_word_pattern(self):
 		return self.__word_pattern
 	
 	def __set_word_pattern(self, pattern):
 		from re import UNICODE, compile as compile_
 		self.__word_pattern = compile_(pattern, UNICODE)
-		return
-
-	def __update_manager_search_path(self, manager, home_folder):
-		gedit_path = self.__get_style_path(".gnome2/gedit/styles")
-		scribes_path = self.__get_style_path(".gnome2/scribes/styles")
-		search_paths = manager.get_search_path()
-		if gedit_path and not (gedit_path in search_paths): manager.prepend_search_path(gedit_path)
-		if scribes_path and not (scribes_path in search_paths): manager.prepend_search_path(scribes_path)
-		manager.force_rescan()
 		return
 
 	def __get_selection_range(self):
@@ -234,12 +218,12 @@ class Editor(GObject):
 	objects = instances = property(lambda self: self.__imanager.get_editor_instances())
 	uri_object = property(lambda self: self.get_data("uri_object"))
 	name = property(lambda self: self.uri_object.short_name if self.uri else None)
-	language_object = property(lambda self: get_language(self.uri))
-	language = property(lambda self: self.language_object.get_id() if self.language_object else None)
+	language_object = property(lambda self: self.get_data("language_object"))
+	language = property(lambda self: self.get_data("language"))
 	language_manager = property(lambda self: language_manager_get_default())
 	language_ids = property(lambda self: self.language_manager.get_language_ids())
 	language_objects = property(lambda self: [self.language_manager.get_language(language) for language in self.language_ids])
-	style_scheme_manager = property(__get_style_scheme_manager)
+	style_scheme_manager = property(lambda self: self.get_data("style_scheme_manager"))
 	readonly = property(lambda self: self.get_data("readonly"))
 	modified = property(lambda self: self.get_data("modified"))
 	contains_document = property(lambda self: self.get_data("contains_document"))
