@@ -95,6 +95,7 @@ scribes_PYTHON = \
 	PrintToolButton.py \
 	UndoToolButton.py \
 	RedoToolButton.py \
+	RegistrationManager.py \
 	GotoToolButton.py \
 	SearchToolButton.py \
 	ReadonlyManager.py \

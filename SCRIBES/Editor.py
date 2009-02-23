@@ -71,6 +71,8 @@ class Editor(GObject):
 		"remove-trigger": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"add-triggers": (SACTION, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"remove-triggers": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"register-object": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"unregister-object": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"trigger": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"refresh": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"add-to-popup": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
@@ -81,7 +83,10 @@ class Editor(GObject):
 
 	def __init__(self, manager, uri=None, encoding=None):
 		GObject.__init__(self)
+		self.set_data("InstanceManager", manager)
 		self.__init_attributes(manager, uri)
+		from RegistrationManager import Manager
+		Manager(self)
 		from ContentDetector import Detector
 		Detector(self, uri)
 		from FileModificationMonitor import Monitor
@@ -151,7 +156,7 @@ class Editor(GObject):
 		Manager(self)
 		# Register with instance manager after a successful editor
 		# initialization.
-		self.__imanager.register_editor(self)
+		manager.register_editor(self)
 		# Load files or initialize plugins. Always load files, if any,
 		# before initializing plugin systems. This should be the last
 		# line in this method.
@@ -161,13 +166,6 @@ class Editor(GObject):
 		Manager(self, uri, encoding)
 
 	def __init_attributes(self, manager, uri):
-		self.__processing = False
-		# Reference to instance manager.
-		self.__imanager = manager
-		from collections import deque
-		# Key objects register with this object so that the editor does not
-		# terminate before proper object cleanup.
-		self.__registered_objects = deque([])
 		from os.path import join
 		glade_file = join(self.data_folder, "Editor.glade")
 		from gtk.glade import XML
@@ -177,13 +175,6 @@ class Editor(GObject):
 		self.__word_pattern = compile_("\w+|[-]", UNICODE)
 		self.__bar_is_active = False
 		self.__fullscreen = False
-		return False
-
-	def __destroy(self):
-		self.__imanager.unregister_editor(self)
-		self.__glade.get_widget("Window").destroy()
-		del self
-		self = None
 		return False
 
 	def __get_word_pattern(self):
@@ -205,6 +196,7 @@ class Editor(GObject):
 #
 ################################################################
 
+	imanager = property(lambda self: self.get_data("InstanceManager"))
 	gui = property(lambda self: self.__glade)
 	window = property(lambda self: self.gui.get_widget("Window"))
 	textview = property(lambda self: self.gui.get_widget("ScrolledWindow").get_child())
@@ -213,9 +205,9 @@ class Editor(GObject):
 	statusbar = property(lambda self: self.gui.get_widget("StatusContainer"))
 	id_ = property(lambda self: id(self))
 	uri = property(lambda self: self.get_data("uri"))
-	uris = property(lambda self: self.__imanager.get_uris())
+	uris = property(lambda self: self.imanager.get_uris())
 	# All editor instances
-	objects = instances = property(lambda self: self.__imanager.get_editor_instances())
+	objects = instances = property(lambda self: self.imanager.get_editor_instances())
 	uri_object = property(lambda self: self.get_data("uri_object"))
 	name = property(lambda self: self.uri_object.short_name if self.uri else None)
 	language_object = property(lambda self: self.get_data("language_object"))
@@ -255,7 +247,7 @@ class Editor(GObject):
 	artists = property(lambda self: artists)
 	author = property(lambda self: author)
 	website = property(lambda self: website)
-	save_processor = property(lambda self: self.__imanager.get_save_processor())
+	save_processor = property(lambda self: self.imanager.get_save_processor())
 	supported_encodings = property(lambda self: get_supported_encodings())
 	word_pattern = property(__get_word_pattern, __set_word_pattern)
 	selection_range = property(__get_selection_range)
@@ -285,11 +277,11 @@ class Editor(GObject):
 		return
 
 	def new(self):
-		return self.__imanager.open_files()
+		return self.imanager.open_files()
 
 	def shutdown(self):
 		self.close()
-		return self.__imanager.close_all_windows()
+		return self.imanager.close_all_windows()
 
 	def close(self, save_first=True):
 		self.emit("close", save_first)
@@ -327,37 +319,37 @@ class Editor(GObject):
 
 	def open_file(self, uri, encoding="utf8"):
 		self.response()
-		self.__imanager.open_files([uri], encoding)
+		self.imanager.open_files([uri], encoding)
 		self.response()
 		return
 
 	def open_files(self, uris, encoding="utf8"):
 		self.response()
-		self.__imanager.open_files(uris, encoding)
+		self.imanager.open_files(uris, encoding)
 		self.response()
 		return
 
 	def focus_file(self, uri):
 		self.response()
-		self.__imanager.focus_file(uri)
+		self.imanager.focus_file(uri)
 		self.response()
 		return
 
 	def focus_by_id(self, id_):
 		self.response()
-		self.__imanager.focus_by_id(id_)
+		self.imanager.focus_by_id(id_)
 		self.response()
 		return
 
 	def close_file(self, uri):
 		self.response()
-		self.__imanager.close_files([uri])
+		self.imanager.close_files([uri])
 		self.response()
 		return
 
 	def close_files(self, uris):
 		self.response()
-		self.__imanager.close_files(uris)
+		self.imanager.close_files(uris)
 		self.response()
 		return
 
@@ -370,12 +362,11 @@ class Editor(GObject):
 		return create_image(path)
 
 	def register_object(self, instance):
-		self.__registered_objects.append(instance)
+		self.emit("register-object", instance)
 		return False
 
 	def unregister_object(self, instance):
-		self.__registered_objects.remove(instance)
-		if not self.__registered_objects: self.__destroy()
+		self.emit("unregister-object", instance)
 		return False
 
 	def calculate_resolution_independence(self, window, width, height):
@@ -392,7 +383,7 @@ class Editor(GObject):
 		return False
 
 	def response(self):
-		return self.__imanager.response()
+		return self.imanager.response()
 
 	def busy(self, busy=True):
 		self.__busy = self.__busy + 1 if busy else self.__busy - 1
@@ -589,13 +580,13 @@ class Editor(GObject):
 		return
 
 	def add_shortcut(self, shortcut):
-		return self.__imanager.add_shortcut(shortcut)
+		return self.imanager.add_shortcut(shortcut)
 	
 	def remove_shortcut(self, shortcut):
-		return self.__imanager.remove_shortcut(shortcut)
+		return self.imanager.remove_shortcut(shortcut)
 	
 	def get_shortcuts(self):
-		return self.__imanager.get_shortcuts()
+		return self.imanager.get_shortcuts()
 
 	def add_to_popup(self, menuitem):
 		self.emit("add-to-popup", menuitem)

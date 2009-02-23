@@ -7,6 +7,7 @@ class Manager(object):
 		self.__sigid3 = editor.connect("renamed-file", self.__loaded_file_cb)
 		self.__sigid4 = editor.connect("load-error", self.__load_error_cb)
 		self.__set(uri)
+		self.__editor.register_object(self)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -17,6 +18,7 @@ class Manager(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
+		self.__editor.unregister_object(self)
 		del self
 		self = None
 		return False
