@@ -42,7 +42,8 @@ class Processor(object):
 		return False
 
 	def __process_cb(self, manager, uri, string):
-		self.__send(uri, string)
+		from gobject import idle_add
+		idle_add(self.__send, uri, string)
 		return False
 
 	def __init_loading_cb(self, manager, uri, encoding):

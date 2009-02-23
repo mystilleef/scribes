@@ -19,6 +19,7 @@ class Inserter(object):
 
 	def __insert(self, uri, string, encoding):
 		try:
+			if encoding is None: encoding = "utf-8"
 			unicode_string = string.decode(encoding)
 			utf8_string = unicode_string.encode("utf-8")
 			self.__editor.refresh()
@@ -34,5 +35,6 @@ class Inserter(object):
 		return False
 
 	def __insert_cb(self, manager, uri, string, encoding):
-		self.__insert(uri, string, encoding)
+		from gobject import idle_add
+		idle_add(self.__insert, uri, string, encoding)
 		return False

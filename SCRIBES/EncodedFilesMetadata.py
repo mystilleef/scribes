@@ -3,7 +3,7 @@ basepath = "Preferences/EncodedFiles.gdb"
 
 def get_value(uri):
 	try:
-		value = None
+		value = "utf-8"
 		database = open_database(basepath, "r")
 		value = database[str(uri)]
 	except KeyError:
