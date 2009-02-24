@@ -34,6 +34,7 @@ class Editor(GObject):
 		"readonly": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"toggle-readonly": (SSIGNAL, TYPE_NONE, ()),
 		"busy": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"private-busy": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"checking-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"loading-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"loaded-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
@@ -98,6 +99,8 @@ class Editor(GObject):
 		from SchemeManager import Manager
 		Manager(self)
 		from GladeObjectManager import Manager
+		Manager(self)
+		from BusyManager import Manager
 		Manager(self)
 		# Manages the behavior of the window.
 		from Window import Window
@@ -168,7 +171,6 @@ class Editor(GObject):
 		Manager(self, uri, encoding)
 
 	def __init_attributes(self, manager, uri):
-		self.__busy = 0
 		from re import UNICODE, compile as compile_
 		self.__word_pattern = compile_("\w+|[-]", UNICODE)
 		self.__bar_is_active = False
@@ -384,12 +386,7 @@ class Editor(GObject):
 		return self.imanager.response()
 
 	def busy(self, busy=True):
-		self.__busy = self.__busy + 1 if busy else self.__busy - 1
-		if self.__busy < 0: self.__busy = 0
-		busy = True if self.__busy else False
-		self.refresh(False)
-		self.emit("busy", busy)
-		self.refresh(False)
+		self.emit("private-busy", busy)
 		return False
 
 	def show_load_encoding_error_window(self):

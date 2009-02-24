@@ -27,6 +27,7 @@ SUBDIRS = . URILoader
 scribes_PYTHON = \
 	Globals.py \
 	__init__.py \
+	BusyManager.py \
 	ColorThemeMetadata.py \
 	CommandLineInfo.py \
 	CommandLineProcessor.py \
