@@ -132,7 +132,7 @@ class Manager(object):
 		[editor.close() for editor in copy(self.__editor_instances) if editor.uri == uri]
 		return False
 
-	def __new_editor(self, uri=None, encoding=None):
+	def __new_editor(self, uri=None, encoding="utf-8"):
 		from Editor import Editor
 		Editor(self, uri, encoding)
 		return False

@@ -53,6 +53,7 @@ scribes_PYTHON = \
 	FileSaver.py \
 	FontMetadata.py \
 	ForkScribesMetadata.py \
+	GladeObjectManager.py \
 	GlobalStore.py \
 	InstanceManager.py \
 	i18n.py \

@@ -34,6 +34,6 @@ class Checker(object):
 		return False
 
 	def __check_cb(self, manager, uri):
-		self.__check(uri)
+		from gobject import idle_add
+		idle_add(self.__check, uri)
 		return False
-

@@ -3,7 +3,7 @@ class Manager(object):
 	def __init__(self, editor, uri):
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("loaded-file", self.__loaded_file_cb)
+		self.__sigid2 = editor.connect("checking-file", self.__loaded_file_cb)
 		self.__sigid3 = editor.connect("renamed-file", self.__loaded_file_cb)
 		self.__sigid4 = editor.connect("load-error", self.__load_error_cb)
 		self.__set(uri)

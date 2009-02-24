@@ -81,7 +81,7 @@ class Editor(GObject):
 		"fullscreen": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 	}
 
-	def __init__(self, manager, uri=None, encoding=None):
+	def __init__(self, manager, uri=None, encoding="utf-8"):
 		GObject.__init__(self)
 		self.set_data("InstanceManager", manager)
 		self.__init_attributes(manager, uri)
@@ -96,6 +96,8 @@ class Editor(GObject):
 		from LanguageManager import Manager
 		Manager(self, uri)
 		from SchemeManager import Manager
+		Manager(self)
+		from GladeObjectManager import Manager
 		Manager(self)
 		# Manages the behavior of the window.
 		from Window import Window
@@ -166,10 +168,6 @@ class Editor(GObject):
 		Manager(self, uri, encoding)
 
 	def __init_attributes(self, manager, uri):
-		from os.path import join
-		glade_file = join(self.data_folder, "Editor.glade")
-		from gtk.glade import XML
-		self.__glade = XML(glade_file, "Window", "scribes")
 		self.__busy = 0
 		from re import UNICODE, compile as compile_
 		self.__word_pattern = compile_("\w+|[-]", UNICODE)
@@ -197,7 +195,7 @@ class Editor(GObject):
 ################################################################
 
 	imanager = property(lambda self: self.get_data("InstanceManager"))
-	gui = property(lambda self: self.__glade)
+	gui = property(lambda self: self.get_data("gui"))
 	window = property(lambda self: self.gui.get_widget("Window"))
 	textview = property(lambda self: self.gui.get_widget("ScrolledWindow").get_child())
 	textbuffer = property(lambda self: self.textview.get_property("buffer"))
@@ -219,7 +217,7 @@ class Editor(GObject):
 	readonly = property(lambda self: self.get_data("readonly"))
 	modified = property(lambda self: self.get_data("modified"))
 	contains_document = property(lambda self: self.get_data("contains_document"))
-	encoding = property(lambda self:get_encoding(self.uri) if get_encoding(self.uri) else "utf-8")
+	encoding = property(lambda self:get_encoding(self.uri))
 	encoding_list = property(lambda self: get_encoding_list())
 	encoding_guess_list = property(lambda self: get_encoding_guess_list())
 	# textview and textbuffer information

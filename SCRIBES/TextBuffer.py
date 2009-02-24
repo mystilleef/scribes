@@ -202,8 +202,6 @@ class Buffer(object):
 		return
 
 	def __load_error_cb(self, *args):
-		from Utils import set_vm_interval
-		set_vm_interval(True)
 		self.__buffer.set_language(None)
 		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		self.__buffer.handler_unblock(self.__sigid4)
