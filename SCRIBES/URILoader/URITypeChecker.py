@@ -27,5 +27,6 @@ class Checker(object):
 		return False
 
 	def __init_loading_cb(self, manager, uri, encoding):
-		self.__check(uri)
+		from gobject import idle_add
+		idle_add(self.__check, uri)
 		return False

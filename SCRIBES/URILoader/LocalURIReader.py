@@ -30,8 +30,8 @@ class Reader(object):
 
 	def __open_cb(self, handle, result, uri):
 		try:
-			from gnomevfs import URI
-			local_path = URI(uri).path
+			from gnomevfs import URI, get_local_path_from_uri
+			local_path = get_local_path_from_uri(uri)
 			from os.path import getsize
 			size = getsize(local_path)
 			if not (size): size = 4096
