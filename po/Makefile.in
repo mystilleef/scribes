@@ -19,7 +19,7 @@
 
 GETTEXT_PACKAGE = scribes
 PACKAGE = scribes
-VERSION = 0.4-eurika-dev-build387
+VERSION = 0.4-eurika-dev-build388
 
 SHELL = /bin/sh
 

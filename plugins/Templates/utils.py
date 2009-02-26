@@ -70,18 +70,18 @@ def get_placeholders(string):
 	is_not_special = lambda placeholder: not (placeholder in special_placeholders)
 	# Return all strings enclosed in ${} with the exception of ${}.
 	from re import findall, UNICODE
-	placeholders = findall(placeholder_pattern, string, UNICODE)
+	placeholders = findall(placeholder_pattern, string)
 	return filter(is_not_special, placeholders)
 
 def has_placeholders(string):
 	from re import search, UNICODE
 	# Match any strings enclosed in ${} with the exception of ${}.
-	if search(placeholder_pattern, string, UNICODE): return True
+	if search(placeholder_pattern, string): return True
 	return False
 
 def get_special_placeholders(string):
 	from re import findall
-	placeholders = findall(placeholder_pattern, string, UNICODE)
+	placeholders = findall(placeholder_pattern, string)
 	has_special_placeholder = lambda placeholder: placeholder in special_placeholders
 	return filter(has_special_placeholder, placeholders)
 
