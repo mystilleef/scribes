@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Dec  9 14:16:28 2008 -->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="Window">
     <property name="sensitive">False</property>
     <property name="title" translatable="yes">Unsaved Document</property>
-    <property name="startup_id">ScribesWindowID</property>
     <property name="role">ScribesWindowRole</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
+    <property name="startup_id">ScribesWindowID</property>
+    <property name="window_position">center</property>
     <property name="default_width">640</property>
     <property name="default_height">480</property>
     <property name="icon_name">scribes</property>
@@ -22,13 +22,14 @@
               <widget class="GtkToolbar" id="Toolbar">
                 <property name="sensitive">False</property>
                 <property name="no_show_all">True</property>
-                <property name="toolbar_style">GTK_TOOLBAR_ICONS</property>
-                <property name="icon_size">GTK_ICON_SIZE_SMALL_TOOLBAR</property>
+                <property name="toolbar_style">icons</property>
+                <property name="icon_size">2</property>
                 <property name="icon_size_set">True</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -37,9 +38,9 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="border_width">2</property>
-                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="shadow_type">GTK_SHADOW_IN</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <property name="shadow_type">in</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -82,6 +83,7 @@
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="padding">3</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
@@ -91,7 +93,7 @@
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">&lt;b&gt;SCRIBES: FEEDBACK AREA&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
-                    <property name="ellipsize">PANGO_ELLIPSIZE_END</property>
+                    <property name="ellipsize">end</property>
                     <property name="single_line_mode">True</property>
                   </widget>
                   <packing>
@@ -138,6 +140,9 @@
               </packing>
             </child>
           </widget>
+          <packing>
+            <property name="position">0</property>
+          </packing>
         </child>
       </widget>
     </child>
