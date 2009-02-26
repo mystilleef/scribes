@@ -29,5 +29,6 @@ class Monitor(object):
 		return False
 
 	def __populated_model_cb(self, *args):
-		self.__send_scheme()
+		from gobject import idle_add
+		idle_add(self.__send_scheme)
 		return False

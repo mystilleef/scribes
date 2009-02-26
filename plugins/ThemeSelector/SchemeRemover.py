@@ -30,5 +30,6 @@ class Remover(object):
 		return False
 
 	def __remove_cb(self, manager, scheme):
-		self.__remove(scheme)
+		from gobject import idle_add
+		idle_add(self.__remove, scheme)
 		return False

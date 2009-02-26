@@ -30,5 +30,6 @@ class Generator(object):
 		return False
 
 	def __schemes_cb(self, manager, schemes):
-		self.__send_treeview_data(schemes)
+		from gobject import idle_add
+		idle_add(self.__send_treeview_data, schemes)
 		return False

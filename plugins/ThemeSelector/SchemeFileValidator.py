@@ -61,5 +61,6 @@ class Validator(object):
 		return False
 
 	def __process_cb(self, manager, filenames):
-		self.__validate(filenames)
+		from gobject import idle_add
+		idle_add(self.__validate, filenames)
 		return False

@@ -8,7 +8,8 @@ class Monitor(object):
 		self.__monid1 = monitor_add(self.__uri1, FOLDER, self.__changed_cb)
 		self.__monid2 = monitor_add(self.__uri2, FOLDER, self.__changed_cb)
 		self.__monid3 = monitor_add(self.__uri3, FOLDER, self.__changed_cb)
-		self.__scan()
+		from gobject import idle_add
+		idle_add(self.__scan)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
@@ -42,5 +43,6 @@ class Monitor(object):
 		return
 
 	def __changed_cb(self, *args):
-		self.__scan()
+		from gobject import idle_add
+		idle_add(self.__scan)
 		return True

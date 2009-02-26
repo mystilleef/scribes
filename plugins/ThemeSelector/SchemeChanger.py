@@ -27,5 +27,6 @@ class Changer(object):
 		return False
 
 	def __new_scheme_cb(self, manager, scheme):
-		self.__change(scheme)
+		from gobject import idle_add
+		idle_add(self.__change, scheme)
 		return False

@@ -36,5 +36,6 @@ class Installer(object):
 		return False
 
 	def __valid_cb(self, manager, filenames):
-		self.__install(filenames)
+		from gobject import idle_add
+		idle_add(self.__install, filenames)
 		return False
