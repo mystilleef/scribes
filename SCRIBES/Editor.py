@@ -1,19 +1,4 @@
-from Globals import data_folder, metadata_folder, home_folder, desktop_folder
-from Globals import session_bus, core_plugin_folder, home_plugin_folder
-from Globals import home_language_plugin_folder, core_language_plugin_folder
-from Globals import version, author, documenters, artists, website
-from Globals import copyrights, translators, python_path, dbus_iface
-from License import license_string
-from gnomevfs import URI, get_uri_from_local_path
-from DialogFilters import create_filter_list
-from gtksourceview2 import language_manager_get_default
-from EncodingGuessListMetadata import get_value as get_encoding_guess_list
-from EncodedFilesMetadata import get_value as get_encoding
-from EncodingMetadata import get_value as get_encoding_list
-from Utils import get_language, word_pattern
-from SupportedEncodings import get_supported_encodings
-from gettext import gettext as _
-
+import EditorImports
 from SIGNALS import Signals
 
 class Editor(Signals):
@@ -108,8 +93,6 @@ class Editor(Signals):
 		Initializer(self, uri)
 		from URILoader.Manager import Manager
 		Manager(self, uri, encoding)
-		from sys import getcheckinterval
-		print getcheckinterval()
 
 ################################################################
 #
@@ -133,51 +116,51 @@ class Editor(Signals):
 	name = property(lambda self: self.uri_object.short_name if self.uri else None)
 	language_object = property(lambda self: self.get_data("language_object"))
 	language = property(lambda self: self.get_data("language"))
-	language_manager = property(lambda self: language_manager_get_default())
+	language_manager = property(lambda self: EditorImports.language_manager_get_default())
 	language_ids = property(lambda self: self.language_manager.get_language_ids())
 	language_objects = property(lambda self: [self.language_manager.get_language(language) for language in self.language_ids])
 	style_scheme_manager = property(lambda self: self.get_data("style_scheme_manager"))
 	readonly = property(lambda self: self.get_data("readonly"))
 	modified = property(lambda self: self.get_data("modified"))
 	contains_document = property(lambda self: self.get_data("contains_document"))
-	encoding = property(lambda self:get_encoding(self.uri))
-	encoding_list = property(lambda self: get_encoding_list())
-	encoding_guess_list = property(lambda self: get_encoding_guess_list())
+	encoding = property(lambda self: EditorImports.get_encoding(self.uri))
+	encoding_list = property(lambda self: EditorImports.get_encoding_list())
+	encoding_guess_list = property(lambda self: EditorImports.get_encoding_guess_list())
 	# textview and textbuffer information
 	cursor = property(lambda self: self.textbuffer.get_iter_at_offset(self.textbuffer.get_property("cursor_position")))
 	text = property(lambda self: self.textbuffer.get_text(*(self.textbuffer.get_bounds())))
 	# Global information
-	data_folder = property(lambda self: data_folder)
-	metadata_folder = property(lambda self: metadata_folder)
-	home_folder = property(lambda self: home_folder)
-	desktop_folder = property(lambda self: desktop_folder)
-	home_folder_uri = property(lambda self: get_uri_from_local_path(self.home_folder))
-	desktop_folder_uri = property(lambda self: get_uri_from_local_path(self.desktop_folder))
-	core_plugin_folder = property(lambda self: core_plugin_folder)
-	home_plugin_folder = property(lambda self: home_plugin_folder)
-	core_language_plugin_folder = property(lambda self: core_language_plugin_folder)
-	home_language_plugin_folder = property(lambda self: home_language_plugin_folder)
-	session_bus = property(lambda self: session_bus)
-	python_path = property(lambda self: python_path)
-	dbus_iface = property(lambda self: dbus_iface)
-	version = property(lambda self: version)
-	copyrights = property(lambda self: copyrights)
-	license = property(lambda self: license_string)
-	translators = property(lambda self: translators)
-	documenters = property(lambda self: documenters)
-	artists = property(lambda self: artists)
-	author = property(lambda self: author)
-	website = property(lambda self: website)
+	data_folder = property(lambda self: EditorImports.data_folder)
+	metadata_folder = property(lambda self: EditorImports.metadata_folder)
+	home_folder = property(lambda self: EditorImports.home_folder)
+	desktop_folder = property(lambda self: EditorImports.desktop_folder)
+	home_folder_uri = property(lambda self: EditorImports.get_uri_from_local_path(self.home_folder))
+	desktop_folder_uri = property(lambda self: EditorImports.get_uri_from_local_path(self.desktop_folder))
+	core_plugin_folder = property(lambda self: EditorImports.core_plugin_folder)
+	home_plugin_folder = property(lambda self: EditorImports.home_plugin_folder)
+	core_language_plugin_folder = property(lambda self: EditorImports.core_language_plugin_folder)
+	home_language_plugin_folder = property(lambda self: EditorImports.home_language_plugin_folder)
+	session_bus = property(lambda self: EditorImports.session_bus)
+	python_path = property(lambda self: EditorImports.python_path)
+	dbus_iface = property(lambda self: EditorImports.dbus_iface)
+	version = property(lambda self: EditorImports.version)
+	copyrights = property(lambda self: EditorImports.copyrights)
+	license = property(lambda self: EditorImports.license_string)
+	translators = property(lambda self: EditorImports.translators)
+	documenters = property(lambda self: EditorImports.documenters)
+	artists = property(lambda self: EditorImports.artists)
+	author = property(lambda self: EditorImports.author)
+	website = property(lambda self: EditorImports.website)
 	save_processor = property(lambda self: self.imanager.get_save_processor())
-	supported_encodings = property(lambda self: get_supported_encodings())
-	word_pattern = property(lambda self: word_pattern)
+	supported_encodings = property(lambda self: EditorImports.get_supported_encodings())
+	word_pattern = property(lambda self: EditorImports.word_pattern)
 	selection_range = property(lambda self: self.get_selection_range())
 	selection_bounds = property(lambda self: self.textbuffer.get_selection_bounds())
 	selected_text = property(lambda self: self.textbuffer.get_text(*(self.selection_bounds)))
 	has_selection = property(lambda self: self.textbuffer.props.has_selection)
 	pwd = property(lambda self: str(URI(self.uri).parent.path) if self.uri else self.desktop_folder)
-	pwd_uri = property(lambda self: str(URI(self.uri).parent) if self.uri else get_uri_from_local_path(self.desktop_folder))
-	dialog_filters = property(lambda self: create_filter_list())
+	pwd_uri = property(lambda self: str(URI(self.uri).parent) if self.uri else EditorImports.get_uri_from_local_path(self.desktop_folder))
+	dialog_filters = property(lambda self: EditorImports.create_filter_list())
 	recent_manager = property(lambda self: self.get_data("RecentManager"))
 	bar_is_active = property(lambda self: self.get_data("bar_is_active"))
 

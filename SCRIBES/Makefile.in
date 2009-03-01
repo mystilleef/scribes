@@ -237,6 +237,7 @@ scribes_PYTHON = \
 	DialogFilters.py \
 	DisplayRightMarginMetadata.py \
 	Editor.py \
+	EditorImports.py \
 	EncodingComboBoxDataManager.py \
 	EncodingErrorComboBox.py \
 	EncodingErrorManager.py \
