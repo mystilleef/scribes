@@ -75,6 +75,7 @@ scribes_PYTHON = \
 	SaveProcessorDBusService.py \
 	SchemeManager.py \
 	ScribesSaveProcessor.py \
+	SIGNALS.py \
 	SpellCheckMetadata.py \
 	SupportedEncodings.py \
 	SupportedEncodingsDatabaseManager.py \
