@@ -1,3 +1,6 @@
+from re import UNICODE, compile as compile_
+word_pattern = compile_("\w+|[-]", UNICODE)
+
 def calculate_resolution_independence(window, width, height):
 	# Need to deprecate this function.
 	screen = window.get_screen()
@@ -391,7 +394,7 @@ def open_database(basepath, flag="c"):
 
 def response():
 	from gtk import events_pending, main_iteration
-	while events_pending(): main_iteration(False)
+	while events_pending(): main_iteration(False) 
 	return
 
 def create_uri(uri, exclusive=True):

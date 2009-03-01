@@ -27,6 +27,7 @@ SUBDIRS = . URILoader
 scribes_PYTHON = \
 	Globals.py \
 	__init__.py \
+	BarObjectManager.py \
 	BusyManager.py \
 	ColorThemeMetadata.py \
 	CommandLineInfo.py \
@@ -54,6 +55,7 @@ scribes_PYTHON = \
 	FileSaver.py \
 	FontMetadata.py \
 	ForkScribesMetadata.py \
+	FullScreenManager.py \
 	GladeObjectManager.py \
 	GlobalStore.py \
 	InstanceManager.py \

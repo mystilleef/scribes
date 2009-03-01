@@ -67,5 +67,6 @@ class Manager(object):
 		return False
 
 	def __name_change_cb(self, *args):
-		self.__start_process()
+		from gobject import idle_add
+		idle_add(self.__start_process)
 		return False

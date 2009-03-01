@@ -13,7 +13,7 @@ from gtksourceview2 import language_manager_get_default
 from EncodingGuessListMetadata import get_value as get_encoding_guess_list
 from EncodedFilesMetadata import get_value as get_encoding
 from EncodingMetadata import get_value as get_encoding_list
-from Utils import get_language
+from Utils import get_language, word_pattern
 from SupportedEncodings import get_supported_encodings
 from gettext import gettext as _
 SSIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
@@ -33,6 +33,7 @@ class Editor(GObject):
 		"ready": (SSIGNAL, TYPE_NONE, ()),
 		"readonly": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"toggle-readonly": (SSIGNAL, TYPE_NONE, ()),
+		"toggle-fullscreen": (SSIGNAL, TYPE_NONE, ()),
 		"busy": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"private-busy": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"checking-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
@@ -61,6 +62,8 @@ class Editor(GObject):
 		"combobox-encoding-data?": (SSIGNAL, TYPE_NONE, ()),
 		"combobox-encoding-data": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"supported-encodings-window": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
+		"remove-bar-object": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
+		"add-bar-object": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
 		"spin-throbber": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"bar-is-active": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"update-message": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_INT,)),
@@ -85,7 +88,6 @@ class Editor(GObject):
 	def __init__(self, manager, uri=None, encoding="utf-8"):
 		GObject.__init__(self)
 		self.set_data("InstanceManager", manager)
-		self.__init_attributes(manager, uri)
 		from RegistrationManager import Manager
 		Manager(self)
 		from ContentDetector import Detector
@@ -162,6 +164,10 @@ class Editor(GObject):
 		# Register with instance manager after a successful editor
 		# initialization.
 		manager.register_editor(self)
+		from BarObjectManager import Manager
+		Manager(self)
+		from FullScreenManager import Manager
+		Manager(self)
 		# Load files or initialize plugins. Always load files, if any,
 		# before initializing plugin systems. This should be the last
 		# line in this method.
@@ -169,21 +175,8 @@ class Editor(GObject):
 		Initializer(self, uri)
 		from URILoader.Manager import Manager
 		Manager(self, uri, encoding)
-
-	def __init_attributes(self, manager, uri):
-		from re import UNICODE, compile as compile_
-		self.__word_pattern = compile_("\w+|[-]", UNICODE)
-		self.__bar_is_active = False
-		self.__fullscreen = False
-		return False
-
-	def __get_word_pattern(self):
-		return self.__word_pattern
-	
-	def __set_word_pattern(self, pattern):
-		from re import UNICODE, compile as compile_
-		self.__word_pattern = compile_(pattern, UNICODE)
-		return
+		from sys import getcheckinterval
+		print getcheckinterval()
 
 	def __get_selection_range(self):
 		if self.textbuffer.props.has_selection is False: return 0
@@ -249,7 +242,7 @@ class Editor(GObject):
 	website = property(lambda self: website)
 	save_processor = property(lambda self: self.imanager.get_save_processor())
 	supported_encodings = property(lambda self: get_supported_encodings())
-	word_pattern = property(__get_word_pattern, __set_word_pattern)
+	word_pattern = property(lambda self: word_pattern)
 	selection_range = property(__get_selection_range)
 	selection_bounds = property(lambda self: self.textbuffer.get_selection_bounds())
 	selected_text = property(lambda self: self.textbuffer.get_text(*(self.selection_bounds)))
@@ -258,12 +251,14 @@ class Editor(GObject):
 	pwd_uri = property(lambda self: str(URI(self.uri).parent) if self.uri else get_uri_from_local_path(self.desktop_folder))
 	dialog_filters = property(lambda self: create_filter_list())
 	recent_manager = property(lambda self: self.get_data("RecentManager"))
-	bar_is_active = property(lambda self: self.__bar_is_active)
+	bar_is_active = property(lambda self: self.get_data("bar_is_active"))
 
 	def optimize(self, functions):
 		try:
+			self.response()
 			from psyco import bind
 			[bind(function) for function in functions]
+			self.response()
 		except ImportError:
 			pass
 		return False
@@ -277,24 +272,27 @@ class Editor(GObject):
 		return
 
 	def new(self):
+		self.response()
 		return self.imanager.open_files()
 
 	def shutdown(self):
+		self.response()
 		self.close()
+		self.response()
 		return self.imanager.close_all_windows()
 
 	def close(self, save_first=True):
+		self.response()
 		self.emit("close", save_first)
+		self.response()
 		return False
 
 	def fullscreen(self, value=True):
 		self.emit("fullscreen", value)
-		self.__fullscreen = value
 		return
 
 	def toggle_fullscreen(self):
-		value = False if self.__fullscreen else True
-		self.fullscreen(value)
+		self.emit("toggle-fullscreen")
 		return False
 
 	def toggle_readonly(self):
@@ -306,15 +304,19 @@ class Editor(GObject):
 		return False
 
 	def save_file(self, uri, encoding="utf-8"):
+		self.response()
 		self.emit("save-file", uri, encoding)
+		self.response()
 		return
 
 	def rename_file(self, uri, encoding="utf-8"):
 		self.emit("rename-file", uri, encoding)
-		return 
+		return
 
 	def load_file(self, uri, encoding, readonly=False):
+		self.response()
 		self.emit("load-file", uri, encoding)
+		self.response()
 		return False
 
 	def open_file(self, uri, encoding="utf8"):
@@ -407,7 +409,7 @@ class Editor(GObject):
 		window = window if window else self.window
 		self.emit("show-info", title, message, window, busy)
 		return False
-	
+
 	def emit_combobox_encodings(self):
 		self.emit("combobox-encoding-data?")
 		return False
@@ -528,8 +530,8 @@ class Editor(GObject):
 		if iterator is None: iterator = self.cursor
 		start = self.backward_to_line_begin(iterator)
 		end = self.forward_to_line_end(iterator)
-		return start, end 
-	
+		return start, end
+
 	def get_line_text(self, iterator=None):
 		if iterator is None: iterator = self.cursor
 		return self.textbuffer.get_text(*(self.get_line_bounds(iterator)))
@@ -549,37 +551,25 @@ class Editor(GObject):
 		from os.path import split
 		folder = split(globals_["__file__"])[0]
 		return folder
-	
+
 	def uri_is_folder(self, uri):
 		from Utils import uri_is_folder
 		return uri_is_folder(uri)
 
-	def add_bar_object(self, instance):
-		container = self.gui.get_widget("BarBox")
-		from Exceptions import BarBoxAddError
-		if container.get_children(): raise BarBoxAddError
-		container.add(instance) if instance.parent is None else instance.reparent(container)
-		container.show_all()
-		self.__bar_is_active = True
-		self.emit("bar-is-active", True)
+	def add_bar_object(self, bar):
+		self.emit("add-bar-object", bar)
 		return
 
-	def remove_bar_object(self, instance):
-		container = self.gui.get_widget("BarBox")
-		from Exceptions import BarBoxInvalidObjectError
-		if not (instance in container.get_children()): raise BarBoxInvalidObjectError
-		container.hide()
-		container.remove(instance)
-		self.__bar_is_active = False
-		self.emit("bar-is-active", False)
+	def remove_bar_object(self, bar):
+		self.emit("remove-bar-object", bar)
 		return
 
 	def add_shortcut(self, shortcut):
 		return self.imanager.add_shortcut(shortcut)
-	
+
 	def remove_shortcut(self, shortcut):
 		return self.imanager.remove_shortcut(shortcut)
-	
+
 	def get_shortcuts(self):
 		return self.imanager.get_shortcuts()
 

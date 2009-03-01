@@ -23,11 +23,11 @@ class Inserter(object):
 		return False
 
 	def __insert(self, text):
+		self.__editor.refresh(False)
 		self.__editor.textbuffer.begin_user_action()
-		self.__editor.set_vm_interval(False)
 		self.__editor.textbuffer.insert_at_cursor(text[len(self.__string):].encode("utf8"))
-		self.__editor.set_vm_interval(True)
 		self.__editor.textbuffer.end_user_action()
+		self.__editor.refresh(False)
 		return False
 
 	def __destroy_cb(self, *args):
@@ -39,8 +39,9 @@ class Inserter(object):
 		return False
 
 	def __insert_cb(self, manager, text):
-		self.__insert(text)
-		return False #
+		from gobject import idle_add
+		idle_add(self.__insert, text)
+		return False
 
 	def __precompile_methods(self):
 		methods = (self.__insert,)

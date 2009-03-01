@@ -71,7 +71,8 @@ class Monitor(object):
 		return False
 
 	def __valid_cb(self, manager, string):
-		self.__process(string)
+		from gobject import idle_add
+		idle_add(self.__process, string)
 		return False
 
 	def __dictionary_cb(self, manager, dictionary):

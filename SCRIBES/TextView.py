@@ -140,14 +140,13 @@ class View(object):
 		self.__scrollwin.props.sensitive = sensitive
 #		self.__view.props.sensitive = sensitive
 		return False
-	
+
 	def __refresh(self, grab_focus=True):
 		try:
 			self.__editor.response()
 			self.__view.queue_draw()
-			self.__view.queue_resize()
-			self.__view.resize_children()
-			self.__view.window.process_updates(True)
+			self.__view.window.update_children(True)
+			self.__editor.window.update_children(True)
 		except:
 			pass
 		finally:
@@ -173,15 +172,14 @@ class View(object):
 	def __ready_cb(self, *args):
 		self.__sensitive(True)
 		self.__refresh()
+		#self.__view.window.set_composited(True)
 		return False
 
 	def __checking_file_cb(self, *args):
-		self.__view.freeze_child_notify()
 		self.__editor.busy()
 		return False
 
 	def __loaded_file_cb(self, *args):
-		self.__view.thaw_child_notify()
 		self.__editor.busy(False)
 		self.__refresh()
 		return False
@@ -200,25 +198,34 @@ class View(object):
 		return False
 
 	def __drag_motion_cb(self, textview, context, x, y, time):
+		self.__refresh()
 		if "text/uri-list" in context.targets: return True
+		self.__refresh()
 		return False
 
 	def __drag_drop_cb(self, textview, context, x, y, time):
+		self.__refresh()
 		if "text/uri-list" in context.targets: return True
+		self.__refresh()
 		return False
 
 	def __drag_data_received_cb(self, textview, context, xcord, ycord,
 								selection_data, info, timestamp):
+		self.__refresh()
 		if not ("text/uri-list" in context.targets): return False
+		self.__refresh()
 		if info != 80: return False
 		# Load file
+		self.__refresh()
 		uri_list = list(selection_data.get_uris())
 		self.__editor.open_files(uri_list, None)
 		context.finish(True, False, timestamp)
+		self.__refresh()
 		return True
 
 	def __refresh_cb(self, editor, grab_focus):
-		self.__refresh(grab_focus)
+		from gobject import idle_add
+		idle_add(self.__refresh, grab_focus)
 		return False
 
 ################################################################################
@@ -279,10 +286,8 @@ class View(object):
 		return
 
 	def __move_focus_cb(self, *args):
-		self.__view.stop_emission("move-focus")
 		return True
 
 	def __fullscreen_cb(self, *args):
 		self.__refresh()
 		return False
-

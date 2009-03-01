@@ -67,7 +67,8 @@ class Communicator(object):
 		return False
 
 	def __extract_text_cb(self, manager, text):
-		self.__send_text(text)
+		from gobject import idle_add
+		idle_add(self.__send_text, text)
 		return False
 
 	def __name_change_cb(self, *args):

@@ -38,9 +38,20 @@ class Inserter(object):
 
 	def __insert_template(self, template):
 		from utils import insert_string
+		template = self.__format(template)
 		insert_string(self.__editor.textbuffer, template)
 		return
 
+	def __format(self, template):
+		view = self.__editor.textview
+		tab_width = view.get_property("tab-width")
+		# Convert tabs to spaces
+		template = template.replace("\t", " " * tab_width)
+		use_spaces = view.get_property("insert-spaces-instead-of-tabs")
+		if use_spaces: return template
+		# Convert spaces to tabs 
+		return template.replace(" " * tab_width, "\t")
+	
 	def __remove_trigger(self):
 		iterator = self.__editor.cursor
 		from utils import remove_trailing_spaces_on_line

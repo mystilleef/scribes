@@ -4,6 +4,8 @@ class Manager(object):
 		from DBusService import DBusService
 		DBusService(self)
 		self.__init_attributes()
+		from sys import setcheckinterval
+		setcheckinterval(-1)
 		from gobject import timeout_add
 		timeout_add(21000, self.__init_psyco, priority=9999)
 		self.__init_i18n()
