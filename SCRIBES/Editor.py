@@ -178,11 +178,6 @@ class Editor(GObject):
 		from sys import getcheckinterval
 		print getcheckinterval()
 
-	def __get_selection_range(self):
-		if self.textbuffer.props.has_selection is False: return 0
-		start, end = self.textbuffer.get_selection_bounds()
-		return (end.get_line() - start.get_line()) + 1
-
 ################################################################
 #
 #						Public APIs
@@ -243,7 +238,7 @@ class Editor(GObject):
 	save_processor = property(lambda self: self.imanager.get_save_processor())
 	supported_encodings = property(lambda self: get_supported_encodings())
 	word_pattern = property(lambda self: word_pattern)
-	selection_range = property(__get_selection_range)
+	selection_range = property(lambda self: self.get_selection_range())
 	selection_bounds = property(lambda self: self.textbuffer.get_selection_bounds())
 	selected_text = property(lambda self: self.textbuffer.get_text(*(self.selection_bounds)))
 	has_selection = property(lambda self: self.textbuffer.props.has_selection)
@@ -600,3 +595,8 @@ class Editor(GObject):
 	def set_vm_interval(self, response=True):
 		#FIXME: This function is deprecated!
 		return
+
+	def get_selection_range(self):
+		if self.textbuffer.props.has_selection is False: return 0
+		start, end = self.textbuffer.get_selection_bounds()
+		return (end.get_line() - start.get_line()) + 1
