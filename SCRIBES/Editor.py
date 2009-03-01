@@ -5,100 +5,14 @@ class Editor(Signals):
 
 	def __init__(self, manager, uri=None, encoding="utf-8"):
 		Signals.__init__(self)
-		self.set_data("InstanceManager", manager)
-		from RegistrationManager import Manager
-		Manager(self)
-		from ContentDetector import Detector
-		Detector(self, uri)
-		from FileModificationMonitor import Monitor
-		Monitor(self)
-		from URIManager import Manager
-		Manager(self, uri)
-		from LanguageManager import Manager
-		Manager(self, uri)
-		from SchemeManager import Manager
-		Manager(self)
-		from GladeObjectManager import Manager
-		Manager(self)
-		from BusyManager import Manager
-		Manager(self)
-		# Manages the behavior of the window.
-		from Window import Window
-		Window(self, uri)
-		# Manages he behavior of the buffer's container.
-		from TextView import View
-		View(self)
-		# Manages the behavior of the buffer.
-		from TextBuffer import Buffer
-		Buffer(self)
-		# Manages error and information window.
-		from MessageWindow import Window
-		Window(self)
-		# Manages encoding information.
-		from EncodingManager import Manager
-		Manager(self)
-		# Object responsible for sending data to external process via
-		# DBus to save files. An external process does the I/O operations.
-		from SaveCommunicator import Communicator
-		Communicator(self)
-		# Object responsible for saving files.
-		from FileSaver import Saver
-		Saver(self)
-		# Object responsible for deciding when to save files
-		# automatically.
-		from SaveManager import Manager
-		Manager(self)
-		# Manages window that shows supported encodings.
-		from SupportedEncodingsGUIManager import Manager
-		Manager(self)
-		# Object responsible for showing encoding error window. The window
-		# allows users to load files with the correct encoding.
-		from EncodingErrorManager import Manager
-		Manager(self)
-		# Object that share information for encoding combo box.
-		from EncodingComboBoxDataManager import Manager
-		Manager(self)
-		from StatusFeedback import Feedback
-		Feedback(self)
-		from StatusImage import Image
-		Image(self)
-		from StatusCursorPosition import Position
-		Position(self)
-		from StatusInsertionType import Type
-		Type(self)
-		from StatusContainer import Container
-		Container(self)
-		from RecentManager import Manager
-		Manager(self)
-		# Toolbar object.
-		from Toolbar import Toolbar
-		Toolbar(self)
-		from PopupMenuManager import Manager
-		Manager(self)
-		from TriggerManager import Manager
-		Manager(self)
-		from ReadonlyManager import Manager
-		Manager(self)
-		# Register with instance manager after a successful editor
-		# initialization.
-		manager.register_editor(self)
-		from BarObjectManager import Manager
-		Manager(self)
-		from FullScreenManager import Manager
-		Manager(self)
-		# Load files or initialize plugins. Always load files, if any,
-		# before initializing plugin systems. This should be the last
-		# line in this method.
-		from PluginSystemInitializer import Initializer
-		Initializer(self, uri)
-		from URILoader.Manager import Manager
-		Manager(self, uri, encoding)
+		from Services import InitServices
+		InitServices(self, manager, uri, encoding)
 
-################################################################
+########################################################################
 #
 #						Public APIs
 #
-################################################################
+########################################################################
 
 	imanager = property(lambda self: self.get_data("InstanceManager"))
 	gui = property(lambda self: self.get_data("gui"))
