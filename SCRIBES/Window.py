@@ -8,22 +8,16 @@ class Window(object):
 	def __init__(self, editor, uri):
 		self.__init_attributes(editor, uri)
 		self.__set_properties()
-		self.__sigid5 = self.__window.connect("focus-out-event", self.__focus_out_event_cb)
-		self.__sigid6 = self.__window.connect("focus-in-event", self.__focus_in_event_cb)
 		self.__sigid7 = editor.connect("checking-file", self.__checking_file_cb)
 		self.__sigid8 = editor.connect("loaded-file", self.__loaded_file_cb)
 		self.__sigid9 = editor.connect("load-error", self.__load_error_cb)
 		self.__sigid10 = editor.connect("modified-file", self.__modified_file_cb)
 		self.__sigid11 = editor.connect("readonly", self.__readonly_cb)
-		self.__sigid12 = self.__window.connect_after("focus-out-event", self.__focus_out_after_event_cb)
 		self.__sigid13 = editor.connect("renamed-file", self.__renamed_file_cb)
 		self.__sigid14 = editor.connect("bar-is-active", self.__active_cb)
 		self.__sigid15 = editor.connect("fullscreen", self.__fullscreen_cb)
 #		editor.register_object(self)
 		editor.response()
-		self.__window.set_property("sensitive", True)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, editor, uri):
 		self.__editor = editor
@@ -36,20 +30,6 @@ class Window(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid5, self.__window)
-		self.__editor.disconnect_signal(self.__sigid6, self.__window)
-		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid8, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid9, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid10, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid11, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid12, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid13, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid14, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid15, self.__editor)
-#		self.__editor.unregister_object(self)
-		del self
-		self = None
 		return False
 
 	def __set_properties(self):
@@ -107,18 +87,6 @@ class Window(object):
 		title = str(self.__editor.uri_object.short_name) if self.__editor.uri else _("Unsaved Document")
 		set_title = self.__window.set_title
 		set_title("*%s" % title) if modified else set_title(title)
-		return False
-
-	def __focus_out_after_event_cb(self, *args):
-		self.__editor.emit("window-focus-out")
-		return False
-
-	def __focus_out_event_cb(self, window, event):
-		self.__window.grab_remove()
-		return False
-
-	def __focus_in_event_cb(self, *args):
-		self.__window.grab_add()
 		return False
 
 	def __readonly_cb(self, editor, readonly):

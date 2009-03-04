@@ -5,6 +5,8 @@ class Window(object):
 		self.__set_properties()
 		self.__sigid1 = self.__window.connect("delete-event", self.__delete_event_cb)
 		self.__sigid2 = editor.connect("close", self.__close_cb)
+		self.__sigid3 = self.__window.connect_after("focus-out-event", self.__focus_out_event_cb)
+		self.__window.set_property("sensitive", True)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
@@ -15,6 +17,7 @@ class Window(object):
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__window)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid3, self.__window)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -55,4 +58,8 @@ class Window(object):
 	def __close_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__destroy)
+		return False
+
+	def __focus_out_event_cb(self, *args):
+		self.__editor.emit("window-focus-out")
 		return False
