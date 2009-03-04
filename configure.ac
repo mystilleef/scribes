@@ -39,6 +39,13 @@ Makefile
 help/Makefile
 SCRIBES/Makefile
 SCRIBES/URILoader/Makefile
+SCRIBES/GUI/Makefile
+SCRIBES/GUI/MainGUI/Makefile
+SCRIBES/GUI/MainGUI/StatusBar/Makefile
+SCRIBES/GUI/MainGUI/Window/Makefile
+SCRIBES/GUI/MainGUI/Toolbar/Makefile
+SCRIBES/GUI/MainGUI/View/Makefile
+SCRIBES/GUI/MainGUI/Buffer/Makefile
 data/Makefile]
 )
 

@@ -18,6 +18,8 @@ class InitServices(object):
 		Manager(editor)
 		from BusyManager import Manager
 		Manager(editor)
+		from GUI.Manager import Manager
+		Manager(editor, uri)
 		# Manages the behavior of the window.
 		from Window import Window
 		Window(editor, uri)

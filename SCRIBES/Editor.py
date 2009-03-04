@@ -77,6 +77,8 @@ class Editor(Signals):
 	dialog_filters = property(lambda self: EditorImports.create_filter_list())
 	recent_manager = property(lambda self: self.get_data("RecentManager"))
 	bar_is_active = property(lambda self: self.get_data("bar_is_active"))
+	minimized = property(lambda self: self.get_data("minimized"))
+	maximized = property(lambda self: self.get_data("maximized"))
 
 	def optimize(self, functions):
 		try:

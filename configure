@@ -6921,7 +6921,7 @@ fi
 
 
 
-ac_config_files="$ac_config_files po/Makefile.in Makefile help/Makefile SCRIBES/Makefile SCRIBES/URILoader/Makefile data/Makefile"
+ac_config_files="$ac_config_files po/Makefile.in Makefile help/Makefile SCRIBES/Makefile SCRIBES/URILoader/Makefile SCRIBES/GUI/Makefile SCRIBES/GUI/MainGUI/Makefile SCRIBES/GUI/MainGUI/StatusBar/Makefile SCRIBES/GUI/MainGUI/Window/Makefile SCRIBES/GUI/MainGUI/Toolbar/Makefile SCRIBES/GUI/MainGUI/View/Makefile SCRIBES/GUI/MainGUI/Buffer/Makefile data/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -7591,6 +7591,13 @@ do
     "help/Makefile") CONFIG_FILES="$CONFIG_FILES help/Makefile" ;;
     "SCRIBES/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/Makefile" ;;
     "SCRIBES/URILoader/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/URILoader/Makefile" ;;
+    "SCRIBES/GUI/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/GUI/Makefile" ;;
+    "SCRIBES/GUI/MainGUI/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/GUI/MainGUI/Makefile" ;;
+    "SCRIBES/GUI/MainGUI/StatusBar/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/GUI/MainGUI/StatusBar/Makefile" ;;
+    "SCRIBES/GUI/MainGUI/Window/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/GUI/MainGUI/Window/Makefile" ;;
+    "SCRIBES/GUI/MainGUI/Toolbar/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/GUI/MainGUI/Toolbar/Makefile" ;;
+    "SCRIBES/GUI/MainGUI/View/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/GUI/MainGUI/View/Makefile" ;;
+    "SCRIBES/GUI/MainGUI/Buffer/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/GUI/MainGUI/Buffer/Makefile" ;;
     "data/Makefile") CONFIG_FILES="$CONFIG_FILES data/Makefile" ;;
     "po/stamp-it") CONFIG_COMMANDS="$CONFIG_COMMANDS po/stamp-it" ;;
 
