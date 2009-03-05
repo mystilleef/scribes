@@ -13,3 +13,5 @@ class Manager(object):
 		Updater(editor, uri)
 		from Window import Window
 		Window(editor)
+		from TitleUpdater import Updater
+		Updater(editor, uri)
