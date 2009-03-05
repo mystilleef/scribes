@@ -47,7 +47,7 @@ class Positioner(object):
 		return False
 
 	def __checking_cb(self, editor, uri):
-		if not self.__positioned: self.__position_window(uri)
+		if not self.__positioned: self.__position(uri)
 		return False
 
 	def __error_cb(self, *args):
