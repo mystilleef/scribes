@@ -121,7 +121,6 @@ scribes_PYTHON = \
 	Usage.py \
 	UseTabsMetadata.py \
 	Utils.py \
-	Window.py \
 	Word.py
 
 clean-local:
