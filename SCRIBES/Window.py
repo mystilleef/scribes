@@ -15,8 +15,6 @@ class Window(object):
 		self.__sigid11 = editor.connect("readonly", self.__readonly_cb)
 		self.__sigid13 = editor.connect("renamed-file", self.__renamed_file_cb)
 		self.__sigid14 = editor.connect("bar-is-active", self.__active_cb)
-		self.__sigid15 = editor.connect("fullscreen", self.__fullscreen_cb)
-#		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, editor, uri):
@@ -24,8 +22,6 @@ class Window(object):
 		self.__window = editor.gui.get_widget("Window")
 		self.__uri = str(uri) if uri else None
 		self.__title = self.__set_title()
-		self.__is_minimized = False
-		self.__is_maximized = False
 		self.__bar_is_active = False
 		return
 
@@ -38,8 +34,6 @@ class Window(object):
 
 	def __update_window_title(self, title):
 		self.__window.set_property("title", title)
-		self.__window.set_data("minimized", self.__is_minimized)
-		self.__window.set_data("maximized", self.__is_maximized)
 		return False
 
 	def __set_title(self):
@@ -53,8 +47,7 @@ class Window(object):
 		return False
 
 	def __precompile_methods(self):
-		methods = (self.__focus_in_event_cb,
-			self.__focus_out_event_cb, self.__focus_out_after_event_cb,
+		methods = (self.__focus_in_event_cb, self.__focus_out_event_cb, self.__focus_out_after_event_cb,
 			self.__modified_file_cb)
 		self.__editor.optimize(methods)
 		return False
@@ -101,9 +94,3 @@ class Window(object):
 	def __active_cb(self, editor, active):
 		self.__bar_is_active = active
 		return False
-
-	def __fullscreen_cb(self, manager, fullscreen):
-		self.__editor.response()
-		self.__window.fullscreen() if fullscreen else self.__window.unfullscreen()
-		self.__editor.response()
-		return True
