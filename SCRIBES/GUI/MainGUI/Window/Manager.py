@@ -1,6 +1,8 @@
 class Manager(object):
 
 	def __init__(self, editor, uri):
+		from Window import Window
+		Window(editor)
 		from StateTracker import Tracker
 		Tracker(editor)
 		from Grabber import Grabber
@@ -11,7 +13,5 @@ class Manager(object):
 		Positioner(editor, uri)
 		from PositionUpdater import Updater
 		Updater(editor, uri)
-		from Window import Window
-		Window(editor)
 		from TitleUpdater import Updater
 		Updater(editor, uri)
