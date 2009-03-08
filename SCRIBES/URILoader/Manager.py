@@ -23,6 +23,8 @@ class Manager(GObject):
 		GObject.__init__(self)
 		from Destroyer import Destroyer
 		Destroyer(self, editor)
+		from BusyManager import Manager
+		Manager(self, editor)
 		from StateNotifier import Notifier
 		Notifier(self, editor)
 		from ErrorManager import Manager

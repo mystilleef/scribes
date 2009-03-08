@@ -29,6 +29,7 @@ class Signals(GObject):
 		"show-error": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_OBJECT, TYPE_BOOLEAN)),
 		"show-info": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_OBJECT, TYPE_BOOLEAN)),
 		"modified-file": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"enable-spell-checking": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"new-encoding-list": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"update-encoding-guess-list": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"renamed-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),

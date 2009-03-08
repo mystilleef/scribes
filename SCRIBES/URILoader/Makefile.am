@@ -5,6 +5,7 @@ uriloader_PYTHON = \
 	StateNotifier.py \
 	URITypeChecker.py \
 	LocalURIPermissionChecker.py \
+	BusyManager.py\
 	RemoteURIPermissionChecker.py \
 	LocalURIReader.py \
 	RemoteURIReader.py \

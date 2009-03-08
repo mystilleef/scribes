@@ -57,12 +57,12 @@ class Trigger(GObject):
 	removable = property(__get_removable)
 
 	def __activate(self):
+		self.__editor.refresh(False)
 		self.emit("activate")
 		self.__editor.refresh(False)
 		return False
 
 	def activate(self):
-		self.__editor.refresh(False)
 		from gobject import idle_add
 		idle_add(self.__activate)
 		return

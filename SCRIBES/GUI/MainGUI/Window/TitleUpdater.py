@@ -86,6 +86,7 @@ class Updater(object):
 
 	def __saved_cb(self, editor, uri, *args):
 		if self.__uri == uri: return False
+		print "Going to update title to a new name."
 		from gobject import idle_add
 		idle_add(self.__update_title, uri, "normal")
 		return False

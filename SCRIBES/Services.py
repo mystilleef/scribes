@@ -20,12 +20,6 @@ class InitServices(object):
 		Manager(editor)
 		from GUI.Manager import Manager
 		Manager(editor, uri)
-		# Manages the behavior of the window.
-#		from Window import Window
-#		Window(editor, uri)
-		# Manages he behavior of the buffer's container.
-		from TextView import View
-		View(editor)
 		# Manages the behavior of the buffer.
 		from TextBuffer import Buffer
 		Buffer(editor)
