@@ -24,8 +24,8 @@ class View(object):
 		swin = self.__editor.gui.get_widget("ScrolledWindow")
 		self.__editor.response()
 		swin.add(self.__view)
+		self.__editor.response()
 		swin.show_all()
-		swin.set_property("sensitive", True)
 		self.__editor.response()
 		return False
 

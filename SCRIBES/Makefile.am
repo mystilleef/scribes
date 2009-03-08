@@ -89,7 +89,6 @@ scribes_PYTHON = \
 	TabWidthMetadata.py \
 	TextWrappingMetadata.py \
 	TextBuffer.py \
-	TextView.py \
 	Toolbar.py \
 	Trigger.py \
 	TriggerManager.py \
