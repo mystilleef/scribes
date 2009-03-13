@@ -1,3 +1,5 @@
+
+
 class View(object):
 
 	def __init__(self, editor):
@@ -46,6 +48,8 @@ class View(object):
 		self.__view.set_property("show-right-margin", show_margin())
 		from SCRIBES.UseTabsMetadata import get_value as use_tabs
 		self.__view.set_property("insert-spaces-instead-of-tabs",(not use_tabs()))
+		from gtksourceview2 import SMART_HOME_END_BEFORE
+		self.__view.set_property("smart-home-end", SMART_HOME_END_BEFORE)
 		from SCRIBES.FontMetadata import get_value as font_name
 		from pango import FontDescription
 		font = FontDescription(font_name())

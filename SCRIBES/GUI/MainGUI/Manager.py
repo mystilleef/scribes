@@ -5,3 +5,5 @@ class Manager(object):
 		Manager(editor, uri)
 		from View.Manager import Manager
 		Manager(editor, uri)
+		from Buffer.Manager import Manager
+		Manager(editor)

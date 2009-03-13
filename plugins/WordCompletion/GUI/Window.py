@@ -40,7 +40,7 @@ class Window(object):
 		if self.__visible is False: return False
 		self.__window.hide()
 		self.__visible = False
-		return False #
+		return False
 
 	def __precompile_methods(self):
 		methods = (self.__hide, self.__show)
@@ -58,4 +58,3 @@ class Window(object):
 	def __show_cb(self, *args):
 		self.__show()
 		return False
-
