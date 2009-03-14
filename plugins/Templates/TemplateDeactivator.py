@@ -141,11 +141,9 @@ class Deactivator(object):
 		return False
 
 	def __deactivate_template_mode_cb(self, *args):
-		self.__editor.set_vm_interval(False)
 		self.__remove_recent_boundary()
 		self.__remove_placeholder_boundary()
 		self.__check_boundary()
-		self.__editor.set_vm_interval(True)
 		if len(self.__boundaries_dictionary): return False
 		self.__block_signal()
 		return False

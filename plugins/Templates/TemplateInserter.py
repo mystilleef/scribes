@@ -39,7 +39,9 @@ class Inserter(object):
 	def __insert_template(self, template):
 		from utils import insert_string
 		template = self.__format(template)
+#		self.__editor.response()
 		insert_string(self.__editor.textbuffer, template)
+#		self.__editor.response()
 		return
 
 	def __format(self, template):
