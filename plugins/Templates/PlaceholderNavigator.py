@@ -58,7 +58,7 @@ class Navigator(object):
 		else:
 			iterator = self.__editor.textbuffer.get_iter_at_mark(placeholder[0])
 			self.__editor.textbuffer.place_cursor(iterator)
-#		self.__editor.response() name=value
+#		self.__editor.response()
 		self.__editor.move_view_to_cursor()
 		self.__manager.emit("selected-placeholder", placeholder)
 		return

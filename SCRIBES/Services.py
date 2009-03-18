@@ -75,9 +75,7 @@ class InitServices(object):
 		Manager(editor)
 		from FullScreenManager import Manager
 		Manager(editor)
-		# Load files or initialize plugins. Always load files, if any,
-		# before initializing plugin systems. This should be the last
-		# line in this method.
+		# This should be the last lines in this method.
 		from PluginSystemInitializer import Initializer
 		Initializer(editor, uri)
 		from URILoader.Manager import Manager

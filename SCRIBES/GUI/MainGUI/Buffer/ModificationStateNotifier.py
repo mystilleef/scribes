@@ -54,3 +54,4 @@ class Notifier(object):
 		from gobject import idle_add
 		idle_add(self.__emit)
 		return False
+

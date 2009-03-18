@@ -140,7 +140,7 @@ class Manager(object):
 		return False
 
 	def __focus(self, editor):
-		editor.refresh()
+		editor.response()
 		if editor.window.get_data("minimized"): editor.window.deiconify()
 		coordinates = None if editor.window.get_data("maximized") else editor.window.get_position()
 		editor.response()
@@ -155,7 +155,6 @@ class Manager(object):
 	def __init_garbage_collector(self):
 		from gc import collect
 		collect()
-		print "Garbage collection!"
 		return True
 
 	def __init_psyco(self):
@@ -163,7 +162,8 @@ class Manager(object):
 			from psyco import background
 			background()
 		except ImportError:
-			print "psyco not found"
+			pass
+#			print "psyco not found"
 		return False
 
 	def __init_i18n(self):
