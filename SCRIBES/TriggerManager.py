@@ -143,7 +143,7 @@ class Manager(object):
 		return [self.__remove_trigger(trigger) for trigger in triggers]
 
 	def __trigger(self, trigger_name):
-		if self.__bar_is_active: return 
+		if self.__bar_is_active: return
 		self.__trigger_dictionary[trigger_name][0].activate()
 		return
 
@@ -202,7 +202,7 @@ class Manager(object):
 
 	def __accel_activate_cb(self, accelgroup, window, keyval, mod, *args):
 		if self.__bar_is_active: return True
-		self.__accel_dictionary[(keyval, mod)].activate()	
+		self.__accel_dictionary[(keyval, mod)].activate()
 		return True
 
 	def __add_trigger_cb(self, editor, trigger):
@@ -246,4 +246,3 @@ class Manager(object):
 	def __fullscreen_cb(self, *args):
 		self.__editor.toggle_fullscreen()
 		return False
-	

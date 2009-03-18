@@ -46,11 +46,9 @@ class Manager(object):
 		return False
 
 	def __add_cb(self, editor, bar):
-		from gobject import idle_add
-		idle_add(self.__add, bar)
+		self.__add(bar)
 		return False
 
 	def __remove_cb(self, editor, bar):
-		from gobject import idle_add
-		idle_add(self.__remove, bar)
+		self.__remove(bar)
 		return False
