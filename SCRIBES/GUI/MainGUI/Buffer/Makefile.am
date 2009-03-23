@@ -10,6 +10,7 @@ buffer_PYTHON = \
 	CursorPositionNotifier.py \
 	CursorPlacer.py \
 	CursorPositionUpdater.py \
+	ResponsivenessManager.py \
 	Buffer.py
 
 clean-local:

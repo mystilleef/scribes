@@ -7,6 +7,7 @@ class Updater(object):
 		self.__monid = monitor_add(self.__uri, MONITOR_FILE, self.__changed_cb)
 		self.__update()
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -24,6 +25,7 @@ class Updater(object):
 		return False
 
 	def __update(self):
+		self.__editor.response()
 		from SCRIBES.ColorThemeMetadata import get_value
 		scheme_id = get_value()
 		style_scheme = self.__editor.style_scheme_manager.get_scheme(scheme_id)

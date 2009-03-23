@@ -6,6 +6,7 @@ class Grabber(object):
 		self.__sigid2 = self.__window.connect_after("focus-in-event", self.__in_cb)
 		self.__sigid3 = self.__window.connect("focus-out-event", self.__out_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

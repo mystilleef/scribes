@@ -47,10 +47,6 @@ class InitServices(object):
 		# Object that share information for encoding combo box.
 		from EncodingComboBoxDataManager import Manager
 		Manager(editor)
-		from StatusFeedback import Feedback
-		Feedback(editor)
-		from StatusImage import Image
-		Image(editor)
 		from StatusCursorPosition import Position
 		Position(editor)
 		from StatusInsertionType import Type

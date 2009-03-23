@@ -7,6 +7,7 @@ class Tracker(object):
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.__window.connect("window-state-event", self.__state_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -22,6 +23,7 @@ class Tracker(object):
 		return False
 
 	def __update(self, state):
+		self.__editor.response()
 		from gtk.gdk import WINDOW_STATE_MAXIMIZED, WINDOW_STATE_FULLSCREEN
 		from gtk.gdk import WINDOW_STATE_ICONIFIED
 		MINIMIZED = state & WINDOW_STATE_ICONIFIED
@@ -30,6 +32,7 @@ class Tracker(object):
 		maximized = True if MAXIMIZED else False
 		self.__editor.set_data("minimized", minimized)
 		self.__editor.set_data("maximized", maximized)
+		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

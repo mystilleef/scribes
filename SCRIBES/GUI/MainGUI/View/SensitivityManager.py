@@ -6,6 +6,7 @@ class Manager(object):
 		self.__sigid2 = editor.connect("busy", self.__busy_cb)
 		self.__sigid3 = editor.connect("ready", self.__ready_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -22,9 +23,10 @@ class Manager(object):
 		return False
 
 	def __sensitive(self, sensitive):
-		self.__editor.refresh(False)
+		self.__editor.response()
 		self.__swin.props.sensitive = sensitive
-		self.__editor.refresh()
+		self.__editor.response()
+		if sensitive: self.__editor.textview.grab_focus()
 		return False
 
 	def __quit_cb(self, *args):

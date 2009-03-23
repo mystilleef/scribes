@@ -8,6 +8,7 @@ class Window(object):
 		self.__sigid3 = self.__window.connect_after("focus-out-event", self.__focus_out_event_cb)
 		self.__window.set_property("sensitive", True)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

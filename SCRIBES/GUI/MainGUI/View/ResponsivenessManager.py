@@ -18,6 +18,7 @@ class Manager(object):
 		self.__sigid14 = self.__view.connect("set-anchor", self.__response_cb)
 		self.__sigid15 = self.__view.connect("toggle-overwrite", self.__response_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

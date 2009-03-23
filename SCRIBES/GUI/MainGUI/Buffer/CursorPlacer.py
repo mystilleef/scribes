@@ -5,6 +5,7 @@ class Placer(object):
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("loaded-file", self.__loaded_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -20,13 +21,14 @@ class Placer(object):
 		return False
 
 	def __place(self):
+		self.__editor.response()
 		line, index = self.__get_cursor_data()
 		iterator = self.__get_cursor_iterator(line)
 		index = self.__get_cursor_index(iterator, index)
 		iterator.set_line_index(index)
 		self.__buffer.place_cursor(iterator)
 		self.__editor.move_view_to_cursor(True)
-		self.__editor.refresh()
+		self.__editor.response()
 		return False
 
 	def __get_cursor_data(self):

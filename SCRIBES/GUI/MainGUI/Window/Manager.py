@@ -15,3 +15,4 @@ class Manager(object):
 		Updater(editor, uri)
 		from TitleUpdater import Updater
 		Updater(editor, uri)
+		editor.response()

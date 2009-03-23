@@ -25,6 +25,7 @@ class Positioner(object):
 
 	def __position(self, uri):
 		try:
+			self.__editor.response()
 			self.__window.hide()
 			uri = uri if uri else "<EMPTY>"
 			if uri != "<EMPTY>": self.__positioned = True
@@ -40,6 +41,7 @@ class Positioner(object):
 			pass
 		finally:
 			self.__window.present()
+			self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

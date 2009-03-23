@@ -6,6 +6,7 @@ class Setter(object):
 		self.__sigid2 = editor.connect("checking-file", self.__checking_cb)
 		self.__sigid3 = editor.connect("load-error", self.__error_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -22,7 +23,9 @@ class Setter(object):
 		return
 
 	def __set(self, language):
+		self.__editor.response()
 		self.__buffer.set_language(language)
+		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

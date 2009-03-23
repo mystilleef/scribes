@@ -22,12 +22,15 @@ class Inserter(object):
 			if encoding is None: encoding = "utf-8"
 			unicode_string = string.decode(encoding)
 			utf8_string = unicode_string.encode("utf-8")
-			self.__editor.refresh()
+			self.__editor.response()
 			self.__editor.textbuffer.set_text(utf8_string)
-			self.__editor.refresh()
+			self.__editor.response()
 			self.__manager.emit("load-success", uri, encoding)
 		except:
 			self.__manager.emit("insertion-error", uri, string)
+		finally:
+			self.__editor.response()
+			self.__editor.textview.grab_focus()
 		return False
 
 	def __destroy_cb(self, *args):

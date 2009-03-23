@@ -1,38 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2007 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This modules documents a class that implements the plugin system for
-Scribes.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2007 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
 class Manager(object):
-	"""
-	This class creates an object that loads and unloads plugins.
-	"""
 
 	def __init__(self, editor):
 		try:
@@ -63,6 +29,7 @@ class Manager(object):
 		from Exceptions import PluginModuleValidationError
 		from Exceptions import DuplicatePluginError, DoNotLoadError
 		try:
+			self.__editor.response()
 			if not (filename.startswith("Plugin") and filename.endswith(".py")): return False
 			from os import path
 			filepath = path.join(plugin_folder, filename)
@@ -80,11 +47,14 @@ class Manager(object):
 		except DoNotLoadError:
 			#print "Not loading: ", (filename)
 			self.__plugin_modules.add(module)
+		finally:
+			self.__editor.response()
 		return False
 
 	def __load_plugin(self, PluginClass):
 		self.__editor.response()
 		plugin_object = PluginClass(self.__editor)
+		self.__editor.response()
 		plugin_object.load()
 		self.__editor.response()
 		return plugin_object
@@ -92,6 +62,7 @@ class Manager(object):
 	def __unload_plugin(self, plugin_info):
 		self.__editor.response()
 		plugin_object = plugin_info[2]
+		self.__editor.response()
 		plugin_object.unload()
 		self.__plugin_objects.remove(plugin_info)
 		self.__editor.response()
@@ -112,11 +83,7 @@ class Manager(object):
 		return False
 
 	def __unload_plugins(self):
-#		from gobject import idle_add, PRIORITY_LOW
-		#from thread import start_new_thread
 		for plugin_info in self.__plugin_objects.copy():
-			#start_new_thread(self.__unload_plugin, (plugin_info,))
-			#idle_add(self.__unload_plugin, plugin_info, priority=PRIORITY_LOW)
 			self.__unload_plugin(plugin_info)
 		return False
 

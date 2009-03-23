@@ -11,6 +11,7 @@ class Destroyer(object):
 		return
 
 	def __destroy(self):
+		self.__editor.textview.grab_focus()
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		del self.__manager

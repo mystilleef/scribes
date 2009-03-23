@@ -13,6 +13,7 @@ class Updater(object):
 		self.__sigid7 = editor.connect("saved-file", self.__saved_cb)
 		if uri: self.__set_title("loading")
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor, uri):
 		self.__editor = editor
@@ -56,7 +57,9 @@ class Updater(object):
 		return False
 
 	def __set_title(self, title):
+		self.__editor.response()
 		self.__window.set_title(self.__dictionary[title])
+		self.__editor.response()
 		return False
 
 	def __checking_cb(self, editor, uri):
@@ -86,11 +89,10 @@ class Updater(object):
 
 	def __saved_cb(self, editor, uri, *args):
 		if self.__uri == uri: return False
-		print "Going to update title to a new name."
 		from gobject import idle_add
 		idle_add(self.__update_title, uri, "normal")
 		return False
-	
+
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False

@@ -77,18 +77,16 @@ class Colorer(object):
 		return
 
 	def __color_trigger(self, position):
-		self.__uncolor_trigger()
+		self.__uncolor_trigger(False)
 		self.__buffer.apply_tag(self.__highlight_tag, position[0], position[1])
 		self.__is_highlighted = True
-		self.__editor.set_message(message, "info")
 		return False
 
-	def __uncolor_trigger(self):
+	def __uncolor_trigger(self, message=True):
 		start = self.__buffer.get_iter_at_mark(self.__lmark)
 		end = self.__buffer.get_iter_at_mark(self.__rmark)
 		self.__buffer.remove_tag(self.__highlight_tag, start, end)
 		self.__is_highlighted = False
-		self.__editor.unset_message(message, "info")
 		return False
 
 ################################################################################
@@ -110,6 +108,7 @@ class Colorer(object):
 			pass
 		finally:
 			self.__tid = idle_add(self.__process, trigger, priority=9999)
+			self.__editor.set_message(message, "info")
 		return
 
 	def __no_trigger_found_cb(self, *args):
@@ -121,4 +120,5 @@ class Colorer(object):
 			pass
 		finally:
 			self.__textid = idle_add(self.__uncolor_trigger, priority=9999)
+			self.__editor.unset_message(message, "info")
 		return

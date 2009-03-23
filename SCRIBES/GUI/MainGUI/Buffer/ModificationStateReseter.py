@@ -8,6 +8,7 @@ class Reseter(object):
 		self.__sigid4 = editor.connect("load-error", self.__reset_cb)
 		self.__sigid5 = editor.connect("saved-file", self.__reset_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

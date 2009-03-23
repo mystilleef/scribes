@@ -1,13 +1,12 @@
-
-
 class View(object):
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
+		self.__add_view_to_scroll()
 		self.__set_properties()
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__add_view_to_scroll()
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -23,6 +22,7 @@ class View(object):
 		return False
 
 	def __add_view_to_scroll(self):
+		self.__editor.response()
 		swin = self.__editor.gui.get_widget("ScrolledWindow")
 		self.__editor.response()
 		swin.add(self.__view)
@@ -32,6 +32,13 @@ class View(object):
 		return False
 
 	def __set_properties(self):
+		self.__editor.response()
+		self.__view.set_property("is-focus", True)
+		self.__view.set_property("has-focus", True)
+		self.__view.set_property("can-focus", True)
+		self.__view.set_property("can-default", True)
+		self.__view.set_property("has-default", True)
+		self.__view.set_property("receives-default", True)
 		targets = [("text/uri-list", 0, 80)]
 		from gtk import DEST_DEFAULT_ALL
 		from gtk.gdk import ACTION_COPY, BUTTON1_MASK, ACTION_DEFAULT
@@ -59,6 +66,7 @@ class View(object):
 		wrap_mode = self.__view.set_wrap_mode
 		wrap_mode(WRAP_WORD_CHAR) if wrap_mode_bool() else wrap_mode(WRAP_NONE)
 		self.__view.set_property("sensitive", True)
+		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

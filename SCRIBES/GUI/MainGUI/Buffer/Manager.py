@@ -19,3 +19,6 @@ class Manager(object):
 		Placer(editor)
 		from CursorPositionUpdater import Updater
 		Updater(editor)
+		from ResponsivenessManager import Manager
+		Manager(editor)
+		editor.response()

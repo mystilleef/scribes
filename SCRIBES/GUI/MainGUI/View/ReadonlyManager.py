@@ -5,6 +5,7 @@ class Manager(object):
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("readonly", self.__readonly_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -20,10 +21,12 @@ class Manager(object):
 		return False
 
 	def __set(self, readonly):
+		self.__editor.response()
 		self.__view.props.editable = not readonly
 		self.__view.props.highlight_current_line = not readonly
 		self.__view.props.show_line_numbers = not readonly
 		self.__view.props.cursor_visible = not readonly
+		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

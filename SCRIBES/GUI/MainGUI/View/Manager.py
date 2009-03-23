@@ -17,3 +17,4 @@ class Manager(object):
 		Checker(editor)
 		from DatabaseListeners.Manager import Manager
 		Manager(editor)
+		editor.response()

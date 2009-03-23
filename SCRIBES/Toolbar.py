@@ -10,6 +10,7 @@ class Toolbar(object):
 		editor.register_object(self)
 		from gnomevfs import monitor_add, MONITOR_FILE
 		self.__monid1 = monitor_add(self.__uri, MONITOR_FILE, self.__changed_cb)
+		editor.response()
 
 
 	def __init_attributes(self, editor):
@@ -100,15 +101,15 @@ class Toolbar(object):
 		return
 
 	def __show(self):
-		self.__editor.refresh()
+		self.__editor.response()
 		self.__toolbar.show()
-		self.__editor.refresh()
+		self.__editor.response()
 		return 
 
 	def __hide(self):
-		self.__editor.refresh()
+		self.__editor.response()
 		self.__toolbar.hide()
-		self.__editor.refresh()
+		self.__editor.response()
 		return 
 
 	def __set_visibility(self):

@@ -1,40 +1,6 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2008 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that creates the throbber for the text
-editor.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2008 Lateef Alabi-Oki
-@license: GNU GPLv3 or Later
-@contact: mystilleef@gmail.com
-"""
-
 from gtk import ToolItem
 
 class Spinner(ToolItem):
-	"""
-	This class defines the behavior of the throbber for the text editor.
-	"""
 
 	def __init__(self, editor):
 		ToolItem.__init__(self)
@@ -89,15 +55,17 @@ class Spinner(ToolItem):
 		return
 
 	def __start(self):
+		self.__editor.response()
 		self.__call_count += 1
 		if self.__is_spinning: return
 		self.__is_spinning = True
-		self.__image.clear()
+#		self.__image.clear()
 		self.__image.set_from_animation(self.__animation)
 		self.__editor.response()
 		return
 
 	def __stop(self):
+		self.__editor.response()
 		if self.__is_spinning is False: return
 		self.__call_count -= 1
 		if self.__call_count: return

@@ -11,6 +11,7 @@ class UndoRedo(object):
 		self.__sigid5 = editor.connect("undo", self.__undo_cb)
 		self.__sigid6 = editor.connect("redo", self.__redo_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

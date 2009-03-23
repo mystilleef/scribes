@@ -7,6 +7,7 @@ class DragAndDrop(object):
 		self.__sigid3 = self.__view.connect("drag-drop", self.__drop_cb)
 		self.__sigid4 = self.__view.connect("drag-data-received", self.__received_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

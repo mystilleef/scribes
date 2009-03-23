@@ -44,7 +44,6 @@ class Navigator(object):
 		return False
 
 	def __select_placeholder(self, placeholder, end=False):
-#		self.__editor.response()
 		if end and (len(placeholder) > 2):
 			key = len(self.__boundaries_dictionary)
 			emark = self.__boundaries_dictionary[key][1]
@@ -58,8 +57,6 @@ class Navigator(object):
 		else:
 			iterator = self.__editor.textbuffer.get_iter_at_mark(placeholder[0])
 			self.__editor.textbuffer.place_cursor(iterator)
-#		self.__editor.response()
-		self.__editor.move_view_to_cursor()
 		self.__manager.emit("selected-placeholder", placeholder)
 		return
 

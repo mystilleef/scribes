@@ -9,6 +9,7 @@ class Updater(object):
 		self.__sigid5 = editor.connect("load-error", self.__error_cb)
 		self.__sigid6 = editor.connect("saved-file", self.__saved_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor, uri):
 		self.__editor = editor

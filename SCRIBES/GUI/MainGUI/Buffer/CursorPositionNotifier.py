@@ -9,6 +9,7 @@ class Notifier(object):
 		self.__sigid4 = self.__editor.connect("loaded-file", self.__unblock_cb)
 		self.__sigid5 = self.__editor.connect("load-error", self.__unblock_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
