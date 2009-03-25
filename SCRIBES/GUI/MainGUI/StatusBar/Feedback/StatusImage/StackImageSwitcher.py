@@ -1,6 +1,7 @@
 class Switcher(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = manager.connect("set", self.__set_cb)
@@ -45,7 +46,6 @@ class Switcher(object):
 
 	def __reset(self):
 		try:
-			if self.__busy: return False
 			self.__manager.emit("update-image", self.__queue[-1])
 		except IndexError:
 			self.__manager.emit("fallback")
