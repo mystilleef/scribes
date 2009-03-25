@@ -30,7 +30,7 @@ class Switcher(object):
 		return False
 
 	def __update(self):
-		self.__manager.emit("update", SUCCESS_MESSAGE, "gtk-open", 7)
+		self.__manager.emit("update", SUCCESS_MESSAGE, "gtk-open", 3)
 		self.__manager.emit("unset", BUSY_MESSAGE)
 		return False
 
