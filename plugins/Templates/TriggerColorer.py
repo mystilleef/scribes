@@ -80,6 +80,7 @@ class Colorer(object):
 		self.__uncolor_trigger(False)
 		self.__buffer.apply_tag(self.__highlight_tag, position[0], position[1])
 		self.__is_highlighted = True
+		self.__editor.set_message(message, "info")
 		return False
 
 	def __uncolor_trigger(self, message=True):
@@ -108,7 +109,6 @@ class Colorer(object):
 			pass
 		finally:
 			self.__tid = idle_add(self.__process, trigger, priority=9999)
-			self.__editor.set_message(message, "info")
 		return
 
 	def __no_trigger_found_cb(self, *args):

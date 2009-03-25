@@ -11,7 +11,8 @@ statusimage_PYTHON = \
 	FileModificationStateSwitcher.py \
 	SavedStateSwitcher.py \
 	ReadonlyModeSwitcher.py \
-	FileLoadingStateSwitcher.py
+	FileLoadingStateSwitcher.py \
+	SaveErrorSwitcher.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

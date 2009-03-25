@@ -112,7 +112,6 @@ scribes_PYTHON = \
 	HelpToolButton.py \
 	Spinner.py \
 	StatusContainer.py \
-	StatusCursorPosition.py \
 	StatusInsertionType.py \
 	Usage.py \
 	UseTabsMetadata.py \

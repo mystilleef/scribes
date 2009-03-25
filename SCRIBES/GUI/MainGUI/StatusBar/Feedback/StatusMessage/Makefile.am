@@ -10,7 +10,9 @@ statusmessage_PYTHON = \
 	FileModificationStateSwitcher.py \
 	SavedStateSwitcher.py \
 	TimedMessageSwitcher.py \
-	FileLoadingStateSwitcher.py
+	FileLoadingStateSwitcher.py \
+	ReadonlyModeSwitcher.py \
+	SaveErrorSwitcher.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

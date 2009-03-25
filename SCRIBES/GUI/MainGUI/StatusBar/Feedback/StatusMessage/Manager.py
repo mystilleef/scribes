@@ -37,4 +37,8 @@ class Manager(GObject):
 		Switcher(self, editor)
 		from FileLoadingStateSwitcher import Switcher
 		Switcher(self, editor)
+		from ReadonlyModeSwitcher import Switcher
+		Switcher(self, editor)
+		from SaveErrorSwitcher import Switcher
+		Switcher(self, editor)
 		editor.response()

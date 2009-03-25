@@ -190,7 +190,9 @@ statusmessage_PYTHON = \
 	FileModificationStateSwitcher.py \
 	SavedStateSwitcher.py \
 	TimedMessageSwitcher.py \
-	FileLoadingStateSwitcher.py
+	FileLoadingStateSwitcher.py \
+	ReadonlyModeSwitcher.py \
+	SaveErrorSwitcher.py
 
 all: all-am
 

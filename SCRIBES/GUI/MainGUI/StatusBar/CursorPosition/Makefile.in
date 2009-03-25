@@ -29,9 +29,9 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-subdir = SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusImage
-DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(statusimage_PYTHON)
+subdir = SCRIBES/GUI/MainGUI/StatusBar/CursorPosition
+DIST_COMMON = $(cursorposition_PYTHON) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gnome-doc-utils.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/configure.ac
@@ -47,8 +47,8 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(statusimagedir)"
-statusimagePYTHON_INSTALL = $(INSTALL_DATA)
+am__installdirs = "$(DESTDIR)$(cursorpositiondir)"
+cursorpositionPYTHON_INSTALL = $(INSTALL_DATA)
 py_compile = $(top_srcdir)/py-compile
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
@@ -178,21 +178,13 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-statusimagedir = $(pythondir)/SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusImage
-statusimage_PYTHON = \
+cursorpositiondir = $(pythondir)/SCRIBES/GUI/MainGUI/StatusBar/CursorPosition
+cursorposition_PYTHON = \
 	__init__.py \
 	Manager.py \
-	ImageDisplayer.py \
-	ImageIDProcessor.py \
-	TimedImageSwitcher.py \
-	FeedbackDispatcher.py \
-	StackImageSwitcher.py \
-	FallbackImageSwitcher.py \
-	FileModificationStateSwitcher.py \
-	SavedStateSwitcher.py \
-	ReadonlyModeSwitcher.py \
-	FileLoadingStateSwitcher.py \
-	SaveErrorSwitcher.py
+	Displayer.py \
+	Timer.py \
+	Tracker.py
 
 all: all-am
 
@@ -206,9 +198,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusImage/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  SCRIBES/GUI/MainGUI/StatusBar/CursorPosition/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusImage/Makefile
+	  $(AUTOMAKE) --gnu  SCRIBES/GUI/MainGUI/StatusBar/CursorPosition/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -226,33 +218,33 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-install-statusimagePYTHON: $(statusimage_PYTHON)
+install-cursorpositionPYTHON: $(cursorposition_PYTHON)
 	@$(NORMAL_INSTALL)
-	test -z "$(statusimagedir)" || $(MKDIR_P) "$(DESTDIR)$(statusimagedir)"
-	@list='$(statusimage_PYTHON)'; dlist=''; for p in $$list; do\
+	test -z "$(cursorpositiondir)" || $(MKDIR_P) "$(DESTDIR)$(cursorpositiondir)"
+	@list='$(cursorposition_PYTHON)'; dlist=''; for p in $$list; do\
 	  if test -f "$$p"; then b=; else b="$(srcdir)/"; fi; \
 	  if test -f $$b$$p; then \
 	    f=$(am__strip_dir) \
 	    dlist="$$dlist $$f"; \
-	    echo " $(statusimagePYTHON_INSTALL) '$$b$$p' '$(DESTDIR)$(statusimagedir)/$$f'"; \
-	    $(statusimagePYTHON_INSTALL) "$$b$$p" "$(DESTDIR)$(statusimagedir)/$$f"; \
+	    echo " $(cursorpositionPYTHON_INSTALL) '$$b$$p' '$(DESTDIR)$(cursorpositiondir)/$$f'"; \
+	    $(cursorpositionPYTHON_INSTALL) "$$b$$p" "$(DESTDIR)$(cursorpositiondir)/$$f"; \
 	  else :; fi; \
 	done; \
 	if test -n "$$dlist"; then \
 	  if test -z "$(DESTDIR)"; then \
-	    PYTHON=$(PYTHON) $(py_compile) --basedir "$(statusimagedir)" $$dlist; \
+	    PYTHON=$(PYTHON) $(py_compile) --basedir "$(cursorpositiondir)" $$dlist; \
 	  else \
-	    PYTHON=$(PYTHON) $(py_compile) --destdir "$(DESTDIR)" --basedir "$(statusimagedir)" $$dlist; \
+	    PYTHON=$(PYTHON) $(py_compile) --destdir "$(DESTDIR)" --basedir "$(cursorpositiondir)" $$dlist; \
 	  fi; \
 	else :; fi
 
-uninstall-statusimagePYTHON:
+uninstall-cursorpositionPYTHON:
 	@$(NORMAL_UNINSTALL)
-	@list='$(statusimage_PYTHON)'; dlist=''; for p in $$list; do\
+	@list='$(cursorposition_PYTHON)'; dlist=''; for p in $$list; do\
 	  f=$(am__strip_dir) \
-	  rm -f "$(DESTDIR)$(statusimagedir)/$$f"; \
-	  rm -f "$(DESTDIR)$(statusimagedir)/$${f}c"; \
-	  rm -f "$(DESTDIR)$(statusimagedir)/$${f}o"; \
+	  rm -f "$(DESTDIR)$(cursorpositiondir)/$$f"; \
+	  rm -f "$(DESTDIR)$(cursorpositiondir)/$${f}c"; \
+	  rm -f "$(DESTDIR)$(cursorpositiondir)/$${f}o"; \
 	done
 tags: TAGS
 TAGS:
@@ -291,7 +283,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile
 installdirs:
-	for dir in "$(DESTDIR)$(statusimagedir)"; do \
+	for dir in "$(DESTDIR)$(cursorpositiondir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -336,7 +328,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-statusimagePYTHON
+install-data-am: install-cursorpositionPYTHON
 
 install-dvi: install-dvi-am
 
@@ -370,21 +362,21 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-statusimagePYTHON
+uninstall-am: uninstall-cursorpositionPYTHON
 
 .MAKE: install-am install-strip
 
 .PHONY: all all-am check check-am clean clean-generic clean-local \
 	distclean distclean-generic distdir dvi dvi-am html html-am \
-	info info-am install install-am install-data install-data-am \
-	install-dvi install-dvi-am install-exec install-exec-am \
-	install-html install-html-am install-info install-info-am \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-statusimagePYTHON install-strip \
+	info info-am install install-am install-cursorpositionPYTHON \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-statusimagePYTHON
+	uninstall-cursorpositionPYTHON
 
 
 clean-local:

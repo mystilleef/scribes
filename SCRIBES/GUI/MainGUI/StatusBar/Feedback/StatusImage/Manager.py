@@ -39,4 +39,6 @@ class Manager(GObject):
 		Switcher(self, editor)
 		from FeedbackDispatcher import Dispatcher
 		Dispatcher(self, editor)
+		from SaveErrorSwitcher import Switcher
+		Switcher(self, editor)
 		editor.response()

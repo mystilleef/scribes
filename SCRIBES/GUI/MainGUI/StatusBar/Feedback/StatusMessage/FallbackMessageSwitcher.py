@@ -32,8 +32,8 @@ class Switcher(object):
 	def __fallback(self):
 		try:
 			if self.__busy: return False
-			if not self.__editor.uri: raise ValueError
 			emit = lambda message, bold, italic: self.__manager.emit("update-message", message, bold, italic, "")
+			if not self.__editor.uri: raise ValueError
 			mname, nname = self.__modified_filename, self.__normal_filename
 			emit(mname, False, True) if self.__editor.modified else emit(nname, True, False)
 		except ValueError:
@@ -47,10 +47,10 @@ class Switcher(object):
 		return False
 
 	def __get_filename(self, uri):
-		from gnomevfs import URI
+		from gnomevfs import URI, unescape_string_for_display
 		filename = str(URI(uri).path)
 		filename = filename.replace(self.__editor.home_folder.rstrip("/"), "~")
-		return filename
+		return unescape_string_for_display(filename)
 
 	def __quit_cb(self, *args):
 		self.__destroy()
