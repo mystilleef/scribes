@@ -1,3 +1,4 @@
+#FIXME: REWRITE THIS HACK. STATUS FEEDBACK IS BORKED!
 message = "Template trigger highlighted"
 
 class Colorer(object):
@@ -23,6 +24,7 @@ class Colorer(object):
 		self.__status_id = None
 		self.__lmark = self.__editor.create_left_mark()
 		self.__rmark = self.__editor.create_right_mark()
+		self.__feedback_counter = 0
 		return
 
 	def __destroy(self):
@@ -80,7 +82,7 @@ class Colorer(object):
 		self.__uncolor_trigger(False)
 		self.__buffer.apply_tag(self.__highlight_tag, position[0], position[1])
 		self.__is_highlighted = True
-		self.__editor.set_message(message, "info")
+		self.__set_message()
 		return False
 
 	def __uncolor_trigger(self, message=True):
@@ -88,6 +90,19 @@ class Colorer(object):
 		end = self.__buffer.get_iter_at_mark(self.__rmark)
 		self.__buffer.remove_tag(self.__highlight_tag, start, end)
 		self.__is_highlighted = False
+		self.__unset_message()
+		return False
+
+	def __set_message(self):
+		if self.__feedback_counter: return False
+		self.__feedback_counter += 1
+		self.__editor.set_message(message, "info")
+		return False
+
+	def __unset_message(self):
+		if not self.__feedback_counter: return False
+		self.__feedback_counter -= 1
+		self.__editor.unset_message(message, "info")
 		return False
 
 ################################################################################
@@ -120,5 +135,4 @@ class Colorer(object):
 			pass
 		finally:
 			self.__textid = idle_add(self.__uncolor_trigger, priority=9999)
-			self.__editor.unset_message(message, "info")
 		return
