@@ -32,12 +32,15 @@ class Selector(object):
 			offset = self.__offsets[0][1]
 			line = self.__offsets[0][0]
 			noffset = offset + (indentation)
+			if noffset < 0: noffset = 0
 			iterator = get_iter(line, noffset)
 			self.__buffer.place_cursor(iterator)
 		else:
 			bindent, eindent = self.__indentation if len(self.__indentation) > 1 else (self.__indentation[0], self.__indentation[0])
 			boffset = self.__offsets[0][1] + (bindent)
 			eoffset = self.__offsets[1][1] + (eindent)
+			if boffset < 0: boffset = 0
+			if eoffset < 0: eoffset = 0
 			start = get_iter(self.__offsets[0][0], boffset)
 			end = get_iter(self.__offsets[1][0], eoffset)
 			self.__buffer.place_cursor(start)

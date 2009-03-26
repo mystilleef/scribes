@@ -1,6 +1,7 @@
 class Manager(object):
 
 	def __init__(self, editor, uri):
+		editor.response()
 		from View import View
 		View(editor)
 		from Refresher import Refresher

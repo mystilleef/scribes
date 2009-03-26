@@ -1,6 +1,7 @@
 class Window(object):
 
 	def __init__(self, editor):
+		editor.response()
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__sigid1 = self.__window.connect("delete-event", self.__delete_event_cb)

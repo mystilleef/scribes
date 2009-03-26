@@ -1,6 +1,7 @@
 class Manager(object):
 
 	def __init__(self, editor):
+		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("ready", self.__update_cb)
@@ -8,6 +9,7 @@ class Manager(object):
 		self.__set()
 		self.__update_search_path()
 		self.__editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

@@ -3,6 +3,7 @@ from gettext import gettext as _
 class UndoRedo(object):
 
 	def __init__(self, editor):
+		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("checking-file", self.__checking_cb)

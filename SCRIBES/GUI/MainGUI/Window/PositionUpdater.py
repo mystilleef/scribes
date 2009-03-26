@@ -1,6 +1,7 @@
 class Updater(object):
 
 	def __init__(self, editor, uri):
+		editor.response()
 		self.__init_attributes(editor, uri)
 		self.__sigid1 = editor.connect("close", self.__close_cb)
 		self.__sigid2 = self.__window.connect("focus-out-event", self.__update_cb)

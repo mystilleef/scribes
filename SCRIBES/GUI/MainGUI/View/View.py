@@ -1,6 +1,7 @@
 class View(object):
 
 	def __init__(self, editor):
+		editor.response()
 		self.__init_attributes(editor)
 		self.__add_view_to_scroll()
 		self.__set_properties()

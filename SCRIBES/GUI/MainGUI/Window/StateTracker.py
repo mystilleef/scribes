@@ -1,6 +1,7 @@
 class Tracker(object):
 
 	def __init__(self, editor):
+		editor.response()
 		self.__init_attributes(editor)
 		self.__editor.set_data("minimized", False)
 		self.__editor.set_data("maximized", False)

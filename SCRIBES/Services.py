@@ -2,6 +2,7 @@ class InitServices(object):
 
 	def __init__(self, editor, manager, uri, encoding):
 		editor.set_data("InstanceManager", manager)
+		editor.response()
 		from RegistrationManager import Manager
 		Manager(editor)
 		from ContentDetector import Detector
@@ -74,3 +75,4 @@ class InitServices(object):
 		Initializer(editor, uri)
 		from URILoader.Manager import Manager
 		Manager(editor, uri, encoding)
+		editor.response()

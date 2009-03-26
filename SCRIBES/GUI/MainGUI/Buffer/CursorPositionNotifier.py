@@ -1,6 +1,7 @@
 class Notifier(object):
 
 	def __init__(self, editor):
+		editor.response()
 		self.__init_attributes(editor)
 		self.__buffer.notify("cursor-position")
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)

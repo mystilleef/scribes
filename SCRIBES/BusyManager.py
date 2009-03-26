@@ -1,10 +1,12 @@
 class Manager(object):
 
 	def __init__(self, editor):
+		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("private-busy", self.__busy_cb)
 		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -23,9 +25,9 @@ class Manager(object):
 		self.__busy = self.__busy + 1 if busy else self.__busy - 1
 		if self.__busy < 0: self.__busy = 0
 		busy = True if self.__busy else False
-		self.__editor.refresh(False)
+		self.__editor.response()
 		self.__editor.emit("busy", busy)
-		self.__editor.refresh(False)
+		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

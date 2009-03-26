@@ -1,12 +1,14 @@
 class Positioner(object):
 
 	def __init__(self, editor, uri):
+		editor.response()
 		self.__init_attributes(editor, uri)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("checking-file", self.__checking_cb)
 		self.__sigid3 = editor.connect("load-error", self.__error_cb)
 		editor.register_object(self)
 		self.__position(uri)
+		editor.response()
 
 	def __init_attributes(self, editor, uri):
 		self.__editor = editor
@@ -38,7 +40,7 @@ class Positioner(object):
 				self.__window.resize(width, height)
 				self.__window.move(xcoordinate, ycoordinate)
 		except TypeError:
-			pass
+			self.__editor.response()
 		finally:
 			self.__window.present()
 			self.__editor.response()
