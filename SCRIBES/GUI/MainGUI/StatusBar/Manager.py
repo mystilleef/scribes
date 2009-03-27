@@ -6,4 +6,6 @@ class Manager(object):
 		Manager(editor)
 		from CursorPosition.Manager import Manager
 		Manager(editor)
+		from EditingModeDisplayer import Displayer
+		Displayer(editor)
 		editor.response()

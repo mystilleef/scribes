@@ -48,8 +48,6 @@ class InitServices(object):
 		# Object that share information for encoding combo box.
 		from EncodingComboBoxDataManager import Manager
 		Manager(editor)
-		from StatusInsertionType import Type
-		Type(editor)
 		from StatusContainer import Container
 		Container(editor)
 		from RecentManager import Manager
