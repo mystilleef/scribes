@@ -34,7 +34,7 @@ class SmartSpace(object):
 			self.__unblock_event_after_signal()
 		else:
 			self.__block_event_after_signal()
-		self.__editor.refresh()
+		self.__editor.response()
 		return
 
 	def __precompile_method(self):

@@ -1,7 +1,7 @@
 from gettext import gettext as _
 
 class Selector(object):
-	
+
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("select-word", self.__select_word_cb)
@@ -9,7 +9,7 @@ class Selector(object):
 		self.__sigid3 = manager.connect("select-line", self.__select_line_cb)
 		self.__sigid4 = manager.connect("select-statement", self.__select_statement_cb)
 		self.__sigid5 = manager.connect("select-paragraph", self.__select_paragraph_cb)
-		
+
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
@@ -23,7 +23,7 @@ class Selector(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		del self
 		self = None
-		return 
+		return
 
 	def __select_word(self):
 		try:
@@ -53,7 +53,7 @@ class Selector(object):
 			self.__editor.response()
 			self.__editor.textbuffer.select_range(start, end)
 			self.__editor.response()
-			line = start.get_line() + 1   
+			line = start.get_line() + 1
 			message = _("Selected statement on line %d") % line
 			self.__editor.update_message(message, "pass")
 		except ValueError:

@@ -86,6 +86,3 @@ class Processor(object):
 	def __extracted_text_cb(self, manager, text):
 		self.__send_processed_text(text)
 		return False
-
-
-

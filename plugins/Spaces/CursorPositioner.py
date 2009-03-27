@@ -32,11 +32,11 @@ class Positioner(object):
 		line, offset = self.__data
 		new_text = self.__get_text_on_line(line)
 		new_offset = offset + (len(new_text) - len(self.__old_text))
+		if new_offset < 0: new_offset = 0
 		get_iter = self.__editor.textbuffer.get_iter_at_line_offset
 		iterator = get_iter(line, new_offset)
 		self.__editor.textbuffer.place_cursor(iterator)
 		self.__editor.move_view_to_cursor(True)
-		self.__editor.refresh()
 		self.__data = None
 		self.__old_text = None
 		return False

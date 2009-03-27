@@ -30,27 +30,27 @@ class DragAndDrop(object):
 		return False
 
 	def __motion_cb(self, textview, context, x, y, time):
-		editor.response()
+		self.__editor.response()
 		if "text/uri-list" in context.targets: return True
-		editor.response()
+		self.__editor.response()
 		return False
 
 	def __drop_cb(self, textview, context, x, y, time):
-		editor.response()
+		self.__editor.response()
 		if "text/uri-list" in context.targets: return True
-		editor.response()
+		self.__editor.response()
 		return False
 
 	def __received_cb(self, textview, context, x, y, data, info, time):
-		editor.response()
+		self.__editor.response()
 		if not ("text/uri-list" in context.targets): return False
-		editor.response()
+		self.__editor.response()
 		if info != 80: return False
-		editor.response()
+		self.__editor.response()
 		uri_list = list(data.get_uris())
-		editor.response()
+		self.__editor.response()
 		self.__editor.open_files(uri_list, "utf-8")
-		editor.response()
+		self.__editor.response()
 		context.finish(True, False, time)
-		editor.response()
+		self.__editor.response()
 		return True
