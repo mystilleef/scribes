@@ -111,8 +111,6 @@ scribes_PYTHON = \
 	PreferenceMenuManager.py \
 	HelpToolButton.py \
 	Spinner.py \
-	StatusContainer.py \
-	StatusInsertionType.py \
 	Usage.py \
 	UseTabsMetadata.py \
 	Utils.py \

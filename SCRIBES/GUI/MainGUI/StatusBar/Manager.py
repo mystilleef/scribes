@@ -8,4 +8,6 @@ class Manager(object):
 		Manager(editor)
 		from EditingModeDisplayer import Displayer
 		Displayer(editor)
+		from Bar.Manager import Manager
+		Manager(editor)
 		editor.response()
