@@ -1,15 +1,17 @@
-from gtk import ToolButton
+from gtk import MenuToolButton
 
-class Button(ToolButton):
+class Button(MenuToolButton):
 
 	def __init__(self, editor):
-		ToolButton.__init__(self)
+		editor.response()
+		from gtk import STOCK_OPEN
+		MenuToolButton.__init__(self, STOCK_OPEN)
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
-		editor.register_object(self)
 		self.show()
+		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, editor):
@@ -25,10 +27,14 @@ class Button(ToolButton):
 		return
 
 	def __set_properties(self):
-		from gtk import STOCK_NEW
-		self.set_property("stock-id", STOCK_NEW)
-		self.set_property("name", "NewToolButton")
-		self.set_property("sensitive", True)
+		from ..Utils import never_focus
+		never_focus(self)
+		self.set_property("name", "OpenToolButton")
+		self.set_property("sensitive", False)
+		#self.set_tooltip(editor.tip, open_button_tip)
+		from RecentMenu import RecentMenu
+		self.set_menu(RecentMenu(self.__editor))
+#		self.set_arrow_tooltip(editor.tip, recent_menu_tip, recent_menu_tip)
 		return
 
 	def __quit_cb(self, *args):
@@ -36,5 +42,7 @@ class Button(ToolButton):
 		return False
 
 	def __clicked_cb(self, *args):
-		self.__editor.new()
+		self.__editor.response()
+		self.__editor.trigger("show_open_dialog")
+		self.__editor.response()
 		return False

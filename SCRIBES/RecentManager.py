@@ -1,19 +1,14 @@
 class Manager(object):
-	"""
-	This class creates an object that manages recently used files for
-	the text editor.
-	"""
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
 		self.__sigid1 = self.__editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.__editor.connect("loaded-file", self.__loaded_file_cb)
 		self.__sigid3 = self.__editor.connect("renamed-file", self.__renamed_file_cb)
-		
 		editor.set_data("RecentManager", self.__manager)
 		editor.register_object(self)
 		editor.response()
-		
+
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = self.__create_recent_manager()

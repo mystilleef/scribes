@@ -49,6 +49,8 @@ SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/Makefile
 SCRIBES/GUI/MainGUI/StatusBar/CursorPosition/Makefile
 SCRIBES/GUI/MainGUI/Window/Makefile
 SCRIBES/GUI/MainGUI/Toolbar/Makefile
+SCRIBES/GUI/MainGUI/Toolbar/ToolbarVisibility/Makefile
+SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/Makefile
 SCRIBES/GUI/MainGUI/View/Makefile
 SCRIBES/GUI/MainGUI/View/DatabaseListeners/Makefile
 SCRIBES/GUI/MainGUI/Buffer/Makefile

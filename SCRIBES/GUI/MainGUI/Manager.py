@@ -8,6 +8,8 @@ class Manager(object):
 		Manager(editor, uri)
 		from Buffer.Manager import Manager
 		Manager(editor)
+		from Toolbar.Manager import Manager
+		Manager(editor)
 		from StatusBar.Manager import Manager
 		Manager(editor)
 		editor.response()

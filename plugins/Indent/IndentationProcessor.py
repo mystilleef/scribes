@@ -40,9 +40,11 @@ class Processor(object):
 		return "\n".join(lines)
 
 	def __process_line(self, line, use_tabs, indentation_width):
+		self.__editor.response()
 		characters = self.__get_indent_characters(line)
 		characters = self.__get_new_indentation(characters, indentation_width)
 		if use_tabs: characters = "\t" * (len(characters)/indentation_width)
+		self.__editor.response
 		return characters + line.lstrip(" \t")
 
 	def __get_indent_characters(self, line):

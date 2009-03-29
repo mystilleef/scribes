@@ -27,6 +27,7 @@ class Manager(object):
 		from gtk import SeparatorMenuItem
 		menu.insert(SeparatorMenuItem(), 0)
 		for menuitem in self.__items:
+			self.__editor.response()
 			if menuitem.props.name == "AboutMenuitem":
 				menu.append(SeparatorMenuItem())
 				menu.append(menuitem)
@@ -34,7 +35,9 @@ class Manager(object):
 			else:
 				menu.prepend(menuitem)
 				menuitem.show()
+			self.__editor.response()
 		menu.show_all()
+		self.__editor.response()
 		return False
 
 	def __destroy(self):

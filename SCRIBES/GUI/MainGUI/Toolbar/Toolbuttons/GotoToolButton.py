@@ -1,18 +1,16 @@
-from gtk import MenuToolButton
+from gtk import ToolButton
 
-class Button(MenuToolButton):
+class Button(ToolButton):
 
 	def __init__(self, editor):
-		from gtk import STOCK_PREFERENCES
-		MenuToolButton.__init__(self, STOCK_PREFERENCES)
+		editor.response()
+		ToolButton.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
-		from PreferenceMenuManager import Manager
-		Manager(editor, self.get_menu())
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
-		editor.register_object(self)
 		self.show()
+		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, editor):
@@ -28,10 +26,12 @@ class Button(MenuToolButton):
 		return
 
 	def __set_properties(self):
-		self.set_property("name", "PreferenceToolButton")
+		from ..Utils import never_focus
+		never_focus(self)
+		from gtk import STOCK_JUMP_TO
+		self.set_property("stock-id", STOCK_JUMP_TO)
+		self.set_property("name", "GotoToolButton")
 		self.set_property("sensitive", False)
-		from gtk import Menu
-		self.set_property("menu", Menu())
 		return
 
 	def __quit_cb(self, *args):
@@ -39,5 +39,7 @@ class Button(MenuToolButton):
 		return False
 
 	def __clicked_cb(self, *args):
-		self.__editor.trigger("show_preference_dialog")
+		self.__editor.response()
+		self.__editor.trigger("show_gotobar")
+		self.__editor.response()
 		return False

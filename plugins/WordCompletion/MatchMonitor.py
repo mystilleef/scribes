@@ -31,19 +31,42 @@ class Monitor(object):
 		self.__emit_matches(matches) if matches else self.__emit_no_matches()
 		return False
 
-	def __find_matches(self, word):
+	def __get_match_list(self, word):
+		match_list = []
 		dictionary = self.__dictionary
-		if not dictionary: return None
-		match_list = [list(items) for items in dictionary.items() \
-				if items[0].startswith(word) and (items[0] != word)]
-		if not match_list: return None
-		match_list.sort(self.__sort)
-		matches = [items[0] for items in match_list]
+		for items in dictionary.items():
+			self.__editor.response()
+			if not (items[0].startswith(word) and (items[0] != word)): continue
+			match_list.append(list(items))
+			self.__editor.response()
+		return match_list
+
+	def __get_matches(self, match_list):
+		matches = []
+		for items in match_list:
+			self.__editor.response()
+			matches.append(items[0])
+			self.__editor.response()
 		return matches
 
+	def __find_matches(self, word):
+		self.__editor.response()
+		dictionary = self.__dictionary
+		if not dictionary: return None
+#		match_list = [list(items) for items in dictionary.items() \
+#				if items[0].startswith(word) and (items[0] != word)]
+		match_list = self.__get_match_list(word)
+		if not match_list: return None
+		match_list.sort(self.__sort)
+#		matches = [items[0] for items in match_list]
+		return self.__get_matches(match_list)
+
 	def __sort(self, x, y):
+		self.__editor.response()
 		if (x[1] < y[1]): return 1
+		self.__editor.response()
 		if (x[1] > y[1]): return -1
+		self.__editor.response()
 		return 0
 
 	def __precompile_methods(self):

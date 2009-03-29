@@ -3,6 +3,7 @@ from gtk import ToolItem
 class Spinner(ToolItem):
 
 	def __init__(self, editor):
+		editor.response()
 		ToolItem.__init__(self)
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
@@ -13,10 +14,8 @@ class Spinner(ToolItem):
 		self.__sigid6 = editor.connect("load-error", self.__load_error_cb)
 		self.__set_properties()
 		self.show_all()
-		editor.response()
 		editor.register_object(self)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=9999)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -44,13 +43,9 @@ class Spinner(ToolItem):
 		self = None
 		return
 
-	def __precompile_methods(self):
-		methods = (self.__busy_cb, self.__spin_throbber_cb, 
-			self.__start, self.__stop) 
-		self.__editor.optimize(methods)
-		return False
-
 	def __set_properties(self):
+		from ..Utils import never_focus
+		never_focus(self)
 		self.add(self.__image)
 		return
 
@@ -59,7 +54,6 @@ class Spinner(ToolItem):
 		self.__call_count += 1
 		if self.__is_spinning: return
 		self.__is_spinning = True
-#		self.__image.clear()
 		self.__image.set_from_animation(self.__animation)
 		self.__editor.response()
 		return

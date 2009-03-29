@@ -37,12 +37,14 @@ class Processor(object):
 		return False
 
 	def __convert(self, line):
+		self.__editor.response()
 		indentation_width = self.__editor.textview.get_tab_width()
 		characters = self.__get_indent_characters(line)
 		characters = self.__get_new_indentation(characters, indentation_width)
 		if self.__use_tabs: characters = "\t" * (len(characters)/indentation_width)
 		message = _("Converted spaces to tabs") if self.__use_tabs else _("Converted tabs to spaces")
 		self.__editor.update_message(message, "pass")
+		self.__editor.response()
 		return characters + line.lstrip(" \t")
 
 	def __get_indent_characters(self, line):
@@ -61,9 +63,12 @@ class Processor(object):
 		return " " * (number_of_characters - remainder)
 
 	def __remove(self, line):
+		self.__editor.response()
+		line = line.rstrip(" \t")
+		self.__editor.response()
 		message = _("Removed trailing spaces")
 		self.__editor.update_message(message, "pass")
-		return line.rstrip(" \t")
+		return line
 
 	def __destroy_cb(self, *args):
 		self.__destroy()

@@ -19,8 +19,11 @@ class InitServices(object):
 		Manager(editor)
 		from BusyManager import Manager
 		Manager(editor)
+		from RecentManager import Manager
+		Manager(editor)
 		from GUI.Manager import Manager
 		Manager(editor, uri)
+######## Everything below still needs refactoring.
 		# Manages error and information window.
 		from MessageWindow import Window
 		Window(editor)
@@ -48,11 +51,6 @@ class InitServices(object):
 		# Object that share information for encoding combo box.
 		from EncodingComboBoxDataManager import Manager
 		Manager(editor)
-		from RecentManager import Manager
-		Manager(editor)
-		# Toolbar object.
-		from Toolbar import Toolbar
-		Toolbar(editor)
 		from PopupMenuManager import Manager
 		Manager(editor)
 		from TriggerManager import Manager

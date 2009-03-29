@@ -1,16 +1,16 @@
-from gtk import MenuToolButton
+from gtk import ToolButton
 
-class Button(MenuToolButton):
+class Button(ToolButton):
 
 	def __init__(self, editor):
-		from gtk import STOCK_OPEN
-		MenuToolButton.__init__(self, STOCK_OPEN)
+		editor.response()
+		ToolButton.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
-		editor.register_object(self)
 		self.show()
+		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, editor):
@@ -26,14 +26,12 @@ class Button(MenuToolButton):
 		return
 
 	def __set_properties(self):
-#		from gtk import STOCK_OPEN
-#		self.set_property("stock-id", STOCK_OPEN)
-		self.set_property("name", "OpenToolButton")
+		from ..Utils import never_focus
+		never_focus(self)
+		from gtk import STOCK_PRINT
+		self.set_property("stock-id", STOCK_PRINT)
+		self.set_property("name", "PrintToolButton")
 		self.set_property("sensitive", False)
-		#self.set_tooltip(editor.tip, open_button_tip)
-		from RecentMenu import RecentMenu
-		self.set_menu(RecentMenu(self.__editor))
-#		self.set_arrow_tooltip(editor.tip, recent_menu_tip, recent_menu_tip)
 		return
 
 	def __quit_cb(self, *args):
@@ -41,5 +39,5 @@ class Button(MenuToolButton):
 		return False
 
 	def __clicked_cb(self, *args):
-		self.__editor.trigger("show_open_dialog")
+		self.__editor.emit("not-yet-implemented")
 		return False

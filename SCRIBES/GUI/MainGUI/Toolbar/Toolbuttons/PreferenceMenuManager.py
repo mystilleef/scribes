@@ -1,12 +1,14 @@
 class Manager(object):
 
 	def __init__(self, editor, menu):
+		editor.response()
 		self.__init_attributes(editor, menu)
 		menu.props.sensitive = False
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("add-to-pref-menu", self.__add_cb)
 		self.__sigid3 = editor.connect("remove-from-pref-menu", self.__remove_cb)
-		self.__editor.register_object(self)
+		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, editor, menu):
 		self.__editor = editor
@@ -25,31 +27,56 @@ class Manager(object):
 		return False
 
 	def __add(self, menuitem):
+		self.__editor.response()
 		self.__menu.props.sensitive = False
 		self.__menuitems.append(menuitem)
 		menuitems = self.__sort(self.__menuitems)
 		self.__update(menuitems)
 		self.__menu.props.sensitive = True
 		self.__menu.show_all()
+		self.__editor.response()
 		return False
 
 	def __sort(self, menuitems):
-		itemlist = [(menuitem.props.name, menuitem) for menuitem in menuitems]
+#		itemlist = [(menuitem.props.name, menuitem) for menuitem in menuitems]
+		#FIXME: Refactor into a function
+		itemlist = []
+		for menuitem in menuitems:
+			self.__editor.response()
+			itemlist.append((menuitem.props.name, menuitem))
+			self.__editor.response()
 		itemlist.sort()
 		itemlist.reverse()
-		menuitems = [element[1] for element in itemlist]
+		#FIXME: Refactor into a function
+		menuitems = []
+		for element in itemlist:
+			self.__editor.response()
+			menuitems.append(element[1])
+			self.__editor.response()
 		return menuitems
 
 	def __update(self, menuitems):
-		[self.__menu.remove(menuitem) for menuitem in self.__menu.get_children()]
-		[self.__menu.append(menuitem) for menuitem in menuitems]
+#		[self.__menu.remove(menuitem) for menuitem in self.__menu.get_children()]
+		#FIXME: Refactor into a function
+		for menuitem in self.__menu.get_children():
+			self.__editor.response()
+			self.__menu.remove(menuitem)
+			self.__editor.response()
+		#FIXME: Refactor into a function
+		for menuitem in menuitems:
+			self.__editor.response()
+			self.__menu.append(menuitem)
+			self.__editor.response()
+#		[self.__menu.append(menuitem) for menuitem in menuitems]
 		return False
 
 	def __remove(self, menuitem):
+		self.__editor.response()
 		self.__menuitems.remove(menuitem)
 		self.__menu.remove(menuitem)
 		sensitive = True if self.__menu.get_children() else False
 		self.__menu.props.sensitive = sensitive
+		self.__editor.response()
 		return False
 
 	def __add_cb(self, editor, menuitem):

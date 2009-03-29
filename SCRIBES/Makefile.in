@@ -268,29 +268,14 @@ scribes_PYTHON = \
 	PositionMetadata.py \
 	TabWidthMetadata.py \
 	TextWrappingMetadata.py \
-	Toolbar.py \
 	Trigger.py \
 	TriggerManager.py \
 	URIManager.py \
-	NewToolButton.py \
-	OpenToolButton.py \
-	SaveToolButton.py \
 	PluginManager.py \
 	PopupMenuManager.py \
-	PrintToolButton.py \
-	UndoToolButton.py \
-	RedoToolButton.py \
 	RegistrationManager.py \
-	GotoToolButton.py \
-	SearchToolButton.py \
 	ReadonlyManager.py \
 	RecentManager.py \
-	RecentMenu.py \
-	ReplaceToolButton.py \
-	PreferenceToolButton.py \
-	PreferenceMenuManager.py \
-	HelpToolButton.py \
-	Spinner.py \
 	Usage.py \
 	UseTabsMetadata.py \
 	Utils.py \

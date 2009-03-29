@@ -3,6 +3,7 @@ from gtk import ToolButton
 class Button(ToolButton):
 
 	def __init__(self, editor):
+		editor.response()
 		ToolButton.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -33,6 +34,8 @@ class Button(ToolButton):
 		return
 
 	def __set_properties(self):
+		from ..Utils import never_focus
+		never_focus(self)
 		from gtk import STOCK_UNDO
 		self.set_property("stock-id", STOCK_UNDO)
 		self.set_property("name", "UndoToolButton")
@@ -44,13 +47,17 @@ class Button(ToolButton):
 		return False
 
 	def __sensitive(self):
+		self.__editor.response()
 		sensitive = True if self.__editor.textbuffer.can_undo() else False
 		self.set_property("sensitive", sensitive)
+		self.__editor.response()
 		return False
 
 	def __clicked_cb(self, *args):
+		self.__editor.response()
 		self.__editor.undo()
 		self.__sensitive()
+		self.__editor.response()
 		return False
 
 	def __undo_cb(self, *args):

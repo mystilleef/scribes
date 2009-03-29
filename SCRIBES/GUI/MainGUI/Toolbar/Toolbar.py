@@ -1,40 +1,37 @@
-from gtk import ToolButton
-
-class Button(ToolButton):
+class Toolbar(object):
 
 	def __init__(self, editor):
-		ToolButton.__init__(self)
+		editor.response()
 		self.__init_attributes(editor)
 		self.__set_properties()
+		self.__add_toolbuttons()
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
 		editor.register_object(self)
-		self.show()
 		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
+		self.__toolbar = editor.gui.get_widget("Toolbar")
 		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
 		return
 
 	def __set_properties(self):
-		from gtk import STOCK_FIND_AND_REPLACE
-		self.set_property("stock-id", STOCK_FIND_AND_REPLACE)
-		self.set_property("name", "ReplaceToolButton")
-		self.set_property("sensitive", False)
+		from Utils import never_focus
+		never_focus(self.__toolbar)
+		self.__toolbar.set_property("sensitive", True)
+		return
+
+	def __add_toolbuttons(self):
+		from ToolbuttonsInitializer import Initializer
+		Initializer(self.__toolbar, self.__editor)
 		return
 
 	def __quit_cb(self, *args):
 		self.__destroy()
-		return False
-
-	def __clicked_cb(self, *args):
-		self.__editor.trigger("show_replacebar")
 		return False

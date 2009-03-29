@@ -1,11 +1,9 @@
 from gtk import RecentChooserMenu
 
 class RecentMenu(RecentChooserMenu):
-	"""
-	This class implements the recent menu for the text editor.
-	"""
 
 	def __init__(self, editor):
+		editor.response()
 		self.__init_attributes(editor)
 		manager = editor.get_data("RecentManager")
 		RecentChooserMenu.__init__(self, manager)
@@ -21,6 +19,8 @@ class RecentMenu(RecentChooserMenu):
 		return
 
 	def __set_properties(self):
+		from ..Utils import never_focus
+		never_focus(self)
 		from gtk import RECENT_SORT_MRU
 		self.set_show_numbers(False)
 		self.set_property("sort-type", RECENT_SORT_MRU)
@@ -49,7 +49,9 @@ class RecentMenu(RecentChooserMenu):
 
 	def __activated_cb(self, recent_chooser):
 		uri = self.get_current_uri()
+		self.__editor.response()
 		self.__editor.open_file(uri)
+		self.__editor.response()
 		return True
 
 	def __quit_cb(self, editor):

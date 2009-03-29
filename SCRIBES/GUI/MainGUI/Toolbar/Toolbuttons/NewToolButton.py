@@ -3,13 +3,14 @@ from gtk import ToolButton
 class Button(ToolButton):
 
 	def __init__(self, editor):
+		editor.response()
 		ToolButton.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
-		editor.register_object(self)
 		self.show()
+		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, editor):
@@ -25,10 +26,12 @@ class Button(ToolButton):
 		return
 
 	def __set_properties(self):
-		from gtk import STOCK_PRINT
-		self.set_property("stock-id", STOCK_PRINT)
-		self.set_property("name", "PrintToolButton")
-		self.set_property("sensitive", False)
+		from ..Utils import never_focus
+		never_focus(self)
+		from gtk import STOCK_NEW
+		self.set_property("stock-id", STOCK_NEW)
+		self.set_property("name", "NewToolButton")
+		self.set_property("sensitive", True)
 		return
 
 	def __quit_cb(self, *args):
@@ -36,5 +39,7 @@ class Button(ToolButton):
 		return False
 
 	def __clicked_cb(self, *args):
-		print "Not yet implemented"
+		self.__editor.response()
+		self.__editor.new()
+		self.__editor.response()
 		return False
