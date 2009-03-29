@@ -32,6 +32,8 @@ class Button(ToolButton):
 		self.set_property("stock-id", STOCK_NEW)
 		self.set_property("name", "NewToolButton")
 		self.set_property("sensitive", True)
+		from gettext import gettext as _
+		self.set_tooltip_text(_("Open a new window"))
 		return
 
 	def __quit_cb(self, *args):

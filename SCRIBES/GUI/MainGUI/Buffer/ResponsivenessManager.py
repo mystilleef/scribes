@@ -32,7 +32,7 @@ class Manager(object):
 		return False
 
 	def __optimize(self):
-		methods = (self.__response_cb, self.__response, 
+		methods = (self.__response_cb, self.__response,
 			self.__response_idle_cb, self.__response_timeout_cb)
 		self.__editor.optimize(methods)
 		return False

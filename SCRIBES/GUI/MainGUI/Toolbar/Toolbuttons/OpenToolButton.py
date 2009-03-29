@@ -31,10 +31,13 @@ class Button(MenuToolButton):
 		never_focus(self)
 		self.set_property("name", "OpenToolButton")
 		self.set_property("sensitive", False)
-		#self.set_tooltip(editor.tip, open_button_tip)
 		from RecentMenu import RecentMenu
 		self.set_menu(RecentMenu(self.__editor))
-#		self.set_arrow_tooltip(editor.tip, recent_menu_tip, recent_menu_tip)
+		from gtk import Tooltips
+		from gettext import gettext as _
+		menu_tip = _("Recently opened files")
+		self.set_arrow_tooltip(Tooltips(), menu_tip, menu_tip)
+		self.set_tooltip_text(_("Open a new file"))
 		return
 
 	def __quit_cb(self, *args):

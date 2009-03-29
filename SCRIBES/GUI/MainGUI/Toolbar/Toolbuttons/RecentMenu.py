@@ -30,6 +30,8 @@ class RecentMenu(RecentChooserMenu):
 		self.set_property("show-icons", True)
 		self.set_property("show-not-found", False)
 		self.set_property("show-tips", True)
+		from gettext import gettext as _
+		self.set_tooltip_text(_("Recently opened files"))
 		return
 
 	def __create_filter(self):

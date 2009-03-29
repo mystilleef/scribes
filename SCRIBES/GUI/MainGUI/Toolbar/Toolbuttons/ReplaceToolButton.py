@@ -32,6 +32,8 @@ class Button(ToolButton):
 		self.set_property("stock-id", STOCK_FIND_AND_REPLACE)
 		self.set_property("name", "ReplaceToolButton")
 		self.set_property("sensitive", False)
+		from gettext import gettext as _
+		self.set_tooltip_text(_("Show bar to search for and replace text"))
 		return
 
 	def __quit_cb(self, *args):

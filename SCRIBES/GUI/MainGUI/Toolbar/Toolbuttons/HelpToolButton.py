@@ -32,6 +32,8 @@ class Button(ToolButton):
 		self.set_property("stock-id", STOCK_HELP)
 		self.set_property("name", "HelpToolButton")
 		self.set_property("sensitive", True)
+		from gettext import gettext as _
+		self.set_tooltip_text(_("Show user guide"))
 		return
 
 	def __quit_cb(self, *args):

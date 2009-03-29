@@ -38,6 +38,8 @@ class Button(ToolButton):
 		self.set_property("stock-id", STOCK_REDO)
 		self.set_property("name", "RedoToolButton")
 		self.set_property("sensitive", False)
+		from gettext import gettext as _
+		self.set_tooltip_text(_("Redo last action"))
 		return
 
 	def __quit_cb(self, *args):

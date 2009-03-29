@@ -32,6 +32,8 @@ class Button(ToolButton):
 		self.set_property("stock-id", STOCK_JUMP_TO)
 		self.set_property("name", "GotoToolButton")
 		self.set_property("sensitive", False)
+		from gettext import gettext as _
+		self.set_tooltip_text(_("Show bar to move cursor to a specific line"))
 		return
 
 	def __quit_cb(self, *args):

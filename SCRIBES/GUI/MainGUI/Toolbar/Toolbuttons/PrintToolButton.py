@@ -32,6 +32,8 @@ class Button(ToolButton):
 		self.set_property("stock-id", STOCK_PRINT)
 		self.set_property("name", "PrintToolButton")
 		self.set_property("sensitive", False)
+		from gettext import gettext as _
+		self.set_tooltip_text(_("Show window to print current file"))
 		return
 
 	def __quit_cb(self, *args):
