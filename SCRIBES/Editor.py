@@ -5,8 +5,8 @@ class Editor(Signals):
 
 	def __init__(self, manager, uri=None, encoding="utf-8"):
 		Signals.__init__(self)
-		from Services import InitServices
-		InitServices(self, manager, uri, encoding)
+		from ServicesInitializer import Initializer
+		Initializer(self, manager, uri, encoding)
 
 ########################################################################
 #

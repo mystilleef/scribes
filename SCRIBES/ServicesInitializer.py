@@ -1,4 +1,4 @@
-class InitServices(object):
+class Initializer(object):
 
 	def __init__(self, editor, manager, uri, encoding):
 		editor.set_data("InstanceManager", manager)

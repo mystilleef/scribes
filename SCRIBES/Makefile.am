@@ -75,7 +75,7 @@ scribes_PYTHON = \
 	SaveProcessMonitor.py \
 	SaveProcessorDBusService.py \
 	SchemeManager.py \
-	Services.py \
+	ServicesInitializer.py \
 	ScribesSaveProcessor.py \
 	SIGNALS.py \
 	SpellCheckMetadata.py \
