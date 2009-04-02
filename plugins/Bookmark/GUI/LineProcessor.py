@@ -18,6 +18,7 @@
 		return
 
 	def __text_from_line(self, line):
+		self.__editor.response()
 		start = self.__editor.textbuffer.get_iter_at_line(line)
 		end = self.__editor.forward_to_line_end(start.copy())
 		return self.__editor.textbuffer.get_text(start, end).strip(" \t\r\n")

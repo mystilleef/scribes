@@ -67,6 +67,8 @@ class View(object):
 		wrap_mode = self.__view.set_wrap_mode
 		wrap_mode(WRAP_WORD_CHAR) if wrap_mode_bool() else wrap_mode(WRAP_NONE)
 		self.__view.set_property("sensitive", True)
+		from gtk.gdk import color_parse
+		self.__view.modify_cursor(color_parse("red"), color_parse("red"))
 		self.__editor.response()
 		return False
 

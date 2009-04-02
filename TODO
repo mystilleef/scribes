@@ -1,5 +1,3 @@
-Change Services.py to ServicesInitializer.py
-Work on refactoring and moving popup menu manager to MainGUI folder
 refactor encoding system and gui
 refactor saving system (CONSIDER CREATING A NEW BRANCH)
 implement a global storage object. (useful to use with signal system)

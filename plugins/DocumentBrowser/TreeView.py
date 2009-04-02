@@ -82,6 +82,7 @@ class TreeView(object):
 		self.__model.clear()
 		for type_, name, path, uri in data:
 			self.__model.append([name, type_, path, uri])
+			self.__editor.response()
 		self.__treeview.set_model(self.__model)
 		self.__editor.select_row(self.__treeview)
 		self.__treeview.set_property("sensitive", True)

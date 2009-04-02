@@ -48,6 +48,7 @@ class Marker(object):
 		return
 
 	def __mark(self, line=None):
+		self.__editor.response()
 		iterator = self.__iter_at_line(line)
 		if iterator is None: return
 		self.__editor.textbuffer.create_source_mark(None, "scribes_bookmark", iterator)
@@ -56,6 +57,7 @@ class Marker(object):
 		return
 
 	def __unmark(self, line=None):
+		self.__editor.response()
 		iterator = self.__iter_at_line(line)
 		if iterator is None: return
 		end = self.__editor.forward_to_line_end(iterator.copy())

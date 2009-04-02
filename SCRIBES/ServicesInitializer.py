@@ -51,8 +51,6 @@ class Initializer(object):
 		# Object that share information for encoding combo box.
 		from EncodingComboBoxDataManager import Manager
 		Manager(editor)
-		from PopupMenuManager import Manager
-		Manager(editor)
 		from TriggerManager import Manager
 		Manager(editor)
 		from ReadonlyManager import Manager

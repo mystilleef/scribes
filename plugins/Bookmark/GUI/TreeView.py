@@ -57,6 +57,7 @@ class TreeView(object):
 			append = self.__model.append
 			for line, text in data:
 				append([line, text])
+				self.__editor.response()
 			self.__line_column.queue_resize()
 			self.__text_column.queue_resize()
 			self.__treeview.set_model(self.__model)

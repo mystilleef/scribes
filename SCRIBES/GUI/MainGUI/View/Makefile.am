@@ -9,6 +9,7 @@ view_PYTHON = \
 	ReadonlyManager.py \
 	SpellChecker.py \
 	ResponsivenessManager.py \
+	PopupMenuManager.py \
 	DragAndDrop.py
 
 clean-local:

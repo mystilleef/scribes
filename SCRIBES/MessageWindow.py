@@ -3,6 +3,7 @@ from gettext import gettext as _
 class Window(object):
 
 	def __init__(self, editor):
+		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.__window.connect("delete-event", self.__delete_event_cb)
@@ -12,7 +13,7 @@ class Window(object):
 		self.__sigid6 = editor.connect("show-info", self.__show_info_cb)
 		editor.register_object(self)
 		editor.response()
-		
+
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		from os.path import join
@@ -39,7 +40,7 @@ class Window(object):
 		del self
 		self = None
 		return False
-	
+
 	def __hide(self):
 		if self.__busy: self.__editor.busy(False)
 		self.__busy = False

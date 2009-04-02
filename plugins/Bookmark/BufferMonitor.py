@@ -1,8 +1,4 @@
 class Monitor(object):
-	"""
-	This class monitors the buffer for mark updates (addition/removal).It emits
-	a signal (marked-lines) when marks are updated.
-	"""
 
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
@@ -30,6 +26,7 @@ class Monitor(object):
 		append = marks.append
 		append(mark)
 		while True:
+			self.__editor.response()
 			mark = mark.next("scribes_bookmark")
 			if mark is None: break
 			append(mark)

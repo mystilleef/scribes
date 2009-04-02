@@ -1,4 +1,4 @@
-SUBDIRS = MainGUI
+SUBDIRS = MainGUI InformationWindow
 guidir = $(pythondir)/SCRIBES/GUI
 gui_PYTHON = \
 	__init__.py \

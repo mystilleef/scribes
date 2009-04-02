@@ -92,7 +92,6 @@ scribes_PYTHON = \
 	TriggerManager.py \
 	URIManager.py \
 	PluginManager.py \
-	PopupMenuManager.py \
 	RegistrationManager.py \
 	ReadonlyManager.py \
 	RecentManager.py \

@@ -1,38 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2006 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that implements a treeview for the
-symbol browser.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2006 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
 class TreeView(object):
-	"""
-	This class creates a treeview for the bookmark browser.
-	"""
 
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
@@ -89,6 +55,7 @@ class TreeView(object):
 			append = self.__append_symbols
 			for item in symbols:
 				append(item, indentation)
+				self.__editor.response()
 			self.__treeview.set_model(self.__model)
 		self.__select_row()
 		self.__treeview.set_property("sensitive", True)
@@ -102,6 +69,7 @@ class TreeView(object):
 		lines.reverse()
 		found_line = False
 		for line in lines:
+			self.__editor.response()
 			if not (current_line == line or current_line > line): continue
 			found_line = True
 			current_line = line
@@ -115,11 +83,13 @@ class TreeView(object):
 	def __select_line_in_treeview(self, line):
 		iterator = self.__model.get_iter_root()
 		while True:
+			self.__editor.response()
 			if self.__model.get_value(iterator, 0) == line: break
 			if self.__model.iter_has_child(iterator):
 				parent_iterator = iterator
 				found_line = False
 				for index in xrange(self.__model.iter_n_children(iterator)):
+					self.__editor.response()
 					iterator = self.__model.iter_nth_child(parent_iterator, index)
 					if not (self.__model.get_value(iterator, 0) == line): continue
 					found_line = True
@@ -152,6 +122,7 @@ class TreeView(object):
 		return
 
 	def __find_parent(self, index):
+		self.__editor.response()
 		if not index: return None
 		depth = self.__model.iter_depth(self.__depth_level_iter)
 		if index == depth:

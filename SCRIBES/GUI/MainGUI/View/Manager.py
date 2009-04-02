@@ -14,6 +14,8 @@ class Manager(object):
 		Manager(editor)
 		from DragAndDrop import DragAndDrop
 		DragAndDrop(editor)
+		from PopupMenuManager import Manager
+		Manager(editor)
 		from SpellChecker import Checker
 		Checker(editor)
 		from DatabaseListeners.Manager import Manager
