@@ -3,6 +3,7 @@ save_dbus_service = "org.sourceforge.ScribesSaveProcessor"
 class Communicator(object):
 
 	def __init__(self, editor):
+		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("send-data-to-processor", self.__send_cb)

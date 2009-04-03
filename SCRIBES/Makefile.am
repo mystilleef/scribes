@@ -66,7 +66,6 @@ scribes_PYTHON = \
 	License.py \
 	Main.py \
 	MarginPositionMetadata.py \
-	MessageWindow.py \
 	MinimalModeMetadata.py \
 	OutputProcessor.py \
 	OutputWriter.py \

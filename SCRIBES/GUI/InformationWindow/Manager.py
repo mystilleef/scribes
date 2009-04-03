@@ -14,7 +14,13 @@ class Manager(GObject):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		from BusyManager import Manager
-		Manager(editor)
+		Manager(self, editor)
+		from MessageLabel import Label
+		Label(self, editor)
+		from TitleLabel import Label
+		Label(self, editor)
+		from Image import Image
+		Image(self, editor)
 		from WindowTitleUpdater import Updater
 		Updater(self, editor)
 		from Window import Window

@@ -24,10 +24,6 @@ class Initializer(object):
 		from GUI.Manager import Manager
 		Manager(editor, uri)
 ######## Everything below still needs refactoring.
-		# Manages error and information window.
-		from MessageWindow import Window
-		Window(editor)
-		# Manages encoding information.
 		from EncodingManager import Manager
 		Manager(editor)
 		# Object responsible for sending data to external process via

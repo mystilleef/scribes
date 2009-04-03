@@ -73,6 +73,7 @@ class Manager(object):
 		file_list = listdir(folder)
 		# Calculate count to append to unsaved documents.
 		while True:
+			self.__editor.response()
 			newfile = filename + str(count)
 			if not (newfile in file_list): break
 			count += 1
@@ -103,7 +104,7 @@ class Manager(object):
 		from gobject import idle_add
 		idle_add(self.__save, uri, encoding, priority=9999)
 		return False
-	
+
 	def __rename_file_cb(self, editor, uri, encoding):
 		self.__rename = True
 		self.__remove_timer()
