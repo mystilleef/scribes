@@ -8,6 +8,7 @@ class Switcher(object):
 		self.__sigid2 = manager.connect("fallback", self.__fallback_cb)
 		self.__sigid3 = manager.connect("busy", self.__busy_cb)
 		self.__sigid4 = editor.connect("loaded-file", self.__loaded_cb)
+		self.__sigid5 = editor.connect("renamed-file", self.__loaded_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -24,6 +25,7 @@ class Switcher(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None

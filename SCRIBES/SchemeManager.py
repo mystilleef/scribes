@@ -6,6 +6,7 @@ class Manager(object):
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("ready", self.__update_cb)
 		self.__sigid3 = editor.connect("loaded-file", self.__update_cb)
+		self.__sigid4 = editor.connect("renamed-file", self.__update_cb)
 		self.__set()
 		self.__update_search_path()
 		self.__editor.register_object(self)
@@ -21,6 +22,7 @@ class Manager(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None

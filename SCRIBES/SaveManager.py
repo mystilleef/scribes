@@ -52,11 +52,18 @@ class Manager(object):
 			if self.__editor.readonly: raise TypeError
 			self.__editor.emit("private-save-file", uri, encoding)
 		except ValueError:
-			message = _("Error: No location or file to save to.")
-			self.__error_message(_("URI NOT FOUND"), message)
+			#FIXME: Refactor
+			from gobject import idle_add
+			idle_add(self.__show_save_dialog, priority=9999)
+#			message = _("Error: No location or file to save to.")
+#			self.__error_message(_("URI NOT FOUND"), message)
 		except TypeError:
 			message = "Error: Editor is in readonly mode"
 			self.__error_message(_("READONLY ERROR"), message)
+		return False
+
+	def __show_save_dialog(self):
+		self.__editor.trigger("show_save_dialog")
 		return False
 
 	def __create_unsaved_file(self):
