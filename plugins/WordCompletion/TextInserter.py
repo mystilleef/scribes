@@ -23,11 +23,13 @@ class Inserter(object):
 		return False
 
 	def __insert(self, text):
-		self.__editor.response()
+		self.__manager.emit("inserting-text")
 		self.__editor.textbuffer.begin_user_action()
-		self.__editor.textbuffer.insert_at_cursor(text[len(self.__string):].encode("utf8"))
-		self.__editor.textbuffer.end_user_action()
 		self.__editor.response()
+		self.__editor.textbuffer.insert_at_cursor(text[len(self.__string):].encode("utf8"))
+		self.__editor.response()
+		self.__editor.textbuffer.end_user_action()
+		self.__manager.emit("inserted-text")
 		return False
 
 	def __destroy_cb(self, *args):

@@ -1,7 +1,6 @@
-refactor encoding system and gui
 refactor saving system (CONSIDER CREATING A NEW BRANCH)
+refactor encoding system and gui
 implement a global storage object. (useful to use with signal system)
-
 
 Version 0.3.5
 =============

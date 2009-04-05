@@ -38,7 +38,6 @@ class Monitor(object):
 			self.__editor.response()
 			if not (items[0].startswith(word) and (items[0] != word)): continue
 			match_list.append(list(items))
-			self.__editor.response()
 		return match_list
 
 	def __get_matches(self, match_list):
@@ -46,7 +45,6 @@ class Monitor(object):
 		for items in match_list:
 			self.__editor.response()
 			matches.append(items[0])
-			self.__editor.response()
 		return matches
 
 	def __find_matches(self, word):
@@ -64,9 +62,7 @@ class Monitor(object):
 	def __sort(self, x, y):
 		self.__editor.response()
 		if (x[1] < y[1]): return 1
-		self.__editor.response()
 		if (x[1] > y[1]): return -1
-		self.__editor.response()
 		return 0
 
 	def __precompile_methods(self):

@@ -76,14 +76,17 @@ class Manager(object):
 		init_module = self.__init_module
 		from gobject import idle_add
 		for filename in core_files:
+			self.__editor.response()
 			idle_add(init_module, filename, core_plugin_folder, priority=9999)
 		home_files = listdir(home_plugin_folder)
 		for filename in home_files:
+			self.__editor.response()
 			idle_add(init_module, filename, home_plugin_folder, priority=9999)
 		return False
 
 	def __unload_plugins(self):
 		for plugin_info in self.__plugin_objects.copy():
+			self.__editor.response()
 			self.__unload_plugin(plugin_info)
 		return False
 
@@ -118,6 +121,7 @@ class Manager(object):
 
 	def __unload_duplicate_plugins(self, name, version):
 		for info in self.__plugin_objects.copy():
+			self.__editor.response()
 			if name in info:
 				if (version > info[1]):
 					info[2].unload()

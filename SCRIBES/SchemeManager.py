@@ -43,7 +43,9 @@ class Manager(object):
 		search_paths = self.__manager.get_search_path()
 		if gedit_path and not (gedit_path in search_paths): self.__manager.prepend_search_path(gedit_path)
 		if scribes_path and not (scribes_path in search_paths): self.__manager.prepend_search_path(scribes_path)
+		self.__editor.response()
 		self.__manager.force_rescan()
+		self.__editor.response()
 		return
 
 	def __quit_cb(self, *args):

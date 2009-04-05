@@ -16,6 +16,9 @@ class Monitor(object):
 		self.__sigid12 = self.__view.connect("move-focus", self.__generic_hide_cb)
 		self.__sigid13 = manager.connect("match-found", self.__match_found_cb)
 		self.__sigid14 = manager.connect("no-match-found", self.__no_match_found_cb)
+		self.__sigid15 = manager.connect("inserting-text", self.__inserting_cb)
+		self.__sigid16 = manager.connect("inserted-text", self.__inserted_cb)
+		self.__sigid17 = self.__view.connect("button-press-event", self.__generic_hide_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=555)
 
@@ -27,6 +30,7 @@ class Monitor(object):
 		self.__valid = False
 		self.__is_active = False
 		self.__is_visible = False
+		self.__inserting = False
 		return
 
 	def __destroy(self):
@@ -44,6 +48,9 @@ class Monitor(object):
 		self.__editor.disconnect_signal(self.__sigid12, self.__view)
 		self.__editor.disconnect_signal(self.__sigid13, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid14, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid15, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid16, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid17, self.__view)
 		del self
 		self = None
 		return False
@@ -118,6 +125,7 @@ class Monitor(object):
 
 	def __insert_text_cb(self, textbuffer, iterator, text, length):
 		try:
+			if self.__inserting: return False
 			if (length > 1): raise ValueError
 			self.__send() if self.__is_visible else self.__send_valid_string_async()
 		except ValueError:
@@ -139,6 +147,16 @@ class Monitor(object):
 	def __match_found_cb(self, *args):
 		self.__is_visible = True
 		return False #
+
+	def __inserting_cb(self, *args):
+		self.__inserting = True
+		self.__emit_invalid()
+		return False
+	
+	def __inserted_cb(self, *args):
+		self.__inserting = False
+		self.__emit_invalid()
+		return False
 
 	def __precompile_methods(self):
 		methods = (self.__insert_text_cb, self.__get_word_before_cursor,

@@ -28,6 +28,8 @@ class Initializer(object):
 		Manager(editor)
 		# Object responsible for sending data to external process via
 		# DBus to save files. An external process does the I/O operations.
+		from SaveSystem.Manager import Manager
+		Manager(editor)
 		from SaveCommunicator import Communicator
 		Communicator(editor)
 		# Object responsible for saving files.

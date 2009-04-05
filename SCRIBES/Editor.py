@@ -203,12 +203,15 @@ class Editor(Signals):
 		return calculate_resolution_independence(window, width, height)
 
 	def disconnect_signal(self, sigid, instance):
+		self.response()
 		from Utils import disconnect_signal
 		return disconnect_signal(sigid, instance)
 
 	def move_view_to_cursor(self, align=False, iterator=None):
+		self.response()
 		if iterator is None: iterator = self.cursor
 		self.textview.scroll_to_iter(iterator, 0.001, use_align=align, xalign=1.0)
+		self.response()
 		return False
 
 	def response(self):
@@ -260,6 +263,7 @@ class Editor(Signals):
 	def get_toolbutton(self, name):
 		toolbutton = None
 		for toolbutton in self.toolbar.get_children():
+			self.response()
 			if name != toolbutton.get_property("name"): continue
 			toolbutton = toolbutton
 			break

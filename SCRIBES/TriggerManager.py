@@ -173,6 +173,7 @@ class Manager(object):
 			return
 		if not (accelerator): return
 		for trigger_object, trigger_accelerator in self.__trigger_dictionary.values():
+			self.__editor.response()
 			if (accelerator == trigger_accelerator):
 				if trigger.error:
 					raise DuplicateTriggerAcceleratorError
@@ -185,6 +186,7 @@ class Manager(object):
 
 	def __activate(self, shortcut):
 		for trigger, accel in self.__trigger_dictionary.values():
+			self.__editor.response()
 			if accel != shortcut: continue
 			trigger.activate()
 			break

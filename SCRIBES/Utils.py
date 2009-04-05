@@ -49,8 +49,10 @@ def __get_language_for_mime_type(mime):
 	lang_manager = language_manager_get_default()
 	lang_ids = lang_manager.get_language_ids()
 	for i in lang_ids:
+		response()
 		lang = lang_manager.get_language(i)
 		for m in lang.get_mime_types():
+			response()
 			if m == mime: return lang
 	return None
 
@@ -222,10 +224,9 @@ def select_row(treeview, column=0):
 	return
 
 def disconnect_signal(signal_id, instance):
-	try:
-		if signal_id and instance.handler_is_connected(signal_id): instance.disconnect(signal_id)
-	except AttributeError:
-		print "Disconnect Signal error: ", instance
+	is_connected = instance.handler_is_connected
+	disconnect = instance.disconnect
+	if signal_id and is_connected(signal_id): disconnect(signal_id)
 	return
 
 def __is_beside_bracket(iterator, characters):
@@ -235,13 +236,13 @@ def __is_beside_bracket(iterator, characters):
 	return False
 
 def __is_open_bracket(iterator, characters):
-	return self.__is_beside_bracket(iterator, characters)
+	return __is_beside_bracket(iterator, characters)
 
 def __is_close_bracket(iterator, characters):
-	return self.__is_beside_bracket(iterator, characters)
+	return __is_beside_bracket(iterator, characters)
 
 def __reposition_iterator(iterator, open_chars, close_chars):
-	if self.__is_open_bracket(iterator.copy(), open_chars):
+	if __is_open_bracket(iterator.copy(), open_chars):
 		if iterator.get_char() in open_chars: return iterator
 		iterator.backward_char()
 	else:

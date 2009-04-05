@@ -6,6 +6,8 @@ class Manager(GObject):
 
 	__gsignals__ = {
 		"destroy": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"inserting-text": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"inserted-text": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"start-indexing": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"finished-indexing": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"extracted-text": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),

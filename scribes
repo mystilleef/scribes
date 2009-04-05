@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from sys import argv, path
-python_path = "/usr/lib/python2.6/dist-packages"
+python_path = "/usr/lib/python2.6/site-packages"
 path.insert(0, python_path)
 from SCRIBES.Main import main
 

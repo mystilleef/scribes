@@ -1,38 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a class that (un)loads language specific plugins.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2008 Lateef Alabi-Oki
-@license: GNU GPLv3 or Later
-@contact: mystilleef@gmail.com
-"""
-
 class Manager(object):
-	"""
-	This class creates an object that loads and unloads language
-	specific plugins.
-	"""
 
 	def __init__(self, editor):
 		try:
@@ -121,6 +87,7 @@ class Manager(object):
 
 	def __unload_duplicate_plugins(self, name, version):
 		for info in self.__plugin_objects.copy():
+			self.__editor.response()
 			if name in info:
 				if (version > info[1]):
 					info[2].unload()
@@ -182,18 +149,22 @@ class Manager(object):
 		core_files = listdir(cl_folder)
 		from gobject import idle_add
 		for filename in core_files:
+			self.__editor.response()
 #			start_new_thread(init_module, (filename, cl_folder))
 #			init_module(filename, cl_folder)
 			idle_add(init_module, filename, cl_folder, priority=9999)
 		home_files = listdir(hl_folder)
 		for filename in home_files:
+			self.__editor.response()
 #			start_new_thread(init_module, (filename, hl_folder))
 #			init_module(filename, hl_folder)
 			idle_add(init_module, filename, hl_folder, priority=9999)
 		return False
 
 	def __unload_plugins(self):
-		[self.__unload_plugin(plugin) for plugin in self.__plugin_objects.copy()]
+		for plugin in self.__plugin_objects.copy():
+			self.__editor.response()
+			self.__unload_plugin(plugin)
 		return False
 
 	def __reload_plugins(self):

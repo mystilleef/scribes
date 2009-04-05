@@ -73,8 +73,8 @@ class Manager(object):
 
 	def __create_new_file(self):
 		folder = self.__editor.desktop_folder
-		# A count to append to unsaved documents if many unsaved documents
-		# exists in folder.
+		# A count to append to unsaved documents if many unsaved 
+		# documents exists in folder.
 		count = 1
 		from dircache import listdir
 		file_list = listdir(folder)
