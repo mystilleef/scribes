@@ -60,6 +60,7 @@ class Window(object):
 
 	def __key_press_event_cb(self, window, event):
 		from gtk import keysyms
+		if event.keyval == keysyms.Tab: return True
 		if event.keyval != keysyms.Escape: return False
 		self.__manager.emit("hide-window")
 		return True
