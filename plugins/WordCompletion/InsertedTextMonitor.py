@@ -19,6 +19,7 @@ class Monitor(object):
 		self.__sigid15 = manager.connect("inserting-text", self.__inserting_cb)
 		self.__sigid16 = manager.connect("inserted-text", self.__inserted_cb)
 		self.__sigid17 = self.__view.connect("button-press-event", self.__generic_hide_cb)
+		self.__sigid18 = self.__view.connect("focus-out-event", self.__generic_hide_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=555)
 
@@ -51,6 +52,7 @@ class Monitor(object):
 		self.__editor.disconnect_signal(self.__sigid15, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid16, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid17, self.__view)
+		self.__editor.disconnect_signal(self.__sigid18, self.__view)
 		del self
 		self = None
 		return False

@@ -206,5 +206,5 @@ class Navigator(object):
 	def __deactivate_template_mode_cb(self, *args):
 		self.__remove_recent_placeholders()
 		self.__remove_recent_boundaries()
-		self.__editor.response()
+#		self.__editor.response()
 		return

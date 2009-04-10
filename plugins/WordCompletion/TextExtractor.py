@@ -20,7 +20,10 @@ class Extractor(object):
 		return False
 
 	def __extract_text(self):
-		texts = [editor.text for editor in self.__editor.instances]
+		texts = []
+		for editor in self.__editor.instances:
+			self.__editor.response()
+			texts.append(editor.text)
 		text = " ".join(texts)
 		self.__manager.emit("extracted-text", text)
 		return False

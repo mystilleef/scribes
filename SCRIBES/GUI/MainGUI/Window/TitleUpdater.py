@@ -58,9 +58,7 @@ class Updater(object):
 		return False
 
 	def __set_title(self, title):
-		self.__editor.response()
 		self.__window.set_title(self.__dictionary[title])
-		self.__editor.response()
 		return False
 
 	def __checking_cb(self, editor, uri):

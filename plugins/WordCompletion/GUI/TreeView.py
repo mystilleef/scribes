@@ -75,7 +75,9 @@ class TreeView(object):
 			if self.__matches == matches: raise ValueError
 			self.__treeview.set_model(None)
 			self.__model.clear()
-			for word in matches: self.__model.append([word])
+			for word in matches: 
+				self.__editor.response()
+				self.__model.append([word])
 			self.__treeview.set_model(self.__model)
 			self.__column.queue_resize()
 			self.__treeview.columns_autosize()

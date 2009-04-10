@@ -11,7 +11,7 @@ class Manager(object):
 		self.__editor = editor
 		from collections import deque
 		self.__objects = deque()
-		return  
+		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
@@ -24,18 +24,20 @@ class Manager(object):
 		return False
 
 	def __register(self, _object):
+		self.__editor.response()
 		self.__objects.append(_object)
 		return False
 
 	def __unregister(self, _object):
+		self.__editor.response()
 		self.__objects.remove(_object)
 		if not self.__objects: self.__destroy()
 		return False
-	
+
 	def __register_cb(self, editor, _object):
 		self.__register(_object)
 		return False
-	
+
 	def __unregister_cb(self, editor, _object):
 		self.__unregister(_object)
 		return False

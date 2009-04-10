@@ -9,6 +9,8 @@ class Notifier(object):
 		self.__sigid3 = self.__editor.connect("checking-file", self.__block_cb)
 		self.__sigid4 = self.__editor.connect("loaded-file", self.__unblock_cb)
 		self.__sigid5 = self.__editor.connect("load-error", self.__unblock_cb)
+		from gobject import idle_add
+		idle_add(self.__optimize, priority=9999)
 		editor.register_object(self)
 		editor.response()
 
@@ -32,13 +34,19 @@ class Notifier(object):
 		self.__editor.emit("cursor-moved")
 		return False
 
+	def __optimize(self):
+		methods = (self.__notify, self.__position_cb)
+		self.__editor.optimize(methods)
+		return False
+
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __position_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__notify, priority=99999)
+#		from gobject import idle_add
+#		idle_add(self.__notify, priority=99999)
+		self.__notify()
 		return False
 
 	def __block_cb(self, *args):

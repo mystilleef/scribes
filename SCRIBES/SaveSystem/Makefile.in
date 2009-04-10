@@ -183,7 +183,10 @@ savesystem_PYTHON = \
 	__init__.py \
 	Manager.py \
 	UnsavedDocumentCreator.py \
-	AutomaticSaver.py
+	AutomaticSaver.py \
+	SessionManager.py \
+	DataValidator.py \
+	ReadonlyHandler.py
 
 all: all-am
 

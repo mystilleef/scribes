@@ -1,16 +1,16 @@
-class Displayer(object):
+class Handler(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("set-image", self.__set_cb)
+		self.__sigid2 = manager.connect("readonly-error", self.__error_cb)
 		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__image = editor.gui.get_widget("StatusImage")
 		return
 
 	def __destroy(self):
@@ -21,17 +21,17 @@ class Displayer(object):
 		self = None
 		return False
 
-	def __set(self, image):
-		from gtk import ICON_SIZE_MENU as SIZE
-		if image: self.__image.set_from_icon_name(image, SIZE)
-		self.__image.show() if image else self.__image.hide()
+	def __error(self):
+		from gettext import gettext as _
+		message = _("ERROR: Failed to perform operation in readonly mode")
+		self.__editor.update_message(message, "fail")
 		return False
 
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
-	def __set_cb(self, manager, image):
+	def __error_cb(self, *args):
 		from gobject import idle_add
-		idle_add(self.__set, image, priority=9999)
+		idle_add(self.__error, priority=9999)
 		return False

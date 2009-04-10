@@ -215,6 +215,7 @@ class TreeView(object):
 		self.__treeview.set_model(None)
 		self.__model.clear()
 		for abbreviation, text in dictionary.items():
+			self.__editor.response()
 			self.__model.append([abbreviation, text])
 		self.__treeview.set_model(self.__model)
 		if len(self.__model): self.__editor.select_row(self.__treeview)

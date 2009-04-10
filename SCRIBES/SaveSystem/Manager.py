@@ -1,4 +1,25 @@
-class Manager(object):
+from gobject import GObject, SIGNAL_ACTION, SIGNAL_RUN_LAST
+from gobject import SIGNAL_NO_RECURSE, TYPE_PYOBJECT
+from gobject import TYPE_NONE, TYPE_PYOBJECT
+SSIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
+
+class Manager(GObject):
+
+	__gsignals__ = {
+		"session-id": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"validate-save-data": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"save-data": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"readonly-error": (SSIGNAL, TYPE_NONE, ()),
+		"show-save-dialog": (SSIGNAL, TYPE_NONE, ()),
+	}
 
 	def __init__(self, editor):
-		print "initialize save system manager"
+		editor.response()
+		GObject.__init__(self)
+		from SessionManager import Manager
+		Manager(self, editor)
+		from DataValidator import Validator
+		Validator(self, editor)
+		from ReadonlyHandler import Handler
+		Handler(self, editor)
+		editor.response()
