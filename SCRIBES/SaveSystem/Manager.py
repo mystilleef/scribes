@@ -9,6 +9,7 @@ class Manager(GObject):
 		"session-id": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"validate-save-data": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-data": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"save-processor-object": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"readonly-error": (SSIGNAL, TYPE_NONE, ()),
 		"show-save-dialog": (SSIGNAL, TYPE_NONE, ()),
 	}
@@ -22,4 +23,10 @@ class Manager(GObject):
 		Validator(self, editor)
 		from ReadonlyHandler import Handler
 		Handler(self, editor)
+		from SaveDialogDisplayer import Displayer
+		Displayer(self, editor)
+		from DbusDataSender import Sender
+		Sender(self, editor)
+		from DbusSaveProcessorMonitor import Monitor
+		Monitor(self, editor)
 		editor.response()

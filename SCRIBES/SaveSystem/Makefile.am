@@ -6,7 +6,10 @@ savesystem_PYTHON = \
 	AutomaticSaver.py \
 	SessionManager.py \
 	DataValidator.py \
-	ReadonlyHandler.py
+	ReadonlyHandler.py \
+	SaveDialogDisplayer.py \
+	DbusDataSender.py \
+	DbusSaveProcessorMonitor.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

@@ -1,10 +1,15 @@
-class Displayer(object):
+save_dbus_service = "org.sourceforge.ScribesSaveProcessor"
+
+class Monitor(object):
 
 	def __init__(self, manager, editor):
 		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("show-save-dialog", self.__show_cb)
+		editor.session_bus.add_signal_receiver(self.__is_ready_cb,
+						signal_name="is_ready",
+						dbus_interface=save_dbus_service)
+		self.__manager.emit("save-processor-object", self.__editor.save_processor)
 		editor.register_object(self)
 		editor.response()
 
@@ -15,21 +20,18 @@ class Displayer(object):
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.session_bus.remove_signal_receiver(self.__is_ready_cb,
+						signal_name="is_ready",
+						dbus_interface=save_dbus_service)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
-		return False
-
-	def __show(self):
-		self.__editor.trigger("show_save_dialog")
 		return False
 
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
-	def __show_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__show, priority=9999)
+	def __is_ready_cb(self, *args):
+		self.__manager.emit("save-processor-object", self.__editor.save_processor)
 		return False

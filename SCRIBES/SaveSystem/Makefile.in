@@ -186,7 +186,10 @@ savesystem_PYTHON = \
 	AutomaticSaver.py \
 	SessionManager.py \
 	DataValidator.py \
-	ReadonlyHandler.py
+	ReadonlyHandler.py \
+	SaveDialogDisplayer.py \
+	DbusDataSender.py \
+	DbusSaveProcessorMonitor.py
 
 all: all-am
 
