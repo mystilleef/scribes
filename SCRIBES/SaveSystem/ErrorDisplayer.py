@@ -1,11 +1,11 @@
-class Validator(object):
+class Displayer(object):
 
 	def __init__(self, manager, editor):
 		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("session-id", self.__session_cb)
-		self.__sigid3 = manager.connect("validate-save-data", self.__validate_cb)
+		self.__sigid2 = manager.connect("save-failed", self.__failed_cb)
+		self.__sigid3 = manager.connect("session-id", self.__session_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -24,31 +24,21 @@ class Validator(object):
 		self = None
 		return False
 
-	def __validate(self, data):
-		try:
-			if self.__editor.readonly: raise AssertionError
-			uri, encoding, session_id = data
-			if session_id != self.__session_id: return False
-			uri = uri if uri else self.__editor.uri
-			if not uri: raise ValueError
-			if not encoding: encoding = "utf-8"
-			data = session_id, uri, encoding
-			self.__manager.emit("save-data", data)
-		except ValueError:
-			self.__manager.emit("show-save-dialog")
-		except AssertionError:
-			self.__manager.emit("readonly-error")
+	def __show(self, data):
+		session_id, uri, encoding, message, message_id = data
+		if self.__session_id != session_id: return False
+		self.__editor.show_error(uri, message, busy=True)
 		return False
-
+	
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
-
-	def __validate_cb(self, manager, data):
-		from gobject import idle_add
-		idle_add(self.__validate, data, priority=9999)
-		return False
-
+	
 	def __session_cb(self, manager, session_id):
 		self.__session_id = session_id
 		return False
+		
+	def __failed_cb(self, manager, data):
+		from gobject import idle_add
+		idle_add(self.__show, data, priority=9999)
+		return

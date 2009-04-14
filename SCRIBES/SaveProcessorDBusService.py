@@ -11,8 +11,8 @@ class DBusService(Object):
 		self.__processor = processor
 
 	@method(dbus_service)
-	def process(self, editor_id, text, uri, encoding):
-		return self.__processor.save_file(editor_id, text, uri, encoding)
+	def process(self, session_id, text, uri, encoding):
+		return self.__processor.save_file(session_id, text, uri, encoding)
 
 	@method(dbus_service)
 	def update(self, editor_id):
@@ -23,9 +23,9 @@ class DBusService(Object):
 		return
 
 	@signal(dbus_service)
-	def saved_file(self, editor_id, uri, encoding):
+	def saved_file(self, session_id, uri, encoding):
 		return
 
 	@signal(dbus_service)
-	def error(self, editor_id, uri, encoding, error_message, error_id):
+	def error(self, session_id, uri, encoding, error_message, error_id):
 		return

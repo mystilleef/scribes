@@ -1,39 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents as class that saves files to a local or remote
-location.
-
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
 class OutputProcessor(object):
-	"""
-	This class creates an instance that saves files to local or remote
-	locations.
-	"""
 
 	def __init__(self, dbus):
 		self.__init_attributes(dbus)
@@ -51,17 +16,17 @@ class OutputProcessor(object):
 		self.__writer = OutputWriter()
 		return
 
-	def process(self, editor_id, text, uri, encoding):
+	def process(self, session_id, text, uri, encoding):
 		try:
 			if self.__is_busy: raise ValueError
 			self.__is_busy = True
 			from Exceptions import PermissionError, SwapError
-			self.__begin_saving(editor_id, text, uri, encoding)
+			self.__begin_saving(session_id, text, uri, encoding)
 		except ValueError:
-			self.__queue.append((editor_id, text, uri, encoding))
+			self.__queue.append((session_id, text, uri, encoding))
 		except PermissionError:
 			message = """
-Module: OutputProcessor.py 
+Module: OutputProcessor.py
 Class: OutputProcessor
 method: process
 Exception: PermissionError
@@ -71,7 +36,7 @@ Automatic saving is temporarily disabled. You will loose information in
 this window if you close it. Please save the file to a location you
 have permission rights to, like your desktop.
 """
-			self.__send_result(editor_id, uri, encoding, message, 1)
+			self.__send_result(session_id, uri, encoding, message, 1)
 		except UnicodeEncodeError:
 			message = """
 Module: OutputProcessor.py
@@ -84,7 +49,7 @@ Automatic saving is temporarily disabled. You will loose information in
 this window if you close it. The recommended encoding for saving files
 is "UTF-8". Please save the file using "UTF-8".
 """
-			self.__send_result(editor_id, uri, encoding, message, 2)
+			self.__send_result(session_id, uri, encoding, message, 2)
 		except UnicodeDecodeError:
 			message = """
 Module: OutputProcessor.py
@@ -97,7 +62,7 @@ Automatic saving is temporarily disabled. You will loose information in
 this window if you close it. The recommended encoding for saving files
 is "UTF-8". Please save the file using "UTF-8".
 """
-			self.__send_result(editor_id, uri, encoding, message, 3)
+			self.__send_result(session_id, uri, encoding, message, 3)
 		except SwapError:
 			message = """
 Module: OutputProcessor.py
@@ -110,7 +75,7 @@ Automatic saving is temporarily disabled. You will loose information in
 this window if you close it. Try saving the file again. Report this
 problem if it persists.
 """
-			self.__send_result(editor_id, uri, encoding, message, 4)
+			self.__send_result(session_id, uri, encoding, message, 4)
 		return
 
 	def update(self, editor_id):
@@ -131,7 +96,8 @@ problem if it persists.
 		folder_path = path.dirname(file_path)
 		from Exceptions import PermissionError
 		if access(folder_path, W_OK) is False:
-			raise PermissionError		elif access(file_path, W_OK) is False:
+			raise PermissionError
+		elif access(file_path, W_OK) is False:
 			if path.exists(file_path): raise PermissionError
 		return
 
@@ -139,25 +105,25 @@ problem if it persists.
 		encoded_text = text.encode(encoding)
 		return encoded_text
 
-	def __save_file(self, editor_id, uri, text, swap_uri, encoding):
-		self.__writer.write_file(editor_id, uri, text, swap_uri, encoding)
+	def __save_file(self, session_id, uri, text, swap_uri, encoding):
+		self.__writer.write_file(session_id, uri, text, swap_uri, encoding)
 		return
 
-	def __begin_saving(self, editor_id, text, uri, encoding):
+	def __begin_saving(self, session_id, text, uri, encoding):
 		self.__check_permissions(uri)
-		swap_file_uri = self.__get_swap_file(editor_id)
+		swap_file_uri = self.__get_swap_file(session_id[0])
 		encoded_text = self.__encode_text(text, encoding)
-		self.__save_file(editor_id, uri, encoded_text, swap_file_uri, encoding)
+		self.__save_file(session_id, uri, encoded_text, swap_file_uri, encoding)
 		return
 
-	def __send_result(self, editor_id, uri, encoding, error_message=None, error_id=None, error=False):
+	def __send_result(self, session_id, uri, encoding, error_message=None, error_id=None, error=False):
 		try:
 			if error:
-				self.__dbus.error(editor_id, error_message, error_id)
+				self.__dbus.error(session_id, error_message, error_id)
 			else:
-				self.__dbus.saved_file(editor_id, uri, encoding)
+				self.__dbus.saved_file(session_id, uri, encoding)
 			editor_id, text, uri, encoding = self.__queue.popleft()
-			self.__begin_saving(editor_id, text, uri, encoding)
+			self.__begin_saving(session_id, text, uri, encoding)
 			#self.process(editor_id, text, uri, encoding)
 		except IndexError, ValueError:
 			self.__is_busy = False
@@ -210,11 +176,10 @@ problem if it persists.
 		self = None
 		return
 
-	def __saved_cb(self, writer, editor_id, uri, encoding):
-		self.__send_result(editor_id, uri, encoding)
+	def __saved_cb(self, writer, session_id, uri, encoding):
+		self.__send_result(session_id, uri, encoding)
 		return
 
-	def __error_cb(self, writer, editor_id, uri, encoding, error_message, error_id):
-		self.__send_result(editor_id, uri, encoding, error_message, error_id)
+	def __error_cb(self, writer, session_id, uri, encoding, error_message, error_id):
+		self.__send_result(session_id, uri, encoding, error_message, error_id)
 		return
-

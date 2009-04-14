@@ -9,8 +9,13 @@ savesystem_PYTHON = \
 	ReadonlyHandler.py \
 	SaveDialogDisplayer.py \
 	DbusDataSender.py \
-	DbusSaveProcessorMonitor.py
+	DbusDataReceiver.py \
+	DbusSaveProcessorMonitor.py \
+	SavedSignalEmitter.py \
+	SaveErrorSignalEmitter.py \
+	ErrorDisplayer.py \
+	QuitSaver.py \
+	FocusOutSaver.py
 
 clean-local:
 	rm -rf *.pyc *.pyo
-

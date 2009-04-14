@@ -15,12 +15,12 @@ class Manager(object):
 	def __init__(self, editor):
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("close", self.__close_cb)
-		self.__sigid2 = editor.connect("save-file", self.__save_file_cb)
-		self.__sigid3 = editor.connect("saved-file", self.__saved_file_cb)
-		self.__sigid4 = editor.connect("save-error", self.__save_error_cb)
-		self.__sigid5 = editor.connect("modified-file", self.__modified_file_cb)
-		self.__sigid6 = editor.connect("window-focus-out", self.__focus_out_cb)
-		self.__sigid7 = editor.connect("rename-file", self.__rename_file_cb)
+		#self.__sigid2 = editor.connect("save-file", self.__save_file_cb)
+		#self.__sigid3 = editor.connect("saved-file", self.__saved_file_cb)
+		#self.__sigid4 = editor.connect("save-error", self.__save_error_cb)
+		#self.__sigid5 = editor.connect("modified-file", self.__modified_file_cb)
+		#self.__sigid6 = editor.connect("window-focus-out", self.__focus_out_cb)
+		#self.__sigid7 = editor.connect("rename-file", self.__rename_file_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -33,12 +33,12 @@ class Manager(object):
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
+		#self.__editor.disconnect_signal(self.__sigid2, self.__editor)
+		#self.__editor.disconnect_signal(self.__sigid3, self.__editor)
+		#self.__editor.disconnect_signal(self.__sigid4, self.__editor)
+		#self.__editor.disconnect_signal(self.__sigid5, self.__editor)
+		#self.__editor.disconnect_signal(self.__sigid6, self.__editor)
+		#self.__editor.disconnect_signal(self.__sigid7, self.__editor)
 		self.__editor.unregister_object(self)
 		self.__editor.emit("quit")
 		del self
@@ -147,6 +147,7 @@ class Manager(object):
 
 	def __close_cb(self, editor, save_file):
 		try:
+			save_file = False
 			if save_file is False or self.__error or editor.modified is False: raise ValueError
 			self.__remove_timer()
 			self.__quit = True

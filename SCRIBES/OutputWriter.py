@@ -1,44 +1,8 @@
-# -*- coding: utf-8 -*-
-# Copyright © 2005 Lateef Alabi-Oki
-#
-# This file is part of Scribes.
-#
-# Scribes is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# Scribes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Scribes; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-# USA
-
-"""
-This module documents a file that writes files to local and remote
-locations.
-
-@todo: Implement file info setting and getting.
-@author: Lateef Alabi-Oki
-@organization: The Scribes Project
-@copyright: Copyright © 2005 Lateef Alabi-Oki
-@license: GNU GPLv2 or Later
-@contact: mystilleef@gmail.com
-"""
-
 PRIORITY = 10
 from gobject import GObject, SIGNAL_RUN_CLEANUP, TYPE_PYOBJECT, TYPE_NONE
 from gobject import SIGNAL_NO_RECURSE, SIGNAL_ACTION
 
 class OutputWriter(GObject):
-	"""
-	This class creates an object that writes files to local and remote
-	locations.
-	"""
 
 	__gsignals__ = {
 		"saved": (SIGNAL_ACTION|SIGNAL_RUN_CLEANUP|SIGNAL_NO_RECURSE, TYPE_NONE, (TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT,)),
@@ -59,11 +23,11 @@ class OutputWriter(GObject):
 		self.__encoding = None
 		return
 
-	def write_file(self, editor_id, uri, text, swap_uri, encoding):
+	def write_file(self, session_id, uri, text, swap_uri, encoding):
 		self.__reset_attributes()
 		from gnomevfs import OPEN_WRITE, URI
 		from gnomevfs.async import create
-		self.__id, self.__uri, self.__swap_uri, self.__encoding = editor_id, uri, swap_uri, encoding
+		self.__id, self.__uri, self.__swap_uri, self.__encoding = session_id, uri, swap_uri, encoding
 		try:
 			self.__file_info = self.__get_file_info()
 			# Write to a temporary file.

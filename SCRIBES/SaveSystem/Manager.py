@@ -10,13 +10,24 @@ class Manager(GObject):
 		"validate-save-data": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-data": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-processor-object": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"save-succeeded": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"save-failed": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"readonly-error": (SSIGNAL, TYPE_NONE, ()),
 		"show-save-dialog": (SSIGNAL, TYPE_NONE, ()),
+		"create-unsaved-file": (SSIGNAL, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
 		editor.response()
 		GObject.__init__(self)
+		from AutomaticSaver import Saver
+		Saver(self, editor)
+		from FocusOutSaver import Saver
+		Saver(self, editor)
+		from UnsavedDocumentCreator import Creator
+		Creator(self, editor)
+		from QuitSaver import Saver
+		Saver(self, editor)
 		from SessionManager import Manager
 		Manager(self, editor)
 		from DataValidator import Validator
@@ -25,6 +36,14 @@ class Manager(GObject):
 		Handler(self, editor)
 		from SaveDialogDisplayer import Displayer
 		Displayer(self, editor)
+		from ErrorDisplayer import Displayer
+		Displayer(self, editor)
+		from SaveErrorSignalEmitter import Emitter
+		Emitter(self, editor)
+		from SavedSignalEmitter import Emitter
+		Emitter(self, editor)
+		from DbusDataReceiver import Receiver
+		Receiver(self, editor)
 		from DbusDataSender import Sender
 		Sender(self, editor)
 		from DbusSaveProcessorMonitor import Monitor

@@ -30,16 +30,6 @@ class Initializer(object):
 		# DBus to save files. An external process does the I/O operations.
 		from SaveSystem.Manager import Manager
 		Manager(editor)
-		from SaveCommunicator import Communicator
-		Communicator(editor)
-		# Object responsible for saving files.
-		from FileSaver import Saver
-		Saver(editor)
-		# Object responsible for deciding when to save files
-		# automatically.
-		from SaveManager import Manager
-		Manager(editor)
-		# Manages window that shows supported encodings.
 		from SupportedEncodingsGUIManager import Manager
 		Manager(editor)
 		# Object responsible for showing encoding error window. The window

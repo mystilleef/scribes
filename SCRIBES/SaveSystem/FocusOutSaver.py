@@ -1,13 +1,11 @@
-SAVE_TIMER = 7000
-
 class Saver(object):
 
 	def __init__(self, manager, editor):
 		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("modified-file", self.__modified_cb)
 		self.__sigid3 = editor.connect("close", self.__close_cb)
+		self.__sigid2 = editor.connect("window-focus-out", self.__out_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -17,7 +15,6 @@ class Saver(object):
 		return
 
 	def __destroy(self):
-		self.__remove_timer()
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.unregister_object(self)
@@ -25,23 +22,9 @@ class Saver(object):
 		self = None
 		return False
 
-	def __remove_timer(self):
-		try:
-			from gobject import source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		return False
-
-	def __process(self):
-		self.__remove_timer()
-		from gobject import timeout_add
-		self.__timer = timeout_add(SAVE_TIMER, self.__save, priority=9999)
-		return False
-
 	def __save(self):
 		if not self.__editor.uri: return False
-		if self.__editor.modified is False: return False
+		if not self.__editor.modified: return False
 		self.__editor.save_file(self.__editor.uri, self.__editor.encoding)
 		return False
 
@@ -49,11 +32,11 @@ class Saver(object):
 		self.__destroy()
 		return False
 
-	def __close_cb(self, *args):
-		self.__remove_timer()
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
+	def __out_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__save, priority=9999)
 		return False
 
-	def __modified_cb(self, *args):
-		self.__process()
+	def __close_cb(self, *args):
+		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		return False

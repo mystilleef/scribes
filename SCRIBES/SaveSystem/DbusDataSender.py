@@ -33,9 +33,9 @@ class Sender(object):
 		return False
 
 	def __send(self, data):
-		uri, encoding, session_id = data
+		session_id, uri, encoding = data
 		if self.__session_id != session_id: return False
-		self.__processor.process(self.__editor.text, uri, encoding, session_id,
+		self.__processor.process(session_id, self.__editor.text, uri, encoding,
 				dbus_interface=save_dbus_service,
 				reply_handler=self.__reply_handler_cb,
 				error_handler=self.__error_handler_cb)
