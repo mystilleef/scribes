@@ -2,7 +2,8 @@
 from re import UNICODE, compile as compile_
 placeholder_pattern = compile_("\$\{[^${}]*\}", UNICODE)
 special_placeholders = ("${time}", "${timestring}", "${timestamp}",
-					"${date}", "${day}", "${month}", "${year}", "${author}")
+					"${date}", "${day}", "${month}", "${year}",
+					"${author}", "${rfc2822}")
 
 
 def replace_special_placeholder(placeholder):
@@ -33,6 +34,9 @@ def replace_special_placeholder(placeholder):
 		from time import localtime
 		thetime = localtime()
 		return "[%s-%s-%s] %s:%s:%s" % (thetime[0], pad_zero(thetime[1]), pad_zero(thetime[2]), pad_zero(thetime[3]), pad_zero(thetime[4]), pad_zero(thetime[5]))
+	if placeholder == "${rfc2822}":
+		from email.utils import formatdate
+		return formatdate(localtime=1)        
 	if placeholder == "${author}":
 		return get_author_name()
 
