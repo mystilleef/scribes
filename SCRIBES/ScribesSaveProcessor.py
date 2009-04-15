@@ -1,6 +1,3 @@
-from dbus.mainloop.glib import DBusGMainLoop
-DBusGMainLoop(set_as_default=True)
-RECURSIONLIMITMULTIPLIER = 1000000
 dbus_service = "org.sourceforge.ScribesSaveProcessor"
 dbus_path = "/org/sourceforge/ScribesSaveProcessor"
 

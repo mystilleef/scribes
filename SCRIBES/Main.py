@@ -3,6 +3,8 @@ scribes_dbus_path = "/net/sourceforge/Scribes"
 
 def main(argv=None):
 	__open(argv)
+	from gobject import threads_init
+	threads_init()
 	from gtk import main
 	main()
 	return

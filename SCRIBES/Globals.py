@@ -18,7 +18,7 @@ sysconfdir = "/usr/etc"
 data_folder = data_path + "/scribes"
 core_plugin_folder = data_folder + "/plugins"
 core_language_plugin_folder = data_folder + "/LanguagePlugins"
-python_path = "/usr/lib/python2.6/site-packages"
+python_path = "/usr/lib/python2.6/dist-packages"
 version = "0.4-eurika-dev-build431"
 author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"Contributors:",
