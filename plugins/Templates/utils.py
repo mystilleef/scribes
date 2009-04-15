@@ -35,8 +35,8 @@ def replace_special_placeholder(placeholder):
 		thetime = localtime()
 		return "[%s-%s-%s] %s:%s:%s" % (thetime[0], pad_zero(thetime[1]), pad_zero(thetime[2]), pad_zero(thetime[3]), pad_zero(thetime[4]), pad_zero(thetime[5]))
 	if placeholder == "${rfc2822}":
-		from time import gmtime, strftime
-		return strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())        
+		from email.utils import formatdate
+		return formatdate(localtime=1)        
 	if placeholder == "${author}":
 		return get_author_name()
 
