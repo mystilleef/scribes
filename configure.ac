@@ -39,7 +39,7 @@ Makefile
 help/Makefile
 SCRIBES/Makefile
 SCRIBES/URILoader/Makefile
-SCRIBES/SaveProcess/Makefile
+SCRIBES/SaveProcessInitializer/Makefile
 SCRIBES/SaveSystem/Makefile
 SCRIBES/SaveSystem/ExternalProcess/Makefile
 SCRIBES/GUI/Makefile

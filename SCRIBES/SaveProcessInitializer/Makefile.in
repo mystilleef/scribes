@@ -29,8 +29,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-subdir = SCRIBES/SaveProcess
-DIST_COMMON = $(saveprocess_PYTHON) $(srcdir)/Makefile.am \
+subdir = SCRIBES/SaveProcessInitializer
+DIST_COMMON = $(saveprocessinitializer_PYTHON) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gnome-doc-utils.m4 \
@@ -47,8 +47,8 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(saveprocessdir)"
-saveprocessPYTHON_INSTALL = $(INSTALL_DATA)
+am__installdirs = "$(DESTDIR)$(saveprocessinitializerdir)"
+saveprocessinitializerPYTHON_INSTALL = $(INSTALL_DATA)
 py_compile = $(top_srcdir)/py-compile
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
@@ -178,8 +178,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-saveprocessdir = $(pythondir)/SCRIBES/SaveProcess
-saveprocess_PYTHON = \
+saveprocessinitializerdir = $(pythondir)/SCRIBES/SaveProcessInitializer
+saveprocessinitializer_PYTHON = \
 	__init__.py \
 	Manager.py \
 	Initializer.py \
@@ -197,9 +197,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  SCRIBES/SaveProcess/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  SCRIBES/SaveProcessInitializer/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  SCRIBES/SaveProcess/Makefile
+	  $(AUTOMAKE) --gnu  SCRIBES/SaveProcessInitializer/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -217,33 +217,33 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-install-saveprocessPYTHON: $(saveprocess_PYTHON)
+install-saveprocessinitializerPYTHON: $(saveprocessinitializer_PYTHON)
 	@$(NORMAL_INSTALL)
-	test -z "$(saveprocessdir)" || $(MKDIR_P) "$(DESTDIR)$(saveprocessdir)"
-	@list='$(saveprocess_PYTHON)'; dlist=''; for p in $$list; do\
+	test -z "$(saveprocessinitializerdir)" || $(MKDIR_P) "$(DESTDIR)$(saveprocessinitializerdir)"
+	@list='$(saveprocessinitializer_PYTHON)'; dlist=''; for p in $$list; do\
 	  if test -f "$$p"; then b=; else b="$(srcdir)/"; fi; \
 	  if test -f $$b$$p; then \
 	    f=$(am__strip_dir) \
 	    dlist="$$dlist $$f"; \
-	    echo " $(saveprocessPYTHON_INSTALL) '$$b$$p' '$(DESTDIR)$(saveprocessdir)/$$f'"; \
-	    $(saveprocessPYTHON_INSTALL) "$$b$$p" "$(DESTDIR)$(saveprocessdir)/$$f"; \
+	    echo " $(saveprocessinitializerPYTHON_INSTALL) '$$b$$p' '$(DESTDIR)$(saveprocessinitializerdir)/$$f'"; \
+	    $(saveprocessinitializerPYTHON_INSTALL) "$$b$$p" "$(DESTDIR)$(saveprocessinitializerdir)/$$f"; \
 	  else :; fi; \
 	done; \
 	if test -n "$$dlist"; then \
 	  if test -z "$(DESTDIR)"; then \
-	    PYTHON=$(PYTHON) $(py_compile) --basedir "$(saveprocessdir)" $$dlist; \
+	    PYTHON=$(PYTHON) $(py_compile) --basedir "$(saveprocessinitializerdir)" $$dlist; \
 	  else \
-	    PYTHON=$(PYTHON) $(py_compile) --destdir "$(DESTDIR)" --basedir "$(saveprocessdir)" $$dlist; \
+	    PYTHON=$(PYTHON) $(py_compile) --destdir "$(DESTDIR)" --basedir "$(saveprocessinitializerdir)" $$dlist; \
 	  fi; \
 	else :; fi
 
-uninstall-saveprocessPYTHON:
+uninstall-saveprocessinitializerPYTHON:
 	@$(NORMAL_UNINSTALL)
-	@list='$(saveprocess_PYTHON)'; dlist=''; for p in $$list; do\
+	@list='$(saveprocessinitializer_PYTHON)'; dlist=''; for p in $$list; do\
 	  f=$(am__strip_dir) \
-	  rm -f "$(DESTDIR)$(saveprocessdir)/$$f"; \
-	  rm -f "$(DESTDIR)$(saveprocessdir)/$${f}c"; \
-	  rm -f "$(DESTDIR)$(saveprocessdir)/$${f}o"; \
+	  rm -f "$(DESTDIR)$(saveprocessinitializerdir)/$$f"; \
+	  rm -f "$(DESTDIR)$(saveprocessinitializerdir)/$${f}c"; \
+	  rm -f "$(DESTDIR)$(saveprocessinitializerdir)/$${f}o"; \
 	done
 tags: TAGS
 TAGS:
@@ -282,7 +282,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile
 installdirs:
-	for dir in "$(DESTDIR)$(saveprocessdir)"; do \
+	for dir in "$(DESTDIR)$(saveprocessinitializerdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -327,7 +327,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-saveprocessPYTHON
+install-data-am: install-saveprocessinitializerPYTHON
 
 install-dvi: install-dvi-am
 
@@ -361,7 +361,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-saveprocessPYTHON
+uninstall-am: uninstall-saveprocessinitializerPYTHON
 
 .MAKE: install-am install-strip
 
@@ -371,11 +371,11 @@ uninstall-am: uninstall-saveprocessPYTHON
 	install-dvi install-dvi-am install-exec install-exec-am \
 	install-html install-html-am install-info install-info-am \
 	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-saveprocessPYTHON install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-saveprocessPYTHON
+	install-ps-am install-saveprocessinitializerPYTHON \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-saveprocessinitializerPYTHON
 
 
 clean-local:

@@ -7016,7 +7016,7 @@ fi
 
 
 
-ac_config_files="$ac_config_files po/Makefile.in Makefile help/Makefile SCRIBES/Makefile SCRIBES/URILoader/Makefile SCRIBES/SaveProcess/Makefile SCRIBES/SaveSystem/Makefile SCRIBES/SaveSystem/ExternalProcess/Makefile SCRIBES/GUI/Makefile SCRIBES/GUI/MainGUI/Makefile SCRIBES/GUI/MainGUI/StatusBar/Makefile SCRIBES/GUI/MainGUI/StatusBar/Bar/Makefile SCRIBES/GUI/MainGUI/StatusBar/Feedback/Makefile SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusImage/Makefile SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/Makefile SCRIBES/GUI/MainGUI/StatusBar/CursorPosition/Makefile SCRIBES/GUI/MainGUI/Window/Makefile SCRIBES/GUI/MainGUI/Toolbar/Makefile SCRIBES/GUI/MainGUI/Toolbar/ToolbarVisibility/Makefile SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/Makefile SCRIBES/GUI/MainGUI/View/Makefile SCRIBES/GUI/MainGUI/View/DatabaseListeners/Makefile SCRIBES/GUI/MainGUI/Buffer/Makefile SCRIBES/GUI/InformationWindow/Makefile data/Makefile"
+ac_config_files="$ac_config_files po/Makefile.in Makefile help/Makefile SCRIBES/Makefile SCRIBES/URILoader/Makefile SCRIBES/SaveProcessInitializer/Makefile SCRIBES/SaveSystem/Makefile SCRIBES/SaveSystem/ExternalProcess/Makefile SCRIBES/GUI/Makefile SCRIBES/GUI/MainGUI/Makefile SCRIBES/GUI/MainGUI/StatusBar/Makefile SCRIBES/GUI/MainGUI/StatusBar/Bar/Makefile SCRIBES/GUI/MainGUI/StatusBar/Feedback/Makefile SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusImage/Makefile SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/Makefile SCRIBES/GUI/MainGUI/StatusBar/CursorPosition/Makefile SCRIBES/GUI/MainGUI/Window/Makefile SCRIBES/GUI/MainGUI/Toolbar/Makefile SCRIBES/GUI/MainGUI/Toolbar/ToolbarVisibility/Makefile SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/Makefile SCRIBES/GUI/MainGUI/View/Makefile SCRIBES/GUI/MainGUI/View/DatabaseListeners/Makefile SCRIBES/GUI/MainGUI/Buffer/Makefile SCRIBES/GUI/InformationWindow/Makefile data/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -7686,7 +7686,7 @@ do
     "help/Makefile") CONFIG_FILES="$CONFIG_FILES help/Makefile" ;;
     "SCRIBES/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/Makefile" ;;
     "SCRIBES/URILoader/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/URILoader/Makefile" ;;
-    "SCRIBES/SaveProcess/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/SaveProcess/Makefile" ;;
+    "SCRIBES/SaveProcessInitializer/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/SaveProcessInitializer/Makefile" ;;
     "SCRIBES/SaveSystem/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/SaveSystem/Makefile" ;;
     "SCRIBES/SaveSystem/ExternalProcess/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/SaveSystem/ExternalProcess/Makefile" ;;
     "SCRIBES/GUI/Makefile") CONFIG_FILES="$CONFIG_FILES SCRIBES/GUI/Makefile" ;;

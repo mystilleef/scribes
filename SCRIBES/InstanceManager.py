@@ -4,7 +4,7 @@ class Manager(object):
 		from DBusService import DBusService
 		DBusService(self)
 		self.__init_attributes()
-		from SaveProcess.Manager import Manager
+		from SaveProcessInitializer.Manager import Manager
 		Manager()
 		from sys import setcheckinterval
 		setcheckinterval(-1)
