@@ -13,5 +13,5 @@ class Manager(GObject):
 		GObject.__init__(self)
 		from Initializer import Initializer
 		Initializer(self)
-#		from Monitor import Monitor
-#		Monitor(self)
+		from Monitor import Monitor
+		Monitor(self)

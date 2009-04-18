@@ -1,5 +1,9 @@
 from os import environ
 from dbus import SessionBus, Interface, glib
+SCRIBES_DBUS_SERVICE = "net.sourceforge.Scribes"
+SCRIBES_DBUS_PATH = "/net/sourceforge/Scribes"
+SCRIBES_SAVE_PROCESS_DBUS_SERVICE = "org.sourceforge.ScribesSaveProcessor"
+SCRIBES_SAVE_PROCESS_DBUS_PATH = "/org/sourceforge/ScribesSaveProcessor"
 session_bus = SessionBus()
 dbus_proxy_obj = session_bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus')
 dbus_iface = Interface(dbus_proxy_obj, 'org.freedesktop.DBus')
