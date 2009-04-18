@@ -4,6 +4,8 @@ class Manager(object):
 		from DBusService import DBusService
 		DBusService(self)
 		self.__init_attributes()
+		from SaveProcess.Manager import Manager
+		Manager()
 		from sys import setcheckinterval
 		setcheckinterval(-1)
 		from gobject import timeout_add
@@ -16,8 +18,8 @@ class Manager(object):
 		self.__editor_instances = deque([])
 		from gtk import WindowGroup
 		self.__wingroup = WindowGroup()
-		from SaveProcessMonitor import SaveProcessMonitor
-		self.__save_process_monitor = SaveProcessMonitor()
+#		from SaveProcessMonitor import SaveProcessMonitor
+#		self.__save_process_monitor = SaveProcessMonitor()
 		self.__busy = False
 		self.__interval = 0
 		self.__shortcut_list = []
@@ -52,10 +54,13 @@ class Manager(object):
 		return
 
 	def save_processor_is_ready(self):
-		return self.__save_process_monitor.is_ready()
+		from Utils import get_save_processor
+		processor = get_save_processor()
+		return processor.is_ready() if processor else False
 
 	def get_save_processor(self):
-		return self.__save_process_monitor.get_processor_object()
+		from Utils import get_save_processor
+		return get_save_processor()
 
 	def open_files(self, uris=None, encoding="utf-8"):
 		try:
@@ -160,10 +165,9 @@ class Manager(object):
 	def __init_psyco(self):
 		try:
 			from psyco import background
-			background()
+#			background()
 		except ImportError:
 			pass
-#			print "psyco not found"
 		return False
 
 	def __init_i18n(self):
@@ -202,6 +206,6 @@ class Manager(object):
 
 	def __quit(self):
 		self.__remove_swap_area()
-		self.__save_process_monitor.destroy()
+#		self.__save_process_monitor.destroy()
 		raise SystemExit
 		return

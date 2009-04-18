@@ -2,9 +2,6 @@
 # -*- coding: utf8 -*-
 
 def check_dependencies():
-	"""
-	Perform dependency checks for Scribes.
-	"""
 	try:
 		# Check for D-Bus Python Bindings.
 		try:

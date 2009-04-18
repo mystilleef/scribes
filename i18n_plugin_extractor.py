@@ -2,7 +2,7 @@ def main(argv):
 	from operator import ne
 	if ne(argv[0], "plugins"): raise RuntimeError
 	files = __get_i18n_files(argv[0])
-	__write_to_file(files)
+	__write(files)
 	return
 
 def __get_i18n_files(folder):
@@ -16,7 +16,7 @@ def __get_i18n_files(folder):
 				i18n_files.append(_file)
 	return i18n_files
 
-def __write_to_file(files):
+def __write(files):
 	string = "".join(files)
 	handle = open("i18n_plugin_files.txt", "w")
 	handle.write(string)

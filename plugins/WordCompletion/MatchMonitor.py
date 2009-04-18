@@ -79,7 +79,7 @@ class Monitor(object):
 		if self.__found is False: return False
 		self.__manager.emit("no-match-found")
 		self.__found = False
-		return False 
+		return False
 
 	def __destroy_cb(self, *args):
 		self.__destroy()

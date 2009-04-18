@@ -1,3 +1,4 @@
+SUBDIRS = ExternalProcess
 savesystemdir = $(pythondir)/SCRIBES/SaveSystem
 savesystem_PYTHON = \
 	__init__.py \

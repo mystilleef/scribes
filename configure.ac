@@ -1,7 +1,7 @@
 #						-*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([scribes], [0.4-eurika-dev-build434], [<mystilleef@gmail.com>])
+AC_INIT([scribes], [0.4-dev-build434], [<mystilleef@gmail.com>])
 GNOME_COMMON_INIT
 AC_PREREQ(2.60)
 AM_INIT_AUTOMAKE([1.8 dist-bzip2 no-dist-gzip])
@@ -39,7 +39,9 @@ Makefile
 help/Makefile
 SCRIBES/Makefile
 SCRIBES/URILoader/Makefile
+SCRIBES/SaveProcess/Makefile
 SCRIBES/SaveSystem/Makefile
+SCRIBES/SaveSystem/ExternalProcess/Makefile
 SCRIBES/GUI/Makefile
 SCRIBES/GUI/MainGUI/Makefile
 SCRIBES/GUI/MainGUI/StatusBar/Makefile

@@ -1,3 +1,6 @@
+SCRIBES_SAVE_PROCESS_DBUS_SERVICE = "org.sourceforge.ScribesSaveProcessor"
+SCRIBES_SAVE_PROCESS_DBUS_PATH = "/org/sourceforge/ScribesSaveProcessor"
+
 from re import UNICODE, compile as compile_
 word_pattern = compile_("\w+|[-]", UNICODE)
 
@@ -392,6 +395,18 @@ def open_database(basepath, flag="c"):
 	except error:
 		database = open_(database_path, flag="n", writeback=False)
 	return database
+
+def get_save_processor():
+	try:
+		from dbus import DBusException
+		from Globals import dbus_iface, session_bus, python_path
+		services = dbus_iface.ListNames()
+		from operator import contains, not_
+		if not (SCRIBES_SAVE_PROCESS_DBUS_SERVICE in services): return None
+		processor_object = session_bus.get_object(SCRIBES_SAVE_PROCESS_DBUS_SERVICE, SCRIBES_SAVE_PROCESS_DBUS_PATH)
+	except DBusException:
+		return None
+	return processor_object
 
 def response():
 	from gtk import events_pending, main_iteration
