@@ -1,4 +1,4 @@
-save_dbus_service = "org.sourceforge.ScribesSaveProcessor"
+from SCRIBES.Globals import SCRIBES_SAVE_PROCESS_DBUS_SERVICE
 
 class Monitor(object):
 
@@ -8,7 +8,7 @@ class Monitor(object):
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		editor.session_bus.add_signal_receiver(self.__is_ready_cb,
 						signal_name="is_ready",
-						dbus_interface=save_dbus_service)
+						dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE)
 		self.__manager.emit("save-processor-object", self.__editor.save_processor)
 		editor.register_object(self)
 		editor.response()
@@ -22,7 +22,7 @@ class Monitor(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.session_bus.remove_signal_receiver(self.__is_ready_cb,
 						signal_name="is_ready",
-						dbus_interface=save_dbus_service)
+						dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE)
 		self.__editor.unregister_object(self)
 		del self
 		self = None

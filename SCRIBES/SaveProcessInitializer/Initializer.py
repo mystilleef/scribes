@@ -24,11 +24,12 @@ class Initializer(object):
 
 	def __get_save_process_folder(self):
 		from os.path import join, split
-		return split(split(globals()["__file__"])[0])[0]
+		SCRIBES_folder = split(split(globals()["__file__"])[0])[0]
+		return join(SCRIBES_folder, "SaveSystem/ExternalProcess")
 
 	def __get_save_process_executable(self, folder):
 		from os.path import join
-		return join(folder, "ScribesSaveProcessor.py")
+		return join(folder, "ScribesSaveProcess.py")
 
 	def __restart_cb(self, *args):
 		self.__start()

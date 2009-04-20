@@ -1,4 +1,4 @@
-save_dbus_service = "org.sourceforge.ScribesSaveProcessor"
+from SCRIBES.Globals import SCRIBES_SAVE_PROCESS_DBUS_SERVICE
 
 class Receiver(object):
 
@@ -9,10 +9,10 @@ class Receiver(object):
 		self.__sigid2 = manager.connect("session-id", self.__session_cb)
 		editor.session_bus.add_signal_receiver(self.__saved_file_cb,
 						signal_name="saved_file",
-						dbus_interface=save_dbus_service)
+						dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE)
 		editor.session_bus.add_signal_receiver(self.__save_error_cb,
 						signal_name="error",
-						dbus_interface=save_dbus_service)
+						dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE)
 		editor.register_object(self)
 		editor.response()
 
@@ -27,10 +27,10 @@ class Receiver(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.session_bus.remove_signal_receiver(self.__saved_file_cb,
 						signal_name="saved_file",
-						dbus_interface=save_dbus_service)
+						dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE)
 		self.__editor.session_bus.remove_signal_receiver(self.__save_error_cb,
 						signal_name="error",
-						dbus_interface=save_dbus_service)
+						dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -50,14 +50,12 @@ class Receiver(object):
 		self.__session_id = session_id
 		return False
 
-	def __saved_file_cb(self, session_id, uri, encoding):
-		data = session_id, uri, encoding
+	def __saved_file_cb(self, data):
 		from gobject import idle_add
 		idle_add(self.__emit, data, priority=9999)
 		return False
 
-	def __save_error_cb(self, session_id, uri, encoding, error_message, error_id):
-		data = session_id, uri, encoding, error_message, error_id
+	def __save_error_cb(self, data):
 		from gobject import idle_add
 		idle_add(self.__emit, data, priority=9999)
 		return False

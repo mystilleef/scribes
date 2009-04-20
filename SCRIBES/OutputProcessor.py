@@ -95,8 +95,7 @@ problem if it persists.
 		from os import access, W_OK, path
 		folder_path = path.dirname(file_path)
 		from Exceptions import PermissionError
-		if access(folder_path, W_OK) is False:
-			raise PermissionError
+		if access(folder_path, W_OK) is False: raise PermissionError
 		elif access(file_path, W_OK) is False:
 			if path.exists(file_path): raise PermissionError
 		return

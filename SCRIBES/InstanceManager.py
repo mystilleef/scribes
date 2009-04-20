@@ -206,6 +206,5 @@ class Manager(object):
 
 	def __quit(self):
 		self.__remove_swap_area()
-#		self.__save_process_monitor.destroy()
 		raise SystemExit
 		return

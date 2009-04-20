@@ -1,4 +1,4 @@
-save_dbus_service = "org.sourceforge.ScribesSaveProcessor"
+from SCRIBES.Globals import SCRIBES_SAVE_PROCESS_DBUS_SERVICE
 
 class Sender(object):
 
@@ -20,9 +20,6 @@ class Sender(object):
 		return
 
 	def __destroy(self):
-		self.__processor.update(self.__editor.id_, dbus_interface=save_dbus_service,
-				reply_handler=self.__reply_handler_cb,
-				error_handler=self.__error_handler_cb)
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
@@ -35,8 +32,9 @@ class Sender(object):
 	def __send(self, data):
 		session_id, uri, encoding = data
 		if self.__session_id != session_id: return False
-		self.__processor.process(session_id, self.__editor.text, uri, encoding,
-				dbus_interface=save_dbus_service,
+		data = session_id, uri, encoding, self.__editor.text
+		self.__processor.process(data,
+				dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE,
 				reply_handler=self.__reply_handler_cb,
 				error_handler=self.__error_handler_cb)
 		return False
