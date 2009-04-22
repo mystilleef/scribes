@@ -1,6 +1,6 @@
 name = "Escape Quotes Generic Plugin"
 authors = ["Ib Lundgren <ib.lundgren@gmail.com"]
-version = 0.2
+version = 0.3
 autoload = True
 class_name = "EscapeQuotesPlugin"
 short_description = "Escape Quotes or Un-Escape Quotes"
