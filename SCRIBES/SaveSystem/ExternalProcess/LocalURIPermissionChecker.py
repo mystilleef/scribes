@@ -23,7 +23,16 @@ class Checker(object):
 			self.__manager.emit("encode-text", data)
 		except ValueError:
 			from gettext import gettext as _
-			message = _("You do not have permission to write to the file.")
+			message = _("""
+Module: SCRIBES/SaveSystem/ExternalProcess/LocalURIPermissionChecker.py 
+Class: Checker
+Method: __check 
+Exception: Unknown
+Error: You do not have permission to write to save location.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Please try saving the file again, preferably
+to a different location like your desktop.""")
 			data = data + (message,)
 			self.__manager.emit("oops", data)
 		return False

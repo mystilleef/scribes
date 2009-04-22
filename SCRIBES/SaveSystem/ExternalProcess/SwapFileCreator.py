@@ -19,7 +19,16 @@ class Creator(object):
 			self.__manager.emit("write-to-swap-file", data)
 		except:
 			from gettext import gettext as _
-			message = _("Failed to create swap area")
+			message = _("""
+Module: SCRIBES/SaveSystem/ExternalProcess/SwapFileCreator.py 
+Class: Creator
+Method: __create
+Exception: Unknown
+Error: Failed to create swap file.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Please try saving the file again, preferably
+to a different location like your desktop.""")
 			data = data + (message,)
 			self.__manager.emit("oops", data)
 		return False

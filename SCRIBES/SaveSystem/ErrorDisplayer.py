@@ -25,7 +25,7 @@ class Displayer(object):
 		return False
 
 	def __show(self, data):
-		session_id, uri, encoding, message, message_id = data
+		session_id, uri, encoding, message = data
 		if self.__session_id != session_id: return False
 		self.__editor.show_error(uri, message, busy=True)
 		return False

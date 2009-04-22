@@ -45,7 +45,16 @@ class Writer(object):
 					priority=PRIORITY,
 					data=text)
 		except:
-			message = _("Failed to open swap file for writing")
+			message = _("""
+Module: SCRIBES/SaveSystem/ExternalProcess/SwapFileWriter.py
+Class: Writer
+Method: __write
+Exception: Unknown
+Error: Failed to open swap file for writing.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Please try saving the file again, preferably
+to a different location like your desktop.""")
 			self.__error(message)
 		return False
 
@@ -54,7 +63,16 @@ class Writer(object):
 			handle.write(text, self.__close_cb)
 		except:
 			handle.cancel()
-			message = _("Failed to write to swap file.")
+			message = _("""
+Module: SCRIBES/SaveSystem/ExternalProcess/SwapFileWriter.py
+Class: Writer
+Method: __write_cb
+Exception: Unknown
+Error: Failed to write to swap file.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Please try saving the file again, preferably
+to a different location like your desktop.""")
 			self.__error(message)
 		return
 
@@ -63,7 +81,16 @@ class Writer(object):
 			handle.close(self.__finalize_cb)
 		except:
 			handle.cancel()
-			message = _("Failed to close swap file")
+			message = _("""
+Module: SCRIBES/SaveSystem/ExternalProcess/SwapFileWriter.py
+Class: Writer
+Method: __close_cb
+Exception: Unknown
+Error: Failed to close swap file after writing.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Please try saving the file again, preferably
+to a different location like your desktop.""")
 			self.__error(message)
 		return
 

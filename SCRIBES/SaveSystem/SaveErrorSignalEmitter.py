@@ -24,7 +24,7 @@ class Emitter(object):
 		return False
 
 	def __emit(self, data):
-		session_id, uri, encoding, message, message_id = data
+		session_id, uri, encoding, message = data
 		if self.__session_id != session_id: return False
 		self.__editor.emit("save-error", uri, encoding, message)
 		return False

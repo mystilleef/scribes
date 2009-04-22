@@ -16,7 +16,16 @@ class Encoder(object):
 			self.__manager.emit("create-swap-file", data)
 		except:
 			from gettext import gettext as _
-			message = _("Failed to encode file for writing.")
+			message = _("""
+Module: SCRIBES/SaveSystem/ExternalProcess/TextEncoder.py
+Class: Encoder
+Method: __encode
+Exception: Unknown
+Error: Failed to encode text before writing to file.
+
+Automatic saving is temporarily disabled. You will loose information in
+this window if you close it. Please try saving the file again, preferably
+to a different location like your desktop.""")
 			data = data + (message, )
 			self.__manager.emit("oops", data)
 		return False

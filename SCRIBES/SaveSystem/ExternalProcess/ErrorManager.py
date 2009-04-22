@@ -9,7 +9,10 @@ class Manager(object):
 		return
 
 	def __error(self, data):
-		print data[-1]
+		message = data[-1]
+		data = data[0], data[1], data[2], message
+		self.__manager.emit("error", data)
+		print message
 		return False
 
 	def __error_cb(self, manager, data):

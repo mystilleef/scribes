@@ -114,7 +114,7 @@ to a different location like your desktop.
 			message = """
 Module: OutputWriter.py 
 Class: OutputWriter
-method: __begin_file_transfer
+Method: __begin_file_transfer
 Exception: Unknown
 Error: Error while transfering file to save location.
 
