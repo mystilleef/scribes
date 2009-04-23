@@ -84,7 +84,9 @@ class Editor(Signals):
 		try:
 			self.response()
 			from psyco import bind
-			[bind(function) for function in functions]
+			for function in functions:
+				self.response()
+				bind(function)
 			self.response()
 		except ImportError:
 			pass
