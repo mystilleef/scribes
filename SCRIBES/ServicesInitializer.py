@@ -26,8 +26,8 @@ class Initializer(object):
 ######## Everything below still needs refactoring.
 		from EncodingManager import Manager
 		Manager(editor)
-		# Object responsible for sending data to external process via
-		# DBus to save files. An external process does the I/O operations.
+		from FileChangeMonitor import Monitor
+		Monitor(editor)
 		from SaveSystem.Manager import Manager
 		Manager(editor)
 		from SupportedEncodingsGUIManager import Manager

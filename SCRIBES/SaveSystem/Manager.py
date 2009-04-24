@@ -11,6 +11,8 @@ class Manager(GObject):
 		"save-data": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-processor-object": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-succeeded": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"saved": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"error": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-failed": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"readonly-error": (SSIGNAL, TYPE_NONE, ()),
 		"show-save-dialog": (SSIGNAL, TYPE_NONE, ()),
@@ -28,6 +30,8 @@ class Manager(GObject):
 		Creator(self, editor)
 		from QuitSaver import Saver
 		Saver(self, editor)
+		from SessionCompleter import Completer
+		Completer(self, editor)
 		from SessionManager import Manager
 		Manager(self, editor)
 		from DataValidator import Validator

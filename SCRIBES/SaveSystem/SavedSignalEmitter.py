@@ -6,7 +6,7 @@ class Emitter(object):
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("rename-file", self.__rename_cb)
 		self.__sigid3 = manager.connect("session-id", self.__session_cb)
-		self.__sigid4 = manager.connect("save-succeeded", self.__saved_cb)
+		self.__sigid4 = manager.connect("saved", self.__saved_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -28,7 +28,6 @@ class Emitter(object):
 
 	def __emit(self, data):
 		session_id, uri, encoding = data
-		if self.__session_id != session_id: return False
 		self.__editor.emit("saved-file", uri, encoding)
 		if not self.__rename: return False
 		self.__editor.emit("renamed-file", uri, encoding)

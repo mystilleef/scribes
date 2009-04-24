@@ -52,6 +52,7 @@ scribes_PYTHON = \
 	EncodingManager.py \
 	EncodingMetadata.py \
 	Exceptions.py \
+	FileChangeMonitor.py \
 	FileModificationMonitor.py \
 	FileSaver.py \
 	FontMetadata.py \

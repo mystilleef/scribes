@@ -16,6 +16,7 @@ savesystem_PYTHON = \
 	SaveErrorSignalEmitter.py \
 	ErrorDisplayer.py \
 	QuitSaver.py \
+	SessionCompleter.py \
 	FocusOutSaver.py
 
 clean-local:

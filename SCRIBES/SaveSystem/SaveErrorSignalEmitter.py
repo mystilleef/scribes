@@ -5,7 +5,7 @@ class Emitter(object):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = manager.connect("session-id", self.__session_cb)
-		self.__sigid3 = manager.connect("save-failed", self.__failed_cb)
+		self.__sigid3 = manager.connect("error", self.__failed_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -25,7 +25,6 @@ class Emitter(object):
 
 	def __emit(self, data):
 		session_id, uri, encoding, message = data
-		if self.__session_id != session_id: return False
 		self.__editor.emit("save-error", uri, encoding, message)
 		return False
 
