@@ -34,7 +34,7 @@ class Signals(GObject):
 		"update-encoding-guess-list": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"renamed-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"rename-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
-		"reload-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
+		"reload-file": (SSIGNAL, TYPE_NONE, ()),
 		"saved-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"save-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"private-save-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
