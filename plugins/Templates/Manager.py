@@ -1,4 +1,5 @@
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_PYOBJECT
+from gobject import TYPE_BOOLEAN
 
 class Manager(GObject):
 
@@ -22,6 +23,7 @@ class Manager(GObject):
 		"tag-placeholder": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"selected-placeholder": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"database-update": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"reformat-template": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
 	}
 
 	def __init__(self, editor):
@@ -42,6 +44,8 @@ class Manager(GObject):
 		Loader(editor, self)
 		from DatabaseMonitor import Monitor
 		Monitor(self, editor)
+		from TemplateIndentationDatabaseListener import Listener
+		Listener(self, editor)
 
 	def __destroy(self):
 		self.emit("destroy")

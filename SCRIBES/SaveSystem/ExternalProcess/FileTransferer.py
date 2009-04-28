@@ -12,6 +12,11 @@ class Transferer(object):
 		self.__data = ()
 		return
 
+	def __error(self, message):
+		data = self.__data + (message, )
+		self.__manager.emit("oops", data)
+		return False
+
 	def __transfer(self, data):
 		try:
 			# data = (session_id, uri, encoding, swapfile, fileinfo)

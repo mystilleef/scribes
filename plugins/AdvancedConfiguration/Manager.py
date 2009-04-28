@@ -17,6 +17,8 @@ class Manager(GObject):
 		ColorButton(editor, self)
 		from Window import Window
 		Window(editor, self)
+		from TemplateIndentation.Manager import Manager
+		Manager(self, editor)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

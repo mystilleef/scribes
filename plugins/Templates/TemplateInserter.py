@@ -8,15 +8,17 @@ class Inserter(object):
 		self.__sigid4 = manager.connect("expand-trigger", self.__expand_trigger_cb)
 		self.__sigid5 = manager.connect("trigger-found", self.__trigger_found)
 		self.__sigid6 = manager.connect("no-trigger-found", self.__no_trigger_found_cb)
+		self.__sigid7 = manager.connect("reformat-template", self.__reformat_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
-		
+
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
 		self.__manager = manager
 		self.__general_dictionary = {}
 		self.__language_dictionary = {}
 		self.__trigger = None
+		self.__reformat = True
 		return
 
 	def __destroy(self):
@@ -26,6 +28,7 @@ class Inserter(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		del self
 		self = None
 		return
@@ -38,7 +41,7 @@ class Inserter(object):
 
 	def __insert_template(self, template):
 		from utils import insert_string
-		template = self.__format(template)
+		template = self.__format(template) if self.__reformat else template
 		insert_string(self.__editor.textbuffer, template)
 		return
 
@@ -49,9 +52,9 @@ class Inserter(object):
 		template = template.replace("\t", " " * tab_width)
 		use_spaces = view.get_property("insert-spaces-instead-of-tabs")
 		if use_spaces: return template
-		# Convert spaces to tabs 
+		# Convert spaces to tabs
 		return template.replace(" " * tab_width, "\t")
-	
+
 	def __remove_trigger(self):
 		iterator = self.__editor.cursor
 		from utils import remove_trailing_spaces_on_line
@@ -177,4 +180,8 @@ class Inserter(object):
 
 	def __no_trigger_found_cb(self, *args):
 		self.__trigger = None
+		return False
+
+	def __reformat_cb(self, manager, reformat):
+		self.__reformat = reformat
 		return False
