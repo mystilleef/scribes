@@ -37,8 +37,6 @@ class Drawer(object):
 			cr.stroke()
 		except Error:
 			pass
-		finally:
-			self.__editor.response()
 		return False
 
 	def __draw_tab(self, cr, iterator):

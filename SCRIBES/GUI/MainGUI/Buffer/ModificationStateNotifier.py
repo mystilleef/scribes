@@ -52,8 +52,5 @@ class Notifier(object):
 		return False
 
 	def __modified_cb(self, *args):
-#		from gobject import idle_add
-#		idle_add(self.__emit)
 		self.__emit()
 		return False
-

@@ -26,9 +26,7 @@ class Displayer(object):
 
 	def __update(self, position):
 		line, column = position
-		self.__editor.response()
 		self.__label.set_label(_("<b>Ln</b> %s <b>Col</b> %s") % (str(line), str(column)))
-		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

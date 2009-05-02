@@ -24,9 +24,7 @@ class Manager(object):
 		return False
 
 	def __sensitive(self, sensitive):
-		self.__editor.response()
 		self.__swin.props.sensitive = sensitive
-		self.__editor.response()
 		if sensitive: self.__editor.textview.grab_focus()
 		return False
 

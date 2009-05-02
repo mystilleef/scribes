@@ -52,5 +52,11 @@ class Manager(object):
 		return False
 
 	def __response_cb(self, *args):
-		self.__editor.response()
+		try:
+			from gobject import idle_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = idle_add(self.__editor.response)
 		return False

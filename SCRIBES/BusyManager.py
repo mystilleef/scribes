@@ -25,9 +25,7 @@ class Manager(object):
 		self.__busy = self.__busy + 1 if busy else self.__busy - 1
 		if self.__busy < 0: self.__busy = 0
 		busy = True if self.__busy else False
-		self.__editor.response()
 		self.__editor.emit("busy", busy)
-		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

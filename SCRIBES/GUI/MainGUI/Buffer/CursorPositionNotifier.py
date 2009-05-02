@@ -44,8 +44,6 @@ class Notifier(object):
 		return False
 
 	def __position_cb(self, *args):
-#		from gobject import idle_add
-#		idle_add(self.__notify, priority=99999)
 		self.__notify()
 		return False
 

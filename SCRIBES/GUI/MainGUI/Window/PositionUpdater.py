@@ -35,7 +35,6 @@ class Updater(object):
 		return False
 
 	def __set_position_in_database(self):
-		self.__editor.response()
 		xcoordinate, ycoordinate = self.__window.get_position()
 		width, height = self.__window.get_size()
 		is_maximized = False # self.__is_maximized
@@ -45,7 +44,6 @@ class Updater(object):
 		window_position = maximized_position if is_maximized else unmaximized_position
 		from SCRIBES.PositionMetadata import update_window_position_in_database
 		update_window_position_in_database(str(uri), window_position)
-		self.__editor.response()
 		return False
 
 	def __close_cb(self, *args):

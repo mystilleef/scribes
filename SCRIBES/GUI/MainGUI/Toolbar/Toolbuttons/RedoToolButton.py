@@ -47,10 +47,8 @@ class Button(ToolButton):
 		return False
 
 	def __sensitive(self):
-		self.__editor.response()
 		sensitive = True if self.__editor.textbuffer.can_redo() else False
 		self.set_property("sensitive", sensitive)
-		self.__editor.response()
 		return False
 
 	def __clicked_cb(self, *args):

@@ -133,9 +133,7 @@ class Editor(Signals):
 		return False
 
 	def save_file(self, uri, encoding="utf-8"):
-		self.response()
 		self.emit("save-file", uri, encoding)
-		self.response()
 		return
 
 	def rename_file(self, uri, encoding="utf-8"):
