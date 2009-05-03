@@ -23,6 +23,7 @@ class Manager(object):
 		self.__busy = False
 		self.__interval = 0
 		self.__shortcut_list = []
+		self.__count = 0
 		return
 
 ########################################################################
@@ -121,6 +122,8 @@ class Manager(object):
 		from Utils import response
 		response()
 		self.__busy = False
+#		self.__count += 1
+#		print "Response Count: ", self.__count
 		return False
 
 	def set_vm_interval(self, response=True):
