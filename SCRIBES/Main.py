@@ -12,6 +12,9 @@ def main(argv=None):
 def __open(argv=None):
 	uris = __get_uris(argv)
 	__open_via_dbus(uris)
+	from glib import set_application_name, set_prgname
+	set_application_name("Scribes")
+	set_prgname("Scribes")
 	from Utils import init_gnome
 	init_gnome()
 	from InstanceManager import Manager

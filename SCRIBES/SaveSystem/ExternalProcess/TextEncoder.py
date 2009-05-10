@@ -13,7 +13,7 @@ class Encoder(object):
 			encoding, text = data[2], data[3]
 			encoded_text = text.encode(encoding)
 			data = data[0], data[1], data[2], encoded_text
-			self.__manager.emit("create-swap-file", data)
+			self.__manager.emit("replace-file", data)
 		except:
 			from gettext import gettext as _
 			message = _("""

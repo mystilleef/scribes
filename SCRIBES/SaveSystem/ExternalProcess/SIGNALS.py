@@ -13,10 +13,8 @@ class Signals(GObject):
 		"saved-data": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"error": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"oops": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"create-swap-file": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"write-to-swap-file": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"replace-file": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"encode-text": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"transfer": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"finished": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 

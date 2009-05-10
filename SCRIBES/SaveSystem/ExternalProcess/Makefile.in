@@ -187,11 +187,8 @@ externalprocess_PYTHON = \
 	SIGNALS.py \
 	Main.py \
 	JobSpooler.py \
-	SwapFileCreator.py \
-	LocalURIPermissionChecker.py \
 	TextEncoder.py \
-	SwapFileWriter.py \
-	FileTransferer.py \
+	FileReplacer.py \
 	Completer.py \
 	DbusService.py \
 	ErrorManager.py

@@ -29,9 +29,6 @@ class Manager(object):
 	def __set(self, uri=None):
 		uri = uri if uri else None
 		self.__editor.set_data("uri", uri)
-		from gnomevfs import URI
-		uri_object = URI(uri) if uri else None
-		self.__editor.set_data("uri_object", uri_object)
 		return False
 
 	def __destroy_cb(self, *args):

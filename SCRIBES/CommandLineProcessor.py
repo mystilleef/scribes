@@ -31,12 +31,19 @@ def __process_options(options):
 def __uris_from_arguments(arguments, option):
 	create_flag = True if option in ("-n", "-newfile", "--newfile") else False
 	if create_flag and not arguments: __quit_message(option + " takes one or more arguments")
-	from gnomevfs import make_uri_from_shell_arg, exists
-	uris = [make_uri_from_shell_arg(arg) for arg in arguments]
-	fake_uris = [uri for uri in uris if not exists(uri)]
+	from gio import File
+	uris = [File(arg).get_uri() for arg in arguments]
+	fake_uris = [uri for uri in uris if not __exists(uri)]
 	__create_files(fake_uris) if fake_uris and create_flag else __print_no_exist(fake_uris)
-	uris = [str(uri) for uri in uris if exists(uri)]
+	uris = [uri for uri in uris if __exists(uri)]
 	return uris
+
+def __exists(uri):
+	# Do not perform checks on remote files.
+	if uri.startswith("file:///") is False: return True
+	from gio import File
+	from os.path import exists
+	return exists(File(uri).get_path())
 
 def __print_info():
 	from CommandLineInfo import print_info
@@ -59,22 +66,20 @@ def __print_version():
 
 def __print_no_exist(uris):
 	if not uris: return False
-	from gnomevfs import get_local_path_from_uri
-	for uri in uris: print get_local_path_from_uri(uri), " does not exists"
+	from gio import File
+	for uri in uris: print File(uri).get_path(), " does not exists"
 	return False
 
 def __create(uri):
 	try:
 		if not uri.startswith("file:///"): raise ValueError
-		from gnomevfs import create, OPEN_WRITE
-		create(uri, OPEN_WRITE)
+		from gio import File
+		File(uri).replace_contents("")
 	except ValueError:
-		from gnomevfs import get_local_path_from_uri
 		print "Error: %s is a remote file. Cannot create remote files from \
-		terminal" % get_local_path_from_uri(uri)
+		terminal" % File(uri).get_path()
 	except:
-		from gnomevfs import get_local_path_from_uri
-		print "Error: could not create %s" % get_local_path_from_uri(uri)
+		print "Error: could not create %s" % File(uri).get_path()
 	return False
 
 def __create_files(uris):

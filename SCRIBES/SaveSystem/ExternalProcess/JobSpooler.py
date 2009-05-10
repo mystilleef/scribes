@@ -20,7 +20,7 @@ class Spooler(object):
 
 	def __send(self, data):
 		self.__busy = True
-		self.__manager.emit("check-permission", data)
+		self.__manager.emit("encode-text", data)
 		return False
 
 	def __new_job(self, data):

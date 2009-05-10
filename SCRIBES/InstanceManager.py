@@ -18,8 +18,6 @@ class Manager(object):
 		self.__editor_instances = deque([])
 		from gtk import WindowGroup
 		self.__wingroup = WindowGroup()
-#		from SaveProcessMonitor import SaveProcessMonitor
-#		self.__save_process_monitor = SaveProcessMonitor()
 		self.__busy = False
 		self.__interval = 0
 		self.__shortcut_list = []

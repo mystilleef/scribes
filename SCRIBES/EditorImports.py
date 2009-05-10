@@ -4,7 +4,7 @@ from Globals import home_language_plugin_folder, core_language_plugin_folder
 from Globals import version, author, documenters, artists, website
 from Globals import copyrights, translators, python_path, dbus_iface
 from License import license_string
-from gnomevfs import URI, get_uri_from_local_path
+from gio import File
 from DialogFilters import create_filter_list
 from gtksourceview2 import language_manager_get_default
 from EncodingGuessListMetadata import get_value as get_encoding_guess_list

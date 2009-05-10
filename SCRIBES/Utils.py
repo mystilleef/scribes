@@ -59,8 +59,8 @@ def __get_language_for_mime_type(mime):
 def get_language(uri):
 	try:
 		if uri is None: return None
-		from gnomevfs import get_mime_type
-		mimetype = get_mime_type(uri.strip())
+		from gio import content_type_guess
+		mimetype = content_type_guess(uri.strip())
 		language = __get_language_for_mime_type(mimetype)
 	except RuntimeError:
 		print "Caught runtime error when determining mimetype or language"
@@ -93,8 +93,8 @@ def generate_random_number(sequence):
 def check_uri_permission(uri):
 	value = True
 	if uri.startswith("file:///"):
-		from gnomevfs import get_local_path_from_uri
-		local_path = get_local_path_from_uri(uri)
+		from gio import File
+		local_path = File(uri).get_path()
 		from os import access, W_OK, path
 		if path.exists(local_path):
 			value = access(local_path, W_OK)
@@ -104,31 +104,13 @@ def check_uri_permission(uri):
 				value = False
 	else:
 		writable_scheme = ["ssh", "sftp", "smb", "dav", "davs", "ftp"]
-		from gnomevfs import get_uri_scheme
-		scheme = get_uri_scheme(uri)
+		scheme = File(uri).get_uri_scheme()
 		if not scheme in writable_scheme: value = False
 	return value
 
 def get_file_size(uri):
-	size = 0
-	from gnomevfs import get_file_info, FILE_INFO_GET_MIME_TYPE
-	from gnomevfs import FILE_INFO_FORCE_SLOW_MIME_TYPE
-	from gnomevfs import FILE_INFO_FOLLOW_LINKS, FILE_INFO_DEFAULT
-	FILE_INFO_ACCESS_RIGHTS = 1 << 4
-	try:
-		fileinfo = get_file_info(uri, FILE_INFO_DEFAULT |
-							FILE_INFO_GET_MIME_TYPE |
-							FILE_INFO_FORCE_SLOW_MIME_TYPE |
-							FILE_INFO_FOLLOW_LINKS |
-							FILE_INFO_ACCESS_RIGHTS)
-		if fileinfo:
-			try:
-				size = fileinfo.size
-			except:
-				pass
-	except:
-		pass
-	return size
+	from gio import File
+	return File(uri).query_info("*").get_size()
 
 def create_menuitem(string, stock_id=None):
 	from gtk import MenuItem, Image, HBox, Label
@@ -408,19 +390,19 @@ def get_save_processor():
 
 def response():
 	from gtk import events_pending, main_iteration
-	while events_pending(): main_iteration(False) 
+	while events_pending(): main_iteration(False)
 	return
 
 def create_uri(uri, exclusive=True):
-	from gnomevfs import create, OPEN_WRITE  
-	create(uri, OPEN_WRITE, exclusive)
+	from gio import File
+	File(uri).replace_contents()
 	return
 
 def uri_is_folder(uri):
 	if not uri: return False
-	from gnomevfs import get_file_info
-	info = get_file_info(uri)
-	if info.type == 2: return True
+	from gio import File
+	filetype = File(uri).query_info("*").get_file_type()
+	if filetype == 2: return True
 	return False
 
 def set_vm_interval(response=True):
