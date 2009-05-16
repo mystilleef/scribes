@@ -7,8 +7,6 @@ def main():
 
 def __start():
 	if __save_process_exists(): raise SystemExit
-	from gnome.ui import authentication_manager_init
-	authentication_manager_init()
 	from Manager import Manager
 	Manager()
 	return

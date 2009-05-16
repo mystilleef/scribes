@@ -17,38 +17,20 @@ class Reader(object):
 		self = None
 		return False
 
+	def __emit(self, gfile, result):
+		data = gfile.load_contents_finish(result)
+		self.__manager.emit("process-encoding", gfile.get_uri(), data[0])
+		return False
+
 	def __read(self, uri):
 		if not uri.startswith("file:///"): return False
-		# We do asynchronous reads for local files
-		from gnomevfs import OPEN_READ, URI
-		from gnomevfs.async import open as open_
-		try:
-			open_(URI(uri), self.__open_cb, OPEN_READ, 10, uri)
-		except:
-			self.__manager.emit("error", uri, 5)
+		from gio import File
+		File(uri).load_contents_async(self.__ready_cb)
 		return False
 
-	def __open_cb(self, handle, result, uri):
-		try:
-			from gnomevfs import URI, get_local_path_from_uri
-			local_path = get_local_path_from_uri(uri)
-			from os.path import getsize
-			size = getsize(local_path)
-			if not (size): size = 4096
-			handle.read(size, self.__read_cb, uri)
-		except:
-			self.__manager.emit("error", uri, 6)
-		return False
-
-	def __read_cb(self, handle, buffer_, result, bytes, uri):
-		try:
-			handle.close(self.__close_cb)
-			self.__manager.emit("process-encoding", uri, buffer_)
-		except:
-			self.__manager.emit("error", uri, 7)
-		return False
-
-	def __close_cb(self, *args):
+	def __ready_cb(self, gfile, result):
+		from gobject import idle_add
+		idle_add(self.__emit, gfile, result)
 		return False
 
 	def __destroy_cb(self, *args):

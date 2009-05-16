@@ -25,7 +25,7 @@ class RecentMenu(RecentChooserMenu):
 		self.set_show_numbers(False)
 		self.set_property("sort-type", RECENT_SORT_MRU)
 		self.set_property("filter", self.__create_filter())
-		self.set_property("limit", 10)
+		self.set_property("limit", 15)
 		self.set_property("local-only", False)
 		self.set_property("show-icons", True)
 		self.set_property("show-not-found", False)

@@ -19,12 +19,13 @@ class Reader(object):
 
 	def __read(self, uri):
 		if uri.startswith("file:///"): return False
-		from gnomevfs import read_entire_file
-		try:
-			string = read_entire_file(uri)
-			self.__manager.emit("process-encoding", uri, string)
-		except:
-			self.__manager.emit("error", uri, 5)
+		from gio import File
+		File(uri).load_contents_async(self.__ready_cb)
+		return False
+
+	def __ready_cb(self, gfile, result):
+		data = gfile.load_contents_finish(result)
+		self.__manager.emit("process-encoding", gfile.get_uri(), data[0])
 		return False
 
 	def __destroy_cb(self, *args):

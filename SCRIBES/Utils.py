@@ -59,8 +59,8 @@ def __get_language_for_mime_type(mime):
 def get_language(uri):
 	try:
 		if uri is None: return None
-		from gio import content_type_guess
-		mimetype = content_type_guess(uri.strip())
+		from gio import File
+		mimetype = File(uri).query_info("*").get_content_type()
 		language = __get_language_for_mime_type(mimetype)
 	except RuntimeError:
 		print "Caught runtime error when determining mimetype or language"
@@ -92,8 +92,8 @@ def generate_random_number(sequence):
 
 def check_uri_permission(uri):
 	value = True
+	from gio import File
 	if uri.startswith("file:///"):
-		from gio import File
 		local_path = File(uri).get_path()
 		from os import access, W_OK, path
 		if path.exists(local_path):
@@ -334,15 +334,9 @@ def find_matching_bracket(iterator):
 	return iterator
 
 def init_gnome():
-	# Crashes the save dialog if uncommented.
-	from Globals import version, name, data_path
-	from gnome import PARAM_APP_DATADIR, program_init, ui
-	properties = {
-		PARAM_APP_DATADIR: data_path,
-	}
-	program = program_init(name, version, properties=properties)
-	from gnome.ui import authentication_manager_init
-	authentication_manager_init()
+	from gobject import set_application_name, set_prgname
+	set_prgname("Scribes")
+	set_application_name("Scribes")
 	return
 
 def backward_to_line_begin(iterator):

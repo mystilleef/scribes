@@ -45,7 +45,7 @@ You can install scribes into a test or temporary location as follows:
 
 	./configure --prefix=/home/$(USERNAME)/testscribes
 	make
-	make install
+	make install  
 
 Usage
 =====

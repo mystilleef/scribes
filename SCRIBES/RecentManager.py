@@ -20,17 +20,16 @@ class Manager(object):
 		return manager
 
 	def __create_recent_data(self, uri):
-		from gnomevfs import get_mime_type, URI
-		mime_type = get_mime_type(self.__editor.uri)
+		from gio import File
+		fileinfo = File(uri).query_info("*")
 		app_name = "scribes"
 		app_exec = "%U"
-		display_name = URI(self.__editor.uri).short_name
 		description = "A text file."
 		recent_data = {
-			"mime_type": mime_type,
+			"mime_type": fileinfo.get_content_type(),
 			"app_name": app_name,
 			"app_exec": app_exec,
-			"display_name": display_name,
+			"display_name": fileinfo.get_display_name(),
 			"description": description,
 		}
 		return recent_data

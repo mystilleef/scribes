@@ -18,26 +18,7 @@ class Checker(object):
 		return False
 
 	def __check(self, uri):
-		try:
-			FILE_INFO_ACCESS_RIGHTS = 1 << 4
-			from gnomevfs import AccessDeniedError, NotFoundError
-			from gnomevfs import get_file_info, FILE_INFO_DEFAULT
-			fileinfo = get_file_info(uri, FILE_INFO_DEFAULT |
-									FILE_INFO_ACCESS_RIGHTS)
-			if not fileinfo: raise ValueError
-			self.__manager.emit("read-uri", uri)
-		except AccessDeniedError:
-			# Error code 2 signifies an access error.
-			self.__manager.emit("error", uri, 2)
-		except NotFoundError:
-			# Error code 4 signifies a file does not exist.
-			self.__manager.emit("error", uri, 4)
-		except ValueError:
-			# Error code 3 signifies a fileinfo error.
-			self.__manager.emit("error", uri, 3)
-		except:
-			# Error code 3 signifies a fileinfo error.
-			self.__manager.emit("error", uri, 3)
+		self.__manager.emit("read-uri", uri)
 		return False
 
 	def __destroy_cb(self, *args):
