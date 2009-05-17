@@ -11,28 +11,22 @@ class Replacer(object):
 	def __replace(self, data):
 		session_id, uri, encoding, text = data
 		from gio import File, FILE_CREATE_NONE
-		File(uri).replace_contents_async(text, self.__ready_cb,
+		from glib import PRIORITY_DEFAULT
+		File(uri).replace_async(self.__replace_async_cb,
 			etag=None, make_backup=False, flags=FILE_CREATE_NONE,
-			cancellable=None, user_data=data)
-#		File(uri).replace_contents(text, etag=None, make_backup=False,
-#			flags=FILE_CREATE_NONE, cancellable=None)
-#		self.__manager.emit("finished", data)
+			io_priority=PRIORITY_DEFAULT, cancellable=None, user_data=data)
 		return False
 
-	def __emit(self, result, data):
-		print "one"
-		success = result.get_source_object().replace_contents_finish(result)
-		print "two"
+	def __replace_async_cb(self, gfile, result, data):
+		output_streamer = gfile.replace_finish(result)
+		from glib import PRIORITY_DEFAULT
+		output_streamer.write_async(data[-1], self.__write_async_cb,
+			io_priority=PRIORITY_DEFAULT, cancellable=None, user_data=data)
+		return False
+
+	def __write_async_cb(self, output_streamer, result, data):
+		success = output_streamer.write_finish(result)
 		self.__manager.emit("finished", data)
-		return False
-
-	def __cancel(self, *args):
-		return False
-
-	def __ready_cb(self, gfile, result, data):
-		print gfile
-		from gobject import idle_add
-		idle_add(self.__emit, result, data)
 		return False
 
 	def __replace_cb(self, manager, data):
