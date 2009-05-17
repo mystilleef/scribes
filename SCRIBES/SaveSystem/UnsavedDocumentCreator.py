@@ -37,8 +37,8 @@ class Creator(object):
 			if not (newfile in file_list): break
 			count += 1
 		newfile = folder + "/" + newfile
-		from gnomevfs import make_uri_from_shell_arg
-		return make_uri_from_shell_arg(newfile)
+		from gio import File
+		return File(newfile).get_uri()
 
 	def __create(self):
 		uri = self.__get_uri()

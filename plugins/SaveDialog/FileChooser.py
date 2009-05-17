@@ -26,9 +26,10 @@ class FileChooser(object):
 
 	def __set_folder(self):
 		if self.__editor.uri:
-			from gnomevfs import URI, get_local_path_from_uri
-			folder_uri = str(URI(self.__editor.uri).parent)
-			current_name = str(URI(self.__editor.uri).short_name)
+			from gio import File 
+			gfile = File(self.__editor.uri)
+			folder_uri = gfile.get_parent().get_uri()
+			current_name = gfile.get_parse_name()
 			if folder_uri != self.__chooser.get_current_folder_uri():
 				self.__chooser.set_current_folder_uri(folder_uri)
 			self.__chooser.set_current_name(current_name)
@@ -53,19 +54,14 @@ class FileChooser(object):
 		return False
 
 	def __validate_error(self):
-		from gnomevfs import NotFoundError
-		try:
-			uri = self.__chooser.get_uri()
-			if not uri: return True
-			from gnomevfs import URI
-			text = str(URI(uri).short_name)
-			if not text: return True
-			if "/" in text: return True
-			if len(text) > 256: return True
-			if self.__editor.uri_is_folder(uri): return True
-		except NotFoundError:
-			self.__editor.create_uri(uri)
-			self.__validate_error()
+		uri = self.__chooser.get_uri()
+		if not uri: return True
+		from gio import File 
+		text = File(uri).get_basename()
+		if not text: return True
+		if "/" in text: return True
+		if len(text) > 256: return True
+		if self.__editor.uri_is_folder(uri): return True
 		return False
 
 	def __destroy(self):

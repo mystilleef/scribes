@@ -18,7 +18,6 @@ class Initializer(object):
 		return
 
 	def __init_plugins(self):
-		self.__editor.refresh()
 		self.__editor.move_view_to_cursor(True)
 		self.__editor.refresh()
 		self.__editor.emit("ready")

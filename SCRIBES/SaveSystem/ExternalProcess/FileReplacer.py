@@ -18,14 +18,26 @@ class Replacer(object):
 		return False
 
 	def __replace_async_cb(self, gfile, result, data):
-		output_streamer = gfile.replace_finish(result)
-		from glib import PRIORITY_DEFAULT
-		output_streamer.write_async(data[-1], self.__write_async_cb,
-			io_priority=PRIORITY_DEFAULT, cancellable=None, user_data=data)
+		try:
+			text = data[-1]
+			if not text: raise AssertionError
+			output_streamer = gfile.replace_finish(result)
+			from glib import PRIORITY_DEFAULT
+			output_streamer.write_async(text, self.__write_async_cb,
+				io_priority=PRIORITY_DEFAULT, cancellable=None, user_data=data)
+		except AssertionError:
+			self.__manager.emit("finished", data)
 		return False
 
 	def __write_async_cb(self, output_streamer, result, data):
 		success = output_streamer.write_finish(result)
+		from glib import PRIORITY_DEFAULT
+		output_streamer.close_async(self.__close_async_cb, io_priority=PRIORITY_DEFAULT,
+		cancellable=None, user_data=data)
+		return False
+
+	def __close_async_cb(self, output_streamer, result, data):
+		success = output_streamer.close_finish(result)
 		self.__manager.emit("finished", data)
 		return False
 

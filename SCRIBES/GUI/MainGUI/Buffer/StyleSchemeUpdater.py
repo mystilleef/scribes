@@ -4,8 +4,7 @@ class Updater(object):
 		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		from gnomevfs import monitor_add, MONITOR_FILE
-		self.__monid = monitor_add(self.__uri, MONITOR_FILE, self.__changed_cb)
+		self.__monitor.connect("changed", self.__changed_cb)
 		self.__update()
 		editor.register_object(self)
 		editor.response()
@@ -13,13 +12,13 @@ class Updater(object):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__buffer = editor.textbuffer
-		self.__uri = self.__get_database_uri()
+		from gio import File, FILE_MONITOR_NONE
+		self.__monitor = File(self.__get_path()).monitor_file(FILE_MONITOR_NONE, None)
 		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		from gnomevfs import monitor_cancel
-		monitor_cancel(self.__monid)
+		self.__monitor.cancel()
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -34,19 +33,18 @@ class Updater(object):
 		self.__editor.response()
 		return False
 
-	def __get_database_uri(self):
+	def __get_path(self):
 		from os.path import join
 		folder = join(self.__editor.metadata_folder, "Preferences")
-		_path = join(folder, "ColorTheme.gdb")
-		from gnomevfs import get_uri_from_local_path
-		uri = get_uri_from_local_path(_path)
-		return uri
+		return join(folder, "ColorTheme.gdb")
 
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __changed_cb(self, *args):
+		monitor, gfile, otherfile, event = args
+		if not (event in (0, 2, 3)): return False
 		from gobject import idle_add
 		idle_add(self.__update)
 		return False

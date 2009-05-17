@@ -37,22 +37,23 @@ class Monitor(object):
 		self.__unmonitor(self.__uri)
 		if uri.startswith("file:///") is False: return False
 		self.__uri = uri
-		from gnomevfs import monitor_add, MONITOR_FILE
-		self.__monid = monitor_add(uri, MONITOR_FILE, self.__changed_cb)
+		from gio import File, FILE_MONITOR_NONE
+		self.__file_monitor = File(uri).monitor_file(FILE_MONITOR_NONE, None)
+		self.__file_monitor.connect("changed", self.__changed_cb)
 		self.__monitoring = True
 		return False
 
 	def __unmonitor(self, uri):
 		if not uri: return False
 		if self.__monitoring is False: return False
-		from gnomevfs import monitor_cancel
-		monitor_cancel(self.__monid)
+		self.__file_monitor.cancel()
 		self.__monitoring = False
 		return False
 
 	def __process(self, args):
 		try:
-			if not (args[-1] in (0,4)): return False
+			monitor, gfile, otherfile, event = args
+			if not (event in (0, 3)): return False
 			if self.__block: return False
 			self.__block = True
 			from gobject import timeout_add, idle_add

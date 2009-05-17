@@ -31,8 +31,8 @@ class Manager(object):
 		return False
 
 	def __show(self, uri, error_code):
-		from gnomevfs import format_uri_for_display, URI
-		title = _("File: %s") % (URI(uri).path)
+		from gio import File
+		title = _("File: %s") % File(uri).get_parse_name()
 		message = self.__error_codes[error_code] % URI(uri).short_name
 		self.__editor.show_error(title, message)
 		return False

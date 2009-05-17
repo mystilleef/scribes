@@ -4,8 +4,7 @@ class Manager(object):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("quit", self.__quit_cb)
 		self.__sigid2 = manager.connect("new-encoding", self.__new_encoding_cb)
-		from gnomevfs import monitor_add, MONITOR_FILE
-		self.__monid1 = monitor_add(self.__database_uri, MONITOR_FILE, self.__encoding_cb)
+		self.__monitor.connect("changed", self.__encoding_cb)
 		self.__emit_encoding_list()
 		editor.response()
 
@@ -15,13 +14,12 @@ class Manager(object):
 		from os.path import join
 		preference_folder = join(editor.metadata_folder, "Preferences")
 		database_path = join(preference_folder, "Encoding.gdb")
-		from gnomevfs import get_uri_from_local_path
-		self.__database_uri = get_uri_from_local_path(database_path)
+		from gio import File, FILE_MONITOR_NONE
+		self.__monitor = File(database_path).monitor_file(FILE_MONITOR_NONE, None)
 		return
 
 	def __destroy(self):
-		from gnomevfs import monitor_cancel
-		monitor_cancel(self.__monid1)
+		self.__monitor.cancel
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		del self
@@ -49,5 +47,7 @@ class Manager(object):
 		return False
 
 	def __encoding_cb(self, *args):
+		monitor, gfile, otherfile, event = args
+		if not (event in (0, 3)): return False
 		self.__emit_encoding_list()
 		return False

@@ -6,8 +6,7 @@ class Manager(object):
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("combobox-encoding-data?", self.__encoding_data_cb)
-		from gnomevfs import monitor_add, MONITOR_FILE
-		self.__monid1 = monitor_add(self.__database_uri, MONITOR_FILE, self.__encoding_cb)
+		self.__monitor.connect("changed", self.__encoding_cb)
 		editor.register_object(self)
 		self.__emit_encoding_data()
 		editor.response()
@@ -18,15 +17,14 @@ class Manager(object):
 		from os.path import join
 		preference_folder = join(editor.metadata_folder, "Preferences")
 		database_path = join(preference_folder, "Encoding.gdb")
-		from gnomevfs import get_uri_from_local_path
-		self.__database_uri = get_uri_from_local_path(database_path)
+		from gio import File, FILE_MONITOR_NONE
+		self.__monitor = File(database_path).monitor_file(FILE_MONITOR_NONE, None)
 		return False
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		from gnomevfs import monitor_cancel
-		monitor_cancel(self.__monid1)
+		self.__monitor.cancel()
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -58,6 +56,8 @@ class Manager(object):
 		return False
 
 	def __encoding_cb(self, *args):
+		monitor, gfile, otherfile, event = args
+		if not (event in (0, 3)): return False
 		self.__emit_encoding_data()
 		return False
 

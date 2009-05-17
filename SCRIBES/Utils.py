@@ -393,10 +393,14 @@ def create_uri(uri, exclusive=True):
 	return
 
 def uri_is_folder(uri):
-	if not uri: return False
-	from gio import File
-	filetype = File(uri).query_info("*").get_file_type()
-	if filetype == 2: return True
+	from gio import Error
+	try:
+		if not uri: return False
+		from gio import File
+		filetype = File(uri).query_info("*").get_file_type()
+		if filetype == 2: return True
+	except Error:
+		return False
 	return False
 
 def set_vm_interval(response=True):

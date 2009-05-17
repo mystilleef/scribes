@@ -49,10 +49,9 @@ class Switcher(object):
 		return False
 
 	def __get_filename(self, uri):
-		from gnomevfs import URI, unescape_string_for_display
-		filename = str(URI(uri).path)
-		filename = filename.replace(self.__editor.home_folder.rstrip("/"), "~")
-		return unescape_string_for_display(filename)
+		from gio import File
+		filename = File(uri).get_parse_name()
+		return filename.replace(self.__editor.home_folder.rstrip("/"), "~")
 
 	def __quit_cb(self, *args):
 		self.__destroy()

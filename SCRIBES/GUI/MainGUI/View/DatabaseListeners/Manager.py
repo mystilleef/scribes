@@ -19,9 +19,7 @@ class Manager(object):
 		Listener(self, editor)
 		editor.response()
 
-	def get_database_uri(self, database):
+	def get_path(self, database):
 		from os.path import join
 		folder = join(self.__editor.metadata_folder, "Preferences")
-		_path = join(folder, database)
-		from gnomevfs import get_uri_from_local_path as get_uri
-		return get_uri(_path)
+		return join(folder, database)

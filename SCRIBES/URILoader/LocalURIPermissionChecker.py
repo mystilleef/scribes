@@ -19,8 +19,8 @@ class Checker(object):
 
 	def __check(self, uri):
 		try:
-			from gnomevfs import get_local_path_from_uri
-			local_path = get_local_path_from_uri(uri)
+			from gio import File
+			local_path = File(uri).get_path()
 			from os import access, R_OK
 			if not access(local_path, R_OK): raise ValueError
 			self.__manager.emit("read-uri", uri)

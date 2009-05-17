@@ -42,8 +42,8 @@ class Updater(object):
 		return False
 
 	def __get_dictionary(self, uri):
-		from gnomevfs import URI
-		title = URI(uri).short_name if uri else _("Unsaved Document")
+		from gio import File
+		title = File(uri).get_basename() if uri else _("Unsaved Document")
 		dictionary = {
 			"normal": title,
 			"modified": "*" + title,
