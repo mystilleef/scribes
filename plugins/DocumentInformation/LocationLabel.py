@@ -14,15 +14,14 @@ class Label(object):
 
 	def __set_label(self, fileinfo):
 		try:
-			if self.__editor.uri in ("", None): raise TypeError
-			from gnomevfs import get_local_path_from_uri
-			path = get_local_path_from_uri(str(self.__editor.uri))
-			from os.path import dirname
-			folder = dirname(path).replace(self.__editor.home_folder.rstrip("/"), "~")
+			if not self.__editor.uri: raise AssertionError
+			from gio import File
+			path = File(self.__editor.uri).get_parent().get_parse_name()
+			folder = path.replace(self.__editor.home_folder.rstrip("/"), "~")
 			self.__label.set_text(folder)
-		except TypeError:
+		except AssertionError:
 			self.__label.set_text("Unknown")
-		return
+		return False
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
@@ -37,5 +36,6 @@ class Label(object):
 		return
 
 	def __fileinfo_cb(self, manager, fileinfo):
-		self.__set_label(fileinfo)
+		from gobject import idle_add
+		idle_add(self.__set_label, fileinfo)
 		return

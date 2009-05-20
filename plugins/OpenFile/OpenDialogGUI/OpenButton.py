@@ -1,9 +1,4 @@
-
 class Button(object):
-	"""
-	This class defines the properties and behavior of the open button on
-	the file chooser.
-	"""
 
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)

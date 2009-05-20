@@ -1,8 +1,4 @@
 class FileChooser(object):
-	"""
-	This class defines the behavior and properties of an open file
-	chooser.
-	"""
 
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
@@ -73,10 +69,9 @@ class FileChooser(object):
 		return False
 
 	def __selection_changed_cb(self, *args):
-		filenames = self.__chooser.get_filenames()
-		if not filenames: return False
-		from os.path import isdir
-		folders = [name for name in filenames if isdir(name)]
+		uris = self.__chooser.get_uris()
+		if not uris: return False
+		folders = [uri for uri in uris if self.__editor.uri_is_folder(uri)]
 		selected_file = False if folders else True
 		self.__manager.emit("open-button-sensitivity", selected_file)
 		return True

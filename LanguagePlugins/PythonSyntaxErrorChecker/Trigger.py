@@ -1,9 +1,4 @@
-
 class Trigger(object):
-	"""
-	This class creates an object, a trigger, that checks python source
-	code for syntax errors.
-	"""
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)

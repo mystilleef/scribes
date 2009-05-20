@@ -20,6 +20,7 @@ class Updater(object):
 
 	def __get_symbols(self):
 		try:
+			self.__editor.response()
 			self.__symbols.clear()
 			from compiler import parse
 			parse_tree = parse(self.__editor.text)
@@ -28,9 +29,8 @@ class Updater(object):
 			self.__manager.emit("update", self.__symbols)
 		except SyntaxError:
 			pass
-#		finally:
-#			from gc import collect
-#			collect()
+		finally:
+			self.__editor.response()
 		return False
 
 	def __extract_symbols(self, nodes, depth):

@@ -16,7 +16,7 @@ def __set_vm_properties():
 if __name__ == "__main__":
 	from os import nice
 	nice(19)
-	__set_vm_properties()
+#	__set_vm_properties()
 	from sys import argv, path
 	python_path = argv[1]
 	path.insert(0, python_path)

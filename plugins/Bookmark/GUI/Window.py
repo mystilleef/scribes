@@ -2,9 +2,6 @@ from gettext import gettext as _
 message = _("Bookmarked lines")
 
 class Window(object):
-	"""
-	This class creates the window for the template editor.
-	"""
 
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)

@@ -34,9 +34,8 @@ class Validator(object):
 		return False
 
 	def __is_xml(self, _file):
-		from gnomevfs import get_mime_type
 		xml_mime_types = ("application/xml", "text/xml")
-		return get_mime_type(_file) in xml_mime_types
+		return self.__editor.get_mimetype(_file) in xml_mime_types
 
 	def __is_color_scheme(self, file_):
 		root_node = self.__get_xml_root_node(file_)

@@ -14,10 +14,10 @@ class Label(object):
 
 	def __set_label(self, fileinfo):
 		try:
-			self.__label.set_text(fileinfo.mime_type)
+			self.__label.set_text(fileinfo.get_content_type())
 		except AttributeError:
 			self.__label.set_text("Unknown")
-		return
+		return False
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
@@ -32,5 +32,6 @@ class Label(object):
 		return
 
 	def __fileinfo_cb(self, manager, fileinfo):
-		self.__set_label(fileinfo)
+		from gobject import idle_add
+		idle_add(self.__set_label, fileinfo)
 		return

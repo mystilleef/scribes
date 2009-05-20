@@ -61,11 +61,10 @@ class FileChooser(object):
 		return True
 
 	def __changed_cb(self, *args):
-		filenames = self.__chooser.get_filenames()
-		if not filenames: return False
-		from os.path import isdir
-		is_a_folder = lambda _file: isdir(_file)
-		folders = filter(is_a_folder, filenames)
+		uris = self.__chooser.get_uris()
+		if not uris: return False
+		is_a_folder = lambda _file: self.__editor.uri_is_folder(_file)
+		folders = filter(is_a_folder, uris)
 		self.__can_import = False if folders else True
 		self.__manager.emit("can-import-selected-file", self.__can_import)
 		return False

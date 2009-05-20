@@ -58,6 +58,7 @@ class TreeView():
 			self.__treeview.set_model(None)
 			self.__model.clear()
 			for name, description, key in data:
+				self.__editor.response()
 				self.__model.append([name, description, key])
 			self.__treeview.set_model(self.__model)
 			self.__update_sensitivity()
@@ -78,6 +79,7 @@ class TreeView():
 
 	def __select_key(self, key):
 		for row_ in self.__model:
+			self.__editor.response()
 			if row_[-1] != key: continue
 			path = self.__model.get_path(row_.iter)
 			row = self.__model[path]
@@ -155,6 +157,7 @@ class TreeView():
 
 	def __remove_key(self, key, select):
 		for row in self.__model:
+			self.__editor.response()
 			if row[-1] != key: continue
 			iterator = row.iter
 			success = self.__model.remove(iterator)
@@ -176,6 +179,7 @@ class TreeView():
 	def __get_keys(self, paths):
 		keys = []
 		for path in paths:
+			self.__editor.response()
 			iterator = self.__model.get_iter(path)
 			key = self.__model.get_value(iterator, 2)
 			keys.append(key)

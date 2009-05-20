@@ -14,9 +14,8 @@ class Validator(object):
 		return
 
 	def __is_xml(self, file_):
-		from gnomevfs import get_mime_type
 		xml_mime_types = ("application/xml", "text/xml")
-		return get_mime_type(file_) in xml_mime_types
+		return self.__editor.get_mimetype(file_) in xml_mime_types
 
 	def __get_xml_root_node(self, file_):
 		try:

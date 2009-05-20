@@ -78,6 +78,8 @@ class Editor(Signals):
 	bar_is_active = property(lambda self: self.get_data("bar_is_active"))
 	minimized = property(lambda self: self.get_data("minimized"))
 	maximized = property(lambda self: self.get_data("maximized"))
+	mimetype = property(lambda self: self.get_mimetype(self.uri))
+	fileinfo = property(lambda self: self.get_fileinfo(self.uri))
 
 	def optimize(self, functions):
 		try:
@@ -435,3 +437,23 @@ class Editor(Signals):
 		if self.textbuffer.props.has_selection is False: return 0
 		start, end = self.textbuffer.get_selection_bounds()
 		return (end.get_line() - start.get_line()) + 1
+
+	def get_file_monitor(self, path):
+		from Utils import get_file_monitor
+		return get_file_monitor(path)
+
+	def get_folder_monitor(self, path):
+		from Utils import get_folder_monitor
+		return get_folder_monitor(path)
+
+	def monitor_events(self, args, event_types):
+		from Utils import monitor_events
+		return monitor_events(args, event_types)
+
+	def get_fileinfo(self, path):
+		from Utils import get_fileinfo
+		return get_fileinfo(path)
+
+	def get_mimetype(self, path):
+		from Utils import get_mimetype
+		return get_mimetype(path)

@@ -49,6 +49,7 @@ class ComboBox(object):
 		self.__model.append([data[0][0], data[0][1]])
 		self.__model.append(["Separator", "Separator"])
 		for alias, encoding in data[1:]:
+			self.__editor.response()
 			self.__model.append([alias, encoding])
 		self.__model.append(["Separator", "Separator"])
 		self.__model.append(["Add or Remove Encoding...", "show_encoding_window"])

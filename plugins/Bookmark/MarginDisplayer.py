@@ -1,7 +1,4 @@
 class Displayer(object):
-	"""
-	This class shows or hides the bookmark margin as needed.
-	"""
 
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)

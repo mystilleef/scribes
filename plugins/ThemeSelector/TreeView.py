@@ -68,6 +68,7 @@ class TreeView(object):
 			self.__treeview.set_model(None)
 			self.__model.clear()
 			for description, scheme, can_remove in data:
+				self.__editor.response()
 				self.__model.append([description, scheme, can_remove])
 			self.__treeview.set_model(self.__model)
 			self.__treeview.handler_unblock(self.__sigid3)
@@ -158,6 +159,7 @@ class TreeView(object):
 	def __get_scheme_row(self, scheme):
 		row = None
 		for _row in self.__model:
+			self.__editor.response()
 			if _row[1].get_id() != scheme.get_id(): continue
 			row = _row
 			break

@@ -14,9 +14,9 @@ class Label(object):
 
 	def __set_label(self, fileinfo):
 		try:
-			from gnomevfs import mime_get_description, get_mime_type
-			self.__label.set_text(mime_get_description(fileinfo.mime_type))
-		except AttributeError:
+			from gio import content_type_get_description as get_desc
+			self.__label.set_text(get_desc(self.__editor.mimetype))
+		except:
 			self.__label.set_text("plain text document")
 		return
 
@@ -33,5 +33,6 @@ class Label(object):
 		return
 
 	def __fileinfo_cb(self, manager, fileinfo):
-		self.__set_label(fileinfo)
-		return
+		from gobject import idle_add
+		idle_add(self.__set_label, fileinfo)
+		return False

@@ -1,9 +1,6 @@
 from gettext import gettext as _
 
 class TreeView(object):
-	"""
-	This class creates a treeview for the bookmark browser.
-	"""
 
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)

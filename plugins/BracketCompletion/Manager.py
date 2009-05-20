@@ -1,11 +1,6 @@
 from gettext import gettext as _
 
 class BracketManager(object):
-	"""
-	This class implements bracket completion operations for the text
-	editor. Closing characters for most pair characters are
-	automatically inserted into the editing area.
-	"""
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
@@ -239,12 +234,11 @@ class BracketManager(object):
 		return
 
 	def __check_mimetype(self):
-		from gnomevfs import get_mime_type
 		from gtk import keysyms
 		markup_mimetype = ["text/html", "application/xml", "text/xml", "application/docbook+xml"]
 		if not (self.__editor.uri): return
 		try:
-			mimetype = get_mime_type(self.__editor.uri)
+			mimetype = self.__editor.mimetype
 		except RuntimeError:
 			return
 		if (mimetype == "text/x-tex"):

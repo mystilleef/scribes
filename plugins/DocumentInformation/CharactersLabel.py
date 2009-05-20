@@ -10,13 +10,11 @@ class Label(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__label = manager.glade.get_widget("CharactersLabel")
-#		from re import UNICODE, compile
-#		self.__pattern = compile(r"[^-\w]", UNICODE)
 		return
 
 	def __set_label(self, fileinfo):
 		self.__label.set_text(str(self.__editor.textbuffer.get_char_count()))
-		return
+		return False
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
@@ -31,5 +29,6 @@ class Label(object):
 		return
 
 	def __fileinfo_cb(self, manager, fileinfo):
-		self.__set_label(fileinfo)
+		from gobject import idle_add
+		idle_add(self.__set_label, fileinfo)
 		return

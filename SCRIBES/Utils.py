@@ -56,12 +56,30 @@ def __get_language_for_mime_type(mime):
 			if m == mime: return lang
 	return None
 
+def get_file_monitor(path):
+	from gio import File, FILE_MONITOR_NONE
+	return File(path).monitor_file(FILE_MONITOR_NONE, None)
+
+def get_folder_monitor(path):
+	from gio import File, FILE_MONITOR_NONE
+	return File(path).monitor_directory(FILE_MONITOR_NONE, None)
+
+def monitor_events(args, event_types):
+	return args[-1] in event_types
+
+def get_fileinfo(path):
+	if not path: return None
+	from gio import File
+	return File(path).query_info("*")
+
+def get_mimetype(path):
+	if not path: return None
+	return get_fileinfo(path).get_content_type()
+
 def get_language(uri):
 	try:
 		if uri is None: return None
-		from gio import File
-		mimetype = File(uri).query_info("*").get_content_type()
-		language = __get_language_for_mime_type(mimetype)
+		language = __get_language_for_mime_type(get_mimetype(uri))
 	except RuntimeError:
 		print "Caught runtime error when determining mimetype or language"
 		return None
@@ -389,7 +407,7 @@ def response():
 
 def create_uri(uri, exclusive=True):
 	from gio import File
-	File(uri).replace_contents()
+	File(uri).replace_contents("")
 	return
 
 def uri_is_folder(uri):

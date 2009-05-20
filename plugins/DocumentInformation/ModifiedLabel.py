@@ -16,7 +16,7 @@ class Label(object):
 		try:
 			from time import localtime, strftime
 			format = "%a %d %b %Y %I:%M:%S %p %Z"
-			self.__label.set_text(strftime(format, localtime(fileinfo.mtime)))
+			self.__label.set_text(strftime(format, localtime(fileinfo.get_modification_time())))
 		except AttributeError:
 			self.__label.set_text("Unknown")
 		return
@@ -34,5 +34,6 @@ class Label(object):
 		return
 
 	def __fileinfo_cb(self, manager, fileinfo):
-		self.__set_label(fileinfo)
+		from gobject import idle_add
+		idle_add(self.__set_label, fileinfo)
 		return

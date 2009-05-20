@@ -25,6 +25,7 @@ class Loader(object):
 	def __load_general_templates(self):
 		general = {}
 		for element in self.__dictionary.keys():
+			self.__editor.response()
 			if not element.startswith("General|"): continue
 			nelement = "General" + element[len("General|"):]
 			general[nelement] = self.__dictionary[element][1]
@@ -40,6 +41,7 @@ class Loader(object):
 		string = language_id + "|"
 		language = {}
 		for element in self.__dictionary.keys():
+			self.__editor.response()
 			if not element.startswith(string): continue
 			nelement = language_id + element[len(string):]
 			language[nelement] = self.__dictionary[element][1]

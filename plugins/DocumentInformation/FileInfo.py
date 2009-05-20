@@ -12,22 +12,12 @@ class FileInfo(object):
 
 	def __send_fileinfo(self):
 		try:
-			if self.__editor.uri in ("", None): raise Exception
-			from gnomevfs import get_file_info, FILE_INFO_DEFAULT
-			from gnomevfs import FILE_INFO_GET_MIME_TYPE
-			from gnomevfs import FILE_INFO_FORCE_SLOW_MIME_TYPE
-			from gnomevfs import FILE_INFO_FOLLOW_LINKS
-			FILE_INFO_ACCESS_RIGHTS = 1 << 4
-			fileinfo = get_file_info(self.__editor.uri, FILE_INFO_DEFAULT |
-										FILE_INFO_GET_MIME_TYPE |
-										FILE_INFO_FORCE_SLOW_MIME_TYPE |
-										FILE_INFO_FOLLOW_LINKS |
-										FILE_INFO_ACCESS_RIGHTS)
+			fileinfo = self.__editor.fileinfo
 		except:
 			fileinfo = None
 		finally:
 			self.__manager.emit("fileinfo", fileinfo)
-		return
+		return False
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)

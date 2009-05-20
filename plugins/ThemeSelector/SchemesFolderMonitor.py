@@ -3,11 +3,9 @@ class Monitor(object):
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		# Monitor database for changes.
-		from gnomevfs import monitor_add, MONITOR_DIRECTORY as FOLDER
-		self.__monid1 = monitor_add(self.__uri1, FOLDER, self.__changed_cb)
-		self.__monid2 = monitor_add(self.__uri2, FOLDER, self.__changed_cb)
-		self.__monid3 = monitor_add(self.__uri3, FOLDER, self.__changed_cb)
+		self.__scribes_monitor.connect("changed", self.__changed_cb)
+		self.__gedit_monitor.connect("changed", self.__changed_cb)
+		self.__default_monitor.connect("changed", self.__changed_cb)
 		from gobject import idle_add
 		idle_add(self.__scan)
 
@@ -18,10 +16,9 @@ class Monitor(object):
 		scribes_path = join(self.__editor.home_folder, ".gnome2/scribes/styles")
 		gedit_path = join(self.__editor.home_folder, ".gnome2/gedit/styles")
 		default_path = join(self.__editor.home_folder, ".local/share/gtksourceview-2.0/styles")
-		from gnomevfs import get_uri_from_local_path
-		self.__uri1 = get_uri_from_local_path(scribes_path)
-		self.__uri2 = get_uri_from_local_path(gedit_path)
-		self.__uri3 = get_uri_from_local_path(default_path)
+		self.__scribes_monitor = editor.get_folder_monitor(scribes_path)
+		self.__gedit_monitor = editor.get_folder_monitor(gedit_path)
+		self.__default_monitor = editor.get_folder_monitor(default_path)
 		return
 
 	def __scan(self):
@@ -30,10 +27,9 @@ class Monitor(object):
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		from gnomevfs import monitor_cancel
-		monitor_cancel(self.__monid1)
-		monitor_cancel(self.__monid2)
-		monitor_cancel(self.__monid3)
+		self.__scribes_monitor.cancel()
+		self.__gedit_monitor.cancel()
+		self.__default_monitor.cancel()
 		del self
 		self = None
 		return
@@ -43,6 +39,7 @@ class Monitor(object):
 		return
 
 	def __changed_cb(self, *args):
+		if not self.__editor.monitor_events(args, (0,2,3)): return False
 		from gobject import idle_add
 		idle_add(self.__scan)
 		return True

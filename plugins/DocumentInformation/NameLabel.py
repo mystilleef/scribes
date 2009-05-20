@@ -14,10 +14,10 @@ class Label(object):
 
 	def __set_label(self, fileinfo):
 		try:
-			self.__label.set_text(fileinfo.name)
+			self.__label.set_text(fileinfo.get_display_name())
 		except AttributeError:
 			self.__label.set_text(self.__editor.window.get_title().lstrip("*"))
-		return
+		return False
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
@@ -32,5 +32,6 @@ class Label(object):
 		return
 
 	def __fileinfo_cb(self, manager, fileinfo):
-		self.__set_label(fileinfo)
-		return
+		from gobject import idle_add
+		idle_add(self.__set_label, fileinfo)
+		return False

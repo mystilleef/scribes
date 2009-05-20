@@ -14,8 +14,8 @@ class Label(object):
 
 	def __set_label(self, fileinfo):
 		try:
-			from gnomevfs import format_file_size_for_display
-			self.__label.set_text(format_file_size_for_display(fileinfo.size))
+			from gettext import gettext as _
+			self.__label.set_text(str(fileinfo.get_size()) + _(" bytes"))
 		except AttributeError:
 			self.__label.set_text("Unknown")
 		return
@@ -33,5 +33,6 @@ class Label(object):
 		return
 
 	def __fileinfo_cb(self, manager, fileinfo):
-		self.__set_label(fileinfo)
-		return
+		from gobject import idle_add
+		idle_add(self.__set_label, fileinfo)
+		return False

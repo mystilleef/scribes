@@ -5,8 +5,7 @@ class ColorButton(object):
 		self.__set_properties()
 		self.__sigid1 = self.__button.connect("color-set", self.__color_set_cb)
 		self.__sigid2 = manager.connect("destroy", self.__destroy_cb)
-		from gnomevfs import monitor_add, MONITOR_FILE
-		self.__monid1 = monitor_add(self.__database_uri, MONITOR_FILE, self.__database_changed_cb)
+		self.__monitor.connect("changed", self.__changed_cb)
 		self.__button.set_property("sensitive", True)
 
 	def __init_attributes(self, editor, manager):
@@ -15,9 +14,9 @@ class ColorButton(object):
 		self.__button = manager.gui.get_widget("BracketSelectionColorButton")
 		from os.path import join
 		preference_folder = join(editor.metadata_folder, "PluginPreferences")
-		database_path = join(preference_folder, "LexicalScopeHighlight.gdb")
-		from gnomevfs import get_uri_from_local_path
-		self.__database_uri = get_uri_from_local_path(database_path)
+		_path = join(preference_folder, "LexicalScopeHighlight.gdb")
+		from gio import File, FILE_MONITOR_NONE
+		self.__monitor = File(_path).monitor_file(FILE_MONITOR_NONE, None)
 		return
 
 	def __set_properties(self):
@@ -28,8 +27,7 @@ class ColorButton(object):
 		return
 
 	def __destroy(self):
-		from gnomevfs import monitor_cancel
-		if self.__monid1: monitor_cancel(self.__monid1)
+		self.__monitor.cancel()
 		self.__editor.disconnect_signal(self.__sigid1, self.__button)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__button.destroy()
@@ -47,7 +45,9 @@ class ColorButton(object):
 		self.__destroy()
 		return True
 
-	def __database_changed_cb(self, *args):
+	def __changed_cb(self, *args):
+		monitor, gfile, otherfile, event = args
+		if not (event in (0,2,3)): return False
 		self.__button.handler_block(self.__sigid1)
 		from LexicalScopeHighlightMetadata import get_value
 		from gtk.gdk import color_parse

@@ -1,9 +1,6 @@
 from gettext import gettext as _
 
 class Manager(object):
-	"""
-	This class checks python source code for syntax errors.
-	"""
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)

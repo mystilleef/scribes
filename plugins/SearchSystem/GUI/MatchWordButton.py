@@ -1,5 +1,5 @@
 class Button(object):
-	
+
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
@@ -10,7 +10,7 @@ class Button(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__button = manager.menu_gui.get_widget("MatchWordButton")
-		return  
+		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
@@ -19,7 +19,7 @@ class Button(object):
 		self.__button.destroy()
 		del self
 		self = None
-		return 
+		return
 
 	def __update_database(self):
 		from ..MatchWordMetadata import set_value
@@ -30,7 +30,7 @@ class Button(object):
 		self.__button.handler_block(self.__sigid2)
 		self.__button.props.active = match_word
 		self.__button.handler_unblock(self.__sigid2)
-		return 
+		return
 
 	def __destroy_cb(self, *args):
 		self.__destroy()

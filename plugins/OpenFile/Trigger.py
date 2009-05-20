@@ -24,7 +24,7 @@ class Trigger(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__trigger3)
 		del self
 		self = None
-		return 
+		return
 
 	def __get_manager(self):
 		if self.__manager: return self.__manager
@@ -40,11 +40,11 @@ class Trigger(object):
 	def __open_dialog_cb(self, *args):
 		self.__get_manager().show_open_dialog()
 		return False
-	
+
 	def __remote_dialog_cb(self, *args):
 		self.__get_manager().show_remote_dialog()
 		return False
-	
+
 	def __newfile_dialog_cb(self, *args):
 		self.__get_manager().show_newfile_dialog()
 		return False

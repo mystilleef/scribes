@@ -1,8 +1,4 @@
 class Manager(object):
-	"""
-	This class implements methods that provide navigation and selection
-	functions for Python source code.
-	"""
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)

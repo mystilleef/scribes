@@ -1,9 +1,4 @@
 class Trigger(object):
-	"""
-	This class creates objects, triggers,  that allows users to perform
-	python specific navigation and selection operations in Python source
-	code.
-	"""
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)

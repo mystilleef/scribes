@@ -4,8 +4,7 @@ class Manager(object):
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.textview.connect("motion-notify-event", self.__motion_notify_event_cb)
 		self.__sigid2 = editor.window.connect("leave-notify-event", self.__hide_cb)
-		from gnomevfs import monitor_add, MONITOR_FILE
-		self.__monid1 = monitor_add(self.__uri, MONITOR_FILE, self.__changed_cb)
+		self.__monitor.connect("changed", self.__changed_cb)
 		from gobject import idle_add
 		idle_add(self.__monitor_mouse, priority=9999)
 		idle_add(self.__precompile_methods, priority=9999)
@@ -14,17 +13,14 @@ class Manager(object):
 		self.__editor = editor
 		self.__activate = False
 		self.__show = None
-		self.__uri = self.__get_database_uri(editor)
+		self.__monitor = editor.get_file_monitor(self.__get_path())
 		return
 
-	def __get_database_uri(self, editor):
+	def __get_path(self):
 		# Path to the font database.
 		from os.path import join
-		folder = join(editor.metadata_folder, "Preferences")
-		file_path = join(folder, "MinimalMode.gdb")
-		from gnomevfs import get_uri_from_local_path as get_uri
-		uri = get_uri(file_path)
-		return uri
+		folder = join(self.__editor.metadata_folder, "Preferences")
+		return join(folder, "MinimalMode.gdb")
 
 	def __monitor_mouse(self):
 		self.__disable_mouse_monitor()
@@ -101,8 +97,7 @@ class Manager(object):
 		return
 
 	def destroy(self):
-		from gnomevfs import monitor_cancel
-		monitor_cancel(self.__monid1)
+		self.__monitor.cancel()
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor.textview)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor.window)
 		del self
@@ -110,6 +105,7 @@ class Manager(object):
 		return
 
 	def __changed_cb(self, *args):
+		if not self.__editor.monitor_events(args, (0,2,3)): return False
 		self.__monitor_mouse()
 		return False
 

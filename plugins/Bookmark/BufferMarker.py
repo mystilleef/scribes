@@ -1,10 +1,7 @@
 from gettext import gettext as _
 
 class Marker(object):
-	"""
-	This class adds and removes marks in the buffer.
-	"""
-	
+
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__set_properties()

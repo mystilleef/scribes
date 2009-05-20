@@ -3,11 +3,10 @@ class Manager(object):
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		from gnomevfs import monitor_add, MONITOR_FILE
-		self.__monid1 = monitor_add(self.__match_word_uri, MONITOR_FILE, self.__database_changed_cb)
-		self.__monid2 = monitor_add(self.__match_case_uri, MONITOR_FILE, self.__database_changed_cb)
-		self.__monid3 = monitor_add(self.__search_mode_uri, MONITOR_FILE, self.__database_changed_cb)
-		self.__monid4 = monitor_add(self.__search_type_uri, MONITOR_FILE, self.__database_changed_cb)
+		self.__word_monitor.connect("changed", self.__changed_cb)
+		self.__case_monitor.connect("changed", self.__changed_cb)
+		self.__mode_monitor.connect("changed", self.__changed_cb)
+		self.__type_monitor.connect("changed", self.__changed_cb)
 		self.__emit_change_signal()
 
 	def __init_attributes(self, manager, editor):
@@ -19,11 +18,10 @@ class Manager(object):
 		case_path = join(preference_folder, "MatchCase.gdb")
 		mode_path = join(preference_folder, "SearchMode.gdb")
 		type_path = join(preference_folder, "SearchType.gdb")
-		from gnomevfs import get_uri_from_local_path as get_uri
-		self.__match_word_uri = get_uri(word_path)
-		self.__match_case_uri = get_uri(case_path)
-		self.__search_mode_uri = get_uri(mode_path)
-		self.__search_type_uri = get_uri(type_path)
+		self.__word_monitor = editor.get_file_monitor(word_path)
+		self.__case_monitor = editor.get_file_monitor(case_path)
+		self.__mode_monitor = editor.get_file_monitor(mode_path)
+		self.__type_monitor = editor.get_file_monitor(type_path)
 		return
 
 	def __emit_change_signal(self):
@@ -38,11 +36,10 @@ class Manager(object):
 		return
 
 	def __destroy(self):
-		from gnomevfs import monitor_cancel
-		if self.__monid1: monitor_cancel(self.__monid1)
-		if self.__monid2: monitor_cancel(self.__monid2)
-		if self.__monid3: monitor_cancel(self.__monid3)
-		if self.__monid4: monitor_cancel(self.__monid4)
+		self.__word_monitor.cancel()
+		self.__case_monitor.cancel()
+		self.__mode_monitor.cancel()
+		self.__type_monitor.cancel()
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		del self
 		self = None
@@ -52,6 +49,7 @@ class Manager(object):
 		self.__destroy()
 		return
 
-	def __database_changed_cb(self, *args):
+	def __changed_cb(self, *args):
+		if not self.__editor.monitor_events(args, (0,2,3)): return False
 		self.__emit_change_signal()
 		return False

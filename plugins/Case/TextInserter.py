@@ -1,11 +1,11 @@
 class Inserter(object):
-	
+
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("marks", self.__marks_cb)
 		self.__sigid3 = manager.connect("processed-text", self.__text_cb)
-	
+
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
@@ -19,7 +19,7 @@ class Inserter(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		del self
 		self = None
-		return 
+		return
 
 	def __insert(self, string):
 		start = self.__buffer.get_iter_at_mark(self.__marks[0])

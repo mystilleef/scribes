@@ -1,10 +1,7 @@
 from gettext import gettext as _
 
 class Navigator(object):
-	"""
-	This class moves the cursor and view to bookmarked lines.
-	"""
-	
+
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
@@ -21,7 +18,8 @@ class Navigator(object):
 		self.__editor.textview.scroll_to_iter(iterator, 0.001, use_align=True, xalign=1.0)
 		message = _("Moved to bookmark on line %d") % line
 		self.__editor.update_message(message, "yes")
-		return False
+		return False
+
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)

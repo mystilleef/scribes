@@ -1,8 +1,4 @@
-
 class ComboBoxEntry(object):
-	"""
-	This class creates a comboboxentry for the remote dialog.
-	"""
 
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
@@ -41,6 +37,7 @@ class ComboBoxEntry(object):
 		self.__model.clear()
 		recent_infos = self.__editor.recent_manager.get_items()
 		for recent_info in recent_infos:
+			self.__editor.response()
 			uri = recent_info.get_uri()
 			if uri.startswith("file://"): continue
 			self.__model.append([uri])

@@ -20,11 +20,11 @@ class Updater(object):
 	def __process(self):
 		uris = self.__editor.uris
 		if not uris: return False
-		from gnomevfs import get_mime_type, URI, mime_get_description
-		get_mime = lambda uri: mime_get_description(get_mime_type(uri)).split()[0].capitalize()
-		get_filename = lambda uri: URI(uri).short_name
-		get_path = lambda uri: URI(uri).path
-#		get_data = lambda uri: get_mime(uri), get_filename(uri), get_path(uri), uri
+		get_mimetype = self.__editor.get_mimetype
+		from gio import File, content_type_get_description as get_desc
+		get_mime = lambda uri: get_desc(get_mimetype(uri)).split()[0].capitalize()
+		get_filename = lambda uri: File(uri).get_basename()
+		get_path = lambda uri: File(uri).get_parse_name()
 		hfolder = self.__editor.home_folder
 		format = lambda filename: filename.replace(hfolder, "~") if filename.startswith(hfolder) else filename
 		def get_data(uri):

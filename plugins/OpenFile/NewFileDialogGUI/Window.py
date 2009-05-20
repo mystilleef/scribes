@@ -1,9 +1,6 @@
 from gettext import gettext as _
 
 class Window(object):
-	"""
-	This class creates the window for new file dialog window.
-	"""
 
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)

@@ -28,6 +28,7 @@ class Selector(object):
 		cursor = self.__editor.cursor
 		tempiter = cursor.copy()
 		while True:
+			self.__editor.response()
 			if tempiter.is_start(): break
 			tempiter.backward_char()
 			if not (tempiter.get_char() in pair_chars): continue

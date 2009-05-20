@@ -1,8 +1,4 @@
 class Updater(object):
-	"""
-	This class updates a the bookmark database with bookmarked lines
-	associated with a document.
-	"""
 
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
