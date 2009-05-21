@@ -14,7 +14,7 @@ class DBusService(Object):
 	def open_window(self):
 		return self.__manager.open_window()
 
-	@method("net.sourceforge.Scribes")
+	@method("net.sourceforge.Scribes", in_signature="as")
 	def open_files(self, uris):
 		uris = uris if uris else None
 		return self.__manager.open_files(uris)

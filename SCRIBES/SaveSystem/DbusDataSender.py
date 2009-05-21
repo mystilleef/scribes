@@ -29,7 +29,7 @@ class Sender(object):
 		self = None
 		return False
 
-	def __send(self, data):
+	def __send(self, data): 
 		session_id, uri, encoding = data
 		if self.__session_id != session_id: return False
 		data = session_id, uri, encoding, self.__editor.text

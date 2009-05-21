@@ -12,13 +12,13 @@ class DBusService(Object):
 		self.__manager = manager
 		manager.connect("finished", self.__finished_cb)
 
-	@method(indexer_dbus_service)
+	@method(indexer_dbus_service, in_signature="sx")
 	def process(self, text, id_):
 		return self.__manager.process(text, id_)
 
-	@signal(indexer_dbus_service)
+	@signal(indexer_dbus_service, signature="xa{sx}")
 	def finished(self, id_, dictionary):
-		return
+		return # return
 
 	def __finished_cb(self, manager, data):
 		editor_id, dictionary = data

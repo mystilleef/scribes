@@ -29,7 +29,7 @@ class Completer(object):
 
 	def __verify_session(self, data):
 		try:
-			session_id = data[0]
+			session_id = tuple(data[0])
 			if not session_id in self.__queue: raise ValueError
 			if session_id[-1] > self.__queue[-1][-1]: raise StandardError
 			if session_id != self.__queue[-1]: raise AssertionError

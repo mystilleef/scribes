@@ -13,7 +13,7 @@ class DbusService(Object):
 		manager.connect("saved-data", self.__saved_data_cb)
 		manager.connect("error", self.__error_cb)
 
-	@method(dbus_service)
+	@method(dbus_service, in_signature="(ausss)")
 	def process(self, data):
 		return self.__manager.emit("save-data", data)
 
@@ -21,7 +21,7 @@ class DbusService(Object):
 	def is_ready(self):
 		return False
 
-	@signal(dbus_service)
+	@signal(dbus_service, signature="(axss)")
 	def saved_file(self, data):
 		return False
 
