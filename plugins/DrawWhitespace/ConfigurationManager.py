@@ -2,7 +2,7 @@ class Manager(object):
 
 	def __init__(self, editor, manager):
 		self.__init_attributes(editor, manager)
-		self.__sig_id1 = manager.connect("destroy", self.__destroy_cb)
+		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__monitor.connect("changed", self.__changed_cb)
 		self.__send_show_signal()
 
@@ -22,7 +22,7 @@ class Manager(object):
 
 	def __destroy(self):
 		self.__monitor.cancel()
-		self.__editor.disconnect_signal(self.__sig_id1, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		del self
 		self = None
 		return

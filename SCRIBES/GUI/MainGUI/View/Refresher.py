@@ -24,9 +24,7 @@ class Refresher(object):
 	def __refresh(self, grab_focus=True):
 		try:
 			self.__editor.response()
-			self.__view.queue_draw()
 			self.__view.window.update_children(True)
-#			self.__editor.window.window.update_children(True)
 		except:
 			pass
 		finally:

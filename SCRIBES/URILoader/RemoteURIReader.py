@@ -24,8 +24,12 @@ class Reader(object):
 		return False
 
 	def __ready_cb(self, gfile, result):
-		data = gfile.load_contents_finish(result)
-		self.__manager.emit("process-encoding", gfile.get_uri(), data[0])
+		from gio import Error
+		try:
+			data = gfile.load_contents_finish(result)
+			self.__manager.emit("process-encoding", gfile.get_uri(), data[0])
+		except Error:
+			print dir(result)
 		return False
 
 	def __destroy_cb(self, *args):

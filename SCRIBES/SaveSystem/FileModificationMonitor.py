@@ -36,7 +36,7 @@ class Monitor(object):
 		except ValueError:
 			self.__modified = False
 			self.__manager.emit("reset-modification-flag")
-			print "Modification occurred while saving! Saving later!"
+#			print "Modification occurred while saving! Saving later!"
 		return False
 
 	def __block_change_signal(self):

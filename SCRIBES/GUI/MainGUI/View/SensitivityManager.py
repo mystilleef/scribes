@@ -25,7 +25,7 @@ class Manager(object):
 
 	def __sensitive(self, sensitive):
 		self.__swin.props.sensitive = sensitive
-		if sensitive: self.__editor.textview.grab_focus()
+		if sensitive: self.__editor.refresh()
 		return False
 
 	def __quit_cb(self, *args):

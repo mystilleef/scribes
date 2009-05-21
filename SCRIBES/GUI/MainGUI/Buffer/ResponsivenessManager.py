@@ -50,5 +50,5 @@ class Manager(object):
 #		finally:
 #			self.__timer = idle_add(self.__editor.response)
 		from gobject import idle_add
-		idle_add(self.__editor.response)
+		idle_add(self.__editor.refresh, False)
 		return False

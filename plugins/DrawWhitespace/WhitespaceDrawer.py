@@ -81,13 +81,13 @@ class Drawer(object):
 
 	def __block_event_after_signal(self):
 		if self.__blocked: return
-		self.__textview.handler_block(self.__sig_id1)
+		self.__textview.handler_block(self.__sigid1)
 		self.__blocked = True
 		return
 
 	def __unblock_event_after_signal(self):
 		if self.__blocked is False: return
-		self.__textview.handler_unblock(self.__sig_id1)
+		self.__textview.handler_unblock(self.__sigid1)
 		self.__blocked = False
 		return
 
