@@ -12,11 +12,13 @@ class Manager(GObject):
 		"save-processor-object": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-succeeded": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"saved": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"saved?": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"error": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-failed": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"readonly-error": (SSIGNAL, TYPE_NONE, ()),
 		"show-save-dialog": (SSIGNAL, TYPE_NONE, ()),
 		"create-unsaved-file": (SSIGNAL, TYPE_NONE, ()),
+		"reset-modification-flag": (SSIGNAL, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
@@ -30,6 +32,8 @@ class Manager(GObject):
 		Creator(self, editor)
 		from QuitSaver import Saver
 		Saver(self, editor)
+		from FileModificationMonitor import Monitor
+		Monitor(self, editor)
 		from SessionCompleter import Completer
 		Completer(self, editor)
 		from SessionManager import Manager

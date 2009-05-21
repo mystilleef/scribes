@@ -17,7 +17,8 @@ savesystem_PYTHON = \
 	ErrorDisplayer.py \
 	QuitSaver.py \
 	SessionCompleter.py \
-	FocusOutSaver.py
+	FocusOutSaver.py \
+	FileModificationMonitor.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

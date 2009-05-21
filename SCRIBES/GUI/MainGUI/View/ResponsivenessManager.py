@@ -52,7 +52,7 @@ class Manager(object):
 		return False
 
 	def __response_cb(self, *args):
-		self.__editor.response()
+		self.__editor.refresh(False)
 #		try:
 #			from gobject import idle_add, source_remove
 #			source_remove(self.__timer)

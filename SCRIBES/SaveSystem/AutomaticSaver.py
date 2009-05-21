@@ -8,6 +8,7 @@ class Saver(object):
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("modified-file", self.__modified_cb)
 		self.__sigid3 = editor.connect("close", self.__close_cb)
+		self.__sigid4 = manager.connect("reset-modification-flag", self.__modified_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -20,6 +21,7 @@ class Saver(object):
 		self.__remove_timer()
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.unregister_object(self)
 		del self
 		self = None

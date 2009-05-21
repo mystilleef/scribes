@@ -26,7 +26,7 @@ class Refresher(object):
 			self.__editor.response()
 			self.__view.queue_draw()
 			self.__view.window.update_children(True)
-			self.__editor.window.window.update_children(True)
+#			self.__editor.window.window.update_children(True)
 		except:
 			pass
 		finally:
@@ -35,7 +35,7 @@ class Refresher(object):
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		self.__destroy() # Destroy this object.
 		return False
 
 	def __refresh_cb(self, editor, grab_focus):

@@ -35,7 +35,7 @@ class Completer(object):
 			if session_id != self.__queue[-1]: raise AssertionError
 			self.__queue.remove(session_id)
 			emit = self.__manager.emit
-			emit("saved", data) if len(data) == 3 else emit("error", data)
+			emit("saved?", data) if len(data) == 3 else emit("error", data)
 		except ValueError:
 			print "ERROR: SAVING WILL NOT OCCUR - DATA CORRUPTION"
 		except StandardError:
