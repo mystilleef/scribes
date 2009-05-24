@@ -13,7 +13,10 @@ uriloader_PYTHON = \
 	TextInserter.py \
 	EncodingProcessor.py \
 	Destroyer.py \
-	Initializer.py
+	Initializer.py \
+	FileMounter.py \
+	MountOperator.py \
+	GIOErrorHandler.py
 
 TAGS_FILES = $(uriloader_PYTHON)
 

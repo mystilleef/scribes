@@ -1,13 +1,15 @@
-class Reader(object):
+class Mounter(object):
 
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("read-uri", self.__read_uri_cb)
+		self.__sigid2 = manager.connect("ErrorNotMounted", self.__mount_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
+		from MountOperator import Operator
+		self.__mount_operator = Operator(manager, editor)
 		return
 
 	def __destroy(self):
@@ -17,31 +19,30 @@ class Reader(object):
 		self = None
 		return False
 
+	def __mount(self, data):
+		gfile, error = data
+		gfile.mount_enclosing_volume(self.__mount_operator, self.__async_ready_cb)
+		return False
+
 	def __read(self, uri):
-		if uri.startswith("file:///"): return False
-		from gio import File
-		File(uri).load_contents_async(self.__ready_cb)
+		self.__manager.emit("read-uri", uri)
 		return False
 
-	def __error(self, e):
-		self.__manager.emit("gio-error", e)
-		return False
-
-	def __ready_cb(self, gfile, result):
+	def __async_ready_cb(self, gfile, result):
 		from gio import Error
 		try:
-			data = gfile.load_contents_finish(result)
-			self.__manager.emit("process-encoding", gfile.get_uri(), data[0])
-		except Error, e:
+			success = gfile.mount_enclosing_volume_finish(result)
 			from gobject import idle_add
-			idle_add(self.__error, (gfile, e), priority=9999)
+			if success: idle_add(self.__read, gfile.get_uri(), priority=9999)
+		except Error, e:
+			print e.message
 		return False
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
-	def __read_uri_cb(self, manager, uri):
+	def __mount_cb(self, manager, data):
 		from gobject import idle_add
-		idle_add(self.__read, uri)
+		idle_add(self.__mount, data, priority=9999)
 		return False

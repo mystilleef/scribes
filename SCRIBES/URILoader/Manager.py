@@ -1,6 +1,6 @@
 from gobject import GObject, SIGNAL_ACTION, SIGNAL_RUN_LAST
 from gobject import SIGNAL_NO_RECURSE, TYPE_OBJECT, TYPE_STRING
-from gobject import TYPE_NONE, TYPE_INT
+from gobject import TYPE_NONE, TYPE_INT, TYPE_PYOBJECT
 SSIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 
 class Manager(GObject):
@@ -17,12 +17,19 @@ class Manager(GObject):
 		"error": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_INT)),
 		"destroy": (SSIGNAL, TYPE_NONE, ()),
 		"encoding-error": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"gio-error": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"unhandled-gio-error": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"ErrorNotMounted": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor, uri, encoding):
 		GObject.__init__(self)
 		from Destroyer import Destroyer
 		Destroyer(self, editor)
+		from FileMounter import Mounter
+		Mounter(self, editor)
+		from GIOErrorHandler import Handler
+		Handler(self, editor)
 		from BusyManager import Manager
 		Manager(self, editor)
 		from StateNotifier import Notifier
