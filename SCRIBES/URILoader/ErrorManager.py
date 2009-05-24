@@ -7,33 +7,30 @@ class Manager(object):
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect_after("error", self.__error_cb)
 		self.__sigid3 = manager.connect_after("encoding-error", self.__encoding_error_cb)
+		self.__sigid4 = manager.connect_after("unhandled-gio-error", self.__gio_error_cb)
+		self.__sigid5 = manager.connect_after("NoFeedbackError", self.__no_feedback_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__error_codes = {
-			1: _("ERROR: You do not have permission to view %s"),
-			2: _("ERROR: You do not have access to %s"),
-			3: _("ERROR: Cannot find file information object for %s"),
-			4: _("ERROR: %s does not exist"),
-			5: _("ERROR: Failed to open %s for loading"),
-			6: _("ERROR: Failed to read %s for loading"),
-			7: _("ERROR: Failed to close %s for loading"),
-		}
 		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		del self
 		self = None
 		return False
 
-	def __show(self, uri, error_code):
+	def __show(self, data):
+		uri, message = data
+		self.__editor.emit("load-error", uri)
 		from gio import File
-		title = _("File: %s") % File(uri).get_parse_name()
-		message = self.__error_codes[error_code] % URI(uri).short_name
+		gfile = File(uri)
+		title = _("File: %s") % gfile.get_parse_name()
 		self.__editor.show_error(title, message)
 		return False
 
@@ -41,10 +38,21 @@ class Manager(object):
 		self.__destroy
 		return False
 
-	def __error_cb(self, manager, uri, error_code):
-		self.__show(uri, error_code)
+	def __error_cb(self, manager, data):
+		self.__show(data)
 		return False
 
 	def __encoding_error_cb(self, *args):
 		self.__editor.show_load_encoding_error_window()
+		return False
+
+	def __gio_error_cb(self, manager, data):
+		gfile, error = data
+		self.__show((gfile.get_uri(), error.message))
+		return False
+
+	def __no_feedback_cb(self, manager, data):
+		gfile, error = data
+		self.__editor.emit("load-error", gfile.get_uri())
+		self.__editor.busy(False)
 		return False

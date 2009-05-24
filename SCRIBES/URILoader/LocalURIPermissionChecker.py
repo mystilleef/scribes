@@ -25,8 +25,7 @@ class Checker(object):
 			if not access(local_path, R_OK): raise ValueError
 			self.__manager.emit("read-uri", uri)
 		except ValueError:
-			# Error code 1 signifies a permission error.
-			self.__manager.emit("error", uri, 1)
+			self.__manager.emit("error", (uri, "Permission Error."))
 		return False
 
 	def __destroy_cb(self, *args):

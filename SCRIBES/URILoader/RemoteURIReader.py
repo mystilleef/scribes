@@ -23,8 +23,8 @@ class Reader(object):
 		File(uri).load_contents_async(self.__ready_cb)
 		return False
 
-	def __error(self, e):
-		self.__manager.emit("gio-error", e)
+	def __error(self, data):
+		self.__manager.emit("gio-error", data)
 		return False
 
 	def __ready_cb(self, gfile, result):

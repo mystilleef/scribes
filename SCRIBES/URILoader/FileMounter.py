@@ -28,6 +28,10 @@ class Mounter(object):
 		self.__manager.emit("read-uri", uri)
 		return False
 
+	def __error(self, data):
+		self.__manager.emit("gio-error", data)
+		return False
+
 	def __async_ready_cb(self, gfile, result):
 		from gio import Error
 		try:
@@ -35,7 +39,8 @@ class Mounter(object):
 			from gobject import idle_add
 			if success: idle_add(self.__read, gfile.get_uri(), priority=9999)
 		except Error, e:
-			print e.message
+			from gobject import idle_add
+			idle_add(self.__error, (gfile, e))
 		return False
 
 	def __destroy_cb(self, *args):

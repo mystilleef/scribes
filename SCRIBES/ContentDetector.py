@@ -35,7 +35,7 @@ class Detector(object):
 		return False
 
 	def __load_error_cb(self, *args):
-		self.__set(True, self.__editor.handler_unblock)
+		self.__set(False, self.__editor.handler_unblock)
 		return False
 
 	def __quit_cb(self, *args):
