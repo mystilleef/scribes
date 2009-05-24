@@ -14,7 +14,8 @@ class Handler(object):
 		# handle in a special manner.
 		self.__dictionary = {
 			ERROR_NOT_MOUNTED: "ErrorNotMounted",
-			14: "NoFeedbackError",
+#			 Password dialog cancel error.
+#			14: "NoFeedbackError",
 		}
 		return
 

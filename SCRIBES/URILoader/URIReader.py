@@ -18,7 +18,6 @@ class Reader(object):
 		return False
 
 	def __read(self, uri):
-		if uri.startswith("file:///"): return False
 		from gio import File
 		File(uri).load_contents_async(self.__ready_cb)
 		return False

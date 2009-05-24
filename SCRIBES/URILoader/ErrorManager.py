@@ -43,6 +43,7 @@ class Manager(object):
 		return False
 
 	def __encoding_error_cb(self, *args):
+		print "Load encoding error."
 		self.__editor.show_load_encoding_error_window()
 		return False
 

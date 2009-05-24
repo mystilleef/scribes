@@ -7,6 +7,7 @@ class Manager(object):
 		self.__sigid3 = manager.connect("error", self.__nobusy_cb)
 		self.__sigid4 = manager.connect("encoding-error", self.__nobusy_cb)
 		self.__sigid5 = manager.connect("load-success", self.__nobusy_cb)
+		self.__sigid6 = editor.connect("load-error", self.__nobusy_cb)
 #		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
@@ -20,6 +21,7 @@ class Manager(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
 #		self.__editor.unregister_object(self)
 		del self
 		self = None

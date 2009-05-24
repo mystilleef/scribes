@@ -24,8 +24,8 @@ class Mounter(object):
 		gfile.mount_enclosing_volume(self.__mount_operator, self.__async_ready_cb)
 		return False
 
-	def __read(self, uri):
-		self.__manager.emit("read-uri", uri)
+	def __check(self, uri):
+		self.__manager.emit("check-file-type", uri)
 		return False
 
 	def __error(self, data):
@@ -37,7 +37,7 @@ class Mounter(object):
 		try:
 			success = gfile.mount_enclosing_volume_finish(result)
 			from gobject import idle_add
-			if success: idle_add(self.__read, gfile.get_uri(), priority=9999)
+			if success: idle_add(self.__check, gfile.get_uri(), priority=9999)
 		except Error, e:
 			from gobject import idle_add
 			idle_add(self.__error, (gfile, e))

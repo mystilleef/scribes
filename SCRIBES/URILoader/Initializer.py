@@ -20,6 +20,7 @@ class Initializer(object):
 
 	def __load_file_cb(self, editor, uri, encoding):
 		self.__manager.emit("init-loading", uri, encoding)
+		self.__manager.emit("check-file-type", uri)
 		return False
 
 	def __destroy_cb(self, *args):

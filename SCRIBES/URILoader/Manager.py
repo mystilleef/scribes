@@ -11,9 +11,8 @@ class Manager(GObject):
 		"insertion-error": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"load-success": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"insert-text": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_STRING)),
-		"check-local-uri": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
-		"check-remote-uri": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"read-uri": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"check-file-type": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"error": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"NoFeedbackError": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"destroy": (SSIGNAL, TYPE_NONE, ()),
@@ -41,15 +40,9 @@ class Manager(GObject):
 		Inserter(self, editor)
 		from EncodingProcessor import Processor
 		Processor(self, editor)
-		from RemoteURIReader import Reader
+		from URIReader import Reader
 		Reader(self, editor)
-		from LocalURIReader import Reader
-		Reader(self, editor)
-		from RemoteURIPermissionChecker import Checker
-		Checker(self, editor)
-		from LocalURIPermissionChecker import Checker
-		Checker(self, editor)
-		from URITypeChecker import Checker
+		from FileTypeChecker import Checker
 		Checker(self, editor)
 		from Initializer import Initializer
 		Initializer(self, editor, uri, encoding)

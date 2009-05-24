@@ -3,18 +3,16 @@ uriloader_PYTHON = \
 	__init__.py \
 	Manager.py \
 	StateNotifier.py \
-	URITypeChecker.py \
-	LocalURIPermissionChecker.py \
 	BusyManager.py\
-	RemoteURIPermissionChecker.py \
-	LocalURIReader.py \
-	RemoteURIReader.py \
+	URIReader.py \
 	ErrorManager.py \
 	TextInserter.py \
 	EncodingProcessor.py \
 	Destroyer.py \
 	Initializer.py \
 	FileMounter.py \
+	FileTypeChecker.py \
+	GIOError.py \
 	MountOperator.py \
 	GIOErrorHandler.py
 
