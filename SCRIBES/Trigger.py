@@ -6,7 +6,7 @@ class Trigger(GObject):
 		"activate": (SIGNAL_RUN_LAST, TYPE_NONE, ())
 	}
 
-	def __init__(self, editor, name, accelerator=None, description=None, error=True, removable=True):
+	def __init__(self, editor, name, accelerator="", description="", error=True, removable=True):
 		GObject.__init__(self)
 		self.__init_attributes(editor, name, accelerator, description, error, removable)
 		from gobject import idle_add

@@ -30,7 +30,6 @@ class Completer(object):
 
 	def __verify_session(self, data):
 		try:
-			print self.__queue
 			session_id = tuple(data[0])
 			self.__queue.remove(session_id)
 			if self.__session_id != session_id: return False
@@ -40,9 +39,6 @@ class Completer(object):
 			print "Module Name: SCRIBES/SaveSystem/SessionCompleter"
 			print "Method Name: __verify_session"
 			print "ERROR MESSAGE: Session id not in queue", session_id
-		finally:
-			print self.__queue
-			print "==================================================="
 		return False
 
 	def __quit_cb(self, *args):
