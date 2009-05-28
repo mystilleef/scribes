@@ -37,5 +37,6 @@ class Manager(object):
 		return False
 
 	def __save_cb(self, editor, uri, encoding):
-		self.__emit(uri, encoding)
+		from gobject import idle_add
+		idle_add(self.__emit, uri, encoding)
 		return False

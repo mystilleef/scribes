@@ -11,7 +11,7 @@ with power. Scribes enhances your workflow by ensuring common and
 repetitive operations are intelligently automated and by eliminating 
 factors that prevent you from focusing on your tasks.
 
-	http://scribes.sourceforge.net/
+	http://scribes.sf.net/
 
 You can also write Python plugins to extend or customize the editor for
 specialized text editing needs.
@@ -23,7 +23,7 @@ To use scribes you need the following software installed on
 your computer:
 
 	- D-Bus-0.70
-	- Python-2.4
+	- Python-2.5
 	- PyGTK-2.10
 	- Yelp-2.12
 	- gnome-python-2.12

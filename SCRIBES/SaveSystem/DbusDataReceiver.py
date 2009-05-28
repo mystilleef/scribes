@@ -38,6 +38,7 @@ class Receiver(object):
 
 	def __emit(self, data):
 		if self.__editor.id_ != data[0][0]: return False
+		if tuple(data[0]) != self.__session_id: return False
 		signal_name = "save-succeeded" if len(data) == 3 else "save-failed"
 		self.__manager.emit(signal_name, data)
 		return False

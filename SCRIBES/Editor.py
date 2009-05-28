@@ -94,11 +94,13 @@ class Editor(Signals):
 		return False
 
 	def help(self):
-		from gnome import help_display
-		success = True if help_display("/scribes.xml") else False
-		message = _("Launching user guide") if success else _("Failed to launch user guide")
-		show = self.update_message
-		show(message, "help", 10) if success else show(message, "fail", 7)
+		uri = "ghelp:scribes"
+		from gobject import spawn_async, SPAWN_STDERR_TO_DEV_NULL
+		from gobject import SPAWN_SEARCH_PATH, SPAWN_STDOUT_TO_DEV_NULL
+		spawn_async(argv=("xdg-open",uri),
+			flags=SPAWN_SEARCH_PATH | SPAWN_STDOUT_TO_DEV_NULL | SPAWN_STDERR_TO_DEV_NULL)
+		message = _("Launching user guide")
+		show = self.update_message(message, "help", 10) 
 		return
 
 	def new(self):

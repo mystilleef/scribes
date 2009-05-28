@@ -29,7 +29,7 @@ class Sender(object):
 		self = None
 		return False
 
-	def __send(self, data): 
+	def __send(self, data):
 		session_id, uri, encoding = data
 		if self.__session_id != session_id: return False
 		data = session_id, uri, encoding, self.__editor.text
@@ -60,5 +60,10 @@ class Sender(object):
 		return False
 
 	def __error_handler_cb(self, error):
-		print error
+		print "======================================================="
+		print "Module Name: SCRIBES/SaveSystem/DbusDataSender.py"
+		print "Class Name: Sender"
+		print "Method Name: __error_handler_cb"
+		print "ERROR MESSAGE: ", error
+		print "======================================================="
 		return False

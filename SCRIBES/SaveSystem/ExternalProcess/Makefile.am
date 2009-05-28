@@ -11,7 +11,8 @@ externalprocess_PYTHON = \
 	FileReplacer.py \
 	Completer.py \
 	DbusService.py \
-	ErrorManager.py
+	ErrorManager.py \
+	GIOErrorHandler.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

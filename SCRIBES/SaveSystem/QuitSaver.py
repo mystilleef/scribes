@@ -54,13 +54,13 @@ class Saver(object):
 		return False
 
 	def __saved_cb(self, manager, data):
-		if self.__session_id != data[0]: return False
+		if self.__session_id != tuple(data[0]): return False
 		self.__error = False
 		if self.__quit: self.__destroy()
 		return False
 
 	def __error_cb(self, manager, data):
-		if self.__session_id != data[0]: return False
+		if self.__session_id != tuple(data[0]): return False
 		self.__error = True
 		return False
 

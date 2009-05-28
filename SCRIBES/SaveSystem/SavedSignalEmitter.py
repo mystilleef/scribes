@@ -28,6 +28,7 @@ class Emitter(object):
 
 	def __emit(self, data):
 		session_id, uri, encoding = data
+		if tuple(session_id) != self.__session_id: return False
 		self.__editor.emit("saved-file", uri, encoding)
 		if not self.__rename: return False
 		self.__editor.emit("renamed-file", uri, encoding)

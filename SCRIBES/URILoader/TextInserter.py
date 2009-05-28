@@ -25,7 +25,6 @@ class Inserter(object):
 			self.__editor.refresh(False)
 			self.__editor.textbuffer.set_text(utf8_string)
 			self.__editor.refresh(False)
-			print uri, encoding
 			self.__manager.emit("load-success", uri, encoding)
 		except:
 			self.__manager.emit("insertion-error", uri, string)

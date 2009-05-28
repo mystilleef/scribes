@@ -4,7 +4,7 @@ class Displayer(object):
 		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("save-failed", self.__failed_cb)
+		self.__sigid2 = manager.connect_after("save-failed", self.__failed_cb)
 		self.__sigid3 = manager.connect("session-id", self.__session_cb)
 		self.__sigid4 = manager.connect("save-succeeded", self.__succeeded_cb)
 		editor.register_object(self)
@@ -29,7 +29,7 @@ class Displayer(object):
 
 	def __show(self, data):
 		session_id, uri, encoding, message = data
-		if self.__session_id != session_id: return False
+		if self.__session_id != tuple(session_id): return False
 		if self.__error: return False
 		self.__error = True
 		self.__editor.show_error(uri, message, busy=True)

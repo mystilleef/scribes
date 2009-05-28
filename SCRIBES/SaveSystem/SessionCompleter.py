@@ -15,6 +15,7 @@ class Completer(object):
 		self.__editor = editor
 		from collections import deque
 		self.__queue = deque()
+		self.__session_id = ()
 		return
 
 	def __destroy(self):
@@ -29,20 +30,19 @@ class Completer(object):
 
 	def __verify_session(self, data):
 		try:
+			print self.__queue
 			session_id = tuple(data[0])
-			if not session_id in self.__queue: raise ValueError
-			if session_id[-1] > self.__queue[-1][-1]: raise StandardError
-			if session_id != self.__queue[-1]: raise AssertionError
 			self.__queue.remove(session_id)
+			if self.__session_id != session_id: return False
 			emit = self.__manager.emit
 			emit("saved?", data) if len(data) == 3 else emit("error", data)
 		except ValueError:
-			print "ERROR: SAVING WILL NOT OCCUR - DATA CORRUPTION"
-		except StandardError:
-			print "ERROR: SAVE DATA CORRUPTION!"
-		except AssertionError:
-			print "STALE OR OLD SAVE DATA - WILL DO NOTHING"
-			self.__queue.remove(session_id)
+			print "Module Name: SCRIBES/SaveSystem/SessionCompleter"
+			print "Method Name: __verify_session"
+			print "ERROR MESSAGE: Session id not in queue", session_id
+		finally:
+			print self.__queue
+			print "==================================================="
 		return False
 
 	def __quit_cb(self, *args):
@@ -50,6 +50,7 @@ class Completer(object):
 		return False
 
 	def __session_cb(self, manager, session_id):
+		self.__session_id = session_id
 		self.__queue.append(session_id)
 		return False
 

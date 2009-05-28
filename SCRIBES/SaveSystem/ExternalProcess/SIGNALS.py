@@ -13,9 +13,11 @@ class Signals(GObject):
 		"saved-data": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"error": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"oops": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"gio-error": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"replace-file": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"encode-text": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"finished": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		
 	}
 
 	def __init__(self):

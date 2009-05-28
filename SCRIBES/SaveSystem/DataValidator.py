@@ -28,11 +28,11 @@ class Validator(object):
 		try:
 			if self.__editor.readonly: raise AssertionError
 			uri, encoding, session_id = data
-			if session_id != self.__session_id: return False
 			uri = uri if uri else self.__editor.uri
 			if not uri: raise ValueError
 			if not encoding: encoding = "utf-8"
 			data = session_id, uri, encoding
+			if session_id != self.__session_id: return False
 			self.__manager.emit("save-data", data)
 		except ValueError:
 			self.__manager.emit("show-save-dialog")

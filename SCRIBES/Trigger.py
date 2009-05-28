@@ -59,7 +59,7 @@ class Trigger(GObject):
 	def __activate(self):
 		self.__editor.refresh(False)
 		self.emit("activate")
-		self.__editor.refresh(False) # This is a test file. This is a test file.
+		self.__editor.refresh(False)
 		return False
 
 	def activate(self):

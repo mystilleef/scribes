@@ -9,7 +9,7 @@ class Monitor(object):
 		self.__sigid2 = editor.connect_after("loaded-file", self.__monitor_cb)
 		self.__sigid3 = editor.connect_after("renamed-file", self.__monitor_cb)
 		self.__sigid4 = editor.connect("save-file", self.__busy_cb)
-		self.__sigid5 = editor.connect_after("save-error", self.__nobusy_cb)
+		self.__sigid5 = editor.connect("save-error", self.__error_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -93,4 +93,8 @@ class Monitor(object):
 
 	def __nobusy_cb(self, *args):
 		self.__busy = False
+		return False
+
+	def __error_cb(self, *args):
+		self.__block = True
 		return False

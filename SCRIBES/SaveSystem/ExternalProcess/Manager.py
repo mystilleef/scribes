@@ -10,6 +10,8 @@ class Manager(Signals):
 		Quiter()
 		from ErrorManager import Manager
 		Manager(self)
+		from GIOErrorHandler import Handler
+		Handler(self)
 		from Completer import Completer
 		Completer(self)
 		from FileReplacer import Replacer

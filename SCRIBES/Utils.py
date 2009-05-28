@@ -77,7 +77,7 @@ def get_mimetype(path):
 	from gio import File, content_type_guess
 	gfile = File(path)
 	uri = gfile.get_uri()
-	if not uri.startswith("File:///"): return content_type_guess(uri)
+	if uri.startswith("file:///") is False: return content_type_guess(uri)
 	return gfile.query_info("standard::content-type").get_content_type()
 
 def get_language(uri):

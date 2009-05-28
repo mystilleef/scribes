@@ -191,7 +191,8 @@ externalprocess_PYTHON = \
 	FileReplacer.py \
 	Completer.py \
 	DbusService.py \
-	ErrorManager.py
+	ErrorManager.py \
+	GIOErrorHandler.py
 
 all: all-am
 
