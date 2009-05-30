@@ -30,7 +30,7 @@ class Manager(object):
 
 	def __show_hide_full_view(self, widget):
 		if self.__activate is False: return False
-		self.__editor.response()
+		self.__editor.refresh(False)
 		x, y, type_ = widget.window.get_pointer()
 		if y <= 21:
 			if self.__show is True: return False
@@ -38,7 +38,7 @@ class Manager(object):
 		else:
 			if self.__show is False: return False
 			self.__hide_full_view()
-		self.__editor.response()
+		self.__editor.refresh(False)
 		return False
 
 	def __generic_cb(self, *args):
@@ -58,18 +58,18 @@ class Manager(object):
 		return False
 
 	def __show_full_view(self):
-		self.__editor.response()
+		self.__editor.refresh(False)
 		self.__editor.toolbar.show()
 		self.__editor.statusbar.show()
-		self.__editor.response()
+		self.__editor.refresh(False)
 		self.__show = True
 		return False
 
 	def __hide_full_view(self):
-		self.__editor.response()
+		self.__editor.refresh(False)
 		self.__editor.toolbar.hide()
 		self.__editor.statusbar.hide()
-		self.__editor.response()
+		self.__editor.refresh(False)
 		self.__show = False
 		return False
 
