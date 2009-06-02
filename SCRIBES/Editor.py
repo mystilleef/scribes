@@ -97,7 +97,7 @@ class Editor(Signals):
 		uri = "ghelp:scribes"
 		from gobject import spawn_async, SPAWN_STDERR_TO_DEV_NULL
 		from gobject import SPAWN_SEARCH_PATH, SPAWN_STDOUT_TO_DEV_NULL
-		spawn_async(argv=("xdg-open",uri),
+		spawn_async(argv=("yelp",uri),
 			flags=SPAWN_SEARCH_PATH | SPAWN_STDOUT_TO_DEV_NULL | SPAWN_STDERR_TO_DEV_NULL)
 		message = _("Launching user guide")
 		show = self.update_message(message, "help", 10) 

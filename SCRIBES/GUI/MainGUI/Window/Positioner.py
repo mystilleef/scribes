@@ -4,7 +4,7 @@ class Positioner(object):
 		editor.response()
 		self.__init_attributes(editor, uri)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("checking-file", self.__checking_cb)
+		self.__sigid2 = editor.connect_after("checking-file", self.__checking_cb)
 		self.__sigid3 = editor.connect("load-error", self.__error_cb)
 		editor.register_object(self)
 		self.__position(uri)

@@ -1,11 +1,11 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 
-from sys import argv, path
 python_path = "/usr/lib/python2.6/dist-packages"
+from sys import argv, path
 path.insert(0, python_path)
-from SCRIBES.Main import main
 
 if __name__ == "__main__":
 	# Start scribes.
+	from SCRIBES.Main import main
 	main(argv[1:])
