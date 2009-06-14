@@ -25,6 +25,7 @@ class Grabber(object):
 
 	def __in_cb(self, *args):
 		self.__window.grab_add()
+		self.__editor.refresh()
 		return False
 
 	def __out_cb(self, *args):

@@ -22,7 +22,7 @@ $(python_files): Makefile $(python_in_files)
 		echo "removed " $(scribesdir) ;\
 	fi
 
-SUBDIRS = . GUI URILoader SaveSystem SaveProcessInitializer
+SUBDIRS = . GUI URILoader EncodingSystem SaveSystem SaveProcessInitializer
 
 scribes_PYTHON = \
 	Globals.py \

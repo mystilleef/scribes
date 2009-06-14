@@ -3,7 +3,6 @@ class Manager(object):
 	def __init__(self, editor):
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("loaded-file", self.__loaded_file_cb)
-		self.__sigid2 = editor.connect("saved-file", self.__saved_file_cb)
 		self.__sigid3 = editor.connect("renamed-file", self.__renamed_file_cb)
 		self.__sigid4 = editor.connect("quit", self.__quit_cb)
 		self.__sigid5 = editor.connect("update-encoding-guess-list", self.__update_guess_list_cb)
@@ -18,7 +17,6 @@ class Manager(object):
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
@@ -51,11 +49,6 @@ class Manager(object):
 		set_value(new_encoding_list)
 		return False
 
-	def __map_encoding_to_file(self, uri, encoding):
-		from EncodedFilesMetadata import remove_value, set_value
-		remove_value(uri) if encoding == "utf-8" else set_value(uri, encoding)
-		return False
-
 	def __format_encoding(self, encoding):
 		# Remove white spaces. Convert to lower case.
 		if encoding in self.__utf8_encodings: return "utf-8"
@@ -80,17 +73,8 @@ class Manager(object):
 #		self.__set_guess_list(encoding)
 		return
 
-	def __saved_file_cb(self, editor, uri, encoding):
-		if encoding is None: return
-		encoding = self.__format_encoding(encoding)
-		from thread import start_new_thread
-		start_new_thread(self.__map_encoding_to_file, (uri, encoding))
-		return
-
 	def __renamed_file_cb(self, editor, uri, encoding):
 		encoding = "utf-8" if encoding is None else self.__format_encoding(encoding)
-		from thread import start_new_thread
-		start_new_thread(self.__map_encoding_to_file, (uri, encoding))
 		start_new_thread(self.__set_guess_list, (encoding,))
 		return
 

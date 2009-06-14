@@ -8,7 +8,7 @@ from gio import File
 from DialogFilters import create_filter_list
 from gtksourceview2 import language_manager_get_default
 from EncodingGuessListMetadata import get_value as get_encoding_guess_list
-from EncodedFilesMetadata import get_value as get_encoding
+from EncodingSystem.FileEncodingsMetadata import get_value as get_encoding
 from EncodingMetadata import get_value as get_encoding_list
 from Utils import get_language, word_pattern
 from SupportedEncodings import get_supported_encodings

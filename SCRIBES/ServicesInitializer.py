@@ -24,6 +24,8 @@ class Initializer(object):
 		from GUI.Manager import Manager
 		Manager(editor, uri)
 ######## Everything below still needs refactoring.
+		from EncodingSystem.Manager import Manager
+		Manager(editor)
 		from EncodingManager import Manager
 		Manager(editor)
 		from FileChangeMonitor import Monitor

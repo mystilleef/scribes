@@ -6,8 +6,7 @@ def check_dependencies():
 		# Check for D-Bus Python Bindings.
 		try:
 			import dbus
-			if dbus.version < (0, 70, 0):
-				raise AssertionError
+			if dbus.version < (0, 70, 0): raise AssertionError
 			print "Checking for D-Bus (Python Bindings)... yes"
 		except ImportError:
 			print "Error: Python bindings for D-Bus was not found."
@@ -25,8 +24,7 @@ def check_dependencies():
 		# Check for GTK.
 		try:
 			import gtk
-			if gtk.gtk_version < (2, 10, 0):
-				raise AssertionError
+			if gtk.gtk_version < (2, 10, 0): raise AssertionError
 			print "Checking for GTK... yes"
 		except ImportError:
 			print "Error: GTK was not found."
@@ -37,8 +35,7 @@ def check_dependencies():
 		# Check for PyGTK.
 		try:
 			import gtk
-			if gtk.pygtk_version < (2, 10, 0):
-				raise AssertionError
+			if gtk.pygtk_version < (2, 10, 0): raise AssertionError
 			print "Checking for PyGTK... yes"
 		except ImportError:
 			print "Error: PyGTK was not found."
@@ -50,8 +47,7 @@ def check_dependencies():
 		# Check for GNOME Python.
 		try:
 			import gnome
-			if gnome.gnome_python_version < (2, 12, 0):
-				raise AssertionError
+			if gnome.gnome_python_version < (2, 12, 0): raise AssertionError
 			print "Checking for GNOME Python... yes"
 		except ImportError:
 			print "Error: gnome-python was not found."

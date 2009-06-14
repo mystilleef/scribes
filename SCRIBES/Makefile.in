@@ -203,7 +203,7 @@ edit = sed \
 python_files = Globals.py
 python_in_files = $(python_files).in
 scribesdir = $(pythondir)/SCRIBES
-SUBDIRS = . GUI URILoader SaveSystem SaveProcessInitializer
+SUBDIRS = . GUI URILoader EncodingSystem SaveSystem SaveProcessInitializer
 scribes_PYTHON = \
 	Globals.py \
 	__init__.py \
