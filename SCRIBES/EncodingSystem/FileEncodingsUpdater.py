@@ -19,6 +19,7 @@ class Updater(object):
 	def __update(self, uri, encoding):
 		encoding = self.__manager.format_encoding(encoding)
 		if encoding == self.__encoding: return False
+		self.__encoding = encoding
 		from FileEncodingsMetadata import set_value
 		set_value(uri, encoding)
 		return False

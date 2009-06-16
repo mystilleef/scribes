@@ -4,6 +4,8 @@ class Manager(object):
 		editor.response()
 		from FileEncodingsUpdater import Updater
 		Updater(self, editor)
+		from EncodingGuessListUpdater import Updater
+		Updater(self, editor)
 		editor.response()
 
 	def format_encoding(self, encoding):
