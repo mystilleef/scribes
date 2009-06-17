@@ -31,8 +31,7 @@ class Manager(object):
 		return
 
 	def __emit_encoding_data(self):
-		from EncodingMetadata import get_value
-		encoding_list = get_value()
+		encoding_list = self.__editor.encoding_list
 		data = self.__reformat_data_for_display(encoding_list)
 		data.insert(0, (_("Recommended") + " (UTF-8)", "utf-8"))
 		self.__editor.emit("combobox-encoding-data", data)

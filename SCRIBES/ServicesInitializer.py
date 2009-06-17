@@ -26,8 +26,6 @@ class Initializer(object):
 ######## Everything below still needs refactoring.
 		from EncodingSystem.Manager import Manager
 		Manager(editor)
-		from EncodingManager import Manager
-		Manager(editor)
 		from FileChangeMonitor import Monitor
 		Monitor(editor)
 		from SaveSystem.Manager import Manager

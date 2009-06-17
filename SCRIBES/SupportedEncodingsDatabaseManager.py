@@ -27,12 +27,12 @@ class Manager(object):
 		return
 
 	def __emit_encoding_list(self):
-		from EncodingMetadata import get_value
+		from EncodingSystem.EncodingListMetadata import get_value
 		self.__manager.emit("encoding-list", get_value())
 		return False
 
 	def __update_encoding(self, encoding, add):
-		from EncodingMetadata import get_value, set_value
+		from EncodingSystem.EncodingListMetadata import get_value, set_value
 		encodings = get_value()
 		encodings.append(encoding) if add else encodings.remove(encoding)
 		set_value(encodings)

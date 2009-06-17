@@ -47,14 +47,9 @@ scribes_PYTHON = \
 	EncodingErrorLoader.py \
 	EncodingErrorTitleLabel.py \
 	EncodingErrorWindow.py \
-	EncodedFilesMetadata.py \
-	EncodingGuessListMetadata.py \
-	EncodingManager.py \
-	EncodingMetadata.py \
 	Exceptions.py \
 	FileChangeMonitor.py \
 	FileModificationMonitor.py \
-	FileSaver.py \
 	FontMetadata.py \
 	ForkScribesMetadata.py \
 	FullScreenManager.py \
@@ -68,15 +63,8 @@ scribes_PYTHON = \
 	Main.py \
 	MarginPositionMetadata.py \
 	MinimalModeMetadata.py \
-	OutputProcessor.py \
-	OutputWriter.py \
-	SaveCommunicator.py \
-	SaveManager.py \
-	SaveProcessMonitor.py \
-	SaveProcessorDBusService.py \
 	SchemeManager.py \
 	ServicesInitializer.py \
-	ScribesSaveProcessor.py \
 	SIGNALS.py \
 	SpellCheckMetadata.py \
 	SupportedEncodings.py \

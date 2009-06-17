@@ -6,6 +6,8 @@ class Manager(object):
 		Updater(self, editor)
 		from EncodingGuessListUpdater import Updater
 		Updater(self, editor)
+		from EncodingListUpdater import Updater
+		Updater(self, editor)
 		editor.response()
 
 	def format_encoding(self, encoding):
