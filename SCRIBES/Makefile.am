@@ -67,11 +67,6 @@ scribes_PYTHON = \
 	ServicesInitializer.py \
 	SIGNALS.py \
 	SpellCheckMetadata.py \
-	SupportedEncodings.py \
-	SupportedEncodingsDatabaseManager.py \
-	SupportedEncodingsGUIManager.py \
-	SupportedEncodingsTreeView.py \
-	SupportedEncodingsWindow.py \
 	PluginSystemInitializer.py \
 	PositionMetadata.py \
 	TabWidthMetadata.py \

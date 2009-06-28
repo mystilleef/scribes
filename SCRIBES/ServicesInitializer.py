@@ -23,14 +23,13 @@ class Initializer(object):
 		Manager(editor)
 		from GUI.Manager import Manager
 		Manager(editor, uri)
-######## Everything below still needs refactoring.
 		from EncodingSystem.Manager import Manager
 		Manager(editor)
+		from EncodingSystem.SupportedEncodings.Trigger import Trigger
+		Trigger(editor)
 		from FileChangeMonitor import Monitor
 		Monitor(editor)
 		from SaveSystem.Manager import Manager
-		Manager(editor)
-		from SupportedEncodingsGUIManager import Manager
 		Manager(editor)
 		# Object responsible for showing encoding error window. The window
 		# allows users to load files with the correct encoding.

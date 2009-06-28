@@ -16,7 +16,7 @@ class Manager(object):
 		self.__supported_encodings = editor.supported_encodings
 		from os.path import join
 		preference_folder = join(editor.metadata_folder, "Preferences")
-		database_path = join(preference_folder, "Encoding.gdb")
+		database_path = join(preference_folder, "EncodingList.gdb")
 		from gio import File, FILE_MONITOR_NONE
 		self.__monitor = File(database_path).monitor_file(FILE_MONITOR_NONE, None)
 		return False

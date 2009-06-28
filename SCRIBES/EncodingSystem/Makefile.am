@@ -1,3 +1,4 @@
+SUBDIRS = SupportedEncodings
 encodingsystemdir = $(pythondir)/SCRIBES/EncodingSystem
 encodingsystem_PYTHON = \
 	__init__.py \

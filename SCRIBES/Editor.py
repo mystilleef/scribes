@@ -65,7 +65,7 @@ class Editor(Signals):
 	author = property(lambda self: EditorImports.author)
 	website = property(lambda self: EditorImports.website)
 	save_processor = property(lambda self: self.imanager.get_save_processor())
-	supported_encodings = property(lambda self: EditorImports.get_supported_encodings())
+	supported_encodings = property(lambda self: EditorImports.supported_encodings)
 	word_pattern = property(lambda self: EditorImports.word_pattern)
 	selection_range = property(lambda self: self.get_selection_range())
 	selection_bounds = property(lambda self: self.textbuffer.get_selection_bounds())

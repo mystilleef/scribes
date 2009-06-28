@@ -1,29 +1,26 @@
 from gettext import gettext as _
 
-class TreeView(object):
+class Initializer(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__sigid1 = manager.connect("quit", self.__quit_cb)
-		self.__sigid2 = self.__renderer.connect("toggled", self.__toggled_cb)
-		self.__sigid3 = manager.connect("encoding-list", self.__encoding_cb)
-		self.__populate_model()
+		self.__sigid1 = editor.connect("quit", self.__quit_cb)
+		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__model = self.__create_model()
-		self.__view = manager.glade.get_widget("TreeView")
-		from gtk import CellRendererToggle
-		self.__renderer = CellRendererToggle()
+		self.__view = manager.gui.get_widget("TreeView")
+		from ActiveEncodingRenderer import Renderer
+		self.__renderer = Renderer(manager, editor)
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__renderer)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
+		self.__editor.unregister_object(self)
 		del self
 		self = None
 		return False
@@ -64,8 +61,8 @@ class TreeView(object):
 		column.set_sort_order(SORT_DESCENDING)
 		column.set_sort_column_id(2)
 		# Set treeview properties
-		view.set_model(self.__model)
 		view.columns_autosize()
+		view.set_model(self.__create_model())
 		#view.set_enable_search(True)
 		return
 
@@ -75,42 +72,6 @@ class TreeView(object):
 		model = ListStore(TYPE_BOOLEAN, str, str)
 		return model
 
-	def __populate_model(self):
-		self.__view.set_model(None)
-		for encoding, alias, language in self.__editor.supported_encodings:
-			self.__model.append([False, encoding, language])
-		self.__view.set_model(self.__model)
-		return False
-
-	def __update_model(self, encodings):
-		self.__view.set_property("sensitive", False)
-		self.__view.set_model(None)
-		for row in xrange(len(self.__model)):
-			treemodelrow = self.__model[row]
-			value = True if treemodelrow[1] in encodings else False
-			treemodelrow[0] = value
-		self.__view.set_model(self.__model)
-		self.__view.set_property("sensitive", True)
-		self.__view.grab_focus()
-		return False
-
-	def __emit_new_encoding(self, path):
-		iterator = self.__model.get_iter(path)
-		selection = self.__model.get_value(iterator, 0)
-		encoding = self.__model.get_value(iterator, 1)
-		self.__model.set_value(iterator, 0, not selection)
-		selection = self.__model.get_value(iterator, 0)
-		self.__manager.emit("new-encoding", encoding, selection)
-		return False
-
 	def __quit_cb(self, *args):
 		self.__destroy()
-		return False
-
-	def __toggled_cb(self, renderer, path):
-		self.__emit_new_encoding(path)
-		return True
-
-	def __encoding_cb(self, manager, encodings):
-		self.__update_model(encodings)
 		return False

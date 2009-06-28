@@ -10,6 +10,6 @@ from gtksourceview2 import language_manager_get_default
 from EncodingSystem.EncodingGuessListMetadata import get_value as get_encoding_guess_list
 from EncodingSystem.FileEncodingsMetadata import get_value as get_encoding
 from EncodingSystem.EncodingListMetadata import get_value as get_encoding_list
+from EncodingSystem.SupportedEncodings.Encodings import encodings as supported_encodings
 from Utils import get_language, word_pattern
-from SupportedEncodings import get_supported_encodings
 from gettext import gettext as _

@@ -13,6 +13,7 @@
 # PARTICULAR PURPOSE.
 
 @SET_MAKE@
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -29,8 +30,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-subdir = SCRIBES
-DIST_COMMON = $(scribes_PYTHON) $(srcdir)/Makefile.am \
+subdir = SCRIBES/EncodingSystem/SupportedEncodings/GUI
+DIST_COMMON = $(gui_PYTHON) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gnome-doc-utils.m4 \
@@ -54,9 +55,11 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(scribesdir)"
-scribesPYTHON_INSTALL = $(INSTALL_DATA)
+am__installdirs = "$(DESTDIR)$(guidir)" "$(DESTDIR)$(guidir)"
+guiPYTHON_INSTALL = $(INSTALL_DATA)
 py_compile = $(top_srcdir)/py-compile
+guiDATA_INSTALL = $(INSTALL_DATA)
+DATA = $(gui_DATA)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 ETAGS = etags
@@ -190,80 +193,15 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-edit = sed \
-	-e 's,@pixmapsdir\@,$(pixmapsdir),g' \
-	-e 's,@scribes_prefix\@,$(prefix),g' \
-	-e 's,@scribes_data_path\@,$(datadir),g' \
-	-e 's,@scribes_sysconfdir\@,$(sysconfdir),g' \
-	-e 's,@python_path\@,$(pythondir),g' \
-	-e 's,@VERSION\@,$(VERSION),g'
-
-
-# dnl Generate "Globals.py" from "Globals.py.in."
-python_files = Globals.py
-python_in_files = $(python_files).in
-scribesdir = $(pythondir)/SCRIBES
-SUBDIRS = . GUI URILoader EncodingSystem SaveSystem SaveProcessInitializer
-scribes_PYTHON = \
-	Globals.py \
+SUBDIRS = Treeview
+guidir = $(pythondir)/SCRIBES/EncodingSystem/SupportedEncodings/GUI
+gui_PYTHON = \
 	__init__.py \
-	BarObjectManager.py \
-	BusyManager.py \
-	ColorThemeMetadata.py \
-	CommandLineInfo.py \
-	CommandLineProcessor.py \
-	ContentDetector.py \
-	CursorMetadata.py \
-	DBusService.py \
-	DialogFilters.py \
-	DisplayRightMarginMetadata.py \
-	Editor.py \
-	EditorImports.py \
-	EncodingComboBoxDataManager.py \
-	EncodingErrorComboBox.py \
-	EncodingErrorManager.py \
-	EncodingErrorOpenButton.py \
-	EncodingErrorCloseButton.py \
-	EncodingErrorLoader.py \
-	EncodingErrorTitleLabel.py \
-	EncodingErrorWindow.py \
-	Exceptions.py \
-	FileChangeMonitor.py \
-	FileModificationMonitor.py \
-	FontMetadata.py \
-	ForkScribesMetadata.py \
-	FullScreenManager.py \
-	GladeObjectManager.py \
-	GlobalStore.py \
-	InstanceManager.py \
-	i18n.py \
-	LanguageManager.py \
-	LanguagePluginManager.py \
-	License.py \
-	Main.py \
-	MarginPositionMetadata.py \
-	MinimalModeMetadata.py \
-	SchemeManager.py \
-	ServicesInitializer.py \
-	SIGNALS.py \
-	SpellCheckMetadata.py \
-	PluginSystemInitializer.py \
-	PositionMetadata.py \
-	TabWidthMetadata.py \
-	TextWrappingMetadata.py \
-	Trigger.py \
-	TriggerManager.py \
-	URIManager.py \
-	PluginManager.py \
-	RegistrationManager.py \
-	ReadonlyManager.py \
-	RecentManager.py \
-	Usage.py \
-	UseTabsMetadata.py \
-	Utils.py \
-	Word.py
+	Manager.py \
+	Window.py
 
-EXTRA_DIST = Globals.py.in 
+gui_DATA = GUI.glade
+EXTRA_DIST = GUI.glade
 all: all-recursive
 
 .SUFFIXES:
@@ -276,9 +214,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  SCRIBES/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  SCRIBES/EncodingSystem/SupportedEncodings/GUI/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  SCRIBES/Makefile
+	  $(AUTOMAKE) --gnu  SCRIBES/EncodingSystem/SupportedEncodings/GUI/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -296,33 +234,50 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-install-scribesPYTHON: $(scribes_PYTHON)
+install-guiPYTHON: $(gui_PYTHON)
 	@$(NORMAL_INSTALL)
-	test -z "$(scribesdir)" || $(MKDIR_P) "$(DESTDIR)$(scribesdir)"
-	@list='$(scribes_PYTHON)'; dlist=''; for p in $$list; do\
+	test -z "$(guidir)" || $(MKDIR_P) "$(DESTDIR)$(guidir)"
+	@list='$(gui_PYTHON)'; dlist=''; for p in $$list; do\
 	  if test -f "$$p"; then b=; else b="$(srcdir)/"; fi; \
 	  if test -f $$b$$p; then \
 	    f=$(am__strip_dir) \
 	    dlist="$$dlist $$f"; \
-	    echo " $(scribesPYTHON_INSTALL) '$$b$$p' '$(DESTDIR)$(scribesdir)/$$f'"; \
-	    $(scribesPYTHON_INSTALL) "$$b$$p" "$(DESTDIR)$(scribesdir)/$$f"; \
+	    echo " $(guiPYTHON_INSTALL) '$$b$$p' '$(DESTDIR)$(guidir)/$$f'"; \
+	    $(guiPYTHON_INSTALL) "$$b$$p" "$(DESTDIR)$(guidir)/$$f"; \
 	  else :; fi; \
 	done; \
 	if test -n "$$dlist"; then \
 	  if test -z "$(DESTDIR)"; then \
-	    PYTHON=$(PYTHON) $(py_compile) --basedir "$(scribesdir)" $$dlist; \
+	    PYTHON=$(PYTHON) $(py_compile) --basedir "$(guidir)" $$dlist; \
 	  else \
-	    PYTHON=$(PYTHON) $(py_compile) --destdir "$(DESTDIR)" --basedir "$(scribesdir)" $$dlist; \
+	    PYTHON=$(PYTHON) $(py_compile) --destdir "$(DESTDIR)" --basedir "$(guidir)" $$dlist; \
 	  fi; \
 	else :; fi
 
-uninstall-scribesPYTHON:
+uninstall-guiPYTHON:
 	@$(NORMAL_UNINSTALL)
-	@list='$(scribes_PYTHON)'; dlist=''; for p in $$list; do\
+	@list='$(gui_PYTHON)'; dlist=''; for p in $$list; do\
 	  f=$(am__strip_dir) \
-	  rm -f "$(DESTDIR)$(scribesdir)/$$f"; \
-	  rm -f "$(DESTDIR)$(scribesdir)/$${f}c"; \
-	  rm -f "$(DESTDIR)$(scribesdir)/$${f}o"; \
+	  rm -f "$(DESTDIR)$(guidir)/$$f"; \
+	  rm -f "$(DESTDIR)$(guidir)/$${f}c"; \
+	  rm -f "$(DESTDIR)$(guidir)/$${f}o"; \
+	done
+install-guiDATA: $(gui_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(guidir)" || $(MKDIR_P) "$(DESTDIR)$(guidir)"
+	@list='$(gui_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(guiDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(guidir)/$$f'"; \
+	  $(guiDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(guidir)/$$f"; \
+	done
+
+uninstall-guiDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(gui_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(guidir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(guidir)/$$f"; \
 	done
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -500,10 +455,10 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-recursive
-all-am: Makefile
+all-am: Makefile $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(scribesdir)"; do \
+	for dir in "$(DESTDIR)$(guidir)" "$(DESTDIR)$(guidir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -548,7 +503,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-scribesPYTHON
+install-data-am: install-guiDATA install-guiPYTHON
 
 install-dvi: install-dvi-recursive
 
@@ -582,7 +537,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-scribesPYTHON
+uninstall-am: uninstall-guiDATA uninstall-guiPYTHON
 
 .MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) install-am \
 	install-strip
@@ -592,25 +547,15 @@ uninstall-am: uninstall-scribesPYTHON
 	ctags ctags-recursive distclean distclean-generic \
 	distclean-tags distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-scribesPYTHON install-strip installcheck \
+	install-dvi-am install-exec install-exec-am install-guiDATA \
+	install-guiPYTHON install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
 	installcheck-am installdirs installdirs-am maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
-	uninstall-scribesPYTHON
+	uninstall-guiDATA uninstall-guiPYTHON
 
-
-$(python_files): Makefile $(python_in_files)
-	rm -f $(python_files) $(python_files).tmp
-	$(edit) $(python_in_files) > $(python_files).tmp
-	mv $(python_files).tmp $(python_files)
-	if [ -d $(scribesdir) ]; then \
-		echo "removing " $(scribesdir) ;\
-		rm -rf $(scribesdir) ;\
-		echo "removed " $(scribesdir) ;\
-	fi
 
 clean-local:
 	rm -rf *.pyc *.pyo
