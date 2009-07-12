@@ -42,9 +42,9 @@ class Manager(object):
 		self.__show(data)
 		return False
 
-	def __encoding_error_cb(self, *args):
+	def __encoding_error_cb(self, manager, uri, *args):
 		print "Load encoding error."
-		self.__editor.show_load_encoding_error_window()
+		self.__editor.show_load_encoding_error_window(uri)
 		return False
 
 	def __gio_error_cb(self, manager, data):

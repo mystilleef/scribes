@@ -224,8 +224,8 @@ class Editor(Signals):
 		self.emit("private-busy", busy)
 		return False
 
-	def show_load_encoding_error_window(self):
-		self.emit("private-encoding-load-error")
+	def show_load_encoding_error_window(self, uri):
+		self.emit("private-encoding-load-error", uri)
 		return False
 
 	def show_supported_encodings_window(self, window=None):

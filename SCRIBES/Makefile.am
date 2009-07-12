@@ -39,14 +39,6 @@ scribes_PYTHON = \
 	DisplayRightMarginMetadata.py \
 	Editor.py \
 	EditorImports.py \
-	EncodingComboBoxDataManager.py \
-	EncodingErrorComboBox.py \
-	EncodingErrorManager.py \
-	EncodingErrorOpenButton.py \
-	EncodingErrorCloseButton.py \
-	EncodingErrorLoader.py \
-	EncodingErrorTitleLabel.py \
-	EncodingErrorWindow.py \
 	Exceptions.py \
 	FileChangeMonitor.py \
 	FileModificationMonitor.py \

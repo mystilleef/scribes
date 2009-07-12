@@ -1,24 +1,28 @@
 class ComboBox(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__sigid1 = manager.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("combobox-encoding-data", self.__encoding_data_cb)
+		self.__sigid1 = editor.connect("quit", self.__quit_cb)
+		self.__sigid2 = editor.connect("combobox-encoding-data", self.__data_cb)
 		self.__sigid3 = self.__combo.connect("changed", self.__changed_cb)
+		editor.emit("combobox-encoding-data?")
+		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__combo = manager.glade.get_widget("ComboBox")
+		self.__combo = manager.gui.get_widget("ComboBox")
 		self.__model = self.__create_model()
 		return False
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid3, self.__combo)
+		self.__editor.unregister_object(self)
 		del self
 		self = None
 		return
@@ -63,7 +67,7 @@ class ComboBox(object):
 		encoding = self.__model.get_value(iterator, 1)
 		if encoding == "show_encoding_window":
 			self.__combo.set_active(0)
-			self.__editor.show_supported_encodings_window(self.__manager.glade.get_widget("Window"))
+			self.__editor.show_supported_encodings_window(self.__editor.window)
 		else:
 			self.__manager.emit("new-encoding", encoding)
 		return False
@@ -72,8 +76,9 @@ class ComboBox(object):
 		self.__destroy()
 		return False
 
-	def __encoding_data_cb(self, editor, data):
-		self.__populate_model(data)
+	def __data_cb(self, editor, data):
+		from gobject import idle_add
+		idle_add(self.__populate_model, data)
 		return False
 
 	def __changed_cb(self, *args):

@@ -1,40 +1,37 @@
 from gettext import gettext as _
 
-class Manager(object):
+class Generator(object):
 
-	def __init__(self, editor):
-		self.__init_attributes(editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("combobox-encoding-data?", self.__encoding_data_cb)
-		self.__monitor.connect("changed", self.__encoding_cb)
-		editor.register_object(self)
-		self.__emit_encoding_data()
+	def __init__(self, manager, editor):
 		editor.response()
-		
-	def __init_attributes(self, editor):
+		self.__init_attributes(manager, editor)
+		self.__sigid1 = editor.connect("quit", self.__quit_cb)
+		self.__sigid2 = editor.connect("combobox-encoding-data?", self.__query_cb)
+		self.__sigid3 = manager.connect("encoding-list", self.__encoding_cb)
+		editor.register_object(self)
+		editor.response()
+
+	def __init_attributes(self, manager, editor):
 		self.__editor = editor
 		self.__supported_encodings = editor.supported_encodings
-		from os.path import join
-		preference_folder = join(editor.metadata_folder, "Preferences")
-		database_path = join(preference_folder, "EncodingList.gdb")
-		from gio import File, FILE_MONITOR_NONE
-		self.__monitor = File(database_path).monitor_file(FILE_MONITOR_NONE, None)
-		return False
+		self.__manager = manager
+		self.__encoding_data = []
+		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		self.__monitor.cancel()
+		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
 		return
 
-	def __emit_encoding_data(self):
-		encoding_list = self.__editor.encoding_list
-		data = self.__reformat_data_for_display(encoding_list)
+	def __generate_and_send_encoding_data(self, encodings):
+		data = self.__reformat_data_for_display(encodings)
 		data.insert(0, (_("Recommended") + " (UTF-8)", "utf-8"))
-		self.__editor.emit("combobox-encoding-data", data)
+		self.__data = data
+		self.__send_combobox_encoding_data()
 		return False
 
 	def __reformat_data_for_display(self, encodings):
@@ -42,6 +39,7 @@ class Manager(object):
 
 	def __extract_data(self, encoding):
 		for codec, alias, language in self.__supported_encodings:
+			self.__editor.response()
 			if codec != encoding: continue
 			data = self.__construct_data(codec, alias, language)
 			break
@@ -50,16 +48,20 @@ class Manager(object):
 	def __construct_data(self, codec, alias, language):
 		return language + " (" + codec + ")", alias
 
+	def __send_combobox_encoding_data(self):
+		self.__editor.emit("combobox-encoding-data", self.__data)
+		return False
+
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
-	def __encoding_cb(self, *args):
-		monitor, gfile, otherfile, event = args
-		if not (event in (0, 3)): return False
-		self.__emit_encoding_data()
+	def __query_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__send_combobox_encoding_data)
 		return False
 
-	def __encoding_data_cb(self, *args):
-		self.__emit_encoding_data()
+	def __encoding_cb(self, manager, encodings):
+		from gobject import idle_add
+		idle_add(self.__generate_and_send_encoding_data, encodings)
 		return False
