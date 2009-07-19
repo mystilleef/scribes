@@ -21,8 +21,8 @@ class Creator(object):
 		return 
 
 	def __regex_object(self, pattern):
-		from re import I, U, M, compile as compile_
-		flags =  I|M|U if self.__ignore_case else M|U
+		from re import I, U, M, L, compile as compile_
+		flags = I|M|U|L if self.__ignore_case else U|M|L
 		self.__manager.emit("regex-flags", flags)
 		regex_object = compile_(pattern, flags)
 		self.__manager.emit("new-regex", regex_object)

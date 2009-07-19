@@ -30,8 +30,8 @@ class Creator(object):
 		try:
 			if self.__regex_mode: raise ValueError
 			from re import escape
-			pattern = escape(self.__string)
-			if self.__match_word: pattern = r"\b%s\b" % pattern
+			string = escape(self.__string)
+			pattern = r"\b%s\b" % string if self.__match_word else r"%s" % string
 		except ValueError:
 			pattern = r"%s" % self.__string
 		finally:
@@ -43,7 +43,7 @@ class Creator(object):
 		return False
 
 	def __search_string_cb(self, manager, string):
-		self.__string = string
+		self.__string = string.decode("utf-8")
 		return False
 
 	def __search_cb(self, *args):
