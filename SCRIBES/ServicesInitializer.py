@@ -29,6 +29,8 @@ class Initializer(object):
 		Monitor(editor)
 		from SaveSystem.Manager import Manager
 		Manager(editor)
+		from TriggerSystem.Manager import Manager
+		Manager(editor)
 		from TriggerManager import Manager
 		Manager(editor)
 		from ReadonlyManager import Manager

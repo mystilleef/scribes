@@ -38,6 +38,7 @@ po/Makefile.in
 Makefile
 help/Makefile
 SCRIBES/Makefile
+SCRIBES/TriggerSystem/Makefile
 SCRIBES/URILoader/Makefile
 SCRIBES/EncodingSystem/Makefile
 SCRIBES/EncodingSystem/Error/Makefile
