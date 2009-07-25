@@ -9,9 +9,9 @@ class Trigger(object):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = None
-		self.__trigger1 = self.__create_trigger("scroll_up", "ctrl+Up")
-		self.__trigger2 = self.__create_trigger("scroll_down", "ctrl+Down")
-		self.__trigger3 = self.__create_trigger("center", "alt+m")
+		self.__trigger1 = self.__create_trigger("scroll_up", "<ctrl>Up")
+		self.__trigger2 = self.__create_trigger("scroll_down", "<ctrl>Down")
+		self.__trigger3 = self.__create_trigger("center", "<alt>m")
 		return
 
 	def __destroy(self):

@@ -7,8 +7,8 @@ class Trigger(object):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__trigger1 = self.__create_trigger("undo", "ctrl+z")
-		self.__trigger2 = self.__create_trigger("redo", "ctrl+shift+z")
+		self.__trigger1 = self.__create_trigger("undo", "<ctrl>z")
+		self.__trigger2 = self.__create_trigger("redo", "<ctrl><shift>z")
 		return
 
 	def __create_trigger(self, name, shortcut):

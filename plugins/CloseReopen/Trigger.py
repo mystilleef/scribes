@@ -11,7 +11,7 @@ class Trigger(object):
 
 	def __create_trigger(self):
 		# Trigger to close current window and open new one.
-		trigger = self.__editor.create_trigger("close_reopen", "ctrl+shift+n")
+		trigger = self.__editor.create_trigger("close_reopen", "<ctrl><shift>n")
 		self.__editor.add_trigger(trigger)
 		return trigger
 

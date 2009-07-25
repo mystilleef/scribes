@@ -7,7 +7,7 @@ class Trigger(object):
 	def __init_attributes(self, editor):
 		self.__manager = None
 		self.__editor = editor
-		self.__trigger = self.__create_trigger("show-document-statistics", "alt+Return")
+		self.__trigger = self.__create_trigger("show-document-statistics", "<alt>Return")
 		return
 
 	def __create_trigger(self, name, shortcut):

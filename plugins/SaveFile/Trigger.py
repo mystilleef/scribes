@@ -6,7 +6,7 @@ class Trigger(object):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__trigger1 = self.__create_trigger("save-file", "ctrl+s")
+		self.__trigger1 = self.__create_trigger("save-file", "<ctrl>s")
 		return
 
 	def destroy(self):

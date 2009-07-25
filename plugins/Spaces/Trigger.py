@@ -11,9 +11,9 @@ class Trigger(object):
 		self.__editor = editor
 		self.__manager = None
 		self.__view = editor.textview
-		self.__trigger1 = self.__create_trigger("spaces_to_tabs", "alt+t")
-		self.__trigger2 = self.__create_trigger("tabs_to_spaces", "alt+shift+t")
-		self.__trigger3 = self.__create_trigger("remove_trailing_spaces", "alt+r")
+		self.__trigger1 = self.__create_trigger("spaces_to_tabs", "<alt>t")
+		self.__trigger2 = self.__create_trigger("tabs_to_spaces", "<alt><shift>t")
+		self.__trigger3 = self.__create_trigger("remove_trailing_spaces", "<alt>r")
 		return
 
 	def __destroy(self):

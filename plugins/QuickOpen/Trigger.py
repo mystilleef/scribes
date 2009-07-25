@@ -10,7 +10,7 @@ class Trigger(object):
 		return
 
 	def __create_trigger(self):
-		trigger = self.__editor.create_trigger("show-quick-open-window", "ctrl+alt+o")
+		trigger = self.__editor.create_trigger("show-quick-open-window", "<ctrl><alt>o")
 		self.__editor.add_trigger(trigger)
 		return trigger
 

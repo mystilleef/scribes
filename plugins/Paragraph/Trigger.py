@@ -11,9 +11,9 @@ class Trigger(object):
 		self.__editor = editor
 		self.__view = editor.textview
 		self.__manager = None 
-		self.__trigger1 = self.__create_trigger("next_paragraph", "alt+Right")
-		self.__trigger2 = self.__create_trigger("previous_paragraph", "alt+Left")
-		self.__trigger3 = self.__create_trigger("reflow_paragraph", "alt+q")
+		self.__trigger1 = self.__create_trigger("next_paragraph", "<alt>Right")
+		self.__trigger2 = self.__create_trigger("previous_paragraph", "<alt>Left")
+		self.__trigger3 = self.__create_trigger("reflow_paragraph", "<alt>q")
 		return
 
 	def __destroy(self):

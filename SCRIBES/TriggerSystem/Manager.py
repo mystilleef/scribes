@@ -5,11 +5,23 @@ SSIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 class Manager(GObject):
 
 	__gsignals__ = {
-		"generic": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"add": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"remove": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"quit": (SSIGNAL, TYPE_NONE, ()),
+		"triggers-cleared": (SSIGNAL, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
 		editor.response()
 		GObject.__init__(self)
-		print "Initializing trigger system"
+		from Quiter import Quiter
+		Quiter(self, editor)
+		from TriggerActivator import Activator
+		Activator(self, editor)
+		from AcceleratorActivator import Activator
+		Activator(self, editor)
+		from TriggerRemover import Remover
+		Remover(self, editor)
+		from Validator import Validator
+		Validator(self, editor)
 		editor.response()

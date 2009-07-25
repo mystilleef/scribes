@@ -13,7 +13,7 @@ class Trigger(object):
 
 	def __create_trigger(self):
 		# Trigger to show or hide toolbar.
-		trigger = self.__editor.create_trigger("toggle_minimal_interface", "ctrl+alt+m")
+		trigger = self.__editor.create_trigger("toggle_minimal_interface", "<ctrl><alt>m")
 		self.__editor.add_trigger(trigger)
 		return trigger
 
