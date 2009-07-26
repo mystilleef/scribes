@@ -31,8 +31,6 @@ class Initializer(object):
 		Manager(editor)
 		from TriggerSystem.Manager import Manager
 		Manager(editor)
-		from TriggerManager import Manager
-		Manager(editor)
 		from ReadonlyManager import Manager
 		Manager(editor)
 		# Register with instance manager after a successful editor

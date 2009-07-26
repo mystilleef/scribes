@@ -14,6 +14,8 @@ class Manager(GObject):
 	def __init__(self, editor):
 		editor.response()
 		GObject.__init__(self)
+		from Bindings.Manager import Manager
+		Manager(editor)
 		from Quiter import Quiter
 		Quiter(self, editor)
 		from TriggerActivator import Activator

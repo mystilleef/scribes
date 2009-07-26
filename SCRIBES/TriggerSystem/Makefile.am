@@ -1,3 +1,4 @@
+SUBDIRS = Bindings
 triggersystemdir = $(pythondir)/SCRIBES/TriggerSystem
 
 triggersystem_PYTHON = \
