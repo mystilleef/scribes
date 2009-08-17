@@ -8,10 +8,6 @@ short_description = "Navigation and selection for Python source code."
 long_description = """Navigation and selection for Python source code."""
 
 class NavigationSelectionPlugin(object):
-	"""
-	This class loads and unloads the navigation and selection plugin
-	for Python source code.
-	"""
 
 	def __init__(self, editor):
 		self.__editor = editor

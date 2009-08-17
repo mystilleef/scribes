@@ -19,9 +19,9 @@ class TreeView(object):
 		self.__name_renderer = self.__create_renderer()
 		self.__type_renderer = self.__create_renderer()
 		self.__path_renderer = self.__create_renderer()
-		self.__name_column = self.__create_column(_("File _Name"), self.__name_renderer, 0, False, True)
-		self.__type_column = self.__create_column(_("File _Type"), self.__type_renderer, 1, False, True)
-		self.__path_column = self.__create_column(_("File _Path"), self.__path_renderer, 2, False, True)
+		self.__name_column = self.__create_column(_("_Name"), self.__name_renderer, 0, False, True)
+		self.__type_column = self.__create_column(_("_Type"), self.__type_renderer, 1, False, True)
+		self.__path_column = self.__create_column(_("_Path"), self.__path_renderer, 2, False, True)
 		return
 
 	def __set_properties(self):

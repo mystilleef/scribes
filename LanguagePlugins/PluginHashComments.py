@@ -1,4 +1,3 @@
-
 name = "Hash (un)comment plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 languages = ["python", "ruby", "perl", "sh"]
@@ -10,9 +9,6 @@ long_description = """This plugin allows users to (un)comment lines in
 hash source code by pressing (alt - c)"""
 
 class CommentPlugin(object):
-	"""
-	Load and initialize comment plugin for several source code.
-	"""
 
 	def __init__(self, editor):
 		self.__editor = editor

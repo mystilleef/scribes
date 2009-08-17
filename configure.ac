@@ -38,6 +38,7 @@ po/Makefile.in
 Makefile
 help/Makefile
 SCRIBES/Makefile
+SCRIBES/PluginInitializer/Makefile
 SCRIBES/TriggerSystem/Makefile
 SCRIBES/TriggerSystem/Bindings/Makefile
 SCRIBES/URILoader/Makefile
