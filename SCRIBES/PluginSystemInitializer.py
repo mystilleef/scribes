@@ -23,10 +23,10 @@ class Initializer(object):
 		self.__editor.move_view_to_cursor(True)
 		self.__editor.refresh()
 		self.__editor.emit("ready")
-		from PluginManager import Manager
-		Manager(self.__editor)
-		from LanguagePluginManager import Manager
-		Manager(self.__editor)
+#		from PluginManager import Manager
+#		Manager(self.__editor)
+#		from LanguagePluginManager import Manager
+#		Manager(self.__editor)
 		from PluginInitializer.Manager import Manager
 		Manager(self.__editor)
 		self.__destroy()

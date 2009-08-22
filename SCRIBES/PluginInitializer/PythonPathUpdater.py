@@ -23,8 +23,8 @@ class Updater(object):
 
 	def __update(self, plugin_path):
 		from sys import path
-		if plugin_path in path: return False
-		path.insert(0, plugin_path)
+		if not (plugin_path in path): path.insert(0, plugin_path)
+		self.__manager.emit("search-path-updated", plugin_path)
 		return False
 
 	def __quit_cb(self, *args):

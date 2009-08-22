@@ -31,7 +31,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 subdir = SCRIBES/PluginInitializer
 DIST_COMMON = $(plugininitializer_PYTHON) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in
+	$(srcdir)/Makefile.in TODO
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gnome-doc-utils.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/configure.ac
@@ -184,7 +184,22 @@ plugininitializer_PYTHON = \
 	Manager.py \
 	Destroyer.py \
 	Initializer.py \
-	PythonPathUpdater.py
+	PythonPathUpdater.py \
+	PluginPathValidator.py \
+	PluginPathErrorHandler.py \
+	HomePluginPathCreator.py \
+	ErrorManager.py \
+	ModuleFinder.py \
+	ModuleInitializer.py \
+	ModuleValidator.py \
+	LanguageModuleValidator.py \
+	PluginValidator.py \
+	PluginInitializer.py \
+	PluginLoader.py \
+	PluginUnloader.py \
+	PluginsUpdater.py \
+	PluginsDestroyer.py \
+	PluginReloader.py
 
 all: all-am
 

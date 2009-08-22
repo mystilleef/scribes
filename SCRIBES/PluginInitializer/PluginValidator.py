@@ -4,14 +4,14 @@ class Validator(object):
 		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("validate-path", self.__validate_cb)
+		self.__sigid2 = manager.connect("valid-module", self.__validate_cb)
 		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		return False
+		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
@@ -21,14 +21,17 @@ class Validator(object):
 		self = None
 		return False
 
-	def __validate(self, plugin_path):
+	def __validate(self, module):
 		try:
-			from os.path import join, exists
-			filename = join(plugin_path, "__init__.py")
-			if not exists(filename): raise ValueError
-			self.__manager.emit("update-python-path", plugin_path)
+			class_name = getattr(module, "class_name")
+			if not hasattr(module, class_name): raise ValueError
+			PluginClass = getattr(module, class_name)
+			if hasattr(PluginClass, "__init__") is False: raise ValueError
+			if hasattr(PluginClass, "load") is False: raise ValueError
+			if hasattr(PluginClass, "unload") is False: raise ValueError
+			self.__manager.emit("initialize-plugin", (module, PluginClass))
 		except ValueError:
-			self.__manager.emit("plugin-path-error", plugin_path)
+			print module, " has an invalid plugin class"
 		return False
 
 	def __quit_cb(self, *args):
@@ -36,7 +39,7 @@ class Validator(object):
 		idle_add(self.__destroy)
 		return False
 
-	def __validate_cb(self, manager, plugin_path):
+	def __validate_cb(self, manager, module):
 		from gobject import idle_add
-		idle_add(self.__validate, plugin_path)
+		idle_add(self.__validate, module)
 		return False

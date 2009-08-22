@@ -1,10 +1,10 @@
-class Validator(object):
+class Handler(object):
 
 	def __init__(self, manager, editor):
 		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("validate-path", self.__validate_cb)
+		self.__sigid2 = manager.connect("plugin-path-error", self.__error_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -21,14 +21,13 @@ class Validator(object):
 		self = None
 		return False
 
-	def __validate(self, plugin_path):
+	def __create(self, plugin_path):
 		try:
-			from os.path import join, exists
-			filename = join(plugin_path, "__init__.py")
-			if not exists(filename): raise ValueError
-			self.__manager.emit("update-python-path", plugin_path)
+			# Can only create plugin path in home folder.
+			if not plugin_path.startswith(self.__editor.home_folder): raise ValueError
+			self.__manager.emit("create-plugin-path", plugin_path)
 		except ValueError:
-			self.__manager.emit("plugin-path-error", plugin_path)
+			self.__manager.emit("plugin-path-not-found-error", plugin_path)
 		return False
 
 	def __quit_cb(self, *args):
@@ -36,7 +35,7 @@ class Validator(object):
 		idle_add(self.__destroy)
 		return False
 
-	def __validate_cb(self, manager, plugin_path):
+	def __error_cb(self, manager, plugin_path):
 		from gobject import idle_add
-		idle_add(self.__validate, plugin_path)
+		idle_add(self.__create, plugin_path)
 		return False

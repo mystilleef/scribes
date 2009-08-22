@@ -4,35 +4,39 @@ class Initializer(object):
 		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		from gobject import idle_add
-		idle_add(self.__validate)
+		self.__sigid2 = manager.connect("initialize-module", self.__initialize_cb)
 		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__plugin_paths = (
-			editor.core_plugin_folder,
-			editor.home_plugin_folder,
-			editor.core_language_plugin_folder,
-			editor.home_language_plugin_folder,
-		)
 		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
 		return False
 
-	def __validate(self):
-		validate = lambda plugin_path: self.__manager.emit("validate-path", plugin_path)
-		[validate(plugin_path) for plugin_path in self.__plugin_paths]
+	def __initialize(self, module_path):
+		from os.path import split
+		module_name = split(module_path)[-1][:-3]
+		from imp import load_source
+		self.__editor.response()
+		module = load_source(module_name, module_path)
+		self.__editor.response()
+		self.__manager.emit("initialized-module", module)
 		return False
 
 	def __quit_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__destroy)
+		return False
+
+	def __initialize_cb(self, manager, module_path):
+		from gobject import idle_add
+		idle_add(self.__initialize, module_path)
 		return False

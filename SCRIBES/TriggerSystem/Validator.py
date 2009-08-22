@@ -40,7 +40,7 @@ class Validator(object):
 		except NoTriggerNameError:
 			print "ERROR: Trigger must have a name"
 		except DuplicateTriggerNameError:
-			print "ERROR: Duplicate trigger name found"
+			print "ERROR: Duplicate trigger name found", name
 		except DuplicateAcceleratorError:
 			print "ERROR: Accelerator: %s, already in use" % accelerator
 		except InvalidAcceleratorError:
