@@ -23,6 +23,7 @@ class Initializer(object):
 
 	def __initialize(self, data):
 		module, PluginClass = data
+		if not module.autoload: return False
 		self.__editor.response()
 		plugin = PluginClass(self.__editor)
 		self.__editor.response()
