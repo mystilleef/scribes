@@ -22,6 +22,7 @@ class Validator(object):
 		return False
 
 	def __validate(self, module):
+		self.__editor.response()
 		if not (self.__editor.language in module.languages): return False
 		self.__manager.emit("valid-module", module)
 		return False

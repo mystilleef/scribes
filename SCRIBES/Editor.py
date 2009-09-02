@@ -95,12 +95,11 @@ class Editor(Signals):
 
 	def help(self):
 		uri = "ghelp:scribes"
-		from gobject import spawn_async, SPAWN_STDERR_TO_DEV_NULL
-		from gobject import SPAWN_SEARCH_PATH, SPAWN_STDOUT_TO_DEV_NULL
-		spawn_async(argv=("yelp",uri),
-			flags=SPAWN_SEARCH_PATH | SPAWN_STDOUT_TO_DEV_NULL | SPAWN_STDERR_TO_DEV_NULL)
-		message = _("Launching user guide")
-		show = self.update_message(message, "help", 10) 
+		from gtk import show_uri, get_current_event_time
+		result = show_uri(self.window.get_screen(), uri, get_current_event_time())
+		message = _("Launching user guide") if result else _("Failed to launch user guide")
+		image = "help" if result else "fail"
+		show = self.update_message(message, image, 10)
 		return
 
 	def new(self):
