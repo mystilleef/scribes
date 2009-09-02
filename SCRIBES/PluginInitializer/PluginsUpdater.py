@@ -39,9 +39,11 @@ class Updater(object):
 	def __loaded_cb(self, manager, data):
 		from gobject import idle_add
 		idle_add(self.__update, data)
+#		self.__update(data)
 		return False
 
 	def __unloaded_cb(self, manager, data):
 		from gobject import idle_add
 		idle_add(self.__update, data, True)
+#		self.__update(data, True)
 		return False

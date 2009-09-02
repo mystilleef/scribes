@@ -22,6 +22,7 @@ class Manager(GObject):
 		"loaded-plugin": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"unloaded-plugin": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"active-plugins": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"check-duplicate-plugins": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):

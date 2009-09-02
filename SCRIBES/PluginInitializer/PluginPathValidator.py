@@ -23,12 +23,15 @@ class Validator(object):
 
 	def __validate(self, plugin_path):
 		try:
+			self.__editor.response()
 			from os.path import join, exists
 			filename = join(plugin_path, "__init__.py")
 			if not exists(filename): raise ValueError
 			self.__manager.emit("update-python-path", plugin_path)
 		except ValueError:
 			self.__manager.emit("plugin-path-error", plugin_path)
+		finally:
+			self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

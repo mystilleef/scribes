@@ -23,6 +23,7 @@ class Validator(object):
 
 	def __validate(self, module):
 		try:
+			self.__editor.response()
 			if not hasattr(module, "autoload"): raise ValueError
 			if not hasattr(module, "name"): raise ValueError
 			if not hasattr(module, "version"): raise ValueError
@@ -31,6 +32,8 @@ class Validator(object):
 			emit("validate-language-module") if hasattr(module, "languages") else emit("valid-module")
 		except ValueError:
 			print module, " is an invalid plugin module"
+		finally:
+			self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

@@ -12,6 +12,8 @@ def main(argv=None):
 def __open(argv=None):
 	uris = __get_uris(argv)
 	__open_via_dbus(uris)
+	from sys import setcheckinterval
+	setcheckinterval(-1)
 	from Utils import init_gnome
 	init_gnome()
 	from InstanceManager import Manager

@@ -23,6 +23,7 @@ class Creator(object):
 
 	def __create(self, plugin_path):
 		try:
+			self.__editor.response()
 			from os import makedirs, path
 			filename = path.join(plugin_path, "__init__.py")
 			makedirs(plugin_path)
@@ -31,6 +32,8 @@ class Creator(object):
 			self.__manager.emit("validate-path", plugin_path)
 		except OSError, IOError:
 			self.__manager.emit("plugin-folder-creation-error", plugin_path)
+		finally:
+			self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

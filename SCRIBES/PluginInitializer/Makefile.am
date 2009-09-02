@@ -2,7 +2,6 @@ plugininitializerdir = $(pythondir)/SCRIBES/PluginInitializer
 plugininitializer_PYTHON = \
 	__init__.py \
 	Manager.py \
-	Destroyer.py \
 	Initializer.py \
 	PythonPathUpdater.py \
 	PluginPathValidator.py \
