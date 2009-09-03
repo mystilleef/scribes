@@ -47,6 +47,7 @@ class Manager(GObject):
 		"replace-string": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"replaced-mark": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"regex-flags": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"cursor-mark": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -62,6 +63,8 @@ class Manager(GObject):
 		Creator(self, editor)
 		from RegexCreator import Creator
 		Creator(self, editor)
+		from CursorMarker import Marker
+		Marker(self, editor)
 		from Searcher import Searcher
 		Searcher(self, editor)
 		from MatchMapper import Mapper
