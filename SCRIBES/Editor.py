@@ -348,6 +348,7 @@ class Editor(Signals):
 		return self.mark(self.cursor, "right")
 
 	def delete_mark(self, mark):
+		self.response()
 		if mark.get_deleted(): return
 		self.textbuffer.delete_mark(mark)
 		return
@@ -442,6 +443,7 @@ class Editor(Signals):
 		return create_menuitem(name, stock)
 
 	def get_glade_object(self, globals_, basepath, object_name):
+		self.response()
 		from os.path import join
 		folder = self.get_current_folder(globals_)
 		file_ = join(folder, basepath)

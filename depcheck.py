@@ -43,7 +43,6 @@ def check_dependencies():
 		except AssertionError:
 			print "Error: Version 2.10.0 or better of PyGTK needed."
 			raise SystemExit
-
 		# Check for GNOME Python.
 		try:
 			import gnome

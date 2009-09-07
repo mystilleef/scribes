@@ -48,6 +48,7 @@ class ComboBox(object):
 		self.__combo.set_model(None)
 		self.__model.clear()
 		for search_mode, alias in data: 
+			self.__editor.response()
 			self.__model.append([search_mode, alias])
 		self.__combo.set_model(self.__model)
 		self.__combo.set_active(0)

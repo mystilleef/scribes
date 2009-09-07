@@ -67,7 +67,7 @@ class Trigger(GObject):
 
 	def activate(self):
 		from gobject import idle_add
-		idle_add(self.__activate)
+		idle_add(self.__activate, priority=9999)
 		return
 
 	def destroy(self):
