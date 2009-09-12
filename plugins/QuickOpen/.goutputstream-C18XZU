@@ -36,7 +36,7 @@ class Trigger(object):
 
 	def __activate_cb(self, *args):
 		from gobject import idle_add
-		idle_add(self.__activate)
+		idle_add(self.__activate, priority=9999)
 		return
 
 	def destroy(self):

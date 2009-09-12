@@ -443,6 +443,9 @@ class Editor(Signals):
 		return create_menuitem(name, stock)
 
 	def get_glade_object(self, globals_, basepath, object_name):
+		#FIXME: This function will soon be deprecated. It uses glade.
+		# GTKBUILDER should be use instead.get_gui_object uses 
+		# GTKBUILDER.
 		self.response()
 		from os.path import join
 		folder = self.get_current_folder(globals_)
@@ -450,6 +453,16 @@ class Editor(Signals):
 		from gtk.glade import XML
 		glade = XML(file_, object_name, "scribes")
 		return glade
+
+	def get_gui_object(self, globals_, basepath):
+		self.response()
+		from os.path import join
+		folder = self.get_current_folder(globals_)
+		file_ = join(folder, basepath)
+		from gtk import Builder
+		gui = Builder()
+		gui.add_from_file(file_)
+		return gui
 
 	def set_vm_interval(self, response=True):
 		#FIXME: This function is deprecated!

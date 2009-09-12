@@ -1,6 +1,6 @@
 name = "QuickOpen Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>", "Jeremy Wilkins"]
-version = 0.2
+version = 0.3
 autoload = True
 class_name = "QuickOpenPlugin"
 short_description = "Quickly Open Files."
