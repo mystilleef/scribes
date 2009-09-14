@@ -7,6 +7,7 @@ class Entry(object):
 		self.__sigid3 = manager.connect("hide", self.__hide_cb)
 		self.__sigid4 = self.__entry.connect("changed", self.__changed_cb)
 		self.__sigid5 = self.__entry.connect("activate", self.__activate_cb)
+		self.__sigid6 = manager.connect("focus-entry", self.__focus_cb)
 		self.__entry.set_property("sensitive", True)
 
 	def __init_attributes(self, manager, editor):
@@ -21,6 +22,7 @@ class Entry(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__entry)
 		self.__editor.disconnect_signal(self.__sigid5, self.__entry)
+		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		del self
 		self = None
 		return False
@@ -65,4 +67,8 @@ class Entry(object):
 	def __changed_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__timeout_send)
+		return False
+
+	def __focus_cb(self, *args):
+		self.__entry.grab_focus()
 		return False

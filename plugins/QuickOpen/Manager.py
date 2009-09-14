@@ -21,6 +21,8 @@ class Manager(GObject):
 		"uris": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"row-activated": (SSIGNAL, TYPE_NONE, ()),
 		"updated-model": (SSIGNAL, TYPE_NONE, ()),
+		"up-key-press": (SSIGNAL, TYPE_NONE, ()),
+		"focus-entry": (SSIGNAL, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):

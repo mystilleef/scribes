@@ -11,8 +11,7 @@ class Handler(object):
 		self.__view = manager.gui.get_object("TreeView")
 		from gtk.keysyms import Up, Down, Return, Escape
 		self.__dictionary = {
-#			Up: self.__select_previous,
-#			Down: self.__select_next,
+			Up: "up-key-press",
 			Return: "row-activated",
 			Escape: "hide",
 		}

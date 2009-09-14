@@ -7,6 +7,8 @@ class Manager(object):
 		Disabler(manager, editor)
 		from RowSelector import Selector
 		Selector(manager, editor)
+		from UpKeyHandler import Handler
+		Handler(manager, editor)
 		from KeyboardHandler import Handler
 		Handler(manager, editor)
 		from RowActivationHandler import Handler
