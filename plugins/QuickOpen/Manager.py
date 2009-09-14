@@ -23,11 +23,15 @@ class Manager(GObject):
 		"updated-model": (SSIGNAL, TYPE_NONE, ()),
 		"up-key-press": (SSIGNAL, TYPE_NONE, ()),
 		"focus-entry": (SSIGNAL, TYPE_NONE, ()),
+		"message": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"clear-message": (SSIGNAL, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
+		from Feedback import Feedback
+		Feedback(self, editor)
 		from URIOpener import Opener
 		Opener(self, editor)
 		from URIReconstructor import Reconstructor
