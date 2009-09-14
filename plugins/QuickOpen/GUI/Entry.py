@@ -65,6 +65,7 @@ class Entry(object):
 		return False
 
 	def __changed_cb(self, *args):
+		self.__manager.emit("entry-changed")
 		from gobject import idle_add
 		idle_add(self.__timeout_send)
 		return False

@@ -25,6 +25,7 @@ class Manager(GObject):
 		"focus-entry": (SSIGNAL, TYPE_NONE, ()),
 		"message": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"clear-message": (SSIGNAL, TYPE_NONE, ()),
+		"entry-changed": (SSIGNAL, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
