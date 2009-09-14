@@ -13,6 +13,7 @@ class Updater(object):
 		self.__model = self.__view.get_model()
 		self.__column1 = self.__view.get_column(0)
 		self.__column2 = self.__view.get_column(1)
+		self.__data = []
 		return
 
 	def __destroy(self):
@@ -24,7 +25,9 @@ class Updater(object):
 		return False
 
 	def __populate(self, data):
-		self.__view.set_property("sensitive", False)
+		if self.__data == data: return False
+		from copy import copy
+		self.__data = copy(data)
 		self.__view.set_model(None)
 		self.__model.clear()
 		for name, path in data:
@@ -33,7 +36,6 @@ class Updater(object):
 		self.__column1.queue_resize()
 		self.__column2.queue_resize()
 		self.__view.set_model(self.__model)
-		self.__view.set_property("sensitive", True)
 		self.__manager.emit("updated-model")
 		return False
 
