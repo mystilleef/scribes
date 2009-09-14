@@ -56,7 +56,7 @@ def check_dependencies():
 			raise SystemExit
 		# Check for GNOME Python Desktop.
 		try:
-			import gtksourceview
+			import gtksourceview2
 			print "Checking for GNOME Python Desktop... yes"
 		except ImportError:
 			print "Error: gnome-python-desktop was not found."

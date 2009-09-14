@@ -3,6 +3,8 @@ class Manager(object):
 	def __init__(self, manager, editor):
 		from Initializer import Initializer
 		Initializer(manager, editor)
+		from RowSelector import Selector
+		Selector(manager, editor)
 		from KeyboardHandler import Handler
 		Handler(manager, editor)
 		from RowActivationHandler import Handler

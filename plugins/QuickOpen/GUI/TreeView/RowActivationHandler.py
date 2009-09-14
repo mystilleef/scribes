@@ -20,11 +20,15 @@ class Handler(object):
 		return False
 
 	def __send(self):
-		model, paths = self.__selection.get_selected_rows()
-		get_path = lambda path: model[path][-1]
-		filepaths = [get_path(path) for path in paths]
-		self.__manager.emit("selected-paths", filepaths)
-		self.__manager.emit("hide")
+		try:
+			model, paths = self.__selection.get_selected_rows()
+			if not paths: raise ValueError
+			get_path = lambda path: model[path][-1]
+			filepaths = [get_path(path) for path in paths]
+			self.__manager.emit("selected-paths", filepaths)
+			self.__manager.emit("hide")
+		except ValueError:
+			print "no selection to open"
 		return False
 
 	def __destroy_cb(self, *args):

@@ -6,6 +6,7 @@ class Entry(object):
 		self.__sigid2 = manager.connect("show", self.__show_cb)
 		self.__sigid3 = manager.connect("hide", self.__hide_cb)
 		self.__sigid4 = self.__entry.connect("changed", self.__changed_cb)
+		self.__sigid5 = self.__entry.connect("activate", self.__activate_cb)
 		self.__entry.set_property("sensitive", True)
 
 	def __init_attributes(self, manager, editor):
@@ -19,6 +20,7 @@ class Entry(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__entry)
+		self.__editor.disconnect_signal(self.__sigid5, self.__entry)
 		del self
 		self = None
 		return False
@@ -34,7 +36,7 @@ class Entry(object):
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(250, self.__send, priority=9999)
+			self.__timer = timeout_add(500, self.__send, priority=9999)
 		return False
 
 	def __clear(self):
@@ -50,6 +52,10 @@ class Entry(object):
 	def __hide_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__clear)
+		return False
+
+	def __activate_cb(self, *args):
+		self.__manager.emit("row-activated")
 		return False
 
 	def __destroy_cb(self, *args):
