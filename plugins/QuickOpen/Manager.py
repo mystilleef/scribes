@@ -10,7 +10,7 @@ class Manager(GObject):
 		"destroy": (SSIGNAL, TYPE_NONE, ()),
 		"pattern": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"current-path": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"parent-path": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"parent-path": (SSIGNAL, TYPE_NONE, ()),
 		"get-fileinfos": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"folder-and-fileinfos": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"files": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),

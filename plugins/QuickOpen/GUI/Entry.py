@@ -4,10 +4,11 @@ class Entry(object):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("show", self.__show_cb)
-		self.__sigid3 = manager.connect("hide", self.__hide_cb)
+#		self.__sigid3 = manager.connect("hide", self.__hide_cb)
 		self.__sigid4 = self.__entry.connect("changed", self.__changed_cb)
 		self.__sigid5 = self.__entry.connect("activate", self.__activate_cb)
 		self.__sigid6 = manager.connect("focus-entry", self.__focus_cb)
+		self.__sigid7 = manager.connect_after("formatted-files", self.__files_cb)
 		self.__entry.set_property("sensitive", True)
 
 	def __init_attributes(self, manager, editor):
@@ -19,10 +20,11 @@ class Entry(object):
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
+#		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__entry)
 		self.__editor.disconnect_signal(self.__sigid5, self.__entry)
-		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		del self
 		self = None
 		return False
@@ -47,13 +49,14 @@ class Entry(object):
 		return False
 
 	def __show_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__clear)
+#		from gobject import idle_add
+#		idle_add(self.__clear)
+		self.__entry.grab_focus()
 		return False
 
 	def __hide_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__clear)
+#		from gobject import idle_add
+#		idle_add(self.__clear)
 		return False
 
 	def __activate_cb(self, *args):
@@ -72,4 +75,10 @@ class Entry(object):
 
 	def __focus_cb(self, *args):
 		self.__entry.grab_focus()
+		return False
+	
+	def __files_cb(self, *args):
+		self.__entry.grab_focus()
+		if not self.__entry.get_text().strip(): return False
+		self.__timeout_send()
 		return False

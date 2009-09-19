@@ -35,7 +35,7 @@ class Selector(object):
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(50, self.__select, priority=9999)
+			self.__timer = timeout_add(10, self.__select, priority=9999)
 		return False
 
 	def __destroy_cb(self, *args):
