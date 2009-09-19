@@ -5,7 +5,7 @@ class Aggregator(object):
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("current-path", self.__patch_cb)
+		self.__sigid2 = manager.connect("current-path", self.__path_cb)
 		self.__sigid3 = manager.connect("folder-and-fileinfos", self.__fileinfos_cb)
 
 	def __init_attributes(self, manager, editor):
@@ -19,6 +19,7 @@ class Aggregator(object):
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		del self
 		self = None
 		return False
@@ -40,13 +41,11 @@ class Aggregator(object):
 				if fileinfo.get_display_name().endswith(".pyo"): continue
 				files.append(self.__get_uri(folder, fileinfo))
 		self.__manager.emit("files", files)
-		self.__files = []
-		self.__folders = []
 		return False
 
 	def __get_files(self, data):
+		self.__editor.response()
 		folder, fileinfos = data
-		self.__folders.remove(folder)
 		_folders = []
 		_fileinfos = []
 		for fileinfo in fileinfos:
@@ -55,6 +54,7 @@ class Aggregator(object):
 			if fileinfo.get_file_type() == 2: _folders.append(fileinfo)
 		self.__files.append((folder, _fileinfos))
 		[self.__process(self.__get_uri(folder, fileinfo)) for fileinfo in _folders]
+		self.__folders.remove(folder)
 		if not self.__folders: self.__aggregate()
 		return False
 
@@ -68,11 +68,20 @@ class Aggregator(object):
 		self.__destroy()
 		return False
 
-	def __patch_cb(self, manager, folder):
-		from gobject import idle_add
-		idle_add(self.__process, folder)
+	def __path_cb(self, manager, folder):
+		try:
+			from collections import deque
+			self.__folders = deque()
+			self.__files = []
+			from gobject import idle_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = idle_add(self.__process, folder)
 		return False
 
 	def __fileinfos_cb(self, manager, data):
-		self.__get_files(data)
+		from gobject import idle_add
+		self.__timer = idle_add(self.__get_files, data, priority=9999)
 		return False

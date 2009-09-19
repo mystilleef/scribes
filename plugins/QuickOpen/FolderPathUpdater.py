@@ -23,10 +23,14 @@ class Updater(object):
 		return False
 
 	def __update(self, parent=False):
-		pwduri = self.__path if self.__path else self.__editor.pwd_uri
-		from gio import File
-		self.__path = File(pwduri).get_parent().get_uri() if parent else pwduri
-		self.__manager.emit("current-path", self.__path)
+		try:
+			pwduri = self.__path if self.__path else self.__editor.pwd_uri
+			from gio import File
+			self.__path = File(pwduri).get_parent().get_uri() if parent else pwduri
+			if len(self.__path) < len(self.__editor.home_folder_uri): return False
+			self.__manager.emit("current-path", self.__path)
+		except AttributeError:
+			pass
 		return False
 
 	def __destroy_cb(self, *args):

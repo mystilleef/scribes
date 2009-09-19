@@ -20,9 +20,12 @@ class Formatter(object):
 		self = None
 		return False
 
+	def __replace(self, _file):
+		self.__editor.response()
+		return _file.replace(self.__path, "").lstrip("/")
+
 	def __format(self, files):
-		replace = lambda _file: _file.replace(self.__path, "").lstrip("/")
-		paths = [replace(_file) for _file in files]
+		paths = [self.__replace(_file) for _file in files]
 		self.__manager.emit("formatted-files", paths)
 		return False
 
@@ -31,8 +34,13 @@ class Formatter(object):
 		return False
 
 	def __files_cb(self, manager, files):
-		from gobject import idle_add
-		idle_add(self.__format, files)
+		try:
+			from gobject import idle_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = idle_add(self.__format, files)
 		return False
 
 	def __path_cb(self, manager, path):

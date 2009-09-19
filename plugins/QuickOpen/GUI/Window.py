@@ -8,6 +8,8 @@ class Window(object):
 		self.__sigid3 = manager.connect("hide", self.__hide_cb)
 		self.__sigid4 = self.__window.connect("delete-event", self.__delete_event_cb)
 		self.__sigid5 = self.__window.connect("key-press-event", self.__key_press_event_cb)
+		self.__sigid6 = manager.connect("current-path", self.__path_cb)
+		self.__sigid7 = manager.connect("files", self.__files_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -25,6 +27,8 @@ class Window(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__window)
 		self.__editor.disconnect_signal(self.__sigid5, self.__window)
+		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		self.__window.destroy()
 		del self
 		self = None
@@ -42,13 +46,19 @@ class Window(object):
 		self.__editor.response()
 		return False
 
+	def __change_path(self):
+		self.__manager.emit("parent-path")
+		return True
+
 	def __delete_event_cb(self, *args):
 		self.__manager.emit("hide")
 		return True
 
 	def __key_press_event_cb(self, window, event):
-		from gtk import keysyms
-		if event.keyval != keysyms.Escape: return False
+		from gtk.gdk import MOD1_MASK
+		from gtk.keysyms import Up, Escape
+		if event.state & MOD1_MASK and event.keyval == Up: return self.__change_path()
+		if event.keyval != Escape: return False
 		self.__manager.emit("hide")
 		return True
 
@@ -64,4 +74,12 @@ class Window(object):
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
+		return False
+
+	def __files_cb(self, *args):
+		self.__window.set_property("sensitive", True)
+		return False
+	
+	def __path_cb(self, *args):
+		self.__window.set_property("sensitive", False)
 		return False

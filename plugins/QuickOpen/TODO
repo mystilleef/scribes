@@ -1,0 +1,5 @@
+- work on way to filter relevant text files (ignore pdfs, pngs, giffs,
+executables, etc) - ExtensionFilterer ("pyo", "pyc", "png", "pdf", "ps",
+"exe" etc)
+- convert path names to user friendly strings in treeview - rewrite gio
+functions to use asynchronous features (also minor refactoring)

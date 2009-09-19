@@ -294,11 +294,13 @@ class Editor(Signals):
 		return
 
 	def backward_to_line_begin(self, iterator=None):
+#		self.response()
 		if iterator is None: iterator = self.cursor
 		from Utils import backward_to_line_begin
 		return backward_to_line_begin(iterator.copy())
 
 	def forward_to_line_end(self, iterator=None):
+#		self.response()
 		if iterator is None: iterator = self.cursor
 		from Utils import forward_to_line_end
 		return forward_to_line_end(iterator.copy())
@@ -348,7 +350,7 @@ class Editor(Signals):
 		return self.mark(self.cursor, "right")
 
 	def delete_mark(self, mark):
-		self.response()
+#		self.response()
 		if mark.get_deleted(): return
 		self.textbuffer.delete_mark(mark)
 		return
