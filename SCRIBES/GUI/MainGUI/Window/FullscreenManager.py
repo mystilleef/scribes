@@ -22,10 +22,10 @@ class Manager(object):
 		return False
 
 	def __activate(self, fullscreen):
-		self.__editor.response()
+		self.__editor.refresh()
 		self.__window.fullscreen() if fullscreen else self.__window.unfullscreen()
 		self.__editor.move_view_to_cursor(True)
-		self.__editor.response()
+		self.__editor.refresh()
 		return False
 
 	def __quit_cb(self, *args):

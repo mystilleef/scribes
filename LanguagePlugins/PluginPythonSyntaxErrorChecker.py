@@ -9,10 +9,6 @@ long_description = """Check Python source code for syntax errors.
 Press F2 to check document."""
 
 class SyntaxErrorCheckerPlugin(object):
-	"""
-	This class loads and unloads the syntax error checker plugin
-	for Python source code.
-	"""
 
 	def __init__(self, editor):
 		self.__editor = editor

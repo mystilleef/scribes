@@ -15,7 +15,7 @@ class Trigger(object):
 
 	def __create_trigger(self):
 		# Trigger to toggle white space.
-		self.__trigger = self.__editor.create_trigger("show_white_spaces", "alt+period")
+		self.__trigger = self.__editor.create_trigger("show_white_spaces", "<alt>period")
 		self.__editor.add_trigger(self.__trigger)
 		return self.__trigger
 

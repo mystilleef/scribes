@@ -19,7 +19,7 @@ class Trigger(object):
 		return False
 
 	def __create_trigger(self):
-		trigger = self.__editor.create_trigger("switch_document_window", "ctrl+F9")
+		trigger = self.__editor.create_trigger("switch_document_window", "<ctrl>F9")
 		self.__editor.add_trigger(trigger)
 		return trigger
 

@@ -22,6 +22,4 @@ class Button(object):
 
 	def __clicked_cb(self, button):
 		self.__editor.help()
-#		from gnome import help_display
-#		help_display("/scribes.xml", "scribes-templates")
 		return

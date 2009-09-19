@@ -22,7 +22,7 @@ $(python_files): Makefile $(python_in_files)
 		echo "removed " $(scribesdir) ;\
 	fi
 
-SUBDIRS = . GUI URILoader SaveSystem SaveProcessInitializer
+SUBDIRS = . GUI URILoader EncodingSystem SaveSystem SaveProcessInitializer TriggerSystem PluginInitializer
 
 scribes_PYTHON = \
 	Globals.py \
@@ -39,22 +39,9 @@ scribes_PYTHON = \
 	DisplayRightMarginMetadata.py \
 	Editor.py \
 	EditorImports.py \
-	EncodingComboBoxDataManager.py \
-	EncodingErrorComboBox.py \
-	EncodingErrorManager.py \
-	EncodingErrorOpenButton.py \
-	EncodingErrorCloseButton.py \
-	EncodingErrorLoader.py \
-	EncodingErrorTitleLabel.py \
-	EncodingErrorWindow.py \
-	EncodedFilesMetadata.py \
-	EncodingGuessListMetadata.py \
-	EncodingManager.py \
-	EncodingMetadata.py \
 	Exceptions.py \
 	FileChangeMonitor.py \
 	FileModificationMonitor.py \
-	FileSaver.py \
 	FontMetadata.py \
 	ForkScribesMetadata.py \
 	FullScreenManager.py \
@@ -68,28 +55,15 @@ scribes_PYTHON = \
 	Main.py \
 	MarginPositionMetadata.py \
 	MinimalModeMetadata.py \
-	OutputProcessor.py \
-	OutputWriter.py \
-	SaveCommunicator.py \
-	SaveManager.py \
-	SaveProcessMonitor.py \
-	SaveProcessorDBusService.py \
 	SchemeManager.py \
 	ServicesInitializer.py \
-	ScribesSaveProcessor.py \
 	SIGNALS.py \
 	SpellCheckMetadata.py \
-	SupportedEncodings.py \
-	SupportedEncodingsDatabaseManager.py \
-	SupportedEncodingsGUIManager.py \
-	SupportedEncodingsTreeView.py \
-	SupportedEncodingsWindow.py \
 	PluginSystemInitializer.py \
 	PositionMetadata.py \
 	TabWidthMetadata.py \
 	TextWrappingMetadata.py \
 	Trigger.py \
-	TriggerManager.py \
 	URIManager.py \
 	PluginManager.py \
 	RegistrationManager.py \

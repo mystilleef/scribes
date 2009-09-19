@@ -3,12 +3,14 @@ from gettext import gettext as _
 class Manager(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect_after("error", self.__error_cb)
 		self.__sigid3 = manager.connect_after("encoding-error", self.__encoding_error_cb)
 		self.__sigid4 = manager.connect_after("unhandled-gio-error", self.__gio_error_cb)
 		self.__sigid5 = manager.connect_after("NoFeedbackError", self.__no_feedback_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -42,9 +44,9 @@ class Manager(object):
 		self.__show(data)
 		return False
 
-	def __encoding_error_cb(self, *args):
+	def __encoding_error_cb(self, manager, uri, *args):
 		print "Load encoding error."
-		self.__editor.show_load_encoding_error_window()
+		self.__editor.show_load_encoding_error_window(uri)
 		return False
 
 	def __gio_error_cb(self, manager, data):

@@ -6,7 +6,7 @@ class Trigger(object):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__trigger1 = self.__create_trigger("new-window", "ctrl+n")
+		self.__trigger1 = self.__create_trigger("new-window", "<ctrl>n")
 		return
 
 	def destroy(self):

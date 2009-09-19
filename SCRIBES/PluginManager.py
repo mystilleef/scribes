@@ -92,25 +92,17 @@ class Manager(object):
 
 	def __get_module_info(self, module):
 		try:
-			if not hasattr(module, "autoload"):
-				raise Exception
-			if not getattr(module, "autoload"):
-				raise ValueError
-			if hasattr(module, "version") is False:
-				raise Exception
+			if not hasattr(module, "autoload"): raise Exception
+			if not getattr(module, "autoload"): raise ValueError
+			if hasattr(module, "version") is False: raise Exception
 			plugin_version = getattr(module, "version")
-			if hasattr(module, "class_name") is False:
-				raise Exception
+			if hasattr(module, "class_name") is False: raise Exception
 			plugin_name = class_name = getattr(module, "class_name")
-			if hasattr(module, class_name) is False:
-				raise Exception
+			if hasattr(module, class_name) is False: raise Exception
 			PluginClass = getattr(module, class_name)
-			if hasattr(PluginClass, "__init__") is False:
-				raise Exception
-			if hasattr(PluginClass, "load") is False:
-				raise Exception
-			if hasattr(PluginClass, "unload") is False:
-				raise Exception
+			if hasattr(PluginClass, "__init__") is False: raise Exception
+			if hasattr(PluginClass, "load") is False: raise Exception
+			if hasattr(PluginClass, "unload") is False: raise Exception
 		except ValueError:
 			from Exceptions import DoNotLoadError
 			raise DoNotLoadError

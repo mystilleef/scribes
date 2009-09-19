@@ -9,8 +9,8 @@ class Trigger(object):
 		from Manager import Manager
 		self.__manager = Manager(editor)
 		self.__editor = editor
-		self.__trigger1 = self.__create_trigger("escape-quotes", "ctrl+shift+e")
-		self.__trigger2 = self.__create_trigger("unescape-quotes", "ctrl+alt+e")
+		self.__trigger1 = self.__create_trigger("escape-quotes", "<ctrl><shift>e")
+		self.__trigger2 = self.__create_trigger("unescape-quotes", "<ctrl><alt>e")
 		return
 
 	def __create_trigger(self, name, shortcut):

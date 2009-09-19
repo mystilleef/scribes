@@ -9,6 +9,8 @@ class Updater(object):
 		self.__sigid4 = editor.connect("checking-file", self.__checking_cb)
 		self.__sigid5 = editor.connect("load-error", self.__error_cb)
 		self.__sigid6 = editor.connect("saved-file", self.__saved_cb)
+		self.__sigid7 = editor.connect_after("loaded-file", self.__loaded_cb)
+#		self.__block_signals()
 		editor.register_object(self)
 		editor.response()
 
@@ -16,6 +18,7 @@ class Updater(object):
 		self.__editor = editor
 		self.__uri = uri
 		self.__window = editor.window
+		self.__blocked = False
 		return False
 
 	def __destroy(self):
@@ -25,6 +28,7 @@ class Updater(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
 		self.__set_position_in_database()
 		self.__editor.response()
 		self.__window.hide()
@@ -34,10 +38,24 @@ class Updater(object):
 		self = None
 		return False
 
+	def __block_signals(self):
+		if self.__blocked: return False
+		self.__window.handler_block(self.__sigid2)
+		self.__window.handler_block(self.__sigid3)
+		self.__blocked = True
+		return False
+
+	def __unblock_signals(self):
+		if self.__blocked is False: return False
+		self.__window.handler_unblock(self.__sigid2)
+		self.__window.handler_unblock(self.__sigid3)
+		self.__blocked = False
+		return False
+
 	def __set_position_in_database(self):
 		xcoordinate, ycoordinate = self.__window.get_position()
 		width, height = self.__window.get_size()
-		is_maximized = False # self.__is_maximized
+		is_maximized = self.__editor.maximized
 		uri = self.__uri if self.__uri else "<EMPTY>"
 		maximized_position = (True, None, None, None, None)
 		unmaximized_position = (False, width, height, xcoordinate, ycoordinate)
@@ -57,11 +75,17 @@ class Updater(object):
 		return False
 
 	def __checking_cb(self, editor, uri):
+		self.__block_signals()
 		self.__uri = uri
 		return False
 
 	def __error_cb(self, *args):
+		self.__unblock_signals()
 		self.__uri = None
+		return False
+
+	def __loaded_cb(self, *args):
+		self.__unblock_signals()
 		return False
 
 	def __saved_cb(self, editor, uri, *args):

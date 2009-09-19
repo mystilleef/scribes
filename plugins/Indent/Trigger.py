@@ -9,8 +9,8 @@ class Trigger(object):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = None
-		self.__trigger1 = self.__create_trigger("indent", "ctrl+t")
-		self.__trigger2 = self.__create_trigger("unindent", "ctrl+shift+t")
+		self.__trigger1 = self.__create_trigger("indent", "<ctrl>t")
+		self.__trigger2 = self.__create_trigger("unindent", "<ctrl><shift>t")
 		return
 
 	def __destroy(self):

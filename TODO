@@ -42,4 +42,4 @@ Roadmap for Version 0.4
 	- (Un)comment plugin for several languages. (language plugin)
 	- Selectable locale/language spell checking (new dep, pyenchant)
 	- Documentation for extending Scribes and writing plugins.
-	- User interface for managing plugins. 
+	- User interface for managing plugins.

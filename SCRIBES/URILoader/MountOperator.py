@@ -3,9 +3,11 @@ from gtk import MountOperation
 class Operator(MountOperation):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		MountOperation.__init__(self, editor.window)
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

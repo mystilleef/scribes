@@ -19,7 +19,7 @@ class Trigger(object):
 		return
 
 	def __create_trigger(self):
-		trigger = self.__editor.create_trigger("select_text_within_characters", "alt+b")
+		trigger = self.__editor.create_trigger("select_text_within_characters", "<alt>b")
 		self.__editor.add_trigger(trigger)
 		return trigger
 

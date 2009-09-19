@@ -150,14 +150,10 @@ class Manager(object):
 		from gobject import idle_add
 		for filename in core_files:
 			self.__editor.response()
-#			start_new_thread(init_module, (filename, cl_folder))
-#			init_module(filename, cl_folder)
 			idle_add(init_module, filename, cl_folder, priority=9999)
 		home_files = listdir(hl_folder)
 		for filename in home_files:
 			self.__editor.response()
-#			start_new_thread(init_module, (filename, hl_folder))
-#			init_module(filename, hl_folder)
 			idle_add(init_module, filename, hl_folder, priority=9999)
 		return False
 

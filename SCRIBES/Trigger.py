@@ -1,9 +1,11 @@
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE
+from gobject import SIGNAL_ACTION, SIGNAL_NO_RECURSE
+SSIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 
 class Trigger(GObject):
 
 	__gsignals__ = {
-		"activate": (SIGNAL_RUN_LAST, TYPE_NONE, ())
+		"activate": (SSIGNAL, TYPE_NONE, ())
 	}
 
 	def __init__(self, editor, name, accelerator="", description="", error=True, removable=True):
@@ -57,6 +59,7 @@ class Trigger(GObject):
 	removable = property(__get_removable)
 
 	def __activate(self):
+		if self.__editor.bar_is_active: return False
 		self.__editor.refresh(False)
 		self.emit("activate")
 		self.__editor.refresh(False)
@@ -64,7 +67,7 @@ class Trigger(GObject):
 
 	def activate(self):
 		from gobject import idle_add
-		idle_add(self.__activate)
+		idle_add(self.__activate, priority=9999)
 		return
 
 	def destroy(self):

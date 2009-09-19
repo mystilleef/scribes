@@ -13,7 +13,7 @@ class Trigger(object):
 		return
 
 	def __create_trigger(self):
-		trigger = self.__editor.create_trigger("show_theme_selector", "alt+shift+F12")
+		trigger = self.__editor.create_trigger("show_theme_selector", "<alt><shift>F12")
 		self.__editor.add_trigger(trigger)
 		return trigger
 

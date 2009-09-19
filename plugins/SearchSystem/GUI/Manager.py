@@ -17,8 +17,8 @@ class Manager(object):
 		Button(manager, editor)
 		from MatchWordButton import Button
 		Button(manager, editor)
-		from MenuComboBox import ComboBox
-		ComboBox(manager, editor)
+#		from MenuComboBox import ComboBox
+#		ComboBox(manager, editor)
 		from EntryActivator import Activator
 		Activator(manager, editor)
 		from PreviousButton import Button

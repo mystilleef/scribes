@@ -22,28 +22,19 @@ class View(object):
 		self = None
 		return False
 
-	def __add_view_to_scroll(self):
-		self.__editor.response()
-		swin = self.__editor.gui.get_widget("ScrolledWindow")
-		self.__editor.response()
-		swin.add(self.__view)
-		self.__editor.response()
-		swin.show_all()
-		self.__editor.response()
-		return False
-
 	def __set_properties(self):
 		self.__editor.response()
+		from gtk import DEST_DEFAULT_ALL
+		targets = [("text/uri-list", 0, 80)]
+		from gtk.gdk import ACTION_COPY, BUTTON1_MASK, ACTION_DEFAULT
+		self.__view.drag_dest_set(DEST_DEFAULT_ALL, targets, ACTION_COPY)
+		self.__view.drag_dest_add_text_targets()
 		self.__view.set_property("is-focus", True)
 		self.__view.set_property("has-focus", True)
 		self.__view.set_property("can-focus", True)
 		self.__view.set_property("can-default", True)
 		self.__view.set_property("has-default", True)
 		self.__view.set_property("receives-default", True)
-		targets = [("text/uri-list", 0, 80)]
-		from gtk import DEST_DEFAULT_ALL
-		from gtk.gdk import ACTION_COPY, BUTTON1_MASK, ACTION_DEFAULT
-		self.__view.drag_dest_set(DEST_DEFAULT_ALL, targets, ACTION_COPY)
 		self.__view.set_property("auto-indent", True)
 		self.__view.set_property("highlight-current-line", True)
 		self.__view.set_property("show-line-numbers", True)
@@ -67,10 +58,19 @@ class View(object):
 		wrap_mode = self.__view.set_wrap_mode
 		wrap_mode(WRAP_WORD_CHAR) if wrap_mode_bool() else wrap_mode(WRAP_NONE)
 		self.__view.set_property("sensitive", True)
-		from gtk.gdk import color_parse
-		self.__view.modify_cursor(color_parse("red"), color_parse("red"))
 		self.__editor.response()
 		return False
+
+	def __add_view_to_scroll(self):
+		self.__editor.response()
+		swin = self.__editor.gui.get_widget("ScrolledWindow")
+		self.__editor.response()
+		swin.add(self.__view)
+		self.__editor.response()
+		swin.show_all()
+		self.__editor.response()
+		return False
+
 
 	def __quit_cb(self, *args):
 		self.__destroy()

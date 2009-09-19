@@ -14,13 +14,13 @@ class Trigger(object):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = None
-		self.__trigger1 = self.__create_trigger("delete_line", "alt+d")
-		self.__trigger2 = self.__create_trigger("join_line", "alt+j")
-		self.__trigger3 = self.__create_trigger("free_line_above", "alt+shift+o")
-		self.__trigger4 = self.__create_trigger("free_line_below", "alt+o")
-		self.__trigger5 = self.__create_trigger("delete_cursor_to_end", "alt+End")
-		self.__trigger6 = self.__create_trigger("delete_cursor_to_begin", "alt+Home")
-		self.__trigger7 = self.__create_trigger("duplicate_line", "ctrl+shift+d")
+		self.__trigger1 = self.__create_trigger("delete_line", "<alt>d")
+		self.__trigger2 = self.__create_trigger("join_line", "<alt>j")
+		self.__trigger3 = self.__create_trigger("free_line_above", "<alt><shift>o")
+		self.__trigger4 = self.__create_trigger("free_line_below", "<alt>o")
+		self.__trigger5 = self.__create_trigger("delete_cursor_to_end", "<alt>End")
+		self.__trigger6 = self.__create_trigger("delete_cursor_to_begin", "<alt>Home")
+		self.__trigger7 = self.__create_trigger("duplicate_line", "<ctrl><shift>d")
 		return
 
 	def __destroy(self):

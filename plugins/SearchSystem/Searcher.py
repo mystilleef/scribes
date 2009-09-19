@@ -26,11 +26,11 @@ class Searcher(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		del self
 		self = None
-		return 
+		return
 
 	def __find_matches(self, regex_object):
-		iterator = regex_object.finditer(self.__text, self.__regex_flags)
-		matches = [(match.start(), match.end()) for match in iterator]
+		iterator = regex_object.finditer(self.__text)
+		matches = [match.span() for match in iterator]
 		self.__manager.emit("found-matches", matches)
 		if not matches: self.__manager.emit("search-complete")
 		if not matches: self.__editor.update_message(message, "fail", 10)
@@ -41,7 +41,7 @@ class Searcher(object):
 		return False
 
 	def __boundary_cb(self, manager, boundary):
-		self.__text = self.__editor.textbuffer.get_text(*(boundary)).decode("utf8")
+		self.__text = self.__editor.textbuffer.get_text(*(boundary)).decode("utf-8")
 		return False
 
 	def __regex_cb(self, manager, regex_object):

@@ -1,11 +1,13 @@
 class Processor(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("process-encoding", self.__process_cb)
 		self.__sigid3 = manager.connect("init-loading", self.__init_loading_cb)
 		self.__sigid4 = manager.connect("insertion-error", self.__process_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

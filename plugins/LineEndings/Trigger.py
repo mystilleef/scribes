@@ -10,9 +10,9 @@ class Trigger(object):
 	def __init_attributes(self, editor):
 		self.__manager = None
 		self.__editor = editor
-		self.__trigger1 = self.__create_trigger("line-endings-to-unix", "alt+1")
-		self.__trigger2 = self.__create_trigger("line-endings-to-mac", "alt+2")
-		self.__trigger3 = self.__create_trigger("line-endings-to-windows", "alt+3")
+		self.__trigger1 = self.__create_trigger("line-endings-to-unix", "<alt>1")
+		self.__trigger2 = self.__create_trigger("line-endings-to-mac", "<alt>2")
+		self.__trigger3 = self.__create_trigger("line-endings-to-windows", "<alt>3")
 		return
 
 	def __create_trigger(self, name, shortcut):

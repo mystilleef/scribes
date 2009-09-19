@@ -13,7 +13,7 @@ class Trigger(object):
 		return
 
 	def __create_trigger(self):
-		trigger = self.__editor.create_trigger("show_template_editor", "alt+F12")
+		trigger = self.__editor.create_trigger("show_template_editor", "<alt>F12")
 		self.__editor.add_trigger(trigger)
 		return trigger
 

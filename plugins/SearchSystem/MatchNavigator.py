@@ -11,6 +11,7 @@ class Navigator(object):
 		self.__sigid5 = manager.connect("reset", self.__clear_cb)
 		self.__sigid6 = manager.connect("search-type-flag", self.__search_type_cb)
 		self.__sigid7 = manager.connect("replaced-mark", self.__replaced_mark_cb)
+		self.__sigid8 = manager.connect("cursor-mark", self.__cursor_mark_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -20,12 +21,13 @@ class Navigator(object):
 		self.__prev_queue = deque([])
 		self.__current_match = None
 		self.__backward_flag = False
-		return 
+		self.__cursor_mark = None
+		return
 
 	def __clear(self):
 		self.__next_queue.clear()
 		self.__prev_queue.clear()
-		return 
+		return
 
 	def __process_next(self):
 		try:
@@ -51,7 +53,7 @@ class Navigator(object):
 			self.__editor.update_message(message, "fail", 10)
 		return
 
-	def __process(self, matches):
+	def __old_navigation_behavior(self, matches):
 		self.__clear()
 		from collections import deque
 		if self.__backward_flag:
@@ -66,6 +68,21 @@ class Navigator(object):
 		self.__manager.emit("current-match", match)
 		return False
 
+	def __process(self, matches):
+		self.__clear()
+		get_offset = lambda mark: self.__editor.textbuffer.get_iter_at_mark(mark).get_offset()
+		pappend = lambda mark: self.__prev_queue.appendleft(mark)
+		nappend = lambda mark: self.__next_queue.append(mark)
+		cursor_offset = get_offset(self.__cursor_mark)
+		for marks in matches:
+			self.__editor.response()
+			mark = marks[0]
+			pappend(marks) if cursor_offset > get_offset(mark) else nappend(marks)
+		match = self.__next_queue.popleft() if self.__next_queue else self.__prev_queue.popleft()
+		self.__current_match = match
+		self.__manager.emit("current-match", match)
+		return False
+
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
@@ -74,9 +91,10 @@ class Navigator(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
 		del self
 		self = None
-		return 
+		return
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
@@ -84,6 +102,7 @@ class Navigator(object):
 
 	def __marked_matches_cb(self, manager, matches):
 		self.__process(matches)
+#		self.__default(matches)
 		return False
 
 	def __next_cb(self, *args):
@@ -106,4 +125,8 @@ class Navigator(object):
 		if mark in self.__next_queue: self.__next_queue.remove(mark)
 		if mark in self.__prev_queue: self.__prev_queue.remove(mark)
 		if mark == self.__current_match: self.__current_match = None
+		return False
+
+	def __cursor_mark_cb(self, manager, mark):
+		self.__cursor_mark = mark
 		return False

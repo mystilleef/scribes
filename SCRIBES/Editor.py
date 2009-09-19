@@ -65,7 +65,7 @@ class Editor(Signals):
 	author = property(lambda self: EditorImports.author)
 	website = property(lambda self: EditorImports.website)
 	save_processor = property(lambda self: self.imanager.get_save_processor())
-	supported_encodings = property(lambda self: EditorImports.get_supported_encodings())
+	supported_encodings = property(lambda self: EditorImports.supported_encodings)
 	word_pattern = property(lambda self: EditorImports.word_pattern)
 	selection_range = property(lambda self: self.get_selection_range())
 	selection_bounds = property(lambda self: self.textbuffer.get_selection_bounds())
@@ -88,19 +88,20 @@ class Editor(Signals):
 			for function in functions:
 				self.response()
 				bind(function)
-			self.response()
 		except ImportError:
 			pass
+		finally:
+			self.response()
 		return False
 
 	def help(self):
+		self.response()
 		uri = "ghelp:scribes"
-		from gobject import spawn_async, SPAWN_STDERR_TO_DEV_NULL
-		from gobject import SPAWN_SEARCH_PATH, SPAWN_STDOUT_TO_DEV_NULL
-		spawn_async(argv=("xdg-open",uri),
-			flags=SPAWN_SEARCH_PATH | SPAWN_STDOUT_TO_DEV_NULL | SPAWN_STDERR_TO_DEV_NULL)
-		message = _("Launching user guide")
-		show = self.update_message(message, "help", 10) 
+		from gtk import show_uri, get_current_event_time
+		result = show_uri(self.window.get_screen(), uri, get_current_event_time())
+		message = _("Launching user guide") if result else _("Failed to launch user guide")
+		image = "help" if result else "fail"
+		show = self.update_message(message, image, 10)
 		return
 
 	def new(self):
@@ -186,10 +187,12 @@ class Editor(Signals):
 		return
 
 	def create_uri(self, uri, exclusive=True):
+		self.response()
 		from Utils import create_uri
 		return create_uri(uri, exclusive)
 
 	def create_image(self, path):
+		self.response()
 		from Utils import create_image
 		return create_image(path)
 
@@ -202,6 +205,7 @@ class Editor(Signals):
 		return False
 
 	def calculate_resolution_independence(self, window, width, height):
+		self.response()
 		from Utils import calculate_resolution_independence
 		return calculate_resolution_independence(window, width, height)
 
@@ -224,8 +228,8 @@ class Editor(Signals):
 		self.emit("private-busy", busy)
 		return False
 
-	def show_load_encoding_error_window(self):
-		self.emit("private-encoding-load-error")
+	def show_load_encoding_error_window(self, uri):
+		self.emit("private-encoding-load-error", uri)
 		return False
 
 	def show_supported_encodings_window(self, window=None):
@@ -273,6 +277,7 @@ class Editor(Signals):
 		return toolbutton
 
 	def get_indentation(self, iterator=None):
+		self.response()
 		if iterator is None: iterator = self.cursor.copy()
 		start = self.backward_to_line_begin(iterator.copy())
 		if start.is_end() or start.ends_line(): return ""
@@ -299,6 +304,7 @@ class Editor(Signals):
 		return forward_to_line_end(iterator.copy())
 
 	def create_trigger(self, name, accelerator=None, description=None, error=True, removable=True):
+		self.response()
 		from Trigger import Trigger
 		trigger = Trigger(self, name, accelerator, description, error, removable)
 		return trigger
@@ -324,6 +330,7 @@ class Editor(Signals):
 		return False
 
 	def select_row(self, treeview):
+		self.response()
 		from Utils import select_row
 		return select_row(treeview)
 
@@ -341,17 +348,20 @@ class Editor(Signals):
 		return self.mark(self.cursor, "right")
 
 	def delete_mark(self, mark):
+		self.response()
 		if mark.get_deleted(): return
 		self.textbuffer.delete_mark(mark)
 		return
 
 	def inside_word(self, iterator=None, pattern=None):
+		self.response()
 		if iterator is None: iterator = self.cursor
 		if pattern is None: pattern = self.word_pattern
 		from Word import inside_word
 		return inside_word(iterator, pattern)
 
 	def is_empty_line(self, iterator=None):
+		self.response()
 		if iterator is None: iterator = self.cursor
 		start = self.backward_to_line_begin(iterator)
 		if start.ends_line(): return True
@@ -361,16 +371,19 @@ class Editor(Signals):
 		return True
 
 	def get_line_bounds(self, iterator=None):
+		self.response()
 		if iterator is None: iterator = self.cursor
 		start = self.backward_to_line_begin(iterator)
 		end = self.forward_to_line_end(iterator)
 		return start, end
 
 	def get_line_text(self, iterator=None):
+		self.response()
 		if iterator is None: iterator = self.cursor
 		return self.textbuffer.get_text(*(self.get_line_bounds(iterator)))
 
 	def get_word_boundary(self, iterator=None, pattern=None):
+		self.response()
 		if iterator is None: iterator = self.cursor
 		if pattern is None: pattern = self.word_pattern
 		from Word import get_word_boundary
@@ -382,11 +395,13 @@ class Editor(Signals):
 		return find_matching_bracket(iterator)
 
 	def get_current_folder(self, globals_):
+		self.response()
 		from os.path import split
 		folder = split(globals_["__file__"])[0]
 		return folder
 
 	def uri_is_folder(self, uri):
+		self.response()
 		from Utils import uri_is_folder
 		return uri_is_folder(uri)
 
@@ -399,12 +414,15 @@ class Editor(Signals):
 		return
 
 	def add_shortcut(self, shortcut):
+		self.response()
 		return self.imanager.add_shortcut(shortcut)
 
 	def remove_shortcut(self, shortcut):
+		self.response()
 		return self.imanager.remove_shortcut(shortcut)
 
 	def get_shortcuts(self):
+		self.response()
 		return self.imanager.get_shortcuts()
 
 	def add_to_popup(self, menuitem):
@@ -420,10 +438,15 @@ class Editor(Signals):
 		return False
 
 	def create_menuitem(self, name, stock=None):
+		self.response()
 		from Utils import create_menuitem
 		return create_menuitem(name, stock)
 
 	def get_glade_object(self, globals_, basepath, object_name):
+		#FIXME: This function will soon be deprecated. It uses glade.
+		# GTKBUILDER should be use instead.get_gui_object uses 
+		# GTKBUILDER.
+		self.response()
 		from os.path import join
 		folder = self.get_current_folder(globals_)
 		file_ = join(folder, basepath)
@@ -431,31 +454,47 @@ class Editor(Signals):
 		glade = XML(file_, object_name, "scribes")
 		return glade
 
+	def get_gui_object(self, globals_, basepath):
+		self.response()
+		from os.path import join
+		folder = self.get_current_folder(globals_)
+		file_ = join(folder, basepath)
+		from gtk import Builder
+		gui = Builder()
+		gui.add_from_file(file_)
+		return gui
+
 	def set_vm_interval(self, response=True):
 		#FIXME: This function is deprecated!
 		return
 
 	def get_selection_range(self):
+		self.response()
 		if self.textbuffer.props.has_selection is False: return 0
 		start, end = self.textbuffer.get_selection_bounds()
 		return (end.get_line() - start.get_line()) + 1
 
 	def get_file_monitor(self, path):
+		self.response()
 		from Utils import get_file_monitor
 		return get_file_monitor(path)
 
 	def get_folder_monitor(self, path):
+		self.response()
 		from Utils import get_folder_monitor
 		return get_folder_monitor(path)
 
 	def monitor_events(self, args, event_types):
+		self.response()
 		from Utils import monitor_events
 		return monitor_events(args, event_types)
 
 	def get_fileinfo(self, path):
+		self.response()
 		from Utils import get_fileinfo
 		return get_fileinfo(path)
 
 	def get_mimetype(self, path):
+		self.response()
 		from Utils import get_mimetype
 		return get_mimetype(path)

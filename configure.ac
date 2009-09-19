@@ -1,7 +1,7 @@
 #						-*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([scribes], [0.4-dev-build463], [<mystilleef@gmail.com>])
+AC_INIT([scribes], [0.4-dev-build488], [<mystilleef@gmail.com>])
 GNOME_COMMON_INIT
 AC_PREREQ(2.60)
 AM_INIT_AUTOMAKE([1.8 dist-bzip2 no-dist-gzip])
@@ -38,7 +38,17 @@ po/Makefile.in
 Makefile
 help/Makefile
 SCRIBES/Makefile
+SCRIBES/PluginInitializer/Makefile
+SCRIBES/TriggerSystem/Makefile
+SCRIBES/TriggerSystem/Bindings/Makefile
 SCRIBES/URILoader/Makefile
+SCRIBES/EncodingSystem/Makefile
+SCRIBES/EncodingSystem/Error/Makefile
+SCRIBES/EncodingSystem/Error/GUI/Makefile
+SCRIBES/EncodingSystem/ComboBoxData/Makefile
+SCRIBES/EncodingSystem/SupportedEncodings/Makefile
+SCRIBES/EncodingSystem/SupportedEncodings/GUI/Makefile
+SCRIBES/EncodingSystem/SupportedEncodings/GUI/Treeview/Makefile
 SCRIBES/SaveProcessInitializer/Makefile
 SCRIBES/SaveSystem/Makefile
 SCRIBES/SaveSystem/ExternalProcess/Makefile

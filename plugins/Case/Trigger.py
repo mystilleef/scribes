@@ -10,9 +10,9 @@ class Trigger(object):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = None
-		self.__trigger1 = self.__create_trigger("togglecase", "alt+u")
-		self.__trigger2 = self.__create_trigger("titlecase", "alt+shift+u")
-		self.__trigger3 = self.__create_trigger("swapcase", "alt+shift+l")
+		self.__trigger1 = self.__create_trigger("togglecase", "<alt>u")
+		self.__trigger2 = self.__create_trigger("titlecase", "<alt><shift>u")
+		self.__trigger3 = self.__create_trigger("swapcase", "<alt><shift>l")
 		return
 
 	def __destroy(self):

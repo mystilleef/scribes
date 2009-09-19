@@ -11,12 +11,12 @@ class Trigger(object):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__prv_trigger = self.__create_trigger("move_to_previous_block", "alt+bracketleft")
-		self.__nxt_trigger = self.__create_trigger("move_to_next_block", "alt+bracketright")
-		self.__select_trigger = self.__create_trigger("select_python_block", "alt+h")
-		self.__end_trigger = self.__create_trigger("move_to_block_end", "alt+e")
-		self.__select_function_trigger = self.__create_trigger("select_function", "alt+f")
-		self.__select_class_trigger = self.__create_trigger("select_class", "alt+a")
+		self.__prv_trigger = self.__create_trigger("move_to_previous_block", "<alt>bracketleft")
+		self.__nxt_trigger = self.__create_trigger("move_to_next_block", "<alt>bracketright")
+		self.__select_trigger = self.__create_trigger("select_python_block", "<alt>h")
+		self.__end_trigger = self.__create_trigger("move_to_block_end", "<alt>e")
+		self.__select_function_trigger = self.__create_trigger("select_function", "<alt>f")
+		self.__select_class_trigger = self.__create_trigger("select_class", "<alt>a")
 		self.__manager = None
 		return
 

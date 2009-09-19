@@ -12,8 +12,8 @@ class Manager(GObject):
 		"show-bar": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"show-replacebar": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"hide-bar": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-		"search-string": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
-		"new-pattern": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"search-string": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"new-pattern": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"new-regex": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"search-boundary": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"search": (SCRIBES_SIGNAL, TYPE_NONE, ()),
@@ -22,7 +22,7 @@ class Manager(GObject):
 		"found-matches": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"marked-matches": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"mapped-matches": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"search-mode": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"search-mode": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"popup-menu": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"hide-menu": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"reset": (SCRIBES_SIGNAL, TYPE_NONE, ()),
@@ -35,18 +35,19 @@ class Manager(GObject):
 		"entry-activated": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"back-button": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"select-match": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-		"match-word-flag": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
-		"match-case-flag": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
-		"search-type-flag": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
-		"search-mode-flag": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"match-word-flag": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"match-case-flag": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"search-type-flag": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"search-mode-flag": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"selection-bounds": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"replace": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"replace-all": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"replace-entry-activated": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"focus-replace-entry": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-		"replace-string": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_STRING,)),
+		"replace-string": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"replaced-mark": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"regex-flags": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"cursor-mark": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -62,6 +63,8 @@ class Manager(GObject):
 		Creator(self, editor)
 		from RegexCreator import Creator
 		Creator(self, editor)
+		from CursorMarker import Marker
+		Marker(self, editor)
 		from Searcher import Searcher
 		Searcher(self, editor)
 		from MatchMapper import Mapper

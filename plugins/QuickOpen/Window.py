@@ -4,7 +4,7 @@ from gtk import Dialog
 from gettext import gettext as _
 STATUS_MESSAGE = _("Quickly Open Files")
 
-class QuickOpenWindow(Dialog) :
+class Window(Dialog) :
 
 	def __init__(self, editor) :
 		self.__editor = editor

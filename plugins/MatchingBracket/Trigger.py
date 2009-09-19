@@ -19,7 +19,7 @@ class Trigger(object):
 		return False
 
 	def __create_trigger(self):
-		trigger = self.__editor.create_trigger("find_matching_bracket", "alt+shift+b")
+		trigger = self.__editor.create_trigger("find_matching_bracket", "<alt><shift>b")
 		self.__editor.add_trigger(trigger)
 		return trigger
 

@@ -8,7 +8,7 @@ class Trigger(object):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = None
-		self.__trigger = self.__create_trigger("show_save_dialog", "ctrl+shift+s")
+		self.__trigger = self.__create_trigger("show_save_dialog", "<ctrl><shift>s")
 		return
 
 	def __destroy(self):
