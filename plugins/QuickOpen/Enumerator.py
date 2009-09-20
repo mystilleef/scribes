@@ -17,22 +17,27 @@ class Enumerator(object):
 		self = None
 		return False
 
-	def __get_fileinfos(self, folder):
+	def __send(self, folder):
 		attributes = "standard::*"
 		from gio import File
-		enumerator = File(folder).enumerate_children(attributes)
-		fileinfos = []
-		while True:
-			self.__editor.response()
-			fileinfo = enumerator.next_file()
-			if not fileinfo: break
-			fileinfos.append(fileinfo)
-		return fileinfos
+		File(folder).enumerate_children_async(attributes, self.__children_async_cb, user_data=folder)
+		return False
 
-	def __send(self, folder):
-		fileinfos = self.__get_fileinfos(folder)
+	def __children_async_cb(self, gfile, result, folder):
+		enumerator = gfile.enumerate_children_finish(result)
+		from gobject import idle_add
+		idle_add(self.__get_fileinfos, (enumerator, folder))
+		return False
+
+	def __get_fileinfos(self, data):
+		enumerator, folder = data
+		enumerator.next_files_async(999999, self.__next_async_cb, user_data=folder)
+		return False
+
+	def __next_async_cb(self, enumerator, result, folder):
+		fileinfos = enumerator.next_files_finish(result)
 		self.__manager.emit("filter-fileinfos", (folder, fileinfos))
-#		self.__manager.emit("folder-and-fileinfos", (folder, fileinfos))
+		enumerator.close()
 		return False
 
 	def __destroy_cb(self, *args):
