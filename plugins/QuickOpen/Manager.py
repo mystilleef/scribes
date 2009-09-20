@@ -26,6 +26,7 @@ class Manager(GObject):
 		"message": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"clear-message": (SSIGNAL, TYPE_NONE, ()),
 		"entry-changed": (SSIGNAL, TYPE_NONE, ()),
+		"filter-fileinfos": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
@@ -41,6 +42,8 @@ class Manager(GObject):
 		Filterer(self, editor)
 		from FileFormatter import Formatter
 		Formatter(self, editor)
+		from FileinfoFilterer import Filterer
+		Filterer(self, editor)
 		from Enumerator import Enumerator
 		Enumerator(self, editor)
 		from FilesAggregator import Aggregator

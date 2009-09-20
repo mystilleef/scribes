@@ -31,7 +31,8 @@ class Enumerator(object):
 
 	def __send(self, folder):
 		fileinfos = self.__get_fileinfos(folder)
-		self.__manager.emit("folder-and-fileinfos", (folder, fileinfos))
+		self.__manager.emit("filter-fileinfos", (folder, fileinfos))
+#		self.__manager.emit("folder-and-fileinfos", (folder, fileinfos))
 		return False
 
 	def __destroy_cb(self, *args):

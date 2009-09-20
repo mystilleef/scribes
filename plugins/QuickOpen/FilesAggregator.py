@@ -37,8 +37,6 @@ class Aggregator(object):
 			self.__editor.response()
 			for fileinfo in fileinfos:
 				self.__editor.response()
-				if fileinfo.get_is_backup() or fileinfo.get_is_symlink() or fileinfo.get_is_hidden(): continue
-				if fileinfo.get_display_name().endswith(".pyo"): continue
 				files.append(self.__get_uri(folder, fileinfo))
 		self.__manager.emit("files", files)
 		return False

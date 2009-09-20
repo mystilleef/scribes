@@ -294,13 +294,11 @@ class Editor(Signals):
 		return
 
 	def backward_to_line_begin(self, iterator=None):
-#		self.response()
 		if iterator is None: iterator = self.cursor
 		from Utils import backward_to_line_begin
 		return backward_to_line_begin(iterator.copy())
 
 	def forward_to_line_end(self, iterator=None):
-#		self.response()
 		if iterator is None: iterator = self.cursor
 		from Utils import forward_to_line_end
 		return forward_to_line_end(iterator.copy())
