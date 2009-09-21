@@ -20,8 +20,7 @@ class Filterer(object):
 			"bat", "7z", "bz", "bz2", "bzip", "deb", "gz", "gzip",
 			"rar", "zip", "tar", "tbz", "tbz2", "iso", "msi", "part",
 			"torrent", "doc", "pyo", "pyc", "nfo", "m4v", "rtf", "in",
-			"gmo", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", 
-			"toc", "odt", "dat", "svg"
+			"gmo", "toc", "odt", "dat", "svg"
 		)
 		return
 
