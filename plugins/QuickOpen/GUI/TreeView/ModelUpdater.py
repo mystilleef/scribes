@@ -52,8 +52,13 @@ class Updater(object):
 		return False
 
 	def __data_cb(self, manager, data):
-		from gobject import idle_add
-		idle_add(self.__populate, data)
+		try:
+			from gobject import idle_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = idle_add(self.__populate, data)
 		return False
 
 	def __files_cb(self, manager, files):

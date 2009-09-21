@@ -4,6 +4,7 @@ class Handler(object):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = self.__view.connect("key-press-event", self.__event_cb)
+		self.__sigid3 = self.__view.connect("button-press-event", self.__button_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -19,7 +20,8 @@ class Handler(object):
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid2, self.__view)
+		self.__editor.disconnect_signal(self.__sigid3, self.__view)
 		del self
 		self = None
 		return False
@@ -36,3 +38,10 @@ class Handler(object):
 		if not (event.keyval in self.__dictionary.keys()): return False
 		self.__emit(self.__dictionary[event.keyval])
 		return True
+
+	def __button_cb(self, treeview, event):
+		from gtk.gdk import _2BUTTON_PRESS
+		if event.type != _2BUTTON_PRESS: return False
+		self.__manager.emit("row-activated")
+		return True
+

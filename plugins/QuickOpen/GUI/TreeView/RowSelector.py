@@ -28,21 +28,16 @@ class Selector(object):
 		self.__view.scroll_to_cell(0, None, True, 0.5, 0.5)
 		return False
 
-	def __select_timeout(self):
-		try:
-			from gobject import timeout_add, source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = timeout_add(10, self.__select, priority=9999)
-		return False
-
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __updated_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__select_timeout, priority=9999)
+		try:
+			from gobject import idle_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = idle_add(self.__select)
 		return False

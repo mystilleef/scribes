@@ -52,7 +52,7 @@ class Aggregator(object):
 			if fileinfo.get_file_type() == 2: _folders.append(fileinfo)
 		self.__files.append((folder, _fileinfos))
 		[self.__process(self.__get_uri(folder, fileinfo)) for fileinfo in _folders]
-		self.__folders.remove(folder)
+		if folder in self.__folders: self.__folders.remove(folder)
 		if not self.__folders: self.__aggregate()
 		return False
 

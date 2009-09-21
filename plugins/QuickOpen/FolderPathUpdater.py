@@ -6,6 +6,7 @@ class Updater(object):
 		self.__sigid2 = manager.connect("parent-path", self.__parent_cb)
 		self.__sigid3 = manager.connect("show", self.__show_cb)
 		self.__sigid4 = manager.connect("hide", self.__hide_cb)
+		self.__sigid5 = manager.connect("enumeration-error", self.__error_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -18,6 +19,7 @@ class Updater(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		del self
 		self = None
 		return False
@@ -27,7 +29,6 @@ class Updater(object):
 			pwduri = self.__path if self.__path else self.__editor.pwd_uri
 			from gio import File
 			self.__path = File(pwduri).get_parent().get_uri() if parent else pwduri
-			if len(self.__path) < len(self.__editor.home_folder_uri): return False
 			self.__manager.emit("current-path", self.__path)
 		except AttributeError:
 			pass
@@ -49,4 +50,10 @@ class Updater(object):
 
 	def __hide_cb(self, *args):
 		self.__path = ""
+		return False
+
+	def __error_cb(self, *args):
+		self.__path = ""
+		from gobject import timeout_add
+		timeout_add(1000, self.__update)
 		return False

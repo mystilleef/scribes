@@ -26,6 +26,7 @@ class Manager(GObject):
 		"message": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"clear-message": (SSIGNAL, TYPE_NONE, ()),
 		"entry-changed": (SSIGNAL, TYPE_NONE, ()),
+		"enumeration-error": (SSIGNAL, TYPE_NONE, ()),
 		"filter-fileinfos": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 

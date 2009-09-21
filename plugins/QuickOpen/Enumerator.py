@@ -8,6 +8,8 @@ class Enumerator(object):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
+		from Cancellable import GCancellable
+		self.__cancellable = GCancellable(manager, editor)
 		return False
 
 	def __destroy(self):
@@ -20,24 +22,28 @@ class Enumerator(object):
 	def __send(self, folder):
 		attributes = "standard::*"
 		from gio import File
-		File(folder).enumerate_children_async(attributes, self.__children_async_cb, user_data=folder)
+		File(folder).enumerate_children_async(attributes, self.__children_async_cb, cancellable=self.__cancellable, user_data=folder)
 		return False
 
 	def __children_async_cb(self, gfile, result, folder):
-		enumerator = gfile.enumerate_children_finish(result)
-		from gobject import idle_add
-		idle_add(self.__get_fileinfos, (enumerator, folder))
+		try:
+			from gio import Error
+			enumerator = gfile.enumerate_children_finish(result)
+			from gobject import idle_add
+			idle_add(self.__get_fileinfos, (enumerator, folder))
+		except Error, e:
+			self.__manager.emit("enumeration-error")
 		return False
 
 	def __get_fileinfos(self, data):
 		enumerator, folder = data
-		enumerator.next_files_async(999999, self.__next_async_cb, user_data=folder)
+		enumerator.next_files_async(999999, self.__next_async_cb, cancellable=self.__cancellable, user_data=folder)
 		return False
 
 	def __next_async_cb(self, enumerator, result, folder):
 		fileinfos = enumerator.next_files_finish(result)
 		self.__manager.emit("filter-fileinfos", (folder, fileinfos))
-		enumerator.close()
+		enumerator.close(self.__cancellable)
 		return False
 
 	def __destroy_cb(self, *args):

@@ -28,6 +28,7 @@ class Filterer(object):
 
 	def __filter(self, pattern):
 		try:
+			self.__editor.response()
 			if not pattern: raise ValueError
 			filtered_files = [_file for _file in self.__files if self.__is_a_match(pattern, _file)]
 			self.__manager.emit("filtered-files", filtered_files)
@@ -46,8 +47,12 @@ class Filterer(object):
 		return False
 
 	def __pattern_cb(self, manager, pattern):
-		self.__pattern = pattern
-		from gobject import idle_add
-		idle_add(self.__filter, pattern)
+		try:
+			self.__pattern = pattern
+			from gobject import idle_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = idle_add(self.__filter, pattern)
 		return False
-
