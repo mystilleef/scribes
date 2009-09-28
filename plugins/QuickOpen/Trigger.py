@@ -32,7 +32,7 @@ class Trigger(object):
 	def __create_trigger(self):
 		trigger = self.__editor.create_trigger("show-quick-open-window", "<ctrl><alt>o")
 		self.__editor.add_trigger(trigger)
-		return trigger
+		return trigger # 
 
 	def __activate_cb(self, *args):
 		from gobject import idle_add
