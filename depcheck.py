@@ -20,7 +20,7 @@ def check_dependencies():
 			print "Checking for Pygobject... yes"
 		except ImportError:
 			print "Error: pygobject was not found."
-			raise SystemExit
+			raise SystemExit 
 		# Check for GTK.
 		try:
 			import gtk
