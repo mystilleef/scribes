@@ -4,7 +4,7 @@ basepath = "/PluginPreferences/SearchMode.gdb"
 def get_value():
 	try:
 		# Mode values are: "default", "regex" and "findasyoutype"
-		mode = "default"
+		mode = "findasyoutype"
 		database = open_database(basepath, "r")
 		mode = database["mode"]
 	except KeyError:

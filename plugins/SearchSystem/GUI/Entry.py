@@ -59,7 +59,7 @@ class Entry(object):
 		self.__manager.emit("search")
 		return False
 
-	def __changed_cb(self, *args):
+	def __change_idleadd(self):
 		try:
 			from gobject import source_remove, timeout_add
 			source_remove(self.__timer)
@@ -67,6 +67,11 @@ class Entry(object):
 			pass
 		finally:
 			self.__timer = timeout_add(500, self.__change_timeout, priority=9999)
+		return False
+
+	def __changed_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__change_idleadd, priority=9999)
 		return False
 
 	def __activate_cb(self, *args):

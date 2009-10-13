@@ -47,17 +47,21 @@ class Manager(object):
 		self = None
 		return False
 
+	def __refresh(self):
+		try:
+			from gobject import idle_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = idle_add(self.__editor.refresh, False)
+		return False
+
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __response_cb(self, *args):
-		self.__editor.refresh(False)
-#		try:
-#			from gobject import idle_add, source_remove
-#			source_remove(self.__timer)
-#		except AttributeError:
-#			pass
-#		finally:
-#			self.__timer = idle_add(self.__editor.response)
+		from gobject import idle_add
+		idle_add(self.__refresh)
 		return False
