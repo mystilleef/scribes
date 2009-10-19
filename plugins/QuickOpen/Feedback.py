@@ -1,3 +1,6 @@
+from gettext import gettext as _
+STATUS_MESSAGE = _("Open files quickly")
+
 class Feedback(object):
 
 	def __init__(self, manager, editor):
@@ -8,6 +11,8 @@ class Feedback(object):
 		self.__sigid4 = manager.connect("entry-changed", self.__changed_cb)
 		self.__sigid5 = manager.connect("current-path", self.__path_cb)
 		self.__sigid6 = manager.connect("formatted-files", self.__formatted_cb)
+		self.__sigid7 = manager.connect("show", self.__show_cb)
+		self.__sigid8 = manager.connect("hide", self.__hide_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -22,6 +27,8 @@ class Feedback(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
 		del self
 		self = None
 		return False
@@ -116,4 +123,12 @@ class Feedback(object):
 			pass
 		finally:
 			self.__timer = idle_add(self.__path_message, priority=9999)
+		return False
+
+	def __show_cb(self, *args):
+		self.__editor.set_message(STATUS_MESSAGE)
+		return False
+	
+	def __hide_cb(self, *args):
+		self.__editor.unset_message(STATUS_MESSAGE)
 		return False

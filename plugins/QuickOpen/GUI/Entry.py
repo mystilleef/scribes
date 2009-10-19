@@ -40,7 +40,7 @@ class Entry(object):
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(500, self.__send, priority=9999)
+			self.__timer = timeout_add(250, self.__send, priority=9999)
 		return False
 
 	def __clear(self):
@@ -68,9 +68,14 @@ class Entry(object):
 		return False
 
 	def __changed_cb(self, *args):
-		self.__manager.emit("entry-changed")
-		from gobject import idle_add
-		idle_add(self.__timeout_send)
+		try:
+			self.__manager.emit("entry-changed")
+			from gobject import idle_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = idle_add(self.__timeout_send)
 		return False
 
 	def __focus_cb(self, *args):

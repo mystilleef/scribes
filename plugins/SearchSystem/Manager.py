@@ -48,11 +48,14 @@ class Manager(GObject):
 		"replaced-mark": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"regex-flags": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"cursor-mark": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"entry-change-text": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self, editor):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
+		from SearchCaseDetector import Detector
+		Detector(self, editor)
 		from MatchSelector import Selector
 		Selector(self, editor)
 		from GUI.Manager import Manager

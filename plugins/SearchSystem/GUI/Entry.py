@@ -13,6 +13,7 @@ class Entry(object):
 		self.__sigid9 = self.__manager.connect("search-complete", self.__search_complete_cb)
 		self.__sigid10 = self.__entry.connect("button-press-event", self.__button_press_event_cb)
 		self.__sigid11 = manager.connect("search-mode-flag", self.__search_mode_flag_cb)
+		self.__sigid12 = self.__entry.connect("changed", self.__entry_changed_cb)
 		self.__entry.props.sensitive = True
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
@@ -36,6 +37,7 @@ class Entry(object):
 		self.__editor.disconnect_signal(self.__sigid9, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid10, self.__entry)
 		self.__editor.disconnect_signal(self.__sigid11, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid12, self.__entry)
 		self.__entry.destroy()
 		del self
 		self = None
@@ -59,7 +61,7 @@ class Entry(object):
 		self.__manager.emit("search")
 		return False
 
-	def __changed_cb(self, *args):
+	def __change_idleadd(self):
 		try:
 			from gobject import source_remove, timeout_add
 			source_remove(self.__timer)
@@ -67,6 +69,11 @@ class Entry(object):
 			pass
 		finally:
 			self.__timer = timeout_add(500, self.__change_timeout, priority=9999)
+		return False
+
+	def __changed_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__change_idleadd, priority=9999)
 		return False
 
 	def __activate_cb(self, *args):
@@ -110,4 +117,9 @@ class Entry(object):
 	def __precompile_methods(self):
 		methods = (self.__changed_cb,)
 		self.__editor.optimize(methods)
+		return False
+
+	def __entry_changed_cb(self, *args):
+		text = self.__entry.get_text()
+		self.__manager.emit("entry-change-text", text)
 		return False

@@ -13,14 +13,14 @@ def check_dependencies():
 			raise SystemExit
 		except AssertionError:
 			print "Error: Version 0.70 or better of dbus-python needed."
-			raise SystemExit
+			raise SystemExit # PIG pIG piG pig Pig PIg 
 		# Check for Pygobject.
 		try:
 			import gobject
 			print "Checking for Pygobject... yes"
 		except ImportError:
 			print "Error: pygobject was not found."
-			raise SystemExit
+			raise SystemExit 
 		# Check for GTK.
 		try:
 			import gtk

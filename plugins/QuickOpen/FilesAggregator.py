@@ -1,5 +1,3 @@
-#FIXME: This module needs refactoring
-
 class Aggregator(object):
 
 	def __init__(self, manager, editor):
@@ -31,34 +29,42 @@ class Aggregator(object):
 		path = join(File(folder).get_path(), fileinfo.get_name())
 		return File(path).get_uri()
 
-	def __aggregate(self):
-		files = []
-		for folder, fileinfos in self.__files:
-			self.__editor.response()
-			for fileinfo in fileinfos:
-				self.__editor.response()
-				if fileinfo.get_is_backup() or fileinfo.get_is_symlink() or fileinfo.get_is_hidden(): continue
-				if fileinfo.get_display_name().endswith(".pyo"): continue
-				files.append(self.__get_uri(folder, fileinfo))
-		self.__manager.emit("files", files)
+	def __update_afiles(self, afiles, folder, fileinfos):
+		self.__editor.response()
+		uris = [self.__get_uri(folder, fileinfo) for fileinfo in fileinfos]
+		[afiles.append(_file) for _file in uris]
 		return False
 
-	def __get_files(self, data):
+	def __aggregate(self):
+		afiles = []
+		[self.__update_afiles(afiles, folder, fileinfos) for folder, fileinfos in self.__files]
+		self.__manager.emit("files", afiles)
+		return False
+
+	def __update_folder_and_files(self, fileinfo, _folders, _files):
+		self.__editor.response()
+		_files.append(fileinfo) if fileinfo.get_file_type() == 1 else _folders.append(fileinfo)
+		return False
+
+	def __update_files(self, data):
 		self.__editor.response()
 		folder, fileinfos = data
 		_folders = []
-		_fileinfos = []
-		for fileinfo in fileinfos:
-			self.__editor.response()
-			if fileinfo.get_file_type() == 1: _fileinfos.append(fileinfo)
-			if fileinfo.get_file_type() == 2: _folders.append(fileinfo)
-		self.__files.append((folder, _fileinfos))
-		[self.__process(self.__get_uri(folder, fileinfo)) for fileinfo in _folders]
-		self.__folders.remove(folder)
+		_files = []
+		[self.__update_folder_and_files(fileinfo, _folders, _files) for fileinfo in fileinfos]
+		self.__files.append((folder, _files))
+		[self.__send_to_fileinfo_processor(self.__get_uri(folder, fileinfo)) for fileinfo in _folders]
+		if folder in self.__folders: self.__folders.remove(folder)
 		if not self.__folders: self.__aggregate()
 		return False
 
-	def __process(self, folder):
+	def __emit_children_documents(self, folder):
+		self.__folders.clear()
+		self.__files = []
+		self.__send_to_fileinfo_processor(folder)
+		return False
+
+	def __send_to_fileinfo_processor(self, folder):
 		self.__editor.response()
 		self.__folders.append(folder)
 		self.__manager.emit("get-fileinfos", folder)
@@ -70,18 +76,15 @@ class Aggregator(object):
 
 	def __path_cb(self, manager, folder):
 		try:
-			from collections import deque
-			self.__folders = deque()
-			self.__files = []
 			from gobject import idle_add, source_remove
 			source_remove(self.__timer)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = idle_add(self.__process, folder)
+			self.__timer = idle_add(self.__emit_children_documents, folder)
 		return False
 
 	def __fileinfos_cb(self, manager, data):
 		from gobject import idle_add
-		self.__timer = idle_add(self.__get_files, data, priority=9999)
+		self.__timer = idle_add(self.__update_files, data, priority=9999)
 		return False

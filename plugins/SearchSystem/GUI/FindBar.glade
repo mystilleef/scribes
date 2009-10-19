@@ -6,7 +6,10 @@
     <property name="can_focus">True</property>
     <property name="has_focus">True</property>
     <property name="events">GDK_KEY_PRESS_MASK | GDK_STRUCTURE_MASK</property>
+    <property name="border_width">5</property>
+    <property name="type">popup</property>
     <property name="resizable">False</property>
+    <property name="type_hint">popup-menu</property>
     <property name="decorated">False</property>
     <property name="deletable">False</property>
     <child>
@@ -16,25 +19,7 @@
         <child>
           <widget class="GtkTable" id="table1">
             <property name="visible">True</property>
-            <property name="n_rows">2</property>
             <property name="n_columns">2</property>
-            <child>
-              <widget class="GtkLabel" id="label3">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">&lt;b&gt;Alt+C&lt;/b&gt;</property>
-                <property name="use_markup">True</property>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">12</property>
-              </packing>
-            </child>
             <child>
               <widget class="GtkLabel" id="label2">
                 <property name="visible">True</property>
@@ -48,22 +33,6 @@
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options"></property>
                 <property name="x_padding">12</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkCheckButton" id="MatchCaseButton">
-                <property name="label" translatable="yes">Match _Case</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="relief">none</property>
-                <property name="use_underline">True</property>
-                <property name="draw_indicator">True</property>
-              </widget>
-              <packing>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="y_options"></property>
               </packing>
             </child>
             <child>

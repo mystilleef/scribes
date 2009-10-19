@@ -22,6 +22,8 @@ class Formatter(object):
 
 	def __replace(self, _file):
 		self.__editor.response()
+		from gio import File
+		_file = File(_file).get_parse_name()
 		return _file.replace(self.__path, "").lstrip("/")
 
 	def __format(self, files):
@@ -44,5 +46,6 @@ class Formatter(object):
 		return False
 
 	def __path_cb(self, manager, path):
-		self.__path = path
+		from gio import File
+		self.__path = File(path).get_parse_name()
 		return False
