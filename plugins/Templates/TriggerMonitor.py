@@ -101,13 +101,19 @@ class Monitor(object):
 		self.__template_mode += 1
 		return False
 
+	def __check_idleadd(self):
+		from gobject import timeout_add
+		self.__cursor_id = timeout_add(250, self.__check_trigger, priority=9999)
+		return False
+
 	def __cursor_moved_cb(self, *args):
 		try:
 			from gobject import idle_add, source_remove
 			source_remove(self.__cursor_id)
 		except AttributeError:
 			pass
-		self.__cursor_id = idle_add(self.__check_trigger, priority=9999)
+		finally:
+			self.__cursor_id = idle_add(self.__check_idleadd, priority=9999)
 		return False
 
 	def __key_press_event_cb(self, view, event):

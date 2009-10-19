@@ -5,6 +5,8 @@ class Detector(object):
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("entry-change-text", self.__changed_cb)
 		manager.emit("match-case-flag", False)
+		from gobject import idle_add
+		idle_add(self.__optimize, priority=9999)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -20,10 +22,14 @@ class Detector(object):
 		return False
 
 	def __emit(self, text):
-		islower = text.islower()
-		if self.__case == islower: return False
-		self.__case = islower
-		self.__manager.emit("match-case-flag", not islower)
+		match_case = text.islower()
+		if self.__case == match_case: return False
+		self.__case = match_case
+		self.__manager.emit("match-case-flag", not match_case)
+		return False
+
+	def __optimize(self):
+		self.__editor.optimize((self.__emit,))
 		return False
 
 	def __destroy_cb(self, *args):

@@ -20,6 +20,7 @@ class FileChooser(object):
 
 	def __set_properties(self):
 		for filter_ in self.__editor.dialog_filters:
+			self.__editor.response()
 			self.__chooser.add_filter(filter_)
 		self.__set_folder()
 		return
@@ -57,11 +58,13 @@ class FileChooser(object):
 		return
 
 	def __file_activated_cb(self, *args):
-		self.__load_uris()
-		return True
+		from gobject import idle_add
+		idle_add(self.__load_uris)
+		return False
 
 	def __load_files_cb(self, *args):
-		self.__load_uris()
+		from gobject import idle_add
+		idle_add(self.__load_uris)
 		return
 
 	def __encoding_cb(self, manager, encoding):
@@ -74,4 +77,4 @@ class FileChooser(object):
 		folders = [uri for uri in uris if self.__editor.uri_is_folder(uri)]
 		selected_file = False if folders else True
 		self.__manager.emit("open-button-sensitivity", selected_file)
-		return True
+		return False
