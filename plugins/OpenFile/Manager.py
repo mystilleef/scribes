@@ -13,7 +13,8 @@ class Manager(GObject):
 		"open-files": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING)),
 		"open-button-sensitivity": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"remote-button-sensitivity": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
-		"load-files": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"load-files": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"change-folder": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"load-remote-file": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 		"open-encoding": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
@@ -25,6 +26,7 @@ class Manager(GObject):
 		"create-file": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"creation-error": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
 		"creation-pass": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"open-button-activate": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
@@ -36,10 +38,9 @@ class Manager(GObject):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		pwd = editor.get_current_folder(globals())
+		self.__oglade = editor.get_gui_object(globals(), "OpenDialogGUI/GUI/GUI.glade")
 		from os.path import join
-		file_ = join(pwd, "OpenDialogGUI/OpenDialog.glade")
 		from gtk.glade import XML
-		self.__oglade = XML(file_, "Window", "scribes")
 		file_ = join(pwd, "NewFileDialogGUI/NewFileDialog.glade")
 		self.__nglade = XML(file_, "Window", "scribes")
 		file_ = join(pwd, "RemoteDialogGUI/RemoteDialog.glade")
