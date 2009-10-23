@@ -20,18 +20,24 @@ class Handler(object):
 		folders.append(uri) if is_folder(uri) else files.append(uri)
 		return False
 
-	def __activate(self):
+	def __get_folders_and_files(self):
+		self.__editor.response()
+		uris = self.__chooser.get_uris()
+		folders, files = [], []
+		[self.__update(uri, folders, files) for uri in uris]
+		return folders, files
+
+	def __emit(self):
 		try:
-			self.__editor.response()
-			uris = self.__chooser.get_uris()
-			folders, files = [], []
-			[self.__update(uri, folders, files) for uri in uris]
-			if len(folders) == 1 and len(uris) == 1: raise ValueError
+			folders, files = self.__get_folders_and_files()
+			if len(folders) == 1 and not len(files): raise ValueError
 			if len(folders) > 0: return False
 			self.__manager.emit("load-files", files)
 			self.__editor.response()
 		except ValueError:
 			self.__manager.emit("change-folder", folders[0])
+		finally:
+			self.__editor.response()
 		return False
 
 	def __destroy(self):
@@ -48,5 +54,5 @@ class Handler(object):
 
 	def __activate_cb(self, *args):
 		from gobject import idle_add
-		idle_add(self.__activate)
+		idle_add(self.__emit)
 		return False

@@ -10,7 +10,7 @@
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="default_width">640</property>
-    <property name="default_height">480</property>
+    <property name="default_height">320</property>
     <property name="destroy_with_parent">True</property>
     <property name="icon_name">scribes</property>
     <property name="type_hint">dialog</property>

@@ -23,6 +23,7 @@ class Initializer(object):
 		Manager(editor)
 		from GUI.Manager import Manager
 		Manager(editor, uri)
+########################################################################
 		from EncodingSystem.Manager import Manager
 		Manager(editor)
 		from FileChangeMonitor import Monitor
