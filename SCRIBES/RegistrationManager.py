@@ -26,12 +26,18 @@ class Manager(object):
 	def __register(self, _object):
 		self.__editor.response()
 		self.__objects.append(_object)
+		self.__editor.response()
 		return False
 
 	def __unregister(self, _object):
-		self.__editor.response()
-		self.__objects.remove(_object)
-		if not self.__objects: self.__destroy()
+		try:
+			self.__editor.response()
+			self.__objects.remove(_object)
+		except ValueError:
+			print _object, "not in queue"
+		finally:
+			self.__editor.response()
+			if not self.__objects: self.__destroy()
 		return False
 
 	def __register_cb(self, editor, _object):
