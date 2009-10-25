@@ -14,6 +14,7 @@ class Window(object):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__window = editor.window
+		self.__ready = False
 		return
 
 	def __destroy(self):
@@ -55,6 +56,7 @@ class Window(object):
 		return False
 
 	def __delete_event_cb(self, *args):
+		if not self.__ready: return True
 		self.__editor.close()
 		return True
 
@@ -68,5 +70,6 @@ class Window(object):
 		return False
 		
 	def __ready_cb(self, *args):
+		self.__ready = True
 		self.__window.set_property("sensitive", True)
 		return True

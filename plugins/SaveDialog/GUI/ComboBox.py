@@ -11,7 +11,7 @@ class ComboBox(object):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__combo = manager.gui.get_widget("ComboBox")
+		self.__combo = manager.gui.get_object("ComboBox")
 		self.__model = self.__create_model()
 		return False
 
@@ -39,6 +39,7 @@ class ComboBox(object):
 		return model
 
 	def __separator_function(self, model, iterator):
+		self.__editor.response()
 		if model.get_value(iterator, 0) == "Separator" : return True
 		return False
 

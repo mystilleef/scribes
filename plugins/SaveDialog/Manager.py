@@ -1,42 +1,38 @@
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE
-from gobject import TYPE_BOOLEAN, TYPE_STRING
+from gobject import GObject, SIGNAL_ACTION, SIGNAL_RUN_LAST
+from gobject import SIGNAL_NO_RECURSE, TYPE_NONE, TYPE_PYOBJECT
+SSIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 
 class Manager(GObject):
 
 	__gsignals__ = {
-		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"encoding": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"rename": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
+		"destroy": (SSIGNAL, TYPE_NONE, ()),
+		"show": (SSIGNAL, TYPE_NONE, ()),
+		"hide": (SSIGNAL, TYPE_NONE, ()),
+		"encoding": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"change-folder": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"validate": (SSIGNAL, TYPE_NONE, ()),
+		"rename": (SSIGNAL, TYPE_NONE, ()),
+		"save-button-activate": (SSIGNAL, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
-		from ComboBox import ComboBox
-		ComboBox(self, editor)
-		from SaveButton import Button
-		Button(editor, self)
-		from FileChooser import FileChooser
-		FileChooser(editor, self)
-		from CancelButton import Button
-		Button(editor, self)
-		from Window import Window
-		Window(editor, self)
+		from Renamer import Renamer
+		Renamer(self, editor)
+		from NameValidator import Validator
+		Validator(self, editor)
+		from GUI.Manager import Manager
+		Manager(self, editor)
 
 	def __init_attributes(self, editor):
-		self.__editor = editor
-		from os.path import join
-		glade_file = join(editor.get_current_folder(globals()), "SaveDialog.glade")
-		from gtk.glade import XML
-		self.__glade = XML(glade_file, "Window", "scribes")
+		self.__gui = editor.get_gui_object(globals(), "GUI/GUI.glade")
 		return
 
-	gui = property(lambda self: self.__glade)
+	gui = property(lambda self: self.__gui)
 
 	def show(self):
-		self.emit("show-window")
+		self.emit("show")
 		return
 
 	def destroy(self):
