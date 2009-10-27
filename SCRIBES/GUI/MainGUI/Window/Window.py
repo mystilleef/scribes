@@ -68,7 +68,7 @@ class Window(object):
 	def __focus_out_event_cb(self, *args):
 		self.__editor.emit("window-focus-out")
 		return False
-		
+
 	def __ready_cb(self, *args):
 		self.__ready = True
 		self.__window.set_property("sensitive", True)
