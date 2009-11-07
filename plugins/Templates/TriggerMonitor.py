@@ -103,7 +103,7 @@ class Monitor(object):
 
 	def __check_idleadd(self):
 		from gobject import timeout_add
-		self.__cursor_id = timeout_add(125, self.__check_trigger, priority=9999)
+		self.__cursor_id = timeout_add(250, self.__check_trigger, priority=9999)
 		return False
 
 	def __cursor_moved_cb(self, *args):

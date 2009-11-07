@@ -24,6 +24,8 @@ class View(object):
 
 	def __set_properties(self):
 		self.__editor.response()
+		language = self.__editor.language
+		language = language	if language else "plain text"
 		from gtk import DEST_DEFAULT_ALL
 		targets = [("text/uri-list", 0, 80)]
 		from gtk.gdk import ACTION_COPY, BUTTON1_MASK, ACTION_DEFAULT
@@ -40,23 +42,23 @@ class View(object):
 		self.__view.set_property("show-line-numbers", True)
 		self.__view.set_property("indent-width", -1)
 		from SCRIBES.TabWidthMetadata import get_value as tab_width
-		self.__view.set_property("tab-width", tab_width())
+		self.__view.set_property("tab-width", tab_width(language))
 		from SCRIBES.MarginPositionMetadata import get_value as margin_position
-		self.__view.set_property("right-margin-position", margin_position())
+		self.__view.set_property("right-margin-position", margin_position(language))
 		from SCRIBES.DisplayRightMarginMetadata import get_value as show_margin
-		self.__view.set_property("show-right-margin", show_margin())
+		self.__view.set_property("show-right-margin", show_margin(language))
 		from SCRIBES.UseTabsMetadata import get_value as use_tabs
-		self.__view.set_property("insert-spaces-instead-of-tabs",(not use_tabs()))
+		self.__view.set_property("insert-spaces-instead-of-tabs",(not use_tabs(language)))
 		from gtksourceview2 import SMART_HOME_END_BEFORE
 		self.__view.set_property("smart-home-end", SMART_HOME_END_BEFORE)
 		from SCRIBES.FontMetadata import get_value as font_name
 		from pango import FontDescription
-		font = FontDescription(font_name())
+		font = FontDescription(font_name(language))
 		self.__view.modify_font(font)
 		from gtk import WRAP_WORD_CHAR, WRAP_NONE
 		from SCRIBES.TextWrappingMetadata import get_value as wrap_mode_bool
 		wrap_mode = self.__view.set_wrap_mode
-		wrap_mode(WRAP_WORD_CHAR) if wrap_mode_bool() else wrap_mode(WRAP_NONE)
+		wrap_mode(WRAP_WORD_CHAR) if wrap_mode_bool(language) else wrap_mode(WRAP_NONE)
 		self.__view.set_property("sensitive", True)
 		self.__editor.response()
 		return False

@@ -1,21 +1,32 @@
 from Utils import open_database
-basepath = "/Preferences/MarginPosition.gdb"
+basepath = "/Preferences/Languages/MarginPosition.gdb"
 
-def get_value():
+def get_value(language):
 	try:
-		value = 72
+		margin_position = 72
 		database = open_database(basepath, "r")
-		value = database["margin_position"]
+		margin_position = database[language]
 	except KeyError:
 		pass
 	finally:
 		database.close()
-	return value
+	return margin_position
 
-def set_value(value):
+def set_value(data):
+	try:
+		language, margin_position = data
+		database = open_database(basepath, "w")
+		database[language] = margin_position
+	finally:
+		database.close()
+	return
+
+def reset(language):
 	try:
 		database = open_database(basepath, "w")
-		database["margin_position"] = value
+		del database[language]
+	except KeyError:
+		pass
 	finally:
 		database.close()
 	return

@@ -37,8 +37,8 @@ class Button(MenuToolButton):
 		self.set_property("menu", Menu())
 		from gettext import gettext as _
 		from gtk import Tooltips
-		menu_tip = _("Advanced configuration editors")
-		self.set_arrow_tooltip(Tooltips(), menu_tip, menu_tip)
+#		menu_tip = _("Advanced configuration editors")
+#		self.set_arrow_tooltip(Tooltips(), menu_tip, menu_tip)
 		self.set_tooltip_text(_("Show window to customize the editor"))
 		return
 

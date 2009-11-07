@@ -25,7 +25,9 @@ class Checker(object):
 
 	def __set(self):
 		from SCRIBES.SpellCheckMetadata import get_value
-		if not get_value(): return False
+		language = self.__editor.language
+		language = language if language else "plain text"
+		if not get_value(language): return False
 		self.__enable()
 		return False
 

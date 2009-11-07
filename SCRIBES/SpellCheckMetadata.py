@@ -1,21 +1,32 @@
 from Utils import open_database
-basepath = "/Preferences/SpellCheck.gdb"
+basepath = "/Preferences/Languages/SpellCheck.gdb"
 
-def get_value():
+def get_value(language):
 	try:
-		value = False
+		spellcheck = False
 		database = open_database(basepath, "r")
-		value = database["spell_check"]
+		spellcheck = database[language]
 	except KeyError:
 		pass
 	finally:
 		database.close()
-	return value
+	return spellcheck
 
-def set_value(value):
+def set_value(data):
+	try:
+		language, spellcheck = data
+		database = open_database(basepath, "w")
+		database[language] = spellcheck
+	finally:
+		database.close()
+	return
+
+def reset(language):
 	try:
 		database = open_database(basepath, "w")
-		database["spell_check"] = value
+		del database[language]
+	except KeyError:
+		pass
 	finally:
 		database.close()
 	return

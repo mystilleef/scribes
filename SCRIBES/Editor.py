@@ -214,6 +214,9 @@ class Editor(Signals):
 		from Utils import disconnect_signal
 		return disconnect_signal(sigid, instance)
 
+	def disconnect_signals(self, data):
+		return [self.disconnect_signal(sigid, instance) for sigid, instance in data]
+
 	def move_view_to_cursor(self, align=False, iterator=None):
 		self.response()
 		if iterator is None: iterator = self.cursor

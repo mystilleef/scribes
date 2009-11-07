@@ -1,19 +1,20 @@
 name = "Preferences Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-version = 0.2
+version = 0.1
 autoload = True
-class_name = "PreferencesPlugin"
-short_description = "Shows the dialog that customizes the editor."
-long_description = """Shows the dialog that customizes the editor."""
+class_name = "PreferencesGUIPlugin"
+short_description = "GUI to customize the behavior of the editor."
+long_description = """Implements the GUI to customize the behavior of
+the editor"""
 
-class PreferencesPlugin(object):
+class PreferencesGUIPlugin(object):
 
 	def __init__(self, editor):
 		self.__editor = editor
 		self.__trigger = None
 
 	def load(self):
-		from Preferences.Trigger import Trigger
+		from PreferencesGUI.Trigger import Trigger
 		self.__trigger = Trigger(self.__editor)
 		return
 

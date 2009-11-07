@@ -12,10 +12,10 @@ def get_value(uri):
 		database.close()
 	return cursor_position
 
-def set_value(uri, data):
+def set_value(uri, cursor_position):
 	try:
 		database = open_database(basepath, "w")
-		database[str(uri)] = data
+		database[str(uri)] = cursor_position
 	finally:
 		database.close()
 	return

@@ -10,6 +10,7 @@ class Listener(object):
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
+		self.__manager = manager
 		self.__view = editor.textview
 		from gio import File, FILE_MONITOR_NONE
 		self.__monitor = File(manager.get_path("TextWrapping.gdb")).monitor_file(FILE_MONITOR_NONE, None)
@@ -28,7 +29,7 @@ class Listener(object):
 		from gtk import WRAP_NONE, WRAP_WORD_CHAR
 		from SCRIBES.TextWrappingMetadata import get_value
 		wrap_mode = self.__view.set_wrap_mode
-		wrap_mode(WRAP_WORD_CHAR) if get_value() else wrap_mode(WRAP_NONE)
+		wrap_mode(WRAP_WORD_CHAR) if get_value(self.__manager.get_language()) else wrap_mode(WRAP_NONE)
 		self.__editor.response()
 		return False
 

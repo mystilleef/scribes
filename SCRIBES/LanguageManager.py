@@ -29,7 +29,7 @@ class Manager(object):
 		from Utils import get_language
 		language_object = get_language(uri) if uri else None
 		self.__editor.set_data("language_object", language_object)
-		language = language_object.get_id() if language_object else None
+		language = language_object.get_id() if language_object else ""
 		self.__editor.set_data("language", language)
 		return False
 

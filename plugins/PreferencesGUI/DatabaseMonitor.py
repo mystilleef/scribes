@@ -9,7 +9,7 @@ class Monitor(object):
 		self.__editor = editor
 		self.__manager = manager
 		from os.path import join
-		preference_folder = join(editor.metadata_folder, "Preferences")
+		preference_folder = join(editor.metadata_folder, "Preferences/Languages")
 		self.__monitor = editor.get_folder_monitor(preference_folder)
 		return
 
