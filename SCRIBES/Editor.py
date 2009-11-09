@@ -78,6 +78,8 @@ class Editor(Signals):
 	bar_is_active = property(lambda self: self.get_data("bar_is_active"))
 	minimized = property(lambda self: self.get_data("minimized"))
 	maximized = property(lambda self: self.get_data("maximized"))
+	uniquestamp = property(lambda self: self.get_data("uniquestamp"))
+	generate_filename = property(lambda self: self.get_data("generate_filename"))
 	mimetype = property(lambda self: self.get_mimetype(self.uri))
 	fileinfo = property(lambda self: self.get_fileinfo(self.uri))
 
