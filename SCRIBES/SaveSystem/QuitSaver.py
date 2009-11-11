@@ -35,17 +35,18 @@ class Saver(object):
 
 	def __close(self, save_file):
 		try:
-			if save_file is False: raise ValueError
+			if save_file is False: raise StandardError
 			if self.__error: raise ValueError
 			if self.__editor.modified is False: raise ValueError
 			self.__quit = True
-			if not self.__editor.uri: raise StandardError
+			#if not self.__editor.uri: raise StandardError
 			from gobject import idle_add
 			idle_add(self.__save, priority=9999)
 		except ValueError:
 			self.__destroy()
 		except StandardError:
-			self.__manager.emit("create-unsaved-file")
+			self.__manager.emit("remove-new-file")
+			self.__destroy()
 		return False
 
 	def __close_cb(self, editor, save_file):

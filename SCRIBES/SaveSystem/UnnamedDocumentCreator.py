@@ -1,10 +1,10 @@
-class Displayer(object):
+class Creator(object):
 
 	def __init__(self, manager, editor):
 		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("show-save-dialog", self.__show_cb)
+		self.__sigid2 = manager.connect("create-new-file", self.__create_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -21,15 +21,18 @@ class Displayer(object):
 		self = None
 		return False
 
-	def __show(self):
-		self.__editor.trigger("show_save_dialog")
+	def __create(self, _data):
+		uri, data = _data
+		self.__editor.create_uri(uri)
+		data = uri, data[1], data[2]
+		self.__manager.emit("save-data", data)
 		return False
 
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
-	def __show_cb(self, *args):
+	def __create_cb(self, manager, data):
 		from gobject import idle_add
-		idle_add(self.__show, priority=9999)
+		idle_add(self.__create, data, priority=9999)
 		return False

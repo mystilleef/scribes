@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 from os import environ
+from os.path import join, expanduser
 from dbus import SessionBus, Interface, glib
 SCRIBES_DBUS_SERVICE = "net.sourceforge.Scribes"
 SCRIBES_DBUS_PATH = "/net/sourceforge/Scribes"
@@ -7,23 +9,23 @@ SCRIBES_SAVE_PROCESS_DBUS_PATH = "/net/sourceforge/ScribesSaveProcess"
 session_bus = SessionBus()
 dbus_proxy_obj = session_bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus')
 dbus_iface = Interface(dbus_proxy_obj, 'org.freedesktop.DBus')
-home_folder = environ["HOME"]
-folder_ = home_folder + "/Desktop"
+home_folder = expanduser("~")
+folder_ = join(home_folder, "Desktop")
 from os.path import exists
 desktop_folder = folder_ if exists(folder_) else home_folder
-metadata_folder = home_folder + "/.gnome2/scribes/"
-home_plugin_folder = metadata_folder + "plugins"
-home_language_plugin_folder = metadata_folder + "LanguagePlugins"
+metadata_folder = join(home_folder, ".gnome2/scribes")
+home_plugin_folder = join(metadata_folder, "plugins")
+home_language_plugin_folder = join(metadata_folder, "LanguagePlugins")
 name = "scribes"
 prefix = "/usr"
-executable_path = prefix + "/bin"
+executable_path = join(prefix, "bin")
 data_path = "/usr/share"
 sysconfdir = "/usr/etc"
-data_folder = data_path + "/scribes"
-core_plugin_folder = data_folder + "/plugins"
-core_language_plugin_folder = data_folder + "/LanguagePlugins"
+data_folder = join(data_path, "scribes")
+core_plugin_folder = join(data_folder, "plugins")
+core_language_plugin_folder = join(data_folder, "LanguagePlugins")
 python_path = "/usr/lib/python2.6/dist-packages"
-version = "0.4-dev-build506"
+version = "0.4-dev-build507"
 author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"Contributors:",
 			"\tIb Lundgren <ib.lundgren@gmail.com>",

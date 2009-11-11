@@ -42,7 +42,7 @@ class Saver(object):
 		return False
 
 	def __save(self):
-		if not self.__editor.uri: return False
+#		if not self.__editor.uri: return False
 		if self.__editor.modified is False: return False
 		self.__editor.save_file(self.__editor.uri, self.__editor.encoding)
 		return False

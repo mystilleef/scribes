@@ -51,4 +51,3 @@ class Initializer(object):
 		from URILoader.Manager import Manager
 		Manager(editor, uri, encoding)
 		editor.response()
-		print editor.generate_filename

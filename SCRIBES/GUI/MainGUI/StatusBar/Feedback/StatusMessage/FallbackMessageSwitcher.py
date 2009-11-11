@@ -9,6 +9,7 @@ class Switcher(object):
 		self.__sigid3 = manager.connect("busy", self.__busy_cb)
 		self.__sigid4 = editor.connect("loaded-file", self.__loaded_cb)
 		self.__sigid5 = editor.connect("renamed-file", self.__loaded_cb)
+		self.__sigid6 = editor.connect("saved-file", self.__saved_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -26,6 +27,7 @@ class Switcher(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -67,6 +69,12 @@ class Switcher(object):
 		return False
 
 	def __loaded_cb(self, editor, uri, encoding):
+		from gobject import idle_add
+		idle_add(self.__generate_names, uri)
+		return False
+
+	def __saved_cb(self, editor, uri, *args):
+		if editor.generate_filename is False: return False
 		from gobject import idle_add
 		idle_add(self.__generate_names, uri)
 		return False

@@ -8,7 +8,8 @@ class Manager(object):
 		self.__sigid1 = editor.connect("checking-file", self.__checking_file_cb)
 		self.__sigid2 = editor.connect("load-error", self.__load_error_cb)
 		self.__sigid3 = editor.connect("renamed-file", self.__checking_file_cb)
-		self.__sigid4 = editor.connect("quit", self.__quit_cb)
+		self.__sigid4 = editor.connect("rename-file", self.__checking_file_cb)
+		self.__sigid5 = editor.connect("quit", self.__quit_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -21,6 +22,7 @@ class Manager(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None

@@ -193,6 +193,11 @@ class Editor(Signals):
 		from Utils import create_uri
 		return create_uri(uri, exclusive)
 
+	def remove_uri(self, uri):
+		self.response()
+		from Utils import remove_uri
+		return remove_uri(uri)
+
 	def create_image(self, path):
 		self.response()
 		from Utils import create_image

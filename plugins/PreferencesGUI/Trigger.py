@@ -3,6 +3,7 @@ class Trigger(object):
 	def __init__(self, editor):
 		self.__init_attributes(editor)
 		self.__sigid1 = self.__trigger.connect("activate", self.__activate_cb)
+		self.__editor.get_toolbutton("PreferenceToolButton").props.sensitive = True
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

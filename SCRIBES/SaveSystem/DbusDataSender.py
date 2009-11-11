@@ -30,8 +30,9 @@ class Sender(object):
 		return False
 
 	def __send(self, data):
-		session_id, uri, encoding = data
+		uri, encoding, session_id = data
 		if self.__session_id != session_id: return False
+		if not encoding: encoding = "utf-8"
 		data = session_id, uri, encoding, self.__editor.text
 		self.__processor.process(data,
 				dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE,

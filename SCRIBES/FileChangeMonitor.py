@@ -9,7 +9,8 @@ class Monitor(object):
 		self.__sigid2 = editor.connect_after("loaded-file", self.__monitor_cb)
 		self.__sigid3 = editor.connect_after("renamed-file", self.__monitor_cb)
 		self.__sigid4 = editor.connect("save-file", self.__busy_cb)
-		self.__sigid5 = editor.connect("save-error", self.__error_cb)
+		self.__sigid5 = editor.connect("renamed-file", self.__busy_cb)
+		self.__sigid6 = editor.connect("save-error", self.__error_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -28,6 +29,7 @@ class Monitor(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
