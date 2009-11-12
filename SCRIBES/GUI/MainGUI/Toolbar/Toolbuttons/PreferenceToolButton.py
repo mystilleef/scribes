@@ -48,6 +48,6 @@ class Button(MenuToolButton):
 
 	def __clicked_cb(self, *args):
 		self.__editor.response()
-		self.__editor.trigger("show_preference_dialog")
+		self.__editor.trigger("show-preferences-window")
 		self.__editor.response()
 		return False
