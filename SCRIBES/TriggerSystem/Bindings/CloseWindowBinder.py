@@ -8,6 +8,12 @@ class Binder(BaseBinder):
 		self.__editor = editor
 		editor.response()
 
+	def __document_is_empty(self):
+		from string import whitespace
+		if self.__editor.text.strip(whitespace): return False
+		return True
+
 	def activate(self):
-		self.__editor.close()
+		save = False if self.__editor.generate_filename and self.__document_is_empty() else True
+		self.__editor.close(save)
 		return False

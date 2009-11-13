@@ -1,7 +1,8 @@
-from string import punctuation
-STRIP_CHARACTERS = punctuation + " \n"
+from string import punctuation, whitespace
+STRIP_CHARACTERS = punctuation + whitespace
 RESERVED_CHARACTERS = ["/", "\\", "?", "%", "*", ":", "|", '"', "<", ">", ".", "&", ",", "\t"]
 NUMBER_OF_WORDS = 10
+NUMBER_OF_CHARACTERS = 80
 
 class Generator(object):
 
@@ -38,7 +39,7 @@ class Generator(object):
 			invalid_characters = [character for character in line if character in RESERVED_CHARACTERS]
 			for character in invalid_characters: line = line.replace(character, " ")
 			# Select first ten words and remove extras spaces to get filename
-			filename = " ".join(line.split()[:NUMBER_OF_WORDS]).strip()
+			filename = " ".join(line.split()[:NUMBER_OF_WORDS]).strip()[:NUMBER_OF_CHARACTERS].strip()
 		except IndexError:
 			filename = ""
 		finally:
