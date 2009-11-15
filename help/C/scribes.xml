@@ -7,7 +7,7 @@
 	<!ENTITY date "August 2005">
 	<!ENTITY app "Scribes">
 ]>
-<?yelp:chunk-depth 2?>
+<?yelp chunk-depth 2?>
 <article id="index" lang="en">
 <!-- =============Document Header ============================= -->
 <!-- please do not change the id; for translations, change lang to -->
