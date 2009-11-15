@@ -119,7 +119,7 @@ class Editor(Signals):
 	def close(self, save_first=True):
 		try:
 			self.response()
-			if save_first: raise ValueError
+			if save_first and self.generate_filename: raise ValueError
 		except ValueError:
 			# Don't save document if buffer contains only whitespaces.
 			from string import whitespace
