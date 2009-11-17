@@ -7,7 +7,7 @@ def get_value(language):
 		database = open_database(basepath, "r")
 		spellcheck = database[language]
 	except KeyError:
-		pass
+		if "def" in database: spellcheck = database["def"]
 	finally:
 		database.close()
 	return spellcheck

@@ -7,7 +7,7 @@ def get_value(language):
 		database = open_database(basepath, "r")
 		tab_width = database[language]
 	except KeyError:
-		pass
+		if "def" in database: tab_width = database["def"]
 	finally:
 		database.close()
 	return tab_width

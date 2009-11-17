@@ -7,7 +7,7 @@ def get_value(language):
 		database = open_database(basepath, "r")
 		use_tabs = database[language]
 	except KeyError:
-		pass
+		if "def" in database: use_tabs = database["def"]
 	finally:
 		database.close()
 	return use_tabs

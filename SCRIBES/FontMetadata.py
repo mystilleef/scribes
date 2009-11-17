@@ -7,7 +7,7 @@ def get_value(language):
 		database = open_database(basepath, "r")
 		font = database[language]
 	except KeyError:
-		pass
+		if "def" in database: font = database["def"]
 	finally:
 		database.close()
 	return font

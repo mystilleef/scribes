@@ -7,7 +7,7 @@ def get_value(language):
 		database = open_database(basepath, "r")
 		margin_position = database[language]
 	except KeyError:
-		pass
+		if "def" in database: margin_position = database["def"]
 	finally:
 		database.close()
 	return margin_position

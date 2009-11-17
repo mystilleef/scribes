@@ -7,7 +7,7 @@ def get_value(language):
 		database = open_database(basepath, "r")
 		text_wrapping = database[language]
 	except KeyError:
-		pass
+		if "def" in database: text_wrapping = database["def"]
 	finally:
 		database.close()
 	return text_wrapping
