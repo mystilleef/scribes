@@ -35,8 +35,8 @@ class Button(MenuToolButton):
 		self.set_menu(RecentMenu(self.__editor))
 		from gtk import Tooltips
 		from gettext import gettext as _
-		menu_tip = _("Recently opened files")
-		self.set_arrow_tooltip(Tooltips(), menu_tip, menu_tip)
+#		menu_tip = _("Recently opened files")
+#		self.set_arrow_tooltip(Tooltips(), menu_tip, menu_tip)
 		self.set_tooltip_text(_("Open a new file"))
 		return
 

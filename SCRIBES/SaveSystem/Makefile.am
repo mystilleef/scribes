@@ -3,12 +3,10 @@ savesystemdir = $(pythondir)/SCRIBES/SaveSystem
 savesystem_PYTHON = \
 	__init__.py \
 	Manager.py \
-	UnsavedDocumentCreator.py \
+	UnnamedDocumentCreator.py \
 	AutomaticSaver.py \
 	SessionManager.py \
-	DataValidator.py \
 	ReadonlyHandler.py \
-	SaveDialogDisplayer.py \
 	DbusDataSender.py \
 	DbusDataReceiver.py \
 	DbusSaveProcessorMonitor.py \
@@ -18,7 +16,10 @@ savesystem_PYTHON = \
 	QuitSaver.py \
 	SessionCompleter.py \
 	FocusOutSaver.py \
-	FileModificationMonitor.py
+	FileModificationMonitor.py \
+	FileNameGenerator.py \
+	NameGenerator.py \
+	NewFileRemover.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

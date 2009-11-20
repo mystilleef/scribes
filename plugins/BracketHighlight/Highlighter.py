@@ -36,7 +36,7 @@ class Highlighter(object):
 
 	def __precompile_methods(self):
 		methods = (self.__cursor_moved_cb, self.__apply_tag_cb,
-			self.__remove_tag_cb, self.__highlight_region, 
+			self.__remove_tag_cb, self.__highlight_region,
 			self.__highlight_cb,)
 		self.__editor.optimize(methods)
 		return False
@@ -118,6 +118,11 @@ class Highlighter(object):
 		del self
 		return
 
+	def __highlight_region_timeout(self):
+		from gobject import timeout_add
+		self.__timer = timeout_add(250, self.__highlight_region, priority=9999)
+		return False
+
 ########################################################################
 #
 #						Signal and Event Handlers
@@ -126,12 +131,13 @@ class Highlighter(object):
 
 	def __cursor_moved_cb(self, editor):
 		if not (self.__can_highlight): return
-		from gobject import source_remove, timeout_add
 		try:
-			source_remove(self.__cursor_moved_id)
+			from gobject import source_remove, idle_add
+			source_remove(self.__timer)
 		except:
 			pass
-		self.__cursor_moved_id = timeout_add(100, self.__highlight_region, priority=9999)
+		finally:
+			self.__timer = idle_add(self.__highlight_region_timeout, priority=9999)
 		return
 
 	def __apply_tag_cb(self, textbuffer, tag, start, end):

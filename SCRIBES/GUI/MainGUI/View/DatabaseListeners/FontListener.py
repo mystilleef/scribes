@@ -13,6 +13,7 @@ class Listener(object):
 		self.__view = editor.textview
 		from gio import File, FILE_MONITOR_NONE
 		self.__monitor = File(manager.get_path("Font.gdb")).monitor_file(FILE_MONITOR_NONE, None)
+		self.__manager = manager
 		return
 
 	def __destroy(self):
@@ -27,7 +28,7 @@ class Listener(object):
 		self.__editor.response()
 		from pango import FontDescription
 		from SCRIBES.FontMetadata import get_value
-		new_font = FontDescription(get_value())
+		new_font = FontDescription(get_value(self.__manager.get_language()))
 		self.__view.modify_font(new_font)
 		self.__editor.response()
 		return False

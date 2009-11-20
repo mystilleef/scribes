@@ -11,6 +11,7 @@ class Listener(object):
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
 		self.__view = editor.textview
+		self.__manager = manager
 		from gio import File, FILE_MONITOR_NONE
 		self.__monitor = File(manager.get_path("UseTabs.gdb")).monitor_file(FILE_MONITOR_NONE, None)
 		return
@@ -26,7 +27,7 @@ class Listener(object):
 	def __update(self):
 		self.__editor.response()
 		from SCRIBES.UseTabsMetadata import get_value
-		self.__view.set_insert_spaces_instead_of_tabs(not get_value())
+		self.__view.set_insert_spaces_instead_of_tabs(not get_value(self.__manager.get_language()))
 		self.__editor.response()
 		return False
 

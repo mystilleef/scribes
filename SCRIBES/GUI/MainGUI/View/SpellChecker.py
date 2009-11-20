@@ -5,6 +5,8 @@ class Checker(object):
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("enable-spell-checking", self.__checking_cb)
+		self.__sigid3 = editor.connect("load-error", self.__check_cb)
+		self.__sigid4 = editor.connect("checking-file", self.__check_cb)
 		self.__set()
 		editor.register_object(self)
 		editor.response()
@@ -18,6 +20,8 @@ class Checker(object):
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -25,8 +29,9 @@ class Checker(object):
 
 	def __set(self):
 		from SCRIBES.SpellCheckMetadata import get_value
-		if not get_value(): return False
-		self.__enable()
+		language = self.__editor.language
+		language = language if language else "plain text"
+		self.__enable() if get_value(language) else self.__disable()
 		return False
 
 	def __enable(self):
@@ -35,6 +40,7 @@ class Checker(object):
 			from gobject import GError
 			from gtkspell import Spell
 			from locale import getdefaultlocale
+			if self.__checker: return False
 			self.__checker = Spell(self.__view, getdefaultlocale()[0])
 		except GError:
 			pass
@@ -55,4 +61,9 @@ class Checker(object):
 	def __checking_cb(self, editor, enable):
 		from gobject import idle_add
 		idle_add(self.__enable if enable else self.__disable)
+		return False
+
+	def __check_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__set, priority=9999)
 		return False

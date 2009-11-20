@@ -3,8 +3,12 @@ class Initializer(object):
 	def __init__(self, editor, manager, uri, encoding):
 		editor.set_data("InstanceManager", manager)
 		editor.response()
+		from UniqueStampGenerator import Generator
+		Generator(editor)
 		from RegistrationManager import Manager
 		Manager(editor)
+		from FilenameGeneratorModeManager import Manager
+		Manager(editor, uri)
 		from ContentDetector import Detector
 		Detector(editor, uri)
 		from FileModificationMonitor import Monitor
@@ -23,6 +27,7 @@ class Initializer(object):
 		Manager(editor)
 		from GUI.Manager import Manager
 		Manager(editor, uri)
+########################################################################
 		from EncodingSystem.Manager import Manager
 		Manager(editor)
 		from FileChangeMonitor import Monitor

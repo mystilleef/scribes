@@ -1,21 +1,32 @@
 from Utils import open_database
-basepath = "/Preferences/Font.gdb"
+basepath = "/Preferences/Languages/Font.gdb"
 
-def get_value():
+def get_value(language):
 	try:
-		value = "Monospace 12"
+		font = "Monospace 12"
 		database = open_database(basepath, "r")
-		value = database["font"]
+		font = database[language]
 	except KeyError:
-		pass
+		if "def" in database: font = database["def"]
 	finally:
 		database.close()
-	return value
+	return font
 
-def set_value(value):
+def set_value(data):
+	try:
+		language, font = data
+		database = open_database(basepath, "w")
+		database[language] = font
+	finally:
+		database.close()
+	return
+
+def reset(language):
 	try:
 		database = open_database(basepath, "w")
-		database["font"] = value
+		del database[language]
+	except KeyError:
+		pass
 	finally:
 		database.close()
 	return

@@ -414,6 +414,11 @@ def create_uri(uri, exclusive=True):
 	File(uri).replace_contents("")
 	return
 
+def remove_uri(uri):
+	from gio import File
+	File(uri).delete()
+	return
+
 def uri_is_folder(uri):
 	from gio import Error
 	try:

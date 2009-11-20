@@ -3,19 +3,19 @@ basepath = "/Preferences/ColorTheme.gdb"
 
 def get_value():
 	try:
-		value = "oblivion"
+		theme = "oblivion"
 		database = open_database(basepath, "r")
-		value = database["theme"]
+		theme = database["theme"]
 	except:
 		pass
 	finally:
 		database.close()
-	return value
+	return theme
 
-def set_value(value):
+def set_value(theme):
 	try:
 		database = open_database(basepath, "w")
-		database["theme"] = value
+		database["theme"] = theme
 	finally:
 		database.close()
 	return

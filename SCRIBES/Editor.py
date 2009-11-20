@@ -78,6 +78,8 @@ class Editor(Signals):
 	bar_is_active = property(lambda self: self.get_data("bar_is_active"))
 	minimized = property(lambda self: self.get_data("minimized"))
 	maximized = property(lambda self: self.get_data("maximized"))
+	uniquestamp = property(lambda self: self.get_data("uniquestamp"))
+	generate_filename = property(lambda self: self.get_data("generate_filename"))
 	mimetype = property(lambda self: self.get_mimetype(self.uri))
 	fileinfo = property(lambda self: self.get_fileinfo(self.uri))
 
@@ -115,9 +117,17 @@ class Editor(Signals):
 		return self.imanager.close_all_windows()
 
 	def close(self, save_first=True):
-		self.response()
-		self.emit("close", save_first)
-		self.response()
+		try:
+			self.response()
+			if save_first and self.generate_filename: raise ValueError
+		except ValueError:
+			# Don't save document if buffer contains only whitespaces.
+			from string import whitespace
+			document_is_empty = False if self.text.strip(whitespace) else True
+			save_first = False if document_is_empty else True
+		finally:
+			self.emit("close", save_first)
+			self.response()
 		return False
 
 	def fullscreen(self, value=True):
@@ -191,6 +201,11 @@ class Editor(Signals):
 		from Utils import create_uri
 		return create_uri(uri, exclusive)
 
+	def remove_uri(self, uri):
+		self.response()
+		from Utils import remove_uri
+		return remove_uri(uri)
+
 	def create_image(self, path):
 		self.response()
 		from Utils import create_image
@@ -213,6 +228,9 @@ class Editor(Signals):
 		self.response()
 		from Utils import disconnect_signal
 		return disconnect_signal(sigid, instance)
+
+	def disconnect_signals(self, data):
+		return [self.disconnect_signal(sigid, instance) for sigid, instance in data]
 
 	def move_view_to_cursor(self, align=False, iterator=None):
 		self.response()

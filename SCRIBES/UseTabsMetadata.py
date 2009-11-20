@@ -1,21 +1,32 @@
 from Utils import open_database
-basepath = "/Preferences/UseTabs.gdb"
+basepath = "/Preferences/Languages/UseTabs.gdb"
 
-def get_value():
+def get_value(language):
 	try:
-		value = True
+		use_tabs = True
 		database = open_database(basepath, "r")
-		value = database["use_tabs"]
+		use_tabs = database[language]
 	except KeyError:
-		pass
+		if "def" in database: use_tabs = database["def"]
 	finally:
 		database.close()
-	return value
+	return use_tabs
 
-def set_value(value):
+def set_value(data):
+	try:
+		language, use_tabs = data
+		database = open_database(basepath, "w")
+		database[language] = use_tabs
+	finally:
+		database.close()
+	return
+
+def reset(language):
 	try:
 		database = open_database(basepath, "w")
-		database["use_tabs"] = value
+		del database[language]
+	except KeyError:
+		pass
 	finally:
 		database.close()
 	return

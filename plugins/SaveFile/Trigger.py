@@ -22,7 +22,11 @@ class Trigger(object):
 		return trigger
 
 	def __save(self):
-		self.__editor.save_file(self.__editor.uri, self.__editor.encoding)
+		try:
+			if self.__editor.generate_filename: raise ValueError
+			self.__editor.save_file(self.__editor.uri, self.__editor.encoding)
+		except ValueError:
+			self.__editor.trigger("show_save_dialog")
 		return False
 
 	def __save_cb(self, *args):

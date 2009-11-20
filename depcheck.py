@@ -13,7 +13,7 @@ def check_dependencies():
 			raise SystemExit
 		except AssertionError:
 			print "Error: Version 0.70 or better of dbus-python needed."
-			raise SystemExit # PIG pIG piG pig Pig PIg 
+			raise SystemExit
 		# Check for Pygobject.
 		try:
 			import gobject
@@ -43,6 +43,13 @@ def check_dependencies():
 		except AssertionError:
 			print "Error: Version 2.10.0 or better of PyGTK needed."
 			raise SystemExit
+		# Check for pygtksourceview2.
+		try:
+			import gtksourceview2
+			print "Checking for pygtksourceview2... yes"
+		except ImportError:
+			print "Error: pygtksourceview2 was not found."
+			raise SystemExit
 		# Check for GNOME Python.
 		try:
 			import gnome
@@ -56,7 +63,7 @@ def check_dependencies():
 			raise SystemExit
 		# Check for GNOME Python Desktop.
 		try:
-			import gtksourceview2
+			import gnomeprint
 			print "Checking for GNOME Python Desktop... yes"
 		except ImportError:
 			print "Error: gnome-python-desktop was not found."

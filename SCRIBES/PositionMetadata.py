@@ -11,10 +11,10 @@ def get_window_position_from_database(uri):
 		database.close()
 	return window_position
 
-def update_window_position_in_database(uri, data):
+def update_window_position_in_database(uri, window_position):
 	try:
 		database = open_database(basepath, "w")
-		database[str(uri)] = data
+		database[str(uri)] = window_position
 	finally:
 		database.close()
 	return

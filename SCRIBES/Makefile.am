@@ -41,6 +41,7 @@ scribes_PYTHON = \
 	EditorImports.py \
 	Exceptions.py \
 	FileChangeMonitor.py \
+	FilenameGeneratorModeManager.py \
 	FileModificationMonitor.py \
 	FontMetadata.py \
 	ForkScribesMetadata.py \
@@ -71,6 +72,7 @@ scribes_PYTHON = \
 	RecentManager.py \
 	Usage.py \
 	UseTabsMetadata.py \
+	UniqueStampGenerator.py \
 	Utils.py \
 	Word.py
 

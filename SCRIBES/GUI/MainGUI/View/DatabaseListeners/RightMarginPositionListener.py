@@ -9,6 +9,7 @@ class Listener(object):
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
+		self.__manager = manager
 		self.__editor = editor
 		self.__view = editor.textview
 		from gio import File, FILE_MONITOR_NONE
@@ -26,7 +27,7 @@ class Listener(object):
 	def __update(self):
 		self.__editor.response()
 		from SCRIBES.MarginPositionMetadata import get_value
-		self.__view.set_property("right-margin-position", get_value())
+		self.__view.set_property("right-margin-position", get_value(self.__manager.get_language()))
 		self.__editor.response()
 		return False
 

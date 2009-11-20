@@ -10,6 +10,7 @@ class Listener(object):
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
+		self.__manager = manager
 		self.__view = editor.textview
 		from gio import File, FILE_MONITOR_NONE
 		self.__monitor = File(manager.get_path("SpellCheck.gdb")).monitor_file(FILE_MONITOR_NONE, None)
@@ -26,7 +27,7 @@ class Listener(object):
 	def __update(self):
 		self.__editor.response()
 		from SCRIBES.SpellCheckMetadata import get_value
-		self.__editor.emit("enable-spell-checking", get_value())
+		self.__editor.emit("enable-spell-checking", get_value(self.__manager.get_language()))
 		self.__editor.response()
 		return False
 

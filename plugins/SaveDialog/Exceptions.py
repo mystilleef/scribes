@@ -1,2 +1,0 @@
-class DialogError(Exception):
-	pass
