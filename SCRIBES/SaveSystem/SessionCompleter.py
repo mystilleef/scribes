@@ -30,15 +30,19 @@ class Completer(object):
 
 	def __verify_session(self, data):
 		try:
+			self.__editor.response()
 			session_id = tuple(data[0])
 			self.__queue.remove(session_id)
 			if self.__session_id != session_id: return False
 			emit = self.__manager.emit
 			emit("saved?", data) if len(data) == 3 else emit("error", data)
 		except ValueError:
+			self.__editor.response()
 			print "Module Name: SCRIBES/SaveSystem/SessionCompleter"
 			print "Method Name: __verify_session"
 			print "ERROR MESSAGE: Session id not in queue", session_id
+		finally:
+			self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):
@@ -46,10 +50,12 @@ class Completer(object):
 		return False
 
 	def __session_cb(self, manager, session_id):
+		self.__editor.response()
 		self.__session_id = session_id
 		self.__queue.append(session_id)
 		return False
 
 	def __data_cb(self, manager, data):
+		self.__editor.response()
 		self.__verify_session(data)
 		return False

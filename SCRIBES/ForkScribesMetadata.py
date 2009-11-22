@@ -1,5 +1,6 @@
 from Utils import open_database
-basepath = "/Preferences/ForkScribes.gdb"
+from os.path import join
+basepath = join("Preferences", "ForkScribes.gdb")
 
 def get_value():
 	try:

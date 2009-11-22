@@ -21,7 +21,7 @@ class Manager(object):
 
 	def get_path(self, database):
 		from os.path import join
-		folder = join(self.__editor.metadata_folder, "Preferences/Languages")
+		folder = join(self.__editor.metadata_folder, "Preferences","Languages")
 		return join(folder, database)
 
 	def get_language(self):

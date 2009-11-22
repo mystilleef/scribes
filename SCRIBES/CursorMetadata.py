@@ -19,4 +19,3 @@ def set_value(uri, cursor_position):
 	finally:
 		database.close()
 	return
-

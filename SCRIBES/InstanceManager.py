@@ -9,7 +9,7 @@ class Manager(object):
 		from sys import setcheckinterval
 		setcheckinterval(-1)
 		from gobject import timeout_add
-		timeout_add(21000, self.__init_psyco, priority=9999)
+		timeout_add(30000, self.__init_psyco, priority=9999)
 		self.__init_i18n()
 		timeout_add(300000, self.__init_garbage_collector, priority=9999)
 
@@ -21,7 +21,6 @@ class Manager(object):
 		self.__busy = False
 		self.__interval = 0
 		self.__shortcut_list = []
-		self.__count = 0
 		return
 
 ########################################################################
@@ -120,8 +119,6 @@ class Manager(object):
 		from Utils import response
 		response()
 		self.__busy = False
-#		self.__count += 1
-#		print "Response Count: ", self.__count
 		return False
 
 	def set_vm_interval(self, response=True):
@@ -166,7 +163,7 @@ class Manager(object):
 	def __init_psyco(self):
 		try:
 			from psyco import background
-#			background()
+			background()
 		except ImportError:
 			pass
 		return False
@@ -197,7 +194,7 @@ class Manager(object):
 		from glob import glob
 		from Globals import home_folder, metadata_folder
 		from os.path import join
-		files = glob(home_folder + "/" + ".Scribes*scribes")
+		files = glob(join(home_folder, ".Scribes*scribes"))
 		from shutil import rmtree
 		[rmtree(file_, True) for file_ in files]
 		files = glob(join(metadata_folder, "__db*"))

@@ -1,5 +1,6 @@
 from SCRIBES.Utils import open_database
-basepath = "Preferences/EncodingList.gdb"
+from os.path import join
+basepath = join("Preferences", "EncodingList.gdb")
 
 def get_value():
 	try:

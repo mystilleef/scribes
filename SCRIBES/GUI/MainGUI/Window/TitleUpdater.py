@@ -39,17 +39,19 @@ class Updater(object):
 	def __update_attributes(self, uri):
 		self.__uri = uri
 		self.__dictionary = self.__get_dictionary(uri)
+		self.__editor.response()
 		return False
 
 	def __get_dictionary(self, uri):
 		from gio import File
-		title = File(uri).get_basename() if uri else _("Unsaved Document")
+		title = File(uri).get_basename() if uri else _("Unnamed Document")
 		dictionary = {
 			"normal": title,
 			"modified": "*" + title,
 			"readonly": title + _(" [READONLY]"),
 			"loading": _("Loading %s ...") % title,
 		}
+		self.__editor.response()
 		return dictionary
 
 	def __update_title(self, uri, title):
@@ -58,7 +60,9 @@ class Updater(object):
 		return False
 
 	def __set_title(self, title):
+		self.__editor.response()
 		self.__window.set_title(self.__dictionary[title])
+		self.__editor.response()
 		return False
 
 	def __checking_cb(self, editor, uri):

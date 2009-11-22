@@ -1,5 +1,6 @@
 from Utils import open_database
-basepath = "/Preferences/ColorTheme.gdb"
+from os.path import join
+basepath = join("Preferences", "ColorTheme.gdb")
 
 def get_value():
 	try:

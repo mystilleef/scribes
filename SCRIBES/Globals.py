@@ -13,7 +13,7 @@ home_folder = expanduser("~")
 folder_ = join(home_folder, "Desktop")
 from os.path import exists
 desktop_folder = folder_ if exists(folder_) else home_folder
-metadata_folder = join(home_folder, ".gnome2/scribes")
+metadata_folder = join(home_folder, ".gnome2", "scribes")
 home_plugin_folder = join(metadata_folder, "plugins")
 home_language_plugin_folder = join(metadata_folder, "LanguagePlugins")
 name = "scribes"
@@ -25,7 +25,7 @@ data_folder = join(data_path, "scribes")
 core_plugin_folder = join(data_folder, "plugins")
 core_language_plugin_folder = join(data_folder, "LanguagePlugins")
 python_path = "/usr/lib/python2.6/dist-packages"
-version = "0.4-dev-build513"
+version = "0.4-dev-build514"
 author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"Contributors:",
 			"\tIb Lundgren <ib.lundgren@gmail.com>",

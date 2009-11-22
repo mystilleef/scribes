@@ -34,6 +34,7 @@ class Tracker(object):
 		line = cursor.get_line()
 		if "\t" in text:
 			for characters in text:
+				self.__editor.response()
 				if (characters == "\t"): offset += (width - 1)
 		self.__busy = False
 		self.__manager.emit("update", (line+1, offset+1))

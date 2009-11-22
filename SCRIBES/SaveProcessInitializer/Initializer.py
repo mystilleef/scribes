@@ -20,12 +20,13 @@ class Initializer(object):
 
 	def __get_python_executable(self):
 		from sys import prefix
-		return prefix + "/bin" + "/python"
+		from os.path import join
+		return join(prefix, "bin", "python")
 
 	def __get_save_process_folder(self):
 		from os.path import join, split
 		SCRIBES_folder = split(split(globals()["__file__"])[0])[0]
-		return join(SCRIBES_folder, "SaveSystem/ExternalProcess")
+		return join(SCRIBES_folder, "SaveSystem", "ExternalProcess")
 
 	def __get_save_process_executable(self, folder):
 		from os.path import join

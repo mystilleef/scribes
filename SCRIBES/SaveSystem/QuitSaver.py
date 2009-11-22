@@ -66,5 +66,6 @@ class Saver(object):
 		return False
 
 	def __session_cb(self, manager, session_id):
+		self.__editor.response()
 		self.__session_id = session_id
 		return False

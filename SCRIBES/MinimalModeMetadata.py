@@ -1,5 +1,6 @@
 from Utils import open_database
-basepath = "Preferences/MinimalMode.gdb"
+from os.path import join
+basepath = join("Preferences", "MinimalMode.gdb")
 
 def get_value():
 	try:

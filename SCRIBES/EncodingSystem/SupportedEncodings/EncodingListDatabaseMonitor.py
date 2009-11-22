@@ -12,7 +12,7 @@ class Monitor(object):
 		self.__editor = editor
 		self.__manager = manager
 		from os.path import join
-		database = join(editor.metadata_folder, "Preferences/EncodingList.gdb")
+		database = join(editor.metadata_folder, "Preferences", "EncodingList.gdb")
 		self.__monitor = editor.get_file_monitor(database)
 		return
 

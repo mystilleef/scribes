@@ -28,7 +28,6 @@ class Saver(object):
 	def __save(self):
 		try:
 			if self.__error is False: raise AssertionError
-			#if not self.__editor.uri: return False
 			if not self.__editor.modified: return False
 			self.__editor.save_file(self.__editor.uri, self.__editor.encoding)
 		except AssertionError:
@@ -47,7 +46,7 @@ class Saver(object):
 	def __close_cb(self, *args):
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		return False
-	
+
 	def __failed_cb(self, *args):
 		self.__error = True
 		return False

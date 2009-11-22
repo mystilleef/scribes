@@ -38,8 +38,9 @@ class Manager(object):
 		return path_ if exists(path_) else None
 
 	def __update_search_path(self):
-		gedit_path = self.__get_style_path(".gnome2/gedit/styles")
-		scribes_path = self.__get_style_path(".gnome2/scribes/styles")
+		from os.path import join
+		gedit_path = self.__get_style_path(join(".gnome2", "gedit", "styles"))
+		scribes_path = self.__get_style_path(join(".gnome2", "scribes", "styles"))
 		search_paths = self.__manager.get_search_path()
 		if gedit_path and not (gedit_path in search_paths): self.__manager.prepend_search_path(gedit_path)
 		if scribes_path and not (scribes_path in search_paths): self.__manager.prepend_search_path(scribes_path)

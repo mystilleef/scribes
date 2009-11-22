@@ -13,7 +13,7 @@ home_folder = expanduser("~")
 folder_ = join(home_folder, "Desktop")
 from os.path import exists
 desktop_folder = folder_ if exists(folder_) else home_folder
-metadata_folder = join(home_folder, ".gnome2/scribes")
+metadata_folder = join(home_folder, ".gnome2", "scribes")
 home_plugin_folder = join(metadata_folder, "plugins")
 home_language_plugin_folder = join(metadata_folder, "LanguagePlugins")
 name = "scribes"

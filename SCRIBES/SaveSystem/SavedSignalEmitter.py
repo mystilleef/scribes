@@ -40,10 +40,12 @@ class Emitter(object):
 		return False
 
 	def __session_cb(self, manager, session_id):
+		self.__editor.response()
 		self.__session_id = session_id
 		return False
 
 	def __saved_cb(self, manager, data):
+		self.__editor.response()
 		from gobject import idle_add
 		idle_add(self.__emit, data, priority=9999)
 		return False

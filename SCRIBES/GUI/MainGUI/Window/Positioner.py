@@ -29,16 +29,22 @@ class Positioner(object):
 		try:
 			self.__editor.response()
 			self.__window.hide()
+			self.__editor.response()
 			uri = uri if uri else "<EMPTY>"
 			if uri != "<EMPTY>": self.__positioned = True
 			# Get window position from the position database, if possible.
 			from SCRIBES.PositionMetadata import get_window_position_from_database as gp
 			maximize, width, height, xcoordinate, ycoordinate = gp(uri)
 			if maximize:
+				self.__editor.response()
 				self.__window.maximize()
+				self.__editor.response()
 			else:
+				self.__editor.response()
 				self.__window.resize(width, height)
+				self.__editor.response()
 				self.__window.move(xcoordinate, ycoordinate)
+				self.__editor.response()
 		except TypeError:
 			self.__editor.response()
 		finally:

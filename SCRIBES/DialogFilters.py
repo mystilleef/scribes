@@ -8,7 +8,6 @@ def create_filter(name="", mime="", pattern=""):
 	if pattern: filefilter.add_pattern(pattern)
 	return filefilter
 
-
 def create_filter_list():
 	filter_list = [
 		create_filter(_("Text Documents"), "text/plain"),

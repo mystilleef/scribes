@@ -1,5 +1,6 @@
 from SCRIBES.Utils import open_database
-basepath = "/Preferences/EncodingGuessList.gdb"
+from os.path import join
+basepath = join("Preferences", "EncodingGuessList.gdb")
 
 def get_value():
 	try:

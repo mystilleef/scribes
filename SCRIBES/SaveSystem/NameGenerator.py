@@ -11,6 +11,8 @@ class Generator(object):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__destroy_cb)
 		self.__sigid2 = manager.connect("generate-name", self.__generate_cb)
+		from gobject import idle_add
+		idle_add(self.__optimize, priority=9999)
 		editor.register_object(self)
 		editor.response()
 		
@@ -32,6 +34,7 @@ class Generator(object):
 
 	def __generate(self, data):
 		try:
+			self.__editor.response()
 			# Get first valid line in buffer. Strip characters, mostly 
 			# punctuation characters, that can cause invalid Unix filenames.
 			line = self.__editor.text.strip(STRIP_CHARACTERS).splitlines()[0].strip(STRIP_CHARACTERS)
@@ -42,8 +45,14 @@ class Generator(object):
 			filename = " ".join(line.split()[:NUMBER_OF_WORDS]).strip()[:NUMBER_OF_CHARACTERS].strip()
 		except IndexError:
 			filename = ""
+			self.__editor.response()
 		finally:
 			self.__manager.emit("newname", (filename, data))
+			self.__editor.response()
+		return False
+
+	def __optimize(self):
+		self.__editor.optimize((self.__generate,))
 		return False
 
 	def __destroy_cb(self, *args):
@@ -51,6 +60,7 @@ class Generator(object):
 		return False
 
 	def __generate_cb(self, manager, data):
+		self.__editor.response()
 		from gobject import idle_add
 		idle_add(self.__generate, data, priority=9999)
 		return False

@@ -40,8 +40,8 @@ def __uris_from_arguments(arguments, option):
 
 def __exists(uri):
 	# Do not perform checks on remote files.
-	if uri.startswith("file:///") is False: return True
 	from gio import File
+	if File(uri).get_uri_scheme() != "file": return True
 	from os.path import exists
 	return exists(File(uri).get_path())
 
@@ -72,8 +72,8 @@ def __print_no_exist(uris):
 
 def __create(uri):
 	try:
-		if not uri.startswith("file:///"): raise ValueError
 		from gio import File
+		if File(uri).get_uri_scheme() != "file": raise ValueError
 		File(uri).replace_contents("")
 	except ValueError:
 		print "Error: %s is a remote file. Cannot create remote files from \

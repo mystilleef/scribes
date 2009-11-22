@@ -1,5 +1,6 @@
 from SCRIBES.Utils import open_database
-basepath = "Preferences/FileEncodings.gdb"
+from os.path import join
+basepath = join("Preferences", "FileEncodings.gdb")
 
 def get_value(uri):
 	try:

@@ -27,29 +27,35 @@ class Remover(object):
 		return False
 
 	def __remove(self):
+		self.__editor.response()
 		if self.__uri: self.__editor.remove_uri(self.__uri)
+		self.__editor.response()
 		return False
 
 	def __create(self, _data):
+		self.__editor.response()
 		uri, data = _data
 		self.__remove()
 		self.__uri = uri
+		self.__editor.response()
 		return False
 
 	def __create_cb(self, manager, data):
+		self.__editor.response()
 		from gobject import idle_add
-		idle_add(self.__create, data)
+		idle_add(self.__create, data, priority=9999)
 		return False
 
 	def __renamed_cb(self, *args):
+		self.__editor.response()
 		from gobject import idle_add
-		idle_add(self.__remove)
+		idle_add(self.__remove, priority=9999)
 		return False
 
 	def __remove_cb(self, *args):
 		self.__remove()
 		return False
-	
+
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False

@@ -233,8 +233,8 @@ class Editor(Signals):
 		return [self.disconnect_signal(sigid, instance) for sigid, instance in data]
 
 	def move_view_to_cursor(self, align=False, iterator=None):
-		self.response()
 		if iterator is None: iterator = self.cursor
+		self.response()
 		self.textview.scroll_to_iter(iterator, 0.001, use_align=align, xalign=1.0)
 		self.response()
 		return False
@@ -366,7 +366,6 @@ class Editor(Signals):
 		return self.mark(self.cursor, "right")
 
 	def delete_mark(self, mark):
-#		self.response()
 		if mark.get_deleted(): return
 		self.textbuffer.delete_mark(mark)
 		return
@@ -384,7 +383,8 @@ class Editor(Signals):
 		start = self.backward_to_line_begin(iterator)
 		if start.ends_line(): return True
 		end = self.forward_to_line_end(iterator)
-		text = self.textbuffer.get_text(start, end).strip(" \t\n\r")
+		from string import whitespace
+		text = self.textbuffer.get_text(start, end).strip(whitespace)
 		if text: return False
 		return True
 

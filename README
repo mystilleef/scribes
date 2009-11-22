@@ -6,15 +6,16 @@ Version
 What is Scribes?
 ================
 
-Scribes is an extensible text editor for GNOME that combines simplicity
-with power. Scribes enhances your workflow by ensuring common and 
-repetitive operations are intelligently automated and by eliminating 
-factors that prevent you from focusing on your tasks.
+Scribes is a minimalist text editor for GNOME that combines
+simplicity with power. Scribes enhances your workflow by
+ensuring common and repetitive operations are intelligently
+automated and by eliminating factors that prevent you from
+focusing on your tasks.
 
 	http://scribes.sf.net/
 
-You can also write Python plugins to extend or customize the editor for
-specialized text editing needs.
+You can also write Python plugins to extend or customize the
+editor for specialized text editing needs.
 
 Requirements
 ============
@@ -41,7 +42,8 @@ following at the command prompt as root:
 	make
 	make install
 
-You can install scribes into a test or temporary location as follows:
+You can install scribes into a test or temporary location as
+follows:
 
 	./configure --prefix=/home/$(USERNAME)/testscribes
 	make

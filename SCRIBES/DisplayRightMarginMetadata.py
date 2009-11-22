@@ -1,5 +1,6 @@
 from Utils import open_database
-basepath = "/Preferences/Languages/DisplayRightMargin.gdb"
+from os.path import join
+basepath = join("Preferences", "Languages", "DisplayRightMargin.gdb")
 
 def get_value(language):
 	try:
@@ -30,4 +31,3 @@ def reset(language):
 	finally:
 		database.close()
 	return
-

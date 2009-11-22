@@ -4,7 +4,7 @@ class Placer(object):
 		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("loaded-file", self.__loaded_cb)
+		self.__sigid2 = editor.connect_after("loaded-file", self.__loaded_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -51,6 +51,7 @@ class Placer(object):
 		return False
 
 	def __loaded_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__place, priority=9999)
+#		from gobject import idle_add
+#		idle_add(self.__place, priority=9999)
+		self.__place()
 		return False

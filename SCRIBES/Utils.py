@@ -77,7 +77,7 @@ def get_mimetype(path):
 	from gio import File, content_type_guess
 	gfile = File(path)
 	uri = gfile.get_uri()
-	if uri.startswith("file:///") is False: return content_type_guess(uri)
+	if File(uri).get_uri_scheme() != "file": return content_type_guess(uri)
 	return gfile.query_info("standard::content-type").get_content_type()
 
 def get_language(uri):
@@ -115,7 +115,7 @@ def generate_random_number(sequence):
 def check_uri_permission(uri):
 	value = True
 	from gio import File
-	if uri.startswith("file:///"):
+	if File(uri).get_uri_scheme() == "file":
 		local_path = File(uri).get_path()
 		from os import access, W_OK, path
 		if path.exists(local_path):
@@ -410,13 +410,17 @@ def response():
 	return
 
 def create_uri(uri, exclusive=True):
+	response()
 	from gio import File
 	File(uri).replace_contents("")
+	response()
 	return
 
 def remove_uri(uri):
 	from gio import File
+	response()
 	File(uri).delete()
+	response()
 	return
 
 def uri_is_folder(uri):

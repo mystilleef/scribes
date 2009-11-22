@@ -1,5 +1,6 @@
 from Utils import open_database
-basepath = "/Preferences/Languages/TextWrapping.gdb"
+from os.path import join
+basepath = join("Preferences", "Languages", "TextWrapping.gdb")
 
 def get_value(language):
 	try:

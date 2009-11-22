@@ -1,4 +1,3 @@
-refactor encoding system and gui
 implement a global storage object. (useful to use with signal system)
 
 

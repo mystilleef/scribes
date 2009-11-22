@@ -1,5 +1,6 @@
 from Utils import open_database
-basepath = "/Preferences/Languages/SpellCheck.gdb"
+from os.path import join
+basepath = join("Preferences", "Languages", "SpellCheck.gdb")
 
 def get_value(language):
 	try:
