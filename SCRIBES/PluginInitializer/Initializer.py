@@ -4,8 +4,10 @@ class Initializer(object):
 		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		from gobject import idle_add
-		idle_add(self.__validate)
+		from thread import start_new_thread
+		start_new_thread(self.__validate, ())
+#		from gobject import idle_add
+#		idle_add(self.__validate)
 		editor.register_object(self)
 		editor.response()
 

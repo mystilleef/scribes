@@ -31,7 +31,8 @@ class Manager(GObject):
 		Marker(self, editor)
 
 	def __init_attributes(self, editor):
-		self.__glade = editor.get_glade_object(globals(), "GUI/Bookmark.glade", "Window")
+		from os.path import join
+		self.__glade = editor.get_glade_object(globals(), join("GUI","Bookmark.glade"), "Window")
 		return False
 
 	def destroy(self):

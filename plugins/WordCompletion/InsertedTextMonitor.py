@@ -1,3 +1,5 @@
+WORDS_BEFORE_CURSOR = 2
+
 class Monitor(object):
 
 	def __init__(self, manager, editor):
@@ -68,8 +70,13 @@ class Monitor(object):
 		return False
 
 	def __send_valid_string(self):
-		from gobject import timeout_add
-		self.__timer = timeout_add(250, self.__send, priority=9999)
+		try:
+			from gobject import timeout_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = timeout_add(250, self.__send, priority=9999)
 		return False
 
 	def __is_valid_character(self, character):
@@ -101,7 +108,7 @@ class Monitor(object):
 		start = self.__backward_to_word_begin(iterator.copy())
 		end = self.__forward_to_word_end(iterator.copy())
 		word = self.__buffer.get_text(start, end)
-		if len(word) > 2: return word
+		if len(word) > WORDS_BEFORE_CURSOR: return word
 		return None
 
 	def __send(self):
@@ -149,7 +156,7 @@ class Monitor(object):
 		self.__inserting = True
 		self.__emit_invalid()
 		return False
-	
+
 	def __inserted_cb(self, *args):
 		self.__inserting = False
 		self.__emit_invalid()

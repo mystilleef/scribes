@@ -18,12 +18,15 @@ class Manager(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
+		signals = (
+			(self.__sigid1, self.__manager),
+			(self.__sigid2, self.__manager),
+			(self.__sigid3, self.__manager),
+			(self.__sigid4, self.__manager),
+			(self.__sigid5, self.__manager),
+			(self.__sigid6, self.__editor),
+		)
+		self.__editor.disconnect_signals(signals)
 #		self.__editor.unregister_object(self)
 		del self
 		self = None

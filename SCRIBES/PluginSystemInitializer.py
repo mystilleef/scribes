@@ -20,14 +20,18 @@ class Initializer(object):
 		return
 
 	def __init_plugins(self):
+		self.__editor.response()
+		self.__editor.move_view_to_cursor(True)
 		from PluginInitializer.Manager import Manager
 		Manager(self.__editor)
 		self.__editor.emit("ready")
-		self.__editor.move_view_to_cursor(True)
 		self.__editor.refresh()
 		self.__destroy()
 		return False
 
 	def __loaded_cb(self, *args):
-		self.__init_plugins()
+		self.__editor.response()
+		from gobject import idle_add
+		idle_add(self.__init_plugins, priority=999999)
+#		self.__init_plugins()
 		return False

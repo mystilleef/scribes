@@ -1,5 +1,5 @@
 class Label(object):
-	
+
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
@@ -11,7 +11,7 @@ class Label(object):
 		self.__editor = editor
 		self.__label = manager.gui.get_widget("ErrorLabel")
 		return False
-	
+
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)

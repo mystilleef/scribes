@@ -94,7 +94,7 @@ class Manager(GObject):
 		self.__manager = None
 		from os.path import join
 		folder = editor.get_current_folder(globals())
-		file_ = join(folder, "GUI/FindBar.glade")
+		file_ = join(folder, "GUI", "FindBar.glade")
 		from gtk.glade import XML
 		self.__glade = XML(file_, "BarWindow", "scribes")
 		self.__mglade = XML(file_, "MenuWindow", "scribes")

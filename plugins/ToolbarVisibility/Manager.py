@@ -2,8 +2,8 @@ class Manager(object):
 
 	def __init__(self, editor):
 		self.__init_attributes(editor)
-		self.__sigid1 = editor.textview.connect("motion-notify-event", self.__motion_notify_event_cb)
-		self.__sigid2 = editor.window.connect("leave-notify-event", self.__hide_cb)
+		self.__sigid1 = editor.textview.connect_after("motion-notify-event", self.__motion_notify_event_cb)
+		self.__sigid2 = editor.window.connect_after("leave-notify-event", self.__hide_cb)
 		self.__monitor.connect("changed", self.__changed_cb)
 		from gobject import idle_add
 		idle_add(self.__monitor_mouse, priority=9999)
@@ -32,13 +32,23 @@ class Manager(object):
 		if self.__activate is False: return False
 		self.__editor.refresh(False)
 		x, y, type_ = widget.window.get_pointer()
-		if y <= 21:
+		if y > 0 and y < 22:
 			if self.__show is True: return False
 			self.__show_full_view()
 		else:
 			if self.__show is False: return False
-			self.__hide_full_view()
+			self.__hide_view()
 		self.__editor.refresh(False)
+		return False
+
+	def __hide_view(self):
+		try:
+			from gobject import timeout_add, source_remove
+			source_remove(self.__hide_timer)
+		except AttributeError:
+			self.__editor.response()
+		finally:
+			self.__hide_timer = timeout_add(3000, self.__hide_full_view, priority=9999)
 		return False
 
 	def __generic_cb(self, *args):
@@ -46,15 +56,23 @@ class Manager(object):
 		return
 
 	def __hide_cb(self, window, event):
+		self.__editor.response()
 		if self.__activate is False: return False
 		if not self.__show: return False
 		window.window.get_pointer()
-		self.__hide_full_view()
+		self.__hide_view()
 		return False
 
 	def __motion_notify_event_cb(self, window, event):
+		self.__editor.response()
 		if self.__activate is False: return False
-		self.__show_hide_full_view(window)
+		try:
+			from gobject import idle_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = idle_add(self.__show_hide_full_view, window)
 		return False
 
 	def __show_full_view(self):

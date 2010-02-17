@@ -75,10 +75,11 @@ class Manager(GObject):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__glade = editor.get_glade_object(globals(), "MainGUI/GUI.glade", "Window")
-		self.__eglade = editor.get_glade_object(globals(), "EditorGUI/GUI.glade", "Window")
-		self.__iglade = editor.get_glade_object(globals(), "Import/GUI/GUI.glade", "Window")
-		self.__exglade = editor.get_glade_object(globals(), "Export/GUI/GUI.glade", "Window")
+		from os.path import join
+		self.__glade = editor.get_glade_object(globals(), join("MainGUI", "GUI.glade"), "Window")
+		self.__eglade = editor.get_glade_object(globals(), join("EditorGUI", "GUI.glade"), "Window")
+		self.__iglade = editor.get_glade_object(globals(), join("Import", "GUI", "GUI.glade"), "Window")
+		self.__exglade = editor.get_glade_object(globals(), join("Export", "GUI", "GUI.glade"), "Window")
 		return
 
 	gui = property(lambda self: self.__glade)

@@ -59,6 +59,7 @@ class TreeView(object):
 
 	def __exists(self, text):
 		for row in self.__model:
+			self.__editor.response()
 			if text == self.__model.get_value(row.iter, 0): return True
 		return False
 

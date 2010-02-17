@@ -48,6 +48,7 @@ class AutoReplaceExpander(object):
 		iterator = self.__editor.get_cursor_iterator()
 		tmp_iterator = iterator.copy()
 		for value in range(len(abbreviation[:-1])):
+			self.__editor.response()
 			tmp_iterator.backward_char()
 		self.__editor.textbuffer.delete(tmp_iterator, iterator)
 		self.__editor.textbuffer.insert_at_cursor(expanded_word + delimeter_character)

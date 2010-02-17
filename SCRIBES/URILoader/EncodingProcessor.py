@@ -27,13 +27,18 @@ class Processor(object):
 
 	def __send(self, uri, string):
 		try:
+			self.__editor.response()
 			encoding = self.__encodings.popleft()
 			self.__manager.emit("insert-text", uri, string, encoding)
 		except IndexError:
+			self.__editor.response()
 			self.__manager.emit("encoding-error", uri)
+		finally:
+			self.__editor.response()
 		return False
 
 	def __generate_encoding_list(self, encoding):
+		self.__editor.response()
 		from collections import deque
 		encodings = deque(self.__editor.encoding_guess_list)
 		encodings.appendleft(encoding)

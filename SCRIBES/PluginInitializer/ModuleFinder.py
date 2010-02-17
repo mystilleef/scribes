@@ -41,4 +41,3 @@ class Finder(object):
 		from gobject import idle_add
 		idle_add(self.__initialize_modules, plugin_path)
 		return False
-

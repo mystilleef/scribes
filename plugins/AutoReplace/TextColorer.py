@@ -56,7 +56,9 @@ class Colorer(object):
 	def __color(self, word):
 		self.__uncolor()
 		start = self.__editor.cursor.copy()
-		for value in xrange(len(word)): start.backward_char()
+		for value in xrange(len(word)): 
+			self.__editor.response()
+			start.backward_char()
 		self.__editor.textbuffer.apply_tag(self.__tag, start, self.__editor.cursor)
 		self.__is_colored = True
 		return False

@@ -57,6 +57,7 @@ class Manager(object):
 		indentation = iterator.get_line_offset()
 		while True:
 			try:
+				self.__editor.response()
 				if self.__editor.is_empty_line(iterator): raise ValueError
 				if self.__is_comment_line(iterator): raise ValueError
 				if self.__is_block_start(iterator.copy(), indentation): break
@@ -74,6 +75,7 @@ class Manager(object):
 		indentation = iterator.get_line_offset()
 		while True:
 			try:
+				self.__editor.response()
 				if self.__editor.is_empty_line(iterator): raise ValueError
 				if self.__is_comment_line(iterator): raise ValueError
 				if self.__is_def_block_start(iterator.copy(), indentation): break
@@ -89,6 +91,7 @@ class Manager(object):
 		indentation = iterator.get_line_offset()
 		while True:
 			try:
+				self.__editor.response()
 				if self.__editor.is_empty_line(iterator): raise ValueError
 				if self.__is_comment_line(iterator): raise ValueError
 				if self.__is_class_block_start(iterator.copy(), indentation): break
@@ -103,6 +106,7 @@ class Manager(object):
 		indentation = iterator.get_line_offset()
 		while True:
 			try:
+				self.__editor.response()
 				success = iterator.backward_line()
 				if success is False: raise TypeError
 				if self.__editor.is_empty_line(iterator): raise ValueError
@@ -119,6 +123,7 @@ class Manager(object):
 		indentation = iterator.get_line_offset()
 		while True:
 			try:
+				self.__editor.response()
 				success = iterator.forward_line()
 				if success is False: raise TypeError
 				if self.__editor.is_empty_line(iterator): raise ValueError
@@ -139,6 +144,7 @@ class Manager(object):
 	def __move_backward_to_inner_indentation(self, iterator, indentation):
 		if indentation < iterator.get_line_offset(): return iterator
 		while True:
+			self.__editor.response()
 			success = iterator.backward_line()
 			if success is False: raise ValueError
 			if self.__editor.is_empty_line(iterator): continue
@@ -155,6 +161,7 @@ class Manager(object):
 	def __find_end_block(self, iterator):
 		indentation = iterator.get_line_offset()
 		while True:
+			self.__editor.response()
 			success = iterator.forward_line()
 			if success is False: break
 			if self.__editor.is_empty_line(iterator.copy()): continue
@@ -176,6 +183,7 @@ class Manager(object):
 		# Search for non-empty lines.
 		empty_or_comment = lambda x: self.__editor.is_empty_line(x) or self.__is_comment_line(x) or self.__line_starts_with_secondary_block_keyword(x)
 		while empty_or_comment(iterator):
+			self.__editor.response()
 			success = iterator.backward_line()
 			if success is False: break
 		if empty_or_comment(iterator): raise TypeError # FIXME Raise an exception here instead.
@@ -237,6 +245,7 @@ class Manager(object):
 	def __has_block_line_colon(self, iterator):
 		if self.__ends_with_colon(iterator.copy()): return True
 		while True:
+			self.__editor.response()
 			success = iterator.forward_line()
 			if success is False: return False
 			if self.__line_starts_with_keyword(iterator): return False

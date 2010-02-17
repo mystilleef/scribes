@@ -4,11 +4,11 @@ class Extractor(object):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("marks", self.__marks_cb)
-		
+
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		return  
+		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)

@@ -114,6 +114,7 @@ class Manager(object):
 
 	def __find_empty_line(self, iterator, backwards=True):
 		while True:
+			self.__editor.response()
 			if backwards:
 				if not iterator.backward_line(): return None
 			else:
@@ -122,6 +123,7 @@ class Manager(object):
 		return None
 
 	def __is_empty_line(self, iterator):
+		self.__editor.response()
 		if iterator.ends_line(): return True
 		temporary_iterator = iterator.copy()
 		temporary_iterator.forward_to_line_end()
@@ -149,6 +151,7 @@ class Manager(object):
 		line = self.__respace_line(line)
 		if len(line) > wrap_width:
 			while True:
+				self.__editor.response()
 				new_line, remainder = self.__shorten_line(line, wrap_width)
 				reflowed_lines.append(new_line)
 				if len(remainder) < wrap_width: break
@@ -176,6 +179,7 @@ class Manager(object):
 	def __get_indentation(self, line):
 		indentation_list = []
 		for char in line:
+			self.__editor.response()
 			if not (char in [" ", "\t"]): break
 			indentation_list.append(char)
 		return "".join(indentation_list)
@@ -184,6 +188,7 @@ class Manager(object):
 		line = line.split(" ")
 		while True:
 			try:
+				self.__editor.response()
 				line.remove("")
 			except ValueError:
 				break

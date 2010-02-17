@@ -1,5 +1,6 @@
 from SCRIBES.Utils import open_database
-basepath = "/PluginPreferences/LexicalScopeHighlight.gdb"
+from os.path import join
+basepath = join("PluginPreferences", "LexicalScopeHighlight.gdb")
 
 def get_value():
 	try:

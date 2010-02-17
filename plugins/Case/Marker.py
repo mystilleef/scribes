@@ -24,10 +24,13 @@ class Marker(object):
 	def __get_bounds(self, cursor):
 		forward = False
 		end = cursor.copy()
-		while self.__pattern.match(end.get_char()): end.forward_char()
+		while self.__pattern.match(end.get_char()): 
+			self.__editor.response()
+			end.forward_char()
 		start = end.copy()
 		start.backward_char()
 		while self.__pattern.match(start.get_char()):
+			self.__editor.response()
 			forward = False
 			if start.starts_line(): break
 			if not start.backward_char(): break
@@ -78,7 +81,9 @@ class Marker(object):
 		return False
 
 	def __clear(self):
-		for mark in self.__marks: self.__editor.delete_mark(mark)
+		for mark in self.__marks: 
+			self.__editor.response()
+			self.__editor.delete_mark(mark)
 		self.__marks = []
 		return False
 

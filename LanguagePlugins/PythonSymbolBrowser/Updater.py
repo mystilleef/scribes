@@ -61,10 +61,12 @@ class Updater(object):
 		return
 
 	def __is_function_node(self, node):
+		self.__editor.response()
 		attributes = set(["decorators", "name", "argnames", "defaults", "flags", "doc", "code"])
 		return attributes.issubset(set(dir(node)))
 
 	def __is_class_node(self, node):
+		self.__editor.response()
 		attributes = set(["name", "bases", "doc", "code"])
 		return attributes.issubset(set(dir(node)))
 

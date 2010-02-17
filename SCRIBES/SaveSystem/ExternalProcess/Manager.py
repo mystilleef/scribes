@@ -3,6 +3,8 @@ from SIGNALS import Signals
 class Manager(Signals):
 
 	def __init__(self):
+		from os import nice
+		nice(19)
 		Signals.__init__(self)
 		from DbusService import DbusService
 		DbusService(self)

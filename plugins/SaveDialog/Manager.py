@@ -24,7 +24,8 @@ class Manager(GObject):
 		Manager(self, editor)
 
 	def __init_attributes(self, editor):
-		self.__gui = editor.get_gui_object(globals(), "GUI/GUI.glade")
+		from os.path import join
+		self.__gui = editor.get_gui_object(globals(), join("GUI", "GUI.glade"))
 		return
 
 	gui = property(lambda self: self.__gui)

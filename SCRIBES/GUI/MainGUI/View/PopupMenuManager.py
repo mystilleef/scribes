@@ -22,15 +22,15 @@ class Manager(object):
 		items = []
 #		items = [(menuitem.props.name, menuitem) for menuitem in self.__items]
 		for menuitem in self.__items:
-			items.append((menuitem.props.name, menuitem))
 			self.__editor.response()
+			items.append((menuitem.props.name, menuitem))
 		items.sort()
 		items.reverse()
 #		self.__items = [menuitem[1] for menuitem in items]
 		self.__items = []
 		for menuitem in items:
-			self.__items.append(menuitem[1])
 			self.__editor.response()
+			self.__items.append(menuitem[1])
 		self.__editor.response()
 		return False
 

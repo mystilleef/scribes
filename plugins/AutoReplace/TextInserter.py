@@ -34,7 +34,9 @@ class Inserter(object):
 		if delimeter == "\n": indentation = self.__indent()
 		end = self.__editor.cursor.copy()
 		start = self.__editor.cursor.copy()
-		for item in xrange(len(self.__word)): start.backward_char()
+		for item in xrange(len(self.__word)): 
+			self.__editor.response()
+			start.backward_char()
 		from copy import copy
 		word = copy(self.__word)
 		self.__editor.textbuffer.delete(start, end)
@@ -52,6 +54,7 @@ class Inserter(object):
 		if not (text[0] in (" ", "\t")): return ""
 		indentation = ""
 		for character in text:
+			self.__editor.response()
 			if not (character in (" ", "\t")): break
 			indentation += character
 		return indentation
