@@ -1,3 +1,5 @@
+from gettext import gettext as _
+
 class Parser(object):
 
 	def __init__(self):
@@ -7,7 +9,9 @@ class Parser(object):
 
 	def __init_attributes(self):
 		from optparse import OptionParser
-		self.__parser = OptionParser()
+		self.__parser = OptionParser(usage=_("usage: %prog [OPTION...] [FILE...]"),
+			description=_("%prog is a text editor for GNOME.\n\n http://scribes.sf.net/"),
+			)
 		self.__args = []
 		self.__readonly = False
 		self.__encoding = "utf-8"
@@ -22,23 +26,23 @@ class Parser(object):
 	def __add_options(self):
 		parser = self.__parser
 		parser.add_option("-v", "--version",
-			help="display the version of Scribes currently running",
+			help=_("display the version of Scribes currently running"),
 			action="callback",
 			callback=self.__print_version)
 		parser.add_option("-i", "--info",
-			help="display detailed information about Scribes",
+			help=_("display detailed information about Scribes"),
 			action="callback",
 			callback=self.__print_info)
 		parser.add_option("-n", "--newfile",
-			help="create a new file and open the file in Scribes",
+			help=_("create a new file and open the file in Scribes"),
 			action="callback",
-			callback=self.__enable_newfile)
+			callback=self.__create_newfile)
 		parser.add_option("-e", "--encoding",
-			help="open file(s) with specified encoding",
+			help=_("open file(s) with specified encoding"),
 			action="callback",
-			callback=self.__update_encoding)
+			callback=self.__use_encoding)
 		parser.add_option("-r", "--readonly",
-			help="open file(s) in readonly mode",
+			help=_("open file(s) in readonly mode"),
 			action="callback",
 			callback=self.__enable_readonly)
 		return
@@ -58,14 +62,21 @@ class Parser(object):
 		raise SystemExit
 		return False
 
-	def __enable_newfile(self, *args):
+	def __create_newfile(self, *args):
+		if not self.__args: return False
 		self.__newfile = True
 		return False
 
-	def __update_encoding(self, *args):
+	def __use_encoding(self, *args):
+		if not self.__args: return False
 		self.__encoding = "utf-8"
+		print "ERROR: NOT YET IMPLEMENTED"
+		raise SystemExit
 		return False
 
 	def __enable_readonly(self, *args):
+		if not self.__args: return False
 		self.__readonly = True
+		print "ERROR: NOT YET IMPLEMENTED"
+		raise SystemExit
 		return False
