@@ -285,6 +285,7 @@ scribes_PYTHON = \
 	SchemeManager.py \
 	ServicesInitializer.py \
 	SIGNALS.py \
+	SignalConnectionManager.py \
 	SpellCheckMetadata.py \
 	PluginSystemInitializer.py \
 	PositionMetadata.py \

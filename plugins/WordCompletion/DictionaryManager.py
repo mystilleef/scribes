@@ -1,9 +1,12 @@
-class Manager(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Manager(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("updated-dictionary", self.__updated_dictionary_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "updated-dictionary", self.__updated_dictionary_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
 
@@ -14,12 +17,10 @@ class Manager(object):
 		return 
 
 	def __destroy(self):
+		self.disconnect()
 		self.__dictionary.clear()
 		del self.__dictionary
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		del self
-		self = None
 		return 
 
 	def __update(self, dictionary):

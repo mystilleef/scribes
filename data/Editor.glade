@@ -5,13 +5,13 @@
   <widget class="GtkWindow" id="Window">
     <property name="sensitive">False</property>
     <property name="title" translatable="yes">Unsaved Document</property>
-    <property name="startup_id">ScribesWindowID</property>
     <property name="role">ScribesWindowRole</property>
     <property name="window_position">center</property>
     <property name="default_width">640</property>
     <property name="default_height">480</property>
     <property name="icon_name">scribes</property>
     <property name="urgency_hint">True</property>
+    <property name="startup_id">ScribesWindowID</property>
     <child>
       <widget class="GtkHBox" id="hbox1">
         <property name="visible">True</property>
@@ -23,7 +23,7 @@
                 <property name="sensitive">False</property>
                 <property name="no_show_all">True</property>
                 <property name="toolbar_style">icons</property>
-                <property name="icon_size">2</property>
+                <property name="icon_size">4</property>
                 <property name="icon_size_set">True</property>
               </widget>
               <packing>
