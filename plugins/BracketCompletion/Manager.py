@@ -1,4 +1,25 @@
 from gettext import gettext as _
+from gtk import keysyms
+
+KEYSYMS = {
+	keysyms.quotedbl             : keysyms.quotedbl,
+	keysyms.braceleft            : keysyms.braceright,
+	keysyms.bracketleft          : keysyms.bracketright,
+	keysyms.parenleft            : keysyms.parenright,
+	keysyms.leftdoublequotemark  : keysyms.rightdoublequotemark,
+	keysyms.guillemotleft        : keysyms.guillemotright,
+	keysyms.guillemotright       : keysyms.guillemotleft,
+	keysyms.leftsinglequotemark  : keysyms.rightsinglequotemark,
+	keysyms.leftmiddlecurlybrace : keysyms.rightmiddlecurlybrace,
+	keysyms.lowleftcorner        : keysyms.lowrightcorner,
+	keysyms.topleftparens        : keysyms.toprightparens,
+	keysyms.topleftsqbracket     : keysyms.toprightsqbracket,
+	keysyms.upleftcorner         : keysyms.uprightcorner,
+	keysyms.botleftparens        : keysyms.botrightparens,
+	keysyms.botleftsqbracket     : keysyms.botrightsqbracket,
+	keysyms.less                 : keysyms.greater,
+	keysyms.dollar               : keysyms.dollar,
+}
 
 class BracketManager(object):
 
@@ -52,45 +73,18 @@ class BracketManager(object):
 
 	def __insert_closing_pair_character(self, keyval):
 		from gtk import keysyms
-		if (keyval == keysyms.quotedbl):
-			self.__insert_pair_characters(keyval, keysyms.quotedbl)
-		elif (keyval == keysyms.braceleft):
-			self.__insert_pair_characters(keyval, keysyms.braceright)
-		elif (keyval == keysyms.bracketleft):
-			self.__insert_pair_characters(keyval, keysyms.bracketright)
-		elif (keyval == keysyms.parenleft):
-			self.__insert_pair_characters(keyval, keysyms.parenright)
-		elif (keyval == keysyms.leftdoublequotemark):
-			self.__insert_pair_characters(keyval, keysyms.righdoublequotemark)
-		elif (keyval == keysyms.guillemotleft):
-			self.__insert_pair_characters(keyval, keysyms.guillemotright)
-		elif (keyval == keysyms.guillemotright):
-			self.__insert_pair_characters(keyval, keysyms.guillemotleft)
-		elif (keyval == keysyms.leftsinglequotemark):
-			self.__insert_pair_characters(keyval, keysyms.rightsinglequotemark)
-		elif (keyval == keysyms.leftmiddlecurlybrace):
-			self.__insert_pair_characters(keyval, keysyms.rightmiddlecurlybrace)
-		elif (keyval == keysyms.lowleftcorner):
-			self.__insert_pair_characters(keyval, keysyms.lowrightcorner)
-		elif (keyval == keysyms.topleftparens):
-			self.__insert_pair_characters(keyval, keysyms.toprightparens)
-		elif (keyval == keysyms.topleftsqbracket):
-			self.__insert_pair_characters(keyval, keysyms.toprightsqbracket)
-		elif (keyval == keysyms.upleftcorner):
-			self.__insert_pair_characters(keyval, keysyms.uprightcorner)
-		elif (keyval == keysyms.botleftparens):
-			self.__insert_pair_characters(keyval, keysyms.botrightparens)
-		elif (keyval == keysyms.botleftsqbracket):
-			self.__insert_pair_characters(keyval, keysyms.botrightsqbracket)
-		elif (keyval == keysyms.less):
-			self.__insert_pair_characters(keyval, keysyms.greater)
-		elif (keyval == keysyms.dollar):
-			self.__insert_pair_characters(keyval, keysyms.dollar)
-		elif (keyval == keysyms.apostrophe):
+		if keyval == keysyms.apostrophe:
 			if self.__can_insert_apostrophe():
 				self.__insert_pair_characters(keyval, keysyms.apostrophe)
 			else:
 				self.__insert_apostrophe()
+		else:
+			self.__insert_pair_characters(keyval, KEYSYMS[keyval])
+		return
+
+	def __enclose_selection(self, keyval):
+		from gtk import keysyms
+		self.__insert_enclosed_selection(keyval, KEYSYMS[keyval])
 		return
 
 	def __insert_pair_characters(self, open_keyval, close_keyval):
@@ -112,45 +106,6 @@ class BracketManager(object):
 		self.__editor.update_message(message, "pass")
 		return
 
-	def __enclose_selection(self, keyval):
-		from gtk import keysyms
-		if (keyval == keysyms.quotedbl):
-			self.__insert_enclosed_selection(keysyms.quotedbl, keysyms.quotedbl)
-		elif (keyval == keysyms.braceleft):
-			self.__insert_enclosed_selection(keysyms.braceleft, keysyms.braceright)
-		elif (keyval == keysyms.bracketleft):
-			self.__insert_enclosed_selection(keysyms.bracketleft, keysyms.bracketright)
-		elif (keyval == keysyms.parenleft):
-			self.__insert_enclosed_selection(keysyms.parenleft, keysyms.parenright)
-		elif (keyval == keysyms.leftdoublequotemark):
-			self.__insert_enclosed_selection(keysyms.leftdoublequotemark, keysyms.rightdoublequotemark)
-		elif (keyval == keysyms.guillemotleft):
-			self.__insert_enclosed_selection(keysyms.guillemotleft, keysyms.guillemotright)
-		elif (keyval == keysyms.guillemotright):
-			self.__insert_enclosed_selection(keysyms.guillemotright, keysyms.guillemotleft)
-		elif (keyval == keysyms.leftsinglequotemark):
-			self.__insert_enclosed_selection(keysyms.leftsinglequotemark, keysyms.rightsinglequotemark)
-		elif (keyval == keysyms.leftmiddlecurlybrace):
-			self.__insert_enclosed_selection(keysyms.leftmiddlecurlybrace, keysyms.rightmiddlecurlybrace)
-		elif (keyval == keysyms.lowleftcorner):
-			self.__insert_enclosed_selection(keysyms.lowleftcorner, keysyms.lowrightcorner)
-		elif (keyval == keysyms.topleftparens):
-			self.__insert_enclosed_selection(keysyms.topleftparens, keysyms.toprightparens)
-		elif (keyval == keysyms.topleftsqbracket):
-			self.__insert_enclosed_selection(keysyms.topleftsqbracket, keysyms.toprightsqbracket)
-		elif (keyval == keysyms.upleftcorner):
-			self.__insert_enclosed_selection(keysyms.upleftcorner, keysyms.uprightcorner)
-		elif (keyval == keysyms.botleftparens):
-			self.__insert_enclosed_selection(keysyms.botleftparens, keysyms.botrightparens)
-		elif (keyval == keysyms.botleftsqbracket):
-			self.__insert_enclosed_selection(keysyms.botleftsqbracket, keysyms.botrightsqbracket)
-		elif (keyval == keysyms.less):
-			self.__insert_enclosed_selection(keysyms.less, keysyms.greater)
-		elif (keyval == keysyms.dollar):
-			self.__insert_enclosed_selection(keysyms.dollar, keysyms.dollar)
-		elif (keyval == keysyms.apostrophe):
-			self.__insert_enclosed_selection(keysyms.apostrophe, keysyms.apostrophe)
-		return
 
 	def __insert_enclosed_selection(self, open_keyval, close_keyval):
 		textbuffer = self.__editor.textbuffer
