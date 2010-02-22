@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 python_path = "@python_path@"
-from sys import argv, path
+from sys import path
 path.insert(0, python_path)
 
 if __name__ == "__main__":
 	# Start scribes.
 	from SCRIBES.Main import main
-	main(argv[1:])
+	main()

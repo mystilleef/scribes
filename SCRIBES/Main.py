@@ -3,16 +3,20 @@ scribes_dbus_path = "/net/sourceforge/Scribes"
 from sys import setcheckinterval
 setcheckinterval(-1)
 
-def main(argv=None):
-	__open(argv)
+def main():
+	__open()
 	from gobject import threads_init
 	threads_init()
 	from gtk import main
 	main()
 	return
 
-def __open(argv=None):
-	uris = __get_uris(argv)
+def __open():
+	from CommandLineParser import Parser
+	parser = Parser()
+	args, encoding, readonly, newfile = parser.args, parser.encoding, parser.readonly, parser.newfile
+	from CommandLineProcessor import get_uris
+	uris = get_uris(args, newfile)
 	__open_via_dbus(uris)
 	from Utils import init_gnome
 	init_gnome()
@@ -20,7 +24,7 @@ def __open(argv=None):
 	Manager().open_files(uris)
 	return
 
-def __open_via_dbus(uris=None):
+def __open_via_dbus(uris):
 	dbus_service = __get_dbus_service()
 	if not dbus_service: return
 	uris = uris if uris else ""
@@ -34,13 +38,6 @@ def __get_dbus_service():
 	if not (scribes_dbus_service in services): return None
 	proxy_object = session_bus.get_object(scribes_dbus_service, scribes_dbus_path)
 	return proxy_object
-
-def __get_uris(argv):
-	if not argv: return None
-	from CommandLineProcessor import get_uris
-	uris = get_uris(argv)
-	if not uris: raise SystemExit
-	return uris
 
 def __fork_scribes():
 	# Very buggy. Don't use for now.
