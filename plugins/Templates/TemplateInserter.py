@@ -68,12 +68,9 @@ class Inserter(object):
 		return indentation + line[indentation_width:]
 
 	def __get_indentation_width(self, line):
-		indentation_width = 0
-		for character in line:
-			self.__editor.response()
-			if character != " ": break
-			indentation_width += 1
-		return indentation_width
+		from itertools import takewhile
+		is_space = lambda character: character == " "
+		return len([space for space in takewhile(is_space, line)])
 
 	def __remove_trigger(self):
 		iterator = self.__editor.cursor
