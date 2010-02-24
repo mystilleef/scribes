@@ -49,28 +49,31 @@ class Inserter(object):
 		view = self.__editor.textview
 		tab_width = view.get_property("tab-width")
 		# Convert tabs to spaces
-		# [skqr]
-		#template = template.replace("\t", " " * tab_width)
 		template = template.expandtabs(tab_width)
-		# [/skqr]
 		use_spaces = view.get_property("insert-spaces-instead-of-tabs")
 		if use_spaces: return template
 		# Convert spaces to tabs
-		# [skqr]
-		# The code will now replace only those groups of white spaces used for intentation.
-		#return template.replace(" " * tab_width, "\t")
-		import re
-		tab_indented_template = ''
-		for line in template.splitlines(True):
-			indentation_match = re.match('\s+', line)
-			if indentation_match:
-				mixed_indentation = indentation_match.group(0)
-				tab_indentation = mixed_indentation.replace(' ' * tab_width, "\t")
-				tab_indented_template += re.sub('^' + mixed_indentation, tab_indentation, line)
-			else:
-				tab_indented_template += line
-		return tab_indented_template
-		# [/skqr]
+		return self.__convert_indentation_to_tabs(template, tab_width)
+
+	def __convert_indentation_to_tabs(self, template, tab_width):
+		tab_indented_lines = [self.__spaces_to_tabs(line, tab_width) for line in template.splitlines(True)]
+		return "".join(tab_indented_lines)
+
+	def __spaces_to_tabs(self, line, tab_width):
+		self.__editor.response()
+		if line[0] != " ": return line
+		indentation_width = self.__get_indentation_width(line)
+		if indentation_width < tab_width: return line
+		indentation = ("\t" * (indentation_width/tab_width)) + (" " * (indentation_width%tab_width))
+		return indentation + line[indentation_width:]
+
+	def __get_indentation_width(self, line):
+		indentation_width = 0
+		for character in line:
+			self.__editor.response()
+			if character != " ": break
+			indentation_width += 1
+		return indentation_width
 
 	def __remove_trigger(self):
 		iterator = self.__editor.cursor
@@ -229,4 +232,3 @@ class Inserter(object):
 	def __reformat_cb(self, manager, reformat):
 		self.__reformat = reformat
 		return False
-
