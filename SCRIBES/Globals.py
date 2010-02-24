@@ -25,7 +25,7 @@ data_folder = join(data_path, "scribes")
 core_plugin_folder = join(data_folder, "plugins")
 core_language_plugin_folder = join(data_folder, "LanguagePlugins")
 python_path = "/usr/lib/python2.6/dist-packages"
-version = "0.4-dev-build518"
+version = "0.4-dev-build523"
 author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"Contributors:",
 			"\tIb Lundgren <ib.lundgren@gmail.com>",
@@ -41,6 +41,7 @@ author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"\tPeter Magnusson <peter.magnusson@crippledcanary.se>",
 			"\tJakub Sadowinski <paypal@unihex.com>",
 			"\tRockallite Wulf <rockalite@users.sourceforge.net>",
+			"\tJavier Lorenzana <skaiuoquer@gmail.com>"
 		]
 documenters = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 artists = ["Alexandre Moore <alexandre.moore@gmail.com>", "Panos Laganakos <panos.laganakos@gmail.com>"]
