@@ -14,7 +14,7 @@ def main():
 def __open():
 	from CommandLineParser import Parser
 	parser = Parser()
-	args, encoding, readonly, newfile = parser.args, parser.encoding, parser.readonly, parser.newfile
+	args, newfile = parser.args, parser.newfile
 	from CommandLineProcessor import get_uris
 	uris = get_uris(args, newfile)
 	__open_via_dbus(uris)
