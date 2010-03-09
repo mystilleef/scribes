@@ -1,5 +1,5 @@
 class Positioner(object):
-	
+
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
@@ -36,9 +36,14 @@ class Positioner(object):
 		get_iter = self.__editor.textbuffer.get_iter_at_line_offset
 		iterator = get_iter(line, new_offset)
 		self.__editor.textbuffer.place_cursor(iterator)
-		self.__editor.move_view_to_cursor(True)
+		from gobject import idle_add
+		idle_add(self.__move_to_cursor, priority=9999)
 		self.__data = None
 		self.__old_text = None
+		return False
+
+	def __move_to_cursor(self):
+		self.__editor.move_view_to_cursor(True)
 		return False
 
 	def __destroy_cb(self, *args):
@@ -51,5 +56,7 @@ class Positioner(object):
 		return False
 
 	def __inserted_cb(self, *args):
-		self.__position()
+		from gobject import idle_add
+		idle_add(self.__position, priority=9999)
+#		self.__position()
 		return False

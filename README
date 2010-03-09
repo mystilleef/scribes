@@ -47,7 +47,7 @@ follows:
 
 	./configure --prefix=/home/$(USERNAME)/testscribes
 	make
-	make install  
+	make install
 
 Usage
 =====

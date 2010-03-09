@@ -67,6 +67,7 @@ scribes_PYTHON = \
 	TabWidthMetadata.py \
 	TextWrappingMetadata.py \
 	Trigger.py \
+	TriggerManager.py \
 	URIManager.py \
 	PluginManager.py \
 	RegistrationManager.py \

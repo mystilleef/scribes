@@ -9,7 +9,7 @@ $(startup_script): Makefile $(startup_script_in_files)
 	$(edit) $(startup_script_in_files) > $(startup_script).tmp
 	mv $(startup_script).tmp $(startup_script)
 
-ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
 SUBDIRS = po help data SCRIBES
 

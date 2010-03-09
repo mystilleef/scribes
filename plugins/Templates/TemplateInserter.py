@@ -68,6 +68,7 @@ class Inserter(object):
 		return indentation + line[indentation_width:]
 
 	def __get_indentation_width(self, line):
+		self.__editor.response()
 		from itertools import takewhile
 		is_space = lambda character: character == " "
 		return len([space for space in takewhile(is_space, line)])

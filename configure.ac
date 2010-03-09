@@ -1,11 +1,12 @@
 #						-*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([scribes], [0.4-dev-build523], [<mystilleef@gmail.com>])
-GNOME_COMMON_INIT
-AC_PREREQ(2.60)
-AM_INIT_AUTOMAKE([1.8 dist-bzip2 no-dist-gzip])
-AM_MAINTAINER_MODE
+AC_INIT([scribes],[0.4-dev-build525],[<mystilleef@gmail.com>])
+#GNOME_COMMON_INIT
+AC_PREREQ(2.64)
+AM_INIT_AUTOMAKE([1.11 dist-bzip2 no-dist-gzip])
+AM_MAINTAINER_MODE([enabled])
+AM_SILENT_RULES([yes])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([configure.ac])
@@ -27,6 +28,10 @@ AC_PATH_PROG([SED], [sed])
 #AC_PATH_PROG([GCONFTOOL], [gconftool-2])
 AC_PATH_PROG([YELP], [yelp])
 GNOME_DOC_INIT
+GNOME_COMPILE_WARNINGS([maximum])
+GNOME_CXX_WARNINGS([yes])
+GNOME_MAINTAINER_MODE_DEFINES
+
 #AM_GCONF_SOURCE_2
 
 AM_PATH_PYTHON([2.5])

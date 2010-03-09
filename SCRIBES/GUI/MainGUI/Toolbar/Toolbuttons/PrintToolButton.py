@@ -41,5 +41,5 @@ class Button(ToolButton):
 		return False
 
 	def __clicked_cb(self, *args):
-		self.__editor.emit("not-yet-implemented")
+		self.__editor.trigger("show-print-window")
 		return False
