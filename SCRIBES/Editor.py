@@ -27,6 +27,7 @@ class Editor(Signals):
 	# All editor instances
 	objects = instances = property(lambda self: self.imanager.get_editor_instances())
 	name = property(lambda self: EditorImports.File(self.uri).query_info("*").get_display_name() if self.uri else None)
+	filename = property(lambda self: EditorImports.File(self.uri).get_path() if self.uri else "")
 	language_object = property(lambda self: self.get_data("language_object"))
 	language = property(lambda self: self.get_data("language"))
 	language_manager = property(lambda self: EditorImports.language_manager_get_default())
@@ -43,6 +44,7 @@ class Editor(Signals):
 	cursor = property(lambda self: self.textbuffer.get_iter_at_offset(self.textbuffer.get_property("cursor_position")))
 	text = property(lambda self: self.textbuffer.get_text(*(self.textbuffer.get_bounds())))
 	# Global information
+	print_settings_filename = property(lambda self: EditorImports.print_settings_filename)
 	data_folder = property(lambda self: EditorImports.data_folder)
 	metadata_folder = property(lambda self: EditorImports.metadata_folder)
 	home_folder = property(lambda self: EditorImports.home_folder)

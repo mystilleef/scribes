@@ -1,6 +1,6 @@
 name = "Printing Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-version = 0.3
+version = 0.4
 autoload = True
 class_name = "PrintingPlugin"
 short_description = "Shows the about dialog."

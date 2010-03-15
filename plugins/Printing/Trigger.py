@@ -26,18 +26,17 @@ class Trigger(SignalManager, TriggerManager):
 
 	def __activate(self):
 		try :
-			self.__manager.show()
+			self.__manager.activate()
 		except AttributeError :
 			from Manager import Manager
 			self.__manager = Manager(self.__editor)
-			self.__manager.show()
+			self.__manager.activate()
 		finally:
 			self.__editor.response()
 		return False
 
 	def __activate_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__activate)
+		self.__activate()
 		return
 
 	def destroy(self):
