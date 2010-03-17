@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Jan  5 14:39:55 2009 -->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.12 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="Window">
     <property name="border_width">1</property>
-    <property name="type">GTK_WINDOW_POPUP</property>
+    <property name="type">popup</property>
     <property name="resizable">False</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_MENU</property>
+    <property name="type_hint">menu</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="accept_focus">False</property>
@@ -17,19 +17,15 @@
       <widget class="GtkScrolledWindow" id="ScrolledWindow">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="border_width">1</property>
-        <property name="resize_mode">GTK_RESIZE_IMMEDIATE</property>
-        <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
-        <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-        <property name="shadow_type">GTK_SHADOW_IN</property>
+        <property name="hscrollbar_policy">never</property>
+        <property name="vscrollbar_policy">automatic</property>
+        <property name="shadow_type">in</property>
         <child>
           <widget class="GtkTreeView" id="TreeView">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="has_focus">True</property>
             <property name="is_focus">True</property>
-            <property name="border_width">1</property>
-            <property name="resize_mode">GTK_RESIZE_IMMEDIATE</property>
             <property name="headers_visible">False</property>
             <property name="headers_clickable">False</property>
             <property name="rules_hint">True</property>
