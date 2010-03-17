@@ -80,6 +80,8 @@ class Monitor(object):
 		return False
 
 	def __is_valid_character(self, character):
+		from string import whitespace
+		if character in whitespace: return False
 		return character.isalpha() or character.isdigit() or (character in ("-", "_"))
 
 	def __backward_to_word_begin(self, iterator):
@@ -107,7 +109,7 @@ class Monitor(object):
 		if not self.__is_valid_character(iterator.get_char()): return None
 		start = self.__backward_to_word_begin(iterator.copy())
 		end = self.__forward_to_word_end(iterator.copy())
-		word = self.__buffer.get_text(start, end)
+		word = self.__buffer.get_text(start, end).strip()
 		if len(word) > WORDS_BEFORE_CURSOR: return word
 		return None
 
@@ -131,6 +133,8 @@ class Monitor(object):
 		try:
 			if self.__inserting: return False
 			if (length > 1): raise ValueError
+			from string import whitespace
+			if text in whitespace: raise ValueError
 			self.__send() if self.__is_visible else self.__send_valid_string_async()
 		except ValueError:
 			self.__emit_invalid()

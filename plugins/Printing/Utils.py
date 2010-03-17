@@ -19,7 +19,7 @@ def get_compositor(editor):
 	compositor.set_header_format(True, editor.name, "%b %d, %Y", "%N")
 	compositor.set_highlight_syntax(True)
 	compositor.set_line_numbers_font_name(font_name)
-	compositor.set_print_line_numbers(1)
+#	compositor.set_print_line_numbers(1)
 	compositor.set_tab_width(view.get_property("tab-width"))
 	compositor.set_wrap_mode(view.get_wrap_mode())
 	return compositor

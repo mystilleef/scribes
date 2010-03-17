@@ -19,8 +19,10 @@ class Displayer(SignalManager):
 		return False
 
 	def __activate(self):
+		self.__editor.response()
 		from Printer import Printer
 		Printer(self.__manager, self.__editor).show()
+		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):
@@ -28,5 +30,6 @@ class Displayer(SignalManager):
 		return False
 
 	def __activate_cb(self, *args):
-		self.__activate()
+		from gobject import idle_add
+		idle_add(self.__activate, priority=9999)
 		return False
