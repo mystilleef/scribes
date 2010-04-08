@@ -34,5 +34,5 @@ class Manager(object):
 	def __changed_cb(self, *args):
 		if not self.__editor.monitor_events(args, (0,2,3)): return False
 		from gobject import timeout_add
-		timeout_add(200, self.__send_activate_signal)
+		timeout_add(250, self.__send_activate_signal)
 		return False

@@ -33,5 +33,4 @@ class Initializer(object):
 		self.__editor.response()
 		from gobject import idle_add
 		idle_add(self.__init_plugins, priority=999999)
-#		self.__init_plugins()
 		return False

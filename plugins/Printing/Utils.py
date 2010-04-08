@@ -6,6 +6,7 @@ def default_page_setup():
 	return setup
 
 def get_compositor(editor):
+	editor.response()
 	view = editor.textview
 	font_name = view.get_pango_context().get_font_description().to_string()
 	from gtksourceview2 import PrintCompositor
@@ -22,4 +23,5 @@ def get_compositor(editor):
 #	compositor.set_print_line_numbers(1)
 	compositor.set_tab_width(view.get_property("tab-width"))
 	compositor.set_wrap_mode(view.get_wrap_mode())
+	editor.response()
 	return compositor

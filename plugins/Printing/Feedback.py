@@ -39,6 +39,7 @@ class Feedback(SignalManager):
 		return False
 
 	def __update(self, status):
+		self.__editor.response()
 		previous_status_message = self.__stack.pop()
 		function, args = PRINTING[status]
 		self.__stack.append(args[0])

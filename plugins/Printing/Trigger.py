@@ -36,7 +36,8 @@ class Trigger(SignalManager, TriggerManager):
 		return False
 
 	def __activate_cb(self, *args):
-		self.__activate()
+		from gobject import idle_add
+		idle_add(self.__activate)
 		return
 
 	def destroy(self):

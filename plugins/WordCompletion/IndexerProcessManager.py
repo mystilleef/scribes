@@ -23,7 +23,7 @@ class Manager(object):
 		self.__cwd = self.__editor.get_current_folder(globals())
 		exec_folder = join(self.__cwd, "IndexerProcess")
 		self.__executable = join(exec_folder, "ScribesWordCompletionIndexer.py")
-		self.__python_executable = prefix + "/bin" + "/python"
+		self.__python_executable = join(prefix, "bin", "python")
 		return
 
 	def __destroy(self):

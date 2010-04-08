@@ -1,5 +1,6 @@
 from SCRIBES.Utils import open_database
-basepath = "/PluginPreferences/Templates.gdb"
+from os.path import join
+basepath = join("PluginPreferences", "Templates.gdb")
 
 def get_value():
 	try:

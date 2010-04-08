@@ -27,7 +27,7 @@ class Installer(object):
 	def __get_scheme_folder(self):
 		from os.path import join, exists
 		from os import makedirs
-		folder = join(self.__editor.home_folder, ".gnome2/scribes/styles")
+		folder = join(self.__editor.home_folder, ".gnome2", "scribes", "styles")
 		if not exists(folder): makedirs(folder)
 		return folder
 

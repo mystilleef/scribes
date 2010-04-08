@@ -58,8 +58,9 @@ class Manager(GObject):
 		Monitor(editor, self)
 
 	def __init_attributes(self, editor):
+		from os.path import join
 		self.__glade = editor.get_glade_object(globals(), "SyntaxColorThemes.glade", "Window")
-		self.__dialog = editor.get_glade_object(globals(), "AddSchemesGUI/Dialog.glade", "Window")
+		self.__dialog = editor.get_glade_object(globals(), join("AddSchemesGUI","Dialog.glade"), "Window")
 		return
 
 	gui = property(lambda self: self.__glade)

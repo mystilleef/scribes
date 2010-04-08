@@ -12,7 +12,6 @@ $(startup_script): Makefile $(startup_script_in_files)
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
 SUBDIRS = po help data SCRIBES
-
 # Workaround broken scrollkeeper that doesn't remove its files on
 # uninstall.
 distuninstallcheck_listfiles = find . -type f -print | grep -v scrollkeeper

@@ -268,7 +268,6 @@ startup_script_in_files = $(startup_script).in
 startup_DATA = $(startup_script_in_files:.in=)
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 SUBDIRS = po help data SCRIBES
-
 # Workaround broken scrollkeeper that doesn't remove its files on
 # uninstall.
 distuninstallcheck_listfiles = find . -type f -print | grep -v scrollkeeper

@@ -1,5 +1,6 @@
 from SCRIBES.Utils import open_database
-basepath = "/PluginPreferences/MatchWord.gdb"
+from os.path import join
+basepath = join("PluginPreferences", "MatchWord.gdb")
 
 def get_value():
 	try:

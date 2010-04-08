@@ -40,6 +40,7 @@ class Operator(object):
 		text = " ".join(newlines)
 		self.__editor.textbuffer.delete(start, end)
 		self.__editor.textbuffer.insert_at_cursor(text)
+		self.__editor.response()
 		return False
 
 	def __join_current_and_next_line(self):
@@ -109,6 +110,7 @@ class Operator(object):
 		end = self.__editor.forward_to_line_end()
 		textbuffer = self.__editor.textbuffer
 		textbuffer.begin_user_action()
+		self.__editor.response()
 		if start.ends_line():
 			textbuffer.insert(start, "\n")
 		else:
@@ -126,6 +128,7 @@ class Operator(object):
 		start = self.__editor.backward_to_line_begin()
 		textbuffer = self.__editor.textbuffer
 		textbuffer.begin_user_action()
+		self.__editor.response()
 		textbuffer.insert(start, "\n")
 		start = self.__editor.backward_to_line_begin()
 		start.backward_line()

@@ -1,5 +1,6 @@
 from SCRIBES.Utils import open_database
-basepath = "/PluginPreferences/MatchCase.gdb"
+from os.path import join
+basepath = join("PluginPreferences", "MatchCase.gdb")
 
 def get_value():
 	try:

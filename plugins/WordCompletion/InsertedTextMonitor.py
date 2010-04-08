@@ -103,6 +103,8 @@ class Monitor(object):
 
 	def __get_word_before_cursor(self):
 		iterator = self.__editor.cursor.copy()
+		# If the cursor is in front of a valid character we ignore
+		# word completion.
 		if self.__is_valid_character(iterator.get_char()): return None
 		if iterator.starts_line(): return None
 		iterator.backward_char()

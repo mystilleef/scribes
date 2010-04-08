@@ -1,5 +1,6 @@
 from SCRIBES.Utils import open_database
-basepath = "/PluginPreferences/TemplateIndentation.gdb"
+from os.path import join
+basepath = join("PluginPreferences", "TemplateIndentation.gdb")
 
 def get_value():
 	try:
