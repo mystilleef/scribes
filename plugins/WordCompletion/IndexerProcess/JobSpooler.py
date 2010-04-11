@@ -28,6 +28,6 @@ class Spooler(object):
 		return False
 
 	def __finished_cb(self, *args):
-		self.__busy = False #
+		self.__busy = False
 		self.__check()
 		return False

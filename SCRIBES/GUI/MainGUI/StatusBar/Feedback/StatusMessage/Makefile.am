@@ -12,7 +12,9 @@ statusmessage_PYTHON = \
 	TimedMessageSwitcher.py \
 	FileLoadingStateSwitcher.py \
 	ReadonlyModeSwitcher.py \
-	SaveErrorSwitcher.py
+	SaveErrorSwitcher.py \
+	BarDisplayer.py \
+	MouseSensor.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

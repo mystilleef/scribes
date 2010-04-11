@@ -37,7 +37,7 @@ class Switcher(object):
 	def __saved_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__update, priority=9999)
-		return False
+		return False 
 
 	def __busy_cb(self, manager, busy):
 		self.__busy = busy

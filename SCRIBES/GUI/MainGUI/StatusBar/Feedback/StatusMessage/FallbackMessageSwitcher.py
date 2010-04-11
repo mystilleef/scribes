@@ -36,7 +36,7 @@ class Switcher(object):
 	def __fallback(self):
 		try:
 			if self.__busy: return False
-			emit = lambda message, bold, italic: self.__manager.emit("update-message", message, bold, italic, "")
+			emit = lambda message, bold, italic: self.__manager.emit("fallback-message", message, bold, italic, "")
 			if not self.__editor.uri: raise ValueError
 			mname, nname = self.__modified_filename, self.__normal_filename
 			emit(mname, False, True) if self.__editor.modified else emit(nname, True, False)

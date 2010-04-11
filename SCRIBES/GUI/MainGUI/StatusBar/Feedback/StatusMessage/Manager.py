@@ -8,17 +8,21 @@ class Manager(GObject):
 	__gsignals__ = {
 		"set-message": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"update-message": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_BOOLEAN, TYPE_BOOLEAN, TYPE_STRING)),
+		"fallback-message": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_BOOLEAN, TYPE_BOOLEAN, TYPE_STRING)),
 		"update": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_INT)),
 		"set": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"unset": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"busy": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"reset": (SSIGNAL, TYPE_NONE, ()),
 		"fallback": (SSIGNAL, TYPE_NONE, ()),
+		"show-message": (SSIGNAL, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
 		GObject.__init__(self)
 		editor.response()
+		from BarDisplayer import Displayer
+		Displayer(self, editor)
 		from MessageDisplayer import Displayer
 		Displayer(self, editor)
 		from FeedbackDispatcher import Dispatcher
@@ -41,4 +45,6 @@ class Manager(GObject):
 		Switcher(self, editor)
 		from SaveErrorSwitcher import Switcher
 		Switcher(self, editor)
+		from MouseSensor import Sensor
+		Sensor(self, editor)
 		editor.response()

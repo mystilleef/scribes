@@ -1,7 +1,7 @@
 #						-*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([scribes],[0.4-dev-build529],[<mystilleef@gmail.com>])
+AC_INIT([scribes],[0.4-dev-build530],[<mystilleef@gmail.com>])
 #GNOME_COMMON_INIT
 AC_PREREQ(2.64)
 AM_INIT_AUTOMAKE([1.11 dist-bzip2 no-dist-gzip])
@@ -64,7 +64,6 @@ SCRIBES/GUI/MainGUI/StatusBar/Bar/Makefile
 SCRIBES/GUI/MainGUI/StatusBar/Feedback/Makefile
 SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusImage/Makefile
 SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/Makefile
-SCRIBES/GUI/MainGUI/StatusBar/CursorPosition/Makefile
 SCRIBES/GUI/MainGUI/Window/Makefile
 SCRIBES/GUI/MainGUI/Toolbar/Makefile
 SCRIBES/GUI/MainGUI/Toolbar/ToolbarVisibility/Makefile

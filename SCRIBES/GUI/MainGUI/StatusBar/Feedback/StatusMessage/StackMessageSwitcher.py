@@ -31,23 +31,24 @@ class Switcher(object):
 
 	def __set(self, message):
 		self.__queue.append(message)
-		if self.__busy: return False
 		self.__reset()
 		return False
 
 	def __unset(self, message):
 		try:
 			self.__queue.remove(message)
-			if self.__busy: return False
-			self.__reset()
 		except ValueError:
 			pass
+		finally:
+			self.__reset()
 		return False
 
 	def __reset(self):
 		try:
+			if self.__busy: return False
+			if not self.__queue: raise ValueError
 			self.__manager.emit("update-message", self.__queue[-1], True, False, "brown")
-		except IndexError:
+		except ValueError:
 			self.__manager.emit("fallback")
 		return False
 

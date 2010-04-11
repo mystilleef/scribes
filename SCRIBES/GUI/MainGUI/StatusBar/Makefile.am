@@ -1,9 +1,8 @@
-SUBDIRS = Feedback CursorPosition Bar
+SUBDIRS = Feedback Bar
 statusbardir = $(pythondir)/SCRIBES/GUI/MainGUI/StatusBar
 statusbar_PYTHON = \
 	__init__.py \
-	Manager.py \
-	EditingModeDisplayer.py
+	Manager.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

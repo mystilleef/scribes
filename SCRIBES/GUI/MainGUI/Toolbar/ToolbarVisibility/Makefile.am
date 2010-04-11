@@ -3,9 +3,7 @@ toolbarvisibility_PYTHON = \
 	__init__.py \
 	Manager.py \
 	Container.py \
-	FullscreenManager.py \
-	DatabaseMonitor.py \
-	VisibilityManager.py
+	MouseSensor.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

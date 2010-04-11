@@ -20,7 +20,6 @@ class Editor(Signals):
 	textview = property(lambda self: self.gui.get_widget("ScrolledWindow").get_child())
 	textbuffer = property(lambda self: self.textview.get_property("buffer"))
 	toolbar = property(lambda self: self.gui.get_widget("Toolbar"))
-	statusbar = property(lambda self: self.gui.get_widget("StatusContainer"))
 	id_ = property(lambda self: id(self))
 	uri = property(lambda self: self.get_data("uri"))
 	uris = property(lambda self: self.imanager.get_uris())

@@ -10,7 +10,7 @@ class Displayer(object):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__image = editor.gui.get_widget("StatusImage")
+		self.__image = editor.get_data("StatusImage")
 		return
 
 	def __destroy(self):

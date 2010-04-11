@@ -4,6 +4,7 @@ class Formatter(object):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = manager.connect("update-message", self.__update_cb)
+		self.__sigid3 = manager.connect("fallback-message", self.__update_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -15,6 +16,7 @@ class Formatter(object):
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.unregister_object(self)
 		del self
 		self = None

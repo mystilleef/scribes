@@ -3,7 +3,8 @@ class SignalManager(object):
 	def __init__(self):
 		self.__signals = []
 
-	def connect(self, gobject, signal_name, callback):
+	def connect(self, gobject, signal_name, callback, after=False):
+		connect = gobject.connect if not after else gobject.connect_after
 		signal_id = gobject.connect(signal_name, callback)
 		self.__signals.append((gobject, signal_id))
 		return signal_id
