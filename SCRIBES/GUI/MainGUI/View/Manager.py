@@ -18,6 +18,8 @@ class Manager(object):
 		Manager(editor)
 		from SpellChecker import Checker
 		Checker(editor)
+		from FullscreenManager import Manager
+		Manager(editor)
 		from DatabaseListeners.Manager import Manager
 		Manager(editor)
 		editor.response()

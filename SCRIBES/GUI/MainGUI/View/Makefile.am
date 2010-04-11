@@ -10,7 +10,8 @@ view_PYTHON = \
 	SpellChecker.py \
 	ResponsivenessManager.py \
 	PopupMenuManager.py \
-	DragAndDrop.py
+	DragAndDrop.py \
+	FullscreenManager.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

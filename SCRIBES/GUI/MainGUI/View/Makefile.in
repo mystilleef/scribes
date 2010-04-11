@@ -257,7 +257,8 @@ view_PYTHON = \
 	SpellChecker.py \
 	ResponsivenessManager.py \
 	PopupMenuManager.py \
-	DragAndDrop.py
+	DragAndDrop.py \
+	FullscreenManager.py
 
 all: all-recursive
 
