@@ -34,6 +34,7 @@ EXTRA_DIST = m4 \
 	TODO \
 	plugins \
 	LanguagePlugins \
+	Examples \
 	compile.py \
 	TRANSLATORS
 

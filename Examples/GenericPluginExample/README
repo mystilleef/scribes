@@ -1,0 +1,20 @@
+INSTALLATION
+============
+
+Close all Scribes windows.
+
+Place PluginFoo.py and the Foo folder in 
+
+~/.gnome2/scribes/plugins
+
+
+USAGE
+=====
+
+Press <ctrl><alt>f to activate foo
+
+PURPOSE
+=======
+
+	- Shows plugin designers how to write a plugin.
+	- Shows plugin designers how to structure code in Scribes.
