@@ -9,7 +9,7 @@ class Displayer(SignalManager):
 		self.connect(manager, "bar", self.__bar_cb)
 		self.connect(manager, "hide", self.__hide_cb)
 		self.connect(manager, "show", self.__show_cb)
-		self.__id = self.connect(self.__view, "expose-event", self.__expose_cb)
+		self.__id = self.connect(self.__view, "expose-event", self.__expose_cb, True)
 		self.__block()
 		editor.response()
 
@@ -34,19 +34,22 @@ class Displayer(SignalManager):
 
 	def __show(self, update=False):
 		self.__unblock()
-		if update: self.__update_cordinates()
+		self.__update_cordinates() 
+#		if update: self.__update_cordinates()
+		self.__bar.hide()
 		self.__view.move_child(self.__bar, self.__x, self.__y)
-		self.__bar.show_all()
+		self.__bar.show_all() 
 		return False
 
 	def __get_cordinates(self):
 		if not self.__bar: return 0, 0
-		rectangle = self.__view.get_visible_rect()
+		geometry = self.__view.window.get_geometry()
+		vwidth, vheight = geometry[2], geometry[3]
 		width, height = self.__bar.size_request()
-		return -3, rectangle.height - height + 4
+		return vwidth - width + 3, vheight - height + 4
 
 	def __update_cordinates(self):
-		self.__x, self.__y = self.__get_cordinates()
+		self.__x, self.__y = self.__get_cordinates() 
 		return False
 
 	def __block(self):
@@ -79,6 +82,4 @@ class Displayer(SignalManager):
 	def __expose_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__show, True)
-#		self.__show(True)
 		return False
-

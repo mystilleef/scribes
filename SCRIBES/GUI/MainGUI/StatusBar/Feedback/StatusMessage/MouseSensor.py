@@ -52,7 +52,7 @@ class Sensor(SignalManager):
 		except AttributeError:
 			pass
 		finally:
-			self.__id = timeout_add(5000, reset, priority=9999)
+			self.__id = timeout_add(750, reset, priority=9999)
 		return False
 
 	def __motion_cb(self, *args):

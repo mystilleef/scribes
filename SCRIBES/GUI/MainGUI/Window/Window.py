@@ -28,8 +28,8 @@ class Window(object):
 		return False
 
 	def __set_properties(self):
+		from gtk import AccelGroup, widget_set_default_colormap
 		self.__add_signal()
-		from gtk import AccelGroup
 		self.__window.add_accel_group(AccelGroup())
 		from gtk.gdk import KEY_PRESS_MASK
 		self.__window.add_events(KEY_PRESS_MASK)
@@ -37,6 +37,7 @@ class Window(object):
 		width, height = get_resolution(self.__window, 1.462857143, 1.536)
 		self.__window.set_property("default-height", height)
 		self.__window.set_property("default-width", width)
+		
 		return
 
 	def __add_signal(self):

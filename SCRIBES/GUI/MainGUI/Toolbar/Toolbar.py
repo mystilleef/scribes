@@ -11,7 +11,9 @@ class Toolbar(object):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__toolbar = editor.gui.get_widget("Toolbar")
+		from gtk import Toolbar
+		self.__toolbar = Toolbar()
+#		self.__toolbar = editor.gui.get_widget("Toolbar")
 		return
 
 	def __destroy(self):
@@ -25,6 +27,18 @@ class Toolbar(object):
 		from Utils import never_focus
 		never_focus(self.__toolbar)
 		self.__toolbar.set_property("sensitive", True)
+		from gtk import TEXT_WINDOW_WIDGET, ORIENTATION_HORIZONTAL, EventBox
+		from gtk import TOOLBAR_ICONS, Frame, SHADOW_IN
+		self.__toolbar.set_style(TOOLBAR_ICONS)
+		self.__toolbar.set_orientation(ORIENTATION_HORIZONTAL)
+		self.__editor.set_data("Toolbar", self.__toolbar)
+		box = EventBox()
+		frame = Frame()
+		frame.add(self.__toolbar)
+		frame.set_shadow_type(SHADOW_IN)
+		box.add(frame)
+		self.__editor.set_data("ToolContainer", box)
+		self.__editor.textview.add_child_in_window(box, TEXT_WINDOW_WIDGET, -3, -3)
 		return
 
 	def __add_toolbuttons(self):

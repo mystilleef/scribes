@@ -4,6 +4,8 @@ class Manager(Signal):
 
 	def __init__(self, editor):
 		Signal.__init__(self)
+#		from Compositor import Compositor
+#		Compositor(self, editor)
 		from Displayer import Displayer
 		Displayer(self, editor)
 		from Widget import Widget

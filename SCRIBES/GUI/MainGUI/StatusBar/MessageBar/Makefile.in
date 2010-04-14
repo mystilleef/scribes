@@ -211,7 +211,8 @@ bar_PYTHON = \
 	Manager.py \
 	Widget.py \
 	Displayer.py \
-	Signals.py
+	Signals.py \
+	Compositor.py
 
 all: all-am
 

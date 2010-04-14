@@ -16,8 +16,8 @@ class Widget(SignalManager):
 		self.__editor = editor
 		self.__label = self.__get_label()
 		self.__button = self.__get_button()
-		from gtk import EventBox, HBox, Image
-		self.__bar = EventBox()
+		self.__bar = self.__get_bar()
+		from gtk import HBox, Image
 		self.__box = HBox(False, 5)
 		self.__image = Image()
 		self.__view = editor.textview
@@ -30,12 +30,12 @@ class Widget(SignalManager):
 		return False
 
 	def __setup(self):
-		self.__box.pack_start(self.__image, False, False)
-		self.__box.pack_start(self.__label, False, False)
-		self.__button.add(self.__box)
-		self.__bar.add(self.__button)
 		from gtk import TEXT_WINDOW_WIDGET
 		self.__view.add_child_in_window(self.__bar, TEXT_WINDOW_WIDGET, 0, 0)
+		self.__bar.add(self.__button)
+		self.__button.add(self.__box)
+		self.__box.pack_start(self.__image, False, False)
+		self.__box.pack_start(self.__label, False, False)
 		return False
 
 	def __emit(self):
@@ -48,11 +48,14 @@ class Widget(SignalManager):
 		self.__editor.set_data("StatusFeedback", self.__label)
 		return False
 
+	def __get_bar(self):
+		from gtk import EventBox
+		bar = EventBox()
+		return bar
+
 	def __get_label(self):
 		from gtk import Label
 		label = Label()
-#		from pango import ELLIPSIZE_END
-#		label.set_property("ellipsize", ELLIPSIZE_END)
 		label.set_property("single-line-mode", True)
 		label.set_property("use-markup", True)
 		return label

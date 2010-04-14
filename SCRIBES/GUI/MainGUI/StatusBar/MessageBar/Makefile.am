@@ -4,7 +4,8 @@ bar_PYTHON = \
 	Manager.py \
 	Widget.py \
 	Displayer.py \
-	Signals.py
+	Signals.py \
+	Compositor.py
 
 clean-local:
 	rm -rf *.pyc *.pyo
