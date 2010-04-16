@@ -29,16 +29,20 @@ class Displayer(SignalManager):
 
 	def __hide(self):
 		self.__block()
+		self.__editor.response()
 		self.__bar.hide()
+		self.__editor.response()
 		return False
 
 	def __show(self, update=False):
 		self.__unblock()
-		self.__update_cordinates() 
+		self.__update_cordinates()
 #		if update: self.__update_cordinates()
+		self.__editor.response()
 		self.__bar.hide()
 		self.__view.move_child(self.__bar, self.__x, self.__y)
-		self.__bar.show_all() 
+		self.__bar.show_all()
+		self.__editor.response()
 		return False
 
 	def __get_cordinates(self):
@@ -49,7 +53,7 @@ class Displayer(SignalManager):
 		return vwidth - width + 3, vheight - height + 4
 
 	def __update_cordinates(self):
-		self.__x, self.__y = self.__get_cordinates() 
+		self.__x, self.__y = self.__get_cordinates()
 		return False
 
 	def __block(self):

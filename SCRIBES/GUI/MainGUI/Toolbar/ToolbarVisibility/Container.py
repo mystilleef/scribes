@@ -9,7 +9,7 @@ class Container(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "hide", self.__hide_cb)
 		self.connect(manager, "show", self.__show_cb)
-		self.__id = self.connect(self.__view, "expose-event", self.__expose_cb)
+		self.__id = self.connect(self.__view, "expose-event", self.__expose_cb, True)
 		self.__block()
 		editor.register_object(self)
 		self.__update_size()
@@ -32,12 +32,16 @@ class Container(SignalManager):
 	def __show(self, update=False):
 		self.__unblock()
 		if update: self.__update_size()
+		self.__editor.response()
 		self.__container.show_all()
+		self.__editor.response()
 		return False
 
 	def __hide(self):
 		self.__block()
+		self.__editor.response()
 		self.__container.hide()
+		self.__editor.response()
 		return False
 
 	def __update_size(self):
@@ -67,7 +71,7 @@ class Container(SignalManager):
 
 	def __show_cb(self, *args):
 		from gobject import idle_add
-		idle_add(self.__show, priority=9999)
+		idle_add(self.__show, True)
 		return False
 
 	def __expose_cb(self, *args):

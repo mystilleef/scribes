@@ -28,14 +28,15 @@ class Toolbar(object):
 		never_focus(self.__toolbar)
 		self.__toolbar.set_property("sensitive", True)
 		from gtk import TEXT_WINDOW_WIDGET, ORIENTATION_HORIZONTAL, EventBox
-		from gtk import TOOLBAR_ICONS, Frame, SHADOW_IN
+		from gtk import TOOLBAR_ICONS, Frame, SHADOW_IN, ICON_SIZE_SMALL_TOOLBAR
+		self.__toolbar.set_property("icon-size", ICON_SIZE_SMALL_TOOLBAR)
 		self.__toolbar.set_style(TOOLBAR_ICONS)
 		self.__toolbar.set_orientation(ORIENTATION_HORIZONTAL)
 		self.__editor.set_data("Toolbar", self.__toolbar)
-		box = EventBox()
 		frame = Frame()
 		frame.add(self.__toolbar)
 		frame.set_shadow_type(SHADOW_IN)
+		box = EventBox()
 		box.add(frame)
 		self.__editor.set_data("ToolContainer", box)
 		self.__editor.textview.add_child_in_window(box, TEXT_WINDOW_WIDGET, -3, -3)
