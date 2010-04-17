@@ -1,11 +1,14 @@
-class Grabber(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Grabber(SignalManager):
 
 	def __init__(self, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = self.__window.connect_after("focus-in-event", self.__in_cb)
-		self.__sigid3 = self.__window.connect("focus-out-event", self.__out_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(self.__window, "focus-in-event", self.__in_cb, True)
+		self.connect(self.__window, "focus-out-event", self.__out_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -15,17 +18,13 @@ class Grabber(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__window)
-		self.__editor.disconnect_signal(self.__sigid3, self.__window)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __in_cb(self, *args):
 		self.__window.grab_add()
-		self.__editor.refresh()
 		return False
 
 	def __out_cb(self, *args):

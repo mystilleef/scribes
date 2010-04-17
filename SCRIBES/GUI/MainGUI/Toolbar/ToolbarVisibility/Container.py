@@ -38,7 +38,7 @@ class Container(SignalManager):
 
 	def __show(self, update=False):
 		self.__unblock()
-		if update: self.__update_size()
+		self.__update_size()
 		self.__editor.response()
 		self.__container.hide()
 		self.__container.show_all()
@@ -73,8 +73,6 @@ class Container(SignalManager):
 		return
 
 	def __hide_cb(self, *args):
-#		from gobject import idle_add
-#		idle_add(self.__hide)
 		if self.__pointer_on_toolbar(): return False
 		self.__hide()
 		return False
