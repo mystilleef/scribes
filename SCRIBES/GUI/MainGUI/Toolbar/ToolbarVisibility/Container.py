@@ -9,6 +9,7 @@ class Container(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "hide", self.__hide_cb)
 		self.connect(manager, "show", self.__show_cb)
+		self.connect(editor, "window-focus-out", self.__focus_cb, True)
 		self.__id = self.connect(self.__view, "expose-event", self.__expose_cb, True)
 		self.__block()
 		editor.register_object(self)
@@ -27,6 +28,12 @@ class Container(SignalManager):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
+		return False
+
+	def __pointer_on_toolbar(self):
+		y = self.__editor.textview.window.get_pointer()[1]
+		height = self.__editor.toolbar.size_request()[1]
+		if y > 0 and y <= height: return True
 		return False
 
 	def __show(self, update=False):
@@ -68,6 +75,7 @@ class Container(SignalManager):
 	def __hide_cb(self, *args):
 #		from gobject import idle_add
 #		idle_add(self.__hide)
+		if self.__pointer_on_toolbar(): return False
 		self.__hide()
 		return False
 
@@ -78,6 +86,10 @@ class Container(SignalManager):
 
 	def __expose_cb(self, *args):
 		self.__show(True)
+		return False
+
+	def __focus_cb(self, *args):
+		self.__hide()
 		return False
 
 	def __quit_cb(self, *args):
