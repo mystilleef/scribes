@@ -7,9 +7,9 @@ class Displayer(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
-		self.connect(manager, "update-message", self.__show_cb, True)
-		self.connect(manager, "show-message", self.__show_cb, True)
-		self.connect(manager, "fallback", self.__hide_cb, True)
+		self.connect(manager, "update-message", self.__show_cb)
+		self.connect(manager, "show-message", self.__show_cb)
+		self.connect(manager, "fallback", self.__hide_cb)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
@@ -41,6 +41,5 @@ class Displayer(SignalManager):
 		return False
 
 	def __hide_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__hide)
+		self.__hide()
 		return False
