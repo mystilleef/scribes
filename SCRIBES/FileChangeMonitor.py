@@ -1,16 +1,18 @@
 #FIXME: Clean up this module. Too many poorly named variables.
+from SCRIBES.SignalConnectionManager import SignalManager
 
-class Monitor(object):
+class Monitor(SignalManager):
 
 	def __init__(self, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect_after("loaded-file", self.__monitor_cb)
-		self.__sigid3 = editor.connect_after("renamed-file", self.__monitor_cb)
-		self.__sigid4 = editor.connect("save-file", self.__busy_cb)
-		self.__sigid5 = editor.connect("renamed-file", self.__busy_cb)
-		self.__sigid6 = editor.connect("save-error", self.__error_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(editor, "loaded-file", self.__monitor_cb, True)
+		self.connect(editor, "renamed-file", self.__monitor_cb, True)
+		self.connect(editor, "save-file", self.__busy_cb)
+		self.connect(editor, "renamed-file", self.__busy_cb)
+		self.connect(editor, "save-error", self.__error_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -24,15 +26,9 @@ class Monitor(object):
 
 	def __destroy(self):
 		self.__unmonitor(self.__uri)
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __monitor(self, uri):
