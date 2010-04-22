@@ -43,7 +43,7 @@
 <!-- According to GNU FDL, revision history is mandatory if you are -->
 <!-- modifying/reusing someone else's document.  If not, you can omit it. -->
 
-	<revhistory>
+		<revhistory>
 
 	<!-- Remember to remove the &manrevision; entity from the revision entries
 		other than the current revision. -->

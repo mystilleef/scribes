@@ -12,7 +12,7 @@ ensuring common and repetitive operations are intelligently
 automated and by eliminating factors that prevent you from
 focusing on your tasks.
 
-	http://scribes.sf.net/
+	http://Scribes.sf.net/
 
 You can also write Python plugins to extend or customize the
 editor for specialized text editing needs.
@@ -20,7 +20,7 @@ editor for specialized text editing needs.
 Requirements
 ============
 
-To use scribes you need the following software installed on
+To use Scribes you need the following software installed on
 your computer:
 
 	- D-Bus-0.70
@@ -42,10 +42,10 @@ following at the command prompt as root:
 	make
 	make install
 
-You can install scribes into a test or temporary location as
+You can install Scribes into a test or temporary location as
 follows:
 
-	./configure --prefix=/home/$(USERNAME)/testscribes
+	./configure --prefix=/home/$(USERNAME)/testScribes
 	make
 	make install
 

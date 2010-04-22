@@ -209,8 +209,14 @@ toolbarvisibilitydir = $(pythondir)/SCRIBES/GUI/MainGUI/Toolbar/ToolbarVisibilit
 toolbarvisibility_PYTHON = \
 	__init__.py \
 	Manager.py \
-	Container.py \
-	MouseSensor.py
+	Displayer.py \
+	MouseSensor.py \
+	Animator.py \
+	DeltaCalculator.py \
+	SizeUpdater.py \
+	Resizer.py \
+	VisibilityUpdater.py \
+	TimerHider.py
 
 all: all-am
 

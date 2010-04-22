@@ -1,6 +1,6 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 
-class Container(SignalManager):
+class Displayer(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
@@ -9,11 +9,9 @@ class Container(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "hide", self.__hide_cb)
 		self.connect(manager, "show", self.__show_cb)
+		self.connect(manager, "visible", self.__visible_cb)
 		self.connect(editor, "window-focus-out", self.__focus_cb, True)
-		self.__id = self.connect(self.__view, "expose-event", self.__expose_cb, True)
-		self.__block()
 		editor.register_object(self)
-		self.__update_size()
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
@@ -21,7 +19,7 @@ class Container(SignalManager):
 		self.__manager = manager
 		self.__container = editor.get_data("ToolContainer")
 		self.__view = editor.textview
-		self.__blocked = False
+		self.__visible = False
 		return
 
 	def __destroy(self):
@@ -37,40 +35,20 @@ class Container(SignalManager):
 		return False
 
 	def __show(self, update=False):
-		self.__unblock()
-		self.__update_size()
+		if self.__visible is True: return False
+		self.__visible = True
 		self.__editor.response()
-		self.__container.hide()
-		self.__container.show_all()
+		# Toolbar slide animation from right to left
+		self.__manager.emit("slide", "left")
 		self.__editor.response()
 		return False
 
 	def __hide(self):
-		self.__block()
+		if self.__visible is False: return False
 		self.__editor.response()
-		self.__container.hide()
+		self.__manager.emit("slide", "up")
 		self.__editor.response()
 		return False
-
-	def __update_size(self):
-		from gtk import TEXT_WINDOW_WIDGET
-		window = self.__view.get_window(TEXT_WINDOW_WIDGET)
-		width = window.get_geometry()[2] + 2
-		height = self.__editor.toolbar.size_request()[1]
-		self.__editor.toolbar.set_size_request(width, height)
-		return False
-
-	def __block(self):
-		if self.__blocked: return
-		self.__view.handler_block(self.__id)
-		self.__blocked = True
-		return
-
-	def __unblock(self):
-		if not self.__blocked: return
-		self.__view.handler_unblock(self.__id)
-		self.__blocked = False
-		return
 
 	def __hide_cb(self, *args):
 		if self.__pointer_on_toolbar(): return False
@@ -82,14 +60,14 @@ class Container(SignalManager):
 		idle_add(self.__show, priority=9999)
 		return False
 
-	def __expose_cb(self, *args):
-		self.__show(True)
-		return False
-
 	def __focus_cb(self, *args):
 		self.__hide()
 		return False
 
 	def __quit_cb(self, *args):
 		self.__destroy()
+		return False
+
+	def __visible_cb(self, manager, visible):
+		self.__visible = visible
 		return False
