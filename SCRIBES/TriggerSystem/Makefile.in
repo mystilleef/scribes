@@ -255,7 +255,8 @@ triggersystem_PYTHON = \
 	Validator.py \
 	Exceptions.py \
 	TriggerRemover.py \
-	Quiter.py
+	Quiter.py \
+	TriggerManager.py
 
 all: all-recursive
 

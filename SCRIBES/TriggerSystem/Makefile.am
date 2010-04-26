@@ -9,7 +9,8 @@ triggersystem_PYTHON = \
 	Validator.py \
 	Exceptions.py \
 	TriggerRemover.py \
-	Quiter.py
+	Quiter.py \
+	TriggerManager.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

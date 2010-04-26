@@ -38,8 +38,13 @@ class Switcher(object):
 		return False
 
 	def __fallback_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__fallback, priority=9999)
+		try:
+			from gobject import source_remove, timeout_add
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = timeout_add(300, self.__fallback, priority=99999)
 		return False
 
 	def __busy_cb(self, manager, busy):

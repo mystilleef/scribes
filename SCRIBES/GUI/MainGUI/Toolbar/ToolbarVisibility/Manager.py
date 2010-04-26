@@ -18,8 +18,8 @@ class Manager(GObject):
 	def __init__(self, editor):
 		editor.response()
 		GObject.__init__(self)
-		from TimerHider import Hider
-		Hider(self, editor)
+		from HideTimer import Timer
+		Timer(self, editor)
 		from VisibilityUpdater import Updater
 		Updater(self, editor)
 		from Resizer import Resizer

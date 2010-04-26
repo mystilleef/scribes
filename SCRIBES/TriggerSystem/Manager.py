@@ -18,6 +18,8 @@ class Manager(GObject):
 		Manager(editor)
 		from Quiter import Quiter
 		Quiter(self, editor)
+		from TriggerManager import Manager
+		Manager(self, editor)
 		from TriggerActivator import Activator
 		Activator(self, editor)
 		from AcceleratorActivator import Activator

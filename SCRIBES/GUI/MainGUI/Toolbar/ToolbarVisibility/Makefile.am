@@ -9,7 +9,7 @@ toolbarvisibility_PYTHON = \
 	SizeUpdater.py \
 	Resizer.py \
 	VisibilityUpdater.py \
-	TimerHider.py
+	HideTimer.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

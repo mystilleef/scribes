@@ -31,11 +31,12 @@ class Widget(SignalManager):
 
 	def __setup(self):
 		from gtk import TEXT_WINDOW_WIDGET
-		self.__view.add_child_in_window(self.__bar, TEXT_WINDOW_WIDGET, 0, 0)
+		self.__view.add_child_in_window(self.__bar, TEXT_WINDOW_WIDGET, 0, -100)
 		self.__bar.add(self.__button)
 		self.__button.add(self.__box)
 		self.__box.pack_start(self.__image, False, False)
 		self.__box.pack_start(self.__label, False, False)
+		self.__bar.realize()
 		return False
 
 	def __emit(self):

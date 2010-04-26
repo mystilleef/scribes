@@ -5,7 +5,15 @@ bar_PYTHON = \
 	Widget.py \
 	Displayer.py \
 	Signals.py \
-	Compositor.py
+	Compositor.py \
+	BarSizeUpdater.py \
+	ViewSizeUpdater.py \
+	Positioner.py \
+	VisibilityUpdater.py \
+	Animator.py \
+	DeltaCalculator.py \
+	DisplayerManager.py \
+	PublicAPIVisibilityUpdater.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

@@ -27,6 +27,7 @@ class Editor(Signals):
 	# All editor instances
 	objects = instances = property(lambda self: self.imanager.get_editor_instances())
 	name = property(lambda self: EditorImports.File(self.uri).query_info("*").get_display_name() if self.uri else None)
+	triggers = property(lambda self: self.get_data("triggers"))
 	filename = property(lambda self: EditorImports.File(self.uri).get_path() if self.uri else "")
 	language_object = property(lambda self: self.get_data("language_object"))
 	language = property(lambda self: self.get_data("language"))

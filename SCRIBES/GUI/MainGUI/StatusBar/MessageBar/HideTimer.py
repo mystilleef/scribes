@@ -2,7 +2,7 @@ from SCRIBES.SignalConnectionManager import SignalManager
 
 HIDE_TIMER = 750
 
-class Hider(SignalManager):
+class Timer(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()

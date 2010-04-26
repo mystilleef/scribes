@@ -69,6 +69,7 @@ class Signals(GObject):
 		"add-to-pref-menu": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
 		"remove-from-pref-menu": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
 		"fullscreen": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"message-bar-is-visible": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 	}
 
 	def __init__(self):
