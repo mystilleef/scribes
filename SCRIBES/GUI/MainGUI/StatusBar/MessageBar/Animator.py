@@ -19,6 +19,7 @@ class Animator(SignalManager):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
+		self.__view = editor.textview
 		self.__bar = None
 		self.__start_point = 0
 		self.__end_point = 0
@@ -37,7 +38,6 @@ class Animator(SignalManager):
 
 	def __slide(self, direction):
 		try:
-			self.__editor.response()
 			if not self.__bar: return False
 			self.__manager.emit("animation", "begin")
 			from gobject import timeout_add, source_remove
@@ -48,47 +48,36 @@ class Animator(SignalManager):
 			self.__update_animation_start_point(direction)
 			self.__update_animation_end_point(direction)
 			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction)
-			self.__editor.response()
 		return False
 
 	def __move(self, direction):
 		try:
-			self.__editor.response()
 			animate = True
 			self.__can_end(direction)
 			x = int(self.__get_x(direction))
 			y = int(self.__get_y(direction))
-			self.__editor.response()
 			self.__editor.textview.move_child(self.__bar, x, y)
-			self.__editor.response()
 			self.__bar.show_all()
-			self.__editor.response()
 		except ValueError:
 			animate = False
 			if direction == "down": self.__bar.hide()
 			self.__manager.emit("animation", "end")
-		finally:
-			self.__editor.response()
 		return animate 
 
 	def __can_end(self, direction):
-		self.__editor.response()
 		if direction == "left" and self.__start_point <= self.__end_point: raise ValueError
 		if direction == "down" and self.__start_point >= self.__end_point: raise ValueError
-		self.__editor.response()
 		return False
 
 	def __get_x(self, direction):
-		self.__editor.response()
 		if direction in ("up", "down"): return self.__vwidth - self.__bwidth + 4
 		if direction == "left": self.__start_point -= self.__hdelta
 		if direction == "right": self.__start_point += self.__hdelta
 		x = self.__vwidth - self.__bwidth
-		if self.__start_point <= x: return x + 4
+		if self.__start_point <= x: return x + OFFSET
 		return self.__start_point
 
 	def __get_y(self, direction):
-		self.__editor.response()
 		if direction in ("left", "right"): return self.__vheight - self.__bheight + 4
 		if direction == "up": self.__start_point += self.__vdelta
 		if direction == "down": self.__start_point += self.__vdelta

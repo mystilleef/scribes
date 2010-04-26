@@ -9,7 +9,6 @@ class Updater(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "bar", self.__bar_cb)
 		self.connect(manager, "slide", self.__size_cb)
-		self.connect(editor.textview, "expose-event", self.__size_cb)
 		self.connect(manager, "visible", self.__visible_cb)
 		editor.response()
 
@@ -18,7 +17,7 @@ class Updater(SignalManager):
 		self.__editor = editor
 		self.__bar = None
 		self.__height = 0
-		self.__width = 0 
+		self.__width = 0
 		return
 
 	def __destroy(self):
@@ -35,7 +34,7 @@ class Updater(SignalManager):
 
 	def __bar_cb(self, manager, bar):
 		self.__bar = bar
-		self.connect(bar, "size-request", self.__size_cb)
+		self.connect(bar, "size-allocate", self.__size_cb)
 		return False
 
 	def __quit_cb(self, *args):
@@ -49,4 +48,3 @@ class Updater(SignalManager):
 	def __visible_cb(self, manager, visible):
 		if visible is False: self.__update()
 		return False
-

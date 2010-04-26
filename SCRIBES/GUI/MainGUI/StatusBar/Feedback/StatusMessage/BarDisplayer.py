@@ -34,7 +34,13 @@ class Displayer(SignalManager):
 		return False
 
 	def __show(self):
-		self.__bar.show()
+		try:
+			from gobject import timeout_add, source_remove
+			source_remove(self.__timer2)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer2 = timeout_add(40, self.__bar.show)
 		return False
 
 	def __hide(self):
@@ -50,7 +56,6 @@ class Displayer(SignalManager):
 		if self.__visible and message == self.__prev_message: return False
 		self.__prev_message = message
 		self.__reshow() if self.__visible else self.__show()
-#		self.__show()
 		return False
 
 	def __quit_cb(self, *args):
@@ -59,7 +64,7 @@ class Displayer(SignalManager):
 
 	def __show_cb(self, *args):
 		if self.__visible: return False
-		self.__show()
+		self.__bar.show()
 		return False
 
 	def __hide_cb(self, *args):
@@ -73,7 +78,7 @@ class Displayer(SignalManager):
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(300, self.__update, message, priority=9999)
+			self.__timer = timeout_add(10, self.__update, message)
 		return False
 
 	def __visible_cb(self, editor, visible):

@@ -45,7 +45,6 @@ class Animator(SignalManager):
 
 	def __move(self, direction):
 		try:
-			self.__editor.response()
 			animate = True
 			self.__can_end(direction)
 			x = int(self.__get_x(direction))
@@ -55,8 +54,6 @@ class Animator(SignalManager):
 		except ValueError:
 			animate = False
 			self.__manager.emit("animation", "end")
-		finally:
-			self.__editor.response()
 		return animate 
 
 	def __can_end(self, direction):
@@ -116,4 +113,3 @@ class Animator(SignalManager):
 	def __size_cb(self, manager, size):
 		self.__width, self.__height = size
 		return False
-

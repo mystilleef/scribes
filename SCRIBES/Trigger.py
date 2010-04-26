@@ -8,55 +8,28 @@ class Trigger(GObject):
 		"activate": (SSIGNAL, TYPE_NONE, ())
 	}
 
-	def __init__(self, editor, name, accelerator="", description="", error=True, removable=True):
+	def __init__(self, editor, name, accelerator="", description="", category="", error=True, removable=True):
 		GObject.__init__(self)
-		self.__init_attributes(editor, name, accelerator, description, error, removable)
+		self.__init_attributes(editor, name, accelerator, description, category, error, removable)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
 
-	def __init_attributes(self, editor, name, accelerator, description, error, removable):
+	def __init_attributes(self, editor, name, accelerator, description, category, error, removable):
 		self.__editor = editor
 		self.__name = name
 		self.__accelerator = accelerator
 		self.__description = description
 		self.__error = error
 		self.__removable = removable
+		self.__category = category
 		return
 
-########################################################################
-#
-#					Getters For Public Porperties
-#
-########################################################################
-
-	def __get_name(self):
-		return self.__name
-
-	def __get_accelerator(self):
-		if not (self.__accelerator): return None
-		return self.__accelerator
-
-	def __get_description(self):
-		if not (self.__description): return None
-		return self.__description
-
-	def __get_error(self):
-		return self.__error
-
-	def __get_removable(self):
-		return self.__removable
-
-########################################################################
-#
-#							Public API
-#
-########################################################################
-
-	name = property(__get_name)
-	accelerator = property(__get_accelerator)
-	description = property(__get_description)
-	error = property(__get_error)
-	removable = property(__get_removable)
+	name = property(lambda self: self.__name)
+	accelerator = property(lambda self: self.__accelerator)
+	description = property(lambda self: self.__description)
+	category = property(lambda self: self.__category)
+	error = property(lambda self: self.__error)
+	removable = property(lambda self: self.__removable)
 
 	def __activate(self):
 		if self.__editor.bar_is_active: return False
@@ -71,11 +44,10 @@ class Trigger(GObject):
 		return
 
 	def destroy(self):
-		del self.__name, self.__description, self.__accelerator, self
-		self = None
+		del self
 		return
 
 	def __precompile_methods(self):
-		methods = (self.activate, self.__get_name, self.__get_accelerator)
+		methods = (self.activate,)
 		self.__editor.optimize(methods)
 		return False

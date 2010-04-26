@@ -20,7 +20,7 @@ def check_dependencies():
 			print "Checking for Pygobject... yes"
 		except ImportError:
 			print "Error: pygobject was not found."
-			raise SystemExit 
+			raise SystemExit
 		# Check for GTK.
 		try:
 			import gtk
@@ -71,9 +71,9 @@ def check_dependencies():
 		# Check for GNOME Python Extras.
 		try:
 			import gtkspell
-			print "Checking for GNOME Python Extras... yes"
+			print "Checking for gtkspell-python... yes"
 		except ImportError:
-			print "Error: gnome-python-extras was not found."
+			print "Error: Python bindings for gtkspell was not found."
 			raise SystemExit
 	except SystemExit:
 		from sys import exit
