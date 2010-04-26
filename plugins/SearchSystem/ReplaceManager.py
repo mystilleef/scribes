@@ -21,7 +21,7 @@ class Manager(object):
 		self.__editor = editor
 		self.__selected_mark = None
 		self.__marks = None
-		self.__string = None
+		self.__string = ""
 		self.__search_string = None
 		return
 
@@ -48,7 +48,7 @@ class Manager(object):
 		end = self.__editor.textbuffer.get_iter_at_mark(marks[1])
 		self.__editor.textbuffer.delete(start, end)
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
-		self.__editor.textbuffer.insert(start, self.__string)
+		self.__editor.textbuffer.insert(start, self.__string or "")
 		self.__manager.emit("replaced-mark", marks)
 		message = _("Replaced '%s' with '%s'") % (self.__search_string, self.__string)
 		self.__editor.update_message(message, "pass", 10)
