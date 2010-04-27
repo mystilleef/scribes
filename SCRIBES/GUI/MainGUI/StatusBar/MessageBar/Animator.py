@@ -58,6 +58,7 @@ class Animator(SignalManager):
 			y = int(self.__get_y(direction))
 			self.__editor.textview.move_child(self.__bar, x, y)
 			self.__bar.show_all()
+			if direction == "down": self.__editor.response()
 		except ValueError:
 			animate = False
 			if direction == "down": self.__bar.hide()

@@ -8,8 +8,8 @@ class TriggerManager(object):
 		self.__triggers = []
 		return
 
-	def create_trigger(self, command, shortcut):
-		trigger = self.__editor.create_trigger(command, shortcut)
+	def create_trigger(self, name, accelerator="", description="", category="", error=True, removable=True):
+		trigger = self.__editor.create_trigger(name, accelerator, description, category, error, removable)
 		self.__editor.add_trigger(trigger)
 		self.__triggers.append(trigger)
 		return trigger

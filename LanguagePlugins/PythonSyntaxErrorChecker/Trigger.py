@@ -1,20 +1,21 @@
-class Trigger(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+from SCRIBES.TriggerManager import TriggerManager
+from gettext import gettext as _
+
+class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
+		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.__sigid1 = self.__trigger.connect("activate", self.__check_error_cb)
+		self.connect(self.__trigger, "activate", self.__check_error_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = None
-		self.__trigger = self.__create_trigger("check_syntax_errors", "F2")
+		name, shortcut, description, category = ("check-python-syntax-errors", "F2", _("Check for syntax errors"), _("Python"))
+		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		return
-
-	def __create_trigger(self, name, shortcut):
-		# Trigger to check for syntax errors.
-		trigger = self.__editor.create_trigger(name, shortcut)
-		self.__editor.add_trigger(trigger)
-		return trigger
 
 	def __check_error_cb(self, *args):
 		try:
@@ -26,9 +27,9 @@ class Trigger(object):
 		return
 
 	def destroy(self):
-		self.__editor.remove_trigger(self.__trigger)
-		self.__editor.disconnect_signal(self.__sigid1, self.__trigger)
 		if self.__manager: self.__manager.destroy()
+		self.disconnect()
+		self.remove_triggers()
 		del self
-		self = None
 		return
+

@@ -1,5 +1,6 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 from SCRIBES.TriggerManager import TriggerManager
+from gettext import gettext as _
 
 class Trigger(SignalManager, TriggerManager):
 
@@ -11,7 +12,8 @@ class Trigger(SignalManager, TriggerManager):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__trigger = self.create_trigger("activate-foo-power", "<ctrl><alt>f")
+		name, shortcut, description, category = ("activate-foo-power", "<ctr><alt>f", _("Activate the holy power of foo"), _("Example"))
+		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None
 		return
 

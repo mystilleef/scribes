@@ -51,6 +51,7 @@ class Animator(SignalManager):
 			y = int(self.__get_y(direction))
 			self.__editor.textview.move_child(self.__container, x, y)
 			self.__container.show_all()
+			if direction == "up": self.__editor.response()
 		except ValueError:
 			animate = False
 			self.__manager.emit("animation", "end")

@@ -324,10 +324,11 @@ class Editor(Signals):
 		from Utils import forward_to_line_end
 		return forward_to_line_end(iterator.copy())
 
-	def create_trigger(self, name, accelerator=None, description=None, error=True, removable=True):
+	def create_trigger(self, name, accelerator="", description="", category="", error=True, removable=True):
 		self.response()
 		from Trigger import Trigger
-		trigger = Trigger(self, name, accelerator, description, error, removable)
+		trigger = Trigger(self, name, accelerator, description, category, error, removable)
+		self.response()
 		return trigger
 
 	def trigger(self, name):
