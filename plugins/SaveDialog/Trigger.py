@@ -1,31 +1,36 @@
-class Trigger(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+from SCRIBES.TriggerManager import TriggerManager
+from gettext import gettext as _
+
+class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
+		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.__sigid1 = self.__trigger.connect("activate", self.__show_cb)
-		self.__editor.get_toolbutton("SaveToolButton").props.sensitive = True
+		self.connect(self.__trigger, "activate", self.__activate_cb)
+		editor.get_toolbutton("SaveToolButton").props.sensitive = True
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
+		name, shortcut, description, category = (
+			"show-save-dialog", 
+			"<ctrl><shift>s", 
+			_("Rename the current file"), 
+			_("File Operations")
+		)
+		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None
-		self.__trigger = self.__create_trigger("show_save_dialog", "<ctrl><shift>s")
 		return
 
-	def __destroy(self):
-		self.__editor.remove_trigger(self.__trigger)
-		self.__editor.disconnect_signal(self.__sigid1, self.__trigger)
+	def destroy(self):
+		self.disconnect()
+		self.remove_triggers()
 		if self.__manager: self.__manager.destroy()
 		del self
-		self = None
-		return
+		return False
 
-	def __create_trigger(self, name, shortcut):
-		# Trigger to show the save dialog.
-		trigger = self.__editor.create_trigger(name, shortcut)
-		self.__editor.add_trigger(trigger)
-		return trigger
-
-	def __show_cb(self, *args):
+	def __activate_cb(self, *args):
 		try:
 			self.__manager.show()
 		except AttributeError:
@@ -33,7 +38,3 @@ class Trigger(object):
 			self.__manager = Manager(self.__editor)
 			self.__manager.show()
 		return
-
-	def destroy(self):
-		self.__destroy()
-		return 

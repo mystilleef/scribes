@@ -1,5 +1,6 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 from SCRIBES.TriggerManager import TriggerManager
+from gettext import gettext as _
 
 class Trigger(SignalManager, TriggerManager):
 
@@ -12,16 +13,21 @@ class Trigger(SignalManager, TriggerManager):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__trigger = self.create_trigger("show-print-window", "<ctrl>p")
+		name, shortcut, description, category = (
+			"show-print-window", 
+			"<ctrl>p", 
+			_("Print the current file"), 
+			_("File Operations")
+		)
+		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None
 		return
 
-	def __destroy(self):
-		if self.__manager: self.__manager.destroy()
+	def destroy(self):
 		self.disconnect()
 		self.remove_triggers()
+		if self.__manager: self.__manager.destroy()
 		del self
-		self = None
 		return False
 
 	def __activate(self):
@@ -38,8 +44,4 @@ class Trigger(SignalManager, TriggerManager):
 	def __activate_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__activate)
-		return
-
-	def destroy(self):
-		self.__destroy()
 		return

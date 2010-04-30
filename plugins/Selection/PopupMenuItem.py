@@ -1,16 +1,17 @@
 from gtk import ImageMenuItem
+from gettext import gettext as _
 
 class SelectionPopupMenuItem(ImageMenuItem):
 
 	def __init__(self, editor):
-		from i18n import msg0010
-		ImageMenuItem.__init__(self, msg0010)
+		ImageMenuItem.__init__(self, _("Selection"))
 		self.__init_attributes(editor)
 		self.__creates_widgets()
 		self.__set_properties()
 		self.__signal_id_1 = self.select_word_menuitem.connect("activate", self.__popup_activate_cb)
 		self.__signal_id_2 = self.select_line_menuitem.connect("activate", self.__popup_activate_cb)
 		self.__signal_id_3 = self.select_sentence_menuitem.connect("activate", self.__popup_activate_cb)
+		self.__signal_id_4 = self.paragraph_item.connect("activate", self.__popup_activate_cb)
 		self.__signal_id_5 = self.select_word_menuitem.connect("map-event", self.__popup_word_map_event_cb)
 		self.__signal_id_6 = self.select_line_menuitem.connect("map-event", self.__popup_line_map_event_cb)
 		self.__signal_id_7 = self.select_sentence_menuitem.connect("map-event", self.__popup_sentence_map_event_cb)
@@ -24,14 +25,6 @@ class SelectionPopupMenuItem(ImageMenuItem):
 		self.select_word_menuitem = None
 		self.select_line_menuitem = None
 		self.select_sentence_menuitem = None
-		self.__signal_id_1 = None
-		self.__signal_id_2 = None
-		self.__signal_id_3 = None
-		self.__signal_id_4 = None
-		self.__signal_id_5 = None
-		self.__signal_id_6 = None
-		self.__signal_id_7 = None
-		self.__signal_id_9 = None
 		return
 
 	def __creates_widgets(self):
@@ -39,11 +32,10 @@ class SelectionPopupMenuItem(ImageMenuItem):
 		self.image = Image()
 		self.image.set_property("stock", STOCK_BOLD)
 		self.menu = Menu()
-		from i18n import msg0011, msg0012, msg0013
-		from i18n import msg0014
-		self.select_word_menuitem = self.editor.create_menuitem(msg0011)
-		self.select_line_menuitem = self.editor.create_menuitem(msg0012)
-		self.select_sentence_menuitem = self.editor.create_menuitem(msg0013)
+		self.select_word_menuitem = self.editor.create_menuitem(_("Select word (alt + w)"))
+		self.select_line_menuitem = self.editor.create_menuitem(_("Select line (alt + l)"))
+		self.select_sentence_menuitem = self.editor.create_menuitem(_("Select sentence (alt + s)"))
+		self.paragraph_item = self.editor.create_menuitem(_("Select paragraph (alt + p)"))
 		return
 
 	def __set_properties(self):
@@ -52,16 +44,19 @@ class SelectionPopupMenuItem(ImageMenuItem):
 		self.menu.append(self.select_line_menuitem)
 		self.menu.append(self.select_word_menuitem)
 		self.menu.append(self.select_sentence_menuitem)
-		if self.editor.is_readonly: self.set_property("sensitive", False)
+		self.menu.append(self.paragraph_item)
+		if self.editor.readonly: self.set_property("sensitive", False)
 		return
 
 	def __popup_activate_cb(self, menuitem):
 		if menuitem == self.select_word_menuitem:
-			self.editor.trigger("select_word")
+			self.editor.trigger("select-word")
 		elif menuitem == self.select_line_menuitem:
-			self.editor.trigger("select_line")
+			self.editor.trigger("select-line")
 		elif menuitem == self.select_sentence_menuitem:
-			self.editor.trigger("select_sentence")
+			self.editor.trigger("select-sentence")
+		elif menuitem == self.paragraph_item:
+			self.editor.trigger("select-paragraph")
 		return True
 
 	def __popup_word_map_event_cb(self, menuitem, event):
@@ -91,6 +86,7 @@ class SelectionPopupMenuItem(ImageMenuItem):
 		self.editor.disconnect_signal(self.__signal_id_1, self.select_word_menuitem)
 		self.editor.disconnect_signal(self.__signal_id_2, self.select_line_menuitem)
 		self.editor.disconnect_signal(self.__signal_id_3, self.select_sentence_menuitem)
+		self.editor.disconnect_signal(self.__signal_id_4, self.select_sentence_menuitem)
 		self.editor.disconnect_signal(self.__signal_id_5, self.select_word_menuitem)
 		self.editor.disconnect_signal(self.__signal_id_6, self.select_line_menuitem)
 		self.editor.disconnect_signal(self.__signal_id_7, self.select_sentence_menuitem)

@@ -12,17 +12,21 @@ class Trigger(SignalManager, TriggerManager):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		name, shortcut, description, category = ("activate-foo-power", "<ctr><alt>f", _("Activate the holy power of foo"), _("Example"))
+		name, shortcut, description, category = (
+			"activate-foo-power", 
+			"<ctrl><alt>f", 
+			_("Activate the holy power of foo"), 
+			_("Example")
+		)
 		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None
 		return
 
-	def __destroy(self):
-		if self.__manager: self.__manager.destroy()
+	def destroy(self):
 		self.disconnect()
 		self.remove_triggers()
+		if self.__manager: self.__manager.destroy()
 		del self
-		self = None
 		return False
 
 	def __activate(self):
@@ -39,8 +43,4 @@ class Trigger(SignalManager, TriggerManager):
 	def __activate_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__activate)
-		return
-
-	def destroy(self):
-		self.__destroy()
 		return

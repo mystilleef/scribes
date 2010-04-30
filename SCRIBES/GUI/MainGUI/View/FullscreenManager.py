@@ -33,7 +33,7 @@ class Manager(SignalManager):
 
 	def __adjust_margin(self, left=True):
 		width = self.__view.get_visible_rect()[2]
-		return int(0.333 * width)
+		return int(0.25 * width)
 
 	def __margin(self):
 		language = self.__editor.language

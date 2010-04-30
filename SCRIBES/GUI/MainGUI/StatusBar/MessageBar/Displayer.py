@@ -9,7 +9,7 @@ class Displayer(SignalManager):
 		self.connect(manager, "bar", self.__bar_cb)
 		self.connect(manager, "_hide", self.__hide_cb)
 		self.connect(manager, "_show", self.__show_cb)
-		self.connect(manager, "visible", self.__visible_cb)
+#		self.connect(manager, "visible", self.__visible_cb)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
@@ -32,9 +32,8 @@ class Displayer(SignalManager):
 		return False
 
 	def __show(self):
-		self.__bar.queue_resize()
 		self.__editor.response()
-		self.__manager.emit("slide", "left")
+		self.__manager.emit("slide", "up")
 		self.__editor.response()
 		return False
 

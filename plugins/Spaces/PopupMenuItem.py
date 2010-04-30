@@ -35,11 +35,11 @@ class PopupMenuItem(ImageMenuItem):
 
 	def __activate_cb(self, menuitem):
 		if menuitem == self.__menuitem1:
-			self.__editor.trigger("tabs_to_spaces")
+			self.__editor.trigger("tabs-to-spaces")
 		elif menuitem == self.__menuitem2:
-			self.__editor.trigger("spaces_to_tabs")
+			self.__editor.trigger("spaces-to-tabs")
 		else:
-			self.__editor.trigger("remove_trailing_spaces")
+			self.__editor.trigger("remove-trailing-spaces")
 		return True
 
 	def __destroy_cb(self, *args):

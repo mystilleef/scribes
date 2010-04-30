@@ -24,5 +24,5 @@ class MenuItem(object):
 		return
 
 	def __activate_cb(self, menuitem, editor):
-		editor.trigger("show_advanced_configuration_window")
+		editor.trigger("show-advanced-configuration-window")
 		return False

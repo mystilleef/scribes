@@ -38,8 +38,8 @@ class Displayer(SignalManager):
 		if self.__visible is True: return False
 		self.__visible = True
 		self.__editor.response()
-		# Toolbar slide animation from right to left
-		self.__manager.emit("slide", "left")
+		# Toolbar slide animation from up to down
+		self.__manager.emit("slide", "down")
 		self.__editor.response()
 		return False
 

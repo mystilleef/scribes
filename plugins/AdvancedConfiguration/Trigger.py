@@ -1,22 +1,21 @@
-class Trigger(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+from SCRIBES.TriggerManager import TriggerManager
+
+class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
+		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.__sigid1 = self.__trigger.connect("activate", self.__show_window_cb)
+		self.connect(self.__trigger, "activate", self.__show_window_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = None
-		self.__trigger = self.__create_trigger()
+		self.__trigger = self.create_trigger("show-advanced-configuration-window")
 		from MenuItem import MenuItem
 		self.__menuitem = MenuItem(editor)
 		return
-
-	def __create_trigger(self):
-		# Trigger that shows advanced configuration window.
-		trigger = self.__editor.create_trigger("show_advanced_configuration_window")
-		self.__editor.add_trigger(trigger)
-		return trigger
 
 	def __show_window_cb(self, *args):
 		try:
@@ -28,10 +27,10 @@ class Trigger(object):
 		return
 
 	def destroy(self):
-		self.__editor.remove_trigger(self.__trigger)
-		self.__editor.disconnect_signal(self.__sigid1, self.__trigger)
 		if self.__manager: self.__manager.destroy()
 		if self.__menuitem: self.__menuitem.destroy()
+		self.remove_triggers()
+		self.disconnect()
 		del self
-		self = None
 		return
+

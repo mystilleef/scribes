@@ -8,16 +8,21 @@ class Trigger(SignalManager, TriggerManager):
 		SignalManager.__init__(self)
 		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.connect(self.__trigger, "activate", self.__toggle_comment_cb)
+		self.connect(self.__trigger, "activate", self.__activate_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		name, shortcut, description, category = ("toggle-comment", "<alt>c", _("(Un)comment line or selected lines"), _("Line"))
+		name, shortcut, description, category = (
+			"toggle-comment",
+			"<alt>c",
+			_("(Un)comment line or selected lines"),
+			_("Line")
+		)
 		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None
 		return
 
-	def __toggle_comment_cb(self, *args):
+	def __activate_cb(self, *args):
 		try:
 			self.__manager.toggle_comment()
 		except AttributeError:
@@ -27,8 +32,8 @@ class Trigger(SignalManager, TriggerManager):
 		return
 
 	def destroy(self):
-		if self.__manager: self.__manager.destroy()
 		self.disconnect()
 		self.remove_triggers()
+		if self.__manager: self.__manager.destroy()
 		del self
 		return

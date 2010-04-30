@@ -1,10 +1,10 @@
 from gtk import ImageMenuItem
+from gettext import gettext as _
 
 class PopupMenuItem(ImageMenuItem):
 
 	def __init__(self, editor):
-		from i18n import msg0011
-		ImageMenuItem.__init__(self, msg0011)
+		ImageMenuItem.__init__(self, _("Paragraph"))
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__sig_id_1 = self.__next_item.connect("activate", self.__activate_cb)
@@ -18,13 +18,10 @@ class PopupMenuItem(ImageMenuItem):
 		self.__editor = editor
 		self.__menu = Menu()
 		self.__image = Image()
-		from i18n import msg0012, msg0013, msg0014, msg0015
-		self.__previous_item = editor.create_menuitem(msg0012)
-		self.__next_item = editor.create_menuitem(msg0013)
-		self.__reflow_item = editor.create_menuitem(msg0014)
-		self.__select_item = editor.create_menuitem(msg0015)
-		self.__sig_id_1 = self.__sig_id_2 = self.__sig_id_3 = None
-		self.__sig_id_4 = self.__sig_id_5 = None
+		self.__previous_item = editor.create_menuitem(_("Previous Paragraph (alt + Right)"))
+		self.__next_item = editor.create_menuitem(_("Next Paragraph (alt + Left)"))
+		self.__reflow_item = editor.create_menuitem(_("Reflow Paragraph (alt + q)"))
+		self.__select_item = editor.create_menuitem(_("Select Paragraph (alt + p)"))
 		return
 
 	def __set_properties(self):
@@ -36,19 +33,18 @@ class PopupMenuItem(ImageMenuItem):
 		self.__menu.append(self.__next_item)
 		self.__menu.append(self.__reflow_item)
 		self.__menu.append(self.__select_item)
-		if self.__editor.is_readonly:
-			self.__reflow_item.set_property("sensitive", False)
+		if self.__editor.readonly: self.__reflow_item.set_property("sensitive", False)
 		return
 
 	def __activate_cb(self, menuitem):
 		if menuitem == self.__previous_item:
-			self.__editor.trigger("previous_paragraph")
+			self.__editor.trigger("previous-paragraph")
 		elif menuitem == self.__next_item:
-			self.__editor.trigger("next_paragraph")
+			self.__editor.trigger("next-paragraph")
 		elif menuitem == self.__select_item:
-			self.__editor.trigger("select_paragraph")
+			self.__editor.trigger("select-paragraph")
 		else:
-			self.__editor.trigger("reflow_paragraph")
+			self.__editor.trigger("reflow-paragraph")
 		return False
 
 	def __destroy_cb(self, *args):

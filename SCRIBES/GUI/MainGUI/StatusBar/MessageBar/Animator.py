@@ -47,27 +47,38 @@ class Animator(SignalManager):
 		finally:
 			self.__update_animation_start_point(direction)
 			self.__update_animation_end_point(direction)
-			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction)
+			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction, priority=9999)
+		return False
+
+	def __move_on_idle(self, direction):
+		x = int(self.__get_x(direction))
+		y = int(self.__get_y(direction))
+		self.__editor.textview.move_child(self.__bar, x, y)
+		if not self.__bar.get_property("visible"): self.__bar.show_all()
+		self.__editor.response()
 		return False
 
 	def __move(self, direction):
 		try:
 			animate = True
 			self.__can_end(direction)
-			x = int(self.__get_x(direction))
-			y = int(self.__get_y(direction))
-			self.__editor.textview.move_child(self.__bar, x, y)
-			self.__bar.show_all()
-			if direction == "down": self.__editor.response()
+			try:
+				from gobject import idle_add, source_remove
+				source_remove(self.__timer1)
+			except AttributeError:
+				pass
+			finally:
+				self.__timer1 = idle_add(self.__move_on_idle, direction, priority=9999)
 		except ValueError:
 			animate = False
 			if direction == "down": self.__bar.hide()
 			self.__manager.emit("animation", "end")
-		return animate 
+		return animate
 
 	def __can_end(self, direction):
-		if direction == "left" and self.__start_point <= self.__end_point: raise ValueError
+#		if direction == "left" and self.__start_point <= self.__end_point: raise ValueError
 		if direction == "down" and self.__start_point >= self.__end_point: raise ValueError
+		if direction == "up" and self.__start_point <= self.__end_point: raise ValueError
 		return False
 
 	def __get_x(self, direction):
@@ -80,24 +91,25 @@ class Animator(SignalManager):
 
 	def __get_y(self, direction):
 		if direction in ("left", "right"): return self.__vheight - self.__bheight + 4
-		if direction == "up": self.__start_point += self.__vdelta
+		if direction == "up": self.__start_point -= self.__vdelta
 		if direction == "down": self.__start_point += self.__vdelta
-		if self.__start_point > self.__vheight + 4: return self.__vheight + 4
+#		if self.__start_point > self.__vheight + 4: return self.__vheight + 4
+#		if self.__start_point < self.__end_point: return self.__end_point
 		return self.__start_point
 
 	def __update_animation_start_point(self, direction):
 		dictionary = {
-			"up": -2,
+			"up": self.__vheight,
 			"down": self.__vheight - self.__bheight + 4,
 			"left": self.__vwidth,
 			"right":0,
 		}
 		self.__start_point = dictionary[direction]
 		return False
-	
+
 	def __update_animation_end_point(self, direction):
 		dictionary = {
-			"up": -self.__bheight - 4,
+			"up": self.__vheight - self.__bheight + 4,
 			"down": self.__vheight + 4,
 			"left": self.__vwidth - self.__bwidth + 4,
 			"right": self.__bwidth,
@@ -108,15 +120,16 @@ class Animator(SignalManager):
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
-	
+
 	def __slide_cb(self, manager, direction):
-		self.__slide(direction)
+		from gobject import idle_add
+		idle_add(self.__slide, direction, priority=9999)
 		return False
 
 	def __deltas_cb(self, manager, deltas):
 		self.__hdelta, self.__vdelta = deltas
 		return False
-	
+
 	def __bsize_cb(self, manager, size):
 		self.__bwidth, self.__bheight = size
 		return False

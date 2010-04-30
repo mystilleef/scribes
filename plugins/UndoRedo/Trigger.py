@@ -1,38 +1,46 @@
-class Trigger(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+from SCRIBES.TriggerManager import TriggerManager
+from gettext import gettext as _
+
+class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
+		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.__sigid1 = self.__trigger1.connect("activate", self.__undo_cb)
-		self.__sigid2 = self.__trigger2.connect("activate", self.__redo_cb)
+		self.connect(self.__trigger1, "activate", self.__activate_cb)
+		self.connect(self.__trigger2, "activate", self.__activate_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__trigger1 = self.__create_trigger("undo", "<ctrl>z")
-		self.__trigger2 = self.__create_trigger("redo", "<ctrl><shift>z")
-		return
-
-	def __create_trigger(self, name, shortcut):
-		trigger = self.__editor.create_trigger(name, shortcut)
-		self.__editor.add_trigger(trigger)
-		return trigger
-
-	def __undo_cb(self, *args):
-		self.__editor.undo()
-		return False
-
-	def __redo_cb(self, *args):
-		self.__editor.redo()
-		return
-
-	def __destroy(self):
-		self.__editor.remove_trigger(self.__trigger1)
-		self.__editor.remove_trigger(self.__trigger2)
-		self.__editor.disconnect_signal(self.__sigid1, self.__trigger1)
-		self.__editor.disconnect_signal(self.__sigid2, self.__trigger2)
-		del self
-		self = None
+		name, shortcut, description, category = (
+			"undo", 
+			"<ctrl>z", 
+			_("Undo last action"), 
+			_("Text Operations")
+		)
+		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
+		name, shortcut, description, category = (
+			"redo", 
+			"<ctrl><shift>z", 
+			_("Redo last action"), 
+			_("Text Operations")
+		)
+		self.__trigger2 = self.create_trigger(name, shortcut, description, category)
+		self.__manager = None
 		return
 
 	def destroy(self):
-		self.__destroy()
+		self.disconnect()
+		self.remove_triggers()
+		if self.__manager: self.__manager.destroy()
+		del self
 		return False
+
+	def __activate_cb(self, trigger):
+		function = {
+			self.__trigger1: self.__editor.undo,
+			self.__trigger2: self.__editor.redo,
+		}
+		function[trigger]()
+		return

@@ -28,6 +28,10 @@ class Window(object):
 		return False
 
 	def __set_properties(self):
+#		screen = self.__window.get_screen()
+#		colormap = screen.get_rgba_colormap()
+#		from gtk import widget_set_default_colormap
+#		if colormap: widget_set_default_colormap(colormap)
 		from gtk import AccelGroup, widget_set_default_colormap
 		self.__add_signal()
 		self.__window.add_accel_group(AccelGroup())

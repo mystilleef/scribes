@@ -42,6 +42,6 @@ class Button(ToolButton):
 
 	def __clicked_cb(self, *args):
 		self.__editor.response()
-		self.__editor.trigger("show_gotobar")
+		self.__editor.trigger("show-gotobar")
 		self.__editor.response()
 		return False

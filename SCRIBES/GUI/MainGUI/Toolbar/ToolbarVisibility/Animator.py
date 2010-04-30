@@ -12,6 +12,8 @@ class Animator(SignalManager):
 		self.connect(manager, "slide", self.__slide_cb)
 		self.connect(manager, "deltas", self.__deltas_cb)
 		self.connect(manager, "size", self.__size_cb)
+		from gobject import idle_add
+		idle_add(self.__compile, priority=9999)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -43,23 +45,36 @@ class Animator(SignalManager):
 			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction)
 		return False
 
+	def __move_on_idle(self, direction):
+		x = int(self.__get_x(direction))
+		y = int(self.__get_y(direction))
+		self.__editor.textview.move_child(self.__container, x, y)
+		if not self.__container.get_property("visible"): self.__container.show_all()
+		self.__editor.response()
+		return False
+
 	def __move(self, direction):
 		try:
 			animate = True
 			self.__can_end(direction)
-			x = int(self.__get_x(direction))
-			y = int(self.__get_y(direction))
-			self.__editor.textview.move_child(self.__container, x, y)
-			self.__container.show_all()
-			if direction == "up": self.__editor.response()
+			try:
+				from gobject import idle_add, source_remove
+				source_remove(self.__timer1)
+			except AttributeError:
+				pass
+			finally:
+				self.__timer1 = idle_add(self.__move_on_idle, direction)
 		except ValueError:
 			animate = False
 			self.__manager.emit("animation", "end")
-		return animate 
+		return animate
 
 	def __can_end(self, direction):
-		if direction == "left" and self.__start_point <= -2: raise ValueError
+		self.__editor.response()
+#		if direction == "left" and self.__start_point <= -2: raise ValueError
 		if direction == "up" and self.__start_point <= -self.__height - 4: raise ValueError
+		if direction == "down" and self.__start_point >= -2: raise ValueError
+		self.__editor.response()
 		return False
 
 	def __get_x(self, direction):
@@ -73,44 +88,52 @@ class Animator(SignalManager):
 		if direction in ("left", "right"): return -2
 		if direction == "up": self.__start_point -= self.__vdelta
 		if direction == "down": self.__start_point += self.__vdelta
+		if self.__start_point >= -2: return -2
 		return self.__start_point
 
 	def __update_animation_start_point(self, direction):
 		dictionary = {
 			"up": -2,
-			"down": 0,
+			"down": -self.__height,
 			"left": self.__width,
 			"right":0,
 		}
 		self.__start_point = dictionary[direction]
 		return False
-	
+
 	def __update_animation_end_point(self, direction):
 		dictionary = {
 			"up": -self.__height - 4,
-			"down": -self.__height,
+			"down": -2,
 			"left": -2,
 			"right": self.__width,
 		}
 		self.__end_point = dictionary[direction]
 		return False
 
-	def __end_animation(self):
-		self.__container.hide()
+	def __compile(self):
+		self.__editor.optimize((self.__move,))
 		return False
 
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
-	
+
 	def __slide_cb(self, manager, direction):
-		self.__slide(direction)
+		try:
+			from gobject import idle_add, source_remove
+			source_remove(self.__ttimer)
+		except AttributeError:
+			pass
+		finally:
+			self.__ttimer = idle_add(self.__slide, direction, priority=9999)
+#		self.__slide(direction)
 		return False
 
 	def __deltas_cb(self, manager, deltas):
 		self.__hdelta, self.__vdelta = deltas
 		return False
-	
+
 	def __size_cb(self, manager, size):
 		self.__width, self.__height = size
 		return False

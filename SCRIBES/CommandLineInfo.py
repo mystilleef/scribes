@@ -15,8 +15,6 @@ def print_info():
 	print "GTK+ Version: ", gtk.gtk_version
 	import gtk
 	print "PyGTK Version: ",	gtk.pygtk_version
-	import gnome
-	print "GNOME Python Version: ", gnome.gnome_python_version
 	try:
 		import psyco
 		print "Psyco Version: ", psyco.version_info

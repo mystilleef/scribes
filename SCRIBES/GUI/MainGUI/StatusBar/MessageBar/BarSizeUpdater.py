@@ -8,8 +8,8 @@ class Updater(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "bar", self.__bar_cb)
-		self.connect(manager, "slide", self.__size_cb)
-		self.connect(manager, "visible", self.__visible_cb)
+#		self.connect(manager, "slide", self.__size_cb)
+#		self.connect(manager, "visible", self.__visible_cb)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):

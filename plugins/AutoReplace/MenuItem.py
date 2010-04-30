@@ -24,5 +24,5 @@ class MenuItem(object):
 		return
 
 	def __activate_cb(self, menuitem, editor):
-		editor.trigger("show_autoreplace_dialog")
+		editor.trigger("show-autoreplace-dialog")
 		return False

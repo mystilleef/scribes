@@ -14,5 +14,5 @@ class PopupMenuItem(ImageMenuItem):
 		return
 
 	def __activate_cb(self, *args):
-		self.__editor.trigger("show_about_dialog")
+		self.__editor.trigger("show-about-dialog")
 		return True

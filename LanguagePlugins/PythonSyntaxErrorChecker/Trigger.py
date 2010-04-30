@@ -8,16 +8,21 @@ class Trigger(SignalManager, TriggerManager):
 		SignalManager.__init__(self)
 		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.connect(self.__trigger, "activate", self.__check_error_cb)
+		self.connect(self.__trigger, "activate", self.__activate_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = None
-		name, shortcut, description, category = ("check-python-syntax-errors", "F2", _("Check for syntax errors"), _("Python"))
+		name, shortcut, description, category = (
+			"check-python-syntax-errors", 
+			"F2", 
+			_("Check for syntax errors"), 
+			_("Python")
+		)
 		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		return
 
-	def __check_error_cb(self, *args):
+	def __activate_cb(self, *args):
 		try:
 			self.__manager.check()
 		except AttributeError:
@@ -27,9 +32,8 @@ class Trigger(SignalManager, TriggerManager):
 		return
 
 	def destroy(self):
-		if self.__manager: self.__manager.destroy()
 		self.disconnect()
 		self.remove_triggers()
+		if self.__manager: self.__manager.destroy()
 		del self
 		return
-

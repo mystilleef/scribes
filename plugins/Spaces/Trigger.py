@@ -1,37 +1,50 @@
-class Trigger(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+from SCRIBES.TriggerManager import TriggerManager
+from gettext import gettext as _
+
+class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
+		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.__sigid1 = self.__trigger1.connect("activate", self.__activate_cb)
-		self.__sigid2 = self.__trigger2.connect("activate", self.__activate_cb)
-		self.__sigid3 = self.__trigger3.connect("activate", self.__activate_cb)
-		self.__sigid4 = self.__view.connect("populate-popup", self.__popup_cb)
+		self.connect(self.__trigger1, "activate", self.__activate_cb)
+		self.connect(self.__trigger2, "activate", self.__activate_cb)
+		self.connect(self.__trigger3, "activate", self.__activate_cb)
+		self.connect(editor.textview, "populate-popup", self.__popup_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
+		name, shortcut, description, category = (
+			"spaces-to-tabs",
+			"<alt>t",
+			_("Convert spaces to tabs"),
+			_("Text Operations")
+		)
+		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
+		name, shortcut, description, category = (
+			"tabs-to-spaces",
+			"<alt><shift>t",
+			_("Convert tabs to spaces"),
+			_("Text Operations")
+		)
+		self.__trigger2 = self.create_trigger(name, shortcut, description, category)
+		name, shortcut, description, category = (
+			"remove-trailing-spaces",
+			"<alt>r",
+			_("Remove trailing spaces"),
+			_("Text Operations")
+		)
+		self.__trigger3 = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None
-		self.__view = editor.textview
-		self.__trigger1 = self.__create_trigger("spaces_to_tabs", "<alt>t")
-		self.__trigger2 = self.__create_trigger("tabs_to_spaces", "<alt><shift>t")
-		self.__trigger3 = self.__create_trigger("remove_trailing_spaces", "<alt>r")
 		return
 
-	def __destroy(self):
+	def destroy(self):
+		self.disconnect()
+		self.remove_triggers()
 		if self.__manager: self.__manager.destroy()
-		self.__editor.disconnect_signal(self.__sigid1, self.__trigger1)
-		self.__editor.disconnect_signal(self.__sigid2, self.__trigger2)
-		self.__editor.disconnect_signal(self.__sigid3, self.__trigger3)
-		self.__editor.disconnect_signal(self.__sigid4, self.__view)
-		triggers = (self.__trigger1, self.__trigger2, self.__trigger3)
-		self.__editor.remove_triggers(triggers)
 		del self
-		self = None
 		return False
-
-	def __create_trigger(self, name, shortcut):
-		trigger = self.__editor.create_trigger(name, shortcut)
-		self.__editor.add_trigger(trigger)
-		return trigger
 
 	def __get_manager(self):
 		from Manager import Manager
@@ -50,8 +63,4 @@ class Trigger(object):
 	def __popup_cb(self, *args):
 		from PopupMenuItem import PopupMenuItem
 		self.__editor.add_to_popup(PopupMenuItem(self.__editor))
-		return False
-
-	def destroy(self):
-		self.__destroy()
 		return False

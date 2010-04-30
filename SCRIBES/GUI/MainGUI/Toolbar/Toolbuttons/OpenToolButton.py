@@ -46,6 +46,6 @@ class Button(MenuToolButton):
 
 	def __clicked_cb(self, *args):
 		self.__editor.response()
-		self.__editor.trigger("show_open_dialog")
+		self.__editor.trigger("show-open-dialog")
 		self.__editor.response()
 		return False

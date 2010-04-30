@@ -24,5 +24,5 @@ class MenuItem(object):
 		return
 
 	def __activate_cb(self, menuitem):
-		self.__editor.trigger("show_theme_selector")
+		self.__editor.trigger("show-theme-selector")
 		return False

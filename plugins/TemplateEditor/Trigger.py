@@ -1,21 +1,35 @@
-class Trigger(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+from SCRIBES.TriggerManager import TriggerManager
+from gettext import gettext as _
+
+class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
+		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.__sigid1 = self.__trigger.connect("activate", self.__activate_cb)
+		self.connect(self.__trigger, "activate", self.__activate_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
+		name, shortcut, description, category = (
+			"show-template-editor",
+			"<alt>F12",
+			_("Manage dynamic templates or snippets"),
+			_("Miscellaneous Operations")
+		)
+		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None
-		self.__trigger = self.__create_trigger()
 		from MenuItem import MenuItem
 		self.__menuitem = MenuItem(editor)
 		return
 
-	def __create_trigger(self):
-		trigger = self.__editor.create_trigger("show_template_editor", "<alt>F12")
-		self.__editor.add_trigger(trigger)
-		return trigger
+	def destroy(self):
+		self.disconnect()
+		self.remove_triggers()
+		if self.__manager: self.__manager.destroy()
+		del self
+		return False
 
 	def __activate_cb(self, *args):
 		try:
@@ -24,13 +38,4 @@ class Trigger(object):
 			from Manager import Manager
 			self.__manager = Manager(self.__editor)
 			self.__manager.show()
-		return
-
-	def destroy(self):
-		self.__editor.remove_trigger(self.__trigger)
-		self.__editor.disconnect_signal(self.__sigid1, self.__trigger)
-		if self.__manager: self.__manager.destroy()
-		if self.__menuitem: self.__menuitem.destroy()
-		del self
-		self = None
 		return

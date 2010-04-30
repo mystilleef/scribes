@@ -42,6 +42,6 @@ class Button(ToolButton):
 
 	def __clicked_cb(self, *args):
 		self.__editor.response()
-		self.__editor.trigger("show_save_dialog")
+		self.__editor.trigger("show-save-dialog")
 		self.__editor.response()
 		return False

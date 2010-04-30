@@ -42,6 +42,6 @@ class Button(ToolButton):
 
 	def __clicked_cb(self, *args):
 		self.__editor.response()
-		self.__editor.trigger("show_replacebar")
+		self.__editor.trigger("show-replacebar")
 		self.__editor.response()
 		return False

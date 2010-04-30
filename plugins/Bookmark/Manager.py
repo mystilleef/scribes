@@ -31,11 +31,14 @@ class Manager(GObject):
 		Marker(self, editor)
 
 	def __init_attributes(self, editor):
+		self.__editor = editor
 		from os.path import join
 		self.__glade = editor.get_glade_object(globals(), join("GUI","Bookmark.glade"), "Window")
+		self.__browser = None
 		return False
 
 	def destroy(self):
+		if self.__browser: self.__browser.destroy()
 		self.emit("destroy")
 		del self
 		self = None
@@ -43,10 +46,19 @@ class Manager(GObject):
 
 	gui = property(lambda self: self.__glade)
 
-	def toggle_bookmark(self):
+	def toggle(self):
 		self.emit("toggle-bookmark")
 		return False
 
-	def remove_bookmarks(self):
+	def remove(self):
 		self.emit("remove-all-bookmarks")
+		return False
+
+	def show(self, *args):
+		try:
+			self.__browser.show()
+		except AttributeError:
+			from GUI.Manager import Manager
+			self.__browser = Manager(self, self.__editor)
+			self.__browser.show()
 		return False

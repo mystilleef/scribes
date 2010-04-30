@@ -1,54 +1,61 @@
-class Trigger(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+from SCRIBES.TriggerManager import TriggerManager
+from gettext import gettext as _
+
+class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
+		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.__sigid1 = self.__trigger1.connect("activate", self.__open_dialog_cb)
-		self.__sigid2 = self.__trigger2.connect("activate", self.__remote_dialog_cb)
-		self.__sigid3 = self.__trigger3.connect("activate", self.__newfile_dialog_cb)
+		self.connect(self.__trigger1, "activate", self.__activate_cb)
+		self.connect(self.__trigger2, "activate", self.__activate_cb)
+		self.connect(self.__trigger3, "activate", self.__activate_cb)
 		editor.get_toolbutton("OpenToolButton").props.sensitive = True
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
+		name, shortcut, description, category = (
+			"show-open-dialog", 
+			"<ctrl>o", 
+			_("Open a new file"), 
+			_("File Operations")
+		)
+		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
+		name, shortcut, description, category = (
+			"show-remote-dialog", 
+			"<ctrl>l", 
+			_("Open a file at a remote location"), 
+			_("File Operations")
+		)
+		self.__trigger2 = self.create_trigger(name, shortcut, description, category)
+		name, shortcut, description, category = (
+			"show-newfile-dialog", 
+			"<ctrl><shift>o", 
+			_("Create a new file and open it"), 
+			_("File Operations")
+		)
+		self.__trigger3 = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None
-		self.__trigger1 = self.__create_trigger("show_open_dialog", "<ctrl>o")
-		self.__trigger2 = self.__create_trigger("show_remote_dialog", "<ctrl>l")
-		self.__trigger3 = self.__create_trigger("show_newfile_dialog", "<ctrl><shift>o")
 		return
-
-	def __destroy(self):
-		if self.__manager: self.__manager.destroy()
-		triggers = (self.__trigger1, self.__trigger2, self.__trigger3)
-		self.__editor.remove_triggers(triggers)
-		self.__editor.disconnect_signal(self.__sigid1, self.__trigger1)
-		self.__editor.disconnect_signal(self.__sigid3, self.__trigger1)
-		self.__editor.disconnect_signal(self.__sigid3, self.__trigger3)
-		del self
-		self = None
-		return
-
-	def __get_manager(self):
-		if self.__manager: return self.__manager
-		from Manager import Manager
-		self.__manager = Manager(self.__editor)
-		return self.__manager
-
-	def __create_trigger(self, name, shortcut):
-		trigger = self.__editor.create_trigger(name, shortcut)
-		self.__editor.add_trigger(trigger)
-		return trigger
-
-	def __open_dialog_cb(self, *args):
-		self.__get_manager().show_open_dialog()
-		return False
-
-	def __remote_dialog_cb(self, *args):
-		self.__get_manager().show_remote_dialog()
-		return False
-
-	def __newfile_dialog_cb(self, *args):
-		self.__get_manager().show_newfile_dialog()
-		return False
 
 	def destroy(self):
-		self.__destroy()
-		return
+		self.disconnect()
+		self.remove_triggers()
+		if self.__manager: self.__manager.destroy()
+		del self
+		return False
+
+	def __create_manager(self):
+		from Manager import Manager
+		return Manager(self.__editor)
+
+	def __activate_cb(self, trigger):
+		if self.__manager is None: self.__manager = self.__create_manager()
+		dictionary = {
+			"show-open-dialog": self.__manager.show_open_dialog,
+			"show-remote-dialog": self.__manager.show_remote_dialog,
+			"show-newfile-dialog": self.__manager.show_newfile_dialog,
+		}
+		dictionary[trigger.name]()
+		return False

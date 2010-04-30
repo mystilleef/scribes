@@ -1,48 +1,53 @@
-class Trigger(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+from SCRIBES.TriggerManager import TriggerManager
+from gettext import gettext as _
+
+class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
+		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.__sigid1 = self.__trigger1.connect("activate", self.__show_cb)
-		self.__sigid2 = self.__trigger2.connect("activate", self.__show_replace_cb)
-		self.__editor.get_toolbutton("SearchToolButton").props.sensitive = True
-		self.__editor.get_toolbutton("ReplaceToolButton").props.sensitive = True
+		self.connect(self.__trigger1, "activate", self.__activate_cb)
+		self.connect(self.__trigger2, "activate", self.__activate_cb)
+		editor.get_toolbutton("SearchToolButton").props.sensitive = True
+		editor.get_toolbutton("ReplaceToolButton").props.sensitive = True
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__trigger1 = self.__create_trigger("show_findbar", "<ctrl>f")
-		self.__trigger2 = self.__create_trigger("show_replacebar", "<ctrl>r")
+		name, shortcut, description, category = (
+			"show-findbar", 
+			"<ctrl>f", 
+			_("Search for text"), 
+			_("Navigation Operations")
+		)
+		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
+		name, shortcut, description, category = (
+			"show-replacebar", 
+			"<ctrl>r", 
+			_("Search for and replace text"), 
+			_("Navigation Operations")
+		)
+		self.__trigger2 = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None
 		return
 
-	def __create_trigger(self, name, shortcut):
-		trigger = self.__editor.create_trigger(name, shortcut)
-		self.__editor.add_trigger(trigger)
-		return trigger
-
-	def __show_cb(self, *args):
-		try:
-			self.__manager.show()
-		except AttributeError:
-			from Manager import Manager
-			self.__manager = Manager(self.__editor)
-			self.__manager.show()
-		return
-
-	def __show_replace_cb(self, *args):
-		try:
-			self.__manager.show_replacebar()
-		except AttributeError:
-			from Manager import Manager
-			self.__manager = Manager(self.__editor)
-			self.__manager.show_replacebar()
-		return
-
 	def destroy(self):
+		self.disconnect()
+		self.remove_triggers()
 		if self.__manager: self.__manager.destroy()
-		triggers = (self.__trigger1, self.__trigger2)
-		self.__editor.remove_triggers(triggers)
-		self.__editor.disconnect_signal(self.__sigid1, self.__trigger1)
-		self.__editor.disconnect_signal(self.__sigid2, self.__trigger2)
 		del self
-		self = None
+		return False
+
+	def __get_manager(self):
+		from Manager import Manager
+		return Manager(self.__editor)
+
+	def __activate_cb(self, trigger):
+		if not self.__manager: self.__manager = self.__get_manager()
+		function = {
+			self.__trigger1: self.__manager.show,
+			self.__trigger2: self.__manager.show_replacebar,
+		}
+		function[trigger]()
 		return

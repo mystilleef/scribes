@@ -49,19 +49,19 @@ class PopupMenuItem(ImageMenuItem):
 
 	def __activate_cb(self, menuitem):
 		if menuitem == self.__menuitem1:
-			self.__editor.trigger("join_line")
+			self.__editor.trigger("join-line")
 		elif menuitem == self.__menuitem2:
-			self.__editor.trigger("duplicate_line")
+			self.__editor.trigger("duplicate-line")
 		elif menuitem == self.__menuitem3:
-			self.__editor.trigger("delete_line")
+			self.__editor.trigger("delete-line")
 		elif menuitem == self.__menuitem4:
-			self.__editor.trigger("free_line_below")
+			self.__editor.trigger("free-line-below")
 		elif menuitem == self.__menuitem5:
-			self.__editor.trigger("free_line_above")
+			self.__editor.trigger("free-line-above")
 		elif menuitem == self.__menuitem6:
-			self.__editor.trigger("delete_cursor_to_end")
+			self.__editor.trigger("delete-cursor-to-end")
 		elif menuitem == self.__menuitem7:
-			self.__editor.trigger("delete_cursor_to_begin")
+			self.__editor.trigger("delete-cursor-to-start")
 		return True
 
 	def __destroy_cb(self, *args):
