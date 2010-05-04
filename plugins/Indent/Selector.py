@@ -24,6 +24,7 @@ class Selector(SignalManager):
 		return 
 
 	def __select(self):
+		if self.__offsets is None or self.__indentation is None: return False
 		get_iter = self.__editor.textbuffer.get_iter_at_line_offset
 		if len(self.__offsets) == 1:
 			indentation = self.__indentation[0]

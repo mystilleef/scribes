@@ -7,7 +7,7 @@ class Processor(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(manager, "extracted-text", self.__text_cb)
+		self.connect(manager, "extracted-text", self.__text_cb, True)
 		self.connect(manager, "indent", self.__indent_cb)
 		self.connect(manager, "unindent", self.__unindent_cb)
 
@@ -31,10 +31,17 @@ class Processor(SignalManager):
 		return False
 
 	def __process_text(self, text):
-		lines = text.splitlines()
-		use_tabs = not self.__textview.get_insert_spaces_instead_of_tabs()
-		indentation_width = self.__textview.get_tab_width()
-		lines = [self.__process_line(line, use_tabs, indentation_width) for line in lines]
+		try:
+			lines = text.splitlines()
+			# Properly indent empty lines at the end of a selection.
+			if len(lines) < self.__editor.selection_range: lines.append("")
+			use_tabs = not self.__textview.get_insert_spaces_instead_of_tabs()
+			indentation_width = self.__textview.get_tab_width()
+			if not lines: raise ValueError 
+			lines = [self.__process_line(line, use_tabs, indentation_width) for line in lines]
+		except ValueError:
+			if self.__function == self.__indent: return "\t" if use_tabs else " " * indentation_width
+			return ""
 		return "\n".join(lines)
 
 	def __process_line(self, line, use_tabs, indentation_width):

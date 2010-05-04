@@ -66,7 +66,7 @@ class Monitor(object):
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = idle_add(self.__send_valid_string, priority=9999)
+			self.__timer = idle_add(self.__send_valid_string, priority=999999)
 		return False
 
 	def __send_valid_string(self):
@@ -76,7 +76,7 @@ class Monitor(object):
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(250, self.__send, priority=9999)
+			self.__timer = timeout_add(250, self.__send, priority=999999)
 		return False
 
 	def __is_valid_character(self, character):

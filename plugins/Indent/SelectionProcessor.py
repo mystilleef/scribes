@@ -23,6 +23,7 @@ class Processor(SignalManager):
 	def __send_indent(self, text):
 		plines = text.splitlines()
 		olines = self.__text.splitlines()
+		if not plines or not olines: return False
 		if len(plines) > 1:
 			bindentation = len(plines[0]) - len(olines[0])
 			eindentation = len(plines[-1]) - len(olines[-1])
