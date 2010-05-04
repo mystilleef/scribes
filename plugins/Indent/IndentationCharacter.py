@@ -1,10 +1,13 @@
-class Character(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Character(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("indent", self.__process_cb)
-		self.__sigid3 = manager.connect("unindent", self.__process_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "indent", self.__process_cb)
+		self.connect(manager, "unindent", self.__process_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -21,11 +24,8 @@ class Character(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
+		self.disconnect()
 		del self
-		self = None
 		return
 
 	def __destroy_cb(self, *args):

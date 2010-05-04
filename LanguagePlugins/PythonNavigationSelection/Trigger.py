@@ -75,7 +75,7 @@ class Trigger(SignalManager, TriggerManager):
 		return manager
 
 	def __activate_cb(self, trigger):
-		if not self.__manager: self.__manager = self.__create_manager(self.__editor)
+		if not self.__manager: self.__manager = self.__create_manager()
 		function = {
 			self.__trigger1: self.__manager.previous_block,
 			self.__trigger2: self.__manager.next_block,

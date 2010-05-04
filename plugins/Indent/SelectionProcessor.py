@@ -1,10 +1,13 @@
-class Processor(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Processor(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("extracted-text", self.__extract_cb)
-		self.__sigid3= manager.connect("iprocessed-text", self.__processed_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "extracted-text", self.__extract_cb)
+		self.connect(manager, "iprocessed-text", self.__processed_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -13,11 +16,8 @@ class Processor(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
+		self.disconnect()
 		del self
-		self = None
 		return 
 
 	def __send_indent(self, text):

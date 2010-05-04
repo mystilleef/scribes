@@ -1,11 +1,14 @@
-class Selector(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Selector(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect_after("inserted-text", self.__insert_cb)
-		self.__sigid3 = manager.connect("offsets", self.__offsets_cb)
-		self.__sigid4 = manager.connect("indentation", self.__indentation_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "inserted-text", self.__insert_cb)
+		self.connect(manager, "offsets", self.__offsets_cb)
+		self.connect(manager, "indentation", self.__indentation_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -16,17 +19,12 @@ class Selector(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.disconnect()
 		del self
-		self = None
 		return 
 
 	def __select(self):
 		get_iter = self.__editor.textbuffer.get_iter_at_line_offset
-		self.__editor.response()
 		if len(self.__offsets) == 1:
 			indentation = self.__indentation[0]
 			offset = self.__offsets[0][1]
@@ -45,7 +43,6 @@ class Selector(object):
 			end = get_iter(self.__offsets[1][0], eoffset)
 			self.__buffer.place_cursor(start)
 			self.__buffer.select_range(start, end)
-		self.__editor.response()
 		self.__indentation = None
 		self.__offsets = None
 		self.__manager.emit("complete")
@@ -56,8 +53,13 @@ class Selector(object):
 		return False
 
 	def __insert_cb(self, *args):
-		from gobject import timeout_add, idle_add
-		timeout_add(200, self.__select, priority=9999)
+		try:
+			from gobject import timeout_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = timeout_add(5, self.__select)
 		return False
 
 	def __offsets_cb(self, manager, offsets):

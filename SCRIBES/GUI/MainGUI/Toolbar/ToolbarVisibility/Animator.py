@@ -50,7 +50,7 @@ class Animator(SignalManager):
 		y = int(self.__get_y(direction))
 		self.__editor.textview.move_child(self.__container, x, y)
 		if not self.__container.get_property("visible"): self.__container.show_all()
-		self.__editor.response()
+#		self.__editor.response()
 		return False
 
 	def __move(self, direction):
@@ -112,7 +112,7 @@ class Animator(SignalManager):
 		return False
 
 	def __compile(self):
-		self.__editor.optimize((self.__move,))
+		self.__editor.optimize((self.__move, self.__move_on_idle))
 		return False
 
 	def __quit_cb(self, *args):

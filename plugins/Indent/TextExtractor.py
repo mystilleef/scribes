@@ -1,21 +1,22 @@
-class Extractor(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Extractor(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("marks", self.__marks_cb)
-	
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "marks", self.__marks_cb)
+
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		return 
+		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		del self
-		self = None
-		return 
+		return
 
 	def __send_text(self, marks):
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])

@@ -15,6 +15,8 @@ class Animator(SignalManager):
 		self.connect(manager, "bar-size", self.__bsize_cb)
 		self.connect(manager, "view-size", self.__vsize_cb)
 		self.connect(manager, "bar", self.__bar_cb)
+		from gobject import idle_add
+		idle_add(self.__compile, priority=9999)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -55,7 +57,7 @@ class Animator(SignalManager):
 		y = int(self.__get_y(direction))
 		self.__editor.textview.move_child(self.__bar, x, y)
 		if not self.__bar.get_property("visible"): self.__bar.show_all()
-		self.__editor.response()
+#		self.__editor.response()
 		return False
 
 	def __move(self, direction):
@@ -115,6 +117,10 @@ class Animator(SignalManager):
 			"right": self.__bwidth,
 		}
 		self.__end_point = dictionary[direction]
+		return False
+
+	def __compile(self):
+		self.__editor.optimize((self.__move, self.__move_on_idle))
 		return False
 
 	def __quit_cb(self, *args):

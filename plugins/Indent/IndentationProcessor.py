@@ -1,13 +1,15 @@
+from SCRIBES.SignalConnectionManager import SignalManager
 from gettext import gettext as _
 
-class Processor(object):
+class Processor(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("extracted-text", self.__text_cb)
-		self.__sigid3 = manager.connect("indent", self.__indent_cb)
-		self.__sigid4 = manager.connect("unindent", self.__unindent_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "extracted-text", self.__text_cb)
+		self.connect(manager, "indent", self.__indent_cb)
+		self.connect(manager, "unindent", self.__unindent_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -17,12 +19,8 @@ class Processor(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.disconnect()
 		del self
-		self = None
 		return 
 
 	def __send_indented_text(self, text):
@@ -40,11 +38,9 @@ class Processor(object):
 		return "\n".join(lines)
 
 	def __process_line(self, line, use_tabs, indentation_width):
-		self.__editor.response()
 		characters = self.__get_indent_characters(line)
 		characters = self.__get_new_indentation(characters, indentation_width)
 		if use_tabs: characters = "\t" * (len(characters)/indentation_width)
-		self.__editor.response
 		return characters + line.lstrip(" \t")
 
 	def __get_indent_characters(self, line):

@@ -49,5 +49,4 @@ class Manager(GObject):
 	def destroy(self):
 		self.emit("destroy")
 		del self
-		self = None
 		return
