@@ -21,7 +21,7 @@ class Processor(SignalManager):
 	def __destroy(self):
 		self.disconnect()
 		del self
-		return 
+		return
 
 	def __send_indented_text(self, text):
 		text = self.__process_text(text)
@@ -32,17 +32,18 @@ class Processor(SignalManager):
 
 	def __process_text(self, text):
 		try:
-			lines = text.splitlines()
+			lines = text.split("\n")
 			# Properly indent empty lines at the end of a selection.
 			if len(lines) < self.__editor.selection_range: lines.append("")
 			use_tabs = not self.__textview.get_insert_spaces_instead_of_tabs()
 			indentation_width = self.__textview.get_tab_width()
-			if not lines: raise ValueError 
+			if not lines: raise ValueError
 			lines = [self.__process_line(line, use_tabs, indentation_width) for line in lines]
 		except ValueError:
 			if self.__function == self.__indent: return "\t" if use_tabs else " " * indentation_width
 			return ""
 		return "\n".join(lines)
+
 
 	def __process_line(self, line, use_tabs, indentation_width):
 		characters = self.__get_indent_characters(line)
@@ -73,7 +74,7 @@ class Processor(SignalManager):
 	def __dedent(self, number_of_characters, indentation_width, remainder):
 		message = _("Dedented line(s)")
 		self.__editor.update_message(message, "pass")
-		if number_of_characters == 0: return ""
+		if number_of_characters < 1: return ""
 		dedent = remainder if remainder else indentation_width
 		return " " * (number_of_characters - dedent)
 

@@ -6,7 +6,7 @@ class Selector(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(manager, "inserted-text", self.__insert_cb)
+		self.connect(manager, "inserted-text", self.__insert_cb, True)
 		self.connect(manager, "offsets", self.__offsets_cb)
 		self.connect(manager, "indentation", self.__indentation_cb)
 
@@ -55,12 +55,12 @@ class Selector(SignalManager):
 
 	def __insert_cb(self, *args):
 		try:
-			from gobject import timeout_add, source_remove
+			from gobject import timeout_add, source_remove, idle_add
 			source_remove(self.__timer)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(5, self.__select)
+			self.__timer = idle_add(self.__select)
 		return False
 
 	def __offsets_cb(self, manager, offsets):

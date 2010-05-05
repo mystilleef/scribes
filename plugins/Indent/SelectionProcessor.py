@@ -1,4 +1,5 @@
 from SCRIBES.SignalConnectionManager import SignalManager
+NEWLINE = "\n"
 
 class Processor(SignalManager):
 
@@ -21,8 +22,8 @@ class Processor(SignalManager):
 		return 
 
 	def __send_indent(self, text):
-		plines = text.splitlines()
-		olines = self.__text.splitlines()
+		plines = text.split(NEWLINE)
+		olines = self.__text.split(NEWLINE)
 		if not plines or not olines: return False
 		if len(plines) > 1:
 			bindentation = len(plines[0]) - len(olines[0])
