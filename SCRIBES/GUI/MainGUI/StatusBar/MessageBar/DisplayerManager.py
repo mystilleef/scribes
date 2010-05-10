@@ -11,6 +11,7 @@ class Manager(SignalManager):
 		self.connect(manager, "show", self.__show_cb)
 		self.connect(manager, "visible", self.__visible_cb)
 		self.connect(manager, "animation", self.__animate_cb)
+		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
@@ -24,6 +25,7 @@ class Manager(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
+		self.__editor.unregister_object(self)
 		del self
 		return False
 

@@ -17,7 +17,7 @@ class Trigger(SignalManager, TriggerManager):
 			"select-inside-brackets", 
 			"<alt>b", 
 			_("Select text inside brackets"), 
-			_("Selection")
+			_("Selection Operations")
 		)
 		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		return

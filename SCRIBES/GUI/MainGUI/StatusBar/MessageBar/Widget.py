@@ -10,6 +10,8 @@ class Widget(SignalManager):
 		self.__emit()
 		self.__update_public_api()
 		self.connect(editor, "quit", self.__quit_cb)
+		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -25,7 +27,7 @@ class Widget(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
-		self.__bar.destroy()
+		self.__editor.unregister_object(self)
 		del self
 		return False
 

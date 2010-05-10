@@ -17,6 +17,8 @@ class Animator(SignalManager):
 		self.connect(manager, "bar", self.__bar_cb)
 		from gobject import idle_add
 		idle_add(self.__compile, priority=9999)
+		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -35,6 +37,7 @@ class Animator(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
+		self.__editor.unregister_object(self)
 		del self
 		return False
 

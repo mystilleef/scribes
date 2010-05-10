@@ -33,7 +33,7 @@ class Trigger(SignalManager, TriggerManager):
 			"reflow-paragraph",
 			"<alt>q",
 			_("Reflow a paragraph"),
-			_("Navigation Operations")
+			_("Text Operations")
 		)
 		self.__trigger3 = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None

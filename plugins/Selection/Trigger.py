@@ -20,28 +20,28 @@ class Trigger(SignalManager, TriggerManager):
 			"select-word",
 			"<alt>w",
 			_("Select current word"),
-			_("Text Operations")
+			_("Selection Operations")
 		)
 		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
 		name, shortcut, description, category = (
 			"select-sentence",
 			"<alt>s",
 			_("Select current statement"),
-			_("Text Operations")
+			_("Selection Operations")
 		)
 		self.__trigger2 = self.create_trigger(name, shortcut, description, category)
 		name, shortcut, description, category = (
 			"select-line",
 			"<alt>l",
 			_("Select current line"),
-			_("Text Operations")
+			_("Selection Operations")
 		)
 		self.__trigger3 = self.create_trigger(name, shortcut, description, category)
 		name, shortcut, description, category = (
 			"select-paragraph",
 			"<alt>p",
 			_("Select current paragraph"),
-			_("Text Operations")
+			_("Selection Operations")
 		)
 		self.__trigger4 = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None

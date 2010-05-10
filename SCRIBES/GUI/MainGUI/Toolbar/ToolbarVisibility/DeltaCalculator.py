@@ -10,6 +10,8 @@ class Calculator(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "size", self.__size_cb)
+		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -18,6 +20,7 @@ class Calculator(SignalManager):
 	
 	def __destroy(self):
 		self.disconnect()
+		self.__editor.unregister_object(self)
 		del self 
 		return False
 

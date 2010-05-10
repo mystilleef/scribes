@@ -9,6 +9,8 @@ class Sensor(SignalManager):
 		self.__id = self.connect(editor.textview, "motion-notify-event", self.__motion_cb)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "visible", self.__visible_cb)
+		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -20,6 +22,7 @@ class Sensor(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
+		self.__editor.unregister_object(self)
 		del self
 		return False
 

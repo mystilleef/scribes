@@ -18,7 +18,7 @@ class Trigger(SignalManager, TriggerManager):
 			"show-white-spaces", 
 			"<alt>period", 
 			_("Show or hide white spaces"), 
-			_("General Operations")
+			_("Miscellaneous Operations")
 		)
 		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		return

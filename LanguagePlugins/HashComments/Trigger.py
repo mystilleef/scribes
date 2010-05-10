@@ -16,7 +16,7 @@ class Trigger(SignalManager, TriggerManager):
 			"toggle-comment",
 			"<alt>c",
 			_("(Un)comment line or selected lines"),
-			_("Line")
+			_("Line Operations")
 		)
 		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None

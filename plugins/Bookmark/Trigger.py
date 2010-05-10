@@ -21,21 +21,21 @@ class Trigger(SignalManager, TriggerManager):
 			"toggle-bookmark", 
 			"<ctrl>d", 
 			_("Add or remove bookmark on a line"), 
-			_("Navigation")
+			_("Navigation Operations")
 		)
 		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
 		name, shortcut, description, category = (
 			"remove-all-bookmarks", 
 			"<ctrl><alt>b", 
 			_("Remove all bookmarks"), 
-			_("Navigation")
+			_("Navigation Operations")
 		)
 		self.__trigger2 = self.create_trigger(name, shortcut, description, category)
 		name, shortcut, description, category = (
 			"show-bookmark-browser", 
 			"<ctrl>b", 
 			_("Navigate bookmarks"), 
-			_("Naviagtion")
+			_("Navigation Operations")
 		)
 		self.__trigger3 = self.create_trigger(name, shortcut, description, category)
 		self.__browser = None

@@ -59,8 +59,3 @@ class Compositor(SignalManager):
 		cr.region(region)
 		cr.fill()
 		return False
-
-	def __(self, parameters):
-		return value
-
-

@@ -16,8 +16,6 @@ class Manager(Signal):
 		Displayer(self, editor)
 		from DisplayerManager import Manager
 		Manager(self, editor)
-#		from Positioner import Positioner
-#		Positioner(self, editor)
 		from ViewSizeUpdater import Updater
 		Updater(self, editor)
 		from BarSizeUpdater import Updater

@@ -20,21 +20,21 @@ class Trigger(SignalManager, TriggerManager):
 			"togglecase", 
 			"<alt>u", 
 			_("Convert the case of text"), 
-			_("Text Manipulation")
+			_("Case Operations")
 		)		
 		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
 		name, shortcut, description, category = (
 			"titlecase", 
 			"<alt><shift>u", 
 			_("Convert text to title case"), 
-			_("Text Manipulation")
+			_("Case Operations")
 		)
 		self.__trigger2 = self.create_trigger(name, shortcut, description, category)
 		name, shortcut, description, category = (
 			"swapcase", 
 			"<alt><shift>l", 
 			_("Swap the case of text"), 
-			_("Text Manipulation")
+			_("Case Operations")
 		)
 		self.__trigger3 = self.create_trigger(name, shortcut, description, category)
 		return

@@ -6,11 +6,13 @@ class Displayer(SignalManager):
 		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
+		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "bar", self.__bar_cb)
 		self.connect(manager, "_hide", self.__hide_cb)
 		self.connect(manager, "_show", self.__show_cb)
 		self.connect(manager, "bar-size", self.__bsize_cb)
 		self.connect(manager, "view-size", self.__vsize_cb)
+		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
@@ -25,6 +27,7 @@ class Displayer(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
+		self.__editor.unregister_object(self)
 		del self
 		return False
 
@@ -66,4 +69,8 @@ class Displayer(SignalManager):
 
 	def __bsize_cb(self, manager, size):
 		self.__bwidth, self.__bheight = size
+		return False
+
+	def __quit_cb(self, *args):
+		self.__destroy()
 		return False

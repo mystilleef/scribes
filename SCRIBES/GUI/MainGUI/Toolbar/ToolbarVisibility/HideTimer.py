@@ -12,6 +12,8 @@ class Timer(SignalManager):
 		self.connect(manager, "visible", self.__visible_cb)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.__block()
+		editor.register_object(self)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -23,6 +25,7 @@ class Timer(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
+		self.__editor.unregister_object(self)
 		del self
 		return False
 

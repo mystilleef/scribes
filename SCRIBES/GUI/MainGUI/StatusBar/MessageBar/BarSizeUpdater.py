@@ -10,6 +10,7 @@ class Updater(SignalManager):
 		self.connect(manager, "bar", self.__bar_cb)
 #		self.connect(manager, "slide", self.__size_cb)
 #		self.connect(manager, "visible", self.__visible_cb)
+		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
@@ -22,6 +23,7 @@ class Updater(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
+		self.__editor.unregister_object(self)
 		del self
 		return False
 

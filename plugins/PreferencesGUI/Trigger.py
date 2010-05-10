@@ -17,7 +17,7 @@ class Trigger(SignalManager, TriggerManager):
 			"show-preferences-window", 
 			"F12", 
 			_("Show preferences window"), 
-			_("General Operations")
+			_("Miscellaneous Operations")
 		)
 		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None

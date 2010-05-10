@@ -16,7 +16,7 @@ class Trigger(SignalManager, TriggerManager):
 			"close-reopen", 
 			"<ctrl><shift>n", 
 			_("Close current window and reopen a new one"), 
-			_("Window")
+			_("Window Operations")
 		)
 		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		return
