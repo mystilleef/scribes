@@ -12,13 +12,14 @@ class Entry(object):
 		self.__sigid8 = self.__entry.connect("button-press-event", self.__button_press_event_cb)
 		self.__sigid9 = self.__entry.connect("activate", self.__activate_cb)
 		self.__sigid10 = self.__entry.connect("changed", self.__changed_cb)
+		self.__sigid11 = manager.connect("show-replacebar", self.__changed_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
 		self.__entry = manager.gui.get_widget("ReplaceEntry")
 		return
-	
+
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
@@ -30,6 +31,7 @@ class Entry(object):
 		self.__editor.disconnect_signal(self.__sigid8, self.__entry)
 		self.__editor.disconnect_signal(self.__sigid9, self.__entry)
 		self.__editor.disconnect_signal(self.__sigid10, self.__entry)
+		self.__editor.disconnect_signal(self.__sigid11, self.__manager)
 		self.__entry.destroy()
 		del self
 		self = None
@@ -43,7 +45,7 @@ class Entry(object):
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
-	
+
 	def __reset_cb(self, *args):
 		self.__entry.props.sensitive = False
 		return False

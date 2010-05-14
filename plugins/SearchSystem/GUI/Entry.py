@@ -52,6 +52,7 @@ class Entry(object):
 		self.__entry.grab_focus()
 		text = self.__entry.get_text()
 		self.__manager.emit("search-string", text)
+		self.__entry.activate()
 		return False
 
 	def __change_timeout(self):

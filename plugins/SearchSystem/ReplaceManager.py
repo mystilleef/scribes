@@ -22,7 +22,7 @@ class Manager(object):
 		self.__selected_mark = None
 		self.__marks = None
 		self.__string = ""
-		self.__search_string = None
+		self.__search_string = ""
 		return
 
 	def __destroy(self, *args):
@@ -40,15 +40,19 @@ class Manager(object):
 		return
 
 	def __reset_flags(self):
-		self.__selected_mark, self.__marks, self.__string = None, None, None
+		self.__selected_mark, self.__marks, self.__string = None, None, ""
 		return False
 
 	def __replace(self, marks):
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
 		end = self.__editor.textbuffer.get_iter_at_mark(marks[1])
+		self.__editor.textbuffer.begin_user_action()
+		self.__editor.response()
 		self.__editor.textbuffer.delete(start, end)
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
-		self.__editor.textbuffer.insert(start, self.__string or "")
+		self.__editor.textbuffer.insert(start, self.__string)
+		self.__editor.response()
+		self.__editor.textbuffer.end_user_action()
 		self.__manager.emit("replaced-mark", marks)
 		message = _("Replaced '%s' with '%s'") % (self.__search_string, self.__string)
 		self.__editor.update_message(message, "pass", 10)
