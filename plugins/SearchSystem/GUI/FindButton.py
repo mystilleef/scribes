@@ -8,6 +8,7 @@ class Button(object):
 		self.__sigid4 = manager.connect("match-index", self.__index_cb)
 		self.__sigid5 = manager.connect("reset", self.__reset_cb)
 		self.__sigid6 = manager.connect("found-matches", self.__found_cb)
+		self.__sigid7 = manager.connect("no-search-string", self.__no_search_cb)
 		self.__manager.set_data("activate_button", self.__button)
 
 	def __init_attributes(self, manager, editor):
@@ -23,10 +24,11 @@ class Button(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		self.__button.destroy()
 		del self
 		self = None
-		return 
+		return
 
 	def __check_sensitive(self, index):
 		sensitive = False if index == (1, 1) else False
@@ -58,4 +60,8 @@ class Button(object):
 
 	def __found_cb(self, manager, matches):
 		if not matches: self.__button.props.sensitive = False
+		return False
+
+	def __no_search_cb(self, *args):
+		self.__button.props.sensitive = False
 		return False

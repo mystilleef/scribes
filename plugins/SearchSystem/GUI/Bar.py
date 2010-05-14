@@ -15,7 +15,7 @@ class Bar(object):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__container = manager.gui.get_widget("Table")
+		self.__container = manager.gui.get_widget("alignment1")
 		return
 
 	def __destroy(self):

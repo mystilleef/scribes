@@ -8,6 +8,7 @@ class Button(object):
 		self.__sigid4 = manager.connect("search-string", self.__reset_cb)
 		self.__sigid5 = manager.connect("replace-entry-activated", self.__activated_cb)
 		self.__sigid6 = manager.connect("found-matches", self.__found_matches_cb)
+		self.__sigid8 = manager.connect("no-search-string", self.__reset_cb)
 		self.__sigid7 = self.__button.connect("clicked", self.__clicked_cb)
 
 	def __init_attributes(self, manager, editor):
@@ -24,6 +25,7 @@ class Button(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid7, self.__button)
+		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
 		self.__button.destroy()
 		del self
 		self = None

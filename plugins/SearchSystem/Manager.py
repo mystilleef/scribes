@@ -12,6 +12,7 @@ class Manager(GObject):
 		"show-bar": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"show-replacebar": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"hide-bar": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"no-search-string": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"search-string": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"new-pattern": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"new-regex": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),

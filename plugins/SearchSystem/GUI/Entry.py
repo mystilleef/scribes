@@ -56,10 +56,14 @@ class Entry(object):
 		return False
 
 	def __change_timeout(self):
-		text = self.__entry.get_text()
-		self.__manager.emit("search-string", text)
-		if self.__findasyoutype is False: return False
-		self.__manager.emit("search")
+		try:
+			text = self.__entry.get_text()
+			self.__manager.emit("search-string", text)
+			if not text: raise ValueError
+			if self.__findasyoutype is False: return False
+			self.__manager.emit("search")
+		except ValueError:
+			self.__manager.emit("no-search-string")
 		return False
 
 	def __change_idleadd(self):

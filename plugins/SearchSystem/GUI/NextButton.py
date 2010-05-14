@@ -6,6 +6,7 @@ class Button(object):
 		self.__sigid2 = self.__button.connect("clicked", self.__clicked_cb)
 		self.__sigid3 = manager.connect("match-index", self.__index_cb)
 		self.__sigid4 = manager.connect("reset", self.__reset_cb)
+		self.__sigid5 = manager.connect("no-search-string", self.__reset_cb)
 		self.__button.props.sensitive = False
 
 	def __init_attributes(self, manager, editor):
@@ -19,6 +20,7 @@ class Button(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__button)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__button.destroy()
 		del self
 		self = None

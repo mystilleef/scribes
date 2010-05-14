@@ -19,7 +19,7 @@
 
 GETTEXT_PACKAGE = scribes
 PACKAGE = scribes
-VERSION = 0.4-dev-build550
+VERSION = 0.4-dev-build551
 
 SHELL = /bin/bash
 

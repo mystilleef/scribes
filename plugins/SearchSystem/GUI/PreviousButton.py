@@ -9,6 +9,7 @@ class Button(object):
 		self.__sigid6 = manager.connect("hide-bar", self.__reset_cb)
 		self.__sigid5 = manager.connect("back-button", self.__activate_cb)
 		self.__sigid7 = manager.connect("search-string", self.__search_string_cb)
+		self.__sigid8 = manager.connect("no-search-string", self.__reset_cb)
 		self.__button.props.sensitive = False
 
 	def __init_attributes(self, manager, editor):
@@ -25,6 +26,7 @@ class Button(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
 		self.__button.destroy()
 		del self
 		self = None
