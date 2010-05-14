@@ -44,6 +44,7 @@ class Manager(object):
 		return False
 
 	def __replace(self, marks):
+		if not self.__search_string: return
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
 		end = self.__editor.textbuffer.get_iter_at_mark(marks[1])
 		self.__editor.textbuffer.begin_user_action()
@@ -59,6 +60,7 @@ class Manager(object):
 		return 
 
 	def __replace_all(self):
+		if not self.__search_string: return False
 		[self.__replace(mark) for mark in self.__marks]
 		message = _("Replaced all occurrences of '%s' with '%s'") % (self.__search_string, self.__string)
 		self.__editor.update_message(message, "pass", 10)

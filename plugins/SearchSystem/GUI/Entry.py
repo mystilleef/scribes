@@ -118,6 +118,10 @@ class Entry(object):
 
 	def __search_mode_flag_cb(self, manager, mode):
 		self.__findasyoutype = True if mode == "findasyoutype" else False
+		text = self.__entry.get_text()
+		self.__entry.set_text("")
+		self.__entry.set_text(text)
+		self.__entry.grab_focus()
 		return False
 
 	def __precompile_methods(self):

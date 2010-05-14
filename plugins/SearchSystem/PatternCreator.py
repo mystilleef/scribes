@@ -28,14 +28,20 @@ class Creator(object):
 
 	def __create_pattern(self):
 		try:
+			if not self.__string: raise AssertionError
 			if self.__regex_mode: raise ValueError
 			from re import escape
 			string = escape(self.__string)
 			pattern = r"\b%s\b" % string if self.__match_word else r"%s" % string
 		except ValueError:
 			pattern = r"%s" % self.__string
+		except AssertionError:
+			self.__manager.emit("reset")
+			message = _("ERROR: Empty search string")
+			self.__editor.update_message(message, "fail", 10)
+			self.__manager.emit("search-complete")
 		finally:
-			self.__manager.emit("new-pattern", pattern)
+			if self.__string: self.__manager.emit("new-pattern", pattern)
 		return 
 
 	def __destroy_cb(self, *args):

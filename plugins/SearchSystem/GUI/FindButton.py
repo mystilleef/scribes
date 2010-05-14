@@ -9,12 +9,14 @@ class Button(object):
 		self.__sigid5 = manager.connect("reset", self.__reset_cb)
 		self.__sigid6 = manager.connect("found-matches", self.__found_cb)
 		self.__sigid7 = manager.connect("no-search-string", self.__no_search_cb)
+		self.__sigid8 = manager.connect("search-mode-flag", self.__search_mode_flag_cb)
 		self.__manager.set_data("activate_button", self.__button)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
 		self.__button = manager.gui.get_widget("FindButton")
+		self.__string = ""
 		return
 
 	def __destroy(self):
@@ -25,6 +27,7 @@ class Button(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
 		self.__button.destroy()
 		del self
 		self = None
@@ -45,7 +48,13 @@ class Button(object):
 		return False
 
 	def __search_string_cb(self, manager, string):
+		self.__string = string
 		sensitive = True if string else False
+		self.__button.props.sensitive = sensitive
+		return False
+
+	def __search_mode_flag_cb(self, *args):
+		sensitive = True if self.__string else False
 		self.__button.props.sensitive = sensitive
 		return False
 
@@ -54,7 +63,8 @@ class Button(object):
 		return False
 
 	def __reset_cb(self, *args):
-		self.__button.props.sensitive = True
+		sensitive = True if self.__string else False
+		self.__button.props.sensitive = sensitive
 		self.__manager.set_data("activate_button", self.__button)
 		return False
 
