@@ -49,10 +49,11 @@ class Entry(object):
 
 	def __show_cb(self, *args):
 		if self.__editor.selection_range > 1: self.__manager.emit("selection-bounds", self.__editor.selection_bounds)
-		self.__entry.grab_focus()
-		text = self.__entry.get_text()
+		text = self.__editor.selected_text if self.__editor.has_selection and self.__editor.selection_range <= 1 else self.__entry.get_text()
 		self.__manager.emit("search-string", text)
-		self.__entry.activate()
+		self.__entry.set_text("")
+		self.__entry.set_text(text)
+		self.__entry.grab_focus()
 		return False
 
 	def __change_timeout(self):
