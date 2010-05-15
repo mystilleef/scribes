@@ -49,6 +49,7 @@ class Entry(object):
 
 	def __reset_cb(self, *args):
 		self.__entry.props.sensitive = False
+		self.__emit_replace_string()
 		return False
 
 	def __found_matches_cb(self, manager, matches):
