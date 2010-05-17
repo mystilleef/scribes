@@ -38,5 +38,7 @@ class Updater(SignalManager):
 		return False 
 
 	def __expose_cb(self, *args):
+#		from gobject import idle_add
+#		idle_add(self.__update, priority=9999)
 		self.__update()
 		return False

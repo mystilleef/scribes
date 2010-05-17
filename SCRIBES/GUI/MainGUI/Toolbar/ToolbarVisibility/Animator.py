@@ -30,6 +30,11 @@ class Animator(SignalManager):
 		return
 
 	def __destroy(self):
+		self.__ttimer, self.__timer1, self.__timer2 = 1, 1, 1
+		from gobject import source_remove
+		source_remove(self.__ttimer)
+		source_remove(self.__timer1)
+		source_remove(self.__timer2)
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
@@ -45,7 +50,7 @@ class Animator(SignalManager):
 		finally:
 			self.__update_animation_start_point(direction)
 			self.__update_animation_end_point(direction)
-			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction)
+			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction, priority=9999)
 		return False
 
 	def __move_on_idle(self, direction):
@@ -53,7 +58,6 @@ class Animator(SignalManager):
 		y = int(self.__get_y(direction))
 		self.__editor.textview.move_child(self.__container, x, y)
 		if not self.__container.get_property("visible"): self.__container.show_all()
-#		self.__editor.response()
 		return False
 
 	def __move(self, direction):
@@ -66,18 +70,16 @@ class Animator(SignalManager):
 			except AttributeError:
 				pass
 			finally:
-				self.__timer1 = idle_add(self.__move_on_idle, direction)
+				self.__timer1 = idle_add(self.__move_on_idle, direction, priority=9999)
 		except ValueError:
 			animate = False
 			self.__manager.emit("animation", "end")
 		return animate
 
 	def __can_end(self, direction):
-		self.__editor.response()
 #		if direction == "left" and self.__start_point <= -2: raise ValueError
 		if direction == "up" and self.__start_point <= -self.__height - 4: raise ValueError
 		if direction == "down" and self.__start_point >= -2: raise ValueError
-		self.__editor.response()
 		return False
 
 	def __get_x(self, direction):
@@ -130,7 +132,6 @@ class Animator(SignalManager):
 			pass
 		finally:
 			self.__ttimer = idle_add(self.__slide, direction, priority=9999)
-#		self.__slide(direction)
 		return False
 
 	def __deltas_cb(self, manager, deltas):

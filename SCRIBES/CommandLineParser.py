@@ -6,13 +6,14 @@ class Parser(object):
 		self.__init_attributes()
 		self.__add_options()
 		self.__args = self.__parser.parse_args()[-1]
+		self.__parser.parse_args()
 
 	def __init_attributes(self):
 		from optparse import OptionParser
 		self.__parser = OptionParser(usage=_("usage: %prog [OPTION...] [FILE...]"),
 			description=_("%prog is a text editor for GNOME.\n\n http://scribes.sf.net/"),
 			)
-		self.__args = []
+		self.__args = [] # self.__parser.parse_args()[-1] # []
 		self.__readonly = False
 		self.__encoding = "utf-8"
 		self.__newfile = False

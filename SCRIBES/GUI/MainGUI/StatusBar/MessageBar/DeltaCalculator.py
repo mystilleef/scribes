@@ -37,5 +37,7 @@ class Calculator(SignalManager):
 		return False
 
 	def __size_cb(self, manager, size):
-		self.__update(size)
+		from gobject import idle_add
+		idle_add(self.__update, size, priority=9999)
+#		self.__update(size)
 		return False

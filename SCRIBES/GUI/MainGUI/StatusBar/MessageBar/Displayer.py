@@ -56,11 +56,15 @@ class Displayer(SignalManager):
 		return False
 
 	def __hide_cb(self, *args):
-		self.__hide()
+		from gobject import idle_add
+		idle_add(self.__hide, priority=9999)
+#		self.__hide()
 		return False
 
 	def __show_cb(self, *args):
-		self.__show()
+		from gobject import idle_add
+		idle_add(self.__show, priority=9999)
+#		self.__show()
 		return False
 
 	def __vsize_cb(self, manager, size):

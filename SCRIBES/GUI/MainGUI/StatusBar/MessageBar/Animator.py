@@ -36,6 +36,11 @@ class Animator(SignalManager):
 		return
 
 	def __destroy(self):
+		self.__timer, self.__timer1, self.__timer2 = 1, 1, 1
+		from gobject import source_remove
+		source_remove(self.__timer)
+		source_remove(self.__timer1)
+		source_remove(self.__timer2)
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
@@ -60,7 +65,6 @@ class Animator(SignalManager):
 		y = int(self.__get_y(direction))
 		self.__editor.textview.move_child(self.__bar, x, y)
 		if not self.__bar.get_property("visible"): self.__bar.show_all()
-#		self.__editor.response()
 		return False
 
 	def __move(self, direction):
@@ -131,8 +135,13 @@ class Animator(SignalManager):
 		return False
 
 	def __slide_cb(self, manager, direction):
-		from gobject import idle_add
-		idle_add(self.__slide, direction, priority=9999)
+		try:
+			from gobject import idle_add, source_remove
+			source_remove(self.__timer2)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer2 = idle_add(self.__slide, direction, priority=9999)
 		return False
 
 	def __deltas_cb(self, manager, deltas):

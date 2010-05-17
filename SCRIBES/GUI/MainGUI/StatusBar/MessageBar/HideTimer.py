@@ -54,7 +54,9 @@ class Timer(SignalManager):
 
 	def __motion_cb(self, *args):
 		if self.__visible is False: return False
-		self.__hide()
+		from gobject import idle_add
+		idle_add(self.__hide, priority=9999)
+#		self.__hide()
 		return False
 
 	def __quit_cb(self, *args):
@@ -64,5 +66,8 @@ class Timer(SignalManager):
 	def __visible_cb(self, manager, visible):
 		self.__visible = visible
 		self.__unblock() if visible else self.__block()
-		if visible: self.__hide()
+		if visible is False: return False
+		from gobject import idle_add
+		idle_add(self.__hide, priority=9999)
+#		if visible: self.__hide()
 		return False

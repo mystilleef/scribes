@@ -45,8 +45,13 @@ class Updater(SignalManager):
 
 	def __size_cb(self, *args):
 		self.__update()
+#		from gobject import idle_add
+#		idle_add(self.__update, priority=9999)
 		return False
 
 	def __visible_cb(self, manager, visible):
 		if visible is False: self.__update()
+#		if visible: return False
+#		from gobject import idle_add
+#		idle_add(self.__update, priority=9999)
 		return False

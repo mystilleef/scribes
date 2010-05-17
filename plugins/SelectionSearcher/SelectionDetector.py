@@ -22,6 +22,8 @@ class Detector(SignalManager):
 	def __emit(self):
 		if self.__editor.has_selection is False: return False
 		if self.__editor.selection_range > 1: return False
+		from Utils import valid_selection
+		if not valid_selection(*self.__editor.selection_bounds): return False
 		self.__manager.emit("search", self.__editor.selected_text)
 		return False
 
