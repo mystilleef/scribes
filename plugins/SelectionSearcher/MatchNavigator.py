@@ -51,7 +51,7 @@ class Navigator(SignalManager):
 		nappend = lambda mark: self.__next_queue.append(mark)
 		for marks in self.__marks:
 			self.__editor.response()
-			mark = marks[0]
+			mark = marks[1]
 			pappend(marks) if cursor_offset > get_offset_at_mark(self.__buffer, mark) else nappend(marks)
 		if direction == "next":
 			match = self.__next_queue.popleft() if self.__next_queue else self.__prev_queue.popleft()

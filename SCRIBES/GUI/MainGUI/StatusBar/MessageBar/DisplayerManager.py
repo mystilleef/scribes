@@ -59,20 +59,17 @@ class Manager(SignalManager):
 	def __hide_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__hide, priority=9999)
-#		self.__hide()
 		return False
 
 	def __show_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__show, priority=9999)
-#		self.__show()
 		return False
 
 	def __visible_cb(self, manager, visible):
 		self.__visible = visible
 		from gobject import idle_add
 		idle_add(self.__check_show, visible, priority=9999)
-#		self.__check_show(visible)
 		return False
 
 	def __quit_cb(self, *args):
@@ -83,5 +80,4 @@ class Manager(SignalManager):
 		self.__animation = animation
 		from gobject import idle_add
 		idle_add(self.__check_hide, animation, priority=9999)
-#		self.__check_hide(animation)
 		return False

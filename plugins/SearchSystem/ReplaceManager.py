@@ -19,6 +19,7 @@ class Manager(object):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
+		self.__buffer = editor.textbuffer
 		self.__selected_mark = None
 		self.__marks = None
 		self.__string = ""
@@ -48,20 +49,24 @@ class Manager(object):
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
 		end = self.__editor.textbuffer.get_iter_at_mark(marks[1])
 		self.__editor.textbuffer.begin_user_action()
-		self.__editor.response()
+#		self.__buffer.select_range(start, end)
+#		self.__buffer.delete_selection(False, False)
+#		self.__buffer.insert_at_cursor(self.__string)
 		self.__editor.textbuffer.delete(start, end)
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
 		self.__editor.textbuffer.insert(start, self.__string)
-		self.__editor.response()
 		self.__editor.textbuffer.end_user_action()
+#		self.__editor.response()
 		self.__manager.emit("replaced-mark", marks)
 		message = _("Replaced '%s' with '%s'") % (self.__search_string, self.__string)
 		self.__editor.update_message(message, "pass", 10)
-		return 
+		return
 
 	def __replace_all(self):
 		if not self.__search_string: return False
+		self.__editor.textbuffer.begin_user_action()
 		[self.__replace(mark) for mark in self.__marks]
+		self.__editor.textbuffer.end_user_action()
 		message = _("Replaced all occurrences of '%s' with '%s'") % (self.__search_string, self.__string)
 		self.__editor.update_message(message, "pass", 10)
 		return False
@@ -91,6 +96,7 @@ class Manager(object):
 		return False
 
 	def __replace_string_cb(self, manager, string):
+#		self.__string = unicode(string, "utf-8")
 		self.__string = string
 		return False
 

@@ -65,6 +65,7 @@ class Animator(SignalManager):
 		y = int(self.__get_y(direction))
 		self.__editor.textview.move_child(self.__bar, x, y)
 		if not self.__bar.get_property("visible"): self.__bar.show_all()
+		self.__editor.response()
 		return False
 
 	def __move(self, direction):

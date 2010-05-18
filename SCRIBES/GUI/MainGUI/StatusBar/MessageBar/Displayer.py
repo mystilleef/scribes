@@ -32,16 +32,12 @@ class Displayer(SignalManager):
 		return False
 
 	def __hide(self):
-		self.__editor.response()
 		if self.__pointer_on_messagebar(): return False
 		self.__manager.emit("slide", "down")
-		self.__editor.response()
 		return False
 
 	def __show(self):
-		self.__editor.response()
 		self.__manager.emit("slide", "up")
-		self.__editor.response()
 		return False
 
 	def __pointer_on_messagebar(self):
@@ -58,13 +54,11 @@ class Displayer(SignalManager):
 	def __hide_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__hide, priority=9999)
-#		self.__hide()
 		return False
 
 	def __show_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__show, priority=9999)
-#		self.__show()
 		return False
 
 	def __vsize_cb(self, manager, size):
