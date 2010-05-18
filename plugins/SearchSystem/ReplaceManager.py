@@ -13,6 +13,7 @@ class Manager(object):
 		self.__sigid7 = manager.connect("hide-bar", self.__reset_cb)
 		self.__sigid8 = manager.connect("search-string", self.__search_string_cb)
 		self.__sigid9 = manager.connect("replace-string", self.__replace_string_cb)
+		self.__sigid10 = manager.connect("match-object", self.__match_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
 
@@ -24,6 +25,7 @@ class Manager(object):
 		self.__marks = None
 		self.__string = ""
 		self.__search_string = ""
+		self.__match = None
 		return
 
 	def __destroy(self, *args):
@@ -36,6 +38,7 @@ class Manager(object):
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid9, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid10, self.__manager)
 		del self
 		self = None
 		return
@@ -49,14 +52,11 @@ class Manager(object):
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
 		end = self.__editor.textbuffer.get_iter_at_mark(marks[1])
 		self.__editor.textbuffer.begin_user_action()
-#		self.__buffer.select_range(start, end)
-#		self.__buffer.delete_selection(False, False)
-#		self.__buffer.insert_at_cursor(self.__string)
 		self.__editor.textbuffer.delete(start, end)
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
 		self.__editor.textbuffer.insert(start, self.__string)
 		self.__editor.textbuffer.end_user_action()
-#		self.__editor.response()
+		self.__editor.response()
 		self.__manager.emit("replaced-mark", marks)
 		message = _("Replaced '%s' with '%s'") % (self.__search_string, self.__string)
 		self.__editor.update_message(message, "pass", 10)
@@ -97,11 +97,16 @@ class Manager(object):
 
 	def __replace_string_cb(self, manager, string):
 #		self.__string = unicode(string, "utf-8")
-		self.__string = string
+		string = string.decode("utf-8")
+		self.__string = self.__match.expand(string) if self.__match else string
 		return False
 
 	def __search_string_cb(self, manager, string):
 		self.__search_string = string
+		return False
+
+	def __match_cb(self, manager, match):
+		self.__match = match
 		return False
 
 	def __precompile_methods(self):

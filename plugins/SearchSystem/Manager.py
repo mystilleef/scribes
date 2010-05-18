@@ -23,6 +23,7 @@ class Manager(GObject):
 		"found-matches": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"marked-matches": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"mapped-matches": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"match-object": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"search-mode": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"popup-menu": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"hide-menu": (SCRIBES_SIGNAL, TYPE_NONE, ()),

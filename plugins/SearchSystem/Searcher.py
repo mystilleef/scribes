@@ -9,6 +9,7 @@ class Searcher(object):
 		self.__sigid2 = manager.connect("search-boundary", self.__boundary_cb)
 		self.__sigid3 = manager.connect("new-regex", self.__regex_cb)
 		self.__sigid4 = manager.connect("regex-flags", self.__regex_flags_cb)
+		self.__sigid5 = manager.connect("search-mode-flag", self.__search_mode_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
 
@@ -17,6 +18,7 @@ class Searcher(object):
 		self.__editor = editor
 		self.__text = None
 		self.__regex_flags = None
+		self.__regex_mode = False
 		return
 
 	def __destroy(self):
@@ -24,6 +26,7 @@ class Searcher(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		del self
 		self = None
 		return
@@ -31,6 +34,8 @@ class Searcher(object):
 	def __find_matches(self, regex_object):
 		iterator = regex_object.finditer(self.__text)
 		matches = [match.span() for match in iterator]
+		match_object = regex_object.search(self.__text) if self.__regex_mode else None
+		self.__manager.emit("match-object", match_object)
 		self.__manager.emit("found-matches", matches)
 		if not matches: self.__manager.emit("search-complete")
 		if not matches: self.__editor.update_message(message, "fail", 10)
@@ -55,4 +60,8 @@ class Searcher(object):
 	def __precompile_methods(self):
 		methods = (self.__find_matches,)
 		self.__editor.optimize(methods)
+		return False
+
+	def __search_mode_cb(self, manager, search_mode):
+		self.__regex_mode = True if search_mode == "regex" else False
 		return False
