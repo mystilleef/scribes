@@ -33,11 +33,11 @@ class Colorer(SignalManager):
 		return tag
 
 	def __clear(self):
-		if self.__colored is False: return
+		if self.__colored is False: return False
 		bounds = self.__editor.textbuffer.get_bounds()
 		self.__editor.textbuffer.remove_tag(self.__tag, *bounds)
 		self.__colored = False
-		return 
+		return False
 
 	def __color(self, marks):
 		self.__clear()
@@ -62,5 +62,7 @@ class Colorer(SignalManager):
 		return False
 
 	def __clear_cb(self, *args):
-		self.__clear()
+		from gobject import idle_add
+		idle_add(self.__clear, priority=9999)
+#		self.__clear()
 		return False

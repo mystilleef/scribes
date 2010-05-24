@@ -24,7 +24,7 @@ class Selector(SignalManager):
 		end = giam(mark[1])
 		self.__editor.response()
 		self.__editor.textbuffer.select_range(start, end)
-		self.__editor.move_view_to_cursor(False, start)
+		self.__editor.textview.scroll_mark_onscreen(mark[1])
 		self.__editor.response()
 		return False
 
@@ -33,5 +33,7 @@ class Selector(SignalManager):
 		return False
 
 	def __match_cb(self, manager, mark):
-		self.__select(mark)
+		from gobject import idle_add
+		idle_add(self.__select, mark, priority=9999)
+#		self.__select(mark)
 		return False

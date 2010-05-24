@@ -30,12 +30,12 @@ class Animator(SignalManager):
 		return
 
 	def __destroy(self):
+		self.disconnect()
 		self.__ttimer, self.__timer1, self.__timer2 = 1, 1, 1
 		from gobject import source_remove
 		source_remove(self.__ttimer)
 		source_remove(self.__timer1)
 		source_remove(self.__timer2)
-		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
 		return False
@@ -58,6 +58,7 @@ class Animator(SignalManager):
 		y = int(self.__get_y(direction))
 		self.__editor.textview.move_child(self.__container, x, y)
 		if not self.__container.get_property("visible"): self.__container.show_all()
+		self.__editor.response()
 		return False
 
 	def __move(self, direction):

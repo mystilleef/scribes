@@ -32,7 +32,7 @@ class Reseter(SignalManager):
 		if self.__can_reset is False: return
 		self.__block()
 		self.__manager.emit("reset")
-		return
+		return False
 
 	def __block(self):
 		if self.__blocked: return False
@@ -60,11 +60,15 @@ class Reseter(SignalManager):
 		return False
 
 	def __changed_cb(self, *args):
-		self.__reset()
+		from gobject import idle_add
+		idle_add(self.__reset, priority=9999)
+#		self.__reset()
 		return False
 
 	def __key_cb(self, window, event):
 		from gtk.keysyms import Escape
 		if event.keyval != Escape: return False
-		self.__reset()
+		from gobject import idle_add
+		idle_add(self.__reset, priority=9999)
+#		self.__reset()
 		return True

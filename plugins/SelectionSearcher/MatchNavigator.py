@@ -122,5 +122,7 @@ class Navigator(SignalManager):
 		return False
 
 	def __reset_cb(self, *args):
-		self.__clear()
+		from gobject import idle_add
+		idle_add(self.__clear, priority=9999)
+#		self.__clear()
 		return False

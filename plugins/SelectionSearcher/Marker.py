@@ -27,11 +27,11 @@ class Marker(SignalManager):
 		(remove_marks(*mark) for mark in self.__marks)
 		self.__marks[:]
 		self.__marks = None
-		return 
+		return False
 
 	def __mark(self, matches):
+		if not matches: return False
 		self.__clear()
-		if not matches: return
 		mr = self.__editor.create_right_mark
 		ml = self.__editor.create_left_mark
 		iao = self.__editor.textbuffer.get_iter_at_offset
@@ -41,14 +41,15 @@ class Marker(SignalManager):
 		marks = [mark_from_offsets(*offset) for offset in matches]
 		self.__marks = marks
 		self.__manager.emit("marked-matches", marks)
-		return
+		return False
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __clear_cb(self, *args):
-		self.__clear()
+		from gobject import idle_add
+		idle_add(self.__clear, priority=9999)
 		return False
 
 	def __matches_cb(self, manager, matches):

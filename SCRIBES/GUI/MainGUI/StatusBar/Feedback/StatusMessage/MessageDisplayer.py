@@ -35,8 +35,7 @@ class Displayer(SignalManager):
 			if self.__prev_message == message: return False
 			self.__prev_message = message
 			self.__label.set_label(message)
-#			self.__label.queue_resize()
-#			self.__editor.response()
+			self.__editor.response()
 		except ValueError:
 			self.__queue.clear()
 			self.__queue.append(message)

@@ -1,7 +1,7 @@
 from gtk import ImageMenuItem
 from gettext import gettext as _
 
-class SelectionPopupMenuItem(ImageMenuItem):
+class PopupMenuItem(ImageMenuItem):
 
 	def __init__(self, editor):
 		ImageMenuItem.__init__(self, _("Selection"))
