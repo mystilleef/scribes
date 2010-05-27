@@ -77,12 +77,12 @@ class Monitor(SignalManager):
 
 	def __monitor_cb(self, editor, uri, *args):
 		from gobject import idle_add
-		idle_add(self.__monitor, uri, priority=9999)
+		idle_add(self.__monitor, uri, priority=19999)
 		return False
 
 	def __changed_cb(self, *args):
 		from gobject import idle_add
-		idle_add(self.__process, args, priority=9999)
+		idle_add(self.__process, args, priority=19999)
 		return False
 
 	def __busy_cb(self, *args):
