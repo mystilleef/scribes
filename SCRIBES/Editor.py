@@ -218,6 +218,14 @@ class Editor(Signals):
 		self.emit("register-object", instance)
 		return False
 
+	def show_full_view(self):
+		self.emit("show-full-view")
+		return False
+
+	def hide_full_view(self):
+		self.emit("hide-full-view")
+		return False
+
 	def unregister_object(self, instance):
 		self.emit("unregister-object", instance)
 		return False
@@ -466,7 +474,7 @@ class Editor(Signals):
 
 	def get_glade_object(self, globals_, basepath, object_name):
 		#FIXME: This function will soon be deprecated. It uses glade.
-		# GTKBUILDER should be use instead.get_gui_object uses 
+		# GTKBUILDER should be use instead.get_gui_object uses
 		# GTKBUILDER.
 		self.response()
 		from os.path import join

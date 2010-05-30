@@ -1,6 +1,6 @@
 from SCRIBES.SignalConnectionManager import SignalManager
-
 class Sensor(SignalManager):
+
 
 	def __init__(self, manager, editor):
 		editor.response()
@@ -11,6 +11,7 @@ class Sensor(SignalManager):
 		self.connect(manager, "visible", self.__visible_cb)
 		editor.register_object(self)
 		editor.response()
+		self.__block()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -53,5 +54,5 @@ class Sensor(SignalManager):
 
 	def __visible_cb(self, manager, visible):
 		self.__visible = visible
-		self.__block() if visible else self.__unblock()
+		self.__unblock() if visible else self.__block()
 		return False

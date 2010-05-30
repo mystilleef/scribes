@@ -61,22 +61,22 @@ class Monitor(object):
 
 	def __send_valid_string_async(self):
 		try:
-			from gobject import idle_add, source_remove
+			from gobject import idle_add, source_remove, timeout_add
 			source_remove(self.__timer)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = idle_add(self.__send_valid_string, priority=999999)
+			self.__timer = timeout_add(500, self.__send_valid_string, priority=999999)
 		return False
 
 	def __send_valid_string(self):
 		try:
-			from gobject import timeout_add, source_remove
+			from gobject import timeout_add, source_remove, idle_add
 			source_remove(self.__timer)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(250, self.__send, priority=999999)
+			self.__timer = idle_add(self.__send, priority=999999)
 		return False
 
 	def __is_valid_character(self, character):

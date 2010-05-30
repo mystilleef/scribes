@@ -43,5 +43,5 @@ class Detector(SignalManager):
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(500, self.__emit_tcb, priority=9999)
+			self.__timer = timeout_add(1000, self.__emit_tcb, priority=9999)
 		return False

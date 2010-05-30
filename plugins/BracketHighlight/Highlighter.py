@@ -1,4 +1,6 @@
-class Highlighter(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Highlighter(SignalManager):
 	"""
 	The class implements and object that highlights regions within pair
 	characters. The following characters are supported "(", ")", "[", "]"
@@ -6,13 +8,14 @@ class Highlighter(object):
 	"""
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(editor)
-		self.__sigid1 = editor.connect("cursor-moved", self.__cursor_moved_cb)
-		self.__sigid2 = editor.textbuffer.connect("apply-tag", self.__apply_tag_cb)
-		self.__sigid3 = editor.textbuffer.connect("remove-tag", self.__remove_tag_cb)
-		self.__sigid5 = editor.connect("loaded-file", self.__generic_highlight_on_cb)
-		self.__sigid6 = editor.connect("readonly", self.__generic_highlight_off_cb)
-		self.__sigid8 = editor.connect("load-error", self.__generic_highlight_on_cb)
+		self.connect(editor, "cursor-moved", self.__cursor_moved_cb)
+		self.connect(editor.textbuffer, "apply-tag", self.__apply_tag_cb)
+		self.connect(editor.textbuffer, "remove-tag", self.__remove_tag_cb)
+		self.connect(editor, "loaded-file", self.__generic_highlight_on_cb)
+		self.connect(editor, "readonly", self.__generic_highlight_on_cb)
+		self.connect(editor, "load-error", self.__generic_highlight_on_cb)
 		self.__monitor.connect("changed", self.__highlight_cb)
 		self.__highlight_region()
 		from gobject import idle_add
@@ -105,22 +108,16 @@ class Highlighter(object):
 
 	def __destroy(self):
 		self.__monitor.cancel()
+		self.disconnect()
 		self.__editor.textbuffer.get_tag_table().remove(self.__highlight_tag)
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor.textbuffer)
-		self.__editor.disconnect_signal(self.__sigid3, self.__editor.textbuffer)
-		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid8, self.__editor)
 		if self.__start_mark: self.__editor.delete_mark(self.__start_mark)
 		if self.__end_mark: self.__editor.delete_mark(self.__end_mark)
-		self = None
 		del self
 		return
 
 	def __highlight_region_timeout(self):
 		from gobject import timeout_add
-		self.__timer = timeout_add(250, self.__highlight_region, priority=9999)
+		self.__timer = timeout_add(1000, self.__highlight_region, priority=9999)
 		return False
 
 ########################################################################

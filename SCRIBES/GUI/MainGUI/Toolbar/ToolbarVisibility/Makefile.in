@@ -209,7 +209,8 @@ toolbarvisibility_PYTHON = \
 	SizeUpdater.py \
 	Resizer.py \
 	VisibilityUpdater.py \
-	HideTimer.py
+	HideTimer.py \
+	PublicAPIVisibilityUpdater.py
 
 all: all-am
 

@@ -7,6 +7,8 @@ class Displayer(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(editor, "show-full-view", self.__show_cb)
+		self.connect(editor, "hide-full-view", self.__hide_cb)
 		self.connect(manager, "hide", self.__hide_cb)
 		self.connect(manager, "show", self.__show_cb)
 		self.connect(manager, "visible", self.__visible_cb)

@@ -57,6 +57,8 @@ class Signals(GObject):
 		"unset-message": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"undo": (SSIGNAL, TYPE_NONE, ()),
 		"redo": (SSIGNAL, TYPE_NONE, ()),
+		"show-full-view": (SSIGNAL, TYPE_NONE, ()),
+		"hide-full-view": (SSIGNAL, TYPE_NONE, ()),
 		"add-trigger": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"remove-trigger": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"add-triggers": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
@@ -70,6 +72,7 @@ class Signals(GObject):
 		"remove-from-pref-menu": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
 		"fullscreen": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"message-bar-is-visible": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"toolbar-is-visible": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 	}
 
 	def __init__(self):
