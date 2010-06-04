@@ -13,7 +13,8 @@ bar_PYTHON = \
 	Animator.py \
 	DeltaCalculator.py \
 	DisplayerManager.py \
-	PublicAPIVisibilityUpdater.py
+	PublicAPIVisibilityUpdater.py \
+	HideTimer.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

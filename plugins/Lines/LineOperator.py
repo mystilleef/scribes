@@ -16,6 +16,7 @@ class Operator(object):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
+		self.__view = editor.textview
 		return False
 
 	def __destroy(self):
@@ -235,29 +236,43 @@ class Operator(object):
 		return False
 
 	def __delete_line_cb(self, *args):
+		self.__view.window.freeze_updates()
 		self.__delete()
+		self.__view.window.thaw_updates()
 		return False
 
 	def __delete_cursor_to_start_cb(self, *args):
+		self.__view.window.freeze_updates()
 		self.__delete_to_start()
+		self.__view.window.thaw_updates()
 		return False
 
 	def __delete_cursor_to_end_cb(self, *args):
+		self.__view.window.freeze_updates()
 		self.__delete_to_end()
+		self.__view.window.thaw_updates()
 		return False
 	
 	def __duplicate_line_cb(self, *args):
+		self.__view.window.freeze_updates()
 		self.__duplicate_line()
+		self.__view.window.thaw_updates()
 		return False
 
 	def __line_below_cb(self, *args):
+		self.__view.window.freeze_updates()
 		self.__line_below()
+		self.__view.window.thaw_updates()
 		return False
 
 	def __line_above_cb(self, *args):
+		self.__view.window.freeze_updates()
 		self.__line_above()
+		self.__view.window.thaw_updates()
 		return False
 
 	def __join_line_cb(self, *args):
+		self.__view.window.freeze_updates()
 		self.__join_line()
+		self.__view.window.thaw_updates()
 		return False

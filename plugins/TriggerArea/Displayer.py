@@ -14,10 +14,20 @@ class Displayer(SignalManager):
 		self.__tbox = manager.get_data("TriggerWidget")
 		return False
 
+	def __show(self):
+		self.__editor.response()
+		self.__tbox.show_all()
+		self.__editor.response()
+		return False
+
 	def __show_cb(self, editor, visible):
-		if visible is False: self.__tbox.show_all()
+		if visible: return False
+		from gobject import timeout_add
+		timeout_add(500, self.__show, priority=9999)
 		return False
 
 	def __hide_cb(self, *args):
+		self.__editor.response()
 		self.__tbox.hide()
+		self.__editor.response()
 		return False

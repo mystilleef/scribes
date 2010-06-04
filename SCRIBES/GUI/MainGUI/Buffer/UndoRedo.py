@@ -33,6 +33,7 @@ class UndoRedo(object):
 
 	def __undo(self):
 		try:
+			self.__editor.textview.window.freeze_updates()
 			if not self.__buffer.can_undo(): raise ValueError
 			self.__buffer.undo()
 			self.__editor.move_view_to_cursor()
@@ -41,10 +42,13 @@ class UndoRedo(object):
 		except ValueError:
 			message = _("Cannot undo last action")
 			self.__editor.update_message(message, "fail")
+		finally:
+			self.__editor.textview.window.thaw_updates()
 		return False
 
 	def __redo(self):
 		try:
+			self.__editor.textview.window.freeze_updates()
 			if not self.__buffer.can_redo(): raise ValueError
 			self.__buffer.redo()
 			self.__editor.move_view_to_cursor()
@@ -53,6 +57,8 @@ class UndoRedo(object):
 		except ValueError:
 			message = _("Cannot redo previous action")
 			self.__editor.update_message(message, "fail")
+		finally:
+			self.__editor.textview.window.thaw_updates()
 		return False
 
 	def __quit_cb(self, *args):

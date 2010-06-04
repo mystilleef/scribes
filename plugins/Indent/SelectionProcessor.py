@@ -19,7 +19,7 @@ class Processor(SignalManager):
 	def __destroy(self):
 		self.disconnect()
 		del self
-		return 
+		return
 
 	def __send_indent(self, text):
 		plines = text.split(NEWLINE)

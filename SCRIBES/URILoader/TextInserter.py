@@ -24,14 +24,22 @@ class Inserter(object):
 			if encoding is None: encoding = "utf-8"
 			unicode_string = string.decode(encoding, "strict")
 			utf8_string = unicode_string.encode("utf-8", "strict")
+			self.__editor.textview.window.freeze_updates()
 			self.__editor.refresh(False)
 			self.__editor.textbuffer.set_text(utf8_string)
-			self.__editor.refresh(False)
 			self.__manager.emit("load-success", uri, encoding)
+			from gobject import idle_add
+			idle_add(self.__move_view_to_cursor)
 		except:
 			self.__manager.emit("insertion-error", uri, string)
 		finally:
 			self.__editor.refresh()
+		return False
+
+	def __move_view_to_cursor(self):
+		self.__editor.move_view_to_cursor(True)
+		self.__editor.textview.window.thaw_updates()
+		self.__editor.refresh(False)
 		return False
 
 	def __destroy_cb(self, *args):

@@ -47,26 +47,30 @@ class Manager(object):
 		self.__selected_mark, self.__marks, self.__string = None, None, ""
 		return False
 
-	def __replace(self, marks):
+	def __replace(self, marks, feedback=True):
 		if not self.__search_string: return
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
 		end = self.__editor.textbuffer.get_iter_at_mark(marks[1])
+		self.__editor.textview.window.freeze_updates()
 		self.__editor.textbuffer.begin_user_action()
 		self.__editor.textbuffer.delete(start, end)
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
 		self.__editor.textbuffer.insert(start, self.__string)
 		self.__editor.textbuffer.end_user_action()
 		self.__editor.response()
+		self.__editor.textview.window.thaw_updates()
 		self.__manager.emit("replaced-mark", marks)
-		message = _("Replaced '%s' with '%s'") % (self.__search_string, self.__string)
-		self.__editor.update_message(message, "pass", 10)
+		if feedback: message = _("Replaced '%s' with '%s'") % (self.__search_string, self.__string)
+		if feedback: self.__editor.update_message(message, "pass", 10)
 		return
 
 	def __replace_all(self):
 		if not self.__search_string: return False
+		self.__editor.textview.window.freeze_updates()
 		self.__editor.textbuffer.begin_user_action()
-		[self.__replace(mark) for mark in self.__marks]
+		[self.__replace(mark, False) for mark in self.__marks]
 		self.__editor.textbuffer.end_user_action()
+		self.__editor.textview.window.thaw_updates()
 		message = _("Replaced all occurrences of '%s' with '%s'") % (self.__search_string, self.__string)
 		self.__editor.update_message(message, "pass", 10)
 		return False

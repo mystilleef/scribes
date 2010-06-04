@@ -213,7 +213,8 @@ bar_PYTHON = \
 	Animator.py \
 	DeltaCalculator.py \
 	DisplayerManager.py \
-	PublicAPIVisibilityUpdater.py
+	PublicAPIVisibilityUpdater.py \
+	HideTimer.py
 
 all: all-am
 

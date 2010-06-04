@@ -62,7 +62,6 @@ class Reseter(SignalManager):
 	def __changed_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__reset, priority=9999)
-#		self.__reset()
 		return False
 
 	def __key_cb(self, window, event):
@@ -70,5 +69,4 @@ class Reseter(SignalManager):
 		if event.keyval != Escape: return False
 		from gobject import idle_add
 		idle_add(self.__reset, priority=9999)
-#		self.__reset()
 		return True

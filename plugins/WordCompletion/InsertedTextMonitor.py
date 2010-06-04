@@ -66,7 +66,7 @@ class Monitor(object):
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(500, self.__send_valid_string, priority=999999)
+			self.__timer = timeout_add(375, self.__send_valid_string, priority=999999)
 		return False
 
 	def __send_valid_string(self):

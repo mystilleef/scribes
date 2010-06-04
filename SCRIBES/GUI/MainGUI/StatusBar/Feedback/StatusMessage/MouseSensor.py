@@ -50,7 +50,7 @@ class Sensor(SignalManager):
 		except AttributeError:
 			pass
 		finally:
-			self.__id = timeout_add(750, reset)
+			self.__id = timeout_add(7000, reset)
 		return False
 
 	def __block(self):

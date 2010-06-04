@@ -25,6 +25,7 @@ class Selector(SignalManager):
 
 	def __select(self):
 		if self.__offsets is None or self.__indentation is None: return False
+		self.__editor.textview.window.freeze_updates()
 		get_iter = self.__editor.textbuffer.get_iter_at_line_offset
 		if len(self.__offsets) == 1:
 			indentation = self.__indentation[0]
@@ -46,6 +47,7 @@ class Selector(SignalManager):
 			self.__buffer.select_range(start, end)
 		self.__indentation = None
 		self.__offsets = None
+		self.__editor.textview.window.thaw_updates()
 		self.__manager.emit("complete")
 		return False
 

@@ -1,6 +1,6 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 
-HIDE_TIMER = 750
+HIDE_TIMER = 7000
 
 class Timer(SignalManager):
 

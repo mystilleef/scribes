@@ -23,11 +23,19 @@ class Manager(SignalManager):
 		return False
 
 	def __update(self, fullscreen):
+		self.__view.window.freeze_updates()
 		self.__editor.response()
 		self.__view.set_property("show-right-margin", False if fullscreen else self.__margin())
 		self.__view.set_property("show-line-numbers", False if fullscreen else True)
 		self.__view.set_left_margin(self.__adjust_margin() if fullscreen else self.__lmargin)
 		self.__view.set_right_margin(self.__adjust_margin(False) if fullscreen else self.__rmargin)
+		from gobject import idle_add
+		idle_add(self.__move_view_to_cursor)
+		return False
+
+	def __move_view_to_cursor(self):
+		self.__editor.move_view_to_cursor(True)
+		self.__view.window.thaw_updates()
 		self.__editor.response()
 		return False
 

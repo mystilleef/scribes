@@ -21,7 +21,9 @@ class Initializer(object):
 
 	def __init_plugins(self):
 		self.__editor.response()
-		self.__editor.move_view_to_cursor(True)
+#		self.__editor.textview.window.freeze_updates()
+#		self.__editor.move_view_to_cursor(True)
+#		self.__editor.textview.window.thaw_updates()
 		from PluginInitializer.Manager import Manager
 		Manager(self.__editor)
 		self.__editor.emit("ready")

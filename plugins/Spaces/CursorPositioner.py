@@ -44,6 +44,7 @@ class Positioner(object):
 
 	def __move_to_cursor(self):
 		self.__editor.move_view_to_cursor(True)
+		self.__editor.textview.window.thaw_updates()
 		return False
 
 	def __destroy_cb(self, *args):

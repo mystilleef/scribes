@@ -72,6 +72,8 @@ class ShortcutWindow(SignalManager):
 		self.window.set_property("skip-taskbar-hint", True)
 
 		self.window.add(windowbox)
+		from gtk import WIN_POS_CENTER_ALWAYS
+		self.window.set_position(WIN_POS_CENTER_ALWAYS)
 
 		self.window.connect('key-press-event', self.__hide_cb)
 

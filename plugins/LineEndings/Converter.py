@@ -15,6 +15,7 @@ class Converter(object):
 		return
 
 	def __convert(self, character):
+		self.__editor.textview.window.freeze_updates()
 		self.__editor.busy(True)
 		offset = self.__editor.cursor.get_offset()
 		lines = self.__editor.text.splitlines()
@@ -28,6 +29,7 @@ class Converter(object):
 		self.__editor.textbuffer.place_cursor(iterator)
 		self.__editor.textview.scroll_to_iter(iterator, 0.3, use_align=True, xalign=1.0)
 		self.__editor.busy(False)
+		self.__editor.textview.window.thaw_updates()
 		return False
 
 	def __destroy(self):

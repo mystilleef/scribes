@@ -1,6 +1,6 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 
-HIDE_TIMER = 750
+HIDE_TIMER = 7000
 
 class Timer(SignalManager):
 
@@ -9,7 +9,7 @@ class Timer(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__id = self.connect(editor.textview, "motion-notify-event", self.__motion_cb)
-		self.connect(manager, "visible", self.__visible_cb)
+		self.connect(editor, "toolbar-is-visible", self.__visible_cb)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.__block()
 		editor.register_object(self)
@@ -56,7 +56,6 @@ class Timer(SignalManager):
 		if self.__visible is False: return False
 		from gobject import idle_add
 		idle_add(self.__hide, priority=9999)
-#		self.__hide()
 		return False
 
 	def __quit_cb(self, *args):
@@ -69,5 +68,4 @@ class Timer(SignalManager):
 		if visible is False: return False
 		from gobject import idle_add
 		idle_add(self.__hide, priority=9999)
-#		if visible: self.__hide()
 		return False

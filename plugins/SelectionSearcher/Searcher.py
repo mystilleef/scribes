@@ -32,8 +32,3 @@ class Searcher(SignalManager):
 		from gobject import idle_add
 		idle_add(self.__find_matches, regex_object, priority=9999)
 		return False
-
-	def __precompile_methods(self):
-		methods = (self.__find_matches,)
-		self.__editor.optimize(methods)
-		return False

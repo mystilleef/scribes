@@ -88,6 +88,7 @@ class BracketManager(object):
 		return
 
 	def __insert_pair_characters(self, open_keyval, close_keyval):
+		self.__editor.textview.window.freeze_updates()
 		textbuffer = self.__editor.textbuffer
 		from gtk.gdk import keyval_to_unicode
 		utf8_open_character = unichr(keyval_to_unicode(open_keyval)).encode("utf-8")
@@ -104,10 +105,12 @@ class BracketManager(object):
 		self.__monitor_list.append((close_keyval, (begin_mark, end_mark)))
 		message = _("Pair character completion occurred")
 		self.__editor.update_message(message, "pass")
+		self.__editor.textview.window.thaw_updates()
 		return
 
 
 	def __insert_enclosed_selection(self, open_keyval, close_keyval):
+		self.__editor.textview.window.freeze_updates()
 		textbuffer = self.__editor.textbuffer
 		from gtk.gdk import keyval_to_unicode
 		utf8_open_character = unichr(keyval_to_unicode(open_keyval)).encode("utf-8")
@@ -121,6 +124,7 @@ class BracketManager(object):
 		textbuffer.end_user_action()
 		message = _("Enclosed selected text")
 		self.__editor.update_message(message, "pass")
+		self.__editor.textview.window.thaw_updates()
 		return
 
 	def __move_cursor_out_of_bracket_region(self):
@@ -151,12 +155,14 @@ class BracketManager(object):
 		close_keyval = self.__monitor_list[-1][0]
 		character = unichr(keyval_to_unicode(close_keyval)).encode("utf-8")
 		if (begin.get_char() != character): return False
+		self.__editor.textview.window.freeze_updates()
 		begin.backward_char()
 		textbuffer.begin_user_action()
 		textbuffer.delete(begin, end)
 		textbuffer.end_user_action()
 		message = _("Removed pair character")
 		self.__editor.update_message(message, "pass")
+		self.__editor.textview.window.thaw_updates()
 		return True
 
 	def __has_escape_character(self):
@@ -182,10 +188,12 @@ class BracketManager(object):
 		return True
 
 	def __insert_apostrophe(self):
+		self.__editor.textview.window.freeze_updates()
 		from gtk import keysyms
 		from gtk.gdk import keyval_to_unicode
 		utf8_apostrophe_character = unichr(keyval_to_unicode(keysyms.apostrophe)).encode("utf-8")
 		self.__editor.textbuffer.insert_at_cursor(utf8_apostrophe_character)
+		self.__editor.textview.window.thaw_updates()
 		return
 
 	def __check_mimetype(self):

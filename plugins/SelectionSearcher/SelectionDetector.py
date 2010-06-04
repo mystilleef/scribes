@@ -16,6 +16,9 @@ class Detector(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
+		self.__timer = 1
+		from gobject import source_remove
+		source_remove(self.__timer)
 		del self
 		return False
 

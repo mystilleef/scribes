@@ -4,6 +4,8 @@ class Manager(Signal):
 
 	def __init__(self, editor):
 		Signal.__init__(self)
+		from HideTimer import Timer
+		Timer(self, editor)
 		from Animator import Animator
 		Animator(self, editor)
 		from DeltaCalculator import Calculator

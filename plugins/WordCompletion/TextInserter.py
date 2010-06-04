@@ -23,6 +23,7 @@ class Inserter(object):
 		return False
 
 	def __insert(self, text):
+		self.__editor.textview.window.freeze_updates()
 		self.__manager.emit("inserting-text")
 		self.__editor.textbuffer.begin_user_action()
 		self.__editor.response()
@@ -30,6 +31,7 @@ class Inserter(object):
 		self.__editor.response()
 		self.__editor.textbuffer.end_user_action()
 		self.__manager.emit("inserted-text")
+		self.__editor.textview.window.thaw_updates()
 		return False
 
 	def __destroy_cb(self, *args):

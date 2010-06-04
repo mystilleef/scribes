@@ -19,6 +19,7 @@ class Inserter(object):
 
 	def __insert(self, text):
 		self.__editor.busy()
+		self.__editor.textview.window.freeze_updates()
 		self.__editor.textbuffer.begin_user_action()
 		self.__editor.response()
 		self.__editor.textbuffer.set_text(text)
