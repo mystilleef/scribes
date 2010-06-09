@@ -57,11 +57,9 @@ class TriggerWidget(EventBox):
 		# draw horizontal line
 		cr.move_to(*origin)
 		cr.line_to(*hline)
-		cr.stroke()
 		# draw arc
+		cr.stroke()
 		cr.set_line_width(2)
-		from cairo import ANTIALIAS_DEFAULT
-		cr.set_antialias(ANTIALIAS_DEFAULT)
 		x, y = origin
 		cr.arc(x, y, radius, 0, 2*pi)
 		cr.stroke_preserve()
@@ -72,14 +70,14 @@ class TriggerWidget(EventBox):
 		bitmap = Pixmap(self.window, self.__size, self.__size, 1)
 		cr = bitmap.cairo_create()
 		from cairo import OPERATOR_SOURCE, OPERATOR_CLEAR, OPERATOR_OVER
-		# Clear the bitmap
+#		 Clear the bitmap
 		cr.set_operator(OPERATOR_CLEAR)
 		cr.paint()
-		# Draw the arc
+#		 Draw the arc
 		cr.set_operator(OPERATOR_OVER)
 		self.__draw(cr, self.__position)
 		cr.fill()
-		# Set the window shape
+#		 Set the window shape
 		self.window.shape_combine_mask(bitmap, 0, 0)
 		return False
 
@@ -95,12 +93,5 @@ class TriggerWidget(EventBox):
 		return False
 
 	def __expose_cb(self, *args):
-#		try:
-#			from gobject import idle_add, source_remove
-#			source_remove(self.__timer)
-#		except AttributeError:
-#			pass
-#		finally:
-#			self.__timer = idle_add(self.__paint)
 		self.__paint()
 		return False

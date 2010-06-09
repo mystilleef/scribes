@@ -9,9 +9,10 @@ class Manager(object):
 		from sys import setcheckinterval
 		setcheckinterval(-1)
 		from gobject import timeout_add
-		timeout_add(30000, self.__init_psyco, priority=9999)
+		timeout_add(60000, self.__init_psyco, priority=9999)
 		self.__init_i18n()
-		timeout_add(300000, self.__init_garbage_collector, priority=9999)
+#		timeout_add(300000, self.__init_garbage_collector, priority=9999)
+#		timeout_add(30000, self.__init_garbage_collector, priority=9999)
 
 	def __init_attributes(self):
 		from collections import deque

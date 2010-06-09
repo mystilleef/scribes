@@ -24,7 +24,9 @@ class Handler(SignalManager):
 	def __action(self, action):
 		from zen_core import run_action
 		self.__zeditor.set_context(self.__editor)
+		self.__editor.textview.window.freeze_updates()
 		run_action(action, self.__zeditor)
+		self.__editor.textview.window.thaw_updates()
 		return False
 
 	def __quit_cb(self, *args):

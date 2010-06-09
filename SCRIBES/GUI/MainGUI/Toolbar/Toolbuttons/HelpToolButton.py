@@ -33,7 +33,7 @@ class Button(ToolButton):
 		self.set_property("name", "HelpToolButton")
 		self.set_property("sensitive", True)
 		from gettext import gettext as _
-		self.set_tooltip_text(_("Show user guide"))
+		self.set_tooltip_text(_("Show keyboard shortcuts"))
 		return
 
 	def __quit_cb(self, *args):
@@ -42,6 +42,6 @@ class Button(ToolButton):
 
 	def __clicked_cb(self, *args):
 		self.__editor.response()
-		self.__editor.help()
+		self.__editor.trigger("activate-shortcut-window")
 		self.__editor.response()
 		return False

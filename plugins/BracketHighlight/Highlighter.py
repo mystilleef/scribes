@@ -8,6 +8,7 @@ class Highlighter(SignalManager):
 	"""
 
 	def __init__(self, editor):
+		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(editor)
 		self.connect(editor, "cursor-moved", self.__cursor_moved_cb)
@@ -20,6 +21,7 @@ class Highlighter(SignalManager):
 		self.__highlight_region()
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -44,21 +46,9 @@ class Highlighter(SignalManager):
 		self.__editor.optimize(methods)
 		return False
 
-########################################################################
-#
-#						Public Method
-#
-########################################################################
-
 	def destroy(self):
 		self.__destroy()
 		return
-
-########################################################################
-#
-#						Helper Methods
-#
-########################################################################
 
 	def __highlight_region(self):
 		textbuffer = self.__editor.textbuffer
@@ -109,15 +99,27 @@ class Highlighter(SignalManager):
 	def __destroy(self):
 		self.__monitor.cancel()
 		self.disconnect()
-		self.__editor.textbuffer.get_tag_table().remove(self.__highlight_tag)
+		self.__remove_highlight_tag()
 		if self.__start_mark: self.__editor.delete_mark(self.__start_mark)
 		if self.__end_mark: self.__editor.delete_mark(self.__end_mark)
 		del self
 		return
 
+	def __remove_highlight_tag(self):
+		try:
+			self.__editor.textbuffer.get_tag_table().remove(self.__highlight_tag)
+		except ValueError:
+			pass
+		return False
+
 	def __highlight_region_timeout(self):
 		from gobject import timeout_add
-		self.__timer = timeout_add(1000, self.__highlight_region, priority=9999)
+		self.__timer = timeout_add(250, self.__highlight_on_idle, priority=9999)
+		return False
+
+	def __highlight_on_idle(self):
+		from gobject import idle_add
+		self.__timer = idle_add(self.__highlight_region, priority=9999)
 		return False
 
 ########################################################################

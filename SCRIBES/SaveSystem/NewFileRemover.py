@@ -1,12 +1,15 @@
-class Remover(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Remover(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__destroy_cb)
-		self.__sigid2 = manager.connect("create-new-file", self.__create_cb)
-		self.__sigid3 = editor.connect("renamed-file", self.__renamed_cb)
-		self.__sigid4 = manager.connect("remove-new-file", self.__remove_cb)
+		self.connect(editor, "quit", self.__destroy_cb)
+		self.connect(manager, "create-new-file", self.__create_cb)
+		self.connect(editor, "renamed-file", self.__renamed_cb)
+		self.connect(manager, "remove-new-file", self.__remove_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -17,37 +20,27 @@ class Remover(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __remove(self):
-		self.__editor.response()
 		if self.__uri: self.__editor.remove_uri(self.__uri)
-		self.__editor.response()
 		return False
 
 	def __create(self, _data):
-		self.__editor.response()
 		uri, data = _data
 		self.__remove()
 		self.__uri = uri
-		self.__editor.response()
 		return False
 
 	def __create_cb(self, manager, data):
-		self.__editor.response()
 		from gobject import idle_add
 		idle_add(self.__create, data, priority=9999)
 		return False
 
 	def __renamed_cb(self, *args):
-		self.__editor.response()
 		from gobject import idle_add
 		idle_add(self.__remove, priority=9999)
 		return False

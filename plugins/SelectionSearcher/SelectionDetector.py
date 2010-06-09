@@ -16,18 +16,20 @@ class Detector(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
-		self.__timer = 1
-		from gobject import source_remove
-		source_remove(self.__timer)
 		del self
 		return False
 
 	def __emit(self):
-		if self.__editor.has_selection is False: return False
-		if self.__editor.selection_range > 1: return False
-		from Utils import valid_selection
-		if not valid_selection(*self.__editor.selection_bounds): return False
-		self.__manager.emit("search", self.__editor.selected_text)
+		try:
+			if self.__editor.has_selection is False: return False
+			if self.__editor.selection_range > 1: return False
+			from Utils import valid_selection
+			if not valid_selection(*self.__editor.selection_bounds): return False
+			self.__manager.emit("search", self.__editor.selected_text)
+		except AttributeError:
+			# Prevent harmless error messages from appearing in stderr.
+			# Usually happens when editor object is being destroyed.
+			pass
 		return False
 
 	def __emit_tcb(self):

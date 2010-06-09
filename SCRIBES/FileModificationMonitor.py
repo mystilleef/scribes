@@ -16,7 +16,6 @@ class Monitor(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		del self
-		self = None
 		return False
 
 	def __modified_cb(self, editor, modified):

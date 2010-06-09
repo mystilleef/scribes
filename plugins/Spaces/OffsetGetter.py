@@ -19,7 +19,8 @@ class Getter(object):
 
 	def __send_line_offset(self):
 		iterator = self.__editor.cursor
-		data = iterator.get_line(), iterator.get_line_offset()
+		adjustment_value = self.__editor.gui.get_widget("ScrolledWindow").get_vadjustment().get_value()
+		data = iterator.get_line(), iterator.get_line_offset(), adjustment_value
 		self.__manager.emit("line-offset", data)
 		return False
 

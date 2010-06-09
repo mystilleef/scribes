@@ -1,14 +1,16 @@
+from SCRIBES.SignalConnectionManager import SignalManager
 from SCRIBES.Globals import SCRIBES_SAVE_PROCESS_DBUS_SERVICE
 
-class Sender(object):
+class Sender(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("session-id", self.__session_cb)
-		self.__sigid3 = manager.connect("save-data", self.__data_cb)
-		self.__sigid4 = manager.connect("save-processor-object", self.__processor_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(manager, "session-id", self.__session_cb)
+		self.connect(manager, "save-data", self.__data_cb)
+		self.connect(manager, "save-processor-object", self.__processor_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -20,13 +22,9 @@ class Sender(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __send(self, data):

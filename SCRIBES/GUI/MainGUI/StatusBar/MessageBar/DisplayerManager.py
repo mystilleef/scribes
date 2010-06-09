@@ -9,6 +9,7 @@ class Manager(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "show-full-view", self.__show_cb)
 		self.connect(editor, "hide-full-view", self.__hide_cb)
+#		self.connect(editor, "toolbar-is-visible", self.__toolbar_cb)
 		self.connect(manager, "hide", self.__hide_cb)
 		self.connect(manager, "show", self.__show_cb)
 		self.connect(manager, "visible", self.__visible_cb)
@@ -23,6 +24,7 @@ class Manager(SignalManager):
 		self.__animation = ""
 		self.__reshow = False
 		self.__rehide = False
+		self.__toolbar_is_visible = False
 		return False
 
 	def __destroy(self):
@@ -39,6 +41,7 @@ class Manager(SignalManager):
 
 	def __show(self):
 		try:
+#			if self.__toolbar_is_visible: return False
 			if self.__visible: raise ValueError
 			self.__manager.emit("_show")
 		except ValueError:
@@ -82,4 +85,8 @@ class Manager(SignalManager):
 		self.__animation = animation
 		from gobject import idle_add
 		idle_add(self.__check_hide, animation, priority=9999)
+		return False
+
+	def __toolbar_cb(self, editor, visible):
+		self.__toolbar_is_visible = visible
 		return False

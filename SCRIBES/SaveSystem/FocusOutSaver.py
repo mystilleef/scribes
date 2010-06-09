@@ -1,12 +1,15 @@
-class Saver(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Saver(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid3 = editor.connect("close", self.__close_cb)
-		self.__sigid2 = editor.connect("window-focus-out", self.__out_cb)
-		self.__sigid4 = manager.connect("save-failed", self.__failed_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(editor, "close", self.__close_cb)
+		self.__sigid1 = self.connect(editor, "window-focus-out", self.__out_cb)
+		self.connect(manager, "save-failed", self.__failed_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -17,17 +20,14 @@ class Saver(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __save(self):
 		try:
-			if self.__error is False: raise AssertionError
+			if self.__error: raise AssertionError
 			if not self.__editor.modified: return False
 			self.__editor.save_file(self.__editor.uri, self.__editor.encoding)
 		except AssertionError:
@@ -44,7 +44,7 @@ class Saver(object):
 		return False
 
 	def __close_cb(self, *args):
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
+		self.__editor.handler_block(self.__sigid1)
 		return False
 
 	def __failed_cb(self, *args):

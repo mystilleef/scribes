@@ -1,12 +1,15 @@
-class Displayer(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Displayer(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect_after("save-failed", self.__failed_cb)
-		self.__sigid3 = manager.connect("session-id", self.__session_cb)
-		self.__sigid4 = manager.connect("save-succeeded", self.__succeeded_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(manager, "save-failed", self.__failed_cb)
+		self.connect(manager, "session-id", self.__session_cb)
+		self.connect(manager, "save-succeeded", self.__succeeded_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -18,13 +21,9 @@ class Displayer(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __show(self, data):

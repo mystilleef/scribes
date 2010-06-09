@@ -3,10 +3,12 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Updater(SignalManager):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "configuration-data", self.__data_cb)
 		self.connect(manager, "destroy", self.__destroy_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

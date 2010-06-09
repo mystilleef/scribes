@@ -1,12 +1,14 @@
 from gettext import gettext as _
+from SCRIBES.SignalConnectionManager import SignalManager
 
-class Generator(object):
+class Generator(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("newname", self.__newname_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(manager, "newname", self.__newname_cb)
 		from gobject import idle_add
 		idle_add(self.__optimize, priority=9999)
 		editor.register_object(self)
@@ -21,19 +23,13 @@ class Generator(object):
 		return
 
 	def __destroy(self):
-		signals_data = (
-			(self.__sigid1, self.__editor),
-			(self.__sigid1, self.__manager),
-		)
-		self.__editor.disconnect_signals(signals_data)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __filename(self, _data):
 		try:
-			self.__editor.response()
 			newname, data = _data
 			if not newname: newname = _("Unnamed Document")
 			if self.__name == newname: raise ValueError
@@ -45,11 +41,8 @@ class Generator(object):
 			self.__uri = File(newfile).get_uri()
 			self.__manager.emit("create-new-file", (self.__uri, data))
 		except ValueError:
-			self.__editor.response()
 			data = self.__uri, data[1], data[2]
 			self.__manager.emit("save-data", data)
-		finally:
-			self.__editor.response()
 		return False
 
 	def __optimize(self):
@@ -61,7 +54,6 @@ class Generator(object):
 		return False
 
 	def __newname_cb(self, manager, data):
-		self.__editor.response()
 		from gobject import idle_add
 		idle_add(self.__filename, data, priority=9999)
 		return False

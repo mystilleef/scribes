@@ -1,12 +1,15 @@
-class Emitter(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Emitter(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("rename-file", self.__rename_cb)
-		self.__sigid3 = manager.connect("session-id", self.__session_cb)
-		self.__sigid4 = manager.connect("saved", self.__saved_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(editor, "rename-file", self.__rename_cb)
+		self.connect(manager, "session-id", self.__session_cb)
+		self.connect(manager, "saved", self.__saved_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -17,13 +20,9 @@ class Emitter(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __emit(self, data):
@@ -40,12 +39,10 @@ class Emitter(object):
 		return False
 
 	def __session_cb(self, manager, session_id):
-		self.__editor.response()
 		self.__session_id = session_id
 		return False
 
 	def __saved_cb(self, manager, data):
-		self.__editor.response()
 		from gobject import idle_add
 		idle_add(self.__emit, data, priority=9999)
 		return False

@@ -3,6 +3,7 @@ from Signals import Signal
 class Manager(Signal):
 
 	def __init__(self, editor):
+		editor.response()
 		Signal.__init__(self)
 		self.__init_attributes(editor)
 		from GUI.Manager import Manager
@@ -13,8 +14,6 @@ class Manager(Signal):
 		Handler(self, editor)
 		from Positioner import Positioner
 		Positioner(self, editor)
-		from Displayer import Displayer
-		Displayer(self, editor)
 		from PropertiesUpdater import Updater
 		Updater(self, editor)
 		from FullViewHider import Hider
@@ -27,6 +26,7 @@ class Manager(Signal):
 		Writer(self, editor)
 		from DatabaseMonitor import Monitor
 		Monitor(self, editor)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		from os.path import join

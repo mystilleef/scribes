@@ -18,9 +18,7 @@ class Manager(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.imanager.unregister_editor(self.__editor)
 		self.__editor.window.destroy()
-		del self.__editor
 		del self
-		self = None
 		return False
 
 	def __register(self, _object):

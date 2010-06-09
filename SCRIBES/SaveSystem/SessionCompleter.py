@@ -1,12 +1,15 @@
-class Completer(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Completer(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("session-id", self.__session_cb)
-		self.__sigid3 = manager.connect("save-succeeded", self.__data_cb)
-		self.__sigid4 = manager.connect("save-failed", self.__data_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(manager, "session-id", self.__session_cb)
+		self.connect(manager, "save-succeeded", self.__data_cb)
+		self.connect(manager, "save-failed", self.__data_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -19,30 +22,27 @@ class Completer(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __verify_session(self, data):
 		try:
-			self.__editor.response()
 			session_id = tuple(data[0])
 			self.__queue.remove(session_id)
-			if self.__session_id != session_id: return False
+			if self.__session_id != session_id: raise AssertionError # False
 			emit = self.__manager.emit
 			emit("saved?", data) if len(data) == 3 else emit("error", data)
 		except ValueError:
-			self.__editor.response()
 			print "Module Name: SCRIBES/SaveSystem/SessionCompleter"
 			print "Method Name: __verify_session"
 			print "ERROR MESSAGE: Session id not in queue", session_id
-		finally:
-			self.__editor.response()
+		except AssertionError:
+			print "Module Name: SCRIBES/SaveSystem/SessionCompleter"
+			print "Method Name: __verify_session"
+			print "ERROR: Session id has changed!"
+			print "Old session id: %s, New session id: %s" % (self.__session_id, session_id)
 		return False
 
 	def __quit_cb(self, *args):
@@ -50,12 +50,11 @@ class Completer(object):
 		return False
 
 	def __session_cb(self, manager, session_id):
-		self.__editor.response()
 		self.__session_id = session_id
 		self.__queue.append(session_id)
 		return False
 
 	def __data_cb(self, manager, data):
-		self.__editor.response()
-		self.__verify_session(data)
+		from gobject import idle_add
+		idle_add(self.__verify_session, data)
 		return False

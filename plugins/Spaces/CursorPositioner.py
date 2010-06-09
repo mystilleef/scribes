@@ -29,7 +29,7 @@ class Positioner(object):
 		return text
 
 	def __position(self):
-		line, offset = self.__data
+		line, offset, adjustment_value = self.__data
 		new_text = self.__get_text_on_line(line)
 		new_offset = offset + (len(new_text) - len(self.__old_text))
 		if new_offset < 0: new_offset = 0
@@ -37,13 +37,15 @@ class Positioner(object):
 		iterator = get_iter(line, new_offset)
 		self.__editor.textbuffer.place_cursor(iterator)
 		from gobject import idle_add
-		idle_add(self.__move_to_cursor, priority=9999)
+		idle_add(self.__move_to_cursor, adjustment_value, priority=9999)
 		self.__data = None
 		self.__old_text = None
 		return False
 
-	def __move_to_cursor(self):
-		self.__editor.move_view_to_cursor(True)
+	def __move_to_cursor(self, adjustment_value):
+#		self.__editor.move_view_to_cursor(True)
+		vadjustment = self.__editor.gui.get_widget("ScrolledWindow").get_vadjustment()
+		vadjustment.set_value(adjustment_value)
 		self.__editor.textview.window.thaw_updates()
 		return False
 

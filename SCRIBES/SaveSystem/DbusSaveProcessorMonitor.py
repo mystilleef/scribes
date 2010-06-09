@@ -25,7 +25,6 @@ class Monitor(object):
 						dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __quit_cb(self, *args):

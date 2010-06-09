@@ -1,11 +1,14 @@
-class Manager(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Manager(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("save-file", self.__save_cb)
-		self.__sigid3 = editor.connect_after("rename-file", self.__save_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(editor, "save-file", self.__save_cb)
+		self.connect(editor, "rename-file", self.__save_cb, True)
 		editor.register_object(self)
 		editor.response()
 
@@ -16,17 +19,13 @@ class Manager(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __process(self, uri, encoding):
 		try:
-			self.__editor.response()
 			self.__count += 1
 			session_id = self.__editor.id_, self.__count
 			self.__manager.emit("session-id", session_id)
@@ -35,10 +34,8 @@ class Manager(object):
 			if self.__editor.generate_filename: raise ValueError
 			self.__manager.emit("save-data", data)
 		except AssertionError:
-			self.__editor.response()
 			self.__manager.emit("readonly-error")
 		except ValueError:
-			self.__editor.response()
 			self.__manager.emit("generate-name", data)
 		return False
 

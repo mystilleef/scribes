@@ -1,10 +1,13 @@
-class Handler(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Handler(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("readonly-error", self.__error_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(manager, "readonly-error", self.__error_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -14,11 +17,9 @@ class Handler(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __error(self):

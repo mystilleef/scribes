@@ -121,6 +121,7 @@ class Manager(object):
 
 	def toggle_comment(self):
 		try:
+			self.__editor.textview.window.freeze_updates()
 			from Exceptions import ReadOnlyError
 			if self.__editor.readonly: raise ReadOnlyError
 			offset = self.__editor.cursor.get_offset()
@@ -157,6 +158,7 @@ class Manager(object):
 		finally:
 			self.__update_feedback_message()
 			self.__reset_flags()
+			self.__editor.textview.window.thaw_updates()
 		return
 
 	def __get_begin_selection(self):

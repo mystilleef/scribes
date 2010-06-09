@@ -31,11 +31,6 @@ class Animator(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
-		self.__ttimer, self.__timer1, self.__timer2 = 1, 1, 1
-		from gobject import source_remove
-		source_remove(self.__ttimer)
-		source_remove(self.__timer1)
-		source_remove(self.__timer2)
 		self.__editor.unregister_object(self)
 		del self
 		return False

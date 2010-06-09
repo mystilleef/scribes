@@ -91,16 +91,27 @@ class Manager(object):
 		self.__editor.textbuffer.insert_at_cursor("\n" + whitespaces)
 		return
 
+#	def __move_view_to_cursor(self):
+#		mark = self.__editor.textbuffer.get_insert()
+#		self.__editor.textview.scroll_mark_onscreen(mark)
+#		return False
+
+	def __insert_indentation(self, whitespaces):
+		self.__editor.textview.window.freeze_updates()
+		self.__insert_indentation_on_next_line(whitespaces)
+		mark = self.__editor.textbuffer.get_insert()
+		self.__editor.textview.scroll_mark_onscreen(mark)
+		self.__editor.textview.window.thaw_updates()
+		return False
+
 	def __indent_next_line(self):
 		whitespaces = self.__get_indentation_for_next_line()
-		self.__insert_indentation_on_next_line(whitespaces)
-		self.__editor.move_view_to_cursor()
+		self.__insert_indentation(whitespaces)
 		return
 
 	def __dedent_next_line(self):
 		whitespaces = self.__get_dedentation_for_next_line()
-		self.__insert_indentation_on_next_line(whitespaces)
-		self.__editor.move_view_to_cursor()
+		self.__insert_indentation(whitespaces)
 		return
 
 	def __cursor_is_before_colon(self):
@@ -124,12 +135,12 @@ class Manager(object):
 		return False
 
 	def __key_press_event_cb(self, widget, event):
-		from gtk.gdk import SHIFT_MASK, MOD1_MASK, CONTROL_MASK
 		from gtk.gdk import keyval_name
+		if keyval_name(event.keyval) != "Return": return False
+		from gtk.gdk import SHIFT_MASK, MOD1_MASK, CONTROL_MASK
 		if event.state & SHIFT_MASK: return False
 		if event.state & MOD1_MASK: return False
 		if event.state & CONTROL_MASK: return False
-		if keyval_name(event.keyval) != "Return": return False
 		ends_with_colon = self.__line_ends_with_colon()
 		if ends_with_colon:
 			if self.__cursor_is_before_colon(): return False

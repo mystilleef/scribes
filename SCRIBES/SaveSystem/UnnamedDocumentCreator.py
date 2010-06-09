@@ -1,10 +1,13 @@
-class Creator(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Creator(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("create-new-file", self.__create_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(manager, "create-new-file", self.__create_cb)
 		from gobject import idle_add
 		idle_add(self.__optimize, priority=9999)
 		editor.register_object(self)
@@ -17,12 +20,11 @@ class Creator(object):
 		return
 
 	def __destroy(self):
+		self.__editor.response()
 		if self.__count: return True
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __create(self, _data):
