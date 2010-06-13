@@ -1,0 +1,2 @@
+class NoMultiCommentCharacterError(Exception):
+	pass

@@ -40,6 +40,7 @@ class Hider(SignalManager):
 		from gtk.keysyms import Escape
 		if event.keyval != Escape: return False
 		self.__editor.hide_full_view()
+		self.__block()
 		return True
 
 	def __visible_cb(self, editor, visible):

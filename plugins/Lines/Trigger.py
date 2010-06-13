@@ -64,7 +64,7 @@ class Trigger(SignalManager, TriggerManager):
 		self.__trigger6 = self.create_trigger(name, shortcut, description, category)
 		name, shortcut, description, category = (
 			"duplicate-line", 
-			"<ctrl><shift>d", 
+			"<ctrl>u", 
 			_("Duplicate line or selected lines"), 
 			_("Line Operations")
 		)

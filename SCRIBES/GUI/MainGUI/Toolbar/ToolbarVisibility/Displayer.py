@@ -12,7 +12,7 @@ class Displayer(SignalManager):
 		self.connect(manager, "hide", self.__hide_cb)
 		self.connect(manager, "show", self.__show_cb)
 		self.connect(manager, "visible", self.__visible_cb)
-#		self.connect(editor, "window-focus-out", self.__focus_cb, True)
+		self.connect(editor, "window-focus-out", self.__focus_cb, True)
 		editor.register_object(self)
 		editor.response()
 

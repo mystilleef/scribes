@@ -23,7 +23,7 @@ class PopupMenuItem(ImageMenuItem):
 		self.__menu = Menu()
 		self.__image = Image()
 		self.__menuitem1 = self.__editor.create_menuitem(_("_Join Line (alt + j)"))
-		self.__menuitem2 = self.__editor.create_menuitem(_("D_uplicate Line (ctrl + shift + d)"))
+		self.__menuitem2 = self.__editor.create_menuitem(_("D_uplicate Line (ctrl + u)"))
 		self.__menuitem3 = self.__editor.create_menuitem(_("_Delete Line (alt + d)"))
 		self.__menuitem4 = self.__editor.create_menuitem(_("Free Line _Below (alt + o)"))
 		self.__menuitem5 = self.__editor.create_menuitem(_("Free Line _Above (alt + shift + o)"))
