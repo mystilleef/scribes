@@ -12,11 +12,29 @@ def has_comment(text):
 	return False
 
 def comment(text, multiline=False):
-	if multiline is False: return "//" + text
+	if multiline is False: return __comment_single_line(text)
 	return "/*\n" + text.rstrip(" \t") + "\n*/"
+
+def __comment_single_line(text):
+	is_indentation_character = lambda character: character in (" ", "\t")
+	from itertools import takewhile
+	indentation =  takewhile(is_indentation_character, text)
+	indentation_character = "".join(indentation)
+	return indentation_character + "// " + text.lstrip(" \t")
+
+def __comment_multiple_lines(text):
+	return False
 
 def uncomment(text):
 	tmp = text.lstrip(" \t")
-	if tmp.startswith("//"): return text.replace("//", "", 1)
+	if tmp.startswith("//"): return __uncomment_single_line(text)
 	text = BEGIN_RE.sub("", text)
 	return END_RE.sub("", text)
+
+def __uncomment_single_line(text):
+	tmp = text.lstrip(" \t")
+	if tmp.startswith("// "): return text.replace("// ", "", 1)
+	return text.replace("//", "", 1)
+
+def __uncomment_multiple_lines(text):
+	return False

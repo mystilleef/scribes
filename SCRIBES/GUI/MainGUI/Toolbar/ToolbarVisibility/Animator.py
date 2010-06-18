@@ -49,11 +49,15 @@ class Animator(SignalManager):
 		return False
 
 	def __move_on_idle(self, direction):
-		x = int(self.__get_x(direction))
-		y = int(self.__get_y(direction))
-		self.__editor.textview.move_child(self.__container, x, y)
-		if not self.__container.get_property("visible"): self.__container.show_all()
-		self.__editor.response()
+		try:
+			x = int(self.__get_x(direction))
+			y = int(self.__get_y(direction))
+			self.__editor.response()
+			self.__editor.textview.move_child(self.__container, x, y)
+			if not self.__container.get_property("visible"): self.__container.show_all()
+			self.__editor.response()
+		except AttributeError:
+			pass
 		return False
 
 	def __move(self, direction):

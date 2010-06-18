@@ -16,17 +16,22 @@ class Marker(SignalManager):
 		self.__buffer = editor.textbuffer
 		from MultiCommentSearcher import Searcher
 		self.__searcher = Searcher()
+		iterator_copy = self.__editor.cursor.copy
+		self.__lmark = self.__editor.create_left_mark(iterator_copy())
+		self.__rmark = self.__editor.create_right_mark(iterator_copy())
 		return
 
 	def __destroy(self):
 		self.disconnect()
+		self.__editor.delete_mark(self.__lmark)
+		self.__editor.delete_mark(self.__rmark)
 		del self
 		return False
 
 	def __mark_region(self, start, end):
-		lmark = self.__editor.create_left_mark(start)
-		rmark = self.__editor.create_right_mark(end)
-		return lmark, rmark
+		self.__buffer.move_mark(self.__lmark, start)
+		self.__buffer.move_mark(self.__rmark, end)
+		return
 
 	def __mark_comment_region(self):
 		from Exceptions import NoMultiCommentCharacterError
@@ -36,14 +41,14 @@ class Marker(SignalManager):
 			if not boundaries: raise NoMultiCommentCharacterError
 			start = self.__buffer.get_iter_at_offset(boundaries[0])
 			end = self.__buffer.get_iter_at_offset(boundaries[1])
-			lmark, rmark = self.__mark_region(start, end)
+			self.__mark_region(start, end)
 		except NoMultiCommentCharacterError:
-			lmark, rmark = self.__mark_region(*self.__editor.get_line_bounds())
-		return lmark, rmark
+			self.__mark_region(*self.__editor.get_line_bounds())
+		return
 
 	def __emit(self):
-		marks = self.__mark_region(*self.__editor.selection_bounds) if self.__editor.has_selection else self.__mark_comment_region()
-		self.__manager.emit("comment-boundary", marks)
+		self.__mark_region(*self.__editor.selection_bounds) if self.__editor.has_selection else self.__mark_comment_region()
+		self.__manager.emit("comment-boundary", (self.__lmark, self.__rmark))
 		return False
 
 	def __destroy_cb(self, *args):
