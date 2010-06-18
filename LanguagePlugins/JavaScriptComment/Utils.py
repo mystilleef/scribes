@@ -11,19 +11,25 @@ def has_comment(text):
 	if text.startswith("/*") and text.endswith("*/"): return True
 	return False
 
-def comment(text, multiline=False):
-	if multiline is False: return __comment_single_line(text)
-	return "/*\n" + text.rstrip(" \t") + "\n*/"
-
-def __comment_single_line(text):
+def get_indentation(text):
 	is_indentation_character = lambda character: character in (" ", "\t")
 	from itertools import takewhile
-	indentation =  takewhile(is_indentation_character, text)
-	indentation_character = "".join(indentation)
-	return indentation_character + "// " + text.lstrip(" \t")
+	whitespaces =  takewhile(is_indentation_character, text)
+	return "".join(whitespaces)
+
+def comment(text, multiline=False):
+	if multiline is False: return __comment_single_line(text)
+	return __comment_multiple_lines(text)
+
+def __comment_single_line(text):
+	return get_indentation(text) + "// " + text.lstrip(" \t")
 
 def __comment_multiple_lines(text):
-	return False
+	indent_value = lambda line: len(line.replace("\t", "    "))
+	line_indentations = [(indent_value(line), get_indentation(line)) for line in text.splitlines()]
+	line_indentations.sort()
+	indentation = line_indentations[0][1]
+	return indentation + "/*\n" + text.rstrip(" \t") + "\n" + indentation + "*/"
 
 def uncomment(text):
 	tmp = text.lstrip(" \t")
