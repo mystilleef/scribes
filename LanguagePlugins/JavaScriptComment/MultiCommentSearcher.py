@@ -1,10 +1,3 @@
-#from re import U, M, L, escape, compile as compile_
-#BEGIN_CHARACTER = "/\*+" # r"%s" % escape("/*+")
-#END_CHARACTER = r"%s" % escape("*/")
-#flags = U|M|L
-#BEGIN_RE = compile_(BEGIN_CHARACTER, flags)
-#END_RE = compile_(END_CHARACTER, flags)
-
 class Searcher(object):
 
 	def find_comment_boundaries(self, text, cursor):

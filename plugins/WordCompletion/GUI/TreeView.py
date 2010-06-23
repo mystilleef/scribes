@@ -1,6 +1,7 @@
 class TreeView(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = self.__view.connect("key-press-event", self.__key_press_event_cb)
@@ -10,6 +11,7 @@ class TreeView(object):
 		self.__sigid4 = manager.connect("no-match-found", self.__no_match_found_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=8888)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

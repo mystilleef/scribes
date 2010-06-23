@@ -1,6 +1,7 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		from Window import Window
@@ -9,6 +10,7 @@ class Manager(object):
 		Positioner(manager, editor)
 		from TreeView import TreeView
 		TreeView(manager, editor)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
