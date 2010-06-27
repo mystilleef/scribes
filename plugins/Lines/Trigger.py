@@ -5,6 +5,7 @@ from gettext import gettext as _
 class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
+		editor.response()
 		SignalManager.__init__(self)
 		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
@@ -16,6 +17,7 @@ class Trigger(SignalManager, TriggerManager):
 		self.connect(self.__trigger6, "activate", self.__activate_cb)
 		self.connect(self.__trigger7, "activate", self.__activate_cb)
 		self.connect(editor.textview, "populate-popup", self.__popup_cb)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

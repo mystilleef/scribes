@@ -10,12 +10,14 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
+		editor.response()
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		from SmartSpace import SmartSpace
 		SmartSpace(editor, self)
 		from ConfigurationManager import Manager
 		Manager(editor, self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

@@ -14,6 +14,7 @@ class Manager(GObject):
 	
 
 	def __init__(self, editor):
+		editor.response()
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		from FileInfo import FileInfo
@@ -40,6 +41,7 @@ class Manager(GObject):
 		Label(self, editor)
 		from AccessedLabel import Label
 		Label(self, editor)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__glade = editor.get_glade_object(globals(), "DocumentStatistics.glade", "Window")

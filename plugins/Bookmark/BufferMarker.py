@@ -3,6 +3,7 @@ from gettext import gettext as _
 class Marker(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
@@ -11,6 +12,7 @@ class Marker(object):
 		self.__sigid4 = editor.connect("renamed-file", self.__restore_cb)
 		self.__sigid5 = manager.connect("remove-all-bookmarks", self.__remove_bookmarks_cb)
 		self.__restore_marks()
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

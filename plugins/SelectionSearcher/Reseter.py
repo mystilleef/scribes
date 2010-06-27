@@ -3,6 +3,7 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Reseter(SignalManager):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -11,6 +12,7 @@ class Reseter(SignalManager):
 		self.__sig2 = self.connect(self.__window, "key-press-event", self.__key_cb)
 		self.__sig3 = self.connect(self.__view, "focus-out-event", self.__changed_cb)
 		self.__block()
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

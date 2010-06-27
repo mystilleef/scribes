@@ -7,6 +7,7 @@ class AutoReplaceMonitor(GObject):
 	}
 
 	def __init__(self, manager, editor):
+		editor.response()
 		GObject.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__signal_id_1 = self.__manager.connect("abbreviations-updated", self.__manager_abbreviations_updated_cb)
@@ -14,6 +15,7 @@ class AutoReplaceMonitor(GObject):
 		self.__signal_id_3 = self.__editor.textview.connect("key-press-event", self.__monitor_key_press_event_cb)
 		if self.__can_monitor is False:
 			self.__editor.textview.handle_block(self.__signal_id_3)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		# Reference to the AutoReplaceManager.

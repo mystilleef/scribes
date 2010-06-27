@@ -3,6 +3,7 @@ from gettext import gettext as _
 class Window(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
@@ -13,6 +14,7 @@ class Window(object):
 		self.__sigid6 = manager.connect("show-edit-template-editor", self.__edit_cb)
 		self.__sigid7 = manager.connect("ready", self.__show_cb)
 		self.__sigid8 = manager.connect("updating-database", self.__delete_event_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

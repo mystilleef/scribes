@@ -5,12 +5,14 @@ data = ((_("Normal"), "normal"), (_("Forward"), "forward"),
 class ComboBox(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__quit_cb)
 		self.__sigid2 = self.__combo.connect("changed", self.__changed_cb)
 		self.__sigid3 = manager.connect("search-type-flag", self.__update_cb)
 		self.__populate_model(data)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

@@ -1,10 +1,12 @@
 class Dispatcher(object):
 
 	def __init__(self, editor, manager):
+		editor.response()
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("scan-schemes", self.__scan_themes_cb)
 		self.__scheme_manager.force_rescan()
+		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__manager = manager

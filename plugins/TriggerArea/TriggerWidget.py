@@ -40,9 +40,9 @@ class TriggerWidget(EventBox):
 	border_color = property(lambda self: self.__bcolor, __set_border_color)
 	fill_color = property(lambda self: self.__fcolor, __set_fill_color)
 
-	def __draw(self, cr, position="top-right"):
+	def __draw(self, cr, size, position="top-right"):
 		offset = self.__offset
-		size, radius = self.__size, self.__size - offset
+		size, radius = size, size - offset
 		corner = {
 			"top-right": ((size, 0), (size, radius), (offset, 0)),
 			"top-left": ((0, 0), (0, radius), (radius, 0)),
@@ -75,7 +75,7 @@ class TriggerWidget(EventBox):
 		cr.paint()
 #		 Draw the arc
 		cr.set_operator(OPERATOR_OVER)
-		self.__draw(cr, self.__position)
+		self.__draw(cr, self.__size, self.__position)
 		cr.fill()
 #		 Set the window shape
 		self.window.shape_combine_mask(bitmap, 0, 0)
@@ -85,10 +85,10 @@ class TriggerWidget(EventBox):
 		cr = self.window.cairo_create()
 		# Draw arc
 		bcolor = Color(self.__bcolor)
-		cr.set_source_rgba(bcolor.red_float, bcolor.green_float, bcolor.blue_float, 0.5)
-		self.__draw(cr, self.__position)
+		cr.set_source_rgba(bcolor.red_float, bcolor.green_float, bcolor.blue_float, 1.0)
+		self.__draw(cr, self.__size, self.__position)
 		fcolor = Color(self.__fcolor)
-		cr.set_source_rgba(fcolor.red_float, fcolor.green_float, fcolor.blue_float, 0.25)
+		cr.set_source_rgba(fcolor.red_float, fcolor.green_float, fcolor.blue_float, 0.5)
 		cr.fill()
 		return False
 

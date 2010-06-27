@@ -1,8 +1,9 @@
 from gettext import gettext as _
 
 class Operator(object):
-	
+
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("delete-line", self.__delete_line_cb)
@@ -12,6 +13,7 @@ class Operator(object):
 		self.__sigid6 = manager.connect("delete-cursor-to-start", self.__delete_cursor_to_start_cb)
 		self.__sigid7 = manager.connect("free-line-below", self.__line_below_cb)
 		self.__sigid8 = manager.connect("free-line-above", self.__line_above_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -30,14 +32,14 @@ class Operator(object):
 		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
 		del self
 		self = None
-		return 
+		return
 
 	def __join(self, start, end):
 		text = self.__editor.textbuffer.get_text(start, end)
 		lines = text.splitlines()
 		if len(lines) in (0,1): raise TypeError
 		newlines = [line.strip("\t ") for line in lines[1:]]
-		newlines.insert(0, lines[0].rstrip("\t ")) 
+		newlines.insert(0, lines[0].rstrip("\t "))
 		text = " ".join(newlines)
 		self.__editor.textbuffer.delete(start, end)
 		self.__editor.textbuffer.insert_at_cursor(text)
@@ -56,14 +58,14 @@ class Operator(object):
 			self.__editor.cursor.set_line_offset(offset)
 			textbuffer.place_cursor(textbuffer.get_iter_at_line_offset(self.__editor.cursor.get_line(), offset))
 			self.__editor.update_message(_("Joined current and next lines"), "pass")
-		except ValueError: 
+		except ValueError:
 			self.__editor.update_message(_("Cannot join lines"), "fail")
 		except TypeError:
 			self.__editor.update_message(_("No lines to join"), "fail")
 		finally:
 			self.__editor.move_view_to_cursor()
 		return
-	
+
 	def __join_selections(self):
 		try:
 			start, end = self.__editor.textbuffer.get_selection_bounds()
@@ -180,8 +182,8 @@ class Operator(object):
 			self.__editor.update_message(message, "pass")
 		finally:
 			self.__editor.move_view_to_cursor()
-		return 
-	
+		return
+
 	def __delete_lines(self):
 		start, end = self.__editor.textbuffer.get_selection_bounds()
 		start = self.__editor.backward_to_line_begin(start)
@@ -203,7 +205,7 @@ class Operator(object):
 		message = _("Deleted selection on line %d") % (start.get_line() + 1)
 		self.__editor.update_message(message, "pass")
 		self.__editor.move_view_to_cursor()
-		return 
+		return
 
 	def __delete_last_line(self):
 		try:
@@ -219,14 +221,14 @@ class Operator(object):
 			self.__editor.update_message(_("Deleted last line"), "pass")
 		finally:
 			self.__editor.move_view_to_cursor()
-		return 
+		return
 
 	def __delete(self):
 		if self.__is_last_line() and not self.__editor.selection_range: return self.__delete_last_line()
 		if not self.__editor.selection_range: return self.__delete_line()
 		if self.__editor.selection_range == 1: return self.__delete_selection()
 		return self.__delete_lines()
-	
+
 	def __is_last_line(self):
 		if self.__editor.cursor.get_line() == self.__editor.textbuffer.get_line_count() -1: return True
 		return False
@@ -252,7 +254,7 @@ class Operator(object):
 		self.__delete_to_end()
 		self.__view.window.thaw_updates()
 		return False
-	
+
 	def __duplicate_line_cb(self, *args):
 		self.__view.window.freeze_updates()
 		self.__duplicate_line()

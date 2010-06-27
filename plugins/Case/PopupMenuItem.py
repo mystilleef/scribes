@@ -4,6 +4,7 @@ from gtk import ImageMenuItem
 class PopupMenuItem(ImageMenuItem):
 
 	def __init__(self, editor):
+		editor.response()
 		ImageMenuItem.__init__(self, _("_Case"))
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -14,6 +15,7 @@ class PopupMenuItem(ImageMenuItem):
 		self.__sigid5 = self.__menuitem2.connect("map-event", self.__map_event_cb)
 		self.__sigid6 = self.__menuitem3.connect("map-event", self.__map_event_cb)
 		self.__sigid7 = self.__editor.textview.connect("focus-in-event", self.__focus_cb)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		from gtk import Menu, Image, STOCK_SORT_DESCENDING

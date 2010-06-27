@@ -1,6 +1,7 @@
 class Generator(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("show-add-template-editor", self.__add_cb)
@@ -8,6 +9,7 @@ class Generator(object):
 		self.__sigid4 = manager.connect("selected-language-id", self.__language_id_cb)
 		self.__sigid5 = manager.connect("selected-templates-dictionary-key", self.__dictionary_key_cb)
 		self.__sigid6 = manager.connect("gui-template-editor-data", self.__data_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

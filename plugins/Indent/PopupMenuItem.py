@@ -4,12 +4,14 @@ from gettext import gettext as _
 class PopupMenuItem(ImageMenuItem):
 
 	def __init__(self, editor):
+		editor.response()
 		ImageMenuItem.__init__(self, _("In_dentation"))
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__sigid1 = self.__menuitem1.connect("activate", self.__activate_cb)
 		self.__sigid2 = self.__menuitem2.connect("activate", self.__activate_cb)
 		self.__sigid3 = self.__textview.connect("focus-in-event", self.__focus_cb)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

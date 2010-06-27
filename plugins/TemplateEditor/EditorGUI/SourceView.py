@@ -3,11 +3,13 @@ from gtksourceview2 import View, Buffer
 class SourceView(View):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		View.__init__(self, Buffer())
 		self.__init_attributes(manager, editor)
 		self.__add_view_to_scrolled_window()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("valid-trigger", self.__valid_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

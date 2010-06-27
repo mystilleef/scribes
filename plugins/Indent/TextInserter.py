@@ -3,12 +3,14 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Inserter(SignalManager):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "processed-text", self.__text_cb)
 		self.connect(manager, "marks", self.__marks_cb)
 		self.connect(manager, "complete", self.__complete_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

@@ -1,10 +1,12 @@
 class Selector(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("new-imported-templates", self.__new_imported_templates_cb)
 		self.__sigid3 = manager.connect_after("templates-dictionary", self.__templates_dictionary_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

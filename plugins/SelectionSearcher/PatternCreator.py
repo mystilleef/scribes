@@ -4,12 +4,14 @@ MATCH_WORD = True
 class Creator(SignalManager):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "search", self.__search_cb)
 		self.connect(manager, "research", self.__research_cb)
 		self.connect(manager, "reset", self.__reset_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

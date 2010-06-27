@@ -4,6 +4,7 @@ NO_SELECTION_FOUND_ERROR = _("ERROR: No selection found")
 class TreeView(object):
 
 	def __init__(self, editor, manager):
+		editor.response()
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
@@ -13,6 +14,7 @@ class TreeView(object):
 		self.__sigid5 = manager.connect("current-scheme", self.__current_scheme_cb)
 		self.__sigid6 = self.__treeview.connect("key-press-event", self.__key_press_event_cb)
 		self.__sigid7 = manager.connect("remove-row", self.__remove_row_cb)
+		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__manager = manager

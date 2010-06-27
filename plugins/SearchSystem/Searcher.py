@@ -4,6 +4,7 @@ message = _("No matches found")
 class Searcher(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("search-boundary", self.__boundary_cb)
@@ -12,6 +13,7 @@ class Searcher(object):
 		self.__sigid5 = manager.connect("search-mode-flag", self.__search_mode_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

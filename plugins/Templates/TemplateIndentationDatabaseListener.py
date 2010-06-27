@@ -1,10 +1,12 @@
 class Listener(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__monitor.connect("changed", self.__update_cb)
 		self.__update()
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor

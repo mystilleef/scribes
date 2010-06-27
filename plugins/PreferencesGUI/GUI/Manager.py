@@ -1,6 +1,7 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		from Window.Manager import Manager
 		Manager(manager, editor)
 		from SensitivityEmitter import Emitter
@@ -23,3 +24,4 @@ class Manager(object):
 		Button(manager, editor)
 		from LanguageComboBox.Manager import Manager
 		Manager(manager, editor)
+		editor.response()

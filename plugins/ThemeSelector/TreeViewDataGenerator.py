@@ -1,9 +1,11 @@
 class Generator(object):
 
 	def __init__(self, editor, manager):
+		editor.response()
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("schemes", self.__schemes_cb)
+		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
@@ -14,7 +16,6 @@ class Generator(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __send_treeview_data(self, schemes):

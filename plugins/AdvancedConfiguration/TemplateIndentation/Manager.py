@@ -12,6 +12,7 @@ class Manager(GObject):
 	}
 
 	def __init__(self, manager, editor):
+		editor.response()
 		GObject.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
@@ -21,6 +22,7 @@ class Manager(GObject):
 		Button(self, editor)
 		from DatabaseListener import Listener
 		Listener(self, editor)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor

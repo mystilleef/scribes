@@ -4,6 +4,7 @@ from gettext import gettext as _
 class PopupMenuItem(ImageMenuItem):
 
 	def __init__(self, editor):
+		editor.response()
 		ImageMenuItem.__init__(self, _("Paragraph"))
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -12,6 +13,7 @@ class PopupMenuItem(ImageMenuItem):
 		self.__sig_id_3 = self.__reflow_item.connect("activate", self.__activate_cb)
 		self.__sig_id_4 = editor.textview.connect("focus-in-event", self.__destroy_cb)
 		self.__sig_id_5 = self.__select_item.connect("activate", self.__activate_cb)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		from gtk import Menu, Image

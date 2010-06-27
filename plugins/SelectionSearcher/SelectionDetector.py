@@ -3,11 +3,13 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Detector(SignalManager):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(editor, "cursor-moved", self.__moved_cb, True)
 		self.connect(editor.textview, "focus-in-event", self.__moved_cb, True)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

@@ -11,14 +11,20 @@ Press F2 to check document."""
 class SyntaxErrorCheckerPlugin(object):
 
 	def __init__(self, editor):
+		editor.response()
 		self.__editor = editor
 		self.__trigger = None
+		editor.response()
 
 	def load(self):
+		self.__editor.response()
 		from PythonSyntaxErrorChecker.Trigger import Trigger
 		self.__trigger = Trigger(self.__editor)
+		self.__editor.response()
 		return
 
 	def unload(self):
+		self.__editor.response()
 		self.__trigger.destroy()
+		self.__editor.response()
 		return

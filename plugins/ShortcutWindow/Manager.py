@@ -3,9 +3,11 @@ from Signals import Signal
 class Manager(Signal):
 
 	def __init__(self, editor):
+		editor.response()
 		Signal.__init__(self)
 		from ShortcutWindow import ShortcutWindow
 		ShortcutWindow(self, editor)
+		editor.response()
 
 	def destroy(self):
 		self.emit("destroy")

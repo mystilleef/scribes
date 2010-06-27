@@ -1,6 +1,7 @@
 class Entry(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("show", self.__show_cb)
@@ -10,6 +11,7 @@ class Entry(object):
 		self.__sigid6 = manager.connect("focus-entry", self.__focus_cb)
 		self.__sigid7 = manager.connect_after("formatted-files", self.__files_cb)
 		self.__entry.set_property("sensitive", True)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

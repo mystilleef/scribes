@@ -6,6 +6,7 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Printer(SignalManager):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
@@ -13,6 +14,7 @@ class Printer(SignalManager):
 		self.connect(self.__operation, "done", self.__done_cb)
 		self.connect(self.__operation, "paginate", self.__paginate_cb)
 		self.connect(self.__operation, "status-changed", self.__status_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

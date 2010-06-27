@@ -1,10 +1,12 @@
 class Escaper(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("escape", self.__escape_cb)
 		self.__sigid3 = manager.connect("unescape", self.__unescape_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

@@ -4,8 +4,10 @@ message = _("Information about Scribes")
 class Dialog(object):
 
 	def __init__(self, editor):
+		editor.response()
 		self.__init_attributes(editor)
 		self.__set_properties()
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

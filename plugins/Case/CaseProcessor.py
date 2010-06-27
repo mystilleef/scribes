@@ -3,10 +3,12 @@ from gettext import gettext as _
 class Processor(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("extracted-text", self.__extract_cb)
 		self.__sigid3 = manager.connect("case", self.__case_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

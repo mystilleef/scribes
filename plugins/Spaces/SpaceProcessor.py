@@ -3,12 +3,14 @@ from gettext import gettext as _
 class Processor(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("tabs-to-spaces", self.__tabs_to_spaces_cb)
 		self.__sigid3 = manager.connect("spaces-to-tabs", self.__spaces_to_tabs_cb)
 		self.__sigid4 = manager.connect("remove-trailing-spaces", self.__remove_trailing_spaces_cb)
 		self.__sigid5 = manager.connect("extracted-text", self.__extracted_text_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

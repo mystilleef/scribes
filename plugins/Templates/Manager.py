@@ -27,6 +27,7 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
+		editor.response()
 		GObject.__init__(self)
 		from TriggerColorer import Colorer
 		Colorer(editor, self)
@@ -46,6 +47,7 @@ class Manager(GObject):
 		Monitor(self, editor)
 		from TemplateIndentationDatabaseListener import Listener
 		Listener(self, editor)
+		editor.response()
 
 	def __destroy(self):
 		self.emit("destroy")

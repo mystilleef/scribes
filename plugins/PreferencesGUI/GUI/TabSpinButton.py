@@ -1,6 +1,7 @@
 class Button(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = self.__button.connect("value-changed", self.__changed_cb)
@@ -9,6 +10,7 @@ class Button(object):
 		self.__sigid4 = manager.connect("selected-language", self.__language_cb)
 		self.__sigid5 = manager.connect("sensitive", self.__sensitive_cb)
 		self.__sigid6 = manager.connect("reset", self.__reset_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor

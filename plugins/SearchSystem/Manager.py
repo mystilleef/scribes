@@ -54,6 +54,7 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
+		editor.response()
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		from SearchCaseDetector import Detector
@@ -90,6 +91,7 @@ class Manager(GObject):
 		Colorer(self, editor)
 		from ReplaceManager import Manager
 		Manager(self, editor)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

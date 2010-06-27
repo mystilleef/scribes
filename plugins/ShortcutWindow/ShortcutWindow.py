@@ -7,10 +7,12 @@ import pango
 class ShortcutWindow(SignalManager):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "activate", self.__activate_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -22,13 +24,17 @@ class ShortcutWindow(SignalManager):
 		# If so, just show it instead of re-creating it
 		# Prevents memory leaks (tested) & instant access after init
 		try:
+			self.__editor.response()
 			if self.window:
 				# Window already exists, show it
+				self.__editor.response()
 				self.__show()
+				self.__editor.response()
 		except:
 			# Window does not exist, create it
 			self.__createShortcutWindow()
-
+		finally:
+			self.__editor.response()
 		return False
 
 	def __createShortcutWindow(self):
@@ -81,7 +87,9 @@ class ShortcutWindow(SignalManager):
 		self.window.connect('focus-out-event', self.__hide_cb)
 
 		# show window
+		self.__editor.response()
 		self.__show()
+		self.__editor.response()
 
 		# Prints to stdout triggers with missing information
 		#self.__getShortcutsMissing()
@@ -469,7 +477,9 @@ class ShortcutWindow(SignalManager):
 		return False
 
 	def __activate_cb(self, *args):
+		self.__editor.response()
 		self.__shortcutWindow()
+		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):

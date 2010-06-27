@@ -3,6 +3,7 @@ from gtksourceview2 import View, Buffer
 class SourceView(View):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		View.__init__(self, Buffer())
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
@@ -13,6 +14,7 @@ class SourceView(View):
 		self.__sigid4 = manager.connect("selected-templates-dictionary-key", self.__key_cb)
 		self.__sigid5 = manager.connect("templates-dictionary", self.__dictionary_cb)
 		self.__sigid6 = self.connect("button-press-event", self.__button_press_event_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

@@ -26,6 +26,7 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
+		editor.response()
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		from ErrorLabel import Label
@@ -56,6 +57,7 @@ class Manager(GObject):
 		Dispatcher(editor, self)
 		from SchemesFolderMonitor import Monitor
 		Monitor(editor, self)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		from os.path import join

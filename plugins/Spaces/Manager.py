@@ -17,6 +17,7 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
+		editor.response()
 		GObject.__init__(self)
 		from CursorPositioner import Positioner
 		Positioner(self, editor)
@@ -28,6 +29,7 @@ class Manager(GObject):
 		Extractor(self, editor)
 		from OffsetGetter import Getter
 		Getter(self, editor)
+		editor.response()
 
 	def spaces_to_tabs(self):
 		self.emit("position")

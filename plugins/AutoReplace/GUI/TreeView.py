@@ -1,6 +1,7 @@
 class TreeView(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
@@ -19,6 +20,7 @@ class TreeView(object):
 		self.__sigid14 = self.__rplrenderer.connect("editing-started", self.__editing_started_cb)
 		self.__sigid15 = self.__abvrenderer.connect("editing-canceled", self.__editing_canceled_cb)
 		self.__block_row_changed_signal()
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor

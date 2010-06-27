@@ -14,30 +14,32 @@ class Manager(GObject):
 	"free-line-above": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	"destroy": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	}
-	
+
 	def __init__(self, editor):
+		editor.response()
 		GObject.__init__(self)
 		from LineOperator import Operator
 		Operator(self, editor)
-	
+		editor.response()
+
 	def destroy(self):
 		self.emit("destroy")
 		del self
 		self = None
-		return 
+		return
 
 	def delete_line(self):
 		self.emit("delete-line")
-		return 
+		return
 
 	def join_line(self):
 		self.emit("join-line")
-		return 
+		return
 
 	def duplicate_line(self):
 		self.emit("duplicate-line")
-		return 
-	
+		return
+
 	def delete_cursor_to_end(self):
 		self.emit("delete-cursor-to-end")
 		return
@@ -45,7 +47,7 @@ class Manager(GObject):
 	def delete_cursor_to_start(self):
 		self.emit("delete-cursor-to-start")
 		return
-	
+
 	def free_line_above(self):
 		self.emit ("free-line-above")
 		return

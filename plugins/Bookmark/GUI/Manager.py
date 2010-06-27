@@ -1,6 +1,7 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		from Window import Window
 		Window(manager, editor)
@@ -9,6 +10,7 @@ class Manager(object):
 		from LineProcessor import Processor
 		Processor(manager, editor)
 		manager.emit("gui-created")
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

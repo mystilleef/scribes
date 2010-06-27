@@ -1,6 +1,7 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		from Window import Window
 		Window(manager, editor)
 		from SourceView import SourceView
@@ -29,3 +30,4 @@ class Manager(object):
 		TreeView(manager, editor)
 		from LanguageTreeViewModelGenerator import Generator
 		Generator(manager, editor)
+		editor.response()

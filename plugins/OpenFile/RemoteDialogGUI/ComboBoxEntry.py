@@ -1,6 +1,7 @@
 class ComboBoxEntry(object):
 
 	def __init__(self, editor, manager):
+		editor.response()
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
 		self.__sigid1 = self.__editor.recent_manager.connect("changed", self.__entry_changed_cb)
@@ -12,6 +13,7 @@ class ComboBoxEntry(object):
 		from gobject import idle_add
 		idle_add(self.__populate_model, priority=9999)
 		idle_add(self.__emit_error)
+		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

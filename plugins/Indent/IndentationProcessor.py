@@ -4,12 +4,14 @@ from gettext import gettext as _
 class Processor(SignalManager):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "extracted-text", self.__text_cb, True)
 		self.connect(manager, "indent", self.__indent_cb)
 		self.connect(manager, "unindent", self.__unindent_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

@@ -1,6 +1,7 @@
 class Colorer(object):
 
 	def __init__(self, editor, manager):
+		editor.response()
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("tag-placeholder", self.__tag_placeholder_cb)
@@ -11,6 +12,7 @@ class Colorer(object):
 		self.__block_signal()
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
+		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

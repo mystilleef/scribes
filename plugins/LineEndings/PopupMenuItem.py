@@ -4,6 +4,7 @@ from gettext import gettext as _
 class PopupMenuItem(MenuItem):
 
 	def __init__(self, editor):
+		editor.response()
 		MenuItem.__init__(self, _("Line En_dings"))
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -11,6 +12,7 @@ class PopupMenuItem(MenuItem):
 		self.__sigid2 = self.__menuitem2.connect("activate", self.__activate_cb)
 		self.__sigid3 = self.__menuitem3.connect("activate", self.__activate_cb)
 		self.__sigid4 = editor.textview.connect("focus-in-event", self.__destroy_cb)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

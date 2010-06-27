@@ -1,12 +1,14 @@
 class Loader(object):
 
 	def __init__(self, editor, manager):
+		editor.response()
 		self.__init_attributes(editor, manager)
 		self.__signal_id_1 = manager.connect("destroy", self.__destroy_cb)
 		self.__signal_id_2 = editor.connect("loaded-file", self.__loaded_document_cb)
 		self.__signal_id_3 = editor.connect("renamed-file", self.__loaded_document_cb)
 		self.__signal_id_4 = manager.connect("database-update", self.__changed_cb)
 		self.__load_templates()
+		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

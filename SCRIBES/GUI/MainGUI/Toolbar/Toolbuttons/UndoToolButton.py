@@ -9,8 +9,8 @@ class Button(ToolButton):
 		self.__set_properties()
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
-		self.__sigid3 = editor.connect("undo", self.__undo_cb)
-		self.__sigid4 = editor.connect("redo", self.__undo_cb)
+		self.__sigid3 = editor.connect_after("undo", self.__undo_cb)
+		self.__sigid4 = editor.connect_after("redo", self.__undo_cb)
 		self.__sigid5 = editor.connect("modified-file", self.__undo_cb)
 		self.__sigid6 = editor.connect("bar-is-active", self.__active_cb)
 		editor.register_object(self)
@@ -61,7 +61,9 @@ class Button(ToolButton):
 		return False
 
 	def __undo_cb(self, *args):
-		self.__sensitive()
+		from gobject import idle_add
+		idle_add(self.__sensitive)
+#		self.__sensitive()
 		return False
 
 	def __active_cb(self, editor, active):

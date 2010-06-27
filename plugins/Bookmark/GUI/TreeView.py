@@ -1,12 +1,14 @@
 class TreeView(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("populate-model", self.__populate_cb)
 		self.__sigid3 = self.__treeview.connect("row-activated", self.__row_activated_cb)
 		self.__sigid4 = manager.connect_after("show-window", self.__show_window_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

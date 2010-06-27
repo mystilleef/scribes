@@ -15,6 +15,7 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
+		editor.response()
 		GObject.__init__(self)
 		from Selector import Selector
 		Selector(self, editor)
@@ -26,6 +27,7 @@ class Manager(GObject):
 		Extractor(self, editor)
 		from Marker import Marker
 		Marker(self, editor)
+		editor.response()
 
 	def destroy(self):
 		self.emit("destroy")

@@ -4,10 +4,12 @@ message = _("Advanced Configuration")
 class MenuItem(object):
 
 	def __init__(self, editor):
+		editor.response()
 		self.__init_attributes(editor)
 		self.__menuitem.props.name = "Advanced Configuration MenuItem"
 		self.__sigid1 = self.__menuitem.connect("activate", self.__activate_cb, editor)
 		editor.add_to_pref_menu(self.__menuitem)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

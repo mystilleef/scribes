@@ -19,12 +19,14 @@ PRINTING = {
 class Feedback(SignalManager):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "feedback", self.__feedback_cb)
 		self.connect(manager, "activate", self.__activate_cb)
 		self.connect(manager, "cancel", self.__cancel_cb)
 		self.connect(manager, "destroy", self.__destroy_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

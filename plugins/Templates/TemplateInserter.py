@@ -1,6 +1,7 @@
 class Inserter(object):
 
 	def __init__(self, editor, manager):
+		editor.response()
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("loaded-language-templates", self.__loaded_language_templates_cb)
@@ -11,6 +12,7 @@ class Inserter(object):
 		self.__sigid7 = manager.connect("reformat-template", self.__reformat_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
+		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

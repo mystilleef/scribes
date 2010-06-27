@@ -11,9 +11,11 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
+		editor.response()
 		GObject.__init__(self)
 		from Selector import Selector
 		Selector(self, editor)
+		editor.response()
 
 	def select_word(self):
 		self.emit("select-word")

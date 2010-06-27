@@ -1,6 +1,7 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		from ButtonSwitcher import Switcher
 		Switcher(manager, editor)
 		from Bar import Bar
@@ -37,3 +38,4 @@ class Manager(object):
 		Button(manager, editor)
 		from ReplaceAllButton import Button
 		Button(manager, editor)
+		editor.response()

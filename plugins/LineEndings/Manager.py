@@ -12,9 +12,11 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
+		editor.response()
 		GObject.__init__(self)
 		from Converter import Converter
 		Converter(self, editor)
+		editor.response()
 
 	def to_unix(self):
 		self.emit("to-unix")

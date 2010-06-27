@@ -10,10 +10,12 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
+		editor.response()
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		from Selector import Selector
 		Selector(self, editor)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

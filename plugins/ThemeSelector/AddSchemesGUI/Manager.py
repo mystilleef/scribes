@@ -1,6 +1,7 @@
 class Manager(object):
 
 	def __init__(self, editor, manager):
+		editor.response()
 		self.__init_attributes(editor, manager)
 		from Window import Window
 		Window(editor, manager)
@@ -11,6 +12,7 @@ class Manager(object):
 		from CancelButton import Button
 		Button(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

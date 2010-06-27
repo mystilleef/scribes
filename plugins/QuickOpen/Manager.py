@@ -31,6 +31,7 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
+		editor.response()
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		from Feedback import Feedback
@@ -53,6 +54,7 @@ class Manager(GObject):
 		Updater(self, editor)
 		from GUI.Manager import Manager
 		Manager(self, editor)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		from os.path import join

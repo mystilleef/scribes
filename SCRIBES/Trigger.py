@@ -9,10 +9,12 @@ class Trigger(GObject):
 	}
 
 	def __init__(self, editor, name, accelerator="", description="", category="", error=True, removable=True):
+		editor.response()
 		GObject.__init__(self)
 		self.__init_attributes(editor, name, accelerator, description, category, error, removable)
 		from gobject import idle_add
 		idle_add(self.__compile, priority=99999)
+		editor.response()
 
 	def __init_attributes(self, editor, name, accelerator, description, category, error, removable):
 		self.__editor = editor
@@ -32,6 +34,7 @@ class Trigger(GObject):
 	removable = property(lambda self: self.__removable)
 
 	def __activate(self):
+		self.__editor.response()
 		if self.__editor.bar_is_active: return False
 		self.__editor.response()
 		self.emit("activate")
@@ -44,10 +47,11 @@ class Trigger(GObject):
 		return
 
 	def destroy(self):
+		self.__editor.response()
 		del self
 		return
 
 	def __compile(self):
-		methods = (self.activate,)
+		methods = (self.activate, self.__activate)
 		self.__editor.optimize(methods)
 		return False

@@ -1,6 +1,7 @@
 class Button(object):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("search-string", self.__search_string_cb)
@@ -11,6 +12,7 @@ class Button(object):
 		self.__sigid7 = manager.connect("no-search-string", self.__no_search_cb)
 		self.__sigid8 = manager.connect("search-mode-flag", self.__search_mode_flag_cb)
 		self.__manager.set_data("activate_button", self.__button)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

@@ -5,11 +5,13 @@ from gettext import gettext as _
 class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
+		editor.response()
 		SignalManager.__init__(self)
 		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
 		self.connect(self.__trigger, "activate", self.__activate_cb)
 		self.__editor.get_toolbutton("GotoToolButton").props.sensitive = True
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

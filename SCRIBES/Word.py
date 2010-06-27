@@ -28,8 +28,6 @@ def inside_word(iterator, pattern):
 def get_word_boundary(iterator, pattern):
 	start = iterator.copy()
 	end = iterator.copy()
-	while starts_word(start, pattern) is False:
-		start.backward_char()
-	while ends_word(end, pattern) is False:
-		end.forward_char()
+	while starts_word(start, pattern) is False: start.backward_char()
+	while ends_word(end, pattern) is False: end.forward_char()
 	return start, end

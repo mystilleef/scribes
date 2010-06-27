@@ -3,12 +3,14 @@ from gtk import MenuToolButton
 class ToolButton(MenuToolButton):
 
 	def __init__(self, manager, editor):
+		editor.response()
 		from gtk import STOCK_PROPERTIES
 		MenuToolButton.__init__(self, STOCK_PROPERTIES)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
+		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

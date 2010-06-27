@@ -2,7 +2,6 @@ from re import UNICODE, compile as compile_
 word_pattern = compile_("\w+|[-]", UNICODE)
 
 def calculate_resolution_independence(window, width, height):
-	# Need to deprecate this function.
 	screen = window.get_screen()
 	number = screen.get_number()
 	rectangle = screen.get_monitor_geometry(number)

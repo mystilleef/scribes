@@ -1,12 +1,14 @@
 class ColorButton(object):
 
 	def __init__(self, editor, manager):
+		editor.response()
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
 		self.__sigid1 = self.__button.connect("color-set", self.__color_set_cb)
 		self.__sigid2 = manager.connect("destroy", self.__destroy_cb)
 		self.__monitor.connect("changed", self.__changed_cb)
 		self.__button.set_property("sensitive", True)
+		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

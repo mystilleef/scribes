@@ -50,12 +50,15 @@ class Validator(object):
 		return False
 
 	def __validate_name(self, name):
+		self.__editor.response()
 		from Exceptions import NoTriggerNameError, DuplicateTriggerNameError
 		if not name: raise NoTriggerNameError
 		if name in self.__names: raise DuplicateTriggerNameError
+		self.__editor.response()
 		return False
 
 	def __validate_accelerator(self, accelerator):
+		self.__editor.response()
 		if not accelerator: return False
 		from Exceptions import DuplicateAcceleratorError
 		if accelerator in self.__accelerators: raise DuplicateAcceleratorError
@@ -64,6 +67,7 @@ class Validator(object):
 		if accelerator_valid(keyval, modifier): return False
 		from Exceptions import InvalidAcceleratorError
 		raise InvalidAcceleratorError
+		self.__editor.response()
 		return False
 
 	def __validate_triggers(self, triggers):
