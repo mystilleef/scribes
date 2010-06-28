@@ -11,24 +11,32 @@ class Trigger(SignalManager, TriggerManager):
 		self.__init_attributes(editor)
 		self.connect(self.__trigger1, "activate", self.__activate_cb)
 		self.connect(self.__trigger2, "activate", self.__activate_cb)
+		self.connect(self.__trigger3, "activate", self.__activate_cb)
 		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		name, shortcut, description, category = (
-			"undo", 
-			"<ctrl>z", 
-			_("Undo last action"), 
+			"undo",
+			"<ctrl>z",
+			_("Undo last action"),
 			_("Text Operations")
 		)
 		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
 		name, shortcut, description, category = (
-			"redo", 
-			"<ctrl><shift>z", 
-			_("Redo last action"), 
+			"redo",
+			"<ctrl><shift>z",
+			_("Redo last action"),
 			_("Text Operations")
 		)
 		self.__trigger2 = self.create_trigger(name, shortcut, description, category)
+		name, shortcut, description, category = (
+			"redo_",
+			"<ctrl>y",
+			_("Redo last action"),
+			_("Text Operations")
+		)
+		self.__trigger3 = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None
 		return
 
@@ -43,6 +51,7 @@ class Trigger(SignalManager, TriggerManager):
 		function = {
 			self.__trigger1: self.__editor.undo,
 			self.__trigger2: self.__editor.redo,
+			self.__trigger3: self.__editor.redo,
 		}
 		function[trigger]()
 		return

@@ -28,7 +28,7 @@ data_folder = join(data_path, "scribes")
 core_plugin_folder = join(data_folder, "plugins")
 core_language_plugin_folder = join(data_folder, "LanguagePlugins")
 python_path = "/usr/lib/python2.6/dist-packages"
-version = "0.4-dev-build569"
+version = "0.4-dev-build570"
 author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"Contributors:",
 			"\tIb Lundgren <ib.lundgren@gmail.com>",
