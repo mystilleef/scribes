@@ -22,6 +22,8 @@ class Manager(Signal):
 		Updater(self, editor)
 		from BarSizeUpdater import Updater
 		Updater(self, editor)
+		from EventBoxColorChanger import Changer
+		Changer(self, editor)
 		from Widget import Widget
 		Widget(self, editor)
 

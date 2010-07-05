@@ -214,7 +214,8 @@ bar_PYTHON = \
 	DeltaCalculator.py \
 	DisplayerManager.py \
 	PublicAPIVisibilityUpdater.py \
-	HideTimer.py
+	HideTimer.py \
+	EventBoxColorChanger.py
 
 all: all-am
 

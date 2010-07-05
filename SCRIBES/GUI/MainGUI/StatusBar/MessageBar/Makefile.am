@@ -14,7 +14,8 @@ bar_PYTHON = \
 	DeltaCalculator.py \
 	DisplayerManager.py \
 	PublicAPIVisibilityUpdater.py \
-	HideTimer.py
+	HideTimer.py \
+	EventBoxColorChanger.py
 
 clean-local:
 	rm -rf *.pyc *.pyo
