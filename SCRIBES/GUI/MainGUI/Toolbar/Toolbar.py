@@ -13,7 +13,6 @@ class Toolbar(object):
 		self.__editor = editor
 		from gtk import Toolbar
 		self.__toolbar = Toolbar()
-#		self.__toolbar = editor.gui.get_widget("Toolbar")
 		return
 
 	def __destroy(self):

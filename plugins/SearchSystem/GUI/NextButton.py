@@ -29,8 +29,7 @@ class Button(object):
 		return
 
 	def __check_sensitive(self, index):
-		sensitive = False if index[0] == index[1] else True
-		self.__button.props.sensitive = sensitive
+		self.__button.props.sensitive = True
 		return
 
 	def __destroy_cb(self, *args):

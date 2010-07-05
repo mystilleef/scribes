@@ -31,28 +31,30 @@ class Navigator(object):
 		self.__prev_queue.clear()
 		return
 
+	def __swap(self):
+		from collections import deque
+		if not self.__next_queue:
+			self.__next_queue = deque(reversed(self.__prev_queue))
+			self.__prev_queue = deque()
+		else:
+			self.__prev_queue = deque(reversed(self.__next_queue))
+			self.__next_queue = deque()
+		return
+
 	def __process_next(self):
-		try:
-			if not self.__next_queue: raise ValueError
-			if self.__current_match: self.__prev_queue.appendleft(self.__current_match)
-			match = self.__next_queue.popleft()
-			self.__current_match = match
-			self.__manager.emit("current-match", match)
-		except ValueError:
-			message = _("No next match found")
-			self.__editor.update_message(message, "fail", 10)
+		if not self.__next_queue: self.__swap()
+		if self.__current_match: self.__prev_queue.appendleft(self.__current_match)
+		match = self.__next_queue.popleft()
+		self.__current_match = match
+		self.__manager.emit("current-match", match)
 		return False
 
 	def __process_previous(self):
-		try:
-			if not self.__prev_queue: raise ValueError
-			if self.__current_match: self.__next_queue.appendleft(self.__current_match)
-			match = self.__prev_queue.popleft()
-			self.__current_match = match
-			self.__manager.emit("current-match", match)
-		except ValueError:
-			message = _("No previous match found")
-			self.__editor.update_message(message, "fail", 10)
+		if not self.__prev_queue: self.__swap()
+		if self.__current_match: self.__next_queue.appendleft(self.__current_match)
+		match = self.__prev_queue.popleft()
+		self.__current_match = match
+		self.__manager.emit("current-match", match)
 		return
 
 	def __old_navigation_behavior(self, matches):
