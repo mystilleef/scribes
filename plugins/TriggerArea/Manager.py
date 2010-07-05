@@ -9,7 +9,7 @@ class Manager(Signal):
 		from GUI.Manager import Manager
 		Manager(self, editor)
 		from TriggerWidget import TriggerWidget
-		self.set_data("TriggerWidget", TriggerWidget())
+		self.set_data("TriggerWidget", TriggerWidget(editor))
 		from TriggerHandler import Handler
 		Handler(self, editor)
 		from Positioner import Positioner
@@ -25,6 +25,8 @@ class Manager(Signal):
 		from DatabaseWriter import Writer
 		Writer(self, editor)
 		from DatabaseMonitor import Monitor
+		Monitor(self, editor)
+		from SyntaxThemeMonitor import Monitor
 		Monitor(self, editor)
 		editor.response()
 

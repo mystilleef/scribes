@@ -59,6 +59,7 @@ class Signals(GObject):
 		"redo": (SSIGNAL, TYPE_NONE, ()),
 		"show-full-view": (SSIGNAL, TYPE_NONE, ()),
 		"hide-full-view": (SSIGNAL, TYPE_NONE, ()),
+		"syntax-color-theme-changed": (SSIGNAL, TYPE_NONE, ()),
 		"add-trigger": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"remove-trigger": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"add-triggers": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),

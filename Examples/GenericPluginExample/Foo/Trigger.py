@@ -32,9 +32,9 @@ class Trigger(SignalManager, TriggerManager):
 		return False
 
 	def __activate(self):
-		try :
+		try:
 			self.__manager.activate()
-		except AttributeError :
+		except AttributeError:
 			from Manager import Manager
 			self.__manager = Manager(self.__editor)
 			self.__manager.activate()
@@ -45,4 +45,4 @@ class Trigger(SignalManager, TriggerManager):
 	def __activate_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__activate)
-		return
+		return False

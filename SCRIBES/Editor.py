@@ -85,6 +85,7 @@ class Editor(Signals):
 	generate_filename = property(lambda self: self.get_data("generate_filename"))
 	mimetype = property(lambda self: self.get_mimetype(self.uri))
 	fileinfo = property(lambda self: self.get_fileinfo(self.uri))
+	view_bg_color = property(lambda self: self.textview.get_modifier_style().base[-1])
 
 	def optimize(self, functions):
 		try:

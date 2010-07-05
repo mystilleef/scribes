@@ -24,7 +24,7 @@ performance, especially under heavy system load.
 information about a document (name, full path, size, type, language, etc)
 	- Close all reported bugs.
 
-Roadmap for Version 0.4 
+Roadmap for Version 0.4
 =======================
 
 	- Refactor and cleanup the trigger system for plugin system.

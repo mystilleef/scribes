@@ -128,6 +128,7 @@ class Inserter(object):
 		mark = self.__editor.create_right_mark()
 		start = buffer_.get_iter_at_mark(mstart)
 		for placeholder in placeholders:
+			self.__editor.response()
 			epos = buffer_.get_iter_at_mark(end)
 			begin, end_ = start.forward_search(placeholder, TEXT_SEARCH_VISIBLE_ONLY, epos)
 			buffer_.place_cursor(begin)
@@ -137,6 +138,7 @@ class Inserter(object):
 			buffer_.move_mark(mark, cursor_position)
 			buffer_.insert_at_cursor(nplaceholder)
 			start = buffer_.get_iter_at_mark(mark)
+			self.__editor.response()
 		self.__editor.delete_mark(mark)
 		return
 
@@ -152,6 +154,7 @@ class Inserter(object):
 		from collections import deque
 		placeholder_marks = deque([])
 		for placeholder in placeholders:
+			self.__editor.response()
 			epos = buffer_.get_iter_at_mark(mend)
 			begin, end_ = start.forward_search(placeholder, TEXT_SEARCH_VISIBLE_ONLY, epos)
 			buffer_.place_cursor(begin)
@@ -166,8 +169,6 @@ class Inserter(object):
 				if not nplaceholder: nplaceholder = " "
 				bmark = self.__editor.create_left_mark(begin)
 				emark = self.__editor.create_right_mark(end_)
-#				bmark.set_visible(True)
-#				emark.set_visible(True)
 				pmark = bmark, emark
 				buffer_.place_cursor(begin)
 				buffer_.delete(begin, end_)
@@ -177,6 +178,7 @@ class Inserter(object):
 			buffer_.insert_at_cursor(nplaceholder)
 			self.__manager.emit("tag-placeholder", pmark)
 			start = buffer_.get_iter_at_mark(mark)
+			self.__editor.response()
 		self.__editor.delete_mark(mark)
 		self.__manager.emit("activate-template-mode")
 		self.__manager.emit("template-boundaries", (mstart, mend))
