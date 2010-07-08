@@ -4,7 +4,7 @@ basepath = join("PluginPreferences", "TriggerArea", "BorderColor.gdb")
 
 def get_value():
 	try:
-		color = "black"
+		color = "brown"
 		database = open_database(basepath, "r")
 		color = database["color"]
 	except:
