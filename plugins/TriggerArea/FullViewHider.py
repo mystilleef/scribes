@@ -9,6 +9,8 @@ class Hider(SignalManager):
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(editor, "toolbar-is-visible", self.__visible_cb)
 		self.__sigid1 = self.connect(editor.window, "key-press-event", self.__event_cb)
+		self.__sigid2 = self.connect(editor.textview, "button-press-event", self.__generic_hide_cb)
+		self.__sigid3 = self.connect(editor.textbuffer, "changed", self.__generic_hide_cb)
 		self.__block()
 		editor.response()
 
@@ -24,27 +26,39 @@ class Hider(SignalManager):
 		del self
 		return False
 
+	def __hide_and_block(self):
+		self.__editor.hide_full_view()
+		self.__block()
+		return False
+
 	def __block(self):
 		if self.__blocked: return False
 		self.__window.handler_block(self.__sigid1)
+		self.__editor.textview.handler_block(self.__sigid2)
+		self.__editor.textbuffer.handler_block(self.__sigid3)
 		self.__blocked = True
 		return False
 
 	def __unblock(self):
 		if self.__blocked is False: return False
 		self.__window.handler_unblock(self.__sigid1)
+		self.__editor.textview.handler_unblock(self.__sigid2)
+		self.__editor.textbuffer.handler_unblock(self.__sigid3)
 		self.__blocked = False
 		return False
 
 	def __event_cb(self, window, event):
-		from gtk.keysyms import Escape
-		if event.keyval != Escape: return False
-		self.__editor.hide_full_view()
-		self.__block()
-		return True
+#		from gtk.keysyms import Escape
+#		if event.keyval != Escape: return False
+		self.__hide_and_block()
+		return False
 
 	def __visible_cb(self, editor, visible):
 		self.__unblock() if visible else self.__block()
+		return False
+
+	def __generic_hide_cb(self, *args):
+		self.__hide_and_block()
 		return False
 
 	def __destroy_cb(self, *args):
