@@ -2,6 +2,8 @@ from math import pi
 from gtk import EventBox
 from gtk.gdk import Color
 
+DEFAULT_COLOR = "brown"
+
 class TriggerWidget(EventBox):
 
 	def __init__(self, editor):
@@ -21,8 +23,8 @@ class TriggerWidget(EventBox):
 		self.__position = "top-right"
 		self.__size = 24
 		self.__offset = 2
-		self.__bcolor = "black"
-		self.__fcolor = "blue"
+		self.__bcolor = DEFAULT_COLOR
+		self.__fcolor = DEFAULT_COLOR
 		return
 
 	def __set_size(self, size):

@@ -25,7 +25,7 @@ class Updater(SignalManager):
 		self.__widget.position = configuration_data["position"]
 		self.__widget.size = configuration_data["size"]
 		self.__widget.fill_color = configuration_data["fill_color"]
-		self.__widget.border_color = configuration_data["border_color"]
+		self.__widget.border_color = configuration_data["fill_color"]
 		self.__widget.queue_draw()
 		self.__editor.textview.queue_draw()
 		self.__editor.window.queue_draw()

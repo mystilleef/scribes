@@ -3,13 +3,11 @@ from SCRIBES.SignalConnectionManager import SignalManager
 from PositionMetadata import set_value as position_value
 from SizeMetadata import set_value as size_value
 from FillColorMetadata import set_value as fill_value
-from BorderColorMetadata import set_value as border_value
 
 UPDATE_DATABASE = {
 	"position": position_value,
 	"size": size_value,
 	"fill_color": fill_value,
-	"border_color": border_value,
 }
 
 class Writer(SignalManager):

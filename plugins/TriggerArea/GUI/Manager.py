@@ -9,5 +9,3 @@ class Manager(object):
 		ComboBox(manager, editor)
 		from FillColorButton import Button
 		Button(manager, editor)
-		from BorderColorButton import Button
-		Button(manager, editor)

@@ -26,14 +26,11 @@ class Reader(SignalManager):
 		position = get_value()
 		from SizeMetadata import get_value
 		size = get_value()
-		from BorderColorMetadata import get_value
-		border_color = get_value()
 		from FillColorMetadata import get_value
 		fill_color = get_value()
 		configuration_data = {
 			"position": position,
 			"size": size,
-			"border_color": border_color,
 			"fill_color": fill_color,
 		}
 		self.__manager.emit("configuration-data", configuration_data)
