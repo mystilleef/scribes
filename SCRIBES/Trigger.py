@@ -36,7 +36,7 @@ class Trigger(GObject):
 	def __activate(self):
 		self.__editor.response()
 		if self.__editor.bar_is_active: return False
-		self.__editor.response()
+		self.__editor.refresh()
 		self.emit("activate")
 		self.__editor.response()
 		return False

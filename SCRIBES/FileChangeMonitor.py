@@ -33,7 +33,7 @@ class Monitor(SignalManager):
 
 	def __monitor(self, uri):
 		self.__unmonitor(self.__uri)
-		if uri.startswith("file:///") is False: return False
+#		if uri.startswith("file:///") is False: return False
 		self.__uri = uri
 		from gio import File, FILE_MONITOR_NONE
 		self.__file_monitor = File(uri).monitor_file(FILE_MONITOR_NONE, None)

@@ -27,7 +27,7 @@ class Refresher(object):
 	def __refresh(self, grab_focus=True):
 		try:
 			self.__editor.response()
-			self.__view.window.update_children(True)
+			self.__view.window.process_updates(True)
 		except:
 			self.__editor.response()
 		finally:
