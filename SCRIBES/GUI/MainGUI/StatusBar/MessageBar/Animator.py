@@ -33,6 +33,7 @@ class Animator(SignalManager):
 		self.__bwidth = 0
 		self.__vheight =0
 		self.__vwidth = 0
+		self.__busy = False
 		return
 
 	def __destroy(self):
@@ -44,6 +45,7 @@ class Animator(SignalManager):
 	def __slide(self, direction):
 		try:
 			if not self.__bar: return False
+			self.__busy = True
 			self.__manager.emit("animation", "begin")
 			from gobject import timeout_add, source_remove
 			source_remove(self.__timer)
@@ -82,6 +84,7 @@ class Animator(SignalManager):
 			animate = False
 			if direction == "down": self.__bar.hide()
 			self.__manager.emit("animation", "end")
+			self.__busy = False
 		return animate
 
 	def __can_end(self, direction):
@@ -135,6 +138,7 @@ class Animator(SignalManager):
 		return False
 
 	def __slide_cb(self, manager, direction):
+		if self.__busy: return False
 		try:
 			from gobject import idle_add, source_remove
 			source_remove(self.__timer2)

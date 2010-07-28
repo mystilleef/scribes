@@ -4,7 +4,7 @@ basepath = join("Preferences", "Languages", "Font.gdb")
 
 def get_value(language):
 	try:
-		font = "Monospace 12"
+		font = "Monospace 11"
 		database = open_database(basepath, "r")
 		font = database[language]
 	except KeyError:

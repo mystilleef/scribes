@@ -21,7 +21,6 @@ class Updater(object):
 		self.__monitor.cancel()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __update(self):

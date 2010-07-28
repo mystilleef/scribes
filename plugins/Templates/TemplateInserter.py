@@ -104,6 +104,7 @@ class Inserter(object):
 		return
 
 	def __place_template_in_buffer_callback(self):
+		self.__editor.refresh()
 		self.__editor.textview.window.freeze_updates()
 		self.__editor.response()
 		template = self.__get_template()
@@ -116,6 +117,7 @@ class Inserter(object):
 		self.__mark_placeholders(template, start, end)
 		self.__editor.response()
 		self.__editor.textview.window.thaw_updates()
+		self.__editor.refresh()
 		return False
 
 	def __expand_special_placeholders(self, template, mstart, end):

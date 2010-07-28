@@ -38,7 +38,12 @@ class Saver(SignalManager):
 	def __process(self):
 		self.__remove_timer()
 		from gobject import timeout_add
-		self.__timer = timeout_add(SAVE_TIMER, self.__save, priority=9999)
+		self.__timer = timeout_add(SAVE_TIMER, self.__save_on_idle, priority=9999)
+		return False
+
+	def __save_on_idle(self):
+		from gobject import idle_add
+		idle_add(self.__save, priority=9999)
 		return False
 
 	def __save(self):
@@ -56,5 +61,6 @@ class Saver(SignalManager):
 		return False
 
 	def __modified_cb(self, *args):
-		self.__process()
+		from gobject import idle_add
+		idle_add(self.__process)
 		return False
