@@ -38,7 +38,6 @@ class Animator(SignalManager):
 
 	def __slide(self, direction="left"):
 		try:
-			self.__busy = True
 			self.__manager.emit("animation", "begin")
 			from gobject import timeout_add, source_remove
 			source_remove(self.__timer)
@@ -47,10 +46,10 @@ class Animator(SignalManager):
 		finally:
 			self.__update_animation_start_point(direction)
 			self.__update_animation_end_point(direction)
-			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction, priority=9999)
+			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction)
 		return False
 
-	def __move_on_idle(self, direction):
+	def __reposition_in(self, direction):
 		try:
 			x = int(self.__get_x(direction))
 			y = int(self.__get_y(direction))
@@ -66,13 +65,7 @@ class Animator(SignalManager):
 		try:
 			animate = True
 			self.__can_end(direction)
-			try:
-				from gobject import idle_add, source_remove
-				source_remove(self.__timer1)
-			except AttributeError:
-				pass
-			finally:
-				self.__timer1 = idle_add(self.__move_on_idle, direction, priority=9999)
+			self.__reposition_in(direction)
 		except ValueError:
 			animate = False
 			self.__manager.emit("animation", "end")
@@ -80,7 +73,6 @@ class Animator(SignalManager):
 		return animate
 
 	def __can_end(self, direction):
-#		if direction == "left" and self.__start_point <= -2: raise ValueError
 		if direction == "up" and self.__start_point <= -self.__height - 4: raise ValueError
 		if direction == "down" and self.__start_point >= -2: raise ValueError
 		return False
@@ -120,7 +112,7 @@ class Animator(SignalManager):
 		return False
 
 	def __compile(self):
-		self.__editor.optimize((self.__move, self.__move_on_idle))
+		self.__editor.optimize((self.__move, self.__reposition_in))
 		return False
 
 	def __quit_cb(self, *args):
@@ -130,6 +122,7 @@ class Animator(SignalManager):
 	def __slide_cb(self, manager, direction):
 		if self.__busy: return False
 		try:
+			self.__busy = True
 			from gobject import idle_add, source_remove
 			source_remove(self.__ttimer)
 		except AttributeError:

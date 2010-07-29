@@ -44,8 +44,6 @@ class Animator(SignalManager):
 
 	def __slide(self, direction):
 		try:
-			if not self.__bar: return False
-			self.__busy = True
 			self.__manager.emit("animation", "begin")
 			from gobject import timeout_add, source_remove
 			source_remove(self.__timer)
@@ -57,7 +55,7 @@ class Animator(SignalManager):
 			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction, priority=9999)
 		return False
 
-	def __move_on_idle(self, direction):
+	def __reposition_in(self, direction):
 		try:
 			x = int(self.__get_x(direction))
 			y = int(self.__get_y(direction))
@@ -73,13 +71,7 @@ class Animator(SignalManager):
 		try:
 			animate = True
 			self.__can_end(direction)
-			try:
-				from gobject import idle_add, source_remove
-				source_remove(self.__timer1)
-			except AttributeError:
-				pass
-			finally:
-				self.__timer1 = idle_add(self.__move_on_idle, direction, priority=9999)
+			self.__reposition_in(direction)
 		except ValueError:
 			animate = False
 			if direction == "down": self.__bar.hide()
@@ -88,7 +80,6 @@ class Animator(SignalManager):
 		return animate
 
 	def __can_end(self, direction):
-#		if direction == "left" and self.__start_point <= self.__end_point: raise ValueError
 		if direction == "down" and self.__start_point >= self.__end_point: raise ValueError
 		if direction == "up" and self.__start_point <= self.__end_point: raise ValueError
 		return False
@@ -130,7 +121,7 @@ class Animator(SignalManager):
 		return False
 
 	def __compile(self):
-		self.__editor.optimize((self.__move, self.__move_on_idle))
+		self.__editor.optimize((self.__move, self.__reposition_in))
 		return False
 
 	def __quit_cb(self, *args):
@@ -138,8 +129,10 @@ class Animator(SignalManager):
 		return False
 
 	def __slide_cb(self, manager, direction):
+		if not self.__bar: return False
 		if self.__busy: return False
 		try:
+			self.__busy = True
 			from gobject import idle_add, source_remove
 			source_remove(self.__timer2)
 		except AttributeError:
