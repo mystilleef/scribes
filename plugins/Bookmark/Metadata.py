@@ -1,24 +1,22 @@
 from SCRIBES.Utils import open_database
-basepath = "bookmark.gdb"
+from os.path import join
+basepath = join("PluginPreferences", "Bookmark", "Bookmark.gdb")
 
 def get_value(uri):
 	try:
-		uri = str(uri)
 		database = open_database(basepath, "r")
-		bookmarks = database[uri] if database.has_key(uri) else None
+		lines = database[uri] if database.has_key(uri) else ()
+	except:
+		pass
 	finally:
 		database.close()
-	return bookmarks
+	return lines
 
-def set_value(uri, data):
+def set_value(uri, lines):
 	try:
-		if uri in (None, ""): return
 		database = open_database(basepath, "w")
-		uri = str(uri)
-		if data:
-			database[uri] = data
-		else:
-			if database.has_key(uri): del database[uri]
+		if lines: database[uri] = lines
+		if not lines and database.has_key(uri): del database[uri]
 	finally:
 		database.close()
 	return

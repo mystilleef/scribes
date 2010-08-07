@@ -1,72 +1,67 @@
-from gettext import gettext as _
-message = _("Bookmarked lines")
+from SCRIBES.SignalConnectionManager import SignalManager
 
-class Window(object):
+class Window(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("show-window", self.__show_cb)
-		self.__sigid3 = manager.connect("hide-window", self.__hide_cb)
-		self.__sigid4 = self.__window.connect("delete-event", self.__delete_event_cb)
-		self.__sigid5 = self.__window.connect("key-press-event", self.__key_press_event_cb)
-		self.__window.set_property("sensitive", True)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "show", self.__show_cb)
+		self.connect(manager, "hide", self.__hide_cb)
+		self.connect(manager, "scroll-to-line", self.__delete_event_cb)
+		self.connect(self.__window, "delete-event", self.__delete_event_cb)
+		self.connect(self.__window, "key-press-event", self.__key_press_event_cb)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
-		self.__manager = manager
 		self.__editor = editor
-		self.__window = manager.gui.get_widget("Window")
-		return
+		self.__manager = manager
+		self.__window = manager.gui.get_object("Window")
+		return False
 
 	def __set_properties(self):
 		self.__window.set_transient_for(self.__editor.window)
 		return
 
-	def __show_window(self):
-		self.__editor.response()
-		self.__editor.busy()
-		self.__window.show_all()
-		self.__window.present()
-		self.__editor.set_message(message)
-		self.__editor.response()
-		return
-
-	def __hide_window(self):
-		self.__editor.response()
-		self.__editor.busy(False)
-		self.__window.hide()
-		self.__editor.unset_message(message)
-		self.__editor.response()
-		return
-
-	def __destroy_cb(self, manager):
-		self.__editor.disconnect_signal(self.__sigid1, manager)
-		self.__editor.disconnect_signal(self.__sigid2, manager)
-		self.__editor.disconnect_signal(self.__sigid3, manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__window)
-		self.__editor.disconnect_signal(self.__sigid5, self.__window)
-		self.__window.destroy()
-		self = None
+	def __destroy(self):
+		self.disconnect()
 		del self
-		return
+		return False
 
-	def __show_cb(self, *args):
-		self.__show_window()
-		return
+	def __hide(self):
+		self.__editor.response()
+		self.__window.hide()
+		self.__editor.response()
+		return False
 
-	def __hide_cb(self, *args):
-		self.__hide_window()
-		return
+	def __show(self):
+		self.__editor.response()
+		self.__window.show_all()
+		self.__editor.response()
+		return False
 
 	def __delete_event_cb(self, *args):
-		self.__manager.emit("hide-window")
+		self.__manager.emit("hide")
 		return True
 
 	def __key_press_event_cb(self, window, event):
-		from gtk import keysyms
-		if event.keyval != keysyms.Escape: return False
-		self.__manager.emit("hide-window")
+		from gtk.keysyms import Escape
+		if event.keyval != Escape: return False
+		self.__manager.emit("hide")
 		return True
+
+	def __show_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__show)
+		return False
+
+	def __hide_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__hide)
+		return False
+
+	def __destroy_cb(self, *args):
+		self.__destroy()
+		return False

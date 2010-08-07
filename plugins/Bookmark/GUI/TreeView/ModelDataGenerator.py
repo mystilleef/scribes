@@ -1,10 +1,13 @@
-﻿class Processor(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Generator(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("marked-lines", self.__lines_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "lines", self.__lines_cb)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
@@ -13,22 +16,21 @@
 		return
 
 	def __destroy(self):
-#		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-#		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		del self
-		self = None
-		return
+		return False
 
-	def __text_from_line(self, line):
+	def __text_from(self, line):
 		self.__editor.response()
 		start = self.__editor.textbuffer.get_iter_at_line(line)
 		end = self.__editor.forward_to_line_end(start.copy())
 		return self.__editor.textbuffer.get_text(start, end).strip(" \t\r\n")
 
-
-	def __send_line_and_text(self, lines):
-		data = [(line + 1, self.__text_from_line(line)) for line in lines]
-		self.__manager.emit("populate-model", data)
+	def __generate(self, lines):
+		self.__editor.response()
+		data = [(line + 1, self.__text_from(line)) for line in lines]
+		self.__manager.emit("model-data", tuple(data))
+		self.__editor.response()
 		return
 
 	def __destroy_cb(self, *args):
@@ -36,5 +38,6 @@
 		return False
 
 	def __lines_cb(self, manager, lines):
-		self.__send_line_and_text(lines)
+		from gobject import idle_add
+		idle_add(self.__generate, lines)
 		return False

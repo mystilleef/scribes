@@ -1,13 +1,14 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 
-class Displayer(SignalManager):
+class Adder(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(manager, "lines", self.__lines_cb)
+		self.connect(manager, "add", self.__add_cb)
+		self.connect(manager, "bookmark-lines", self.__lines_cb)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
@@ -20,16 +21,28 @@ class Displayer(SignalManager):
 		del self
 		return False
 
-	def __toggle(self, lines):
-		show = self.__editor.textview.set_show_line_marks
-		show(True) if lines else show(False)
+	def __mark(self, line):
+		self.__editor.response()
+		iterator = self.__editor.textbuffer.get_iter_at_line(line)
+		from Utils import BOOKMARK_NAME
+		self.__editor.textbuffer.create_source_mark(None, BOOKMARK_NAME, iterator)
+		self.__editor.response()
+		return False
+
+	def __update(self, lines):
+		[self.__mark(line) for line in lines]
 		return False
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
+	def __add_cb(self, manager, line):
+		from gobject import idle_add
+		idle_add(self.__mark, line)
+		return False
+
 	def __lines_cb(self, manager, lines):
 		from gobject import idle_add
-		idle_add(self.__toggle, lines)
+		idle_add(self.__update, lines)
 		return False

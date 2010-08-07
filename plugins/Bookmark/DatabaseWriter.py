@@ -1,12 +1,12 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 
-class Displayer(SignalManager):
+class Writer(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
-		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "destroy", self.__destroy_cb, True)
 		self.connect(manager, "lines", self.__lines_cb)
 		editor.response()
 
@@ -20,9 +20,13 @@ class Displayer(SignalManager):
 		del self
 		return False
 
-	def __toggle(self, lines):
-		show = self.__editor.textview.set_show_line_marks
-		show(True) if lines else show(False)
+	def __update(self, lines):
+		uri = self.__editor.uri
+		if not uri: return False
+		from Metadata import set_value
+		self.__editor.response()
+		set_value(str(uri), lines)
+		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):
@@ -31,5 +35,5 @@ class Displayer(SignalManager):
 
 	def __lines_cb(self, manager, lines):
 		from gobject import idle_add
-		idle_add(self.__toggle, lines)
+		idle_add(self.__update, lines)
 		return False

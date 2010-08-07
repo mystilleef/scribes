@@ -1,13 +1,13 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 
-class Displayer(SignalManager):
+class Jumper(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
-		SignalManager.__init__(self, editor)
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(manager, "lines", self.__lines_cb)
+		self.connect(manager, "scroll-to-line", self.__scroll_cb)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
@@ -20,16 +20,19 @@ class Displayer(SignalManager):
 		del self
 		return False
 
-	def __toggle(self, lines):
-		show = self.__editor.textview.set_show_line_marks
-		show(True) if lines else show(False)
+	def __scroll_to(self, line):
+		iterator = self.__editor.textbuffer.get_iter_at_line(line)
+		self.__editor.response()
+		self.__editor.textbuffer.place_cursor(iterator)
+		self.__editor.textview.scroll_to_iter(iterator, 0.001, use_align=True, xalign=1.0)
+		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
-	def __lines_cb(self, manager, lines):
+	def __scroll_cb(self, manager, line):
 		from gobject import idle_add
-		idle_add(self.__toggle, lines)
+		idle_add(self.__scroll_to, line)
 		return False

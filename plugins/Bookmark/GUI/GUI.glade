@@ -1,14 +1,11 @@
 <?xml version="1.0"?>
-<glade-interface>
-  <!-- interface-requires gtk+ 2.16 -->
-  <!-- interface-naming-policy toplevel-contextual -->
-  <widget class="GtkWindow" id="Window">
-    <property name="sensitive">False</property>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="Window">
     <property name="border_width">10</property>
     <property name="title" translatable="yes">Bookmarked Lines</property>
-    <property name="startup_id">ScribesBookmarkBrowserID</property>
     <property name="role">ScribesBookmarkBrowserRole</property>
-    <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="default_width">350</property>
     <property name="default_height">200</property>
@@ -19,24 +16,25 @@
     <property name="skip_pager_hint">True</property>
     <property name="urgency_hint">True</property>
     <child>
-      <widget class="GtkScrolledWindow" id="scrolledwindow1">
+      <object class="GtkScrolledWindow" id="scrolledwindow1">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="hscrollbar_policy">never</property>
         <property name="vscrollbar_policy">automatic</property>
         <property name="shadow_type">in</property>
         <child>
-          <widget class="GtkTreeView" id="TreeView">
+          <object class="GtkTreeView" id="TreeView">
             <property name="visible">True</property>
-            <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="headers_visible">False</property>
+            <property name="headers_clickable">False</property>
             <property name="rules_hint">True</property>
             <property name="search_column">0</property>
+            <property name="show_expanders">False</property>
             <property name="enable_grid_lines">vertical</property>
-          </widget>
+          </object>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>

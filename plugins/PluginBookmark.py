@@ -1,11 +1,12 @@
 name = "Bookmark Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-version = 0.3
+version = 0.4
 autoload = True
 class_name = "BookmarkPlugin"
-short_description = "Bookmark operations."
-long_description = """This plug-in performs operations to bookmark \
-lines."""
+short_description = "Manage bookmarked lines in a file."
+long_description = """Add or remove bookmarks to lines. Navigate to 
+bookmarked lines via a browser. Press ctrl+b to add or remove 
+bookmarks. Press ctrl+d to navigate to bookmarked lines."""
 
 class BookmarkPlugin(object):
 
@@ -14,7 +15,7 @@ class BookmarkPlugin(object):
 		self.__editor = editor
 		self.__trigger = None
 		editor.response()
-
+		
 	def load(self):
 		self.__editor.response()
 		from Bookmark.Trigger import Trigger

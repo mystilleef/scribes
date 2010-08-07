@@ -1,66 +1,57 @@
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_PYOBJECT
-from gobject import SIGNAL_NO_RECURSE, SIGNAL_ACTION
-SCRIBES_SIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
+from Signals import Signal
 
-class Manager(GObject):
-
-	__gsignals__ = {
-		"destroy": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-		"toggle-bookmark": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-		"remove-all-bookmarks": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-		"marked-lines": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"scroll-to-line": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"populate-model": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"gui-created": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-		"show-window": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-		"hide-window": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-	}
+class Manager(Signal):
 
 	def __init__(self, editor):
 		editor.response()
-		GObject.__init__(self)
+		Signal.__init__(self)
 		self.__init_attributes(editor)
-		from MarkNavigator import Navigator
-		Navigator(self, editor)
+		from GUI.Manager import Manager
+		Manager(self, editor)
+		from LineJumper import Jumper
+		Jumper(self, editor)
+		from Feedback import Feedback
+		Feedback(self, editor)
+		from Utils import create_bookmark_image
+		create_bookmark_image(editor)
+		from MarkAdder import Adder
+		Adder(self, editor)
+		from MarkRemover import Remover
+		Remover(self, editor)
 		from MarginDisplayer import Displayer
 		Displayer(self, editor)
-		from DatabaseUpdater import Updater
+		from DatabaseWriter import Writer
+		Writer(self, editor)
+		from MarkReseter import Reseter
+		Reseter(self, editor)
+		from MarkUpdater import Updater
 		Updater(self, editor)
-		from BufferMonitor import Monitor
-		Monitor(self, editor)
-		from BufferMarker import Marker
+		from Marker import Marker
 		Marker(self, editor)
+		from DatabaseReader import Reader
+		Reader(self, editor)
 		editor.response()
 
 	def __init_attributes(self, editor):
-		self.__editor = editor
 		from os.path import join
-		self.__glade = editor.get_glade_object(globals(), join("GUI","Bookmark.glade"), "Window")
-		self.__browser = None
-		return False
-
-	def destroy(self):
-		if self.__browser: self.__browser.destroy()
-		self.emit("destroy")
-		del self
-		self = None
+		self.__gui = editor.get_gui_object(globals(), join("GUI", "GUI.glade"))
 		return
 
-	gui = property(lambda self: self.__glade)
+	gui = property(lambda self: self.__gui)
+
+	def destroy(self):
+		self.emit("destroy")
+		del self
+		return False
 
 	def toggle(self):
-		self.emit("toggle-bookmark")
+		self.emit("toggle")
 		return False
 
 	def remove(self):
-		self.emit("remove-all-bookmarks")
+		self.emit("remove-all")
 		return False
 
-	def show(self, *args):
-		try:
-			self.__browser.show()
-		except AttributeError:
-			from GUI.Manager import Manager
-			self.__browser = Manager(self, self.__editor)
-			self.__browser.show()
+	def show(self):
+		self.emit("show")
 		return False

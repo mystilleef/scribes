@@ -150,6 +150,12 @@ class Editor(Signals):
 		self.emit("refresh", grab_focus)
 		return False
 
+	def set_text(self, text):
+		self.emit("reset-buffer", "begin")
+		self.textbuffer.set_text(text) 
+		self.emit("reset-buffer", "end")
+		return False
+
 	def save_file(self, uri, encoding="utf-8"):
 		self.emit("save-file", uri, encoding)
 		return

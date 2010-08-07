@@ -52,7 +52,7 @@ class Animator(SignalManager):
 		finally:
 			self.__update_animation_start_point(direction)
 			self.__update_animation_end_point(direction)
-			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction, priority=9999)
+			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction)
 		return False
 
 	def __reposition_in(self, direction):
