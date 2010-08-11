@@ -6,7 +6,8 @@ def get_window_position_from_database(uri):
 		database = open_database(basepath, "r")
 		window_position = database[uri]
 	except KeyError:
-		window_position = None
+		KEY = "<EMPTY>"
+		window_position = database[KEY] if database.has_key(KEY) else None
 	finally:
 		database.close()
 	return window_position

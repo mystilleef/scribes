@@ -56,7 +56,7 @@ class Trigger(SignalManager, TriggerManager):
 		return False
 
 	def __activate_cb(self, trigger):
-		function ={
+		function = {
 			self.__trigger1: self.__manager.toggle,
 			self.__trigger2: self.__manager.remove,
 			self.__trigger3: self.__manager.show,
