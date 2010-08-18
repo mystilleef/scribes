@@ -97,6 +97,7 @@ class TriggerWidget(EventBox):
 		style = self.get_style().copy()
 		from gtk import STATE_NORMAL
 		style.bg[STATE_NORMAL] = color
+		self.__editor.response()
 		self.set_style(style)
 		self.__editor.response()
 		return False

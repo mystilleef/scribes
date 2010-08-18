@@ -4,7 +4,7 @@ class Monitor(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
-		SignalManager.__init__(self)
+		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(editor, "syntax-color-theme-changed", self.__changed_cb, True)
@@ -22,7 +22,9 @@ class Monitor(SignalManager):
 		return False
 
 	def __change_color(self):
+		self.__editor.response()
 		self.__widget.change_bg_color()
+		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):

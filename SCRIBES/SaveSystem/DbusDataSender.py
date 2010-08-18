@@ -27,11 +27,17 @@ class Sender(SignalManager):
 		del self
 		return False
 
+	def __get_text(self):
+		# Make sure file is always saved with a newline character.
+		text = self.__editor.text
+		if text[-1] in ("\n", "\r", "\r\n"): return text
+		return text + "\n"
+
 	def __send(self, data):
 		uri, encoding, session_id = data
 		if self.__session_id != session_id: return False
 		if not encoding: encoding = "utf-8"
-		data = session_id, uri, encoding, self.__editor.text
+		data = session_id, uri, encoding, self.__get_text()
 		self.__processor.process(data,
 				dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE,
 				reply_handler=self.__reply_handler_cb,
