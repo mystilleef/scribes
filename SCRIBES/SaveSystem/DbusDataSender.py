@@ -30,6 +30,7 @@ class Sender(SignalManager):
 	def __get_text(self):
 		# Make sure file is always saved with a newline character.
 		text = self.__editor.text
+		if not text: return text + "\n"
 		if text[-1] in ("\n", "\r", "\r\n"): return text
 		return text + "\n"
 
