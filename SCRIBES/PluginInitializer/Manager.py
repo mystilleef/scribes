@@ -15,14 +15,14 @@ class Manager(GObject):
 		"initialized-module": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"validate-language-module": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"valid-module": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"initialize-plugin": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"initialize-module": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"load-plugin": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"unload-plugin": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"loaded-plugin": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"unloaded-plugin": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"active-plugins": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"check-duplicate-plugins": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"active-plugins": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"destroyed-plugins": (SSIGNAL, TYPE_NONE, ()),
 	}
 
 	def __init__(self, editor):
@@ -38,8 +38,8 @@ class Manager(GObject):
 		Unloader(self, editor)
 		from PluginLoader import Loader
 		Loader(self, editor)
-		from PluginInitializer import Initializer
-		Initializer(self, editor)
+		from DuplicatePluginDetector import Detector
+		Detector(self, editor)
 		from PluginValidator import Validator
 		Validator(self, editor)
 		from LanguageModuleValidator import Validator

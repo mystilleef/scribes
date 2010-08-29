@@ -146,12 +146,13 @@ class Manager(object):
 	def __focus(self, editor):
 		editor.response()
 		if editor.window.get_data("minimized"): editor.window.deiconify()
-		coordinates = None if editor.window.get_data("maximized") else editor.window.get_position()
 		editor.response()
-		editor.window.hide()
-		editor.response()
-		if coordinates: editor.window.move(coordinates[0], coordinates[1])
-		editor.response()
+#		coordinates = None if editor.window.get_data("maximized") else editor.window.get_position()
+#		editor.response()
+#		editor.window.hide()
+#		editor.response()
+#		if coordinates: editor.window.move(coordinates[0], coordinates[1])
+#		editor.response()
 		editor.window.present()
 		editor.refresh()
 		return False

@@ -47,6 +47,7 @@ class TreeView(object):
 	def __populate_model(self, symbols):
 		self.__treeview.set_property("sensitive", False)
 		if self.__symbols != symbols:
+			self.__treeview.window.freeze_updates()
 			from copy import copy
 			self.__symbols = copy(symbols)
 			self.__treeview.set_model(None)
@@ -57,6 +58,7 @@ class TreeView(object):
 				append(item, indentation)
 				self.__editor.response()
 			self.__treeview.set_model(self.__model)
+			self.__treeview.window.thaw_updates()
 		self.__select_row()
 		self.__treeview.set_property("sensitive", True)
 		self.__treeview.grab_focus()
@@ -135,12 +137,14 @@ class TreeView(object):
 		return parent
 
 	def __select_symbol(self, line, name):
+		self.__editor.response()
 		begin = self.__editor.textbuffer.get_iter_at_line(line - 1)
 		end = self.__editor.forward_to_line_end(begin.copy())
 		from gtk import TEXT_SEARCH_TEXT_ONLY
 		x, y = begin.forward_search(name, TEXT_SEARCH_TEXT_ONLY, end)
 		self.__editor.textbuffer.select_range(x, y)
 		self.__editor.move_view_to_cursor(True)
+		self.__editor.response()
 		return False
 
 	def __forward_to_line_end(self, iterator):
@@ -158,12 +162,16 @@ class TreeView(object):
 		return
 
 	def __row_activated_cb(self, treeview, path, column):
+		self.__editor.response()
 		iterator = self.__model.get_iter(path)
+		self.__editor.response()
 		self.__manager.emit("hide-window")
+		self.__editor.response()
+		self.__treeview.set_property("sensitive", False)
 		line = self.__model.get_value(iterator, 0)
 		name = self.__model.get_value(iterator, 1)
 		self.__select_symbol(line, name)
-		self.__treeview.set_property("sensitive", False)
+		self.__editor.response()
 		return True
 
 	def __update_cb(self, manager, symbols):

@@ -13,11 +13,11 @@ plugininitializer_PYTHON = \
 	ModuleValidator.py \
 	LanguageModuleValidator.py \
 	PluginValidator.py \
-	PluginInitializer.py \
 	PluginLoader.py \
 	PluginUnloader.py \
 	PluginsUpdater.py \
 	PluginsDestroyer.py \
+	DuplicatePluginDetector.py \
 	PluginReloader.py
 
 clean-local:

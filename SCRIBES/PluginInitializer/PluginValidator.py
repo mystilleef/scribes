@@ -1,10 +1,13 @@
-class Validator(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Validator(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("valid-module", self.__validate_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(manager, "valid-module", self.__validate_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -14,11 +17,9 @@ class Validator(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __validate(self, module):
@@ -30,8 +31,7 @@ class Validator(object):
 			if hasattr(PluginClass, "__init__") is False: raise ValueError
 			if hasattr(PluginClass, "load") is False: raise ValueError
 			if hasattr(PluginClass, "unload") is False: raise ValueError
-#			self.__manager.emit("check-duplicate-plugins", (module, PluginClass))
-			self.__manager.emit("initialize-plugin", (module, PluginClass))
+			self.__manager.emit("check-duplicate-plugins", (module, PluginClass))
 		except ValueError:
 			print module, " has an invalid plugin class"
 		finally:
@@ -39,11 +39,9 @@ class Validator(object):
 		return False
 
 	def __quit_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
+		self.__destroy()
 		return False
 
 	def __validate_cb(self, manager, module):
-		from gobject import idle_add
-		idle_add(self.__validate, module)
+		self.__validate(module)
 		return False

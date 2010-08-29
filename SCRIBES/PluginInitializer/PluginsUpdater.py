@@ -1,11 +1,14 @@
-class Updater(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Updater(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("loaded-plugin", self.__loaded_cb)
-		self.__sigid3 = manager.connect("unloaded-plugin", self.__unloaded_cb)
+		self.connect(manager, "destroyed-plugins", self.__quit_cb)
+		self.connect(manager, "loaded-plugin", self.__loaded_cb)
+		self.connect(manager, "unloaded-plugin", self.__unloaded_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -16,12 +19,9 @@ class Updater(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __update(self, data, remove=False):
@@ -29,6 +29,7 @@ class Updater(object):
 		self.__plugins.remove(data) if remove else self.__plugins.append(data)
 		self.__editor.response()
 		self.__manager.emit("active-plugins", self.__plugins)
+		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):
@@ -37,13 +38,9 @@ class Updater(object):
 		return False
 
 	def __loaded_cb(self, manager, data):
-		from gobject import idle_add
-		idle_add(self.__update, data)
-#		self.__update(data)
+		self.__update(data)
 		return False
 
 	def __unloaded_cb(self, manager, data):
-		from gobject import idle_add
-		idle_add(self.__update, data, True)
-#		self.__update(data, True)
+		self.__update(data, True)
 		return False

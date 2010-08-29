@@ -58,6 +58,7 @@ class Updater(object):
 			if function_flag: self.__function_depth -= 1
 			class_flag = False
 			function_flag = False
+		self.__editor.response()
 		return
 
 	def __is_function_node(self, node):

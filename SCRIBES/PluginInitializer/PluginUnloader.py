@@ -1,10 +1,13 @@
-class Unloader(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Unloader(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = manager.connect("unload-plugin", self.__unload_cb)
+		self.connect(manager, "destroyed-plugins", self.__quit_cb)
+		self.connect(manager, "unload-plugin", self.__unload_cb)
 		editor.register_object(self)
 		editor.response()
 
@@ -14,11 +17,9 @@ class Unloader(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __unload(self, data):
@@ -27,6 +28,8 @@ class Unloader(object):
 		plugin.unload()
 		self.__editor.response()
 		self.__manager.emit("unloaded-plugin", (module, plugin))
+#		print "Unloaded: ", plugin
+		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):
@@ -35,6 +38,5 @@ class Unloader(object):
 		return False
 
 	def __unload_cb(self, manager, data):
-		from gobject import idle_add
-		idle_add(self.__unload, data)
+		self.__unload(data)
 		return False

@@ -9,7 +9,7 @@ class Trigger(SignalManager, TriggerManager):
 		SignalManager.__init__(self, editor)
 		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.connect(editor.textview, "populate-popup", self.__popup_cb)
+#		self.connect(editor.textview, "populate-popup", self.__popup_cb)
 		self.connect(self.__trigger1, "activate", self.__activate_cb)
 		self.connect(self.__trigger2, "activate", self.__activate_cb)
 		self.connect(self.__trigger3, "activate", self.__activate_cb)
