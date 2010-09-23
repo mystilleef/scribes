@@ -39,7 +39,7 @@ class Initializer(SignalManager):
 		return False
 
 	def __initialize_cb(self, manager, module_path):
-		#from gobject import idle_add
-		#idle_add(self.__initialize, module_path)
 		self.__initialize(module_path)
+#		from gobject import idle_add
+#		idle_add(self.__initialize, module_path)
 		return False

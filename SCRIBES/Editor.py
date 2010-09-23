@@ -152,7 +152,7 @@ class Editor(Signals):
 
 	def set_text(self, text):
 		self.emit("reset-buffer", "begin")
-		self.textbuffer.set_text(text) 
+		self.textbuffer.set_text(text)
 		self.emit("reset-buffer", "end")
 		return False
 
@@ -535,3 +535,11 @@ class Editor(Signals):
 		self.response()
 		from Utils import get_mimetype
 		return get_mimetype(path)
+
+	def enable_busy_pointer(self):
+		print "Not yet implemented"
+		return False
+
+	def disable_busy_pointer(self):
+		print "Not yet implemented"
+		return False

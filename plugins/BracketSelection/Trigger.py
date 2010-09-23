@@ -6,7 +6,7 @@ class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
 		editor.response()
-		SignalManager.__init__(self)
+		SignalManager.__init__(self, editor)
 		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
 		self.connect(self.__trigger, "activate", self.__activate_cb)
@@ -14,32 +14,35 @@ class Trigger(SignalManager, TriggerManager):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__manager = None
 		name, shortcut, description, category = (
-			"select-inside-brackets", 
+			"bracket-selection", 
 			"<alt>b", 
-			_("Select text inside brackets"), 
+			_("Select characters inside brackets and quotes"), 
 			_("Selection Operations")
 		)
 		self.__trigger = self.create_trigger(name, shortcut, description, category)
+		self.__manager = None
 		return
 
-	def __destroy(self): 
+	def destroy(self):
 		self.disconnect()
 		self.remove_triggers()
 		if self.__manager: self.__manager.destroy()
 		del self
-		return
+		return False
 
-	def __activate_cb(self, *args):
+	def __activate(self):
 		try:
-			self.__manager.select()
+			self.__manager.activate()
 		except AttributeError:
 			from Manager import Manager
 			self.__manager = Manager(self.__editor)
-			self.__manager.select()
-		return
+			self.__manager.activate()
+		finally:
+			self.__editor.response()
+		return False
 
-	def destroy(self):
-		self.__destroy()
-		return
+	def __activate_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__activate)
+		return False

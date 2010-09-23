@@ -32,6 +32,7 @@ class Generator(SignalManager):
 
 	def __generate(self, data):
 		try:
+			self.__editor.response()
 			# Get first valid line in buffer. Strip characters, mostly
 			# punctuation characters, that can cause invalid Unix filenames.
 			line = self.__editor.text.strip(STRIP_CHARACTERS).splitlines()[0].strip(STRIP_CHARACTERS)
@@ -44,6 +45,7 @@ class Generator(SignalManager):
 			filename = ""
 		finally:
 			self.__manager.emit("newname", (filename, data))
+			self.__editor.response()
 		return False
 
 	def __optimize(self):

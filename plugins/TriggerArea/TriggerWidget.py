@@ -9,17 +9,19 @@ class TriggerWidget(EventBox):
 	def __init__(self, editor):
 		editor.response()
 		EventBox.__init__(self)
+		self.hide()
 		self.__init_attributes(editor)
 		self.set_app_paintable(True)
 		self.set_size_request(self.__size, self.__size)
 		self.connect("size-allocate", self.__allocate_cb)
 		self.connect("expose-event", self.__expose_cb)
 		self.change_bg_color()
+		self.hide()
 		editor.response()
 
 	def __init_attributes(self, editor):
-		# position could be "top-left", "top-right", "bottom-left", "bottom-right"
 		self.__editor = editor
+		# position could be "top-left", "top-right", "bottom-left", "bottom-right"
 		self.__position = "top-right"
 		self.__size = 24
 		self.__offset = 2
@@ -34,6 +36,7 @@ class TriggerWidget(EventBox):
 		rectangle = Rectangle(0, 0, size, size)
 		self.size_allocate(rectangle)
 		self.queue_draw()
+		self.__editor.response()
 		return
 
 	def __set_position(self, position): self.__position = position

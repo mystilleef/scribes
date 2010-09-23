@@ -1,10 +1,11 @@
 name = "Bracket Selection Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-version = 0.2
+version = 0.3
 autoload = True
 class_name = "BracketSelectionPlugin"
-short_description = "Bracket completion operations."
-long_description = """This plug-in performs bracket completion operations"""
+short_description = "Bracket selection operations."
+long_description = """Selects characters within brackets and quotes. Is
+capable of incremental selection."""
 
 class BracketSelectionPlugin(object):
 

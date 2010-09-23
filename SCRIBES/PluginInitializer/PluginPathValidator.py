@@ -40,7 +40,5 @@ class Validator(SignalManager):
 		return False
 
 	def __validate_cb(self, manager, plugin_path):
-		#from gobject import idle_add
-		#idle_add(self.__validate, plugin_path)
 		self.__validate(plugin_path)
 		return False

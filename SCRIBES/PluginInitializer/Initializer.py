@@ -7,8 +7,7 @@ class Initializer(SignalManager):
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
-		from gobject import idle_add, timeout_add
-#		idle_add(self.__validate, priority=999999)
+		from gobject import timeout_add
 		timeout_add(250, self.__validate_timeout, priority=999999)
 		editor.register_object(self)
 		editor.response()

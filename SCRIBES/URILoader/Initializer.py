@@ -1,10 +1,13 @@
-class Initializer(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Initializer(SignalManager):
 
 	def __init__(self, manager, editor, uri, encoding):
 		editor.response()
+		SignalManager.__init__(self, editor)
 		self.__init_attibutes(manager, editor)
-		self.__sigid1 = editor.connect("load-file", self.__load_file_cb)
-		self.__sigid2 = manager.connect("destroy", self.__destroy_cb)
+		self.connect(editor, "load-file", self.__load_file_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
 		if uri: editor.load_file(uri, encoding)
 		editor.response()
 
@@ -14,10 +17,8 @@ class Initializer(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		del self
-		self = None
 		return False
 
 	def __load(self, uri, encoding):
@@ -25,9 +26,14 @@ class Initializer(object):
 		self.__manager.emit("check-file-type", uri)
 		return False
 
-	def __load_file_cb(self, editor, uri, encoding):
+	def __load_timeout(self, uri, encoding):
 		from gobject import idle_add
 		idle_add(self.__load, uri, encoding)
+		return False
+
+	def __load_file_cb(self, editor, uri, encoding):
+		from gobject import timeout_add
+		timeout_add(125, self.__load_timeout, uri, encoding)
 		return False
 
 	def __destroy_cb(self, *args):

@@ -36,7 +36,5 @@ class Updater(SignalManager):
 		return False
 
 	def __update_cb(self, manager, plugin_path):
-		#from gobject import idle_add
-		#idle_add(self.__update, plugin_path)
 		self.__update(plugin_path)
 		return False

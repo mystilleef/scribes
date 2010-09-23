@@ -1,32 +1,29 @@
-from gobject import SIGNAL_RUN_LAST, SIGNAL_NO_RECURSE, SIGNAL_ACTION
-from gobject import TYPE_NONE, GObject
-SCRIBES_SIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
+from Signals import Signal
 
-class Manager(GObject):
-
-	__gsignals__ = {
-		"destroy": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-		"select": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-	}
+class Manager(Signal):
 
 	def __init__(self, editor):
-		editor.response()
-		GObject.__init__(self)
-		self.__init_attributes(editor)
+		Signal.__init__(self)
+		from Feedback import Feedback
+		Feedback(self, editor)
 		from Selector import Selector
 		Selector(self, editor)
-		editor.response()
-
-	def __init_attributes(self, editor):
-		self.__editor = editor
-		return
+		from QuoteCharacterMatcher import Matcher
+		Matcher(self, editor)
+		from RangeChecker import Checker
+		Checker(self, editor)
+		from PairCharacterMatcher import Matcher
+		Matcher(self, editor)
+		from OpenCharacterSearcher import Searcher
+		Searcher(self, editor)
+		from SelectionChecker import Checker
+		Checker(self, editor)
 
 	def destroy(self):
 		self.emit("destroy")
 		del self
-		self = None
 		return False
 
-	def select(self):
-		self.emit("select")
+	def activate(self):
+		self.emit("activate")
 		return False

@@ -3,6 +3,7 @@ from Signals import Signal
 class Manager(Signal):
 
 	def __init__(self, editor):
+		editor.response()
 		Signal.__init__(self)
 		self.__init_attributes(editor)
 		from GenericActionHandler import Handler
@@ -13,6 +14,7 @@ class Manager(Signal):
 		Handler(self, editor, self.__zeditor)
 		from SelectionMarker import Marker
 		Marker(self, editor)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

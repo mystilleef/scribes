@@ -53,6 +53,11 @@ class Detector(SignalManager):
 		self.__editor.response()
 		return False
 
+	def __check_timeout(self, unloaded_plugin_data):
+		from gobject import idle_add
+		idle_add(self.__check, unloaded_plugin_data, priority=9999999)
+		return False
+
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
@@ -63,4 +68,7 @@ class Detector(SignalManager):
 
 	def __check_cb(self, manager, unloaded_plugin_data):
 		self.__check(unloaded_plugin_data)
+#		from gobject import idle_add, timeout_add
+#		idle_add(self.__check, unloaded_plugin_data)
+#		timeout_add(250, self.__check_timeout, unloaded_plugin_data, priority=9999999)
 		return False

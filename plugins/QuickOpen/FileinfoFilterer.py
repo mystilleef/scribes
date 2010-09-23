@@ -1,11 +1,13 @@
+from SCRIBES.SignalConnectionManager import SignalManager
 
-class Filterer(object):
+class Filterer(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("filter-fileinfos", self.__filter_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "filter-fileinfos", self.__filter_cb)
 		from gobject import idle_add
 		idle_add(self.__optimize, priority=9999)
 		editor.response()
@@ -28,10 +30,8 @@ class Filterer(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		del self
-		self = None
 		return False
 
 	def __valid(self, fileinfo):

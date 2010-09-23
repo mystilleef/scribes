@@ -5,7 +5,8 @@ from gettext import gettext as _
 class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
-		SignalManager.__init__(self)
+		editor.response()
+		SignalManager.__init__(self, editor)
 		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
 		self.connect(self.__trigger1, "activate", self.__activate_cb)
@@ -18,6 +19,7 @@ class Trigger(SignalManager, TriggerManager):
 		self.connect(self.__trigger8, "activate", self.__activate_cb)
 		self.connect(self.__trigger9, "activate", self.__activate_cb)
 		self.connect(self.__trigger10, "activate", self.__activate_cb)
+		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -40,7 +42,7 @@ class Trigger(SignalManager, TriggerManager):
 		self.__trigger2.zen_action = "expand_abbreviation"
 		name, shortcut, description, category = (
 			"zencoding-next-edit-point",
-			"<super>Right",
+			"<super><alt>Right",
 			_("Move cursor to next edit point"),
 			_("Markup Operations")
 		)
@@ -48,7 +50,7 @@ class Trigger(SignalManager, TriggerManager):
 		self.__trigger3.zen_action = "next_edit_point"
 		name, shortcut, description, category = (
 			"zencoding-previous-edit-point",
-			"<super>Left",
+			"<super><alt>Left",
 			_("Move cursor to previous edit point"),
 			_("Markup Operations")
 		)

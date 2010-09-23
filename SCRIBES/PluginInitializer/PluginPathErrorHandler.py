@@ -39,7 +39,6 @@ class Handler(SignalManager):
 		return False
 
 	def __error_cb(self, manager, plugin_path):
-		#from gobject import idle_add
-		#idle_add(self.__create, plugin_path)
-		self.__create(plugin_path)
+		from gobject import idle_add
+		idle_add(self.__create, plugin_path)
 		return False

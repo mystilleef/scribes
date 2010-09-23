@@ -1,58 +1,38 @@
-from gettext import gettext as _
-pair_chars = ("(", "[", "{", "<")
+from SCRIBES.SignalConnectionManager import SignalManager
 
-class Selector(object):
+class Selector(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("select", self.__select_cb)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=9999)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "select-offsets", self.__select_cb)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__buffer = editor.textbuffer
-		self.__match = editor.find_matching_bracket
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		del self
-		self = None
 		return False
 
-	def __select(self):
-		cursor = self.__editor.cursor
-		tempiter = cursor.copy()
-		while True:
-			self.__editor.response()
-			if tempiter.is_start(): break
-			tempiter.backward_char()
-			if not (tempiter.get_char() in pair_chars): continue
-			tempiter.forward_char()
-			iterator = self.__match(tempiter.copy())
-			if not iterator: break
-			if iterator.get_offset() < cursor.get_offset(): break
-			self.__buffer.select_range(tempiter, iterator)
-			self.__editor.update_message(_("Selected characters inside bracket"), "pass")
-			return
-		self.__editor.update_message(_("No brackets found for selection"), "fail")
-		return False
-
-	def __precompile_methods(self):
-		methods = (self.__select_cb, self.__select, self.__match,)
-		self.__editor.optimize(methods)
+	def __select(self, offsets):
+		get_iter = self.__editor.textbuffer.get_iter_at_offset
+		start, end = get_iter(offsets[0]), get_iter(offsets[1])
+		self.__editor.response()
+		self.__editor.textbuffer.select_range(start, end)
+		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
-	def __select_cb(self, *args):
-		self.__select()
+	def __select_cb(self, manager, offsets):
+		from gobject import idle_add
+		idle_add(self.__select, offsets)
 		return False

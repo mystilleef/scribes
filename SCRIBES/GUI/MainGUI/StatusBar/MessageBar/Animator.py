@@ -72,7 +72,7 @@ class Animator(SignalManager):
 			animate = True
 			self.__can_end(direction)
 			self.__reposition_in(direction)
-		except ValueError:
+		except ValueError, KeyError:
 			animate = False
 			if direction == "down": self.__bar.hide()
 			self.__manager.emit("animation", "end")

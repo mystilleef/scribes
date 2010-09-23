@@ -22,7 +22,6 @@ class Destroyer(SignalManager):
 	def __destroy(self):
 		self.disconnect()
 		self.__manager.emit("destroyed-plugins")
-#		print "Destroyed all loaded plugins!"
 		self.__editor.unregister_object(self)
 		del self
 		return False

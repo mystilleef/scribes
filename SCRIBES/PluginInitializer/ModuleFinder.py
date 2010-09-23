@@ -35,7 +35,7 @@ class Finder(SignalManager):
 		self.__editor.response()
 		self.__manager.emit("initialize-module", module)
 		self.__editor.response()
-		return 
+		return
 
 	def __initialize_modules(self, plugin_path):
 		self.__editor.response()
@@ -52,7 +52,5 @@ class Finder(SignalManager):
 		return False
 
 	def __find_cb(self, manager, plugin_path):
-		#from gobject import idle_add
-		#idle_add(self.__initialize_modules, plugin_path)
 		self.__initialize_modules(plugin_path)
 		return False

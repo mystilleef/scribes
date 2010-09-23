@@ -9,6 +9,7 @@ class Reloader(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "active-plugins", self.__plugins_cb)
 		self.connect(editor, "loaded-file", self.__loaded_cb, True)
+		self.connect(editor, "renamed-file", self.__loaded_cb, True)
 		editor.register_object(self)
 		editor.response()
 

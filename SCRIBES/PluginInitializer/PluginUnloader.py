@@ -28,7 +28,6 @@ class Unloader(SignalManager):
 		plugin.unload()
 		self.__editor.response()
 		self.__manager.emit("unloaded-plugin", (module, plugin))
-#		print "Unloaded: ", plugin
 		self.__editor.response()
 		return False
 

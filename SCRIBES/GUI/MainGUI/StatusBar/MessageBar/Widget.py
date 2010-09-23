@@ -54,6 +54,7 @@ class Widget(SignalManager):
 	def __get_bar(self):
 		from gtk import EventBox
 		bar = EventBox()
+#		bar.props.visible_window = False
 		return bar
 
 	def __get_label(self):
