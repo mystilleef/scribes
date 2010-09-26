@@ -2,7 +2,8 @@ from gettext import gettext as _
 from SCRIBES.SignalConnectionManager import SignalManager
 
 BRACKET_MESSAGE = _("Bracket selection")
-QUOTE_MESSAGE = _("String selection")
+UNDO_MESSAGE = _("Removed last selection")
+QUOTE_MESSAGE = _("Quote selection")
 FAIL_MESSAGE = _("No brackets found")
 
 class Feedback(SignalManager):
@@ -14,6 +15,7 @@ class Feedback(SignalManager):
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "select-offsets", self.__select_cb, True)
 		self.connect(manager, "no-pair-character-found", self.__no_cb, True)
+		self.connect(manager, "undo-selection", self.__undo_cb, True)
 		editor.response()
 
 	def __init_attributes(self, manager, editor):
@@ -55,4 +57,8 @@ class Feedback(SignalManager):
 
 	def __no_cb(self, *args):
 		self.__editor.update_message(FAIL_MESSAGE, "no")
+		return False
+
+	def __undo_cb(self, *args):
+		self.__editor.update_message(UNDO_MESSAGE, "info")
 		return False

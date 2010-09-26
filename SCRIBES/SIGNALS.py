@@ -5,7 +5,7 @@ SSIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 SACTION = SIGNAL_RUN_LAST|SIGNAL_ACTION
 
 class Signals(GObject):
-	
+
 	__gsignals__ = {
 		# Nobody should listen to this signal. For internal use only.
 		"close": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
@@ -55,7 +55,7 @@ class Signals(GObject):
 		"update-message": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_INT,)),
 		"set-message": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"unset-message": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
-		"undo": (SSIGNAL, TYPE_NONE, ()),
+		"undo": (SSIGNAL, TYPE_BOOLEAN, ()),
 		"redo": (SSIGNAL, TYPE_NONE, ()),
 		"show-full-view": (SSIGNAL, TYPE_NONE, ()),
 		"hide-full-view": (SSIGNAL, TYPE_NONE, ()),
@@ -78,4 +78,6 @@ class Signals(GObject):
 	}
 
 	def __init__(self):
-		GObject.__init__(self)
+		self.__gobject_init__()
+
+type_register(Signals)

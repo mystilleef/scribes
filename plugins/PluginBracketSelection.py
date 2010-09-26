@@ -1,6 +1,6 @@
 name = "Bracket Selection Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-version = 0.3
+version = 0.4
 autoload = True
 class_name = "BracketSelectionPlugin"
 short_description = "Bracket selection operations."

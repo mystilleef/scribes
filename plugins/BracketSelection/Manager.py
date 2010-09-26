@@ -6,6 +6,8 @@ class Manager(Signal):
 		Signal.__init__(self)
 		from Feedback import Feedback
 		Feedback(self, editor)
+		from UndoManager import Manager
+		Manager(self, editor)
 		from Selector import Selector
 		Selector(self, editor)
 		from QuoteCharacterMatcher import Matcher
