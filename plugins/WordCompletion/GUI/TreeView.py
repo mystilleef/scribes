@@ -9,6 +9,7 @@ class TreeView(object):
 		self.__sigid2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid3 = manager.connect("match-found", self.__match_found_cb)
 		self.__sigid4 = manager.connect("no-match-found", self.__no_match_found_cb)
+		self.__sigid5 = manager.connect("show-window", self.__map_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=8888)
 		editor.response()
@@ -37,9 +38,7 @@ class TreeView(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid1, self.__view)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__treeview.destroy()
 		del self
-		self = None
 		return False
 
 	def __block_view(self):
@@ -74,20 +73,25 @@ class TreeView(object):
 
 	def __populate_model(self, matches):
 		try:
+			view_window = self.__treeview.window
 			if self.__matches == matches: raise ValueError
+			if view_window: view_window.freeze_updates()
 			self.__treeview.set_model(None)
 			self.__model.clear()
-			for word in matches: 
+			for word in matches:
 				self.__editor.response()
 				self.__model.append([word])
 			self.__treeview.set_model(self.__model)
+			if view_window: view_window.thaw_updates()
 			self.__column.queue_resize()
+			self.__treeview.queue_resize()
 			self.__treeview.columns_autosize()
+			self.__editor.response()
 		except ValueError:
 			pass
 		finally:
 			self.__select(self.__model[0])
-			self.__manager.emit("treeview-size", (self.__treeview.size_request()))
+			self.__manager.emit("treeview-size", self.__treeview.size_request())
 			from copy import copy
 			self.__matches = copy(matches)
 		return False
@@ -151,4 +155,10 @@ class TreeView(object):
 
 	def __no_match_found_cb(self, *args):
 		self.__block_view()
+		return False
+
+	def __map_cb(self, *args):
+		self.__editor.response()
+		self.__treeview.columns_autosize()
+		self.__editor.response()
 		return False

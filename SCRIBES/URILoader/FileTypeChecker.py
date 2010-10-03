@@ -36,16 +36,12 @@ class Checker(object):
 	def __async_result_cb(self, gfile, result):
 		from gio import FILE_TYPE_REGULAR, ERROR_NOT_REGULAR_FILE, Error
 		try:
-			self.__editor.response()
 			fileinfo = gfile.query_info_finish(result)
 			if fileinfo.get_file_type() != FILE_TYPE_REGULAR: self.__raise_error()
 			self.__manager.emit("read-uri", gfile.get_uri())
 		except Error, e:
-			self.__editor.response()
 			from gobject import idle_add
 			idle_add(self.__error, (gfile, e))
-		finally:
-			self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):

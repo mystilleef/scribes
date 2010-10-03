@@ -24,14 +24,11 @@ class Handler(SignalManager):
 
 	def __create(self, plugin_path):
 		try:
-			self.__editor.response()
 			# Can only create plugin path in home folder.
 			if not plugin_path.startswith(self.__editor.home_folder): raise ValueError
 			self.__manager.emit("create-plugin-path", plugin_path)
 		except ValueError:
 			self.__manager.emit("plugin-path-not-found-error", plugin_path)
-		finally:
-			self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

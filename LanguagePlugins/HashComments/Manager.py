@@ -120,9 +120,9 @@ class Manager(object):
 		return
 
 	def toggle_comment(self):
+		from Exceptions import ReadOnlyError
 		try:
 			self.__editor.textview.window.freeze_updates()
-			from Exceptions import ReadOnlyError
 			if self.__editor.readonly: raise ReadOnlyError
 			offset = self.__editor.cursor.get_offset()
 			begin, end = self.__get_range()
@@ -139,8 +139,10 @@ class Manager(object):
 				if not (len(lines) == 1 and not lines[0]): offset -= 1
 			text = "\n".join(lines)
 			self.__buffer.place_cursor(begin)
+			self.__buffer.begin_user_action()
 			self.__buffer.delete(begin, end)
 			self.__buffer.insert_at_cursor(text)
+			self.__buffer.end_user_action()
 			if self.__has_selection:
 				begin = self.__get_begin_selection()
 				end = self.__get_end_selection()
@@ -149,7 +151,9 @@ class Manager(object):
 				iterator = self.__buffer.get_iter_at_offset(offset)
 				self.__buffer.place_cursor(iterator)
 		except TypeError:
+			self.__buffer.begin_user_action()
 			self.__buffer.insert_at_cursor("#")
+			self.__buffer.end_user_action()
 			self.__commented = True
 			iterator = self.__buffer.get_iter_at_offset(offset)
 			self.__buffer.place_cursor(iterator)

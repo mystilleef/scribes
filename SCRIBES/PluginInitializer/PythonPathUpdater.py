@@ -23,12 +23,9 @@ class Updater(SignalManager):
 		return False
 
 	def __update(self, plugin_path):
-		self.__editor.response()
 		from sys import path
 		if not (plugin_path in path): path.insert(0, plugin_path)
-		self.__editor.response()
 		self.__manager.emit("search-path-updated", plugin_path)
-		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

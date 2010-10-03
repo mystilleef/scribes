@@ -26,7 +26,6 @@ class Reloader(SignalManager):
 		return False
 
 	def __load_language_plugins(self):
-		self.__editor.response()
 		is_language_plugin = lambda data: hasattr(data[0], "languages")
 		unload = lambda plugin: self.__manager.emit("unload-plugin", plugin)
 		from copy import copy
@@ -34,7 +33,6 @@ class Reloader(SignalManager):
 		paths = (self.__editor.core_language_plugin_folder, self.__editor.home_language_plugin_folder,)
 		load = lambda path: self.__manager.emit("search-path-updated", path)
 		[load(path) for path in paths]
-		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

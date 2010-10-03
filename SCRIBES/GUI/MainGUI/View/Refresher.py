@@ -1,27 +1,27 @@
-class Refresher(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Refresher(SignalManager):
 
 	def __init__(self, editor):
 		editor.response()
+		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("refresh", self.__refresh_cb)
-		editor.register_object(self)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(editor, "refresh", self.__refresh_cb, True)
 		from gobject import idle_add
 		idle_add(self.__optimize, priority=9999)
+		editor.register_object(self)
 		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__view = editor.textview
-		self.__count = 0
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return
 
 	def __refresh(self, grab_focus=True):
@@ -44,5 +44,12 @@ class Refresher(object):
 		return False
 
 	def __refresh_cb(self, editor, grab_focus):
-		self.__refresh(grab_focus)
+		try:
+			from gobject import idle_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = idle_add(self.__refresh, grab_focus, priority=99999)
+#		self.__refresh(grab_focus)
 		return False

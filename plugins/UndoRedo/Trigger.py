@@ -55,3 +55,4 @@ class Trigger(SignalManager, TriggerManager):
 		}
 		function[trigger]()
 		return
+

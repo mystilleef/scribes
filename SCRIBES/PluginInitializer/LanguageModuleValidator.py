@@ -25,6 +25,7 @@ class Validator(SignalManager):
 	def __validate(self, module):
 		self.__editor.response()
 		if not (self.__editor.language in module.languages): return False
+		self.__editor.response()
 		self.__manager.emit("valid-module", module)
 		self.__editor.response()
 		return False

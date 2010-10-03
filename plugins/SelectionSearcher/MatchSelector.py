@@ -24,10 +24,8 @@ class Selector(SignalManager):
 		giam = self.__editor.textbuffer.get_iter_at_mark
 		start = giam(mark[0])
 		end = giam(mark[1])
-		self.__editor.response()
 		self.__editor.textbuffer.select_range(start, end)
 		self.__editor.textview.scroll_mark_onscreen(mark[1])
-		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):

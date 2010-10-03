@@ -1,12 +1,16 @@
-class Positioner(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+ADJUSTMENT = 10
+
+class Positioner(SignalManager):
 
 	def __init__(self, manager, editor):
 		editor.response()
+		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("treeview-size", self.__size_cb)
-		self.__sigid3 = manager.connect("show-window", self.__show_cb)
-		self.__sigid4 = manager.connect("no-match-found", self.__hide_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "treeview-size", self.__size_cb)
+		self.connect(manager, "show-window", self.__show_cb)
+		self.connect(manager, "no-match-found", self.__hide_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
 		editor.response()
@@ -15,22 +19,26 @@ class Positioner(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__window = manager.gui.get_widget("Window")
+		self.__scroll = manager.gui.get_widget("ScrolledWindow")
 		self.__is_visible = False
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.disconnect()
 		del self
-		self = None
 		return
+
+	def __set_scroll_policy(self, data):
+		width, height = data
+		from gtk import POLICY_AUTOMATIC, POLICY_NEVER
+		policy = POLICY_AUTOMATIC if height > 200 else POLICY_NEVER
+		self.__scroll.set_policy(POLICY_NEVER, policy)
+		return False
 
 	def __get_size(self, data):
 		width, height = data
-		height = 210 if height > 200 else (height + 6)
-		width = 210 if width < 200 else width
+		height = (200 + ADJUSTMENT) if height > 200 else (height + ADJUSTMENT)
+		width = 200 if width < 200 else (width + ADJUSTMENT+10)
 		return width, height
 
 	def __get_x(self, width, cursor_data, textview_data):
@@ -78,10 +86,11 @@ class Positioner(object):
 
 	def __position_window(self, data):
 		width, height = self.__get_size(data)
-		xcord, ycord = self.__get_cords(width, height) #
+		xcord, ycord = self.__get_cords(width, height)
+		self.__set_scroll_policy((width, height))
 		self.__window.set_size_request(width, height)
 		self.__window.resize(width, height)
-		self.__window.move(xcord, ycord) 
+		self.__window.move(xcord, ycord)
 		self.__manager.emit("show-window")
 		return False
 

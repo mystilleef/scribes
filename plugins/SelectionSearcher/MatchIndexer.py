@@ -58,7 +58,6 @@ class Indexer(SignalManager):
 	def __current_match_cb(self, manager, match):
 		from gobject import idle_add
 		idle_add(self.__send_index, match)
-#		self.__send_index(match)
 		return False
 
 	def __reset_cb(self, *args):

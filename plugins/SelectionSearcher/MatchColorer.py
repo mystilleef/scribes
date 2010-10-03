@@ -48,9 +48,7 @@ class Colorer(SignalManager):
 		giam = self.__editor.textbuffer.get_iter_at_mark
 		iam = lambda start, end: (giam(start), giam(end))
 		tag = lambda start, end: apply_tag(self.__tag, *(iam(start, end)))
-		self.__editor.response()
 		[tag(*mark) for mark in marks]
-		self.__editor.response()
 		self.__colored = True
 		return False
 
@@ -66,5 +64,4 @@ class Colorer(SignalManager):
 	def __clear_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__clear, priority=9999)
-#		self.__clear()
 		return False

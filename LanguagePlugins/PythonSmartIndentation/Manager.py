@@ -91,11 +91,6 @@ class Manager(object):
 		self.__editor.textbuffer.insert_at_cursor("\n" + whitespaces)
 		return
 
-#	def __move_view_to_cursor(self):
-#		mark = self.__editor.textbuffer.get_insert()
-#		self.__editor.textview.scroll_mark_onscreen(mark)
-#		return False
-
 	def __insert_indentation(self, whitespaces):
 		self.__editor.textview.window.freeze_updates()
 		self.__insert_indentation_on_next_line(whitespaces)
@@ -131,7 +126,9 @@ class Manager(object):
 	def __starts_with_return(self):
 		text = self.__get_line_text()
 		text = text.strip(" \t")
-		if text.startswith("return"): return True
+		if not text: return False
+		word = text.split()[0]
+		if word in ("return", "pass", "yield", "break", "continue"): return True
 		return False
 
 	def __key_press_event_cb(self, widget, event):

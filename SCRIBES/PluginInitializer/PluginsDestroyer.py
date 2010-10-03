@@ -27,6 +27,7 @@ class Destroyer(SignalManager):
 		return False
 
 	def __check(self):
+		self.__editor.response()
 		if self.__destroyed: return False
 		if self.__quit is False: return False
 		if self.__plugins: return False
@@ -42,8 +43,8 @@ class Destroyer(SignalManager):
 		return
 
 	def __unload_plugins(self):
-		self.__editor.response()
 		from copy import copy
+		self.__editor.response()
 		[self.__unload(plugin_data) for plugin_data in copy(self.__plugins)]
 		self.__editor.response()
 		return False

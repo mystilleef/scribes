@@ -1,6 +1,6 @@
 name = "Automatic Word Completion Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-version = 0.4
+version = 0.5
 autoload = True
 class_name = "WordCompletionPlugin"
 short_description = "Automatic word completion for Scribes"

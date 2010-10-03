@@ -21,7 +21,7 @@ class Manager(SignalManager):
 		from collections import deque
 		self.__offsets = deque([])
 		self.__cursor_offset = 0
-		self.__mode_is_on = False
+		self.__can_undo = False
 		return
 
 	def __destroy(self):
@@ -32,7 +32,7 @@ class Manager(SignalManager):
 	def __reset(self):
 		self.__block()
 		self.__offsets.clear()
-		self.__mode_is_on = False
+		self.__can_undo = False
 		return False
 
 	def __block(self):
@@ -87,7 +87,7 @@ class Manager(SignalManager):
 	def __select_cb(self, manager, offsets):
 		self.__unblock()
 		self.__offsets.append(offsets)
-		self.__mode_is_on = True
+		self.__can_undo = True
 		return False
 
 	def __event_cb(self, view, event):
@@ -97,6 +97,6 @@ class Manager(SignalManager):
 		return True
 
 	def __activate_cb(self, *args):
-		if self.__mode_is_on: return False
+		if self.__can_undo: return False
 		self.__cursor_offset = self.__editor.cursor.get_offset()
 		return False

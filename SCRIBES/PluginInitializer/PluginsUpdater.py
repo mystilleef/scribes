@@ -25,11 +25,8 @@ class Updater(SignalManager):
 		return False
 
 	def __update(self, data, remove=False):
-		self.__editor.response()
 		self.__plugins.remove(data) if remove else self.__plugins.append(data)
-		self.__editor.response()
 		self.__manager.emit("active-plugins", self.__plugins)
-		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

@@ -21,6 +21,7 @@ class Inserter(object):
 
 	def __insert(self, uri, string, encoding):
 		try:
+			self.__editor.response()
 			if encoding is None: encoding = "utf-8"
 			unicode_string = string.decode(encoding, "strict")
 			utf8_string = unicode_string.encode("utf-8", "strict")
@@ -34,7 +35,7 @@ class Inserter(object):
 		except:
 			self.__manager.emit("insertion-error", uri, string)
 		finally:
-			self.__editor.refresh()
+			self.__editor.response()
 		return False
 
 	def __set_cursor(self):

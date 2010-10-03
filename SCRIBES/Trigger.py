@@ -34,11 +34,11 @@ class Trigger(GObject):
 	removable = property(lambda self: self.__removable)
 
 	def __activate(self):
-		self.__editor.response()
+		self.__editor.refresh(False)
 		if self.__editor.bar_is_active: return False
-		self.__editor.refresh()
+		self.__editor.refresh(False)
 		self.emit("activate")
-		self.__editor.response()
+		self.__editor.refresh(False)
 		return False
 
 	def activate(self):

@@ -23,16 +23,11 @@ class Loader(SignalManager):
 		return False
 
 	def __load(self, data):
-		self.__editor.response()
 		module, PluginClass = data
 		if module.autoload is False: return False
-		self.__editor.response()
 		plugin = PluginClass(self.__editor)
-		self.__editor.response()
 		plugin.load()
-		self.__editor.response()
 		self.__manager.emit("loaded-plugin", (module, plugin))
-		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

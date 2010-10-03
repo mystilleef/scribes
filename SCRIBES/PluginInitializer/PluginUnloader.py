@@ -23,6 +23,7 @@ class Unloader(SignalManager):
 		return False
 
 	def __unload(self, data):
+		self.__editor.response()
 		module, plugin = data
 		self.__editor.response()
 		plugin.unload()
