@@ -8,7 +8,7 @@ class Initializer(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		from gobject import timeout_add
-		timeout_add(25, self.__validate_timeout, priority=999999)
+		timeout_add(1000, self.__validate_timeout, priority=999999)
 		editor.register_object(self)
 		editor.response()
 

@@ -32,7 +32,7 @@ EXTRA_DIST = m4 \
 	i18n_plugin_extractor.py \
 	CONTRIBUTORS \
 	TODO \
-	plugins \
+	GenericPlugins \
 	LanguagePlugins \
 	Examples \
 	compile.py \
@@ -40,6 +40,9 @@ EXTRA_DIST = m4 \
 
 DISTCLEANFILES = \
 	$(startup_script) \
+	intltool-extract \
+	intltool-merge \
+	intltool-update \
 	gnome-doc-utils.make
 
 install-data-hook:
@@ -51,11 +54,23 @@ install-data-hook:
 		rm -rf $(DESTDIR)$(datadir)/scribes/plugins ;\
 		echo "removed " $(DESTDIR)$(datadir)/scribes/plugins ;\
 	fi
-	if [ -d $(DESTDIR)$(datadir)/scribes/plugins ]; then \
+	if [ -d $(DESTDIR)$(datadir)/scribes/GenericPlugins ]; then \
+		echo "removing " $(DESTDIR)$(datadir)/scribes/GenericPlugins ;\
+		rm -rf $(DESTDIR)$(datadir)/scribes/GenericPlugins ;\
+		echo "removed " $(DESTDIR)$(datadir)/scribes/GenericPlugins ;\
+	fi
+	if [ -d $(DESTDIR)$(datadir)/scribes/LanguagePlugins ]; then \
 		echo "removing " $(DESTDIR)$(datadir)/scribes/LanguagePlugins ;\
 		rm -rf $(DESTDIR)$(datadir)/scribes/LanguagePlugins ;\
 		echo "removed " $(DESTDIR)$(datadir)/scribes/LanguagePlugins ;\
 	fi
-	cp -R plugins $(DESTDIR)$(datadir)/scribes
-	cp -R LanguagePlugins $(DESTDIR)$(datadir)/scribes
+	if [ -d $(DESTDIR)$(libdir)/scribes ]; then \
+		echo "removing " $(DESTDIR)$(libdir)/scribes ;\
+		rm -rf $(DESTDIR)$(libdir)/scribes ;\
+		echo "removed " $(DESTDIR)$(libdir)/scribes ;\
+	fi
+	mkdir $(DESTDIR)$(libdir)/scribes
+	cp -R GenericPlugins $(DESTDIR)$(libdir)/scribes
+	cp -R LanguagePlugins $(DESTDIR)$(libdir)/scribes
 	chmod 755 $(DESTDIR)$(startupdir)/$(startup_script)
+	rm -rf $(startup_script)

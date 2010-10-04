@@ -17,18 +17,20 @@ from os.path import exists
 desktop_folder = folder_ if exists(folder_) else home_folder
 metadata_folder = join(home_folder, ".gnome2", "scribes")
 print_settings_filename = join(metadata_folder, "ScribesPrintSettings.txt")
-home_plugin_folder = join(metadata_folder, "plugins")
+home_plugin_folder = home_generic_plugin_folder = join(metadata_folder, "GenericPlugins")
 home_language_plugin_folder = join(metadata_folder, "LanguagePlugins")
 name = "scribes"
 prefix = "/usr"
 executable_path = join(prefix, "bin")
 data_path = "/usr/share"
+library_path = "/usr/lib"
 sysconfdir = "/usr/etc"
 data_folder = join(data_path, "scribes")
-core_plugin_folder = join(data_folder, "plugins")
-core_language_plugin_folder = join(data_folder, "LanguagePlugins")
+root_plugin_folder = join(library_path, "scribes")
+core_plugin_folder = core_generic_plugin_folder = join(root_plugin_folder, "GenericPlugins")
+core_language_plugin_folder = join(root_plugin_folder, "LanguagePlugins")
 python_path = "/usr/lib/python2.6/dist-packages"
-version = "0.4-dev-build588"
+version = "0.4-dev-build589"
 author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"Contributors:",
 			"\tIb Lundgren <ib.lundgren@gmail.com>",
@@ -49,7 +51,7 @@ author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 		]
 documenters = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 artists = ["Alexandre Moore <alexandre.moore@gmail.com>", "Panos Laganakos <panos.laganakos@gmail.com>"]
-website = "http://scribes.sourceforge.net/"
+website = "http://scribes.sf.net/"
 copyrights = "Copyright © 2005 Lateef Alabi-Oki"
 translators = "Brazilian Portuguese translation by Leonardo F. Fontenelle \
 <leo.fontenelle@gmail.com>\nRussian translation by Paul Chavard \

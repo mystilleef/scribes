@@ -1,11 +1,11 @@
 edit = sed \
 	-e 's,@pixmapsdir\@,$(pixmapsdir),g' \
 	-e 's,@scribes_prefix\@,$(prefix),g' \
+	-e 's,@scribes_lib_path\@,$(libdir),g' \
 	-e 's,@scribes_data_path\@,$(datadir),g' \
 	-e 's,@scribes_sysconfdir\@,$(sysconfdir),g' \
 	-e 's,@python_path\@,$(pythondir),g' \
 	-e 's,@VERSION\@,$(VERSION),g'
-
 
 # dnl Generate "Globals.py" from "Globals.py.in."
 python_files = Globals.py
