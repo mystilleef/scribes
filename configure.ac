@@ -1,10 +1,10 @@
 #						-*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([scribes],[0.4-dev-build591],[<mystilleef@gmail.com>])
+AC_INIT([scribes],[0.4-dev-build592],[<mystilleef@gmail.com>])
 #GNOME_COMMON_INIT
 AC_PREREQ(2.63)
-AM_INIT_AUTOMAKE([1.11 dist-bzip2 no-dist-gzip])
+AM_INIT_AUTOMAKE([1.11 dist-bzip2 no-dist-gzip tar-pax])
 AM_MAINTAINER_MODE([enabled])
 #AM_SILENT_RULES([yes])
 

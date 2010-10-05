@@ -12,8 +12,7 @@ pixmaps_DATA = scribes.png
 
 # Process Scribes data files.
 scribesdir = $(datadir)/scribes
-scribes_DATA = \
-	Editor.glade \
+scribes_DATA = Editor.glade \
 	bookmarks.png \
 	ModificationDialog.glade \
 	EncodingSelectionWindow.glade \
@@ -43,15 +42,15 @@ Desktop_in_files = scribes.desktop.in
 Desktop_DATA = $(Desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
-EXTRA_DIST = \
-	bookmarks.png \
+EXTRA_DIST = bookmarks.png \
 	throbber-inactive.png \
 	throbber-active.gif \
 	scribes.desktop.in \
 	ModificationDialog.glade \
 	EncodingSelectionWindow.glade \
 	EncodingErrorWindow.glade \
+	Editor.glade \
+	MessageWindow.glade \
 	scribes.png
 
-CLEANFILES = \
-	$(Desktop_DATA)
+CLEANFILES = $(Desktop_DATA)

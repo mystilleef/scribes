@@ -10,7 +10,7 @@ toolbarvisibility_PYTHON = \
 	Resizer.py \
 	VisibilityUpdater.py \
 	HideTimer.py \
-	PublicAPIVisibilityUpdater.py
+	APIVisibilityUpdater.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

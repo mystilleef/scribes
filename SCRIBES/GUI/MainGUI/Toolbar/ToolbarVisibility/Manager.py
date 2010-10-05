@@ -20,7 +20,7 @@ class Manager(GObject):
 		GObject.__init__(self)
 		from HideTimer import Timer
 		Timer(self, editor)
-		from PublicAPIVisibilityUpdater import Updater
+		from APIVisibilityUpdater import Updater
 		Updater(self, editor)
 		from VisibilityUpdater import Updater
 		Updater(self, editor)
