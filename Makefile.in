@@ -141,9 +141,7 @@ DATADIRNAME = @DATADIRNAME@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DISABLE_DEPRECATED = @DISABLE_DEPRECATED@
-DISTCHECK_CONFIGURE_FLAGS = \
-	--disable-scrollkeeper
-
+DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper
 DOC_USER_FORMATS = @DOC_USER_FORMATS@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -281,10 +279,10 @@ EXTRA_DIST = m4 \
 	LanguagePlugins \
 	Examples \
 	compile.py \
+	removepyc.py \
 	TRANSLATORS
 
-DISTCLEANFILES = \
-	$(startup_script) \
+DISTCLEANFILES = $(startup_script) \
 	intltool-extract \
 	intltool-merge \
 	intltool-update \
@@ -815,6 +813,7 @@ install-data-hook:
 	cp -R LanguagePlugins $(DESTDIR)$(libdir)/scribes
 	chmod 755 $(DESTDIR)$(startupdir)/$(startup_script)
 	rm -rf $(startup_script)
+	python removepyc.py
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

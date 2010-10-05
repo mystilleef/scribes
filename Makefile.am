@@ -16,8 +16,7 @@ SUBDIRS = po help data SCRIBES
 # uninstall.
 distuninstallcheck_listfiles = find . -type f -print | grep -v scrollkeeper
 
-DISTCHECK_CONFIGURE_FLAGS =	\
-	--disable-scrollkeeper
+DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper
 
 EXTRA_DIST = m4 \
 	autogen.sh \
@@ -36,10 +35,10 @@ EXTRA_DIST = m4 \
 	LanguagePlugins \
 	Examples \
 	compile.py \
+	removepyc.py \
 	TRANSLATORS
 
-DISTCLEANFILES = \
-	$(startup_script) \
+DISTCLEANFILES = $(startup_script) \
 	intltool-extract \
 	intltool-merge \
 	intltool-update \
@@ -74,3 +73,4 @@ install-data-hook:
 	cp -R LanguagePlugins $(DESTDIR)$(libdir)/scribes
 	chmod 755 $(DESTDIR)$(startupdir)/$(startup_script)
 	rm -rf $(startup_script)
+	python removepyc.py
