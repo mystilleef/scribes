@@ -2,6 +2,7 @@
 from os import environ
 from os.path import join, expanduser
 from dbus import SessionBus, Interface, glib
+from xdg.BaseDirectory import xdg_config_home
 SCRIBES_DBUS_SERVICE = "net.sourceforge.Scribes"
 SCRIBES_DBUS_PATH = "/net/sourceforge/Scribes"
 SCRIBES_SAVE_PROCESS_DBUS_SERVICE = "net.sourceforge.ScribesSaveProcess"
@@ -15,10 +16,10 @@ tmp_folder = gettempdir()
 folder_ = join(home_folder, "Desktop")
 from os.path import exists
 desktop_folder = folder_ if exists(folder_) else home_folder
-metadata_folder = join(home_folder, ".gnome2", "scribes")
+metadata_folder = config_folder = join(xdg_config_home, "scribes")
 print_settings_filename = join(metadata_folder, "ScribesPrintSettings.txt")
-home_plugin_folder = home_generic_plugin_folder = join(metadata_folder, "GenericPlugins")
-home_language_plugin_folder = join(metadata_folder, "LanguagePlugins")
+home_plugin_folder = home_generic_plugin_folder = join(config_folder, "GenericPlugins")
+home_language_plugin_folder = join(config_folder, "LanguagePlugins")
 name = "scribes"
 prefix = "/usr"
 executable_path = join(prefix, "bin")
@@ -30,7 +31,7 @@ root_plugin_folder = join(library_path, "scribes")
 core_plugin_folder = core_generic_plugin_folder = join(root_plugin_folder, "GenericPlugins")
 core_language_plugin_folder = join(root_plugin_folder, "LanguagePlugins")
 python_path = "/usr/lib/python2.6/dist-packages"
-version = "0.4-dev-build589"
+version = "0.4-dev-build590"
 author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"Contributors:",
 			"\tIb Lundgren <ib.lundgren@gmail.com>",
