@@ -40,7 +40,7 @@ class Manager(object):
 	def __update_search_path(self):
 		from os.path import join
 		gedit_path = self.__get_style_path(join(".gnome2", "gedit", "styles"))
-		scribes_path = self.__get_style_path(join(".gnome2", "scribes", "styles"))
+		scribes_path = self.__get_style_path(join(self.__editor.metadata_folder, "styles"))
 		search_paths = self.__manager.get_search_path()
 		if gedit_path and not (gedit_path in search_paths): self.__manager.prepend_search_path(gedit_path)
 		if scribes_path and not (scribes_path in search_paths): self.__manager.prepend_search_path(scribes_path)
