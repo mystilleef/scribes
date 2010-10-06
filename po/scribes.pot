@@ -1,0 +1,2659 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-06 18:06-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: Examples/GenericPluginExample/Foo/Trigger.py:20
+msgid "Activate the holy power of foo"
+msgstr ""
+
+#: Examples/GenericPluginExample/Foo/Trigger.py:21
+msgid "Example"
+msgstr ""
+
+#: GenericPlugins/About/AboutDialog.glade:7
+msgid "About Scribes"
+msgstr ""
+
+#: GenericPlugins/About/AboutDialog.glade:22
+msgid ""
+"Scribes is an extensible text editor for GNOME \n"
+"that combines simplicity with power."
+msgstr ""
+
+#: GenericPlugins/About/AboutDialog.glade:25
+msgid "Scribes Website"
+msgstr ""
+
+#: GenericPlugins/About/AboutDialog.py:2
+msgid "Information about Scribes"
+msgstr ""
+
+#: GenericPlugins/AdvancedConfiguration/AdvancedConfigurationWindow.glade:8
+#: GenericPlugins/AdvancedConfiguration/MenuItem.py:2
+msgid "Advanced Configuration"
+msgstr ""
+
+#: GenericPlugins/AdvancedConfiguration/AdvancedConfigurationWindow.glade:29
+msgid "<b>Bracket Selection Color</b>"
+msgstr ""
+
+#: GenericPlugins/AdvancedConfiguration/AdvancedConfigurationWindow.glade:54
+msgid "_Selection Color:"
+msgstr ""
+
+#: GenericPlugins/AdvancedConfiguration/AdvancedConfigurationWindow.glade:93
+msgid "<b>Template Indentation</b>"
+msgstr ""
+
+#: GenericPlugins/AdvancedConfiguration/AdvancedConfigurationWindow.glade:109
+msgid "_Use indentation settings from editor"
+msgstr ""
+
+#: GenericPlugins/AdvancedConfiguration/AdvancedConfigurationWindow.glade:115
+msgid ""
+"Convert spaces to tabs, or vice versa, before expanding templates in the "
+"editing area. The conversion is based on indentation settings from the "
+"editor. Enabling this option is highly recommended.\n"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/TreeView.py:71
+msgid "Error: Abbreviation must not contain whitespace"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/TreeView.py:72
+#, python-format
+msgid "Error: '%s' already exists"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/TreeView.py:192
+#: GenericPlugins/EscapeQuotes/Escaper.py:28
+#: GenericPlugins/EscapeQuotes/Escaper.py:73
+msgid "No selection found"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/TreeView.py:243
+msgid "Abbreviation"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/TreeView.py:256
+msgid "Expanded Text"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/Window.glade:8
+#: GenericPlugins/AutoReplace/GUI/i18n.py:6
+msgid "Automatic Replacement"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/Window.glade:76
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:79
+#: GenericPlugins/ThemeSelector/SyntaxColorThemes.glade:83
+msgid "gtk-add"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/Window.glade:91
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:94
+msgid "gtk-edit"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/Window.glade:106
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:110
+#: GenericPlugins/ThemeSelector/SyntaxColorThemes.glade:98
+msgid "gtk-remove"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/Window.py:2
+msgid "Add, editor or remove abbreviations"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/i18n.py:2
+msgid "Auto Replace Editor"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/i18n.py:3
+msgid "_Abbreviations"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/i18n.py:4
+msgid "_Replacements"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/i18n.py:5
+#, python-format
+msgid "Error: '%s' is already in use. Please use another abbreviation."
+msgstr ""
+
+#: GenericPlugins/AutoReplace/GUI/i18n.py:7
+msgid "Modify words for auto-replacement"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/MenuItem.py:2
+msgid "Autoreplace Editor"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/TextColorer.py:2
+msgid "Abbreviation highlighted"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/TextInserter.py:2
+msgid "Expanded abbreviation"
+msgstr ""
+
+#: GenericPlugins/AutoReplace/i18n.py:2
+#: GenericPlugins/SearchSystem/ReplaceManager.py:65
+#, python-format
+msgid "Replaced '%s' with '%s'"
+msgstr ""
+
+#: GenericPlugins/Bookmark/Feedback.py:3
+msgid "Bookmarked lines"
+msgstr ""
+
+#: GenericPlugins/Bookmark/Feedback.py:34
+#, python-format
+msgid "Marked line %s"
+msgstr ""
+
+#: GenericPlugins/Bookmark/Feedback.py:40
+#, python-format
+msgid "Unmarked line %s"
+msgstr ""
+
+#: GenericPlugins/Bookmark/Feedback.py:46
+msgid "Removed all bookmarks"
+msgstr ""
+
+#: GenericPlugins/Bookmark/Feedback.py:82
+#, python-format
+msgid "Cursor on line %s"
+msgstr ""
+
+#: GenericPlugins/Bookmark/GUI/GUI.glade:7
+msgid "Bookmarked Lines"
+msgstr ""
+
+#: GenericPlugins/Bookmark/Trigger.py:25
+msgid "Add or remove bookmark on a line"
+msgstr ""
+
+#: GenericPlugins/Bookmark/Trigger.py:26 GenericPlugins/Bookmark/Trigger.py:33
+#: GenericPlugins/Bookmark/Trigger.py:40
+msgid "Bookmark Operations"
+msgstr ""
+
+#: GenericPlugins/Bookmark/Trigger.py:32
+msgid "Remove all bookmarks"
+msgstr ""
+
+#: GenericPlugins/Bookmark/Trigger.py:39
+msgid "Navigate bookmarks"
+msgstr ""
+
+#: GenericPlugins/BracketCompletion/Manager.py:109
+msgid "Pair character completion occurred"
+msgstr ""
+
+#: GenericPlugins/BracketCompletion/Manager.py:128
+msgid "Enclosed selected text"
+msgstr ""
+
+#: GenericPlugins/BracketCompletion/Manager.py:166
+msgid "Removed pair character"
+msgstr ""
+
+#: GenericPlugins/BracketSelection/Feedback.py:4
+msgid "Bracket selection"
+msgstr ""
+
+#: GenericPlugins/BracketSelection/Feedback.py:5
+msgid "Removed last selection"
+msgstr ""
+
+#: GenericPlugins/BracketSelection/Feedback.py:6
+msgid "Quote selection"
+msgstr ""
+
+#: GenericPlugins/BracketSelection/Feedback.py:7
+msgid "No brackets found"
+msgstr ""
+
+#: GenericPlugins/BracketSelection/Trigger.py:20
+msgid "Select characters inside brackets and quotes"
+msgstr ""
+
+#: GenericPlugins/BracketSelection/Trigger.py:21
+#: GenericPlugins/Selection/Trigger.py:25
+#: GenericPlugins/Selection/Trigger.py:32
+#: GenericPlugins/Selection/Trigger.py:39
+#: GenericPlugins/Selection/Trigger.py:46
+msgid "Selection Operations"
+msgstr ""
+
+#: GenericPlugins/Case/CaseProcessor.py:21
+#, python-format
+msgid "Converted '%s' to upper case"
+msgstr ""
+
+#: GenericPlugins/Case/CaseProcessor.py:22
+#, python-format
+msgid "Converted '%s' to lower case"
+msgstr ""
+
+#: GenericPlugins/Case/CaseProcessor.py:23
+#, python-format
+msgid "Converted '%s' to title case"
+msgstr ""
+
+#: GenericPlugins/Case/CaseProcessor.py:24
+#, python-format
+msgid "Converted '%s' to swap case"
+msgstr ""
+
+#: GenericPlugins/Case/Marker.py:63 GenericPlugins/Paragraph/Manager.py:75
+msgid "No text found"
+msgstr ""
+
+#: GenericPlugins/Case/PopupMenuItem.py:8
+msgid "_Case"
+msgstr ""
+
+#: GenericPlugins/Case/PopupMenuItem.py:26
+msgid "_Togglecase (alt + u)"
+msgstr ""
+
+#: GenericPlugins/Case/PopupMenuItem.py:27
+msgid "_Titlecase (alt + shift + u)"
+msgstr ""
+
+#: GenericPlugins/Case/PopupMenuItem.py:28
+msgid "_Swapcase  (alt + shift + l)"
+msgstr ""
+
+#: GenericPlugins/Case/Trigger.py:24
+msgid "Convert the case of text"
+msgstr ""
+
+#: GenericPlugins/Case/Trigger.py:25 GenericPlugins/Case/Trigger.py:32
+#: GenericPlugins/Case/Trigger.py:39
+msgid "Case Operations"
+msgstr ""
+
+#: GenericPlugins/Case/Trigger.py:31
+msgid "Convert text to title case"
+msgstr ""
+
+#: GenericPlugins/Case/Trigger.py:38
+msgid "Swap the case of text"
+msgstr ""
+
+#: GenericPlugins/CloseReopen/Trigger.py:20
+msgid "Close current window and reopen a new one"
+msgstr ""
+
+#: GenericPlugins/CloseReopen/Trigger.py:21
+#: GenericPlugins/DocumentBrowser/Trigger.py:22
+#: GenericPlugins/DocumentSwitcher/Trigger.py:21
+#: GenericPlugins/NewWindow/Trigger.py:21
+#: GenericPlugins/ShortcutWindow/Trigger.py:20
+msgid "Window Operations"
+msgstr ""
+
+#: GenericPlugins/DocumentBrowser/DocumentBrowser.glade:8
+msgid "Select and Focus A Document"
+msgstr ""
+
+#: GenericPlugins/DocumentBrowser/TreeView.py:24
+#: GenericPlugins/TemplateEditor/MainGUI/DescriptionTreeView.py:215
+msgid "_Name"
+msgstr ""
+
+#: GenericPlugins/DocumentBrowser/TreeView.py:25
+msgid "_Type"
+msgstr ""
+
+#: GenericPlugins/DocumentBrowser/TreeView.py:26
+msgid "_Path"
+msgstr ""
+
+#: GenericPlugins/DocumentBrowser/Trigger.py:21
+msgid "Focus any file window"
+msgstr ""
+
+#: GenericPlugins/DocumentBrowser/Window.py:33
+#: GenericPlugins/DocumentBrowser/Window.py:39
+msgid "Select document"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:7
+msgid "Document Information"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:28
+msgid "<b>Characters:</b>"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:40
+msgid "<b>Words:</b>"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:52
+msgid "<b>Lines:</b>"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:64
+msgid "<b>Accessed:</b>"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:76
+msgid "<b>Modified:</b>"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:88
+msgid "<b>MIME type:</b>"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:100
+msgid "<b>Location:</b>"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:112
+msgid "<b>Size:</b>"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:124
+msgid "<b>Type:</b>"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:136
+msgid "<b>Name:</b>"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:144
+msgid "statistics.py"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:156
+msgid "Python script"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:170
+msgid "1.1 KB (1084 bytes)"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:184
+msgid "/home/goldenmyst/Desktop"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:199
+msgid "text/x-python"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:213
+msgid "113"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:227
+msgid "568"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:241
+msgid "1256"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:255
+msgid "Thu 24 Jul 2008 06:50:22 PM EDT"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/DocumentStatistics.glade:269
+msgid "Thu 24 Jul 2008 06:50:14 PM EDT"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/SizeLabel.py:20
+msgid " bytes"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/Trigger.py:20
+msgid "Show document statistics"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/Trigger.py:21
+#: GenericPlugins/DrawWhitespace/Trigger.py:23
+#: GenericPlugins/PreferencesGUI/Trigger.py:22
+#: GenericPlugins/TemplateEditor/Trigger.py:21
+#: GenericPlugins/ThemeSelector/Trigger.py:21
+#: GenericPlugins/TriggerArea/Trigger.py:24
+#: GenericPlugins/TriggerArea/Trigger.py:32
+#: GenericPlugins/UserGuide/Trigger.py:21
+msgid "Miscellaneous Operations"
+msgstr ""
+
+#: GenericPlugins/DocumentInformation/Window.py:2
+msgid "Document Statistics"
+msgstr ""
+
+#: GenericPlugins/DocumentSwitcher/Trigger.py:20
+msgid "Switch and focus file windows"
+msgstr ""
+
+#: GenericPlugins/DrawWhitespace/Trigger.py:22
+msgid "Show or hide white spaces"
+msgstr ""
+
+#: GenericPlugins/EscapeQuotes/Escaper.py:34
+#: GenericPlugins/EscapeQuotes/Escaper.py:79
+msgid "No selected text found"
+msgstr ""
+
+#: GenericPlugins/EscapeQuotes/Escaper.py:65
+#, python-format
+msgid "Escaped %d quote(s) in selected text"
+msgstr ""
+
+#: GenericPlugins/EscapeQuotes/Escaper.py:100
+#, python-format
+msgid "Unescaped %d quote(s) in selected text"
+msgstr ""
+
+#: GenericPlugins/EscapeQuotes/Trigger.py:22
+msgid "Escape quotes"
+msgstr ""
+
+#: GenericPlugins/EscapeQuotes/Trigger.py:23
+#: GenericPlugins/EscapeQuotes/Trigger.py:30
+#: GenericPlugins/MultiEdit/Trigger.py:19
+#: GenericPlugins/Paragraph/Trigger.py:38 GenericPlugins/Spaces/Trigger.py:24
+#: GenericPlugins/Spaces/Trigger.py:31 GenericPlugins/Spaces/Trigger.py:38
+#: GenericPlugins/UndoRedo/Trigger.py:23 GenericPlugins/UndoRedo/Trigger.py:30
+#: GenericPlugins/UndoRedo/Trigger.py:37
+msgid "Text Operations"
+msgstr ""
+
+#: GenericPlugins/EscapeQuotes/Trigger.py:29
+msgid "Unescape quotes"
+msgstr ""
+
+#: GenericPlugins/GotoBar/GUI/Bar.py:2
+msgid "Move cursor to a specific line"
+msgstr ""
+
+#: GenericPlugins/GotoBar/GUI/GotoBar.glade:19
+msgid "<b>Line _Number:</b>"
+msgstr ""
+
+#: GenericPlugins/GotoBar/GUI/GotoBar.glade:52
+msgid "of <b>1</b>"
+msgstr ""
+
+#: GenericPlugins/GotoBar/GUI/Label.py:26
+#, python-format
+msgid "of <b>%d</b>"
+msgstr ""
+
+#: GenericPlugins/GotoBar/LineJumper.py:28
+#, python-format
+msgid "Moved view to line %d"
+msgstr ""
+
+#: GenericPlugins/GotoBar/Trigger.py:21
+msgid "Jump to a specific line"
+msgstr ""
+
+#: GenericPlugins/GotoBar/Trigger.py:22
+#: GenericPlugins/MatchingBracket/Trigger.py:21
+#: GenericPlugins/Paragraph/Trigger.py:24
+#: GenericPlugins/Paragraph/Trigger.py:31
+#: GenericPlugins/ScrollNavigation/Trigger.py:23
+#: GenericPlugins/ScrollNavigation/Trigger.py:30
+#: GenericPlugins/ScrollNavigation/Trigger.py:37
+#: GenericPlugins/SearchSystem/Trigger.py:24
+#: GenericPlugins/SearchSystem/Trigger.py:31
+#: GenericPlugins/SelectionSearcher/Trigger.py:24
+#: GenericPlugins/SelectionSearcher/Trigger.py:32
+msgid "Navigation Operations"
+msgstr ""
+
+#: GenericPlugins/Indent/IndentationProcessor.py:71
+msgid "Indented line(s)"
+msgstr ""
+
+#: GenericPlugins/Indent/IndentationProcessor.py:77
+msgid "Dedented line(s)"
+msgstr ""
+
+#: GenericPlugins/Indent/PopupMenuItem.py:8
+msgid "In_dentation"
+msgstr ""
+
+#: GenericPlugins/Indent/PopupMenuItem.py:22
+msgid "Shift _Right (ctrl + t)"
+msgstr ""
+
+#: GenericPlugins/Indent/PopupMenuItem.py:23
+msgid "Shift _Left (ctrl + shift + t)"
+msgstr ""
+
+#: GenericPlugins/Indent/Trigger.py:22
+msgid "Indent line or selected lines"
+msgstr ""
+
+#: GenericPlugins/Indent/Trigger.py:23 GenericPlugins/Indent/Trigger.py:30
+#: GenericPlugins/LineEndings/Trigger.py:24
+#: GenericPlugins/LineEndings/Trigger.py:31
+#: GenericPlugins/LineEndings/Trigger.py:38 GenericPlugins/Lines/Trigger.py:29
+#: GenericPlugins/Lines/Trigger.py:36 GenericPlugins/Lines/Trigger.py:43
+#: GenericPlugins/Lines/Trigger.py:50 GenericPlugins/Lines/Trigger.py:57
+#: GenericPlugins/Lines/Trigger.py:64 GenericPlugins/Lines/Trigger.py:71
+#: LanguagePlugins/HashComments/Trigger.py:19
+msgid "Line Operations"
+msgstr ""
+
+#: GenericPlugins/Indent/Trigger.py:29
+msgid "Unindent line or selected lines"
+msgstr ""
+
+#: GenericPlugins/LineEndings/Converter.py:48
+msgid "Converted line endings to UNIX"
+msgstr ""
+
+#: GenericPlugins/LineEndings/Converter.py:54
+msgid "Converted line endings to WINDOWS"
+msgstr ""
+
+#: GenericPlugins/LineEndings/Converter.py:60
+msgid "Converted line ends to MAC"
+msgstr ""
+
+#: GenericPlugins/LineEndings/PopupMenuItem.py:8
+msgid "Line En_dings"
+msgstr ""
+
+#: GenericPlugins/LineEndings/PopupMenuItem.py:21
+msgid "Convert to _Unix (alt + 1)"
+msgstr ""
+
+#: GenericPlugins/LineEndings/PopupMenuItem.py:22
+msgid "Convert to _Mac (alt + 2)"
+msgstr ""
+
+#: GenericPlugins/LineEndings/PopupMenuItem.py:23
+msgid "Convert to _Windows (alt + 3)"
+msgstr ""
+
+#: GenericPlugins/LineEndings/Trigger.py:23
+msgid "Convert to unix line endings"
+msgstr ""
+
+#: GenericPlugins/LineEndings/Trigger.py:30
+msgid "Convert to mac line endings"
+msgstr ""
+
+#: GenericPlugins/LineEndings/Trigger.py:37
+msgid "Convert to windows line endings"
+msgstr ""
+
+#: GenericPlugins/Lines/LineOperator.py:60
+msgid "Joined current and next lines"
+msgstr ""
+
+#: GenericPlugins/Lines/LineOperator.py:62
+msgid "Cannot join lines"
+msgstr ""
+
+#: GenericPlugins/Lines/LineOperator.py:64
+#: GenericPlugins/Lines/LineOperator.py:77
+msgid "No lines to join"
+msgstr ""
+
+#: GenericPlugins/Lines/LineOperator.py:75
+msgid "Join selected lines"
+msgstr ""
+
+#: GenericPlugins/Lines/LineOperator.py:106
+msgid "Duplicated line"
+msgstr ""
+
+#: GenericPlugins/Lines/LineOperator.py:124
+#: GenericPlugins/Lines/LineOperator.py:141
+#, python-format
+msgid "Freed line %d"
+msgstr ""
+
+#: GenericPlugins/Lines/LineOperator.py:157
+msgid "Deleted text to end of line"
+msgstr ""
+
+#: GenericPlugins/Lines/LineOperator.py:165
+msgid "Deleted text to start of line"
+msgstr ""
+
+#: GenericPlugins/Lines/LineOperator.py:181
+#, python-format
+msgid "Deleted line %d"
+msgstr ""
+
+#: GenericPlugins/Lines/LineOperator.py:195
+msgid "Deleted selected lines"
+msgstr ""
+
+#: GenericPlugins/Lines/LineOperator.py:205
+#, python-format
+msgid "Deleted selection on line %d"
+msgstr ""
+
+#: GenericPlugins/Lines/LineOperator.py:221
+msgid "Deleted last line"
+msgstr ""
+
+#: GenericPlugins/Lines/PopupMenuItem.py:8
+msgid "_Lines"
+msgstr ""
+
+#: GenericPlugins/Lines/PopupMenuItem.py:27
+msgid "_Join Line (alt + j)"
+msgstr ""
+
+#: GenericPlugins/Lines/PopupMenuItem.py:28
+msgid "D_uplicate Line (ctrl + u)"
+msgstr ""
+
+#: GenericPlugins/Lines/PopupMenuItem.py:29
+msgid "_Delete Line (alt + d)"
+msgstr ""
+
+#: GenericPlugins/Lines/PopupMenuItem.py:30
+msgid "Free Line _Below (alt + o)"
+msgstr ""
+
+#: GenericPlugins/Lines/PopupMenuItem.py:31
+msgid "Free Line _Above (alt + shift + o)"
+msgstr ""
+
+#: GenericPlugins/Lines/PopupMenuItem.py:32
+msgid "Delete Cursor to Line _End (alt + End)"
+msgstr ""
+
+#: GenericPlugins/Lines/PopupMenuItem.py:33
+msgid "Delete _Cursor to Line Begin (alt + Home)"
+msgstr ""
+
+#: GenericPlugins/Lines/Trigger.py:28
+msgid "Delete line or selected lines"
+msgstr ""
+
+#: GenericPlugins/Lines/Trigger.py:35
+msgid "Join current and next line(s)"
+msgstr ""
+
+#: GenericPlugins/Lines/Trigger.py:42
+msgid "Free current line"
+msgstr ""
+
+#: GenericPlugins/Lines/Trigger.py:49
+msgid "Free next line"
+msgstr ""
+
+#: GenericPlugins/Lines/Trigger.py:56
+msgid "Delete text from cursor to end of line"
+msgstr ""
+
+#: GenericPlugins/Lines/Trigger.py:63
+msgid "Delete text from cursor to start of line"
+msgstr ""
+
+#: GenericPlugins/Lines/Trigger.py:70
+msgid "Duplicate line or selected lines"
+msgstr ""
+
+#: GenericPlugins/MatchingBracket/Manager.py:24
+msgid "Moved cursor to matching bracket"
+msgstr ""
+
+#: GenericPlugins/MatchingBracket/Manager.py:27
+msgid "No matching bracket found"
+msgstr ""
+
+#: GenericPlugins/MatchingBracket/Trigger.py:20
+msgid "Move cursor to matching bracket"
+msgstr ""
+
+#: GenericPlugins/MultiEdit/FeedbackManager.py:4
+msgid "Multi Editing Mode"
+msgstr ""
+
+#: GenericPlugins/MultiEdit/FeedbackManager.py:39
+msgid "Disabled multi editing mode"
+msgstr ""
+
+#: GenericPlugins/MultiEdit/FeedbackManager.py:45
+msgid "New edit point"
+msgstr ""
+
+#: GenericPlugins/MultiEdit/FeedbackManager.py:50
+msgid "Removed edit point"
+msgstr ""
+
+#: GenericPlugins/MultiEdit/FeedbackManager.py:55
+msgid "ERROR: No edit points found"
+msgstr ""
+
+#: GenericPlugins/MultiEdit/Trigger.py:18
+msgid "Enable multi edit mode"
+msgstr ""
+
+#: GenericPlugins/NewWindow/Trigger.py:20
+#: SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/NewToolButton.py:36
+#: SCRIBES/i18n.py:45
+msgid "Open a new window"
+msgstr ""
+
+#: GenericPlugins/OpenFile/NewFileDialogGUI/FeedbackLabel.py:70
+msgid "Validating please wait..."
+msgstr ""
+
+#: GenericPlugins/OpenFile/NewFileDialogGUI/FeedbackLabel.py:74
+msgid "Creating file please wait..."
+msgstr ""
+
+#: GenericPlugins/OpenFile/NewFileDialogGUI/FileCreator.py:33
+msgid "Error: Cannot create new file."
+msgstr ""
+
+#: GenericPlugins/OpenFile/NewFileDialogGUI/InfoLabel.py:2
+#, python-format
+msgid "Create a new file in <b>%s</b> and open it."
+msgstr ""
+
+#: GenericPlugins/OpenFile/NewFileDialogGUI/NewFileDialog.glade:7
+msgid "Open New File"
+msgstr ""
+
+#: GenericPlugins/OpenFile/NewFileDialogGUI/NewFileDialog.glade:41
+msgid "Create a new file in <b>/home/meek/Desktop</b> and open it"
+msgstr ""
+
+#: GenericPlugins/OpenFile/NewFileDialogGUI/NewFileDialog.glade:60
+msgid "<b>_Filename:</b>"
+msgstr ""
+
+#: GenericPlugins/OpenFile/NewFileDialogGUI/NewFileDialog.glade:95
+msgid "<i>processing please wait...</i>"
+msgstr ""
+
+#: GenericPlugins/OpenFile/NewFileDialogGUI/NewFileDialog.glade:113
+msgid "gtk-new"
+msgstr ""
+
+#: GenericPlugins/OpenFile/NewFileDialogGUI/Validator.py:40
+msgid "Error: Invalid file name"
+msgstr ""
+
+#: GenericPlugins/OpenFile/NewFileDialogGUI/Validator.py:42
+msgid "Error: File already exists"
+msgstr ""
+
+#: GenericPlugins/OpenFile/NewFileDialogGUI/Window.py:30
+#: GenericPlugins/OpenFile/NewFileDialogGUI/Window.py:35
+msgid "New Document"
+msgstr ""
+
+#: GenericPlugins/OpenFile/OpenDialogGUI/GUI/GUI.glade:8
+#: GenericPlugins/QuickOpen/GUI/GUI.glade:7
+msgid "Open Files"
+msgstr ""
+
+#: GenericPlugins/OpenFile/OpenDialogGUI/GUI/GUI.glade:39
+#: GenericPlugins/OpenFile/RemoteDialogGUI/RemoteDialog.glade:71
+#: GenericPlugins/SaveDialog/GUI/GUI.glade:39
+#: SCRIBES/EncodingSystem/Error/GUI/GUI.glade:90
+#: data/EncodingErrorWindow.glade:90
+msgid "<b>Character _Encoding:</b>"
+msgstr ""
+
+#: GenericPlugins/OpenFile/OpenDialogGUI/GUI/Window/Displayer.py:26
+#: GenericPlugins/OpenFile/OpenDialogGUI/GUI/Window/Displayer.py:33
+#: GenericPlugins/OpenFile/RemoteDialogGUI/RemoteDialog.glade:9
+#: GenericPlugins/OpenFile/RemoteDialogGUI/Window.py:30
+#: GenericPlugins/OpenFile/RemoteDialogGUI/Window.py:35
+msgid "Open Document"
+msgstr ""
+
+#: GenericPlugins/OpenFile/RemoteDialogGUI/RemoteDialog.glade:30
+msgid "Enter the location of the (URI) you _would like to open:"
+msgstr ""
+
+#: GenericPlugins/OpenFile/RemoteDialogGUI/RemoteDialog.glade:110
+#: GenericPlugins/SaveDialog/GUI/GUI.glade:74
+#: GenericPlugins/TemplateEditor/EditorGUI/GUI.glade:131
+#: GenericPlugins/TemplateEditor/Export/GUI/GUI.glade:41
+#: GenericPlugins/TemplateEditor/Import/GUI/GUI.glade:42
+#: GenericPlugins/ThemeSelector/AddSchemesGUI/Dialog.glade:37
+msgid "gtk-cancel"
+msgstr ""
+
+#: GenericPlugins/OpenFile/RemoteDialogGUI/RemoteDialog.glade:124
+#: SCRIBES/EncodingSystem/Error/GUI/GUI.glade:145
+#: data/EncodingErrorWindow.glade:144
+msgid "gtk-open"
+msgstr ""
+
+#: GenericPlugins/OpenFile/Trigger.py:23
+#: SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/OpenToolButton.py:40
+msgid "Open a new file"
+msgstr ""
+
+#: GenericPlugins/OpenFile/Trigger.py:24 GenericPlugins/OpenFile/Trigger.py:31
+#: GenericPlugins/OpenFile/Trigger.py:38 GenericPlugins/Printing/Trigger.py:22
+#: GenericPlugins/QuickOpen/Trigger.py:21
+#: GenericPlugins/SaveDialog/Trigger.py:22
+#: GenericPlugins/SaveFile/Trigger.py:21
+msgid "File Operations"
+msgstr ""
+
+#: GenericPlugins/OpenFile/Trigger.py:30
+msgid "Open a file at a remote location"
+msgstr ""
+
+#: GenericPlugins/OpenFile/Trigger.py:37
+msgid "Create a new file and open it"
+msgstr ""
+
+#: GenericPlugins/Paragraph/Manager.py:25
+msgid "Moved to previous paragraph"
+msgstr ""
+
+#: GenericPlugins/Paragraph/Manager.py:28
+msgid "No previous paragraph"
+msgstr ""
+
+#: GenericPlugins/Paragraph/Manager.py:43
+msgid "Moved to next paragraph"
+msgstr ""
+
+#: GenericPlugins/Paragraph/Manager.py:46
+msgid "No next paragraph"
+msgstr ""
+
+#: GenericPlugins/Paragraph/Manager.py:56
+#: GenericPlugins/Selection/Selector.py:99
+msgid "Selected paragraph"
+msgstr ""
+
+#: GenericPlugins/Paragraph/Manager.py:59
+#: GenericPlugins/Paragraph/Manager.py:68
+msgid "No paragraph found"
+msgstr ""
+
+#: GenericPlugins/Paragraph/Manager.py:82
+msgid "Reflowed paragraph"
+msgstr ""
+
+#: GenericPlugins/Paragraph/Manager.py:213
+#: LanguagePlugins/HashComments/i18n.py:6
+msgid "Editor is in readonly mode"
+msgstr ""
+
+#: GenericPlugins/Paragraph/PopupMenuItem.py:8
+msgid "Paragraph"
+msgstr ""
+
+#: GenericPlugins/Paragraph/PopupMenuItem.py:23
+msgid "Previous Paragraph (alt + Right)"
+msgstr ""
+
+#: GenericPlugins/Paragraph/PopupMenuItem.py:24
+msgid "Next Paragraph (alt + Left)"
+msgstr ""
+
+#: GenericPlugins/Paragraph/PopupMenuItem.py:25
+msgid "Reflow Paragraph (alt + q)"
+msgstr ""
+
+#: GenericPlugins/Paragraph/PopupMenuItem.py:26
+msgid "Select Paragraph (alt + p)"
+msgstr ""
+
+#: GenericPlugins/Paragraph/Trigger.py:23
+msgid "Move cursor to next paragraph"
+msgstr ""
+
+#: GenericPlugins/Paragraph/Trigger.py:30
+msgid "Move cursor to previous paragraph"
+msgstr ""
+
+#: GenericPlugins/Paragraph/Trigger.py:37
+msgid "Reflow a paragraph"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:7
+msgid "Preferences"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:30
+msgid "<b>Document _Type:</b>"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:73
+msgid "<b>Font</b>"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:92
+msgid "_Font:"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:128
+msgid "<b>Tab Stops</b>"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:148
+msgid "_Tab Width:"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:194
+msgid "_Use spaces instead of tabs"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:213
+msgid "<b>Text Wrapping</b>"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:227
+msgid "Enable text _wrapping"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:245
+msgid "<b>Right Margin</b>"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:259
+msgid "_Show right margin"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:285
+msgid "_Right margin postion:"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:326
+msgid "<b>Spell Checking</b>"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:340
+msgid "_Enable spell checking"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/GUI.glade:382
+msgid "_Reset to Default"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/GUI/LanguageComboBox/ModelUpdater.py:30
+msgid "Plain Text"
+msgstr ""
+
+#: GenericPlugins/PreferencesGUI/Trigger.py:21
+msgid "Show preferences window"
+msgstr ""
+
+#: GenericPlugins/Printing/Feedback.py:7
+msgid "Cancelled print operation"
+msgstr ""
+
+#: GenericPlugins/Printing/Feedback.py:8
+msgid "Print file"
+msgstr ""
+
+#: GenericPlugins/Printing/Feedback.py:11
+msgid "Initializing print operation"
+msgstr ""
+
+#: GenericPlugins/Printing/Feedback.py:12
+msgid "Preparing data for printing"
+msgstr ""
+
+#: GenericPlugins/Printing/Feedback.py:13
+msgid "Generating data for printing"
+msgstr ""
+
+#: GenericPlugins/Printing/Feedback.py:14
+msgid "Sending file to printing"
+msgstr ""
+
+#: GenericPlugins/Printing/Feedback.py:15
+msgid "Finished printing file"
+msgstr ""
+
+#: GenericPlugins/Printing/Feedback.py:16
+msgid "Aborted print operation"
+msgstr ""
+
+#: GenericPlugins/Printing/Trigger.py:21 SCRIBES/i18n.py:48
+msgid "Print the current file"
+msgstr ""
+
+#: GenericPlugins/QuickOpen/Feedback.py:2
+#: GenericPlugins/QuickOpen/Trigger.py:20
+msgid "Open files quickly"
+msgstr ""
+
+#: GenericPlugins/QuickOpen/Feedback.py:44
+msgid "<span foreground='brown'><i>searching please wait...</i></span>"
+msgstr ""
+
+#: GenericPlugins/QuickOpen/Feedback.py:52
+#, python-format
+msgid "<span foreground='blue'><b>%s matches found</b></span>"
+msgstr ""
+
+#: GenericPlugins/QuickOpen/Feedback.py:56
+msgid "<span foreground='red'><b>No match found</b></span>"
+msgstr ""
+
+#: GenericPlugins/QuickOpen/Feedback.py:63
+msgid ""
+"<span foreground='brown'><i>updating search path please wait...</i></span>"
+msgstr ""
+
+#: GenericPlugins/QuickOpen/Feedback.py:70
+#, python-format
+msgid "<span foreground='blue'><b>%s is the current search path</b></span>"
+msgstr ""
+
+#: GenericPlugins/QuickOpen/GUI/GUI.glade:33
+msgid "<b>_Search for: </b>"
+msgstr ""
+
+#: GenericPlugins/QuickOpen/GUI/GUI.glade:98
+msgid "<b>Feedback goes here...</b>"
+msgstr ""
+
+#: GenericPlugins/SaveDialog/GUI/FeedbackUpdater.py:2
+msgid "Rename Document"
+msgstr ""
+
+#: GenericPlugins/SaveDialog/GUI/FileChooser/URISelector.py:29
+#: SCRIBES/i18n.py:10 data/Editor.glade:7
+msgid "Unsaved Document"
+msgstr ""
+
+#: GenericPlugins/SaveDialog/GUI/GUI.glade:8
+msgid "Rename File"
+msgstr ""
+
+#: GenericPlugins/SaveDialog/GUI/GUI.glade:90
+#: GenericPlugins/TemplateEditor/EditorGUI/GUI.glade:144
+msgid "gtk-save"
+msgstr ""
+
+#: GenericPlugins/SaveDialog/Trigger.py:21
+#: SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/SaveToolButton.py:36
+#: SCRIBES/i18n.py:47
+msgid "Rename the current file"
+msgstr ""
+
+#: GenericPlugins/SaveFile/Trigger.py:20
+msgid "Save current file"
+msgstr ""
+
+#: GenericPlugins/ScrollNavigation/Manager.py:47
+msgid "Centered current line"
+msgstr ""
+
+#: GenericPlugins/ScrollNavigation/Trigger.py:22
+msgid "Scroll editing area up"
+msgstr ""
+
+#: GenericPlugins/ScrollNavigation/Trigger.py:29
+msgid "Scroll editing area down"
+msgstr ""
+
+#: GenericPlugins/ScrollNavigation/Trigger.py:36
+msgid "Move cursor line to center"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/Bar.py:2
+#: GenericPlugins/SearchSystem/Trigger.py:23 SCRIBES/i18n.py:51
+msgid "Search for text"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/ComboBox.py:2
+msgid "Default"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/ComboBox.py:2
+msgid "Regular Expression"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/ComboBox.py:3
+msgid "Find As You Type"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/FindBar.glade:27
+msgid "<b>Alt+W</b>"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/FindBar.glade:40
+msgid "Match _Word"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/FindBar.glade:88
+msgid "<b>_Search:</b>"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/FindBar.glade:233
+msgid "<b>_Mode:</b>"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/FindBar.glade:261
+msgid "<b>_Replace</b>:"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/FindBar.glade:304
+msgid "Repla_ce"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/FindBar.glade:322
+msgid "Replace _All"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/MenuComboBox.py:2
+msgid "Normal"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/MenuComboBox.py:2
+msgid "Forward"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/GUI/MenuComboBox.py:3
+msgid "Backward"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/MatchIndexer.py:46
+#: GenericPlugins/SelectionSearcher/MatchIndexer.py:39
+#, python-format
+msgid "Match %d of %d"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/PatternCreator.py:42
+msgid "ERROR: Empty search string"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/ReplaceManager.py:76
+#, python-format
+msgid "Replaced all occurrences of '%s' with '%s'"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/Searcher.py:2
+msgid "No matches found"
+msgstr ""
+
+#: GenericPlugins/SearchSystem/Trigger.py:30 SCRIBES/i18n.py:52
+msgid "Search for and replace text"
+msgstr ""
+
+#: GenericPlugins/Selection/PopupMenuItem.py:8
+msgid "Selection"
+msgstr ""
+
+#: GenericPlugins/Selection/PopupMenuItem.py:37
+msgid "Select word (alt + w)"
+msgstr ""
+
+#: GenericPlugins/Selection/PopupMenuItem.py:38
+msgid "Select line (alt + l)"
+msgstr ""
+
+#: GenericPlugins/Selection/PopupMenuItem.py:39
+msgid "Select sentence (alt + s)"
+msgstr ""
+
+#: GenericPlugins/Selection/PopupMenuItem.py:40
+msgid "Select paragraph (alt + p)"
+msgstr ""
+
+#: GenericPlugins/Selection/Selector.py:38
+#, python-format
+msgid "Selected word on line %d"
+msgstr ""
+
+#: GenericPlugins/Selection/Selector.py:41
+msgid "No word to select"
+msgstr ""
+
+#: GenericPlugins/Selection/Selector.py:59
+#, python-format
+msgid "Selected statement on line %d"
+msgstr ""
+
+#: GenericPlugins/Selection/Selector.py:62
+#: GenericPlugins/Selection/Selector.py:78
+#: GenericPlugins/Selection/Selector.py:102
+msgid "No text to select"
+msgstr ""
+
+#: GenericPlugins/Selection/Selector.py:75
+#, python-format
+msgid "Selected line %d"
+msgstr ""
+
+#: GenericPlugins/Selection/Trigger.py:24
+msgid "Select current word"
+msgstr ""
+
+#: GenericPlugins/Selection/Trigger.py:31
+msgid "Select current statement"
+msgstr ""
+
+#: GenericPlugins/Selection/Trigger.py:38
+msgid "Select current line"
+msgstr ""
+
+#: GenericPlugins/Selection/Trigger.py:45
+msgid "Select current paragraph"
+msgstr ""
+
+#: GenericPlugins/SelectionSearcher/MatchIndexer.py:44
+msgid "Removed selection highlights"
+msgstr ""
+
+#: GenericPlugins/SelectionSearcher/MatchNavigator.py:45
+msgid "No other matches found"
+msgstr ""
+
+#: GenericPlugins/SelectionSearcher/PatternCreator.py:39
+msgid "ERROR: Search string not found"
+msgstr ""
+
+#: GenericPlugins/SelectionSearcher/Trigger.py:23
+msgid "Navigate to next highlighted match"
+msgstr ""
+
+#: GenericPlugins/SelectionSearcher/Trigger.py:31
+msgid "Navigation to previous highlighted match"
+msgstr ""
+
+#: GenericPlugins/ShortcutWindow/Trigger.py:19
+msgid "Show Shortcut Window"
+msgstr ""
+
+#: GenericPlugins/Spaces/PopupMenuItem.py:8
+msgid "S_paces"
+msgstr ""
+
+#: GenericPlugins/Spaces/PopupMenuItem.py:23
+msgid "_Tabs to Spaces (alt+shift+t)"
+msgstr ""
+
+#: GenericPlugins/Spaces/PopupMenuItem.py:24
+msgid "_Spaces to Tabs (alt+t)"
+msgstr ""
+
+#: GenericPlugins/Spaces/PopupMenuItem.py:25
+msgid "_Remove Trailing Spaces (alt+r)"
+msgstr ""
+
+#: GenericPlugins/Spaces/SpaceProcessor.py:47
+msgid "Converted spaces to tabs"
+msgstr ""
+
+#: GenericPlugins/Spaces/SpaceProcessor.py:47
+msgid "Converted tabs to spaces"
+msgstr ""
+
+#: GenericPlugins/Spaces/SpaceProcessor.py:71
+msgid "Removed trailing spaces"
+msgstr ""
+
+#: GenericPlugins/Spaces/Trigger.py:23
+msgid "Convert spaces to tabs"
+msgstr ""
+
+#: GenericPlugins/Spaces/Trigger.py:30
+msgid "Convert tabs to spaces"
+msgstr ""
+
+#: GenericPlugins/Spaces/Trigger.py:37
+msgid "Remove trailing spaces"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/EditorGUI/GUI.glade:76
+msgid "<b>_Template:</b>"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/EditorGUI/GUI.glade:92
+msgid "<b>_Description:</b>"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/EditorGUI/GUI.glade:109
+msgid "<b>_Name:</b>"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/EditorGUI/Window.py:75
+msgid "Add Template"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/EditorGUI/Window.py:79
+msgid "Edit Template"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/Export/GUI/FileChooser.py:22
+#: GenericPlugins/TemplateEditor/Import/GUI/FileChooser.py:24
+msgid "Template Files"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/Export/GUI/GUI.glade:8
+msgid "Export Templates"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/Export/GUI/GUI.glade:58
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:142
+msgid "E_xport"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/Import/GUI/GUI.glade:7
+msgid "Import Templates"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/Import/GUI/GUI.glade:79
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:126
+msgid "I_mport"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/Import/TemplateDataValidator.py:2
+msgid "ERROR: No valid templates found"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/Import/XMLTemplateValidator.py:2
+msgid "ERROR: No valid template files found"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/MainGUI/DescriptionTreeView.py:225
+msgid "_Description"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:7
+#: GenericPlugins/TemplateEditor/MenuItem.py:16
+msgid "Template Editor"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:78
+msgid "Add a new template"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:93
+msgid "Edit selected template"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:109
+msgid "Remove selected templates"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:125
+msgid "Import templates from a valid template file"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:141
+msgid "Export templates to a file."
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:157
+msgid "Read more about templates in user guide"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:158
+msgid "_Help"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:210
+msgid "Download Templates from"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/MainGUI/GUI.glade:225
+msgid "here"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/MainGUI/LanguageTreeView.py:108
+msgid "Language"
+msgstr ""
+
+#: GenericPlugins/TemplateEditor/Trigger.py:20
+msgid "Manage dynamic templates or snippets"
+msgstr ""
+
+#: GenericPlugins/ThemeSelector/AddSchemesGUI/Dialog.glade:8
+msgid "Add Color Theme"
+msgstr ""
+
+#: GenericPlugins/ThemeSelector/AddSchemesGUI/Dialog.glade:69
+msgid "A_dd Scheme"
+msgstr ""
+
+#: GenericPlugins/ThemeSelector/AddSchemesGUI/FileChooser.py:26
+msgid "Color Scheme Files"
+msgstr ""
+
+#: GenericPlugins/ThemeSelector/MenuItem.py:16
+msgid "Theme Selector"
+msgstr ""
+
+#: GenericPlugins/ThemeSelector/SchemeFileValidator.py:34
+msgid "No valid scheme file found"
+msgstr ""
+
+#: GenericPlugins/ThemeSelector/SyntaxColorThemes.glade:9
+msgid "Syntax Color Themes"
+msgstr ""
+
+#: GenericPlugins/ThemeSelector/SyntaxColorThemes.glade:60
+msgid "label"
+msgstr ""
+
+#: GenericPlugins/ThemeSelector/SyntaxColorThemes.glade:82
+msgid "Add new themes"
+msgstr ""
+
+#: GenericPlugins/ThemeSelector/SyntaxColorThemes.glade:97
+msgid "Remove selected theme"
+msgstr ""
+
+#: GenericPlugins/ThemeSelector/TreeView.py:2
+msgid "ERROR: No selection found"
+msgstr ""
+
+#: GenericPlugins/ThemeSelector/TreeView.py:107
+msgid "ERROR: Cannot remove builtin scheme."
+msgstr ""
+
+#: GenericPlugins/ThemeSelector/Trigger.py:20
+msgid "Manage themes"
+msgstr ""
+
+#: GenericPlugins/TriggerArea/GUI/GUI.glade:7
+msgid "Customize Trigger Area"
+msgstr ""
+
+#: GenericPlugins/TriggerArea/GUI/GUI.glade:34
+msgid "<b>_Choose color of trigger area:</b>"
+msgstr ""
+
+#: GenericPlugins/TriggerArea/GUI/GUI.glade:67
+msgid "<b>_Position trigger area at:</b>"
+msgstr ""
+
+#: GenericPlugins/TriggerArea/GUI/GUI.glade:82
+msgid "<b>_Make the trigger area:</b>"
+msgstr ""
+
+#: GenericPlugins/TriggerArea/MenuItem.py:18
+msgid "Trigger Area"
+msgstr ""
+
+#: GenericPlugins/TriggerArea/Trigger.py:23
+msgid "Show trigger area configuration window"
+msgstr ""
+
+#: GenericPlugins/TriggerArea/Trigger.py:31
+msgid "Show editor's full view"
+msgstr ""
+
+#: GenericPlugins/UndoRedo/Trigger.py:22
+#: SCRIBES/GUI/MainGUI/Buffer/UndoRedo.py:43
+#: SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/UndoToolButton.py:44
+#: SCRIBES/i18n.py:49
+msgid "Undo last action"
+msgstr ""
+
+#: GenericPlugins/UndoRedo/Trigger.py:29 GenericPlugins/UndoRedo/Trigger.py:36
+#: SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/RedoToolButton.py:42
+msgid "Redo last action"
+msgstr ""
+
+#: GenericPlugins/UserGuide/Trigger.py:20
+msgid "Show user guide"
+msgstr ""
+
+#: LanguagePlugins/HashComments/Trigger.py:18
+msgid "(Un)comment line or selected lines"
+msgstr ""
+
+#: LanguagePlugins/HashComments/i18n.py:2
+msgid "Commented selected lines"
+msgstr ""
+
+#: LanguagePlugins/HashComments/i18n.py:3
+#, python-format
+msgid "Commented line %d"
+msgstr ""
+
+#: LanguagePlugins/HashComments/i18n.py:4
+msgid "Uncommented selected lines"
+msgstr ""
+
+#: LanguagePlugins/HashComments/i18n.py:5
+#, python-format
+msgid "Uncommented line %d"
+msgstr ""
+
+#: LanguagePlugins/JavaScriptComment/FeedbackManager.py:4
+msgid "please wait..."
+msgstr ""
+
+#: LanguagePlugins/JavaScriptComment/FeedbackManager.py:5
+#, python-format
+msgid "Commented line %s"
+msgstr ""
+
+#: LanguagePlugins/JavaScriptComment/FeedbackManager.py:6
+msgid "Commented lines"
+msgstr ""
+
+#: LanguagePlugins/JavaScriptComment/FeedbackManager.py:7
+#, python-format
+msgid "Uncommented line %s"
+msgstr ""
+
+#: LanguagePlugins/JavaScriptComment/FeedbackManager.py:8
+msgid "Uncommented lines"
+msgstr ""
+
+#: LanguagePlugins/JavaScriptComment/Trigger.py:20
+msgid "Toggle JavaScript comment"
+msgstr ""
+
+#: LanguagePlugins/JavaScriptComment/Trigger.py:21
+msgid "JavaScript Operations"
+msgstr ""
+
+#: LanguagePlugins/PythonNavigationSelection/Trigger.py:23
+msgid "Move cursor to previous block"
+msgstr ""
+
+#: LanguagePlugins/PythonNavigationSelection/Trigger.py:24
+#: LanguagePlugins/PythonNavigationSelection/Trigger.py:31
+#: LanguagePlugins/PythonNavigationSelection/Trigger.py:38
+#: LanguagePlugins/PythonNavigationSelection/Trigger.py:45
+#: LanguagePlugins/PythonNavigationSelection/Trigger.py:52
+#: LanguagePlugins/PythonNavigationSelection/Trigger.py:59
+#: LanguagePlugins/PythonSymbolBrowser/Trigger.py:20
+#: LanguagePlugins/PythonSyntaxErrorChecker/Trigger.py:20
+msgid "Python"
+msgstr ""
+
+#: LanguagePlugins/PythonNavigationSelection/Trigger.py:30
+msgid "Move cursor to next block"
+msgstr ""
+
+#: LanguagePlugins/PythonNavigationSelection/Trigger.py:37
+msgid "Select a block of code"
+msgstr ""
+
+#: LanguagePlugins/PythonNavigationSelection/Trigger.py:44
+msgid "Move cursor to end of block"
+msgstr ""
+
+#: LanguagePlugins/PythonNavigationSelection/Trigger.py:51
+msgid "Select function or method"
+msgstr ""
+
+#: LanguagePlugins/PythonNavigationSelection/Trigger.py:58
+msgid "Select class"
+msgstr ""
+
+#: LanguagePlugins/PythonSymbolBrowser/SymbolBrowser.glade:7
+msgid "Classes and Functions"
+msgstr ""
+
+#: LanguagePlugins/PythonSymbolBrowser/Trigger.py:19
+msgid "Show classes, methods and functions"
+msgstr ""
+
+#: LanguagePlugins/PythonSyntaxErrorChecker/Manager.py:16
+msgid "Syntax error on line "
+msgstr ""
+
+#: LanguagePlugins/PythonSyntaxErrorChecker/Manager.py:25
+msgid "No syntax errors found"
+msgstr ""
+
+#: LanguagePlugins/PythonSyntaxErrorChecker/Trigger.py:19
+msgid "Check for syntax errors"
+msgstr ""
+
+#: LanguagePlugins/zencoding/GUI/GUI.glade:32
+msgid "<b>Zencoding _Abbreviation:</b>"
+msgstr ""
+
+#: LanguagePlugins/zencoding/Trigger.py:30
+msgid "Add or remove comments in most web languages"
+msgstr ""
+
+#: LanguagePlugins/zencoding/Trigger.py:31
+#: LanguagePlugins/zencoding/Trigger.py:39
+#: LanguagePlugins/zencoding/Trigger.py:47
+#: LanguagePlugins/zencoding/Trigger.py:55
+#: LanguagePlugins/zencoding/Trigger.py:63
+#: LanguagePlugins/zencoding/Trigger.py:71
+#: LanguagePlugins/zencoding/Trigger.py:79
+#: LanguagePlugins/zencoding/Trigger.py:87
+#: LanguagePlugins/zencoding/Trigger.py:95
+#: LanguagePlugins/zencoding/Trigger.py:103
+msgid "Markup Operations"
+msgstr ""
+
+#: LanguagePlugins/zencoding/Trigger.py:38
+msgid "Expand markup abbreviations"
+msgstr ""
+
+#: LanguagePlugins/zencoding/Trigger.py:46
+msgid "Move cursor to next edit point"
+msgstr ""
+
+#: LanguagePlugins/zencoding/Trigger.py:54
+msgid "Move cursor to previous edit point"
+msgstr ""
+
+#: LanguagePlugins/zencoding/Trigger.py:62
+msgid "Remove a tag"
+msgstr ""
+
+#: LanguagePlugins/zencoding/Trigger.py:70
+msgid "Select inner tag's content"
+msgstr ""
+
+#: LanguagePlugins/zencoding/Trigger.py:78
+msgid "Select outer tag's content"
+msgstr ""
+
+#: LanguagePlugins/zencoding/Trigger.py:86
+msgid "Toggle between single and double tag"
+msgstr ""
+
+#: LanguagePlugins/zencoding/Trigger.py:94
+msgid "Merge lines"
+msgstr ""
+
+#: LanguagePlugins/zencoding/Trigger.py:102
+msgid "Wrap with abbreviation"
+msgstr ""
+
+#: SCRIBES/CommandLineParser.py:13
+msgid "usage: %prog [OPTION...] [FILE...]"
+msgstr ""
+
+#: SCRIBES/CommandLineParser.py:14
+msgid ""
+"%prog is a text editor for GNOME.\n"
+"\n"
+" http://scribes.sf.net/"
+msgstr ""
+
+#: SCRIBES/CommandLineParser.py:30
+msgid "display the version of Scribes currently running"
+msgstr ""
+
+#: SCRIBES/CommandLineParser.py:34
+msgid "display detailed information about Scribes"
+msgstr ""
+
+#: SCRIBES/CommandLineParser.py:38
+msgid "create a new file and open the file in Scribes"
+msgstr ""
+
+#: SCRIBES/CommandLineParser.py:42
+msgid "open file(s) with specified encoding"
+msgstr ""
+
+#: SCRIBES/CommandLineParser.py:46
+msgid "open file(s) in readonly mode"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:13 SCRIBES/i18n.py:16
+msgid "Text Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:14 SCRIBES/i18n.py:15
+msgid "Python Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:15 SCRIBES/i18n.py:219
+msgid "Ruby Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:16 SCRIBES/i18n.py:220
+msgid "Perl Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:17 SCRIBES/i18n.py:221
+msgid "C Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:18 SCRIBES/i18n.py:222
+msgid "C++ Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:19 SCRIBES/i18n.py:223
+msgid "C# Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:20 SCRIBES/i18n.py:224
+msgid "Java Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:21 SCRIBES/i18n.py:225
+msgid "PHP Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:22 SCRIBES/i18n.py:226
+msgid "HTML Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:23 SCRIBES/i18n.py:227
+msgid "XML Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:24 SCRIBES/i18n.py:228
+msgid "Haskell Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:25 SCRIBES/i18n.py:229
+msgid "Scheme Documents"
+msgstr ""
+
+#: SCRIBES/DialogFilters.py:26 SCRIBES/i18n.py:14
+msgid "All Documents"
+msgstr ""
+
+#: SCRIBES/Editor.py:108
+msgid "Launching user guide"
+msgstr ""
+
+#: SCRIBES/Editor.py:108
+msgid "Failed to launch user guide"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/ComboBoxData/Generator.py:32
+msgid "Recommended"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/Error/GUI/GUI.glade:9
+#: data/EncodingErrorWindow.glade:9
+msgid "Error"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/Error/GUI/GUI.glade:32
+#: data/EncodingErrorWindow.glade:32
+msgid "<b>File:</b>"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/Error/GUI/GUI.glade:46
+#: data/EncodingErrorWindow.glade:45
+msgid "/dev/null"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/Error/GUI/GUI.glade:67
+#: data/EncodingErrorWindow.glade:66
+msgid ""
+"The encoding of this file could not be automatically detected. If you are "
+"sure this file is a text file, please open the file with the correct "
+"encoding."
+msgstr ""
+
+#: SCRIBES/EncodingSystem/Error/GUI/GUI.glade:83
+#: data/EncodingErrorWindow.glade:83
+msgid "Select character encoding"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/Error/GUI/GUI.glade:126
+#: data/EncodingErrorWindow.glade:133 data/MessageWindow.glade:85
+msgid "gtk-close"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/Error/GUI/GUI.glade:151
+#: data/EncodingErrorWindow.glade:143
+msgid "Open file with selected encoding"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:4
+#: SCRIBES/i18n.py:158
+msgid "West Europe"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:5
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:38
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:58
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:79
+#: SCRIBES/i18n.py:114 SCRIBES/i18n.py:134 SCRIBES/i18n.py:159
+#: SCRIBES/i18n.py:177
+msgid "Central and Eastern Europe"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:6
+#: SCRIBES/i18n.py:160
+msgid "Esperanto, Maltese"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:7
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:14
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:36
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:65
+msgid "Baltic Languages"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:8
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:59
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:76
+#: SCRIBES/i18n.py:115 SCRIBES/i18n.py:135 SCRIBES/i18n.py:162
+#: SCRIBES/i18n.py:174
+msgid "Bulgarian, Macedonian, Russian, Serbian"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:9
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:46
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:64
+#: SCRIBES/i18n.py:122 SCRIBES/i18n.py:140 SCRIBES/i18n.py:163
+msgid "Arabic"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:10
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:35
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:49
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:51
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:61
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:77
+#: SCRIBES/i18n.py:111 SCRIBES/i18n.py:125 SCRIBES/i18n.py:127
+#: SCRIBES/i18n.py:137 SCRIBES/i18n.py:164 SCRIBES/i18n.py:175
+msgid "Greek"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:11
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:32
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:40
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:44
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:63
+#: SCRIBES/i18n.py:108 SCRIBES/i18n.py:116 SCRIBES/i18n.py:120
+#: SCRIBES/i18n.py:139 SCRIBES/i18n.py:165
+msgid "Hebrew"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:12
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:41
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:56
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:62
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:81
+#: SCRIBES/i18n.py:117 SCRIBES/i18n.py:132 SCRIBES/i18n.py:138
+#: SCRIBES/i18n.py:166 SCRIBES/i18n.py:179
+msgid "Turkish"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:13
+msgid "Nordic Languages"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:15
+msgid "Celtic Languages"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:16
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:34
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:37
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:57
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:60
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:80
+#: SCRIBES/i18n.py:110 SCRIBES/i18n.py:113 SCRIBES/i18n.py:133
+#: SCRIBES/i18n.py:136 SCRIBES/i18n.py:170 SCRIBES/i18n.py:178
+msgid "Western Europe"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:17
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:18
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:20
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:21
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:22
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:26
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:27
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:28
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:52
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:67
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:68
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:69
+#: SCRIBES/i18n.py:128 SCRIBES/i18n.py:143 SCRIBES/i18n.py:144
+#: SCRIBES/i18n.py:145 SCRIBES/i18n.py:151 SCRIBES/i18n.py:152
+#: SCRIBES/i18n.py:154 SCRIBES/i18n.py:155 SCRIBES/i18n.py:156
+#: SCRIBES/i18n.py:181 SCRIBES/i18n.py:182 SCRIBES/i18n.py:183
+msgid "Japanese"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:19
+msgid "Japanese, Chinese, Simplified Chinese"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:23
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:53
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:70
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:75
+#: SCRIBES/i18n.py:129 SCRIBES/i18n.py:146 SCRIBES/i18n.py:157
+#: SCRIBES/i18n.py:171
+msgid "Korean"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:24
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:25
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:54
+#: SCRIBES/i18n.py:105 SCRIBES/i18n.py:106 SCRIBES/i18n.py:130
+msgid "Traditional Chinese"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:29
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:48
+#: SCRIBES/i18n.py:124 SCRIBES/i18n.py:172
+msgid "Russian"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:30
+msgid "Ukranian"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:31
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:33
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:87
+#: SCRIBES/i18n.py:104 SCRIBES/i18n.py:107 SCRIBES/i18n.py:109
+msgid "English"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:39
+msgid "Bulgarian, Macedonian, Russian, "
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:42
+#: SCRIBES/i18n.py:118
+msgid "Portuguese"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:43
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:78
+#: SCRIBES/i18n.py:119 SCRIBES/i18n.py:176
+msgid "Icelandic"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:45
+#: SCRIBES/i18n.py:121
+msgid "Canadian"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:47
+#: SCRIBES/i18n.py:123
+msgid "Danish, Norwegian"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:50
+#: SCRIBES/i18n.py:126
+msgid "Thai"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:55
+#: SCRIBES/i18n.py:131
+msgid "Urdu"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:66
+#: SCRIBES/i18n.py:142
+msgid "Vietnamese"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:71
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:74
+#: SCRIBES/i18n.py:147 SCRIBES/i18n.py:150
+msgid "Simplified Chinese"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:72
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:73
+#: SCRIBES/i18n.py:148 SCRIBES/i18n.py:149
+msgid "Unified Chinese"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:82
+#: SCRIBES/i18n.py:180
+msgid "Kazakh"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:83
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:86
+#: SCRIBES/i18n.py:187
+msgid "All Languages"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:84
+#: SCRIBES/EncodingSystem/SupportedEncodings/Encodings.py:85
+msgid "All Languages (BMP ONLY)"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/GUI/GUI.glade:9
+#: data/EncodingSelectionWindow.glade:9
+msgid "Select Encodings"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/GUI/Treeview/Initializer.py:35
+#: SCRIBES/i18n.py:98
+msgid "Select"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/GUI/Treeview/Initializer.py:46
+#: SCRIBES/i18n.py:97
+msgid "Character Encoding"
+msgstr ""
+
+#: SCRIBES/EncodingSystem/SupportedEncodings/GUI/Treeview/Initializer.py:56
+#: SCRIBES/i18n.py:96
+msgid "Language and Region"
+msgstr ""
+
+#: SCRIBES/GUI/InformationWindow/MessageWindow.glade:43
+#: data/MessageWindow.glade:42
+msgid "<b>This is a test title label</b>"
+msgstr ""
+
+#: SCRIBES/GUI/InformationWindow/MessageWindow.glade:57
+#: data/MessageWindow.glade:53
+msgid "This is a test message label."
+msgstr ""
+
+#: SCRIBES/GUI/InformationWindow/WindowTitleUpdater.py:28
+msgid "ERROR"
+msgstr ""
+
+#: SCRIBES/GUI/InformationWindow/WindowTitleUpdater.py:28
+msgid "INFORMATION"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Buffer/UndoRedo.py:46
+msgid "Cannot undo last action"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Buffer/UndoRedo.py:62
+msgid "Redo previous action"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Buffer/UndoRedo.py:65
+msgid "Cannot redo previous action"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/FallbackMessageSwitcher.py:49
+msgid " [modified]"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/FileLoadingStateSwitcher.py:2
+#: SCRIBES/i18n.py:20
+msgid "Loading file please wait..."
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/FileLoadingStateSwitcher.py:3
+msgid "Loaded file"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/FileLoadingStateSwitcher.py:4
+msgid "ERROR: Failed to load file"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/ReadonlyModeSwitcher.py:2
+msgid "Enabled readonly mode"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/ReadonlyModeSwitcher.py:3
+msgid "Disabled readonly mode"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/ReadonlyModeSwitcher.py:4
+msgid "File is in readonly mode"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/SaveErrorSwitcher.py:25
+#: SCRIBES/i18n.py:238
+msgid "Failed to save file"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/SavedStateSwitcher.py:30
+msgid "Saved file"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/GotoToolButton.py:36
+msgid "Show bar to move cursor to a specific line"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/HelpToolButton.py:36
+msgid "Show keyboard shortcuts"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/PreferenceToolButton.py:42
+msgid "Show window to customize the editor"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/PrintToolButton.py:36
+msgid "Show window to print current file"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/RecentMenu.py:34
+msgid "Recently opened files"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/ReplaceToolButton.py:36
+msgid "Show bar to search for and replace text"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Toolbar/Toolbuttons/SearchToolButton.py:36
+msgid "Show bar to search for text"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Window/TitleUpdater.py:47
+#: SCRIBES/SaveSystem/FileNameGenerator.py:34
+msgid "Unnamed Document"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Window/TitleUpdater.py:51
+msgid " [READONLY]"
+msgstr ""
+
+#: SCRIBES/GUI/MainGUI/Window/TitleUpdater.py:52
+#, python-format
+msgid "Loading %s ..."
+msgstr ""
+
+#: SCRIBES/PluginInitializer/ErrorManager.py:3
+msgid ""
+"ERROR: Cannot find plugin folder. Scribes will not function properly without "
+"plugins. Please file a bug report to address the issue."
+msgstr ""
+
+#: SCRIBES/PluginInitializer/ErrorManager.py:4
+msgid ""
+"ERROR: Cannot create local plugin folder. Please address the source of the "
+"problem for Scribes to function properly."
+msgstr ""
+
+#: SCRIBES/PluginInitializer/ErrorManager.py:5
+msgid "PLUGIN ERROR!"
+msgstr ""
+
+#: SCRIBES/SaveSystem/ReadonlyHandler.py:27
+msgid "ERROR: Failed to perform operation in readonly mode"
+msgstr ""
+
+#: SCRIBES/URILoader/ErrorManager.py:35 SCRIBES/i18n.py:252
+#, python-format
+msgid "File: %s"
+msgstr ""
+
+#: SCRIBES/i18n.py:4
+msgid "Cannot redo action"
+msgstr ""
+
+#: SCRIBES/i18n.py:7
+msgid "Leave Fullscreen"
+msgstr ""
+
+#: SCRIBES/i18n.py:19
+#, python-format
+msgid "Loaded file \"%s\""
+msgstr ""
+
+#: SCRIBES/i18n.py:22
+msgid " <READONLY>"
+msgstr ""
+
+#: SCRIBES/i18n.py:25
+#, python-format
+msgid "Unrecognized option: '%s'"
+msgstr ""
+
+#: SCRIBES/i18n.py:26
+msgid "Try 'scribes --help' for more information"
+msgstr ""
+
+#: SCRIBES/i18n.py:27
+msgid "Scribes only supports using one option at a time"
+msgstr ""
+
+#: SCRIBES/i18n.py:28
+#, python-format
+msgid "Scribes version %s"
+msgstr ""
+
+#: SCRIBES/i18n.py:29
+#, python-format
+msgid "%s does not exist"
+msgstr ""
+
+#: SCRIBES/i18n.py:32
+#, python-format
+msgid "The file \"%s\" is open in readonly mode"
+msgstr ""
+
+#: SCRIBES/i18n.py:33
+#, python-format
+msgid "The file \"%s\" is open"
+msgstr ""
+
+#: SCRIBES/i18n.py:35
+#, python-format
+msgid "Saved \"%s\""
+msgstr ""
+
+#: SCRIBES/i18n.py:37
+msgid "Copied selected text"
+msgstr ""
+
+#: SCRIBES/i18n.py:38
+msgid "No selection to copy"
+msgstr ""
+
+#: SCRIBES/i18n.py:39
+msgid "Cut selected text"
+msgstr ""
+
+#: SCRIBES/i18n.py:40
+msgid "No selection to cut"
+msgstr ""
+
+#: SCRIBES/i18n.py:41
+msgid "Pasted copied text"
+msgstr ""
+
+#: SCRIBES/i18n.py:42
+msgid "No text content in the clipboard"
+msgstr ""
+
+#: SCRIBES/i18n.py:46
+msgid "Open a file"
+msgstr ""
+
+#: SCRIBES/i18n.py:50
+msgid "Redo undone action"
+msgstr ""
+
+#: SCRIBES/i18n.py:53
+msgid "Go to a specific line"
+msgstr ""
+
+#: SCRIBES/i18n.py:54
+msgid "Configure the editor"
+msgstr ""
+
+#: SCRIBES/i18n.py:55
+msgid "Launch the help browser"
+msgstr ""
+
+#: SCRIBES/i18n.py:56
+msgid "Search for previous occurrence of the string"
+msgstr ""
+
+#: SCRIBES/i18n.py:57
+msgid "Search for next occurrence of the string"
+msgstr ""
+
+#: SCRIBES/i18n.py:58
+msgid "Find occurrences of the string that match upper and lower cases only"
+msgstr ""
+
+#: SCRIBES/i18n.py:60
+msgid "Find occurrences of the string that match the entire word only"
+msgstr ""
+
+#: SCRIBES/i18n.py:61
+msgid "Type in the text you want to search for"
+msgstr ""
+
+#: SCRIBES/i18n.py:62
+msgid "Type in the text you want to replace with"
+msgstr ""
+
+#: SCRIBES/i18n.py:63
+msgid "Replace the selected found match"
+msgstr ""
+
+#: SCRIBES/i18n.py:64
+msgid "Replace all found matches"
+msgstr ""
+
+#: SCRIBES/i18n.py:65
+msgid "Click to specify the font type, style, and size to use for text."
+msgstr ""
+
+#: SCRIBES/i18n.py:66
+msgid ""
+"Click to specify the width of the space that is inserted when you press the "
+"Tab key."
+msgstr ""
+
+#: SCRIBES/i18n.py:68
+msgid ""
+"Select to wrap text onto the next line when you reach the text window "
+"boundary."
+msgstr ""
+
+#: SCRIBES/i18n.py:70
+msgid "Select to display a vertical line that indicates the right margin."
+msgstr ""
+
+#: SCRIBES/i18n.py:72
+msgid "Click to specify the location of the vertical line."
+msgstr ""
+
+#: SCRIBES/i18n.py:73
+msgid "Select to enable spell checking"
+msgstr ""
+
+#: SCRIBES/i18n.py:77
+msgid "A text editor for GNOME."
+msgstr ""
+
+#: SCRIBES/i18n.py:78
+msgid "usage: scribes [OPTION] [FILE] [...]"
+msgstr ""
+
+#: SCRIBES/i18n.py:79
+msgid "Options:"
+msgstr ""
+
+#: SCRIBES/i18n.py:80
+msgid "display this help screen"
+msgstr ""
+
+#: SCRIBES/i18n.py:81
+msgid "output version information of Scribes"
+msgstr ""
+
+#: SCRIBES/i18n.py:82
+msgid "create a new file and open the file with Scribes"
+msgstr ""
+
+#: SCRIBES/i18n.py:83
+msgid "get debuggin information for scribes"
+msgstr ""
+
+#: SCRIBES/i18n.py:86
+msgid "error"
+msgstr ""
+
+#: SCRIBES/i18n.py:89
+msgid "Cannot perform operation in readonly mode"
+msgstr ""
+
+#: SCRIBES/i18n.py:92
+msgid "Character _Encoding: "
+msgstr ""
+
+#: SCRIBES/i18n.py:93
+msgid "Add or Remove Encoding ..."
+msgstr ""
+
+#: SCRIBES/i18n.py:94
+msgid "Recommended (UTF-8)"
+msgstr ""
+
+#: SCRIBES/i18n.py:95
+msgid "Add or Remove Character Encoding"
+msgstr ""
+
+#: SCRIBES/i18n.py:101
+msgid "Closed dialog window"
+msgstr ""
+
+#: SCRIBES/i18n.py:112 SCRIBES/i18n.py:141 SCRIBES/i18n.py:168
+msgid "Baltic languages"
+msgstr ""
+
+#: SCRIBES/i18n.py:153
+msgid "Japanese, Korean, Simplified Chinese"
+msgstr ""
+
+#: SCRIBES/i18n.py:161
+msgid "Baltic languagues"
+msgstr ""
+
+#: SCRIBES/i18n.py:167
+msgid "Nordic languages"
+msgstr ""
+
+#: SCRIBES/i18n.py:169
+msgid "Celtic languages"
+msgstr ""
+
+#: SCRIBES/i18n.py:173
+msgid "Ukrainian"
+msgstr ""
+
+#: SCRIBES/i18n.py:184
+msgid "All languages"
+msgstr ""
+
+#: SCRIBES/i18n.py:185 SCRIBES/i18n.py:186
+msgid "All Languages (BMP only)"
+msgstr ""
+
+#: SCRIBES/i18n.py:188
+msgid "None"
+msgstr ""
+
+#: SCRIBES/i18n.py:191
+msgid "Select to use themes' foreground and background colors"
+msgstr ""
+
+#: SCRIBES/i18n.py:192
+msgid "Click to choose a new color for the editor's text"
+msgstr ""
+
+#: SCRIBES/i18n.py:193
+msgid "Click to choose a new color for the editor's background"
+msgstr ""
+
+#: SCRIBES/i18n.py:194
+msgid "Click to choose a new color for the language syntax element"
+msgstr ""
+
+#: SCRIBES/i18n.py:195
+msgid "Select to make the language syntax element bold"
+msgstr ""
+
+#: SCRIBES/i18n.py:196
+msgid "Select to make the language syntax element italic"
+msgstr ""
+
+#: SCRIBES/i18n.py:197
+msgid "Select to reset the language syntax element to its default settings"
+msgstr ""
+
+#: SCRIBES/i18n.py:204
+msgid "Toggled readonly mode on"
+msgstr ""
+
+#: SCRIBES/i18n.py:205
+msgid "Toggled readonly mode off"
+msgstr ""
+
+#: SCRIBES/i18n.py:208
+msgid "Menu for advanced configuration"
+msgstr ""
+
+#: SCRIBES/i18n.py:209
+msgid "Configure the editor's foreground, background or syntax colors"
+msgstr ""
+
+#: SCRIBES/i18n.py:210
+msgid "Create, modify or manage templates"
+msgstr ""
+
+#: SCRIBES/i18n.py:213
+#, python-format
+msgid "Ln %d col %d"
+msgstr ""
+
+#: SCRIBES/i18n.py:216
+#, python-format
+msgid "Loading \"%s\"..."
+msgstr ""
+
+#: SCRIBES/i18n.py:231
+msgid "INS"
+msgstr ""
+
+#: SCRIBES/i18n.py:232
+msgid "OVR"
+msgstr ""
+
+#: SCRIBES/i18n.py:234
+msgid "No bookmarks found"
+msgstr ""
+
+#: SCRIBES/i18n.py:235
+msgid "Use spaces instead of tabs for indentation"
+msgstr ""
+
+#: SCRIBES/i18n.py:236
+msgid "Select to underline language syntax element"
+msgstr ""
+
+#: SCRIBES/i18n.py:237
+msgid "Open recently used files"
+msgstr ""
+
+#: SCRIBES/i18n.py:240
+msgid ""
+"Save Error: You do not have permission to modify this file or save to its "
+"location."
+msgstr ""
+
+#: SCRIBES/i18n.py:242
+msgid "Save Error: Failed to transfer file from swap to permanent location."
+msgstr ""
+
+#: SCRIBES/i18n.py:243
+msgid "Save Error: Failed to create swap location or file."
+msgstr ""
+
+#: SCRIBES/i18n.py:244
+msgid "Save Error: Failed to create swap file for saving."
+msgstr ""
+
+#: SCRIBES/i18n.py:245
+msgid "Save Error: Failed to write swap file for saving."
+msgstr ""
+
+#: SCRIBES/i18n.py:246
+msgid "Save Error: Failed to close swap file for saving."
+msgstr ""
+
+#: SCRIBES/i18n.py:247
+msgid "Save Error: Failed decode contents of file from \"UTF-8\" to Unicode."
+msgstr ""
+
+#: SCRIBES/i18n.py:248
+msgid ""
+"Save Error: Failed to encode contents of file. Make sure the encoding of the "
+"file is properly set in the save dialog. Press (Ctrl - s) to show the save "
+"dialog."
+msgstr ""
+
+#: SCRIBES/i18n.py:253
+msgid "Failed to load file."
+msgstr ""
+
+#: SCRIBES/i18n.py:254
+msgid "Load Error: You do not have permission to view this file."
+msgstr ""
+
+#: SCRIBES/i18n.py:255
+msgid "Load Error: Failed to access remote file for permission reasons."
+msgstr ""
+
+#: SCRIBES/i18n.py:256
+msgid ""
+"Load Error: Failed to get file information for loading. Please try loading "
+"the file again."
+msgstr ""
+
+#: SCRIBES/i18n.py:258
+msgid "Load Error: File does not exist."
+msgstr ""
+
+#: SCRIBES/i18n.py:259
+msgid "Damn! Unknown Error"
+msgstr ""
+
+#: SCRIBES/i18n.py:260
+msgid "Load Error: Failed to open file for loading."
+msgstr ""
+
+#: SCRIBES/i18n.py:261
+msgid "Load Error: Failed to read file for loading."
+msgstr ""
+
+#: SCRIBES/i18n.py:262
+msgid "Load Error: Failed to close file for loading."
+msgstr ""
+
+#: SCRIBES/i18n.py:263
+msgid ""
+"Load Error: Failed to decode file for loading. The file your are loading may "
+"not be a text file. If you are sure it is a text file, try to open the file "
+"with the correct encoding via the open dialog. Press (control - o) to show "
+"the open dialog."
+msgstr ""
+
+#: SCRIBES/i18n.py:267
+msgid ""
+"Load Error: Failed to encode file for loading. Try to open the file with the "
+"correct encoding via the open dialog. Press (control - o) to show the open "
+"dialog."
+msgstr ""
+
+#: SCRIBES/i18n.py:271
+#, python-format
+msgid "Reloading %s"
+msgstr ""
+
+#: SCRIBES/i18n.py:272
+#, python-format
+msgid "'%s' has been modified by another program"
+msgstr ""
+
+#: data/ModificationDialog.glade:6
+msgid "Warning"
+msgstr ""
+
+#: data/ModificationDialog.glade:37
+msgid "<b>This file has been modified by another program</b>"
+msgstr ""
+
+#: data/ModificationDialog.glade:65
+msgid "Neither reload nor overwrite file"
+msgstr ""
+
+#: data/ModificationDialog.glade:87
+msgid "I_gnore"
+msgstr ""
+
+#: data/ModificationDialog.glade:110
+msgid "Discard current file and load modified file"
+msgstr ""
+
+#: data/ModificationDialog.glade:132
+msgid "_Reload File"
+msgstr ""
+
+#: data/ModificationDialog.glade:155
+msgid "Save current file and overwrite changes made by other program"
+msgstr ""
+
+#: data/ModificationDialog.glade:177
+msgid "_Overwrite File"
+msgstr ""

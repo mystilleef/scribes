@@ -1,3 +1,4 @@
+data/scribes.desktop.in
 Examples/GenericPluginExample/Foo/Trigger.py
 GenericPlugins/About/AboutDialog.glade
 GenericPlugins/About/AboutDialog.py
@@ -179,4 +180,3 @@ data/EncodingErrorWindow.glade
 data/EncodingSelectionWindow.glade
 data/MessageWindow.glade
 data/ModificationDialog.glade
-data/scribes.schemas.in
