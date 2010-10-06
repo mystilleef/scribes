@@ -3,10 +3,10 @@
 
 def main():
 	print "Removing byte compiled python objects please wait..."
-	__remove(__byte_compile_files())
+	__remove(__byte_compiled_files())
 	return
 
-def __byte_compile_files():
+def __byte_compiled_files():
 	from os import walk, getcwd
 	from os.path import join
 	__files = []
