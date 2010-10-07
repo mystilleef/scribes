@@ -1,4 +1,5 @@
 2007-12-22 Lateef Alabi-Oki <mystilleef@gmail.com>
+
 	* New Save system
 	* automatic word completion tweaks
 	* remember window position and size for blank windows (rockalite)
@@ -10,12 +11,15 @@
 	1813334 1808136 1777273 1740190
 
 2007-06-06 Lateef Alabi-Oki <mystilleef@gmail.com>
+
 	* Allow open dialog to open multiple documents
 	
 2007-06-06 Lateef Alabi-Oki <mystilleef@gmail.com>
+
 	* Add encoding selection to open/save dialog
 
 2007-06-02 Lateef Alabi-Oki <mystilleef@gmail.com>
+
 	* Automatic completion now takes into account words in all documents
 	* New paragraph operations
 		- Press (alt-p) to select a paragraph
@@ -33,6 +37,7 @@
 	* Addressed bugs #1691125, #1701252, #1714001, #1720989
 
 2007-05-16 Lateef Alabi-Oki <mystilleef@gmail.com>
+
 	* Fixed automatic completion bug that prevents cursor movement
 	* New logo and window icon.
 	* Addressed bugs #1718133 #1714001 #1717392

@@ -11,7 +11,7 @@
 			Scribes is a GNOME text editor.
 		</description>
     <type>user's guide</type>
-    <format mime="text/xml" dtd="-//OASIS//DTD DocBook XML V4.1.2//EN"/>
+    <format mime="text/xml" dtd="-//OASIS//DTD DocBook XML V4.5//EN"/>
     <identifier url="file:///usr/share/gnome/help/scribes/C/scribes.xml"/>
     <language code="C"/>
     <relation seriesid="081c7e56-2acd-11d9-819f-e6a11scribes"/>
