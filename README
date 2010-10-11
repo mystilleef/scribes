@@ -6,11 +6,11 @@ Version
 What is Scribes?
 ================
 
-Scribes is a minimalist text editor for GNOME that combines
-simplicity with power. Scribes enhances your workflow by
-ensuring common and repetitive operations are intelligently
-automated and by eliminating factors that prevent you from
-focusing on your tasks.
+Scribes is an ultra minimalist text editor for GNOME that
+combines simplicity with power. Scribes enhances your
+workflow by ensuring common and repetitive operations are
+intelligently automated and by eliminating factors that
+prevent you from focusing on your tasks.
 
 	http://Scribes.sf.net/
 
@@ -23,14 +23,12 @@ Requirements
 To use Scribes you need the following software installed on
 your computer:
 
+	- python-xdg
 	- D-Bus-0.70
 	- Python-2.5
 	- PyGTK-2.10
+	- PyGTKSourceView2
 	- Yelp-2.12
-	- gnome-python-2.12
-	- gnome-python-desktop-2.12
-	- gnome-python-extras-2.12
-
 
 Installation
 ============

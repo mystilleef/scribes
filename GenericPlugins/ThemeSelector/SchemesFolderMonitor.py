@@ -15,7 +15,7 @@ class Monitor(object):
 		self.__editor = editor
 		self.__manager = manager
 		from os.path import join
-		scribes_path = join(self.__editor.home_folder, ".gnome2", "scribes", "styles")
+		scribes_path = join(self.__editor.metadata_folder, "styles")
 		gedit_path = join(self.__editor.home_folder, ".gnome2", "gedit", "styles")
 		default_path = join(self.__editor.home_folder, ".local", "share","gtksourceview-2.0", "styles")
 		self.__scribes_monitor = editor.get_folder_monitor(scribes_path)
