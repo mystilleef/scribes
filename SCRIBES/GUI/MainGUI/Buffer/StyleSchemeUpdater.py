@@ -24,13 +24,13 @@ class Updater(object):
 		return False
 
 	def __update(self):
-		self.__editor.response()
+		self.__editor.refresh(True)
 		from SCRIBES.ColorThemeMetadata import get_value
 		scheme_id = get_value()
 		style_scheme = self.__editor.style_scheme_manager.get_scheme(scheme_id)
 		if style_scheme: self.__buffer.set_style_scheme(style_scheme)
 		self.__editor.emit("syntax-color-theme-changed")
-		self.__editor.response()
+		self.__editor.refresh(True)
 		return False
 
 	def __get_path(self):

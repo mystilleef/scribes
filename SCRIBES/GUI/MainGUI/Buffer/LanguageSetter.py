@@ -4,7 +4,7 @@ class Setter(object):
 		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("checking-file", self.__checking_cb)
+		self.__sigid2 = editor.connect_after("checking-file", self.__checking_cb)
 		self.__sigid3 = editor.connect("load-error", self.__error_cb)
 		self.__sigid4 = editor.connect_after("renamed-file", self.__checking_cb)
 		editor.register_object(self)
@@ -26,9 +26,9 @@ class Setter(object):
 		return
 
 	def __set(self, language):
-		self.__editor.response()
+		self.__editor.refresh()
 		self.__buffer.set_language(language)
-		self.__editor.response()
+		self.__editor.refresh()
 		return False
 
 	def __quit_cb(self, *args):

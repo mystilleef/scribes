@@ -43,12 +43,6 @@ def create_scrollwin():
 	scrollwin.set_shadow_type(SHADOW_IN)
 	return scrollwin
 
-def __guess_language(uri):
-	from gtksourceview2 import language_manager_get_default
-	language_manager = language_manager_get_default()
-	language = language_manager.guess_language(uri, None)
-	return language
-
 def __get_language_for_mime_type(mime):
 	from gtksourceview2 import language_manager_get_default
 	lang_manager = language_manager_get_default()
@@ -86,8 +80,9 @@ def get_mimetype(path):
 	return gfile.query_info("standard::content-type").get_content_type()
 
 def get_language(uri):
-	if uri is None: return None
-	return __guess_language(uri)
+	from gtksourceview2 import language_manager_get_default
+	language_manager = language_manager_get_default()
+	return language_manager.guess_language(uri, get_mimetype(uri))
 
 def create_encoding_box(combobox):
 	from i18n import msg0157
