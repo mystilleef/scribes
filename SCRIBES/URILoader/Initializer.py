@@ -28,12 +28,12 @@ class Initializer(SignalManager):
 
 	def __load_timeout(self, uri, encoding):
 		from gobject import idle_add
-		idle_add(self.__load, uri, encoding)
+		idle_add(self.__load, uri, encoding, priority=99999)
 		return False
 
 	def __load_file_cb(self, editor, uri, encoding):
 		from gobject import timeout_add
-		timeout_add(25, self.__load_timeout, uri, encoding)
+		timeout_add(125, self.__load_timeout, uri, encoding, priority=99999)
 		return False
 
 	def __destroy_cb(self, *args):

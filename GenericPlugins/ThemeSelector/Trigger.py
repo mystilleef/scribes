@@ -5,12 +5,12 @@ from gettext import gettext as _
 class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
-		editor.response()
+		editor.refresh()
 		SignalManager.__init__(self)
 		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
 		self.connect(self.__trigger, "activate", self.__activate_cb)
-		editor.response()
+		editor.refresh()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

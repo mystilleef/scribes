@@ -23,7 +23,6 @@ class Button(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__button)
 		del self
-		self = None
 		return False
 
 	def __destroy_cb(self, *args):

@@ -1,11 +1,11 @@
 class Label(object):
 
 	def __init__(self, editor, manager):
-		editor.response()
+		editor.refresh()
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("error-message", self.__error_cb)
-		editor.response()
+		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

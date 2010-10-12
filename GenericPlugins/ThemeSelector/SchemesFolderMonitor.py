@@ -1,7 +1,7 @@
 class Monitor(object):
 
 	def __init__(self, editor, manager):
-		editor.response()
+		editor.refresh()
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__scribes_monitor.connect("changed", self.__changed_cb)
@@ -9,7 +9,7 @@ class Monitor(object):
 		self.__default_monitor.connect("changed", self.__changed_cb)
 		from gobject import idle_add
 		idle_add(self.__scan)
-		editor.response()
+		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

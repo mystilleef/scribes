@@ -6,7 +6,7 @@ class Entry(object):
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("valid-trigger", self.__valid_cb)
 		editor.response()
-		
+
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor

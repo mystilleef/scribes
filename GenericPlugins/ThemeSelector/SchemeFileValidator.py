@@ -1,11 +1,11 @@
 class Validator(object):
 
 	def __init__(self, editor, manager):
-		editor.response()
+		editor.refresh()
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("process-xml-files", self.__process_cb)
-		editor.response()
+		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
@@ -63,5 +63,5 @@ class Validator(object):
 
 	def __process_cb(self, manager, filenames):
 		from gobject import idle_add
-		idle_add(self.__validate, filenames)
+		idle_add(self.__validate, filenames, priority=9999)
 		return False

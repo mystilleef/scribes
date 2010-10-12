@@ -3,12 +3,12 @@ from gettext import gettext as _
 class MenuItem(object):
 
 	def __init__(self, editor):
-		editor.response()
+		editor.refresh()
 		self.__init_attributes(editor)
 		self.__menuitem.set_property("name", "Theme Selector MenuItem")
 		self.__sigid1 = self.__menuitem.connect("activate", self.__activate_cb)
 		editor.add_to_pref_menu(self.__menuitem)
-		editor.response()
+		editor.refresh()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

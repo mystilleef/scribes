@@ -1,11 +1,11 @@
 class Generator(object):
 
 	def __init__(self, editor, manager):
-		editor.response()
+		editor.refresh()
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("schemes", self.__schemes_cb)
-		editor.response()
+		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

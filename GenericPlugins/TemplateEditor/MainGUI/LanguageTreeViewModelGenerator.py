@@ -1,5 +1,5 @@
 class Generator(object):
-	
+
 	def __init__(self, manager, editor):
 		editor.response()
 		self.__init_attributes(manager, editor)
@@ -11,7 +11,7 @@ class Generator(object):
 		self.__manager = manager
 		self.__editor = editor
 		return
-	
+
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		del self

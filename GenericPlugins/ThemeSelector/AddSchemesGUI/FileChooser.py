@@ -3,7 +3,7 @@ from gettext import gettext as _
 class FileChooser(object):
 
 	def __init__(self, editor, manager):
-		editor.response()
+		editor.refresh()
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
 		self.__sigid1 = self.__manager.connect("destroy", self.__destroy_cb)
@@ -12,7 +12,7 @@ class FileChooser(object):
 		self.__sigid4 = self.__manager.connect("activate-chooser", self.__load_schemes_cb)
 		self.__sigid5 = self.__manager.connect("show-add-schemes-window", self.__show_cb)
 		self.__chooser.set_property("sensitive", True)
-		editor.response()
+		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
 		self.__manager = manager
