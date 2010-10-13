@@ -2,7 +2,7 @@
 from os import environ
 from os.path import join, expanduser
 from dbus import SessionBus, Interface, glib
-from xdg.BaseDirectory import xdg_config_home
+from xdg.BaseDirectory import xdg_config_home, xdg_data_home
 SCRIBES_DBUS_SERVICE = "net.sourceforge.Scribes"
 SCRIBES_DBUS_PATH = "/net/sourceforge/Scribes"
 SCRIBES_SAVE_PROCESS_DBUS_SERVICE = "net.sourceforge.ScribesSaveProcess"
@@ -20,6 +20,8 @@ metadata_folder = config_folder = join(xdg_config_home, "scribes")
 print_settings_filename = join(metadata_folder, "ScribesPrintSettings.txt")
 home_plugin_folder = home_generic_plugin_folder = join(config_folder, "GenericPlugins")
 home_language_plugin_folder = join(config_folder, "LanguagePlugins")
+scribes_theme_folder = join(config_folder, "styles")
+default_home_theme_folder = join(xdg_data_home, "gtksourceview-2", "styles")
 name = "scribes"
 prefix = "/usr"
 executable_path = join(prefix, "bin")

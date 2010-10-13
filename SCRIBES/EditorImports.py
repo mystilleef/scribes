@@ -3,7 +3,8 @@ from Globals import session_bus, core_plugin_folder, home_plugin_folder
 from Globals import home_language_plugin_folder, core_language_plugin_folder
 from Globals import version, author, documenters, artists, website
 from Globals import copyrights, translators, python_path, dbus_iface
-from Globals import print_settings_filename
+from Globals import print_settings_filename, scribes_theme_folder
+from Globals import default_home_theme_folder
 from License import license_string
 from gio import File
 from DialogFilters import create_filter_list

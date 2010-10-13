@@ -66,6 +66,8 @@ class Editor(Signals):
 	documenters = property(lambda self: EditorImports.documenters)
 	artists = property(lambda self: EditorImports.artists)
 	author = property(lambda self: EditorImports.author)
+	scribes_theme_folder = property(lambda self: EditorImports.scribes_theme_folder)
+	default_home_theme_folder = property(lambda self: EditorImports.default_home_theme_folder)
 	website = property(lambda self: EditorImports.website)
 	save_processor = property(lambda self: self.imanager.get_save_processor())
 	supported_encodings = property(lambda self: EditorImports.supported_encodings)
