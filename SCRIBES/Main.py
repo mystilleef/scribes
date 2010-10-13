@@ -1,7 +1,7 @@
 scribes_dbus_service = "net.sourceforge.Scribes"
 scribes_dbus_path = "/net/sourceforge/Scribes"
 from sys import setcheckinterval
-setcheckinterval(1000)
+setcheckinterval(-1)
 
 def main():
 	__open()
