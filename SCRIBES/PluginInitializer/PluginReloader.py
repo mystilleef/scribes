@@ -44,6 +44,7 @@ class Reloader(SignalManager):
 		return False
 
 	def __loaded_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__load_language_plugins)
+#		from gobject import idle_add
+#		idle_add(self.__load_language_plugins)
+		self.__load_language_plugins()
 		return False

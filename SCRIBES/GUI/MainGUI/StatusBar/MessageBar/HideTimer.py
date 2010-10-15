@@ -37,6 +37,7 @@ class Timer(SignalManager):
 		except AttributeError:
 			pass
 		finally:
+			self.__editor.refresh(False)
 			self.__timer = timeout_add(HIDE_TIMER, hide)
 		return False
 

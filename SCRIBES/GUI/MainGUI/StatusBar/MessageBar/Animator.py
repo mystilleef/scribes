@@ -6,7 +6,7 @@ REFRESH_TIME = 5 # units in milliseconds
 class Animator(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
+		editor.refresh(False)
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
@@ -18,7 +18,7 @@ class Animator(SignalManager):
 		from gobject import idle_add
 		idle_add(self.__compile, priority=9999)
 		editor.register_object(self)
-		editor.response()
+		editor.refresh(False)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -44,31 +44,38 @@ class Animator(SignalManager):
 
 	def __slide(self, direction):
 		try:
+			self.__editor.refresh(False)
 			self.__manager.emit("animation", "begin")
 			from gobject import timeout_add, source_remove
 			source_remove(self.__timer)
-		except AttributeError:
-			pass
+		except AttributeError, KeyError:
+			self.__editor.refresh(False)
 		finally:
 			self.__update_animation_start_point(direction)
 			self.__update_animation_end_point(direction)
 			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction)
+			self.__editor.refresh(False)
 		return False
 
 	def __reposition_in(self, direction):
 		try:
+			self.__editor.refresh(False)
 			x = int(self.__get_x(direction))
 			y = int(self.__get_y(direction))
-			self.__editor.response()
+			self.__editor.refresh(False)
 			self.__editor.textview.move_child(self.__bar, x, y)
+			self.__editor.refresh(False)
 			if not self.__bar.get_property("visible"): self.__bar.show_all()
-			self.__editor.response()
+			self.__editor.refresh(False)
 		except AttributeError:
 			pass
+		finally:
+			self.__editor.refresh(False)
 		return False
 
 	def __move(self, direction):
 		try:
+			self.__editor.refresh(False)
 			animate = True
 			self.__can_end(direction)
 			self.__reposition_in(direction)
@@ -77,6 +84,8 @@ class Animator(SignalManager):
 			if direction == "down": self.__bar.hide()
 			self.__manager.emit("animation", "end")
 			self.__busy = False
+		finally:
+			self.__editor.refresh(False)
 		return animate
 
 	def __can_end(self, direction):
@@ -129,6 +138,7 @@ class Animator(SignalManager):
 		return False
 
 	def __slide_cb(self, manager, direction):
+		self.__editor.refresh(False)
 		if not self.__bar: return False
 		if self.__busy: return False
 		try:
@@ -155,5 +165,7 @@ class Animator(SignalManager):
 
 	def __bar_cb(self, manager, bar):
 		self.__bar = bar
+		self.__editor.refresh(False)
 		self.__bar.show_all()
+		self.__editor.refresh(False)
 		return False

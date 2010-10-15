@@ -30,15 +30,19 @@ class Displayer(SignalManager):
 
 	def __set(self, message):
 		try:
+			self.__editor.refresh(False)
 			if self.__visible: raise ValueError
 			self.__queue.clear()
 			if self.__prev_message == message: return False
 			self.__prev_message = message
+			self.__editor.refresh(False)
 			self.__label.set_label(message)
-			self.__editor.response()
+			self.__editor.refresh()
 		except ValueError:
 			self.__queue.clear()
 			self.__queue.append(message)
+		finally:
+			self.__editor.refresh(False)
 		return False
 
 	def __check(self):

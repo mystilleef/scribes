@@ -23,8 +23,8 @@ class Changer(SignalManager):
 		return False
 
 	def __change_color(self):
+		self.__editor.refresh(False)
 		if not self.__bar: return False
-		self.__editor.response()
 		self.__bar.set_style(None)
 		color = self.__editor.view_bg_color
 		if color is None: return False
@@ -32,7 +32,7 @@ class Changer(SignalManager):
 		from gtk import STATE_NORMAL
 		style.bg[STATE_NORMAL] = color
 		self.__bar.set_style(style)
-		self.__editor.response()
+		self.__editor.refresh(False)
 		return False
 
 	def __destroy_cb(self, *args):
