@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="Window">
+    <property name="border_width">10</property>
+    <property name="title" translatable="yes">Select Themes</property>
+    <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="default_width">600</property>
+    <property name="default_height">320</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="icon_name">scribes</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="urgency_hint">True</property>
+    <property name="gravity">center</property>
+    <child>
+      <object class="GtkVBox" id="vbox1">
+        <property name="visible">True</property>
+        <property name="spacing">10</property>
+        <child>
+          <object class="GtkHBox" id="hbox1">
+            <property name="visible">True</property>
+            <property name="spacing">10</property>
+            <child>
+              <object class="GtkScrolledWindow" id="scrolledwindow1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">never</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <property name="shadow_type">in</property>
+                <child>
+                  <object class="GtkTreeView" id="TreeView">
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="has_focus">True</property>
+                    <property name="is_focus">True</property>
+                    <property name="headers_visible">False</property>
+                    <property name="rules_hint">True</property>
+                    <property name="search_column">0</property>
+                    <property name="fixed_height_mode">True</property>
+                    <property name="show_expanders">False</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox2">
+                <property name="visible">True</property>
+                <property name="spacing">10</property>
+                <child>
+                  <object class="GtkButton" id="AddButton">
+                    <property name="label">gtk-add</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">Add new themes</property>
+                    <property name="use_stock">True</property>
+                    <property name="focus_on_click">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="RemoveButton">
+                    <property name="label">gtk-remove</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">Remove selected themes</property>
+                    <property name="use_stock">True</property>
+                    <property name="focus_on_click">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLinkButton" id="LinkButton">
+                    <property name="label" translatable="yes">_Themes</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
+                    <property name="has_tooltip">True</property>
+                    <property name="tooltip_text" translatable="yes">Download themes from the internet</property>
+                    <property name="image">image1</property>
+                    <property name="use_underline">True</property>
+                    <property name="focus_on_click">False</property>
+                    <property name="uri">http://scribes.sf.net/gtksv2-themes.tar.bz2</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="FeedbackLabel">
+            <property name="no_show_all">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">&lt;b&gt;Initializing please wait...&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+            <property name="single_line_mode">True</property>
+            <property name="track_visited_links">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="stock">gtk-connect</property>
+  </object>
+</interface>

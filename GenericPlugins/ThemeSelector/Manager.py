@@ -1,78 +1,49 @@
-from gobject import SIGNAL_RUN_LAST, TYPE_NONE, GObject, TYPE_PYOBJECT
-from gobject import TYPE_BOOLEAN, TYPE_STRING
+from Signals import Signal
 
-class Manager(GObject):
-
-	__gsignals__ = {
-		"destroy": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"show-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"hide-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"scan-schemes": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"populated-model": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"schemes": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"treeview-data": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"current-scheme": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"new-scheme": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"remove-scheme": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"process-xml-files": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"valid-scheme-files": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"activate-chooser": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"remove-button-sensitivity": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
-		"valid-selection": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_BOOLEAN,)),
-		"error-message": (SIGNAL_RUN_LAST, TYPE_NONE, (TYPE_STRING,)),
-		"remove-row": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"show-add-schemes-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-		"hide-add-schemes-window": (SIGNAL_RUN_LAST, TYPE_NONE, ()),
-	}
+class Manager(Signal):
 
 	def __init__(self, editor):
 		editor.refresh()
-		GObject.__init__(self)
+		Signal.__init__(self)
 		self.__init_attributes(editor)
-		from ErrorLabel import Label
-		Label(editor, self)
-		from SchemeFileInstaller import Installer
-		Installer(editor, self)
-		from SchemeFileValidator import Validator
-		Validator(editor, self)
-		from AddSchemesGUI.Manager import Manager
-		Manager(editor, self)
-		from RemoveButton import Button
-		Button(editor, self)
-		from AddButton import Button
-		Button(editor, self)
-		from SchemeRemover import Remover
-		Remover(editor, self)
-		from SchemeChanger import Changer
-		Changer(editor, self)
-		from CurrentSchemeMonitor import Monitor
-		Monitor(editor, self)
-		from Window import Window
-		Window(editor, self)
-		from TreeView import TreeView
-		TreeView(editor, self)
-		from TreeViewDataGenerator import Generator
-		Generator(editor, self)
-		from SchemeDispatcher import Dispatcher
-		Dispatcher(editor, self)
-		from SchemesFolderMonitor import Monitor
-		Monitor(editor, self)
+		from Feedback import Feedback
+		Feedback(self, editor)
+		from GUI.Manager import Manager
+		Manager(self, editor)
+		from ThemeFileInstaller import Installer
+		Installer(self, editor)
+		from ThemeFileValidator import Validator
+		Validator(self, editor)
+		from DatabaseWriter import Writer
+		Writer(self, editor)
+		from DatabaseReader import Reader
+		Reader(self, editor)
+		from DatabaseMonitor import Monitor
+		Monitor(self, editor)
+		from ThemeRemover import Remover
+		Remover(self, editor)
+		from ThemeUpdater import Updater
+		Updater(self, editor)
+		from ThemeDispatcher import Dispatcher
+		Dispatcher(self, editor)
+		from ThemeFolderMonitor import Monitor
+		Monitor(self, editor)
 		editor.refresh()
 
 	def __init_attributes(self, editor):
 		from os.path import join
-		self.__glade = editor.get_glade_object(globals(), "SyntaxColorThemes.glade", "Window")
-		self.__dialog = editor.get_glade_object(globals(), join("AddSchemesGUI","Dialog.glade"), "Window")
-		return
+		self.__main_gui = editor.get_gui_object(globals(), join("GUI", "MainGUI", "GUI.glade"))
+		self.__chooser_gui = editor.get_gui_object(globals(), join("GUI", "FileChooserGUI", "GUI.glade"))
+		return False
 
-	gui = property(lambda self: self.__glade)
-	dialog_gui = property(lambda self: self.__dialog)
+	main_gui = property(lambda self: self.__main_gui)
+	chooser_gui = property(lambda self: self.__chooser_gui)
 
 	def destroy(self):
 		self.emit("destroy")
 		del self
-		return
+		return False
 
-	def show(self):
-		self.emit("show-window")
-		return
+	def activate(self):
+		self.emit("activate")
+		return False

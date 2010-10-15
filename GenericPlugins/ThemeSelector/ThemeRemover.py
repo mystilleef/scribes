@@ -1,10 +1,13 @@
-class Remover(object):
+from SCRIBES.SignalConnectionManager import SignalManager
 
-	def __init__(self, editor, manager):
+class Remover(SignalManager):
+
+	def __init__(self, manager, editor):
 		editor.refresh()
+		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor, manager)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("remove-scheme", self.__remove_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "remove-scheme", self.__remove_cb)
 		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
@@ -13,10 +16,8 @@ class Remover(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		del self
-		self = None
 		return False
 
 	def __remove(self, scheme):

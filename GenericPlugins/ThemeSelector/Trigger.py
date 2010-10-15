@@ -35,9 +35,9 @@ class Trigger(SignalManager, TriggerManager):
 
 	def __activate_cb(self, *args):
 		try:
-			self.__manager.show()
+			self.__manager.activate()
 		except AttributeError:
 			from Manager import Manager
 			self.__manager = Manager(self.__editor)
-			self.__manager.show()
+			self.__manager.activate()
 		return

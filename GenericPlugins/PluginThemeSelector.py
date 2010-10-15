@@ -1,28 +1,28 @@
 name = "Theme Selector Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-version = 0.2
+version = 0.3
 autoload = True
 class_name = "ThemeSelectorPlugin"
-short_description = "Shows the theme selector."
-long_description = """Shows the theme selector."""
+short_description = "Shows a window to change themes."
+long_description = """Shows a window to change themes."""
 
 class ThemeSelectorPlugin(object):
 
 	def __init__(self, editor):
-		editor.response()
+		editor.refresh()
 		self.__editor = editor
 		self.__trigger = None
-		editor.response()
+		editor.refresh()
 
 	def load(self):
-		self.__editor.response()
+		self.__editor.refresh()
 		from ThemeSelector.Trigger import Trigger
 		self.__trigger = Trigger(self.__editor)
-		self.__editor.response()
+		self.__editor.refresh()
 		return
 
 	def unload(self):
-		self.__editor.response()
+		self.__editor.refresh()
 		self.__trigger.destroy()
-		self.__editor.response()
+		self.__editor.refresh()
 		return
