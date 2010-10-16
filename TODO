@@ -1,3 +1,4 @@
-- rewrite gtksourceview2 theme installer
 - looking into message bar and toolbar animation glitches and errors
 - look into trigger area glitches.
+- recent-open
+- last-open

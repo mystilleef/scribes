@@ -144,15 +144,9 @@ class Manager(object):
 		return False
 
 	def __focus(self, editor):
-		editor.response()
+		editor.refresh()
 		if editor.window.get_data("minimized"): editor.window.deiconify()
-		editor.response()
-#		coordinates = None if editor.window.get_data("maximized") else editor.window.get_position()
-#		editor.response()
-#		editor.window.hide()
-#		editor.response()
-#		if coordinates: editor.window.move(coordinates[0], coordinates[1])
-#		editor.response()
+		editor.refresh()
 		editor.window.present()
 		editor.refresh()
 		return False
@@ -165,8 +159,8 @@ class Manager(object):
 	def __init_psyco(self):
 		try:
 			from psyco import background, profile
-#			background()
-			profile()
+			background()
+#			profile()
 		except ImportError:
 			pass
 		return False

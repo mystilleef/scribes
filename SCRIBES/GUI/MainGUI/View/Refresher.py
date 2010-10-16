@@ -44,5 +44,12 @@ class Refresher(SignalManager):
 		return False
 
 	def __refresh_cb(self, editor, grab_focus):
-		self.__refresh(grab_focus)
+		try:
+			from gobject import idle_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = idle_add(self.__refresh, grab_focus, priority=999999)
+#		self.__refresh(grab_focus)
 		return False
