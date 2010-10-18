@@ -34,13 +34,11 @@ class Manager(SignalManager):
 		try:
 			self.__editor.response()
 			self.__objects.remove(_object)
-#			print "Unregistering: ", _object.__class__
 		except ValueError:
 			print _object, "not in queue"
 		finally:
 			self.__editor.response()
 			if not self.__objects: self.__destroy()
-#			print self.__objects
 		return False
 
 	def __register_cb(self, editor, _object):
