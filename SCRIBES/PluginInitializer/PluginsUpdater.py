@@ -3,14 +3,13 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Updater(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
-		SignalManager.__init__(self, editor)
+		editor.refresh()
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.connect(manager, "destroyed-plugins", self.__quit_cb)
+		self.connect(editor, "post-quit", self.__quit_cb)
 		self.connect(manager, "loaded-plugin", self.__loaded_cb)
 		self.connect(manager, "unloaded-plugin", self.__unloaded_cb)
-		editor.register_object(self)
-		editor.response()
+		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -20,7 +19,6 @@ class Updater(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
-		self.__editor.unregister_object(self)
 		del self
 		return False
 

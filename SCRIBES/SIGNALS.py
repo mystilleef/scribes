@@ -14,6 +14,7 @@ class Signals(GObject):
 		# EMIT THIS SIGNAL. This is the signal to listen to for proper cleanup
 		# before exit.
 		"quit": (SSIGNAL, TYPE_NONE, ()),
+		"post-quit": (SSIGNAL, TYPE_NONE, ()),
 		"cursor-moved": (SSIGNAL, TYPE_NONE, ()),
 		"ready": (SSIGNAL, TYPE_NONE, ()),
 		"readonly": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),

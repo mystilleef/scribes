@@ -8,7 +8,7 @@ class Destroyer(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "active-plugins", self.__plugins_cb, True)
-		editor.register_object(self)
+#		editor.register_object(self)
 		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
@@ -21,8 +21,7 @@ class Destroyer(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
-		self.__manager.emit("destroyed-plugins")
-		self.__editor.unregister_object(self)
+#		self.__editor.unregister_object(self)
 		del self
 		return False
 
@@ -31,8 +30,7 @@ class Destroyer(SignalManager):
 		if self.__destroyed: return False
 		if self.__quit is False: return False
 		if self.__plugins: return False
-		from gobject import idle_add
-		idle_add(self.__destroy)
+		self.__destroy()
 		self.__destroyed = True
 		return False
 
@@ -53,16 +51,14 @@ class Destroyer(SignalManager):
 		try:
 			if not self.__plugins: raise ValueError
 			self.__quit = True
-#			from gobject import idle_add
-#			idle_add(self.__unload_plugins)
-			self.__unload_plugins()
+			from gobject import idle_add
+			idle_add(self.__unload_plugins)
 		except ValueError:
 			self.__destroy()
 		return False
 
 	def __plugins_cb(self, manager, plugins):
 		self.__plugins = plugins
-#		from gobject import idle_add
-#		idle_add(self.__check)
-		self.__check()
+		from gobject import idle_add
+		idle_add(self.__check)
 		return False

@@ -4,13 +4,12 @@ class Refresher(SignalManager):
 
 	def __init__(self, editor):
 		editor.response()
-		SignalManager.__init__(self, editor)
+		SignalManager.__init__(self)
 		self.__init_attributes(editor)
-		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(editor, "post-quit", self.__quit_cb)
 		self.connect(editor, "refresh", self.__refresh_cb, True)
-#		from gobject import idle_add
-#		idle_add(self.__optimize, priority=9999)
-		editor.register_object(self)
+		from gobject import idle_add
+		idle_add(self.__optimize, priority=9999)
 		editor.response()
 
 	def __init_attributes(self, editor):
@@ -20,7 +19,6 @@ class Refresher(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
-		self.__editor.unregister_object(self)
 		del self
 		return
 
@@ -36,7 +34,7 @@ class Refresher(SignalManager):
 		return False
 
 	def __optimize(self):
-#		self.__editor.optimize((self.__refresh,))
+		self.__editor.optimize((self.__refresh,))
 		return False
 
 	def __quit_cb(self, *args):

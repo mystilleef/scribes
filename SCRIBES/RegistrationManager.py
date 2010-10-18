@@ -1,10 +1,13 @@
-class Manager(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Manager(SignalManager):
 
 	def __init__(self, editor):
 		editor.response()
+		SignalManager.__init__(self)
 		self.__init_attributes(editor)
-		self.__sigid1 = editor.connect("register-object", self.__register_cb)
-		self.__sigid2 = editor.connect("unregister-object", self.__unregister_cb)
+		self.connect(editor, "register-object", self.__register_cb)
+		self.connect(editor, "unregister-object", self.__unregister_cb)
 		editor.response()
 
 	def __init_attributes(self, editor):
@@ -14,8 +17,8 @@ class Manager(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
+		self.disconnect()
+		self.__editor.emit("post-quit")
 		self.__editor.imanager.unregister_editor(self.__editor)
 		self.__editor.window.destroy()
 		del self
@@ -31,11 +34,13 @@ class Manager(object):
 		try:
 			self.__editor.response()
 			self.__objects.remove(_object)
+#			print "Unregistering: ", _object.__class__
 		except ValueError:
 			print _object, "not in queue"
 		finally:
 			self.__editor.response()
 			if not self.__objects: self.__destroy()
+#			print self.__objects
 		return False
 
 	def __register_cb(self, editor, _object):

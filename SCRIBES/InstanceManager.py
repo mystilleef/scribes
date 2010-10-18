@@ -22,6 +22,7 @@ class Manager(object):
 		self.__busy = False
 		self.__interval = 0
 		self.__shortcut_list = []
+#		self.__count = 0
 		return
 
 ########################################################################
@@ -115,11 +116,11 @@ class Manager(object):
 		return self.__shortcut_list
 
 	def response(self):
-		if self.__busy: return False
-		self.__busy = True
+#		if self.__busy: return False
+#		self.__busy = True
 		from Utils import response
 		response()
-		self.__busy = False
+#		self.__busy = False
 		return False
 
 	def set_vm_interval(self, response=True):
@@ -159,8 +160,8 @@ class Manager(object):
 	def __init_psyco(self):
 		try:
 			from psyco import background, profile
-			background()
-#			profile()
+#			background()
+			profile()
 		except ImportError:
 			pass
 		return False
@@ -191,7 +192,6 @@ class Manager(object):
 		from glob import glob
 		from Globals import home_folder, metadata_folder, tmp_folder
 		from os.path import join
-#		files = glob(join(home_folder, ".Scribes*scribes"))
 		files = glob(join(tmp_folder, ".Scribes*scribes"))
 		from shutil import rmtree
 		[rmtree(file_, True) for file_ in files]

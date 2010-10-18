@@ -6,9 +6,8 @@ class Unloader(SignalManager):
 		editor.refresh()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.connect(manager, "destroyed-plugins", self.__quit_cb)
+		self.connect(editor, "post-quit", self.__quit_cb)
 		self.connect(manager, "unload-plugin", self.__unload_cb)
-		editor.register_object(self)
 		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
@@ -18,7 +17,6 @@ class Unloader(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
-		self.__editor.unregister_object(self)
 		del self
 		return False
 
