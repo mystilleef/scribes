@@ -8,8 +8,8 @@ class Refresher(SignalManager):
 		self.__init_attributes(editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "refresh", self.__refresh_cb, True)
-		from gobject import idle_add
-		idle_add(self.__optimize, priority=9999)
+#		from gobject import idle_add
+#		idle_add(self.__optimize, priority=9999)
 		editor.register_object(self)
 		editor.response()
 
@@ -24,7 +24,7 @@ class Refresher(SignalManager):
 		del self
 		return
 
-	def __refresh(self, grab_focus=True):
+	def __refresh(self, grab_focus=False):
 		try:
 			self.__editor.response()
 			self.__view.window.process_updates(True)
@@ -36,7 +36,7 @@ class Refresher(SignalManager):
 		return False
 
 	def __optimize(self):
-		self.__editor.optimize((self.__refresh,))
+#		self.__editor.optimize((self.__refresh,))
 		return False
 
 	def __quit_cb(self, *args):
@@ -44,12 +44,12 @@ class Refresher(SignalManager):
 		return False
 
 	def __refresh_cb(self, editor, grab_focus):
-		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = idle_add(self.__refresh, grab_focus, priority=999999)
-#		self.__refresh(grab_focus)
+#		try:
+#			from gobject import idle_add, source_remove
+#			source_remove(self.__timer)
+#		except AttributeError:
+#			pass
+#		finally:
+#			self.__timer = idle_add(self.__refresh, grab_focus, priority=99999999)
+		self.__refresh(grab_focus)
 		return False
