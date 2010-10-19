@@ -70,6 +70,7 @@ scribes_PYTHON = \
 	TriggerManager.py \
 	URIManager.py \
 	PluginManager.py \
+	RecentInfoManager.py \
 	RegistrationManager.py \
 	ReadonlyManager.py \
 	RecentManager.py \

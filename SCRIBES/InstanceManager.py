@@ -11,8 +11,6 @@ class Manager(object):
 		from gobject import timeout_add
 		timeout_add(60000, self.__init_psyco, priority=9999)
 		self.__init_i18n()
-#		timeout_add(300000, self.__init_garbage_collector, priority=9999)
-#		timeout_add(30000, self.__init_garbage_collector, priority=9999)
 
 	def __init_attributes(self):
 		from collections import deque
@@ -22,6 +20,8 @@ class Manager(object):
 		self.__busy = False
 		self.__interval = 0
 		self.__shortcut_list = []
+		from RecentInfoManager import Manager
+		self.__recent_info_manager = Manager(self)
 #		self.__count = 0
 		return
 
@@ -102,6 +102,12 @@ class Manager(object):
 	def get_uris(self):
 		if not self.__editor_instances: return []
 		return [editor.uri for editor in self.__editor_instances if editor.uri]
+
+	def get_recent_infos(self):
+		return self.__recent_info_manager.recent_infos()
+
+	def get_recent_manager(self):
+		return self.__recent_info_manager.recent_manager()
 
 	def get_editor_instances(self):
 		return self.__editor_instances

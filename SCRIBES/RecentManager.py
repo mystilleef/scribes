@@ -8,18 +8,12 @@ class Manager(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "loaded-file", self.__loaded_file_cb)
 		self.connect(editor, "renamed-file", self.__renamed_file_cb)
-		editor.set_data("RecentManager", self.__manager)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__manager = self.__create_recent_manager()
+		self.__manager = editor.recent_manager
 		return
-
-	def __create_recent_manager(self):
-		from gtk import recent_manager_get_default
-		manager = recent_manager_get_default()
-		return manager
 
 	def __create_recent_data(self, uri):
 		fileinfo = self.__editor.get_fileinfo(uri)

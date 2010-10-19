@@ -79,7 +79,6 @@ class Editor(Signals):
 	pwd = property(lambda self: File(self.uri).get_parent().get_path() if self.uri else self.desktop_folder)
 	pwd_uri = property(lambda self: EditorImports.File(self.uri).get_parent().get_uri() if self.uri else EditorImports.File(self.desktop_folder).get_uri())
 	dialog_filters = property(lambda self: EditorImports.create_filter_list())
-	recent_manager = property(lambda self: self.get_data("RecentManager"))
 	bar_is_active = property(lambda self: self.get_data("bar_is_active"))
 	minimized = property(lambda self: self.get_data("minimized"))
 	maximized = property(lambda self: self.get_data("maximized"))
@@ -88,6 +87,8 @@ class Editor(Signals):
 	mimetype = property(lambda self: self.get_mimetype(self.uri))
 	fileinfo = property(lambda self: self.get_fileinfo(self.uri))
 	view_bg_color = property(lambda self: self.textview.get_modifier_style().base[-1])
+	recent_infos = property(lambda self: self.imanager.get_recent_infos())
+	recent_manager = property(lambda self: self.imanager.get_recent_manager())
 
 	def optimize(self, functions):
 		try:
@@ -156,7 +157,8 @@ class Editor(Signals):
 		self.emit("rename-file", uri, encoding)
 		return
 
-	def load_file(self, uri, encoding, readonly=False):
+	def load_file(self, uri, encoding="utf-8", readonly=False):
+		self.set_data("contains_document", True)
 		self.emit("load-file", uri, encoding)
 		return False
 
