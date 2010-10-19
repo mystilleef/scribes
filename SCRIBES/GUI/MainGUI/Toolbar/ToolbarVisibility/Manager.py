@@ -16,7 +16,6 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		editor.response()
 		GObject.__init__(self)
 		from HideTimer import Timer
 		Timer(self, editor)
@@ -36,4 +35,3 @@ class Manager(GObject):
 		Calculator(self, editor)
 		from SizeUpdater import Updater
 		Updater(self, editor)
-		editor.response()

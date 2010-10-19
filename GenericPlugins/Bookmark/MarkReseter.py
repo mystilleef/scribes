@@ -3,13 +3,11 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Reseter(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "lines", self.__lines_cb)
 		self.connect(editor, "reset-buffer", self.__reset_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

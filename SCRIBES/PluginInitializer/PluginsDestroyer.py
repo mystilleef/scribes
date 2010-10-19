@@ -3,13 +3,11 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Destroyer(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "active-plugins", self.__plugins_cb, True)
 #		editor.register_object(self)
-		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -26,7 +24,6 @@ class Destroyer(SignalManager):
 		return False
 
 	def __check(self):
-		self.__editor.refresh()
 		if self.__destroyed: return False
 		if self.__quit is False: return False
 		if self.__plugins: return False
@@ -35,16 +32,12 @@ class Destroyer(SignalManager):
 		return False
 
 	def __unload(self, plugin_data):
-		self.__editor.refresh()
 		self.__manager.emit("unload-plugin", plugin_data)
-		self.__editor.refresh()
 		return
 
 	def __unload_plugins(self):
 		from copy import copy
-		self.__editor.refresh()
 		[self.__unload(plugin_data) for plugin_data in copy(self.__plugins)]
-		self.__editor.refresh()
 		return False
 
 	def __quit_cb(self, *args):

@@ -3,7 +3,6 @@ from Signals import Signal
 class Manager(Signal):
 
 	def __init__(self, editor):
-		editor.response()
 		Signal.__init__(self)
 		from MatchIndexer import Indexer
 		Indexer(self, editor)
@@ -25,7 +24,6 @@ class Manager(Signal):
 		Creator(self, editor)
 		from SelectionDetector import Detector
 		Detector(self, editor)
-		editor.response()
 
 	def destroy(self):
 		self.emit("destroy")

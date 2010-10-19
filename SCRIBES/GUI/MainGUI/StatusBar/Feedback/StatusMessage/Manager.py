@@ -20,7 +20,6 @@ class Manager(GObject):
 
 	def __init__(self, editor):
 		GObject.__init__(self)
-		editor.response()
 		from BarDisplayer import Displayer
 		Displayer(self, editor)
 		from MessageDisplayer import Displayer
@@ -47,4 +46,3 @@ class Manager(GObject):
 		Switcher(self, editor)
 		from MouseSensor import Sensor
 		Sensor(self, editor)
-		editor.response()

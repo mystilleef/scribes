@@ -3,12 +3,10 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Monitor(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(editor, "syntax-color-theme-changed", self.__changed_cb, True)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -22,9 +20,7 @@ class Monitor(SignalManager):
 		return False
 
 	def __change_color(self):
-		self.__editor.response()
 		self.__widget.change_bg_color()
-		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):

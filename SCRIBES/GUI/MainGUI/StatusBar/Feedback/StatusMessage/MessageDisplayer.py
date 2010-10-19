@@ -3,14 +3,12 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Displayer(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "set-message", self.__set_cb)
 		self.connect(editor, "message-bar-is-visible", self.__visible_cb, True)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -30,19 +28,14 @@ class Displayer(SignalManager):
 
 	def __set(self, message):
 		try:
-			self.__editor.refresh(False)
 			if self.__visible: raise ValueError
 			self.__queue.clear()
 			if self.__prev_message == message: return False
 			self.__prev_message = message
-			self.__editor.refresh(False)
 			self.__label.set_label(message)
-			self.__editor.refresh()
 		except ValueError:
 			self.__queue.clear()
 			self.__queue.append(message)
-		finally:
-			self.__editor.refresh(False)
 		return False
 
 	def __check(self):

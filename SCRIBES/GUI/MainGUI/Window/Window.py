@@ -1,7 +1,6 @@
 class Window(object):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
 		self.__set_properties()
 		self.__sigid1 = self.__window.connect("delete-event", self.__delete_event_cb)
@@ -9,7 +8,6 @@ class Window(object):
 		self.__sigid3 = self.__window.connect_after("focus-out-event", self.__focus_out_event_cb)
 		self.__sigid4 = editor.connect_after("ready", self.__ready_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

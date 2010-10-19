@@ -1,7 +1,6 @@
 class Detector(object):
 
 	def __init__(self, editor, uri):
-		editor.response()
 		self.__init_attributes(editor)
 		if uri: editor.set_data("contains_document", True)
 		self.__sigid1 = editor.connect("checking-file", self.__checking_file_cb)
@@ -10,7 +9,6 @@ class Detector(object):
 		self.__sigid4 = editor.connect("renamed-file", self.__checking_file_cb)
 		self.__sigid5 = editor.connect("quit", self.__quit_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

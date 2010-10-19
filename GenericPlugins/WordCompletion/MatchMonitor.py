@@ -1,7 +1,6 @@
 class Monitor(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("invalid-string", self.__invalid_cb)
@@ -9,7 +8,6 @@ class Monitor(object):
 		self.__sigid4 = manager.connect("dictionary", self.__dictionary_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=444)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -37,7 +35,6 @@ class Monitor(object):
 		match_list = []
 		dictionary = self.__dictionary
 		for items in dictionary.items():
-			self.__editor.response()
 			if not (items[0].startswith(word) and (items[0] != word)): continue
 			match_list.append(list(items))
 		return match_list
@@ -45,7 +42,6 @@ class Monitor(object):
 	def __get_matches(self, match_list):
 		matches = []
 		for items in match_list:
-			self.__editor.response()
 			matches.append(items[0])
 		return matches
 
@@ -58,7 +54,6 @@ class Monitor(object):
 		return self.__get_matches(match_list)
 
 	def __sort(self, x, y):
-		self.__editor.response()
 		if (x[1] < y[1]): return 1
 		if (x[1] > y[1]): return -1
 		return 0

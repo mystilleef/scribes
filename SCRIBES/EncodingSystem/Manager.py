@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, editor):
-		editor.response()
 		from Error.Trigger import Trigger
 		Trigger(editor)
 		from SupportedEncodings.Trigger import Trigger
@@ -14,7 +13,6 @@ class Manager(object):
 		Updater(self, editor)
 		from ComboBoxData.Manager import Manager
 		Manager(editor)
-		editor.response()
 
 	def format_encoding(self, encoding):
 		from Utils import format_encoding

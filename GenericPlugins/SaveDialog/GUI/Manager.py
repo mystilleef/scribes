@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		from FeedbackUpdater import Updater
 		Updater(manager, editor)
 		from Window.Manager import Manager
@@ -14,4 +13,3 @@ class Manager(object):
 		Button(manager, editor)
 		from CancelButton import Button
 		Button(manager, editor)
-		editor.response()

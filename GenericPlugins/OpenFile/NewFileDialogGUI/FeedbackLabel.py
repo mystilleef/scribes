@@ -3,7 +3,6 @@ from gettext import gettext as _
 class Label(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("validate", self.__validate_cb)
@@ -14,7 +13,6 @@ class Label(object):
 		self.__sigid7 = manager.connect("creation-pass", self.__pass_cb)
 		self.__sigid8 = manager.connect("hide-newfile-dialog-window", self.__hide_cb)
 		self.__set_label()
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

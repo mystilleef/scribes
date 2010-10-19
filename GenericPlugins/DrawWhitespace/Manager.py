@@ -10,14 +10,12 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		editor.response()
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		from WhitespaceDrawer import Drawer
 		Drawer(editor, self)
 		from ConfigurationManager import Manager
 		Manager(editor, self)
-		editor.response()
 #		from ColorManager import Manager
 #		Manager(editor, self)
 

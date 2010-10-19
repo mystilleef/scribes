@@ -6,13 +6,11 @@ ANIMATION_TIME = 250 # units in milliseconds
 class Calculator(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "bar-size", self.__size_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

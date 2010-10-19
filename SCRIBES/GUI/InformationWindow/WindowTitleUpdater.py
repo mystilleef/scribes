@@ -1,13 +1,11 @@
 class Updater(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("show-error", self.__update_cb, True)
 		self.__sigid3 = editor.connect("show-info", self.__update_cb, False)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -26,9 +24,7 @@ class Updater(object):
 	def __update(self, error):
 		from gettext import gettext as _
 		title = _("ERROR") if error else _("INFORMATION")
-		self.__editor.response()
 		self.__window.set_title(title)
-		self.__editor.response()
 		return False
 
 	def __update_cb(self, editor, title, message, window, busy, error):

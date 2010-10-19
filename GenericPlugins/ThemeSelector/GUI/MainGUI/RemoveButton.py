@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Button(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor, manager)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -12,7 +11,6 @@ class Button(SignalManager):
 		self.connect(manager, "delete-row", self.__delete_cb)
 		self.connect(manager, "valid-scheme-files", self.__delete_cb)
 		self.connect(self.__button, "clicked", self.__clicked_cb)
-		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

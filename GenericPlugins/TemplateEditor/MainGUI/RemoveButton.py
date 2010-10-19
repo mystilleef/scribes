@@ -1,14 +1,12 @@
 class Button(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect_after("description-treeview-sensitivity", self.__sensitive_cb)
 		self.__sigid3 = manager.connect_after("description-treeview-cursor-changed", self.__changed_cb)
 		self.__sigid4 = manager.connect_after("selected-templates-dictionary-key", self.__key_cb)
 		self.__sigid5 = self.__button.connect("clicked", self.__clicked_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

@@ -45,9 +45,7 @@ class ComboBox(SignalManager):
 		)
 		self.__combo.set_model(None)
 		for position in data:
-			self.__editor.response()
 			self.__model.append([position[0], position[1]])
-			self.__editor.response()
 		self.__combo.set_model(self.__model)
 		return False
 

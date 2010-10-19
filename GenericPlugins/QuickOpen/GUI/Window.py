@@ -1,7 +1,6 @@
 class Window(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
@@ -11,7 +10,6 @@ class Window(object):
 		self.__sigid5 = self.__window.connect("key-press-event", self.__key_press_event_cb)
 		self.__sigid6 = manager.connect("current-path", self.__path_cb)
 		self.__sigid7 = manager.connect("files", self.__files_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -37,15 +35,11 @@ class Window(object):
 		return False
 
 	def __hide(self):
-		self.__editor.response()
 		self.__window.hide()
-		self.__editor.response()
 		return False
 
 	def __show(self):
-		self.__editor.response()
 		self.__window.show_all()
-		self.__editor.response()
 		return False
 
 	def __change_path(self):

@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.__view.connect("set-scroll-adjustments", self.__response_cb)
@@ -19,7 +18,6 @@ class Manager(object):
 		self.__sigid14 = self.__view.connect("set-anchor", self.__response_cb)
 		self.__sigid15 = self.__view.connect("toggle-overwrite", self.__response_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -52,7 +50,7 @@ class Manager(object):
 			from gobject import idle_add, source_remove
 			source_remove(self.__timer)
 		except AttributeError:
-			self.__editor.response()
+			pass
 		finally:
 			self.__timer = idle_add(self.__editor.refresh, False)
 		return False
@@ -66,7 +64,7 @@ class Manager(object):
 			from gobject import idle_add, source_remove
 			source_remove(self.__timer)
 		except AttributeError:
-			self.__editor.response()
+			pass
 		finally:
 			self.__timer = idle_add(self.__refresh)
 		return False

@@ -5,7 +5,6 @@ MESSAGE = _("Bookmarked lines")
 class Feedback(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -16,7 +15,6 @@ class Feedback(SignalManager):
 		self.connect(manager, "show", self.__show_cb)
 		self.connect(manager, "hide", self.__hide_cb)
 		self.connect(manager, "scroll-to-line", self.__scroll_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

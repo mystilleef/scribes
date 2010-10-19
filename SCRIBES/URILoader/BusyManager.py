@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("init-loading", self.__busy_cb)
@@ -9,7 +8,6 @@ class Manager(object):
 		self.__sigid4 = manager.connect("encoding-error", self.__nobusy_cb)
 		self.__sigid5 = manager.connect("load-success", self.__nobusy_cb)
 		self.__sigid6 = editor.connect("load-error", self.__nobusy_cb)
-		editor.response()
 #		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):

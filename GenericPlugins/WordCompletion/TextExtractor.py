@@ -1,13 +1,11 @@
 class Extractor(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("start-indexing", self.__start_indexing_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -24,7 +22,6 @@ class Extractor(object):
 	def __extract_text(self):
 		texts = []
 		for editor in self.__editor.instances:
-			self.__editor.response()
 			texts.append(editor.text)
 		text = " ".join(texts)
 		self.__manager.emit("extracted-text", text)

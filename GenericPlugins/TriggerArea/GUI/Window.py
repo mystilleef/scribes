@@ -29,15 +29,11 @@ class Window(SignalManager):
 		return False
 
 	def __hide(self):
-		self.__editor.response()
 		self.__window.hide()
-		self.__editor.response()
 		return False
 
 	def __show(self):
-		self.__editor.response()
 		self.__window.show_all()
-		self.__editor.response()
 		return False
 
 	def __delete_event_cb(self, *args):

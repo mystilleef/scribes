@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Remover(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__destroy_cb)
@@ -11,7 +10,6 @@ class Remover(SignalManager):
 		self.connect(editor, "renamed-file", self.__renamed_cb)
 		self.connect(manager, "remove-new-file", self.__remove_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

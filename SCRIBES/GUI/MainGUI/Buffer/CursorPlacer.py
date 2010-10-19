@@ -3,14 +3,12 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Placer(SignalManager):
 
 	def __init__(self, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "checking-file", self.__checking_cb)
 		self.connect(editor, "loaded-file", self.__loaded_cb, True)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -34,20 +32,14 @@ class Placer(SignalManager):
 		iterator = self.__get_cursor_iterator(line)
 		index = self.__get_cursor_index(iterator, index)
 		iterator.set_line_index(index)
-		self.__editor.response()
 		self.__buffer.place_cursor(iterator)
-		self.__editor.response()
 		self.__editor.move_view_to_cursor(True)
-		self.__editor.response()
 		self.__editor.textview.window.thaw_updates()
-		self.__editor.response()
 		return False
 
 	def __get_cursor_data(self):
 		from SCRIBES.CursorMetadata import get_value
-		self.__editor.response()
 		position = get_value(self.__editor.uri)
-		self.__editor.response()
 		return position[0] + 1, position[1]
 
 	def __get_cursor_iterator(self, line):

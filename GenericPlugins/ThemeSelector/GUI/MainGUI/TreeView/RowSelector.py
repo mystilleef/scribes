@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Selector(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -11,7 +10,6 @@ class Selector(SignalManager):
 		self.connect(manager, "theme-from-database", self.__theme_cb)
 		self.connect(manager, "last-selected-path", self.__path_cb)
 		self.connect(manager, "activate", self.__activate_cb)
-		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -33,7 +31,6 @@ class Selector(SignalManager):
 		if not theme: return None
 		row = None
 		for _row in self.__model:
-			self.__editor.refresh()
 			if _row[1].get_id() != theme: continue
 			row = _row
 			break

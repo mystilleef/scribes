@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Creator(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
@@ -11,7 +10,6 @@ class Creator(SignalManager):
 		from gobject import idle_add
 		idle_add(self.__optimize, priority=9999)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -20,7 +18,6 @@ class Creator(SignalManager):
 		return
 
 	def __destroy(self):
-		self.__editor.response()
 		if self.__count: return True
 		self.disconnect()
 		self.__editor.unregister_object(self)
@@ -57,7 +54,6 @@ class Creator(SignalManager):
 		return False
 
 	def __create_cb(self, manager, data):
-		self.__editor.response()
 		from gobject import idle_add
 		idle_add(self.__create, data, priority=9999)
 		return False

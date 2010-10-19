@@ -3,12 +3,10 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Writer(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "update-database", self.__data_cb)
-		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

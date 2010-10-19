@@ -3,14 +3,12 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Filterer(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "filter-fileinfos", self.__filter_cb)
 		from gobject import idle_add
 		idle_add(self.__optimize, priority=9999)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -35,7 +33,6 @@ class Filterer(SignalManager):
 		return False
 
 	def __valid(self, fileinfo):
-		self.__editor.response()
 		from gio import FILE_TYPE_DIRECTORY, FILE_TYPE_REGULAR
 		if fileinfo.get_file_type() not in (FILE_TYPE_DIRECTORY, FILE_TYPE_REGULAR): return False
 		if fileinfo.get_is_hidden(): return False
@@ -46,7 +43,6 @@ class Filterer(SignalManager):
 		return True
 
 	def __filter(self, data):
-		self.__editor.response()
 		folder, fileinfos = data
 		fileinfos = [fileinfo for fileinfo in fileinfos if self.__valid(fileinfo)]
 		self.__manager.emit("folder-and-fileinfos", (folder, fileinfos))

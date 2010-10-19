@@ -1,12 +1,10 @@
 class Formatter(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("current-path", self.__path_cb)
 		self.__sigid3 = manager.connect("files", self.__files_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -23,7 +21,6 @@ class Formatter(object):
 		return False
 
 	def __replace(self, _file):
-		self.__editor.response()
 		from gio import File
 		_file = File(_file).get_parse_name()
 		return _file.replace(self.__path, "").lstrip("/")

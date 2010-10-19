@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Reloader(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
@@ -11,7 +10,6 @@ class Reloader(SignalManager):
 		self.connect(editor, "loaded-file", self.__loaded_cb, True)
 		self.connect(editor, "renamed-file", self.__loaded_cb, True)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

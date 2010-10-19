@@ -3,13 +3,11 @@ from gettext import gettext as _
 class Converter(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("to-unix", self.__to_unix_cb)
 		self.__sigid3 = manager.connect("to-mac", self.__to_mac_cb)
 		self.__sigid4 = manager.connect("to-windows", self.__to_windows_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor

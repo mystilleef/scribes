@@ -3,7 +3,6 @@ from gettext import gettext as _
 class Navigator(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("marked-matches", self.__marked_matches_cb)
@@ -13,7 +12,6 @@ class Navigator(object):
 		self.__sigid6 = manager.connect("search-type-flag", self.__search_type_cb)
 		self.__sigid7 = manager.connect("replaced-mark", self.__replaced_mark_cb)
 		self.__sigid8 = manager.connect("cursor-mark", self.__cursor_mark_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -79,7 +77,6 @@ class Navigator(object):
 		nappend = lambda mark: self.__next_queue.append(mark)
 		cursor_offset = get_offset(self.__cursor_mark)
 		for marks in matches:
-			self.__editor.response()
 			mark = marks[0]
 			pappend(marks) if cursor_offset > get_offset(mark) else nappend(marks)
 		match = self.__next_queue.popleft() if self.__next_queue else self.__prev_queue.popleft()

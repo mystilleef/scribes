@@ -1,12 +1,10 @@
 class Handler(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("save-button-activate", self.__activate_cb)
 		self.__sigid3 = self.__chooser.connect("file-activated", self.__activate_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -16,15 +14,11 @@ class Handler(object):
 
 	def __emit(self):
 		try:
-			self.__editor.response()
 			uri = self.__chooser.get_uri()
 			if self.__editor.uri_is_folder(uri): raise ValueError
 			self.__manager.emit("validate")
-			self.__editor.response()
 		except ValueError:
 			self.__manager.emit("change-folder", uri)
-		finally:
-			self.__editor.response()
 		return False
 
 	def __destroy(self):

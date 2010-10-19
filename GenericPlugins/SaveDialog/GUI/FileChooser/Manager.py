@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		from Initializer import Initializer
 		Initializer(manager, editor)
 		from FolderChanger import Changer
@@ -12,4 +11,3 @@ class Manager(object):
 #		Loader(manager, editor)
 		from ActivatorHandler import Handler
 		Handler(manager, editor)
-		editor.response()

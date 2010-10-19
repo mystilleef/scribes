@@ -10,7 +10,6 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		editor.response()
 		GObject.__init__(self)
 		self.__init_attributes(editor)
 		from BusyManager import Manager
@@ -25,7 +24,6 @@ class Manager(GObject):
 		Updater(self, editor)
 		from Window import Window
 		Window(self, editor)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__glade = editor.get_glade_object(globals(), "MessageWindow.glade", "Window")

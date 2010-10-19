@@ -6,7 +6,6 @@ get_offset_at_mark = lambda _buffer, mark: _buffer.get_iter_at_mark(mark).get_of
 class Navigator(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -14,7 +13,6 @@ class Navigator(SignalManager):
 		self.connect(manager, "select-next-match", self.__next_cb)
 		self.connect(manager, "select-previous-match", self.__previous_cb)
 		self.connect(manager, "reset", self.__reset_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -52,7 +50,6 @@ class Navigator(SignalManager):
 		pappend = lambda mark: self.__prev_queue.appendleft(mark)
 		nappend = lambda mark: self.__next_queue.append(mark)
 		for marks in self.__marks:
-			self.__editor.response()
 			mark = marks[1]
 			pappend(marks) if cursor_offset > get_offset_at_mark(self.__buffer, mark) else nappend(marks)
 		if direction == "next":

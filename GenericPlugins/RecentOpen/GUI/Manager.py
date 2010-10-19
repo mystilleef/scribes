@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		from TreeView.Manager import Manager
 		Manager(manager, editor)
 		from Entry import Entry
@@ -10,4 +9,3 @@ class Manager(object):
 		Label(manager, editor)
 		from Window import Window
 		Window(manager, editor)
-		editor.refresh(False)

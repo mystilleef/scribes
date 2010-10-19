@@ -3,7 +3,6 @@ from gettext import gettext as _
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("selected-mark", self.__selected_mark_cb)
@@ -17,7 +16,6 @@ class Manager(object):
 		self.__sigid10 = manager.connect("match-object", self.__match_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -59,7 +57,6 @@ class Manager(object):
 		start = self.__editor.textbuffer.get_iter_at_mark(marks[0])
 		self.__editor.textbuffer.insert(start, self.__string)
 		self.__editor.textbuffer.end_user_action()
-		self.__editor.response()
 		self.__editor.textview.window.thaw_updates()
 		self.__manager.emit("replaced-mark", marks)
 		if feedback: message = _("Replaced '%s' with '%s'") % (self.__search_string, self.__string)

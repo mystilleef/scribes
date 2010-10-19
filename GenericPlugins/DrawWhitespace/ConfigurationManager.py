@@ -1,12 +1,10 @@
 class Manager(object):
 
 	def __init__(self, editor, manager):
-		editor.response()
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__monitor.connect("changed", self.__changed_cb)
 		self.__send_show_signal()
-		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

@@ -23,7 +23,6 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor, uri, encoding):
-		editor.response()
 		GObject.__init__(self)
 		from Destroyer import Destroyer
 		Destroyer(self, editor)
@@ -47,4 +46,3 @@ class Manager(GObject):
 		Checker(self, editor)
 		from Initializer import Initializer
 		Initializer(self, editor, uri, encoding)
-		editor.response()

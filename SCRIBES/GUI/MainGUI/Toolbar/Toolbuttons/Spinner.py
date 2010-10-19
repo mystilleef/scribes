@@ -3,7 +3,6 @@ from gtk import ToolItem
 class Spinner(ToolItem):
 
 	def __init__(self, editor):
-		editor.response()
 		ToolItem.__init__(self)
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
@@ -15,7 +14,6 @@ class Spinner(ToolItem):
 		self.__set_properties()
 		self.show_all()
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -50,16 +48,13 @@ class Spinner(ToolItem):
 		return
 
 	def __start(self):
-		self.__editor.response()
 		self.__call_count += 1
 		if self.__is_spinning: return
 		self.__is_spinning = True
 		self.__image.set_from_animation(self.__animation)
-		self.__editor.response()
 		return
 
 	def __stop(self):
-		self.__editor.response()
 		if self.__is_spinning is False: return
 		self.__call_count -= 1
 		if self.__call_count: return
@@ -67,7 +62,6 @@ class Spinner(ToolItem):
 		self.__call_count = 0
 		self.__image.clear()
 		self.__image.set_from_pixbuf(self.__pixbuf)
-		self.__editor.response()
 		return
 
 	def __quit_cb(self, *args):

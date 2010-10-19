@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		from GUI.Manager import Manager
 		Manager(manager, editor)
 		from PostImportSelector import Selector
@@ -14,4 +13,3 @@ class Manager(object):
 		Importer(manager, editor)
 		from XMLTemplateValidator import Validator
 		Validator(manager, editor)
-		editor.response()

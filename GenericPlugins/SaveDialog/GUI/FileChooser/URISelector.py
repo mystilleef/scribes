@@ -1,12 +1,10 @@
 class Selector(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__select()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect_after("show", self.__show_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -16,7 +14,6 @@ class Selector(object):
 
 	def __select(self):
 		try:
-			self.__editor.response()
 			if not self.__editor.uri: raise ValueError
 			from gio import File 
 			gfile = File(self.__editor.uri)
@@ -28,8 +25,6 @@ class Selector(object):
 		except ValueError:
 			self.__chooser.set_current_name(_("Unsaved Document"))
 			self.__chooser.set_current_folder(self.__editor.desktop_folder)
-		finally:
-			self.__editor.response()
 		return False
 
 	def __destroy(self):

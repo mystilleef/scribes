@@ -3,14 +3,12 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Selector(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "inserted-text", self.__insert_cb, True)
 		self.connect(manager, "offsets", self.__offsets_cb)
 		self.connect(manager, "indentation", self.__indentation_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

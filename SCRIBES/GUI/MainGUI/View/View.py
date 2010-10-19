@@ -1,7 +1,6 @@
 class View(object):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
 		self.__add_view_to_scroll()
 		self.__set_properties()
@@ -10,7 +9,6 @@ class View(object):
 		self.__sigid3 = editor.connect_after("load-error", self.__update_cb)
 		self.__sigid4 = editor.connect("renamed-file", self.__update_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -29,7 +27,6 @@ class View(object):
 		return False
 
 	def __set_properties(self):
-		self.__editor.response()
 		from gtk import DEST_DEFAULT_ALL
 		targets = [("text/uri-list", 0, 80)]
 		from gtk.gdk import ACTION_COPY, BUTTON1_MASK, ACTION_DEFAULT
@@ -49,11 +46,9 @@ class View(object):
 		self.__view.set_property("smart-home-end", SMART_HOME_END_BEFORE)
 		self.__update_view()
 		self.__view.set_property("sensitive", True)
-		self.__editor.response()
 		return False
 
 	def __update_view(self):
-		self.__editor.response()
 		language = self.__editor.language
 		language = language	if language else "plain text"
 		from SCRIBES.TabWidthMetadata import get_value as tab_width
@@ -72,17 +67,12 @@ class View(object):
 		from SCRIBES.TextWrappingMetadata import get_value as wrap_mode_bool
 		wrap_mode = self.__view.set_wrap_mode
 		wrap_mode(WRAP_WORD_CHAR) if wrap_mode_bool(language) else wrap_mode(WRAP_NONE)
-		self.__editor.response()
 		return False
 
 	def __add_view_to_scroll(self):
-		self.__editor.response()
 		swin = self.__editor.gui.get_widget("ScrolledWindow")
-		self.__editor.response()
 		swin.add(self.__view)
-		self.__editor.response()
 		swin.show_all()
-		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

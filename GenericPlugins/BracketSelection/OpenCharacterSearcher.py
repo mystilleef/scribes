@@ -3,12 +3,10 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Searcher(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "find-open-character", self.__find_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -35,7 +33,6 @@ class Searcher(SignalManager):
 		return False
 
 	def __get_backward_character(self, search_iterator):
-		self.__editor.response()
 		from Exceptions import NoPairCharacterFound
 		result = search_iterator.backward_char()
 		if result is False: raise NoPairCharacterFound

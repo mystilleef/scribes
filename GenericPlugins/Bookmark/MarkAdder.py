@@ -3,13 +3,11 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Adder(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "add", self.__add_cb)
 		self.connect(manager, "bookmark-lines", self.__lines_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -22,11 +20,9 @@ class Adder(SignalManager):
 		return False
 
 	def __mark(self, line):
-		self.__editor.response()
 		iterator = self.__editor.textbuffer.get_iter_at_line(line)
 		from Utils import BOOKMARK_NAME
 		self.__editor.textbuffer.create_source_mark(None, BOOKMARK_NAME, iterator)
-		self.__editor.response()
 		return False
 
 	def __update(self, lines):

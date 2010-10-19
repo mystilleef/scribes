@@ -4,7 +4,6 @@ indexer_dbus_path = "/org/sourceforge/ScribesWordCompletionIndexer"
 class Communicator(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("extracted-text", self.__extract_text_cb)
@@ -17,7 +16,6 @@ class Communicator(object):
 		editor.session_bus.add_signal_receiver(self.__finished_cb,
 						signal_name="finished",
 						dbus_interface=indexer_dbus_service)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

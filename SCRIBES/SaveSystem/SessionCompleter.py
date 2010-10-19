@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Completer(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
@@ -11,7 +10,6 @@ class Completer(SignalManager):
 		self.connect(manager, "save-succeeded", self.__data_cb)
 		self.connect(manager, "save-failed", self.__data_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

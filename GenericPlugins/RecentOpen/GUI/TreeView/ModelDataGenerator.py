@@ -6,12 +6,10 @@ TEMPLATE = "<big><b>%s</b></big>\n<span foreground='dark grey'><i>in</i></span> 
 class Generator(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor, manager)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "filtered-data", self.__data_cb)
-		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
@@ -25,7 +23,6 @@ class Generator(SignalManager):
 		return False
 
 	def __format(self, data):
-		self.__editor.refresh(False)
 		file_path, icon, display_name, display_path, modified, location, filetype, uri = data
 		display_info = TEMPLATE % (display_name, display_path, modified, location, filetype)
 		return icon, display_info, uri

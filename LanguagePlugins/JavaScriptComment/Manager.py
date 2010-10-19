@@ -3,7 +3,6 @@ from Signals import Signal
 class Manager(Signal):
 
 	def __init__(self, editor):
-		editor.response()
 		Signal.__init__(self)
 		from FeedbackManager import Manager
 		Manager(self, editor)
@@ -23,7 +22,6 @@ class Manager(Signal):
 		Marker(self, editor)
 		from MarkProcessor import Processor
 		Processor(self, editor)
-		editor.response()
 
 	def destroy(self):
 		self.emit("destroy")

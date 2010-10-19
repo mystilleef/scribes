@@ -2,7 +2,6 @@ class Initializer(object):
 
 	def __init__(self, editor, manager, uri, encoding):
 		editor.set_data("InstanceManager", manager)
-		editor.response()
 		from UniqueStampGenerator import Generator
 		Generator(editor)
 		from RegistrationManager import Manager
@@ -50,4 +49,3 @@ class Initializer(object):
 		Initializer(editor, uri)
 		from URILoader.Manager import Manager
 		Manager(editor, uri, encoding)
-		editor.response()

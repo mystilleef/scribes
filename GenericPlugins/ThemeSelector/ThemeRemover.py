@@ -3,12 +3,10 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Remover(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor, manager)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "remove-scheme", self.__remove_cb)
-		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

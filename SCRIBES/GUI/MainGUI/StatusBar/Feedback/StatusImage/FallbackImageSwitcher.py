@@ -6,7 +6,6 @@ class Switcher(object):
 		self.__sigid2 = manager.connect("fallback", self.__fallback_cb)
 		self.__sigid3 = manager.connect("busy", self.__busy_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

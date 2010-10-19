@@ -1,7 +1,6 @@
 class Updater(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("new-template-data", self.__data_cb)
@@ -9,7 +8,6 @@ class Updater(object):
 		self.__sigid4 = manager.connect("remove-template-data", self.__remove_data_cb)
 		self.__sigid5 = manager.connect("new-imported-templates", self.__imported_cb)
 		self.__emit_new_dictionary_signal()
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor

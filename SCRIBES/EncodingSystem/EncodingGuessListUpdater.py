@@ -1,13 +1,11 @@
 class Updater(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("loaded-file", self.__update_cb)
 		self.__sigid3 = editor.connect("renamed-file", self.__update_cb)
 		self.__sigid4 = editor.connect("update-encoding-guess-list", self.__update_cb)
-		editor.response()
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):

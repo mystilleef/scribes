@@ -1,13 +1,11 @@
 class Updater(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = manager.connect("model-data", self.__model_cb)
 		self.__sigid3 = manager.connect("encoding-list", self.__encodings_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -28,7 +26,6 @@ class Updater(object):
 	def __populate(self, data):
 		self.__view.set_model(None)
 		for active, encoding, language in data:
-			self.__editor.response()
 			self.__model.append([False, encoding, language])
 		self.__view.set_model(self.__model)
 		return False
@@ -36,7 +33,6 @@ class Updater(object):
 	def __update(self, encodings):
 		self.__view.set_model(None)
 		for row in xrange(len(self.__model)):
-			self.__editor.response()
 			treemodelrow = self.__model[row]
 			value = True if treemodelrow[1] in encodings else False
 			treemodelrow[0] = value

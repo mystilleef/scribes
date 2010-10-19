@@ -18,7 +18,6 @@ class Manager(object):
 	def __backward_to_line_begin(self, iterator):
 		if iterator.starts_line(): return iterator
 		while True:
-			self.__editor.response()
 			iterator.backward_char()
 			if iterator.starts_line(): break
 		return iterator
@@ -45,7 +44,6 @@ class Manager(object):
 		begin = self.__backward_to_line_begin(iterator)
 		iterator = begin.copy()
 		while True:
-			self.__editor.response()
 			if not (begin.get_char() in (" ", "\t")): break
 			begin.forward_char()
 		whitespaces = self.__editor.textbuffer.get_text(iterator, begin)

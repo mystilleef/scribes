@@ -7,7 +7,6 @@ class Switcher(object):
 		self.__sigid3 = editor.connect("loaded-file", self.__loaded_cb)
 		self.__sigid4 = editor.connect("load-error", self.__error_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

@@ -9,20 +9,14 @@ long_description = """Open recent files as quickly as possible via a search inte
 class RecentOpenPlugin(object):
 
 	def __init__(self, editor):
-		editor.refresh()
 		self.__editor = editor
 		self.__trigger = None
-		editor.refresh()
 		
 	def load(self):
-		self.__editor.refresh()
 		from RecentOpen.Trigger import Trigger
 		self.__trigger = Trigger(self.__editor)
-		self.__editor.refresh()
 		return
 
 	def unload(self):
-		self.__editor.refresh()
 		self.__trigger.destroy()
-		self.__editor.refresh()
 		return

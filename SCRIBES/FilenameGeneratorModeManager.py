@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, editor, uri):
-		editor.response()
 		self.__init_attributes(editor)
 		set_data = lambda generate: editor.set_data("generate_filename", generate)
 		set_data(False) if uri else set_data(True)
@@ -11,7 +10,6 @@ class Manager(object):
 		self.__sigid4 = editor.connect("rename-file", self.__checking_file_cb)
 		self.__sigid5 = editor.connect("quit", self.__quit_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

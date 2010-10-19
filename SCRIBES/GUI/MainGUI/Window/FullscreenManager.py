@@ -1,12 +1,10 @@
 class Manager(object):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("fullscreen", self.__fullscreen_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -22,10 +20,8 @@ class Manager(object):
 		return False
 
 	def __activate(self, fullscreen):
-		self.__editor.refresh()
 		self.__window.fullscreen() if fullscreen else self.__window.unfullscreen()
 		self.__editor.move_view_to_cursor(True)
-		self.__editor.refresh()
 		return False
 
 	def __quit_cb(self, *args):

@@ -4,7 +4,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class FileChooser(SignalManager):
 
 	def __init__(self, editor, manager):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
@@ -14,7 +13,6 @@ class FileChooser(SignalManager):
 		self.connect(manager, "activate-chooser", self.__load_schemes_cb)
 		self.connect(manager, "show-chooser", self.__show_cb)
 		self.__chooser.set_property("sensitive", True)
-		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
 		self.__manager = manager

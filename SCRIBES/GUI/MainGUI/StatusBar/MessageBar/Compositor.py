@@ -47,7 +47,6 @@ class Compositor(SignalManager):
 		from cairo import OPERATOR_OVER
 		cr.set_operator(OPERATOR_OVER)
 		cr.paint_with_alpha(0.9)
-		self.__editor.refresh()
 		return False
 
 	def __bar_expose_cb(self, bar, event):

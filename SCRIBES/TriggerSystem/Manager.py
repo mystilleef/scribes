@@ -12,7 +12,6 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		editor.response()
 		GObject.__init__(self)
 		from Bindings.Manager import Manager
 		Manager(editor)
@@ -28,4 +27,3 @@ class Manager(GObject):
 		Remover(self, editor)
 		from Validator import Validator
 		Validator(self, editor)
-		editor.response()

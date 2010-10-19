@@ -5,7 +5,6 @@ from gettext import gettext as _
 class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
@@ -19,7 +18,6 @@ class Trigger(SignalManager, TriggerManager):
 		self.connect(self.__trigger8, "activate", self.__activate_cb)
 		self.connect(self.__trigger9, "activate", self.__activate_cb)
 		self.connect(self.__trigger10, "activate", self.__activate_cb)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

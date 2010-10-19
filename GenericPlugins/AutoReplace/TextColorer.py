@@ -4,14 +4,12 @@ message = _("Abbreviation highlighted")
 class Colorer(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("match-found", self.__found_cb)
 		self.__sigid3 = manager.connect("no-match-found", self.__nofound_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -59,7 +57,6 @@ class Colorer(object):
 		self.__uncolor()
 		start = self.__editor.cursor.copy()
 		for value in xrange(len(word)): 
-			self.__editor.response()
 			start.backward_char()
 		self.__editor.textbuffer.apply_tag(self.__tag, start, self.__editor.cursor)
 		self.__is_colored = True

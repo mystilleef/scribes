@@ -1,14 +1,12 @@
 class Activator(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("trigger", self.__activate_cb)
 		self.__sigid3 = manager.connect("add", self.__add_cb)
 		self.__sigid4 = manager.connect("remove", self.__remove_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -28,14 +26,11 @@ class Activator(object):
 		return False
 
 	def __add(self, trigger):
-		self.__editor.response()
 		self.__dictionary[trigger.name] = trigger
-		self.__editor.response()
 		return False
 
 	def __remove(self, trigger):
 		try:
-			self.__editor.response()
 			name = trigger.name
 			trigger.destroy()
 			del trigger
@@ -44,13 +39,10 @@ class Activator(object):
 			print "Error: Trigger named %s not found" % name
 		finally:
 			if not self.__dictionary: self.__manager.emit("triggers-cleared")
-			self.__editor.response()
 		return False
 
 	def __activate(self, name):
-		self.__editor.response()
 		self.__dictionary[name].activate()
-		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

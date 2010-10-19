@@ -1,7 +1,6 @@
 class Reseter(object):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("checking-file", self.__reset_cb)
@@ -9,7 +8,6 @@ class Reseter(object):
 		self.__sigid4 = editor.connect("load-error", self.__reset_cb)
 		self.__sigid5 = editor.connect("saved-file", self.__reset_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

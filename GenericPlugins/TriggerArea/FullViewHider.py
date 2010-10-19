@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Hider(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -12,7 +11,6 @@ class Hider(SignalManager):
 		self.__sigid2 = self.connect(editor.textview, "button-press-event", self.__generic_hide_cb)
 		self.__sigid3 = self.connect(editor.textbuffer, "changed", self.__generic_hide_cb)
 		self.__block()
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

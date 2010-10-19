@@ -4,14 +4,12 @@ from Utils import MARK_NAME
 class Handler(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "toggle-edit-point", self.__toggle_cb)
 		self.connect(manager, "add-edit-point", self.__add_cb)
 		self.connect(manager, "remove-edit-point", self.__remove_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -46,10 +44,8 @@ class Handler(SignalManager):
 		if self.__edit_point_exists(): return False
 		from time import time
 		name = MARK_NAME + str(time())
-		self.__editor.response()
 		mark = self.__buffer.create_mark(name, self.__editor.cursor)
 		mark.set_visible(True)
-		self.__editor.response()
 		self.__manager.emit("add-mark", mark)
 		return False
 
@@ -59,9 +55,7 @@ class Handler(SignalManager):
 		self.__manager.emit("remove-mark", edit_points)
 		from Utils import delete_mark
 		from copy import copy
-		self.__editor.response()
 		[delete_mark(self.__buffer, mark) for mark in copy(edit_points)]
-		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):

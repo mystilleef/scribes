@@ -9,14 +9,12 @@ FAIL_MESSAGE = _("No brackets found")
 class Feedback(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "select-offsets", self.__select_cb, True)
 		self.connect(manager, "no-pair-character-found", self.__no_cb, True)
 		self.connect(manager, "undo-selection", self.__undo_cb, True)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

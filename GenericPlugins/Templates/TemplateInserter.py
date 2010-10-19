@@ -1,7 +1,6 @@
 class Inserter(object):
 
 	def __init__(self, editor, manager):
-		editor.response()
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("loaded-language-templates", self.__loaded_language_templates_cb)
@@ -12,7 +11,6 @@ class Inserter(object):
 		self.__sigid7 = manager.connect("reformat-template", self.__reformat_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
-		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
@@ -62,7 +60,6 @@ class Inserter(object):
 		return "".join(tab_indented_lines)
 
 	def __spaces_to_tabs(self, line, tab_width):
-		self.__editor.response()
 		if line[0] != " ": return line
 		indentation_width = self.__get_indentation_width(line)
 		if indentation_width < tab_width: return line
@@ -70,7 +67,6 @@ class Inserter(object):
 		return indentation + line[indentation_width:]
 
 	def __get_indentation_width(self, line):
-		self.__editor.response()
 		from itertools import takewhile
 		is_space = lambda character: character == " "
 		return len([space for space in takewhile(is_space, line)])
@@ -104,9 +100,7 @@ class Inserter(object):
 		return
 
 	def __place_template_in_buffer_callback(self):
-		self.__editor.refresh()
 		self.__editor.textview.window.freeze_updates()
-		self.__editor.response()
 		template = self.__get_template()
 		self.__remove_trigger()
 		start = self.__editor.create_left_mark()
@@ -115,9 +109,7 @@ class Inserter(object):
 		self.__editor.textview.scroll_mark_onscreen(end)
 		self.__expand_special_placeholders(template, start, end)
 		self.__mark_placeholders(template, start, end)
-		self.__editor.response()
 		self.__editor.textview.window.thaw_updates()
-		self.__editor.refresh()
 		return False
 
 	def __expand_special_placeholders(self, template, mstart, end):
@@ -130,7 +122,6 @@ class Inserter(object):
 		mark = self.__editor.create_right_mark()
 		start = buffer_.get_iter_at_mark(mstart)
 		for placeholder in placeholders:
-			self.__editor.response()
 			epos = buffer_.get_iter_at_mark(end)
 			begin, end_ = start.forward_search(placeholder, TEXT_SEARCH_VISIBLE_ONLY, epos)
 			buffer_.place_cursor(begin)
@@ -140,7 +131,6 @@ class Inserter(object):
 			buffer_.move_mark(mark, cursor_position)
 			buffer_.insert_at_cursor(nplaceholder)
 			start = buffer_.get_iter_at_mark(mark)
-			self.__editor.response()
 		self.__editor.delete_mark(mark)
 		return
 
@@ -156,7 +146,6 @@ class Inserter(object):
 		from collections import deque
 		placeholder_marks = deque([])
 		for placeholder in placeholders:
-			self.__editor.response()
 			epos = buffer_.get_iter_at_mark(mend)
 			begin, end_ = start.forward_search(placeholder, TEXT_SEARCH_VISIBLE_ONLY, epos)
 			buffer_.place_cursor(begin)
@@ -180,7 +169,6 @@ class Inserter(object):
 			buffer_.insert_at_cursor(nplaceholder)
 			self.__manager.emit("tag-placeholder", pmark)
 			start = buffer_.get_iter_at_mark(mark)
-			self.__editor.response()
 		self.__editor.delete_mark(mark)
 		self.__manager.emit("activate-template-mode")
 		self.__manager.emit("template-boundaries", (mstart, mend))

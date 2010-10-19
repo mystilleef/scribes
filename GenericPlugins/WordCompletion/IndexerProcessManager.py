@@ -4,7 +4,6 @@ indexer_dbus_path = "/org/sourceforge/ScribesWordCompletionIndexer"
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		editor.session_bus.add_signal_receiver(self.__name_change_cb,
@@ -15,7 +14,6 @@ class Manager(object):
 						arg0=indexer_dbus_service)
 		from gobject import timeout_add
 		timeout_add(2000, self.__start, priority=99999)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		from os.path import join, split

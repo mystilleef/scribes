@@ -1,12 +1,10 @@
 class Aggregator(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("current-path", self.__path_cb)
 		self.__sigid3 = manager.connect("folder-and-fileinfos", self.__fileinfos_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -25,14 +23,12 @@ class Aggregator(object):
 		return False
 
 	def __get_uri(self, folder, fileinfo):
-		self.__editor.response()
 		from gio import File 
 		from os.path import join
 		path = join(File(folder).get_path(), fileinfo.get_name())
 		return File(path).get_uri()
 
 	def __update_afiles(self, afiles, folder, fileinfos):
-		self.__editor.response()
 		uris = [self.__get_uri(folder, fileinfo) for fileinfo in fileinfos]
 		[afiles.append(_file) for _file in uris]
 		return False
@@ -44,12 +40,10 @@ class Aggregator(object):
 		return False
 
 	def __update_folder_and_files(self, fileinfo, _folders, _files):
-		self.__editor.response()
 		_files.append(fileinfo) if fileinfo.get_file_type() == 1 else _folders.append(fileinfo)
 		return False
 
 	def __update_files(self, data):
-		self.__editor.response()
 		folder, fileinfos = data
 		_folders = []
 		_files = []
@@ -67,7 +61,6 @@ class Aggregator(object):
 		return False
 
 	def __send_to_fileinfo_processor(self, folder):
-		self.__editor.response()
 		self.__folders.append(folder)
 		self.__manager.emit("get-fileinfos", folder)
 		return False

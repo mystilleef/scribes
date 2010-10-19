@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Handler(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -11,7 +10,6 @@ class Handler(SignalManager):
 		self.connect(manager, "shift-up-key-press", self.__shift_up_cb)
 		self.connect(manager, "down-key-press", self.__down_cb)
 		self.connect(manager, "shift-down-key-press", self.__shift_down_cb)
-		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

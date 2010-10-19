@@ -1,7 +1,6 @@
 class Switcher(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid4 = manager.connect("found-matches", self.__found_matches_cb)
@@ -9,7 +8,6 @@ class Switcher(object):
 		self.__sigid3 = manager.connect("reset", self.__reset_cb)
 		self.__sigid5 = manager.connect("hide-bar", self.__reset_cb)
 		self.__sigid6 = manager.connect("search-string", self.__reset_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -47,11 +45,9 @@ class Switcher(object):
 		return
 
 	def __show_button(self, button):
-		self.__editor.response()
 		self.__hide_buttons()
 		button.show()
 		self.__manager.set_data("activate_button", button)
-		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):

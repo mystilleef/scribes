@@ -3,14 +3,12 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Collector(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(self.__recent_manager, "changed", self.__changed_cb)
 		from gobject import idle_add
 		idle_add(self.__filter, priority=9999)
-		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -26,15 +24,12 @@ class Collector(SignalManager):
 		return False
 
 	def __is_scribes_resource(self, info):
-		self.__editor.refresh(False)
 		return info.has_application("scribes")
 
 	def __resource_exists(self, info):
-		self.__editor.refresh(False)
 		return info.exists()
 
 	def __compare(self, x, y):
-		self.__editor.refresh(False)
 		return cmp(x.get_modified(), y.get_modified())
 
 	def __filter(self):

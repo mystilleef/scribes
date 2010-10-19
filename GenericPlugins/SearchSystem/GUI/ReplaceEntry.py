@@ -1,7 +1,6 @@
 class Entry(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("hide-bar", self.__reset_cb)
@@ -15,7 +14,6 @@ class Entry(object):
 		self.__sigid10 = self.__entry.connect("changed", self.__changed_cb)
 		self.__sigid11 = manager.connect("show-replacebar", self.__changed_cb)
 		self.__sigid12 = manager.connect("no-search-string", self.__reset_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

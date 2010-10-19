@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Navigator(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -13,7 +12,6 @@ class Navigator(SignalManager):
 		self.connect(manager, "inserted-text", self.__clear_cb)
 		self.connect(manager, "clear", self.__clear_cb)
 		self.connect(manager, "column-mode-reset", self.__clear_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -31,7 +29,6 @@ class Navigator(SignalManager):
 		return False
 
 	def __toggle_edit_point(self, direction):
-		self.__editor.response()
 		if self.__direction is None: self.__direction = direction
 		if self.__direction != direction: self.__update_direction(direction)
 		cursor = self.__editor.cursor
@@ -48,21 +45,16 @@ class Navigator(SignalManager):
 		self.__view.scroll_mark_onscreen(self.__buffer.get_insert())
 		if iterator.get_line() == self.__start_line: return False
 		self.__manager.emit("toggle-edit-point")
-		self.__editor.response()
 		return False
 
 	def __update_offset(self, cursor_offset):
-		self.__editor.response()
 		self.__cursor_offset = cursor_offset
 		self.__manager.emit("add-edit-point")
-		self.__editor.response()
 		return False
 
 	def __update_direction(self, direction):
-		self.__editor.response()
 		self.__direction = direction
 		self.__manager.emit("toggle-edit-point")
-		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):

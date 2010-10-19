@@ -1,14 +1,12 @@
 class Creator(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("search-string", self.__search_string_cb)
 		self.__sigid3 = manager.connect("search", self.__search_cb)
 		self.__sigid4 = manager.connect("search-mode-flag", self.__search_mode_cb)
 		self.__sigid5 = manager.connect("match-word-flag", self.__match_word_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

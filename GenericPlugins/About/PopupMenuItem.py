@@ -3,13 +3,11 @@ from gtk import ImageMenuItem
 class PopupMenuItem(ImageMenuItem):
 
 	def __init__(self, editor):
-		editor.response()
 		from gtk import STOCK_ABOUT
 		ImageMenuItem.__init__(self, STOCK_ABOUT)
 		self.__init_attributes(editor)
 		self.set_property("name", "AboutMenuitem")
 		self.__sigid1 = self.connect("activate", self.__activate_cb)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

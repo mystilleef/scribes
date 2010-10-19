@@ -1,7 +1,6 @@
 class Window(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("show-error", self.__show_info_cb)
@@ -11,7 +10,6 @@ class Window(object):
 		self.__sigid6 = self.__window.connect("delete-event", self.__delete_event_cb)
 		self.__sigid7 = self.__window.connect("key-press-event", self.__key_press_event_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__window = manager.gui.get_widget("Window")
@@ -38,15 +36,11 @@ class Window(object):
 		return False
 
 	def __show(self):
-		self.__editor.response()
 		self.__window.show_all()
-		self.__editor.response()
 		return False
 
 	def __hide(self):
-		self.__editor.response()
 		self.__window.hide_all()
-		self.__editor.response()
 		return False
 
 	def __show_cb(self, *args):

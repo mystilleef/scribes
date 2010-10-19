@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Manager(SignalManager):
 
 	def __init__(self, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(editor)
 		self.connect(editor, "fullscreen", self.__fullscreen_cb, True)
@@ -24,7 +23,6 @@ class Manager(SignalManager):
 
 	def __update(self, fullscreen):
 		self.__view.window.freeze_updates()
-		self.__editor.response()
 		self.__view.set_property("show-right-margin", False if fullscreen else self.__margin())
 		self.__view.set_property("show-line-numbers", False if fullscreen else True)
 		self.__view.set_left_margin(self.__adjust_margin() if fullscreen else self.__lmargin)
@@ -36,7 +34,6 @@ class Manager(SignalManager):
 	def __move_view_to_cursor(self):
 		self.__editor.move_view_to_cursor(True)
 		self.__view.window.thaw_updates()
-		self.__editor.response()
 		return False
 
 	def __adjust_margin(self, left=True):

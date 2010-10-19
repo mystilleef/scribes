@@ -1,7 +1,6 @@
 class TreeView(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = self.__view.connect("key-press-event", self.__key_press_event_cb)
@@ -12,7 +11,6 @@ class TreeView(object):
 		self.__sigid5 = manager.connect("show-window", self.__map_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=8888)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -79,14 +77,12 @@ class TreeView(object):
 			self.__treeview.set_model(None)
 			self.__model.clear()
 			for word in matches:
-				self.__editor.response()
 				self.__model.append([word])
 			self.__treeview.set_model(self.__model)
 			if view_window: view_window.thaw_updates()
 			self.__column.queue_resize()
 			self.__treeview.queue_resize()
 			self.__treeview.columns_autosize()
-			self.__editor.response()
 		except ValueError:
 			pass
 		finally:
@@ -158,7 +154,5 @@ class TreeView(object):
 		return False
 
 	def __map_cb(self, *args):
-		self.__editor.response()
 		self.__treeview.columns_autosize()
-		self.__editor.response()
 		return False

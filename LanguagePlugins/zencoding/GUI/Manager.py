@@ -1,13 +1,11 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		from Entry import Entry
 		Entry(manager, editor)
 		from Displayer import Displayer
 		Displayer(manager, editor)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

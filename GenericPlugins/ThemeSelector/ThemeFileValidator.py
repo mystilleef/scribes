@@ -3,12 +3,10 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Validator(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor, manager)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "process-xml-files", self.__process_cb)
-		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
@@ -35,12 +33,10 @@ class Validator(SignalManager):
 		return False
 
 	def __is_xml(self, _file):
-		self.__editor.refresh(False)
 		xml_mime_types = ("application/xml", "text/xml")
 		return self.__editor.get_mimetype(_file) in xml_mime_types
 
 	def __is_color_scheme(self, file_):
-		self.__editor.refresh(False)
 		root_node = self.__get_xml_root_node(file_)
 		if root_node.tag != "style-scheme": return False
 		attribute_names = root_node.keys()
@@ -50,7 +46,6 @@ class Validator(SignalManager):
 
 	def __get_xml_root_node(self, file_):
 		try:
-			self.__editor.refresh(False)
 			from xml.parsers.expat import ExpatError
 			from xml.etree.ElementTree import parse
 			xmlobj = parse(file_)

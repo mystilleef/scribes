@@ -3,13 +3,11 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Changer(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__destroy_cb)
 		self.connect(manager, "bar", self.__bar_cb)
 		self.connect(editor, "syntax-color-theme-changed", self.__changed_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -23,7 +21,6 @@ class Changer(SignalManager):
 		return False
 
 	def __change_color(self):
-		self.__editor.refresh(False)
 		if not self.__bar: return False
 		self.__bar.set_style(None)
 		color = self.__editor.view_bg_color
@@ -32,7 +29,6 @@ class Changer(SignalManager):
 		from gtk import STATE_NORMAL
 		style.bg[STATE_NORMAL] = color
 		self.__bar.set_style(style)
-		self.__editor.refresh(False)
 		return False
 
 	def __destroy_cb(self, *args):

@@ -1,7 +1,6 @@
 class Switcher(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = manager.connect("set", self.__set_cb)
@@ -9,7 +8,6 @@ class Switcher(object):
 		self.__sigid4 = manager.connect("reset", self.__reset_cb)
 		self.__sigid5 = manager.connect("busy", self.__busy_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

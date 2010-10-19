@@ -3,7 +3,6 @@ from gtk import ToolButton
 class Button(ToolButton):
 
 	def __init__(self, editor):
-		editor.response()
 		ToolButton.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -11,7 +10,6 @@ class Button(ToolButton):
 		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
 		self.show()
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -41,7 +39,5 @@ class Button(ToolButton):
 		return False
 
 	def __clicked_cb(self, *args):
-		self.__editor.response()
 		self.__editor.trigger("show-replacebar")
-		self.__editor.response()
 		return False

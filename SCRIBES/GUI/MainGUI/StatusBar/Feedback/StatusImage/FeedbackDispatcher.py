@@ -7,7 +7,6 @@ class Dispatcher(object):
 		self.__sigid3 = editor.connect("set-message", self.__set_cb)
 		self.__sigid4 = editor.connect("unset-message", self.__unset_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

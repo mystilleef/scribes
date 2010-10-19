@@ -4,7 +4,6 @@ from SCRIBES.Globals import SCRIBES_SAVE_PROCESS_DBUS_SERVICE
 class Sender(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
@@ -12,7 +11,6 @@ class Sender(SignalManager):
 		self.connect(manager, "save-data", self.__data_cb)
 		self.connect(manager, "save-processor-object", self.__processor_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

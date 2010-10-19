@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("ready", self.__update_cb)
@@ -10,7 +9,6 @@ class Manager(object):
 		self.__set()
 		self.__update_search_path()
 		self.__editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -44,9 +42,7 @@ class Manager(object):
 		search_paths = self.__manager.get_search_path()
 		if gedit_path and not (gedit_path in search_paths): self.__manager.prepend_search_path(gedit_path)
 		if scribes_path and not (scribes_path in search_paths): self.__manager.prepend_search_path(scribes_path)
-		self.__editor.response()
 		self.__manager.force_rescan()
-		self.__editor.response()
 		return
 
 	def __quit_cb(self, *args):

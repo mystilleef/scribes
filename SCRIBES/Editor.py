@@ -91,19 +91,14 @@ class Editor(Signals):
 
 	def optimize(self, functions):
 		try:
-			self.response()
 			from psyco import bind
 			for function in functions:
-				self.response()
 				bind(function)
 		except ImportError:
 			pass
-		finally:
-			self.response()
 		return False
 
 	def help(self):
-		self.response()
 		uri = "ghelp:scribes"
 		from gtk import show_uri, get_current_event_time
 		result = show_uri(self.window.get_screen(), uri, get_current_event_time())
@@ -113,18 +108,14 @@ class Editor(Signals):
 		return
 
 	def new(self):
-		self.response()
 		return self.imanager.open_files()
 
 	def shutdown(self):
-		self.response()
 		self.close()
-		self.response()
 		return self.imanager.close_all_windows()
 
 	def close(self, save_first=True):
 		try:
-			self.response()
 			if save_first and self.generate_filename: raise ValueError
 		except ValueError:
 			# Don't save document if buffer contains only whitespaces.
@@ -133,7 +124,6 @@ class Editor(Signals):
 			save_first = False if document_is_empty else True
 		finally:
 			self.emit("close", save_first)
-			self.response()
 		return False
 
 	def fullscreen(self, value=True):
@@ -167,59 +157,42 @@ class Editor(Signals):
 		return
 
 	def load_file(self, uri, encoding, readonly=False):
-		self.response()
 		self.emit("load-file", uri, encoding)
-		self.response()
 		return False
 
 	def open_file(self, uri, encoding="utf8"):
-		self.response()
 		self.imanager.open_files([uri], encoding)
-		self.response()
 		return
 
 	def open_files(self, uris, encoding="utf8"):
-		self.response()
 		self.imanager.open_files(uris, encoding)
-		self.response()
 		return
 
 	def focus_file(self, uri):
-		self.response()
 		self.imanager.focus_file(uri)
-		self.response()
 		return
 
 	def focus_by_id(self, id_):
-		self.response()
 		self.imanager.focus_by_id(id_)
-		self.response()
 		return
 
 	def close_file(self, uri):
-		self.response()
 		self.imanager.close_files([uri])
-		self.response()
 		return
 
 	def close_files(self, uris):
-		self.response()
 		self.imanager.close_files(uris)
-		self.response()
 		return
 
 	def create_uri(self, uri, exclusive=True):
-		self.response()
 		from Utils import create_uri
 		return create_uri(uri, exclusive)
 
 	def remove_uri(self, uri):
-		self.response()
 		from Utils import remove_uri
 		return remove_uri(uri)
 
 	def create_image(self, path):
-		self.response()
 		from Utils import create_image
 		return create_image(path)
 
@@ -240,12 +213,10 @@ class Editor(Signals):
 		return False
 
 	def calculate_resolution_independence(self, window, width, height):
-		self.response()
 		from Utils import calculate_resolution_independence
 		return calculate_resolution_independence(window, width, height)
 
 	def disconnect_signal(self, sigid, instance):
-		self.response()
 		from Utils import disconnect_signal
 		return disconnect_signal(sigid, instance)
 
@@ -254,18 +225,11 @@ class Editor(Signals):
 
 	def move_view_to_cursor(self, align=False, iterator=None):
 		if iterator is None: iterator = self.cursor
-		self.response()
 		self.textview.scroll_to_iter(iterator, 0.001, use_align=align, xalign=1.0)
-		self.response()
 		return False
 
 	def response(self):
-		from gtk import events_pending, main_iteration
-		while events_pending(): main_iteration(False)
 		return False
-
-#	def response(self):
-#		return self.imanager.response()
 
 	def busy(self, busy=True):
 		self.emit("private-busy", busy)
@@ -313,14 +277,12 @@ class Editor(Signals):
 	def get_toolbutton(self, name):
 		toolbutton = None
 		for toolbutton in self.toolbar.get_children():
-			self.response()
 			if name != toolbutton.get_property("name"): continue
 			toolbutton = toolbutton
 			break
 		return toolbutton
 
 	def get_indentation(self, iterator=None):
-		self.response()
 		if iterator is None: iterator = self.cursor.copy()
 		start = self.backward_to_line_begin(iterator.copy())
 		if start.is_end() or start.ends_line(): return ""
@@ -347,10 +309,8 @@ class Editor(Signals):
 		return forward_to_line_end(iterator.copy())
 
 	def create_trigger(self, name, accelerator="", description="", category="", error=True, removable=True):
-		self.response()
 		from Trigger import Trigger
 		trigger = Trigger(self, name, accelerator, description, category, error, removable)
-		self.response()
 		return trigger
 
 	def trigger(self, name):
@@ -374,7 +334,6 @@ class Editor(Signals):
 		return False
 
 	def select_row(self, treeview):
-		self.response()
 		from Utils import select_row
 		return select_row(treeview)
 
@@ -397,14 +356,12 @@ class Editor(Signals):
 		return
 
 	def inside_word(self, iterator=None, pattern=None):
-		self.response()
 		if iterator is None: iterator = self.cursor
 		if pattern is None: pattern = self.word_pattern
 		from Word import inside_word
 		return inside_word(iterator, pattern)
 
 	def is_empty_line(self, iterator=None):
-		self.response()
 		if iterator is None: iterator = self.cursor
 		start = self.backward_to_line_begin(iterator)
 		if start.ends_line(): return True
@@ -415,19 +372,16 @@ class Editor(Signals):
 		return True
 
 	def get_line_bounds(self, iterator=None):
-		self.response()
 		if iterator is None: iterator = self.cursor
 		start = self.backward_to_line_begin(iterator)
 		end = self.forward_to_line_end(iterator)
 		return start, end
 
 	def get_line_text(self, iterator=None):
-		self.response()
 		if iterator is None: iterator = self.cursor
 		return self.textbuffer.get_text(*(self.get_line_bounds(iterator)))
 
 	def get_word_boundary(self, iterator=None, pattern=None):
-		self.response()
 		if iterator is None: iterator = self.cursor
 		if pattern is None: pattern = self.word_pattern
 		from Word import get_word_boundary
@@ -439,13 +393,11 @@ class Editor(Signals):
 		return find_matching_bracket(iterator)
 
 	def get_current_folder(self, globals_):
-		self.response()
 		from os.path import split
 		folder = split(globals_["__file__"])[0]
 		return folder
 
 	def uri_is_folder(self, uri):
-		self.response()
 		from Utils import uri_is_folder
 		return uri_is_folder(uri)
 
@@ -458,15 +410,12 @@ class Editor(Signals):
 		return
 
 	def add_shortcut(self, shortcut):
-		self.response()
 		return self.imanager.add_shortcut(shortcut)
 
 	def remove_shortcut(self, shortcut):
-		self.response()
 		return self.imanager.remove_shortcut(shortcut)
 
 	def get_shortcuts(self):
-		self.response()
 		return self.imanager.get_shortcuts()
 
 	def add_to_popup(self, menuitem):
@@ -482,7 +431,6 @@ class Editor(Signals):
 		return False
 
 	def create_menuitem(self, name, stock=None):
-		self.response()
 		from Utils import create_menuitem
 		return create_menuitem(name, stock)
 
@@ -490,7 +438,6 @@ class Editor(Signals):
 		#FIXME: This function will soon be deprecated. It uses glade.
 		# GTKBUILDER should be use instead.get_gui_object uses
 		# GTKBUILDER.
-		self.response()
 		from os.path import join
 		folder = self.get_current_folder(globals_)
 		file_ = join(folder, basepath)
@@ -499,7 +446,6 @@ class Editor(Signals):
 		return glade
 
 	def get_gui_object(self, globals_, basepath):
-		self.response()
 		from os.path import join
 		folder = self.get_current_folder(globals_)
 		file_ = join(folder, basepath)
@@ -513,33 +459,27 @@ class Editor(Signals):
 		return
 
 	def get_selection_range(self):
-		self.response()
 		if self.textbuffer.props.has_selection is False: return 0
 		start, end = self.textbuffer.get_selection_bounds()
 		return (end.get_line() - start.get_line()) + 1
 
 	def get_file_monitor(self, path):
-		self.response()
 		from Utils import get_file_monitor
 		return get_file_monitor(path)
 
 	def get_folder_monitor(self, path):
-		self.response()
 		from Utils import get_folder_monitor
 		return get_folder_monitor(path)
 
 	def monitor_events(self, args, event_types):
-		self.response()
 		from Utils import monitor_events
 		return monitor_events(args, event_types)
 
 	def get_fileinfo(self, path):
-		self.response()
 		from Utils import get_fileinfo
 		return get_fileinfo(path)
 
 	def get_mimetype(self, path):
-		self.response()
 		from Utils import get_mimetype
 		return get_mimetype(path)
 

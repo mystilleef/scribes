@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		from Window import Window
 		Window(manager, editor)
 		from ComboBox import ComboBox
@@ -12,4 +11,3 @@ class Manager(object):
 		Button(manager, editor)
 		from CloseButton import Button
 		Button(manager, editor)
-		editor.response()

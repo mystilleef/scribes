@@ -3,13 +3,11 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Initializer(SignalManager):
 
 	def __init__(self, manager, editor, uri, encoding):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attibutes(manager, editor)
 		self.connect(editor, "load-file", self.__load_file_cb)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		if uri: editor.load_file(uri, encoding)
-		editor.response()
 
 	def __init_attibutes(self, manager, editor):
 		self.__manager = manager

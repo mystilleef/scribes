@@ -11,7 +11,6 @@ class Calculator(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "size", self.__size_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

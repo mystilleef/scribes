@@ -1,14 +1,12 @@
 class Handler(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__add_signals()
 		self.__add_bindings()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = self.__view.connect("enter-press", self.__enter_cb)
 		self.__sigid3 = self.__view.connect("up-press", self.__up_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor

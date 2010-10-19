@@ -1,13 +1,11 @@
 class Remover(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("remove-trigger", self.__trigger_cb)
 		self.__sigid3 = editor.connect("remove-triggers", self.__triggers_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -24,9 +22,7 @@ class Remover(object):
 		return False
 
 	def __remove(self, trigger):
-		self.__editor.response()
 		self.__manager.emit("remove", trigger)
-		self.__editor.response()
 		return False
 
 	def __remove_triggers(self, triggers):

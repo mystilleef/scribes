@@ -18,7 +18,6 @@ class Generator(object):
 		return False
 
 	def __extract(self, _object):
-		self.__editor.response()
 		return _object.get_name(), _object.get_id()
 
 	def __generate(self):

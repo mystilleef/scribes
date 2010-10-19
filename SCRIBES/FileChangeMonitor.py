@@ -4,7 +4,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Monitor(SignalManager):
 
 	def __init__(self, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(editor)
 		self.connect(editor, "quit", self.__quit_cb)
@@ -14,7 +13,6 @@ class Monitor(SignalManager):
 		self.connect(editor, "renamed-file", self.__busy_cb)
 		self.connect(editor, "save-error", self.__error_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

@@ -1,12 +1,10 @@
 class Monitor(object):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
 		editor.set_data("modified", False)
 		self.__sigid1 = editor.connect("modified-file", self.__modified_cb)
 		self.__sigid2 = editor.connect("quit", self.__quit_cb)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

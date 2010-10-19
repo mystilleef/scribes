@@ -3,12 +3,10 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Updater(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "model-data", self.__data_cb)
-		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -24,14 +22,11 @@ class Updater(SignalManager):
 		return False
 
 	def __update(self, data):
-		self.__editor.refresh(False)
 		self.__treeview.set_model(None)
 		self.__model.clear()
 		for icon, info, uri in data:
-			self.__editor.refresh()
 			self.__model.append([icon, info, uri])
 		self.__treeview.set_model(self.__model)
-		self.__editor.refresh(False)
 		self.__manager.emit("updated-model")
 		return False
 

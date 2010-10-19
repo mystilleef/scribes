@@ -1,11 +1,9 @@
 class Changer(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("change-folder", self.__change_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -14,9 +12,7 @@ class Changer(object):
 		return
 
 	def __change(self, uri):
-		self.__editor.response()
 		self.__chooser.set_current_folder_uri(uri)
-		self.__editor.response()
 		return False
 
 	def __destroy(self):

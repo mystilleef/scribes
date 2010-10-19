@@ -4,7 +4,6 @@ from gtk import ImageMenuItem
 class PopupMenuItem(ImageMenuItem):
 
 	def __init__(self, editor):
-		editor.response()
 		ImageMenuItem.__init__(self, _("S_paces"))
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -12,7 +11,6 @@ class PopupMenuItem(ImageMenuItem):
 		self.__sigid2 = self.__menuitem2.connect("activate", self.__activate_cb)
 		self.__sigid3 = self.__menuitem3.connect("activate", self.__activate_cb)
 		self.__sigid4 = self.__view.connect("focus-in-event", self.__destroy_cb)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__view = editor.textview

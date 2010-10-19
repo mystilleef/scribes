@@ -3,13 +3,11 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Filterer(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "recent-infos-data", self.__data_cb)
 		self.connect(manager, "search-pattern", self.__pattern_cb)
-		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -25,13 +23,11 @@ class Filterer(SignalManager):
 		return False
 
 	def __match_in(self, file_path, pattern):
-		self.__editor.refresh()
 		if self.__pattern != pattern: raise StandardError
 		return pattern.lower() in file_path.lower()
 
 	def __filter(self, pattern):
 		try:
-			self.__editor.refresh()
 			if self.__data is None: return False
 			if not pattern: raise ValueError
 			filtered_data =[data for data in self.__data if self.__match_in(data[0], pattern)]
@@ -59,7 +55,6 @@ class Filterer(SignalManager):
 
 	def __pattern_cb(self, manager, pattern):
 		try:
-			self.__editor.refresh(False)
 			self.__pattern = pattern
 			from gobject import idle_add, source_remove
 			source_remove(self.__timer)

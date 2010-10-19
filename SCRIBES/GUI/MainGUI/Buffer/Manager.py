@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, editor):
-		editor.response()
 		from Buffer import Buffer
 		Buffer(editor)
 		from ModificationStateNotifier import Notifier
@@ -22,4 +21,3 @@ class Manager(object):
 		Updater(editor)
 		from ResponsivenessManager import Manager
 		Manager(editor)
-		editor.response()

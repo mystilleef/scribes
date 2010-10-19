@@ -29,7 +29,6 @@ class Updater(object):
 		self.__model.clear()
 		self.__model.append([_("Plain Text"), "plain text"])
 		for language_name, language_id in data:
-			self.__editor.response()
 			self.__model.append([language_name, language_id])
 		self.__combo.set_model(self.__model)
 		self.__manager.emit("updated-language-combobox")

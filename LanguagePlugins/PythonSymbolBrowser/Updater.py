@@ -20,7 +20,6 @@ class Updater(object):
 
 	def __get_symbols(self):
 		try:
-			self.__editor.response()
 			self.__symbols.clear()
 			from compiler import parse
 			parse_tree = parse(self.__editor.text)
@@ -29,17 +28,13 @@ class Updater(object):
 			self.__manager.emit("update", self.__symbols)
 		except SyntaxError:
 			pass
-		finally:
-			self.__editor.response()
 		return False
 
 	def __extract_symbols(self, nodes, depth):
-		self.__editor.response()
 		self.__depth = depth
 		class_flag = False
 		function_flag = False
 		for node in nodes:
-			self.__editor.response()
 			if self.__is_function_node(node):
 				function_flag = True
 				if self.__function_depth:
@@ -58,16 +53,13 @@ class Updater(object):
 			if function_flag: self.__function_depth -= 1
 			class_flag = False
 			function_flag = False
-		self.__editor.response()
 		return
 
 	def __is_function_node(self, node):
-		self.__editor.response()
 		attributes = set(["decorators", "name", "argnames", "defaults", "flags", "doc", "code"])
 		return attributes.issubset(set(dir(node)))
 
 	def __is_class_node(self, node):
-		self.__editor.response()
 		attributes = set(["name", "bases", "doc", "code"])
 		return attributes.issubset(set(dir(node)))
 

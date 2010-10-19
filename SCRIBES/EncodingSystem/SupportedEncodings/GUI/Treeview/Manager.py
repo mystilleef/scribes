@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		from Initializer import Initializer
 		Initializer(manager, editor)
 		from SelectedEncodingsExtractor import Extractor
@@ -12,4 +11,3 @@ class Manager(object):
 		Updater(manager, editor)
 		from ModelDataGenerator import Generator
 		Generator(manager, editor)
-		editor.response()

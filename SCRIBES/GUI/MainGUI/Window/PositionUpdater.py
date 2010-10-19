@@ -1,7 +1,6 @@
 class Updater(object):
 
 	def __init__(self, editor, uri):
-		editor.response()
 		self.__init_attributes(editor, uri)
 		self.__sigid1 = editor.connect("close", self.__close_cb)
 		self.__sigid2 = self.__window.connect("focus-out-event", self.__update_cb)
@@ -12,7 +11,6 @@ class Updater(object):
 		self.__sigid7 = editor.connect_after("loaded-file", self.__loaded_cb)
 #		self.__block_signals()
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor, uri):
 		self.__editor = editor
@@ -30,9 +28,7 @@ class Updater(object):
 		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
 		self.__set_position_in_database()
-		self.__editor.response()
 		self.__window.hide()
-		self.__editor.response()
 		self.__editor.unregister_object(self)
 		del self
 		self = None

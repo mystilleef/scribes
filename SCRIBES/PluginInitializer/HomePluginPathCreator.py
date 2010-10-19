@@ -3,13 +3,11 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Creator(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "create-plugin-path", self.__create_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -24,7 +22,6 @@ class Creator(SignalManager):
 
 	def __create(self, plugin_path):
 		try:
-			self.__editor.response()
 			from os import makedirs, path
 			filename = path.join(plugin_path, "__init__.py")
 			makedirs(plugin_path)
@@ -33,8 +30,6 @@ class Creator(SignalManager):
 			self.__manager.emit("validate-path", plugin_path)
 		except OSError, IOError:
 			self.__manager.emit("plugin-folder-creation-error", plugin_path)
-		finally:
-			self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Window(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor, manager)
 		self.__set_properties()
@@ -13,7 +12,6 @@ class Window(SignalManager):
 		self.connect(manager, "activate", self.__activate_cb)
 		self.connect(self.__window, "delete-event", self.__delete_cb)
 		self.connect(self.__window, "key-press-event", self.__key_cb)
-		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
 		self.__manager = manager

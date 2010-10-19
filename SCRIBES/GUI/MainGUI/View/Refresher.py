@@ -3,14 +3,12 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Refresher(SignalManager):
 
 	def __init__(self, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(editor)
 		self.connect(editor, "post-quit", self.__quit_cb)
 		self.connect(editor, "refresh", self.__refresh_cb, True)
 #		from gobject import idle_add
 #		idle_add(self.__optimize, priority=9999)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -24,13 +22,11 @@ class Refresher(SignalManager):
 
 	def __refresh(self, grab_focus=False):
 		try:
-			self.__editor.response()
 			self.__view.window.process_updates(True)
 		except:
-			self.__editor.response()
+			pass
 		finally:
 			if grab_focus: self.__view.grab_focus()
-			self.__editor.response()
 		return False
 
 	def __optimize(self):

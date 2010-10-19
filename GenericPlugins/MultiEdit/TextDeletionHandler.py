@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Handler(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -14,7 +13,6 @@ class Handler(SignalManager):
 		self.__sigid1 = self.connect(manager, "backspace", self.__backspace_cb)
 		self.__sigid2 = self.connect(manager, "delete", self.__delete_cb)
 		self.__block()
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -35,14 +33,11 @@ class Handler(SignalManager):
 		start = end.copy()
 		result = start.backward_char() if method == "backspace" else start.forward_char()
 		if result is False: return False
-		self.__editor.response()
 		self.__buffer.delete(start, end)
-		self.__editor.response()
 		return False
 
 	def __remove_with(self, method):
 		try:
-			self.__editor.response()
 			if not self.__marks: raise ValueError
 			self.__buffer.begin_user_action()
 			self.__editor.textview.window.freeze_updates()
@@ -51,8 +46,6 @@ class Handler(SignalManager):
 			self.__buffer.end_user_action()
 		except ValueError:
 			self.__manager.emit("no-edit-point-error")
-		finally:
-			self.__editor.response()
 		return False
 
 	def __block(self):

@@ -3,7 +3,6 @@ from Signals import Signal
 class Manager(Signal):
 
 	def __init__(self, editor):
-		editor.refresh()
 		Signal.__init__(self)
 		self.__init_attributes(editor)
 		from Feedback import Feedback
@@ -28,7 +27,6 @@ class Manager(Signal):
 		Dispatcher(self, editor)
 		from ThemeFolderMonitor import Monitor
 		Monitor(self, editor)
-		editor.refresh()
 
 	def __init_attributes(self, editor):
 		from os.path import join

@@ -25,7 +25,6 @@ KEYSYMS = {
 class BracketManager(object):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
 		self.__check_mimetype()
 		self.__sigid1 = editor.textview.connect("key-press-event", self.__key_press_event_cb)
@@ -33,7 +32,6 @@ class BracketManager(object):
 		self.__sigid3 = editor.connect("loaded-file", self.__loaded_document_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

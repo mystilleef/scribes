@@ -5,7 +5,6 @@ REFRESH_TIME = 5 # units in milliseconds
 class Animator(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
@@ -15,7 +14,6 @@ class Animator(SignalManager):
 		from gobject import idle_add
 		idle_add(self.__compile, priority=9999)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -53,10 +51,8 @@ class Animator(SignalManager):
 		try:
 			x = int(self.__get_x(direction))
 			y = int(self.__get_y(direction))
-			self.__editor.response()
 			self.__editor.textview.move_child(self.__container, x, y)
 			if not self.__container.get_property("visible"): self.__container.show_all()
-			self.__editor.response()
 		except AttributeError:
 			pass
 		return False

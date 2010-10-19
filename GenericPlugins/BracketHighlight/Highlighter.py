@@ -8,7 +8,6 @@ class Highlighter(SignalManager):
 	"""
 
 	def __init__(self, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(editor)
 		self.connect(editor, "cursor-moved", self.__cursor_moved_cb)
@@ -21,7 +20,6 @@ class Highlighter(SignalManager):
 		self.__highlight_region()
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

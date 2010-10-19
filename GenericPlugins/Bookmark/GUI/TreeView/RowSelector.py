@@ -3,12 +3,10 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Selector(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "show", self.__updated_cb, True)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

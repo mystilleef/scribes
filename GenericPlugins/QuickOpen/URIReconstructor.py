@@ -1,12 +1,10 @@
 class Reconstructor(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("current-path", self.__path_cb)
 		self.__sigid3 = manager.connect("selected-paths", self.__selection_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -24,7 +22,6 @@ class Reconstructor(object):
 
 	def __fullpath(self, _path):
 		from os.path import join
-		self.__editor.response()
 		return join(self.__path, _path)
 
 	def __reconstruct(self, paths):

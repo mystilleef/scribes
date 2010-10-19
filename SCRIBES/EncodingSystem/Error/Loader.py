@@ -1,13 +1,11 @@
 class Loader(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = manager.connect("activate", self.__error_cb)
 		self.__sigid3 = manager.connect("new-encoding", self.__encoding_cb)
 		self.__sigid4 = manager.connect("load", self.__load_cb)
-		editor.response()
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):

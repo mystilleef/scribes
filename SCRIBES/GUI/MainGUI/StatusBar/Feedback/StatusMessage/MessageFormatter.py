@@ -6,7 +6,6 @@ class Formatter(object):
 		self.__sigid2 = manager.connect("update-message", self.__update_cb)
 		self.__sigid3 = manager.connect("fallback-message", self.__update_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

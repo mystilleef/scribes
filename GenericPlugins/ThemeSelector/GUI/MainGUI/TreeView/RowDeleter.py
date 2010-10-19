@@ -3,13 +3,11 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Deleter(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "delete-row", self.__delete_cb)
 		self.connect(self.__treeview, "key-press-event", self.__key_cb)
-		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -31,7 +29,6 @@ class Deleter(SignalManager):
 			removable_paths, unremovable_paths = self.__separate(paths)
 			if unremovable_paths and not removable_paths: raise ValueError
 			if not removable_paths: return False
-			self.__editor.refresh()
 			self.__treeview.props.sensitive = False
 			delete = lambda scheme: self.__manager.emit("remove-scheme", scheme)
 			schemes = [self.__model[path][1] for path in removable_paths]
@@ -44,7 +41,6 @@ class Deleter(SignalManager):
 		removable_paths = []
 		unremovable_paths = []
 		for path in paths:
-			self.__editor.refresh()
 			is_removable = self.__model[path][2]
 			removable_paths.append(path) if is_removable else unremovable_paths.append(path)
 		return removable_paths, unremovable_paths

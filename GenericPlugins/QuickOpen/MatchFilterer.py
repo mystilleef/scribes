@@ -1,12 +1,10 @@
 class Filterer(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("formatted-files", self.__files_cb)
 		self.__sigid3 = manager.connect("pattern", self.__pattern_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -24,13 +22,11 @@ class Filterer(object):
 		return False
 
 	def __is_a_match(self, pattern, _file):
-		self.__editor.response()
 		if self.__pattern != pattern: raise StandardError
 		return pattern.lower() in _file.lower()
 
 	def __filter(self, pattern):
 		try:
-			self.__editor.response()
 			if not pattern: raise ValueError
 			filtered_files = [_file for _file in self.__files if self.__is_a_match(pattern, _file)]
 			self.__manager.emit("filtered-files", filtered_files)

@@ -1,14 +1,12 @@
 class Colorer(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("current-match", self.__current_match_cb)
 		self.__sigid3 = manager.connect("search-string", self.__clear_cb)
 		self.__sigid4 = manager.connect("hide-bar", self.__clear_cb)
 		self.__sigid5 = manager.connect("reset", self.__clear_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

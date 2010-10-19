@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Window(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
@@ -13,7 +12,6 @@ class Window(SignalManager):
 		self.connect(manager, "scroll-to-line", self.__delete_event_cb)
 		self.connect(self.__window, "delete-event", self.__delete_event_cb)
 		self.connect(self.__window, "key-press-event", self.__key_press_event_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -31,15 +29,11 @@ class Window(SignalManager):
 		return False
 
 	def __hide(self):
-		self.__editor.response()
 		self.__window.hide()
-		self.__editor.response()
 		return False
 
 	def __show(self):
-		self.__editor.response()
 		self.__window.show_all()
-		self.__editor.response()
 		return False
 
 	def __delete_event_cb(self, *args):

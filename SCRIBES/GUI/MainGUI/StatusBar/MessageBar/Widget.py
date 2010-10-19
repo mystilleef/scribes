@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Widget(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__setup()
@@ -11,7 +10,6 @@ class Widget(SignalManager):
 		self.__update_public_api()
 		self.connect(editor, "quit", self.__quit_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

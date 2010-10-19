@@ -36,8 +36,6 @@ class Trigger(SignalManager, TriggerManager):
 			from Manager import Manager
 			self.__manager = Manager(self.__editor)
 			self.__manager.activate()
-		finally:
-			self.__editor.response()
 		return False
 
 	def __activate_cb(self, *args):

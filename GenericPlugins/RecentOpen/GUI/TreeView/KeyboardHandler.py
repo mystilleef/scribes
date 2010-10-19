@@ -3,13 +3,11 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Handler(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(self.__window, "key-press-event", self.__window_key_cb)
 		self.connect(self.__view, "button-press-event", self.__button_cb)
-		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

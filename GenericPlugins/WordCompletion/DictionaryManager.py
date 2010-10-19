@@ -3,14 +3,12 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Manager(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "updated-dictionary", self.__updated_dictionary_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

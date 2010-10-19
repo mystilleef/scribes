@@ -3,14 +3,12 @@ from gettext import gettext as _
 class Displayer(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("show", self.__show_window_cb)
 		self.__sigid3 = manager.connect("hide", self.__hide_window_cb)
 		self.__sigid4 = self.__window.connect("delete-event", self.__delete_event_cb)
 		self.__sigid5 = self.__window.connect("key-press-event", self.__key_press_event_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -19,15 +17,11 @@ class Displayer(object):
 		return
 
 	def __show(self):
-		self.__editor.response()
 		self.__window.show_all()
-		self.__editor.response()
 		return False
 
 	def __hide(self):
-		self.__editor.response()
 		self.__window.hide()
-		self.__editor.response()
 		return False
 
 	def __destroy(self):

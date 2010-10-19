@@ -26,7 +26,6 @@ class Selector(object):
 		language = self.__editor.language if self.__editor.language else "plain text"
 		_row = -1
 		for row in self.__model:
-			self.__editor.response()
 			_row += 1
 			if language == row[1]: break
 		self.__combo.set_active(_row)

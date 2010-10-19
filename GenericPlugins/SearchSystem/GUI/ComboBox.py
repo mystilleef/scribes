@@ -5,7 +5,6 @@ data = ((_("Default"), "default"), (_("Regular Expression"), "regex"),
 class ComboBox(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__quit_cb)
@@ -14,7 +13,6 @@ class ComboBox(object):
 		self.__sigid4 = manager.connect("search", self.__search_cb)
 		self.__sigid5 = manager.connect("search-complete", self.__search_complete_cb)
 		self.__populate_model(data)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

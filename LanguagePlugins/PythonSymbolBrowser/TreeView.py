@@ -56,7 +56,6 @@ class TreeView(object):
 			append = self.__append_symbols
 			for item in symbols:
 				append(item, indentation)
-				self.__editor.response()
 			self.__treeview.set_model(self.__model)
 			self.__treeview.window.thaw_updates()
 		self.__select_row()
@@ -71,7 +70,6 @@ class TreeView(object):
 		lines.reverse()
 		found_line = False
 		for line in lines:
-			self.__editor.response()
 			if not (current_line == line or current_line > line): continue
 			found_line = True
 			current_line = line
@@ -85,13 +83,11 @@ class TreeView(object):
 	def __select_line_in_treeview(self, line):
 		iterator = self.__model.get_iter_root()
 		while True:
-			self.__editor.response()
 			if self.__model.get_value(iterator, 0) == line: break
 			if self.__model.iter_has_child(iterator):
 				parent_iterator = iterator
 				found_line = False
 				for index in xrange(self.__model.iter_n_children(iterator)):
-					self.__editor.response()
 					iterator = self.__model.iter_nth_child(parent_iterator, index)
 					if not (self.__model.get_value(iterator, 0) == line): continue
 					found_line = True
@@ -124,7 +120,6 @@ class TreeView(object):
 		return
 
 	def __find_parent(self, index):
-		self.__editor.response()
 		if not index: return None
 		depth = self.__model.iter_depth(self.__depth_level_iter)
 		if index == depth:
@@ -137,14 +132,12 @@ class TreeView(object):
 		return parent
 
 	def __select_symbol(self, line, name):
-		self.__editor.response()
 		begin = self.__editor.textbuffer.get_iter_at_line(line - 1)
 		end = self.__editor.forward_to_line_end(begin.copy())
 		from gtk import TEXT_SEARCH_TEXT_ONLY
 		x, y = begin.forward_search(name, TEXT_SEARCH_TEXT_ONLY, end)
 		self.__editor.textbuffer.select_range(x, y)
 		self.__editor.move_view_to_cursor(True)
-		self.__editor.response()
 		return False
 
 	def __forward_to_line_end(self, iterator):
@@ -162,16 +155,12 @@ class TreeView(object):
 		return
 
 	def __row_activated_cb(self, treeview, path, column):
-		self.__editor.response()
 		iterator = self.__model.get_iter(path)
-		self.__editor.response()
 		self.__manager.emit("hide-window")
-		self.__editor.response()
 		self.__treeview.set_property("sensitive", False)
 		line = self.__model.get_value(iterator, 0)
 		name = self.__model.get_value(iterator, 1)
 		self.__select_symbol(line, name)
-		self.__editor.response()
 		return True
 
 	def __update_cb(self, manager, symbols):

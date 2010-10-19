@@ -4,7 +4,6 @@ from Utils import BOOKMARK_NAME
 class Updater(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -13,7 +12,6 @@ class Updater(SignalManager):
 		self.connect(editor, "renamed-file", self.__updated_cb, True)
 		from gobject import idle_add
 		idle_add(self.__optimize, priority=9999)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -34,30 +32,21 @@ class Updater(SignalManager):
 
 	def __line_from(self, mark):
 		iter_at_mark = self.__buffer.get_iter_at_mark
-		self.__editor.response()
 		return iter_at_mark(mark).get_line()
 
 	def __get_bookmarked_lines(self):
-		self.__editor.response()
 		mark = self.__find_first_mark()
 		marks = self.__get_all_marks(mark)
 		lines = [self.__line_from(mark) for mark in marks]
-		self.__editor.response()
 		return tuple(lines)
 
 	def __find_first_mark(self):
 		iterator = self.__buffer.get_bounds()[0]
-		self.__editor.response()
 		marks = self.__buffer.get_source_marks_at_iter(iterator, BOOKMARK_NAME)
-		self.__editor.response()
 		if marks: return marks[0]
-		self.__editor.response()
 		found_mark = self.__buffer.forward_iter_to_source_mark(iterator, BOOKMARK_NAME)
-		self.__editor.response()
 		if found_mark is False: raise ValueError
-		self.__editor.response()
 		marks = self.__buffer.get_source_marks_at_iter(iterator, BOOKMARK_NAME)
-		self.__editor.response()
 		return marks[0]
 
 	def __get_all_marks(self, mark):
@@ -65,7 +54,6 @@ class Updater(SignalManager):
 		append = marks.append
 		append(mark)
 		while True:
-			self.__editor.response()
 			mark = mark.next(BOOKMARK_NAME)
 			if mark is None: break
 			append(mark)
@@ -73,12 +61,10 @@ class Updater(SignalManager):
 
 	def __update(self):
 		try:
-			self.__editor.response()
 			lines = self.__get_bookmarked_lines()
 		except ValueError:
 			lines = ()
 		finally:
-			self.__editor.response()
 			if lines == self.__lines: return False
 			self.__lines = lines
 			self.__manager.emit("lines", lines)

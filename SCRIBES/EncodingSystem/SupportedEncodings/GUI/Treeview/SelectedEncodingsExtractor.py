@@ -1,12 +1,10 @@
 class Extractor(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = manager.connect("toggled-path", self.__toggled_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -26,7 +24,6 @@ class Extractor(object):
 	def __extract(self):
 		encodings = []
 		for path in xrange(len(self.__model)):
-			self.__editor.response()
 			if not self.__model[path][0]: continue
 			encodings.append(self.__model[path][1])
 		self.__manager.emit("selected-encodings", encodings)

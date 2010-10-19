@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Monitor(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor, manager)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -11,7 +10,6 @@ class Monitor(SignalManager):
 		self.__connect_monitors()
 		from gobject import idle_add
 		idle_add(self.__update)
-		editor.refresh()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

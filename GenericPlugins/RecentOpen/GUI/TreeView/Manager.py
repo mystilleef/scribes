@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		from Initializer import Initializer
 		Initializer(manager, editor)
 		from UpDownKeyHandler import Handler
@@ -18,4 +17,3 @@ class Manager(object):
 		Updater(manager, editor)
 		from ModelDataGenerator import Generator
 		Generator(manager, editor)
-		editor.refresh(False)

@@ -3,13 +3,11 @@ from gio import Cancellable
 class GCancellable(Cancellable):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		Cancellable.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("enumeration-error", self.__error_cb)
 		self.__sigid3 = manager.connect("hide", self.__error_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

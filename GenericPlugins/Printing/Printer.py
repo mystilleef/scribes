@@ -6,7 +6,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Printer(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
@@ -14,7 +13,6 @@ class Printer(SignalManager):
 		self.connect(self.__operation, "done", self.__done_cb)
 		self.connect(self.__operation, "paginate", self.__paginate_cb)
 		self.connect(self.__operation, "status-changed", self.__status_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -41,16 +39,13 @@ class Printer(SignalManager):
 		return False
 
 	def show(self):
-		self.__editor.response()
 		if self.__print_settings: self.__print_settings.load_file(self.__editor.print_settings_filename)
 		from gtk import PRINT_OPERATION_ACTION_PRINT_DIALOG
 		self.__operation.run(PRINT_OPERATION_ACTION_PRINT_DIALOG, self.__editor.window)
-		self.__editor.response()
 		return False
 
 	def __print_settings_to_file(self):
 		try:
-			self.__editor.response()
 			self.__print_settings = self.__operation.get_print_settings()
 			from os.path import exists
 			if not exists(self.__editor.print_settings_filename): raise AssertionError
@@ -58,12 +53,10 @@ class Printer(SignalManager):
 			from gio import File
 			File(self.__editor.print_settings_filename).replace_contents("")
 		finally:
-			self.__editor.response()
 			self.__print_settings.to_file(self.__editor.print_settings_filename)
 		return False
 
 	def __print_settings_from_file(self):
-		self.__editor.response()
 		from os.path import exists
 		if not exists(self.__editor.print_settings_filename): return None
 		from gtk import PrintSettings
@@ -84,23 +77,19 @@ class Printer(SignalManager):
 		return False
 
 	def __draw_page_cb(self, operation, context, page_nr):
-		self.__editor.response()
 		self.__compositor.draw_page(context, page_nr)
 		return False
 
 	def __paginate_cb(self, operation, context):
-		self.__editor.response()
 		if not self.__compositor.paginate(context): return False
 		n_pages = self.__compositor.get_n_pages()
 		operation.set_n_pages(n_pages)
 		return True
 
 	def __done_cb(self, operation, result):
-		self.__editor.response()
 		self.__result_handler[result]()
 		return False
 
 	def __status_cb(self, operation, *args):
-		self.__editor.response()
 		self.__manager.emit("feedback", operation.get_status())
 		return False

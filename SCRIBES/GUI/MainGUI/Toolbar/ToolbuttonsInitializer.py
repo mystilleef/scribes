@@ -1,7 +1,6 @@
 class Initializer(object):
 
 	def __init__(self, toolbar, editor):
-		editor.response()
 		# Create the new window toolbutton.
 		from Toolbuttons.NewToolButton import Button
 		toolbar.insert(Button(editor), 0)
@@ -49,4 +48,3 @@ class Initializer(object):
 		# Create the spinner.
 		from Toolbuttons.Spinner import Spinner
 		toolbar.insert(Spinner(editor), 16)
-		editor.response()

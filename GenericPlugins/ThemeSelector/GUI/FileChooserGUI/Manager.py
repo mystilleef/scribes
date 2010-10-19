@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, editor, manager):
-		editor.refresh()
 		from Window import Window
 		Window(editor, manager)
 		from AddButton import Button
@@ -10,4 +9,3 @@ class Manager(object):
 		FileChooser(editor, manager)
 		from CancelButton import Button
 		Button(editor, manager)
-		editor.refresh()

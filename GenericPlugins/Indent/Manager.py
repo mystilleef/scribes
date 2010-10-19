@@ -20,7 +20,6 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		editor.response()
 		GObject.__init__(self)
 		from Selector import Selector
 		Selector(self, editor)
@@ -38,7 +37,6 @@ class Manager(GObject):
 		Marker(self, editor)
 		from OffsetExtractor import Extractor
 		Extractor(self, editor)
-		editor.response()
 
 	def indent(self):
 		self.emit("indent")

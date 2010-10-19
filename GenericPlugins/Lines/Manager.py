@@ -16,11 +16,9 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		editor.response()
 		GObject.__init__(self)
 		from LineOperator import Operator
 		Operator(self, editor)
-		editor.response()
 
 	def destroy(self):
 		self.emit("destroy")

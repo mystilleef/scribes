@@ -3,7 +3,6 @@ from SCRIBES.Globals import SCRIBES_SAVE_PROCESS_DBUS_SERVICE
 class Monitor(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		editor.session_bus.add_signal_receiver(self.__is_ready_cb,
@@ -11,7 +10,6 @@ class Monitor(object):
 						dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE)
 		self.__manager.emit("save-processor-object", self.__editor.save_processor)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

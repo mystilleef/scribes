@@ -1,11 +1,9 @@
 class Inserter(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("insert-text", self.__insert_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -21,21 +19,16 @@ class Inserter(object):
 
 	def __insert(self, uri, string, encoding):
 		try:
-			self.__editor.refresh(True)
 			if encoding is None: encoding = "utf-8"
 			unicode_string = string.decode(encoding, "strict")
 			utf8_string = unicode_string.encode("utf-8", "strict")
 			self.__editor.textview.window.freeze_updates()
-			self.__editor.refresh(True)
 			self.__editor.textbuffer.set_text(utf8_string)
-			self.__editor.refresh(True)
 			self.__manager.emit("load-success", uri, encoding)
 #			from gobject import timeout_add
 #			timeout_add(125, self.__set_cursor_timeout)
 		except:
 			self.__manager.emit("insertion-error", uri, string)
-		finally:
-			self.__editor.refresh()
 		return False
 
 	def __set_cursor(self):

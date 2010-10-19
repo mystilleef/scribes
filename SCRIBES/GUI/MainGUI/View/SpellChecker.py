@@ -1,7 +1,6 @@
 class Checker(object):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("enable-spell-checking", self.__checking_cb)
@@ -9,7 +8,6 @@ class Checker(object):
 		self.__sigid4 = editor.connect("checking-file", self.__check_cb)
 		self.__set()
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -36,7 +34,6 @@ class Checker(object):
 
 	def __enable(self):
 		try:
-			self.__editor.response()
 			from gobject import GError
 			from gtkspell import Spell
 			from locale import getdefaultlocale
@@ -44,14 +41,10 @@ class Checker(object):
 			self.__checker = Spell(self.__view, getdefaultlocale()[0])
 		except GError:
 			pass
-		finally:
-			self.__editor.response()
 		return False
 
 	def __disable(self):
-		self.__editor.response()
 		if self.__checker: self.__checker.detach()
-		self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

@@ -3,7 +3,6 @@ from gettext import gettext as _
 class Operator(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("delete-line", self.__delete_line_cb)
@@ -13,7 +12,6 @@ class Operator(object):
 		self.__sigid6 = manager.connect("delete-cursor-to-start", self.__delete_cursor_to_start_cb)
 		self.__sigid7 = manager.connect("free-line-below", self.__line_below_cb)
 		self.__sigid8 = manager.connect("free-line-above", self.__line_above_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -43,7 +41,6 @@ class Operator(object):
 		text = " ".join(newlines)
 		self.__editor.textbuffer.delete(start, end)
 		self.__editor.textbuffer.insert_at_cursor(text)
-		self.__editor.response()
 		return False
 
 	def __join_current_and_next_line(self):
@@ -113,7 +110,6 @@ class Operator(object):
 		end = self.__editor.forward_to_line_end()
 		textbuffer = self.__editor.textbuffer
 		textbuffer.begin_user_action()
-		self.__editor.response()
 		if start.ends_line():
 			textbuffer.insert(start, "\n")
 		else:
@@ -131,7 +127,6 @@ class Operator(object):
 		start = self.__editor.backward_to_line_begin()
 		textbuffer = self.__editor.textbuffer
 		textbuffer.begin_user_action()
-		self.__editor.response()
 		textbuffer.insert(start, "\n")
 		start = self.__editor.backward_to_line_begin()
 		start.backward_line()

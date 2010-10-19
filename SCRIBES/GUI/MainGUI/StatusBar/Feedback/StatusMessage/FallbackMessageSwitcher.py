@@ -11,7 +11,6 @@ class Switcher(object):
 		self.__sigid5 = editor.connect("renamed-file", self.__loaded_cb)
 		self.__sigid6 = editor.connect("saved-file", self.__saved_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

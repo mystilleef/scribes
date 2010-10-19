@@ -142,11 +142,8 @@ class Manager(object):
 		return False
 
 	def __focus(self, editor):
-		editor.refresh()
 		if editor.window.get_data("minimized"): editor.window.deiconify()
-		editor.refresh()
 		editor.window.present()
-		editor.refresh()
 		return False
 
 	def __init_garbage_collector(self):

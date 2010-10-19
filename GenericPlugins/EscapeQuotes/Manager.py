@@ -9,11 +9,9 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		editor.response()
 		GObject.__init__(self)
 		from Escaper import Escaper
 		Escaper(self, editor)
-		editor.response()
 
 	def escape(self):
 		self.emit("escape")

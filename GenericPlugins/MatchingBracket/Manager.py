@@ -3,9 +3,7 @@ from gettext import gettext as _
 class Manager(object):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

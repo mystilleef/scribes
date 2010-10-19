@@ -3,7 +3,6 @@ from gtk import MenuToolButton
 class Button(MenuToolButton):
 
 	def __init__(self, editor):
-		editor.response()
 		from gtk import STOCK_PREFERENCES
 		MenuToolButton.__init__(self, STOCK_PREFERENCES)
 		self.__init_attributes(editor)
@@ -14,7 +13,6 @@ class Button(MenuToolButton):
 		self.__sigid2 = self.connect("clicked", self.__clicked_cb)
 		self.show()
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -47,7 +45,5 @@ class Button(MenuToolButton):
 		return False
 
 	def __clicked_cb(self, *args):
-		self.__editor.response()
 		self.__editor.trigger("show-preferences-window")
-		self.__editor.response()
 		return False

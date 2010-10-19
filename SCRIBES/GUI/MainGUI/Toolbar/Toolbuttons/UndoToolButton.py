@@ -3,7 +3,6 @@ from gtk import ToolButton
 class Button(ToolButton):
 
 	def __init__(self, editor):
-		editor.response()
 		ToolButton.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -15,7 +14,6 @@ class Button(ToolButton):
 		self.__sigid6 = editor.connect("bar-is-active", self.__active_cb)
 		editor.register_object(self)
 		self.show()
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -54,10 +52,8 @@ class Button(ToolButton):
 		return False
 
 	def __clicked_cb(self, *args):
-		self.__editor.response()
 		self.__editor.undo()
 		self.__sensitive()
-		self.__editor.response()
 		return False
 
 	def __undo_cb(self, *args):

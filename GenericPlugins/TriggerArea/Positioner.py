@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Positioner(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__widget.hide()
@@ -13,7 +12,6 @@ class Positioner(SignalManager):
 		self.connect(editor, "toolbar-is-visible", self.__show_cb, True)
 		self.connect(editor, "show-full-view", self.__hide_cb)
 		self.__position()
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -37,16 +35,11 @@ class Positioner(SignalManager):
 		return cordinate[position]
 
 	def __position(self):
-		self.__editor.response()
 		self.__widget.hide()
-		self.__editor.response()
 		position = self.__widget.position
-		self.__editor.response()
 		x, y = self.__get_cordinates(position)
 		self.__view.move_child(self.__widget, x, y)
-		self.__editor.response()
 		self.__widget.show_all()
-		self.__editor.response()
 		return False
 
 	def __show(self):
@@ -62,11 +55,8 @@ class Positioner(SignalManager):
 
 	def __hide_cb(self, *args):
 		self.__ignore_expose = True
-		self.__editor.response()
 		self.__widget.hide()
-		self.__editor.response()
 		self.__view.move_child(self.__widget, 0, -120)
-		self.__editor.response()
 		return False
 
 	def __expose_cb(self, *args):

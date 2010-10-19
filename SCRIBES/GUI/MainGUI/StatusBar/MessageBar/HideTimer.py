@@ -5,7 +5,6 @@ HIDE_TIMER = 7000
 class Timer(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__id = self.connect(editor.textview, "motion-notify-event", self.__motion_cb)
@@ -13,7 +12,6 @@ class Timer(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.__block()
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -37,7 +35,6 @@ class Timer(SignalManager):
 		except AttributeError:
 			pass
 		finally:
-			self.__editor.refresh(False)
 			self.__timer = timeout_add(HIDE_TIMER, hide)
 		return False
 

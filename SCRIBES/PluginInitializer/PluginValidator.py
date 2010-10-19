@@ -3,13 +3,11 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Validator(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "valid-module", self.__validate_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -24,7 +22,6 @@ class Validator(SignalManager):
 
 	def __validate(self, module):
 		try:
-			self.__editor.response()
 			class_name = getattr(module, "class_name")
 			if not hasattr(module, class_name): raise ValueError
 			PluginClass = getattr(module, class_name)
@@ -34,8 +31,6 @@ class Validator(SignalManager):
 			self.__manager.emit("check-duplicate-plugins", (module, PluginClass))
 		except ValueError:
 			print module, " has an invalid plugin class"
-		finally:
-			self.__editor.response()
 		return False
 
 	def __quit_cb(self, *args):

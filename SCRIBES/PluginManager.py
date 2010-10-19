@@ -9,7 +9,6 @@ class Manager(object):
 			self.__load_plugins()
 			self.__sigid1 = editor.connect("quit", self.__quit_cb)
 			editor.register_object(self)
-			editor.response()
 		except PluginFolderNotFoundError:
 			print "Error: No plugin folder found"
 
@@ -29,7 +28,6 @@ class Manager(object):
 		from Exceptions import PluginModuleValidationError
 		from Exceptions import DuplicatePluginError, DoNotLoadError
 		try:
-			self.__editor.response()
 			if not (filename.startswith("Plugin") and filename.endswith(".py")): return False
 			from os import path
 			filepath = path.join(plugin_folder, filename)
@@ -47,25 +45,17 @@ class Manager(object):
 		except DoNotLoadError:
 			#print "Not loading: ", (filename)
 			self.__plugin_modules.add(module)
-		finally:
-			self.__editor.response()
 		return False
 
 	def __load_plugin(self, PluginClass):
-		self.__editor.response()
 		plugin_object = PluginClass(self.__editor)
-		self.__editor.response()
 		plugin_object.load()
-		self.__editor.response()
 		return plugin_object
 
 	def __unload_plugin(self, plugin_info):
-		self.__editor.response()
 		plugin_object = plugin_info[2]
-		self.__editor.response()
 		plugin_object.unload()
 		self.__plugin_objects.remove(plugin_info)
-		self.__editor.response()
 		return False
 
 	def __load_plugins(self):
@@ -76,17 +66,14 @@ class Manager(object):
 		init_module = self.__init_module
 		from gobject import idle_add
 		for filename in core_files:
-			self.__editor.response()
 			idle_add(init_module, filename, core_plugin_folder, priority=9999)
 		home_files = listdir(home_plugin_folder)
 		for filename in home_files:
-			self.__editor.response()
 			idle_add(init_module, filename, home_plugin_folder, priority=9999)
 		return False
 
 	def __unload_plugins(self):
 		for plugin_info in self.__plugin_objects.copy():
-			self.__editor.response()
 			self.__unload_plugin(plugin_info)
 		return False
 
@@ -113,7 +100,6 @@ class Manager(object):
 
 	def __unload_duplicate_plugins(self, name, version):
 		for info in self.__plugin_objects.copy():
-			self.__editor.response()
 			if name in info:
 				if (version > info[1]):
 					info[2].unload()

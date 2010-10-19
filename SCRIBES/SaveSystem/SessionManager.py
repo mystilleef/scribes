@@ -3,14 +3,12 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Manager(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "save-file", self.__save_cb)
 		self.connect(editor, "rename-file", self.__save_cb, True)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor

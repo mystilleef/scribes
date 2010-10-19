@@ -3,14 +3,12 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Displayer(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "set-image", self.__set_cb)
 		self.connect(editor, "message-bar-is-visible", self.__visible_cb, True)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -42,7 +40,6 @@ class Displayer(SignalManager):
 			from gtk import ICON_SIZE_MENU as SIZE
 			if image: self.__image.set_from_icon_name(image, SIZE)
 			self.__image.show() if image else self.__image.hide()
-			self.__editor.response()
 		except ValueError:
 			self.__queue.clear()
 			self.__queue.append(image)

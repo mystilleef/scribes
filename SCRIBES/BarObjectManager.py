@@ -25,10 +25,8 @@ class Manager(object):
 		container = self.__editor.gui.get_widget("BarBox")
 		from Exceptions import BarBoxAddError
 		if container.get_children(): raise BarBoxAddError
-		self.__editor.response()
 		container.add(bar) if bar.parent is None else bar.reparent(container)
 		container.show_all()
-		self.__editor.response()
 		self.__editor.set_data("bar_is_active", True)
 		self.__editor.emit("bar-is-active", True)
 		return False
@@ -37,10 +35,8 @@ class Manager(object):
 		container = self.__editor.gui.get_widget("BarBox")
 		from Exceptions import BarBoxInvalidObjectError
 		if not (bar in container.get_children()): raise BarBoxInvalidObjectError
-		self.__editor.response()
 		container.hide()
 		container.remove(bar)
-		self.__editor.response()
 		self.__editor.set_data("bar_is_active", False)
 		self.__editor.emit("bar-is-active", False)
 		return False

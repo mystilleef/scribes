@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Displayer(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
@@ -14,7 +13,6 @@ class Displayer(SignalManager):
 		self.connect(manager, "visible", self.__visible_cb)
 		self.connect(editor, "window-focus-out", self.__focus_cb, True)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -39,17 +37,13 @@ class Displayer(SignalManager):
 	def __show(self, update=False):
 		if self.__visible is True: return False
 		self.__visible = True
-		self.__editor.response()
 		# Toolbar slide animation from up to down
 		self.__manager.emit("slide", "down")
-		self.__editor.response()
 		return False
 
 	def __hide(self):
 		if self.__visible is False: return False
-		self.__editor.response()
 		self.__manager.emit("slide", "up")
-		self.__editor.response()
 		return False
 
 	def __hide_cb(self, *args):

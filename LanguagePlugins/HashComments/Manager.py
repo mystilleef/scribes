@@ -22,7 +22,6 @@ class Manager(object):
 	def __backward_to_line_begin(self, iterator):
 		if iterator.starts_line(): return iterator
 		while True:
-			self.__editor.response()
 			iterator.backward_char()
 			if iterator.starts_line(): break
 		return iterator
@@ -64,21 +63,18 @@ class Manager(object):
 	def __should_comment(self, lines):
 		should_comment = True
 		for line in lines:
-			self.__editor.response()
 			if self.__line_is_comment(line) is False: continue
 			should_comment = False
 			break
 		return should_comment
 
 	def __comment_line(self, line):
-		self.__editor.response()
 		if self.__line_is_comment(line): return line
 		line = "#" + line
 		return line
 
 	def __uncomment_line(self, line):
 		while self.__line_is_comment(line):
-			self.__editor.response()
 			line = line.replace("#", "", 1)
 		return line
 

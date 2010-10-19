@@ -1,13 +1,11 @@
 class Image(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("show-error", self.__update_cb, True)
 		self.__sigid3 = editor.connect("show-info", self.__update_cb, False)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -27,9 +25,7 @@ class Image(object):
 		from gtk import ICON_SIZE_DIALOG as DIALOG, STOCK_DIALOG_ERROR as ERROR
 		from gtk import STOCK_DIALOG_INFO as INFO
 		set_image = lambda image: self.__image.set_from_stock(image, DIALOG)
-		self.__editor.response()
 		set_image(ERROR) if error else set_image(INFO)
-		self.__editor.response()
 		return False
 
 	def __update_cb(self, editor, title, message, window, busy, error):

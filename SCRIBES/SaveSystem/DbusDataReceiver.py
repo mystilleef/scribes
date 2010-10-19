@@ -4,7 +4,6 @@ from SCRIBES.Globals import SCRIBES_SAVE_PROCESS_DBUS_SERVICE
 class Receiver(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
@@ -16,7 +15,6 @@ class Receiver(SignalManager):
 						signal_name="error",
 						dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor

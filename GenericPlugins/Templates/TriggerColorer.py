@@ -4,14 +4,12 @@ message = "Template trigger highlighted"
 class Colorer(object):
 
 	def __init__(self, editor, manager):
-		editor.response()
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("trigger-found", self.__trigger_found_cb)
 		self.__sigid3 = manager.connect("no-trigger-found", self.__no_trigger_found_cb)
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__precompile_methods, priority=9000)
-		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__manager = manager

@@ -5,7 +5,6 @@ SAVE_TIMER = 7000
 class Saver(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
@@ -13,7 +12,6 @@ class Saver(SignalManager):
 		self.connect(editor, "close", self.__close_cb)
 		self.connect(manager, "reset-modification-flag", self.__modified_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

@@ -1,11 +1,9 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		from GUI.Manager import Manager
 		Manager(manager, editor)
-		editor.response()
 #		from OpenButton import Button
 #		Button(editor, manager)
 #		from FileChooser import FileChooser

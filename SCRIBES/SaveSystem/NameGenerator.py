@@ -9,7 +9,6 @@ NUMBER_OF_CHARACTERS = 80
 class Generator(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__destroy_cb)
@@ -17,7 +16,6 @@ class Generator(SignalManager):
 		from gobject import idle_add
 		idle_add(self.__optimize, priority=9999)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -32,7 +30,6 @@ class Generator(SignalManager):
 
 	def __generate(self, data):
 		try:
-			self.__editor.response()
 			# Get first valid line in buffer. Strip characters, mostly
 			# punctuation characters, that can cause invalid Unix filenames.
 			line = self.__editor.text.strip(STRIP_CHARACTERS).splitlines()[0].strip(STRIP_CHARACTERS)
@@ -45,7 +42,6 @@ class Generator(SignalManager):
 			filename = ""
 		finally:
 			self.__manager.emit("newname", (filename, data))
-			self.__editor.response()
 		return False
 
 	def __optimize(self):

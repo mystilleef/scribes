@@ -3,7 +3,6 @@ from gettext import gettext as _
 class Updater(object):
 
 	def __init__(self, editor, uri):
-		editor.response()
 		self.__init_attributes(editor, uri)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("checking-file", self.__checking_cb)
@@ -14,7 +13,6 @@ class Updater(object):
 		self.__sigid7 = editor.connect("saved-file", self.__saved_cb)
 		if uri: self.__set_title("loading")
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor, uri):
 		self.__editor = editor
@@ -39,7 +37,6 @@ class Updater(object):
 	def __update_attributes(self, uri):
 		self.__uri = uri
 		self.__dictionary = self.__get_dictionary(uri)
-		self.__editor.response()
 		return False
 
 	def __get_dictionary(self, uri):
@@ -51,7 +48,6 @@ class Updater(object):
 			"readonly": title + _(" [READONLY]"),
 			"loading": _("Loading %s ...") % title,
 		}
-		self.__editor.response()
 		return dictionary
 
 	def __update_title(self, uri, title):
@@ -60,9 +56,7 @@ class Updater(object):
 		return False
 
 	def __set_title(self, title):
-		self.__editor.response()
 		self.__window.set_title(self.__dictionary[title])
-		self.__editor.response()
 		return False
 
 	def __checking_cb(self, editor, uri):

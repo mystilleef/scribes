@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		from Window import Window
 		Window(manager, editor)
 		from CancelButton import Button
@@ -24,4 +23,3 @@ class Manager(object):
 		Validator(manager, editor)
 		from ValidatorTriggerListGenerator import Generator
 		Generator(manager, editor)
-		editor.response()

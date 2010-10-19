@@ -1,12 +1,10 @@
 class Button(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = self.__button.connect("toggled", self.__toggled_cb)
 		self.__sigid3 = manager.connect("match-word-flag", self.__update_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

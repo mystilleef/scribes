@@ -23,7 +23,6 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		editor.response()
 		GObject.__init__(self)
 		from AutomaticSaver import Saver
 		Saver(self, editor)
@@ -59,4 +58,3 @@ class Manager(GObject):
 		Sender(self, editor)
 		from DbusSaveProcessorMonitor import Monitor
 		Monitor(self, editor)
-		editor.response()

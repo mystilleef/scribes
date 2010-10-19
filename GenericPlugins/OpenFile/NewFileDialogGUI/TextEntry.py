@@ -1,14 +1,12 @@
 class Entry(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = self.__entry.connect("changed", self.__changed_cb)
 		self.__sigid3 = manager.connect("create", self.__create_cb)
 		self.__sigid4 = manager.connect("show-newfile-dialog-window", self.__show_cb)
 		self.__entry.props.sensitive = True
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

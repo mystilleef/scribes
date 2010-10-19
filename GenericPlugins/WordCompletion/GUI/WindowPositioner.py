@@ -4,7 +4,6 @@ ADJUSTMENT = 10
 class Positioner(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -13,7 +12,6 @@ class Positioner(SignalManager):
 		self.connect(manager, "no-match-found", self.__hide_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

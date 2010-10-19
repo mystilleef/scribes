@@ -1,14 +1,12 @@
 class Manager(object):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.textview.connect_after("populate-popup", self.__popup_cb)
 		self.__sigid3 = editor.connect("add-to-popup", self.__add_to_popup_cb)
 		self.__sigid4 = editor.textview.connect("focus-in-event", self.__focus_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -17,21 +15,17 @@ class Manager(object):
 		return
 
 	def __sort_items(self, menuitem):
-		self.__editor.response()
 		self.__items.append(menuitem)
 		items = []
 #		items = [(menuitem.props.name, menuitem) for menuitem in self.__items]
 		for menuitem in self.__items:
-			self.__editor.response()
 			items.append((menuitem.props.name, menuitem))
 		items.sort()
 		items.reverse()
 #		self.__items = [menuitem[1] for menuitem in items]
 		self.__items = []
 		for menuitem in items:
-			self.__editor.response()
 			self.__items.append(menuitem[1])
-		self.__editor.response()
 		return False
 
 	def __generate_menu(self, menu):
@@ -39,7 +33,6 @@ class Manager(object):
 		from gtk import SeparatorMenuItem
 		menu.insert(SeparatorMenuItem(), 0)
 		for menuitem in self.__items:
-			self.__editor.response()
 			if menuitem.props.name == "AboutMenuitem":
 				menu.append(SeparatorMenuItem())
 				menu.append(menuitem)
@@ -47,9 +40,7 @@ class Manager(object):
 			else:
 				menu.prepend(menuitem)
 				menuitem.show()
-			self.__editor.response()
 		menu.show_all()
-		self.__editor.response()
 		return False
 
 	def __destroy(self):

@@ -3,7 +3,6 @@ from Signals import Signal
 class Manager(Signal):
 
 	def __init__(self, editor):
-		editor.refresh(False)
 		Signal.__init__(self)
 		self.__init_attributes(editor)
 		from GUI.Manager import Manager
@@ -18,7 +17,6 @@ class Manager(Signal):
 		Generator(self, editor)
 		from RecentInfoCollector import Collector
 		Collector(self, editor)
-		editor.refresh(False)
 
 	def __init_attributes(self, editor):
 		from os.path import join

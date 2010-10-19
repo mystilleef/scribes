@@ -3,14 +3,12 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Disabler(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "schemes", self.__updated_cb)
 		self.connect(manager, "valid-scheme-files", self.__updated_cb)
 		self.connect(manager, "selected-row", self.__selected_cb, True)
-		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -42,7 +40,6 @@ class Disabler(SignalManager):
 
 	def __updated_cb(self, *args):
 		self.__manager.emit("treeview-sensitivity", False)
-		self.__editor.refresh()
 		self.__treeview.grab_focus()
 		self.__treeview.props.sensitive = False
 		self.__freeze()
@@ -53,5 +50,4 @@ class Disabler(SignalManager):
 		self.__treeview.props.sensitive = True
 		self.__treeview.grab_focus()
 		self.__manager.emit("treeview-sensitivity", True)
-		self.__editor.refresh()
 		return False

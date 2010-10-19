@@ -3,7 +3,6 @@ from gtk import RecentChooserMenu
 class RecentMenu(RecentChooserMenu):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
 		manager = editor.get_data("RecentManager")
 		RecentChooserMenu.__init__(self, manager)
@@ -12,7 +11,6 @@ class RecentMenu(RecentChooserMenu):
 		self.__sigid2 = self.connect("item-activated", self.__activated_cb)
 		editor.set_data("RecentMenu", self)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -51,9 +49,7 @@ class RecentMenu(RecentChooserMenu):
 
 	def __activated_cb(self, recent_chooser):
 		uri = self.get_current_uri()
-		self.__editor.response()
 		self.__editor.open_file(uri)
-		self.__editor.response()
 		return True
 
 	def __quit_cb(self, editor):

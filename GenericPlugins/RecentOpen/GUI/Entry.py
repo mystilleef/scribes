@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Entry(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -11,7 +10,6 @@ class Entry(SignalManager):
 		self.connect(manager, "show-window", self.__focus_cb)
 		self.connect(manager, "focus-entry", self.__focus_cb)
 		self.connect(self.__entry, "changed", self.__changed_cb)
-		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -25,7 +23,6 @@ class Entry(SignalManager):
 		return False
 
 	def __update(self):
-		self.__editor.refresh(False)
 		pattern = self.__entry.get_text().strip()
 		self.__manager.emit("search-pattern", pattern)
 		return False

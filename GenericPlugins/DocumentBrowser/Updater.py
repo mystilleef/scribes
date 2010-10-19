@@ -1,11 +1,9 @@
 class Updater(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("get-uris", self.__get_uris_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -30,7 +28,6 @@ class Updater(object):
 		hfolder = self.__editor.home_folder
 		format = lambda filename: filename.replace(hfolder, "~") if filename.startswith(hfolder) else filename
 		def get_data(uri):
-			self.__editor.response()
 			return get_mime(uri), get_filename(uri), format(get_path(uri)), uri
 		data = [get_data(uri) for uri in uris]
 		self.__manager.emit("update", data)

@@ -1,7 +1,6 @@
 class Window(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
@@ -9,7 +8,6 @@ class Window(object):
 		self.__sigid3 = manager.connect("hide-window", self.__hide_cb)
 		self.__sigid4 = self.__window.connect("delete-event", self.__delete_event_cb)
 		self.__sigid5 = self.__window.connect("key-press-event", self.__key_press_event_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

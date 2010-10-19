@@ -3,14 +3,12 @@ from gettext import gettext as _
 class Processor(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("tabs-to-spaces", self.__tabs_to_spaces_cb)
 		self.__sigid3 = manager.connect("spaces-to-tabs", self.__spaces_to_tabs_cb)
 		self.__sigid4 = manager.connect("remove-trailing-spaces", self.__remove_trailing_spaces_cb)
 		self.__sigid5 = manager.connect("extracted-text", self.__extracted_text_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -39,14 +37,12 @@ class Processor(object):
 		return False
 
 	def __convert(self, line):
-		self.__editor.response()
 		indentation_width = self.__editor.textview.get_tab_width()
 		characters = self.__get_indent_characters(line)
 		characters = self.__get_new_indentation(characters, indentation_width)
 		if self.__use_tabs: characters = "\t" * (len(characters)/indentation_width)
 		message = _("Converted spaces to tabs") if self.__use_tabs else _("Converted tabs to spaces")
 		self.__editor.update_message(message, "pass")
-		self.__editor.response()
 		return characters + line.lstrip(" \t")
 
 	def __get_indent_characters(self, line):
@@ -65,9 +61,7 @@ class Processor(object):
 		return " " * (number_of_characters - remainder)
 
 	def __remove(self, line):
-		self.__editor.response()
 		line = line.rstrip(" \t")
-		self.__editor.response()
 		message = _("Removed trailing spaces")
 		self.__editor.update_message(message, "pass")
 		return line

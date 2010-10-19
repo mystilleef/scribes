@@ -1,14 +1,12 @@
 class ComboBox(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__quit_cb)
 		self.__sigid2 = editor.connect("combobox-encoding-data", self.__encoding_data_cb)
 		self.__sigid3 = self.__combo.connect("changed", self.__changed_cb)
 		editor.emit_combobox_encodings()
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -41,7 +39,6 @@ class ComboBox(object):
 		return model
 
 	def __separator_function(self, model, iterator):
-		self.__editor.response()
 		if model.get_value(iterator, 0) == "Separator" : return True
 		return False
 
@@ -52,7 +49,6 @@ class ComboBox(object):
 		self.__model.append([data[0][0], data[0][1]])
 		self.__model.append(["Separator", "Separator"])
 		for alias, encoding in data[1:]:
-			self.__editor.response()
 			self.__model.append([alias, encoding])
 		self.__model.append(["Separator", "Separator"])
 		self.__model.append(["Add or Remove Encoding...", "show_encoding_window"])

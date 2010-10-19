@@ -1,14 +1,12 @@
 class Inserter(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("valid-string", self.__valid_cb)
 		self.__sigid3 = manager.connect("insert-text", self.__insert_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -28,9 +26,7 @@ class Inserter(object):
 		self.__editor.textview.window.freeze_updates()
 		self.__manager.emit("inserting-text")
 		self.__editor.textbuffer.begin_user_action()
-		self.__editor.response()
 		self.__editor.textbuffer.insert_at_cursor(text[len(self.__string):].encode("utf8"))
-		self.__editor.response()
 		self.__editor.textbuffer.end_user_action()
 		self.__manager.emit("inserted-text")
 		self.__editor.textview.window.thaw_updates()

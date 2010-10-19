@@ -3,7 +3,6 @@ from gettext import gettext as _
 class TreeView():
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__set_properties()
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
@@ -17,7 +16,6 @@ class TreeView():
 		self.__sigid9 = self.__treeview.connect("row-activated", self.__row_activated_cb)
 		self.__sigid10 = manager.connect("new-template-data", self.__new_template_data_cb)
 		self.__sigid11 = manager.connect("created-template-file", self.__created_file_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -60,7 +58,6 @@ class TreeView():
 			self.__treeview.set_model(None)
 			self.__model.clear()
 			for name, description, key in data:
-				self.__editor.response()
 				self.__model.append([name, description, key])
 			self.__treeview.set_model(self.__model)
 			self.__update_sensitivity()
@@ -81,7 +78,6 @@ class TreeView():
 
 	def __select_key(self, key):
 		for row_ in self.__model:
-			self.__editor.response()
 			if row_[-1] != key: continue
 			path = self.__model.get_path(row_.iter)
 			row = self.__model[path]
@@ -159,7 +155,6 @@ class TreeView():
 
 	def __remove_key(self, key, select):
 		for row in self.__model:
-			self.__editor.response()
 			if row[-1] != key: continue
 			iterator = row.iter
 			success = self.__model.remove(iterator)
@@ -181,7 +176,6 @@ class TreeView():
 	def __get_keys(self, paths):
 		keys = []
 		for path in paths:
-			self.__editor.response()
 			iterator = self.__model.get_iter(path)
 			key = self.__model.get_value(iterator, 2)
 			keys.append(key)

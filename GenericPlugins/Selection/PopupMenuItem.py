@@ -4,7 +4,6 @@ from gettext import gettext as _
 class PopupMenuItem(ImageMenuItem):
 
 	def __init__(self, editor):
-		editor.response()
 		ImageMenuItem.__init__(self, _("Selection"))
 		self.__init_attributes(editor)
 		self.__creates_widgets()
@@ -17,7 +16,6 @@ class PopupMenuItem(ImageMenuItem):
 		self.__signal_id_6 = self.select_line_menuitem.connect("map-event", self.__popup_line_map_event_cb)
 		self.__signal_id_7 = self.select_sentence_menuitem.connect("map-event", self.__popup_sentence_map_event_cb)
 		self.__signal_id_9 = self.scribesview.connect("focus-in-event", self.__focus_in_event_cb)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.scribesview = editor.textview

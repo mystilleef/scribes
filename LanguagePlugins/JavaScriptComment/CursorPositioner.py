@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Positioner(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -11,7 +10,6 @@ class Positioner(SignalManager):
 		self.connect(manager, "single-line-boundary", self.__boundary_cb)
 		self.connect(manager, "processed-text", self.__processed_cb)
 		self.connect(manager, "inserted-text", self.__text_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

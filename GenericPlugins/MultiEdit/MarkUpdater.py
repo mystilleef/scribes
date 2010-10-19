@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Updater(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -11,7 +10,6 @@ class Updater(SignalManager):
 		self.connect(manager, "clear", self.__clear_cb)
 		self.connect(manager, "add-mark", self.__add_cb)
 		self.connect(manager, "remove-mark", self.__remove_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -38,13 +36,11 @@ class Updater(SignalManager):
 	def __delete_marks(self):
 		self.__manager.emit("edit-points", [])
 		from copy import copy
-		self.__editor.response()
 		self.__editor.textview.window.freeze_updates()
 		from Utils import delete_mark
 		[delete_mark(self.__buffer, mark) for mark in copy(self.__marks)]
 		self.__marks = []
 		self.__editor.textview.window.thaw_updates()
-		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):

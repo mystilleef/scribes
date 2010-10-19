@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		from FeedbackLabel import Label
 		Label(manager, editor)
@@ -17,7 +16,6 @@ class Manager(object):
 		Entry(manager, editor)
 		from Window import Window
 		Window(editor, manager)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor

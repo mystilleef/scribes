@@ -20,7 +20,6 @@ UNICODE_KEYS = (U, A, B, C, D, E, F, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 class Handler(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -30,7 +29,6 @@ class Handler(SignalManager):
 		self.__sigid1 = self.connect(self.__window, "key-press-event", self.__key_event_cb)
 		self.__sigid2 = self.connect(editor.textview, "event", self.__button_event_cb)
 		self.__block()
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -62,31 +60,23 @@ class Handler(SignalManager):
 		return False
 
 	def __handle_arrow_keys(self):
-		self.__editor.response()
 		self.__manager.emit("column-mode-reset")
 		if self.__inserted_text: self.__manager.emit("clear")
-		self.__editor.response()
 		return False
 
 	def __handle_ctrl_i(self):
-		self.__editor.response()
 		self.__manager.emit("column-mode-reset")
 		if self.__inserted_text: self.__manager.emit("clear")
 		self.__manager.emit("toggle-edit-point")
-		self.__editor.response()
 		return True
 
 	def __handle_deletion(self, method):
-		self.__editor.response()
 		self.__manager.emit(method)
-		self.__editor.response()
 		return True
 
 	def __toggle_column_edit_point(self, direction):
-		self.__editor.response()
 		if self.__inserted_text: self.__manager.emit("clear")
 		self.__manager.emit("column-edit-point", direction)
-		self.__editor.response()
 		return True
 
 	def __keyboard_handler(self, event):

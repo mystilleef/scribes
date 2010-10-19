@@ -3,14 +3,12 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Quiter(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "activate", self.__activate_cb)
 		self.__sigid1 = self.connect(self.__window, "key-press-event", self.__event_cb)
 		self.__block()
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

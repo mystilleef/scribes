@@ -7,7 +7,6 @@ DEFAULT_COLOR = "brown"
 class TriggerWidget(EventBox):
 
 	def __init__(self, editor):
-		editor.response()
 		EventBox.__init__(self)
 		self.hide()
 		self.__init_attributes(editor)
@@ -17,7 +16,6 @@ class TriggerWidget(EventBox):
 		self.connect("expose-event", self.__expose_cb)
 		self.change_bg_color()
 		self.hide()
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -36,7 +34,6 @@ class TriggerWidget(EventBox):
 		rectangle = Rectangle(0, 0, size, size)
 		self.size_allocate(rectangle)
 		self.queue_draw()
-		self.__editor.response()
 		return
 
 	def __set_position(self, position): self.__position = position
@@ -75,7 +72,6 @@ class TriggerWidget(EventBox):
 		return False
 
 	def __allocate_cb(self, win, allocation):
-		self.__editor.response()
 		from gtk.gdk import Pixmap
 		bitmap = Pixmap(self.window, self.__size, self.__size, 1)
 		cr = bitmap.cairo_create()
@@ -89,20 +85,16 @@ class TriggerWidget(EventBox):
 		cr.fill()
 #		 Set the window shape
 		self.window.shape_combine_mask(bitmap, 0, 0)
-		self.__editor.response()
 		return False
 
 	def change_bg_color(self):
-		self.__editor.response()
 		self.set_style(None)
 		color = self.__editor.view_bg_color
 		if color is None: return False
 		style = self.get_style().copy()
 		from gtk import STATE_NORMAL
 		style.bg[STATE_NORMAL] = color
-		self.__editor.response()
 		self.set_style(style)
-		self.__editor.response()
 		return False
 
 	def __paint(self):

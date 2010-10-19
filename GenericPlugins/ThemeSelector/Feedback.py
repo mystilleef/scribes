@@ -6,7 +6,6 @@ FEEDBACK_MESSAGE = _("Manage themes")
 class Feedback(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -20,7 +19,6 @@ class Feedback(SignalManager):
 		self.connect(manager, "activate", self.__activate_cb)
 		self.connect(manager, "hide-window", self.__hide_cb)
 		self.connect(manager, "invalid-scheme-files", self.__invalid_cb)
-		editor.refresh()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

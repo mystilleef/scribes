@@ -1,14 +1,12 @@
 class Manager(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("search", self.__search_cb)
 		self.__sigid3 = manager.connect("search-type-flag", self.__update_cb)
 		self.__sigid4 = manager.connect("selection-bounds", self.__selection_bounds_cb)
 		self.__sigid5 = manager.connect("hide-bar", self.__hide_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

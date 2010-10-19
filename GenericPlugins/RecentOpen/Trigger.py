@@ -5,12 +5,10 @@ from gettext import gettext as _
 class Trigger(SignalManager, TriggerManager):
 
 	def __init__(self, editor):
-		editor.refresh()
 		SignalManager.__init__(self)
 		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
 		self.connect(self.__trigger, "activate", self.__activate_cb)
-		editor.refresh()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -33,9 +31,7 @@ class Trigger(SignalManager, TriggerManager):
 		return False
 
 	def __activate(self):
-		self.__editor.refresh()
 		self.__manager.activate()
-		self.__editor.refresh()
 		return False
 
 	def __activate_cb(self, *args):

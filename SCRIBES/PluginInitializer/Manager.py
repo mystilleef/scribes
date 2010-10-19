@@ -26,7 +26,6 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		editor.response()
 		GObject.__init__(self)
 		from PluginReloader import Reloader
 		Reloader(self, editor)
@@ -62,4 +61,3 @@ class Manager(GObject):
 		Validator(self, editor)
 		from Initializer import Initializer
 		Initializer(self, editor)
-		editor.response()

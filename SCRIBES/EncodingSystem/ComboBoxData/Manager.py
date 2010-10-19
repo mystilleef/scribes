@@ -11,7 +11,6 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		editor.response()
 		GObject.__init__(self)
 		from Generator import Generator
 		Generator(self, editor)
@@ -19,4 +18,3 @@ class Manager(GObject):
 		Dispatcher(self, editor)
 		from ..SupportedEncodings.EncodingListDatabaseMonitor import Monitor
 		Monitor(self, editor)
-		editor.response()

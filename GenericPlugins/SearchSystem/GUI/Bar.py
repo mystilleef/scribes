@@ -4,7 +4,6 @@ message = _("Search for text")
 class Bar(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("hide-bar", self.__hide_cb)
@@ -12,7 +11,6 @@ class Bar(object):
 		self.__sigid4 = editor.textview.connect("focus-in-event", self.__hide_signal_cb)
 		self.__sigid5 = editor.textview.connect("button-press-event", self.__hide_signal_cb)
 		self.__block_signals()
-		editor.response()
 		
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

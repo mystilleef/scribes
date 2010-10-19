@@ -3,13 +3,11 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Manager(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "quit", self.__quit_cb)
 		self.connect(manager, "add", self.__add_cb)
 		self.connect(manager, "remove", self.__remove_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

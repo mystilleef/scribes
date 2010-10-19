@@ -3,7 +3,6 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Handler(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -13,7 +12,6 @@ class Handler(SignalManager):
 		self.connect(manager, "clear", self.__clear_cb)
 		self.__sigid1 = self.connect(editor.textbuffer, "insert-text", self.__insert_cb)
 		self.__block()
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -31,14 +29,11 @@ class Handler(SignalManager):
 
 	def __insert_text_at(self, mark, text):
 		iterator = self.__buffer.get_iter_at_mark(mark)
-		self.__editor.response()
 		self.__buffer.insert(iterator, text)
-		self.__editor.response()
 		return False
 
 	def __insert(self, text):
 		try:
-			self.__editor.response()
 			if not self.__marks: raise ValueError
 			self.__editor.textview.window.freeze_updates()
 			self.__block()
@@ -49,8 +44,6 @@ class Handler(SignalManager):
 			self.__editor.textview.window.thaw_updates()
 		except ValueError:
 			self.__manager.emit("no-edit-point-error")
-		finally:
-			self.__editor.response()
 		return False
 
 	def __block(self):

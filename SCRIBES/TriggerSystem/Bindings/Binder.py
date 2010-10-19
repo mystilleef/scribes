@@ -1,13 +1,11 @@
 class BaseBinder(object):
 
 	def __init__(self, editor, shortcut, signal):
-		editor.response()
 		self.__init_attributes(editor)
 		self.__bind(shortcut, signal)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.window.connect(signal, self.__activate_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

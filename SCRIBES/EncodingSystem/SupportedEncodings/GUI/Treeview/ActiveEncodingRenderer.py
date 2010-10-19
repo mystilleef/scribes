@@ -3,13 +3,11 @@ from gtk import CellRendererToggle
 class Renderer(CellRendererToggle):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		CellRendererToggle.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = self.connect("toggled", self.__toggled_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

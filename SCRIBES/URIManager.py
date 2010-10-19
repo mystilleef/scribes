@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, editor, uri):
-		editor.response()
 		self.__init_attributes(editor, uri)
 		self.__set(uri)
 		self.__sigid1 = editor.connect("checking-file", self.__checking_file_cb)
@@ -9,7 +8,6 @@ class Manager(object):
 		self.__sigid3 = editor.connect("saved-file", self.__saved_file_cb)
 		self.__sigid4 = editor.connect("quit", self.__destroy_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor, uri):
 		self.__editor = editor

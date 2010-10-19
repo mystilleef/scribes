@@ -1,7 +1,6 @@
 class Notifier(object):
 
 	def __init__(self, editor):
-		editor.response()
 		self.__init_attributes(editor)
 		self.__buffer.notify("cursor-position")
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
@@ -12,7 +11,6 @@ class Notifier(object):
 		from gobject import idle_add
 		idle_add(self.__optimize, priority=9999)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

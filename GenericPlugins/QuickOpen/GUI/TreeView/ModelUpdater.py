@@ -1,12 +1,10 @@
 class Updater(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("model-data", self.__data_cb)
 		self.__sigid3 = manager.connect("filtered-files", self.__files_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -33,7 +31,6 @@ class Updater(object):
 		self.__view.set_model(None)
 		self.__model.clear()
 		for name, path in data:
-			self.__editor.response()
 			self.__model.append([name, path])
 		self.__column1.queue_resize()
 		self.__column2.queue_resize()
@@ -42,11 +39,9 @@ class Updater(object):
 		return False
 
 	def __clear(self):
-		self.__editor.response()
 		self.__view.set_model(None)
 		self.__model.clear()
 		self.__view.set_model(self.__model)
-		self.__editor.response()
 		return False
 
 	def __destroy_cb(self, *args):

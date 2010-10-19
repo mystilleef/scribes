@@ -1,7 +1,6 @@
 class Manager(object):
 
 	def __init__(self, editor, uri):
-		editor.response()
 		from Window import Window
 		Window(editor)
 		from StateTracker import Tracker
@@ -16,4 +15,3 @@ class Manager(object):
 		Updater(editor, uri)
 		from TitleUpdater import Updater
 		Updater(editor, uri)
-		editor.response()

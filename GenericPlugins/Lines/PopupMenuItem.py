@@ -4,7 +4,6 @@ from gettext import gettext as _
 class PopupMenuItem(ImageMenuItem):
 
 	def __init__(self, editor):
-		editor.response()
 		ImageMenuItem.__init__(self, _("_Lines"))
 		self.__init_attributes(editor)
 		self.__set_properties()
@@ -16,7 +15,6 @@ class PopupMenuItem(ImageMenuItem):
 		self.__sigid6 = self.__menuitem6.connect("activate", self.__activate_cb)
 		self.__sigid7 = self.__menuitem7.connect("activate", self.__activate_cb)
 		self.__sigid8 = self.__view.connect("focus-in-event", self.__destroy_cb)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

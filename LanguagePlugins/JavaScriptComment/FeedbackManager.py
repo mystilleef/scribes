@@ -10,7 +10,6 @@ UNCOMMENTS_MESSAGE = _("Uncommented lines")
 class Manager(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -19,7 +18,6 @@ class Manager(SignalManager):
 		self.connect(manager, "single-line-boundary", self.__single_boundary_cb)
 		self.connect(manager, "multiline-boundary", self.__multi_boundary_cb)
 		self.connect(manager, "processed-text", self.__text_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

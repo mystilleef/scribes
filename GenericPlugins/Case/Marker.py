@@ -1,12 +1,10 @@
 class Marker(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("case", self.__case_cb)
 		self.__sigid3 = manager.connect("complete", self.__complete_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -27,12 +25,10 @@ class Marker(object):
 		forward = False
 		end = cursor.copy()
 		while self.__pattern.match(end.get_char()): 
-			self.__editor.response()
 			end.forward_char()
 		start = end.copy()
 		start.backward_char()
 		while self.__pattern.match(start.get_char()):
-			self.__editor.response()
 			forward = False
 			if start.starts_line(): break
 			if not start.backward_char(): break
@@ -84,7 +80,6 @@ class Marker(object):
 
 	def __clear(self):
 		for mark in self.__marks: 
-			self.__editor.response()
 			self.__editor.delete_mark(mark)
 		self.__marks = []
 		return False

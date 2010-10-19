@@ -21,9 +21,7 @@ class Entry(SignalManager):
 		return False
 
 	def __show(self):
-		self.__editor.response()
 		self.__entry.grab_focus()
-		self.__editor.response()
 		return False
 
 	def __activate(self):

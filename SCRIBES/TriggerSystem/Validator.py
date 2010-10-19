@@ -1,13 +1,11 @@
 class Validator(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("add-trigger", self.__add_cb)
 		self.__sigid3 = editor.connect("add-triggers", self.__adds_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -30,7 +28,6 @@ class Validator(object):
 		from Exceptions import DuplicateTriggerNameError
 		from Exceptions import InvalidAcceleratorError
 		try:
-			self.__editor.response()
 			name, accelerator = trigger.name, trigger.accelerator
 			self.__validate_name(name)
 			self.__names.append(name)
@@ -45,20 +42,15 @@ class Validator(object):
 			print "ERROR: Accelerator: %s, already in use" % accelerator
 		except InvalidAcceleratorError:
 			print "ERROR: %s is an invalid accelerator" % accelerator
-		finally:
-			self.__editor.response()
 		return False
 
 	def __validate_name(self, name):
-		self.__editor.response()
 		from Exceptions import NoTriggerNameError, DuplicateTriggerNameError
 		if not name: raise NoTriggerNameError
 		if name in self.__names: raise DuplicateTriggerNameError
-		self.__editor.response()
 		return False
 
 	def __validate_accelerator(self, accelerator):
-		self.__editor.response()
 		if not accelerator: return False
 		from Exceptions import DuplicateAcceleratorError
 		if accelerator in self.__accelerators: raise DuplicateAcceleratorError
@@ -67,7 +59,6 @@ class Validator(object):
 		if accelerator_valid(keyval, modifier): return False
 		from Exceptions import InvalidAcceleratorError
 		raise InvalidAcceleratorError
-		self.__editor.response()
 		return False
 
 	def __validate_triggers(self, triggers):

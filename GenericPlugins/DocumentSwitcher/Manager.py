@@ -10,11 +10,9 @@ class Manager(GObject):
 	}
 
 	def __init__(self, editor):
-		editor.response()
 		GObject.__init__(self)
 		from Switcher import Switcher
 		Switcher(self, editor)
-		editor.response()
 
 	def destroy(self):
 		self.emit("destroy")

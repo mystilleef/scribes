@@ -3,12 +3,10 @@ from SCRIBES.SignalConnectionManager import SignalManager
 class Manager(SignalManager):
 
 	def __init__(self, editor):
-		editor.response()
 		SignalManager.__init__(self)
 		self.__init_attributes(editor)
 		self.connect(editor, "register-object", self.__register_cb)
 		self.connect(editor, "unregister-object", self.__unregister_cb)
-		editor.response()
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -25,19 +23,15 @@ class Manager(SignalManager):
 		return False
 
 	def __register(self, _object):
-		self.__editor.response()
 		self.__objects.append(_object)
-		self.__editor.response()
 		return False
 
 	def __unregister(self, _object):
 		try:
-			self.__editor.response()
 			self.__objects.remove(_object)
 		except ValueError:
 			print _object, "not in queue"
 		finally:
-			self.__editor.response()
 			if not self.__objects: self.__destroy()
 		return False
 

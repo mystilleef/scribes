@@ -3,13 +3,11 @@ from gettext import gettext as _
 class Generator(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
 		self.__sigid2 = editor.connect("combobox-encoding-data?", self.__query_cb)
 		self.__sigid3 = manager.connect("encoding-list", self.__encoding_cb)
 		editor.register_object(self)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -39,7 +37,6 @@ class Generator(object):
 
 	def __extract_data(self, encoding):
 		for codec, alias, language in self.__supported_encodings:
-			self.__editor.response()
 			if codec != encoding: continue
 			data = self.__construct_data(codec, alias, language)
 			break

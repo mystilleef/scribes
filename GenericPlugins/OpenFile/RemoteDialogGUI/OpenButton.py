@@ -1,12 +1,10 @@
 class Button(object):
 
 	def __init__(self, editor, manager):
-		editor.response()
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = manager.connect("remote-button-sensitivity", self.__sensitivity_cb)
 		self.__sigid2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid3 = self.__button.connect("clicked", self.__clicked_cb)
-		editor.response()
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor

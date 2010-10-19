@@ -18,7 +18,6 @@ class Manager(GObject):
 
 	def __init__(self, editor):
 		GObject.__init__(self)
-		editor.response()
 		from ImageDisplayer import Displayer
 		Displayer(self, editor)
 		from ImageIDProcessor import Processor
@@ -41,4 +40,3 @@ class Manager(GObject):
 		Dispatcher(self, editor)
 		from SaveErrorSwitcher import Switcher
 		Switcher(self, editor)
-		editor.response()

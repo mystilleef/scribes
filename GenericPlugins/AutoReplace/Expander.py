@@ -1,12 +1,10 @@
 class AutoReplaceExpander(object):
 
 	def __init__(self, manager, editor):
-		editor.response()
 		self.__init_attributes(manager, editor)
 		self.__signal_id_1 = self.__manager.connect("abbreviations-updated", self.__expander_abbreviations_updated_cb)
 		self.__signal_id_2 = self.__manager.connect("destroy", self.__expander_destroy_cb)
 		self.__signal_id_3 = self.__manager.connect("abbreviation-found", self.__expander_abbreviation_found_cb)
-		editor.response()
 
 	def __init_attributes(self, manager, editor):
 		# Reference to the AutoReplaceManager.
@@ -50,7 +48,6 @@ class AutoReplaceExpander(object):
 		iterator = self.__editor.get_cursor_iterator()
 		tmp_iterator = iterator.copy()
 		for value in range(len(abbreviation[:-1])):
-			self.__editor.response()
 			tmp_iterator.backward_char()
 		self.__editor.textbuffer.delete(tmp_iterator, iterator)
 		self.__editor.textbuffer.insert_at_cursor(expanded_word + delimeter_character)
