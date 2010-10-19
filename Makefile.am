@@ -68,7 +68,7 @@ install-data-hook:
 		rm -rf $(DESTDIR)$(libdir)/scribes ;\
 		echo "removed " $(DESTDIR)$(libdir)/scribes ;\
 	fi
-	mkdir $(DESTDIR)$(libdir)/scribes
+	mkdir -p $(DESTDIR)$(libdir)/scribes
 	cp -R GenericPlugins $(DESTDIR)$(libdir)/scribes
 	cp -R LanguagePlugins $(DESTDIR)$(libdir)/scribes
 	chmod 755 $(DESTDIR)$(startupdir)/$(startup_script)
