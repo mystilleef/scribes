@@ -8,8 +8,8 @@ class Refresher(SignalManager):
 		self.__init_attributes(editor)
 		self.connect(editor, "post-quit", self.__quit_cb)
 		self.connect(editor, "refresh", self.__refresh_cb, True)
-		from gobject import idle_add
-		idle_add(self.__optimize, priority=9999)
+#		from gobject import idle_add
+#		idle_add(self.__optimize, priority=9999)
 		editor.response()
 
 	def __init_attributes(self, editor):

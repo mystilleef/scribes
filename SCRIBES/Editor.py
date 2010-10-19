@@ -260,7 +260,12 @@ class Editor(Signals):
 		return False
 
 	def response(self):
-		return self.imanager.response()
+		from gtk import events_pending, main_iteration
+		while events_pending(): main_iteration(False)
+		return False
+
+#	def response(self):
+#		return self.imanager.response()
 
 	def busy(self, busy=True):
 		self.emit("private-busy", busy)

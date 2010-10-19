@@ -431,10 +431,3 @@ def uri_is_folder(uri):
 
 def set_vm_interval(response=True):
 	return False
-
-try:
-	from psyco import bind
-	bind(response)
-	bind(open_database)
-except ImportError:
-	pass

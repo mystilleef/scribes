@@ -116,11 +116,8 @@ class Manager(object):
 		return self.__shortcut_list
 
 	def response(self):
-#		if self.__busy: return False
-#		self.__busy = True
-		from Utils import response
-		response()
-#		self.__busy = False
+#		from Utils import response
+#		response()
 		return False
 
 	def set_vm_interval(self, response=True):
@@ -159,9 +156,8 @@ class Manager(object):
 
 	def __init_psyco(self):
 		try:
-			from psyco import background, profile
-#			background()
-			profile()
+			from psyco import background
+			background()
 		except ImportError:
 			pass
 		return False
