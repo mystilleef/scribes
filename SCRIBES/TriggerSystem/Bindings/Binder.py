@@ -1,10 +1,13 @@
-class BaseBinder(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class BaseBinder(SignalManager):
 
 	def __init__(self, editor, shortcut, signal):
+		SignalManager.__init__(self)
 		self.__init_attributes(editor)
 		self.__bind(shortcut, signal)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.window.connect(signal, self.__activate_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(editor.window, signal, self.__activate_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
@@ -21,16 +24,13 @@ class BaseBinder(object):
 		return False
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor.window)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __quit_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
+		self.__destroy()
 		return False
 
 	def __activate_cb(self, *args):
