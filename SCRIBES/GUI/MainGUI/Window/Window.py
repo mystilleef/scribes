@@ -1,12 +1,15 @@
-class Window(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Window(SignalManager):
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(editor)
 		self.__set_properties()
-		self.__sigid1 = self.__window.connect("delete-event", self.__delete_event_cb)
-		self.__sigid2 = editor.connect("close", self.__close_cb)
-		self.__sigid3 = self.__window.connect_after("focus-out-event", self.__focus_out_event_cb)
-		self.__sigid4 = editor.connect_after("ready", self.__ready_cb)
+		self.connect(editor, "close", self.__close_cb)
+		self.connect(editor, "ready", self.__ready_cb, True)
+		self.connect(self.__window, "delete-event", self.__delete_event_cb)
+		self.connect(self.__window, "focus-out-event", self.__focus_out_event_cb, True)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
@@ -16,20 +19,16 @@ class Window(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__window)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid3, self.__window)
-		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __set_properties(self):
-#		screen = self.__window.get_screen()
-#		colormap = screen.get_rgba_colormap()
-#		from gtk import widget_set_default_colormap
-#		if colormap: widget_set_default_colormap(colormap)
+		screen = self.__window.get_screen()
+		colormap = screen.get_rgba_colormap()
+		from gtk import widget_set_default_colormap
+		if colormap: widget_set_default_colormap(colormap)
 		from gtk import AccelGroup, widget_set_default_colormap
 		self.__add_signal()
 		self.__window.add_accel_group(AccelGroup())
@@ -39,7 +38,6 @@ class Window(object):
 		width, height = get_resolution(self.__window, 1.462857143, 1.536)
 		self.__window.set_property("default-height", height)
 		self.__window.set_property("default-width", width)
-		
 		return
 
 	def __add_signal(self):
@@ -64,8 +62,7 @@ class Window(object):
 		return True
 
 	def __close_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
+		self.__destroy()
 		return False
 
 	def __focus_out_event_cb(self, *args):

@@ -1,15 +1,17 @@
-class Updater(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Updater(SignalManager):
 
 	def __init__(self, editor, uri):
+		SignalManager.__init__(self)
 		self.__init_attributes(editor, uri)
-		self.__sigid1 = editor.connect("close", self.__close_cb)
-		self.__sigid2 = self.__window.connect("focus-out-event", self.__update_cb)
-		self.__sigid3 = self.__window.connect("focus-in-event", self.__update_cb)
-		self.__sigid4 = editor.connect("checking-file", self.__checking_cb)
-		self.__sigid5 = editor.connect("load-error", self.__error_cb)
-		self.__sigid6 = editor.connect("saved-file", self.__saved_cb)
-		self.__sigid7 = editor.connect_after("loaded-file", self.__loaded_cb)
-#		self.__block_signals()
+		self.connect(editor, "close", self.__close_cb)
+		self.__sigid2 = self.connect(self.__window, "focus-out-event", self.__update_cb)
+		self.__sigid3 = self.connect(self.__window, "focus-in-event", self.__update_cb)
+		self.connect(editor, "checking-file", self.__checking_cb)
+		self.connect(editor, "load-error", self.__error_cb)
+		self.connect(editor, "saved-file", self.__saved_cb)
+		self.connect(editor, "loaded-file", self.__loaded_cb, True)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor, uri):
@@ -20,18 +22,11 @@ class Updater(object):
 		return False
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__window)
-		self.__editor.disconnect_signal(self.__sigid3, self.__window)
-		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
+		self.disconnect()
 		self.__set_position_in_database()
 		self.__window.hide()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __block_signals(self):
@@ -61,8 +56,7 @@ class Updater(object):
 		return False
 
 	def __close_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
+		self.__destroy()
 		return False
 
 	def __update_cb(self, *args):
