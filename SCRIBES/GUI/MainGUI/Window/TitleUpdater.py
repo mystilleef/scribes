@@ -42,10 +42,13 @@ class Updater(object):
 	def __get_dictionary(self, uri):
 		from gio import File
 		title = File(uri).get_basename() if uri else _("Unnamed Document")
+		if uri: parent_path = File(uri).get_parent().get_parse_name()
+		if uri: parent_path = parent_path.replace(self.__editor.home_folder, "~").strip("/\\")
+		fulltitle = "%s - (%s)" % (title, parent_path) if uri else title
 		dictionary = {
-			"normal": title,
-			"modified": "*" + title,
-			"readonly": title + _(" [READONLY]"),
+			"normal": fulltitle,
+			"modified": "*" + fulltitle,
+			"readonly": fulltitle + _(" [READONLY]"),
 			"loading": _("Loading %s ...") % title,
 		}
 		return dictionary

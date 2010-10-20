@@ -23,6 +23,7 @@ class Manager(object):
 		return info.has_application("scribes")
 
 	def __resource_exists(self, info):
+		if info.is_local() is False: return True
 		return info.exists()
 
 	def __compare(self, x, y):
