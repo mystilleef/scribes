@@ -43,7 +43,7 @@ class Entry(SignalManager):
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(500, self.__update_timeout, priority=99999)
+			self.__timer = timeout_add(350, self.__update_timeout, priority=99999)
 		return False
 
 	def __focus_cb(self, *args):

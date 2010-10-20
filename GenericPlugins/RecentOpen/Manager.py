@@ -15,8 +15,6 @@ class Manager(Signal):
 		Filterer(self, editor)
 		from DataGenerator import Generator
 		Generator(self, editor)
-		from RecentInfoCollector import Collector
-		Collector(self, editor)
 
 	def __init_attributes(self, editor):
 		from os.path import join

@@ -8,11 +8,14 @@ class Generator(SignalManager):
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor, manager)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(manager, "recent-infos", self.__info_cb)
+		self.connect(editor, "recent-infos", self.__info_cb)
+		from gobject import idle_add
+		idle_add(self.__process, priority=9999)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
 		self.__manager = manager
+		self.__infos = editor.recent_infos
 		return
 
 	def __destroy(self):
@@ -49,14 +52,15 @@ class Generator(SignalManager):
 		icon = info.get_icon(32)
 		return file_path, icon, display_name, display_path, modified, location, filetype, uri
 
-	def __process(self, infos):
-		data = [self.__format(info) for info in infos]
+	def __process(self):
+		from copy import copy
+		data = [self.__format(info) for info in copy(self.__infos)]
 		self.__manager.emit("recent-infos-data", data)
 		return False
 
-	def __process_timeout(self, infos):
+	def __process_timeout(self):
 		from gobject import idle_add
-		self.__timer = idle_add(self.__process, infos)
+		self.__timer = idle_add(self.__process)
 		return False
 
 	def __destroy_cb(self, *args):
@@ -65,10 +69,11 @@ class Generator(SignalManager):
 
 	def __info_cb(self, manager, infos):
 		try:
+			self.__infos = infos
 			from gobject import timeout_add, source_remove
 			source_remove(self.__timer)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(250, self.__process_timeout, infos)
+			self.__timer = timeout_add(250, self.__process_timeout)
 		return False
