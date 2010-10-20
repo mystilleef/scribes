@@ -227,8 +227,16 @@ class Editor(Signals):
 
 	def move_view_to_cursor(self, align=False, iterator=None):
 		if iterator is None: iterator = self.cursor
+		self.__response()
 		self.textview.scroll_to_iter(iterator, 0.001, use_align=align, xalign=1.0)
+		self.__response()
+		self.textview.grab_focus()
 		return False
+
+	def __response(self):
+		from gtk import events_pending, main_iteration
+		while events_pending(): main_iteration(False)
+		return
 
 	def response(self):
 #		from gtk import events_pending, main_iteration

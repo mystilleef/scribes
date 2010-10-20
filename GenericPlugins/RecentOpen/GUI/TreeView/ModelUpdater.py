@@ -25,6 +25,7 @@ class Updater(SignalManager):
 		self.__treeview.set_model(None)
 		self.__model.clear()
 		for icon, info, uri in data:
+			self.__editor.refresh(False)
 			self.__model.append([icon, info, uri])
 		self.__treeview.set_model(self.__model)
 		self.__manager.emit("updated-model")

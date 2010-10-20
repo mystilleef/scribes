@@ -67,12 +67,14 @@ class View(object):
 		from SCRIBES.TextWrappingMetadata import get_value as wrap_mode_bool
 		wrap_mode = self.__view.set_wrap_mode
 		wrap_mode(WRAP_WORD_CHAR) if wrap_mode_bool(language) else wrap_mode(WRAP_NONE)
+		self.__view.grab_focus()
 		return False
 
 	def __add_view_to_scroll(self):
 		swin = self.__editor.gui.get_widget("ScrolledWindow")
 		swin.add(self.__view)
 		swin.show_all()
+		self.__view.grab_focus()
 		return False
 
 	def __quit_cb(self, *args):

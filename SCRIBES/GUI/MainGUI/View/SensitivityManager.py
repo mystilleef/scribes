@@ -10,6 +10,7 @@ class Manager(object):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__swin = editor.gui.get_widget("ScrolledWindow")
+		self.__view = editor.textview
 		return
 
 	def __destroy(self):
@@ -18,11 +19,11 @@ class Manager(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __sensitive(self, sensitive):
 		self.__swin.props.sensitive = sensitive
+		self.__view.grab_focus()
 		return False
 
 	def __quit_cb(self, *args):

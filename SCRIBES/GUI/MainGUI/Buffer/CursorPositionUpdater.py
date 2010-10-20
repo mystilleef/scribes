@@ -3,7 +3,7 @@ class Updater(object):
 	def __init__(self, editor):
 		self.__init_attributes(editor)
 		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("window-focus-out", self.__update_cb)
+#		self.__sigid2 = editor.connect("window-focus-out", self.__update_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
@@ -13,11 +13,10 @@ class Updater(object):
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
+#		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__update()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __update(self):

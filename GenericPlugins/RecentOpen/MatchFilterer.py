@@ -23,11 +23,13 @@ class Filterer(SignalManager):
 		return False
 
 	def __match_in(self, file_path, pattern):
+		self.__editor.refresh(False)
 		if self.__pattern != pattern: raise StandardError
 		return pattern.lower() in file_path.lower()
 
 	def __filter(self, pattern):
 		try:
+			self.__editor.refresh(False)
 			if self.__data is None: return False
 			if not pattern: raise ValueError
 			filtered_data =[data for data in self.__data if self.__match_in(data[0], pattern)]

@@ -23,6 +23,7 @@ class Generator(SignalManager):
 		return False
 
 	def __format(self, data):
+		self.__editor.refresh(False)
 		file_path, icon, display_name, display_path, modified, location, filetype, uri = data
 		display_info = TEMPLATE % (display_name, display_path, modified, location, filetype)
 		return icon, display_info, uri

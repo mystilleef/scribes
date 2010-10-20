@@ -7,7 +7,7 @@ class Placer(SignalManager):
 		self.__init_attributes(editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "checking-file", self.__checking_cb)
-		self.connect(editor, "loaded-file", self.__loaded_cb, True)
+		self.connect(editor, "loaded-file", self.__loaded_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
@@ -33,8 +33,12 @@ class Placer(SignalManager):
 		index = self.__get_cursor_index(iterator, index)
 		iterator.set_line_index(index)
 		self.__buffer.place_cursor(iterator)
+		self.__editor.refresh(True)
 		self.__editor.move_view_to_cursor(True)
+		self.__editor.refresh(True)
 		self.__editor.textview.window.thaw_updates()
+		self.__editor.refresh(True)
+		self.__editor.textview.grab_focus()
 		return False
 
 	def __get_cursor_data(self):
@@ -56,8 +60,9 @@ class Placer(SignalManager):
 		return False
 
 	def __loaded_cb(self, *args):
-		from gobject import timeout_add
-		timeout_add(100, self.__place_timeout)
+#		from gobject import timeout_add
+#		timeout_add(250, self.__place_timeout)
+		self.__place()
 		return False
 
 	def __checking_cb(self, *args):
