@@ -1,17 +1,20 @@
 from gettext import gettext as _
+from SCRIBES.SignalConnectionManager import SignalManager
 
-class Updater(object):
+class Updater(SignalManager):
 
 	def __init__(self, editor, uri):
+		SignalManager.__init__(self)
 		self.__init_attributes(editor, uri)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("checking-file", self.__checking_cb)
-		self.__sigid3 = editor.connect("loaded-file", self.__loaded_cb)
-		self.__sigid4 = editor.connect("load-error", self.__error_cb)
-		self.__sigid5 = editor.connect_after("modified-file", self.__modified_cb)
-		self.__sigid6 = editor.connect("readonly", self.__readonly_cb)
-		self.__sigid7 = editor.connect("saved-file", self.__saved_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(editor, "checking-file", self.__checking_cb)
+		self.connect(editor, "loaded-file", self.__loaded_cb)
+		self.connect(editor, "load-error", self.__error_cb)
+		self.connect(editor, "modified-file", self.__modified_cb)
+		self.connect(editor, "readonly", self.__readonly_cb)
+		self.connect(editor, "saved-file", self.__saved_cb)
 		if uri: self.__set_title("loading")
+		
 		editor.register_object(self)
 
 	def __init_attributes(self, editor, uri):
@@ -22,13 +25,7 @@ class Updater(object):
 		return False
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid7, self.__editor)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
 		self = None
@@ -44,7 +41,7 @@ class Updater(object):
 		title = File(uri).get_basename() if uri else _("Unnamed Document")
 		if uri: parent_path = File(uri).get_parent().get_parse_name()
 		if uri: parent_path = parent_path.replace(self.__editor.home_folder, "~").strip("/\\")
-		fulltitle = "%s - (%s)" % (title, parent_path) if uri else title
+		fulltitle = "%s - ( %s )" % (title, parent_path) if uri else title
 		dictionary = {
 			"normal": fulltitle,
 			"modified": "*" + fulltitle,

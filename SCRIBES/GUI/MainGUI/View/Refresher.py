@@ -7,8 +7,6 @@ class Refresher(SignalManager):
 		self.__init_attributes(editor)
 		self.connect(editor, "post-quit", self.__quit_cb)
 		self.connect(editor, "refresh", self.__refresh_cb, True)
-#		from gobject import idle_add
-#		idle_add(self.__optimize, priority=9999)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -29,21 +27,10 @@ class Refresher(SignalManager):
 			if grab_focus: self.__view.grab_focus()
 		return False
 
-	def __optimize(self):
-		self.__editor.optimize((self.__refresh,))
-		return False
-
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __refresh_cb(self, editor, grab_focus):
-#		try:
-#			from gobject import idle_add, source_remove
-#			source_remove(self.__timer)
-#		except AttributeError:
-#			pass
-#		finally:
-#			self.__timer = idle_add(self.__refresh, grab_focus, priority=99999999)
 		self.__refresh(grab_focus)
 		return False
