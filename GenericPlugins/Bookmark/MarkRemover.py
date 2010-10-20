@@ -36,11 +36,9 @@ class Remover(SignalManager):
 		return False
 
 	def __remove_cb(self, manager, line):
-		from gobject import idle_add
-		idle_add(self.__unmark, self.__get_region(line))
+		self.__unmark(self.__get_region(line))
 		return False
-	
+
 	def __remove_all_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__unmark, self.__get_region())
+		self.__unmark(self.__get_region())
 		return False

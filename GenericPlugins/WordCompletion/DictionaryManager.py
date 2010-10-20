@@ -24,8 +24,7 @@ class Manager(SignalManager):
 		return 
 
 	def __update(self, dictionary):
-		self.__dictionary.clear()
-		self.__dictionary.update(dictionary)
+		self.__dictionary = dictionary
 		self.__manager.emit("dictionary", self.__dictionary)
 		self.__manager.emit("finished-indexing")
 		return False

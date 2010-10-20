@@ -20,7 +20,6 @@ def __byte_compiled_files():
 def __remove(files):
 	from os import remove
 	[remove(path) for path in files]
-	print "Removed byte compiled python objects"
 	return
 
 if __name__ == "__main__":

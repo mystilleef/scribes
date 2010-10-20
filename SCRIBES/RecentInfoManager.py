@@ -1,3 +1,5 @@
+from Utils import response
+
 class Manager(object):
 
 	def __init__(self, manager):
@@ -20,13 +22,16 @@ class Manager(object):
 		return
 
 	def __is_scribes_resource(self, info):
+		response()
 		return info.has_application("scribes")
 
 	def __resource_exists(self, info):
+		response()
 		if info.is_local() is False: return True
 		return info.exists()
 
 	def __compare(self, x, y):
+		response()
 		return cmp(x.get_modified(), y.get_modified())
 
 	def __update(self):

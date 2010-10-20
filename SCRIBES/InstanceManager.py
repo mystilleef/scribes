@@ -7,7 +7,7 @@ class Manager(object):
 		from SaveProcessInitializer.Manager import Manager
 		Manager()
 		from sys import setcheckinterval
-		setcheckinterval(1000)
+		setcheckinterval(-1)
 		from gobject import timeout_add
 		timeout_add(60000, self.__init_psyco, priority=9999)
 		self.__init_i18n()
@@ -122,8 +122,11 @@ class Manager(object):
 		return self.__shortcut_list
 
 	def response(self):
-#		from Utils import response
-#		response()
+		if self.__busy: return False
+		self.__busy = True
+		from Utils import response
+		response()
+		self.__busy = False
 		return False
 
 	def set_vm_interval(self, response=True):
@@ -159,8 +162,8 @@ class Manager(object):
 
 	def __init_psyco(self):
 		try:
-			from psyco import background
-			background()
+			from psyco import profile
+			profile()
 		except ImportError:
 			pass
 		return False

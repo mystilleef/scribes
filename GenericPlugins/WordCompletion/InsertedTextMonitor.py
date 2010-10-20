@@ -66,17 +66,12 @@ class Monitor(object):
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(375, self.__send_valid_string, priority=999999)
+			self.__timer = timeout_add(350, self.__send_valid_string, priority=999999)
 		return False
 
 	def __send_valid_string(self):
-		try:
-			from gobject import timeout_add, source_remove, idle_add
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = idle_add(self.__send, priority=999999)
+		from gobject import idle_add
+		self.__timer = idle_add(self.__send, priority=999999)
 		return False
 
 	def __is_valid_character(self, character):
@@ -102,6 +97,7 @@ class Monitor(object):
 		return iterator
 
 	def __get_word_before_cursor(self):
+		self.__editor.refresh(False)
 		iterator = self.__editor.cursor.copy()
 		# If the cursor is in front of a valid character we ignore
 		# word completion.

@@ -20,12 +20,16 @@ class Refresher(SignalManager):
 
 	def __refresh(self, grab_focus=False):
 		try:
+			self.__editor.response()
 			self.__view.window.process_updates(True)
+			self.__editor.response()
 		except:
-			pass
+			self.__editor.response()
 		finally:
+			self.__editor.response()
 			if grab_focus: self.__view.grab_focus()
-		return False
+			self.__editor.response()
+		return
 
 	def __quit_cb(self, *args):
 		self.__destroy()

@@ -14,7 +14,7 @@ def check_dependencies():
 		except AssertionError:
 			print "Error: Version 0.70 or better of dbus-python needed."
 			raise SystemExit
-		# Check for PyGTK. Okay this is a fantastic application.
+		# Check for PyGTK.
 		try:
 			import gtk
 			if gtk.pygtk_version < (2, 10, 0): raise AssertionError

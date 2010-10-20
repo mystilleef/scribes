@@ -139,7 +139,7 @@ class Editor(Signals):
 		self.emit("toggle-readonly")
 		return False
 
-	def refresh(self, grab_focus=True):
+	def refresh(self, grab_focus=False):
 		self.emit("refresh", grab_focus)
 		return False
 
@@ -231,7 +231,9 @@ class Editor(Signals):
 		return False
 
 	def response(self):
-		return False
+#		from gtk import events_pending, main_iteration
+#		while events_pending(): main_iteration(False)
+		return self.imanager.response()
 
 	def busy(self, busy=True):
 		self.emit("private-busy", busy)

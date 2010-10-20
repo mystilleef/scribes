@@ -77,6 +77,7 @@ class TreeView(object):
 			self.__treeview.set_model(None)
 			self.__model.clear()
 			for word in matches:
+				self.__editor.refresh(False)
 				self.__model.append([word])
 			self.__treeview.set_model(self.__model)
 			if view_window: view_window.thaw_updates()

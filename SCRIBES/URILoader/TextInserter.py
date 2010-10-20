@@ -23,7 +23,9 @@ class Inserter(object):
 			unicode_string = string.decode(encoding, "strict")
 			utf8_string = unicode_string.encode("utf-8", "strict")
 			self.__editor.textview.window.freeze_updates()
+			self.__editor.refresh(True)
 			self.__editor.textbuffer.set_text(utf8_string)
+			self.__editor.refresh(True)
 			self.__manager.emit("load-success", uri, encoding)
 #			from gobject import timeout_add
 #			timeout_add(125, self.__set_cursor_timeout)

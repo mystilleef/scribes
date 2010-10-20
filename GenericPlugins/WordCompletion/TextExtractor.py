@@ -22,6 +22,7 @@ class Extractor(object):
 	def __extract_text(self):
 		texts = []
 		for editor in self.__editor.instances:
+			self.__editor.refresh(False)
 			texts.append(editor.text)
 		text = " ".join(texts)
 		self.__manager.emit("extracted-text", text)

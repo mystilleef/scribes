@@ -24,16 +24,19 @@ class Generator(SignalManager):
 		return False
 
 	def __get_language(self, mimetype):
+		self.__editor.response()
 		from gio import content_type_get_description as get_desc
 		return get_desc(mimetype).split()[0].lower()
 
 	def __get_search_path_from(self, uri):
+		self.__editor.response()
 		from gio import File
 		path = File(uri).get_parse_name()
 		path = path.replace(self.__editor.home_folder, "").strip("/\\")
 		return path
 
 	def __get_display_path_from(self, uri):
+		self.__editor.response()
 		from gio import File
 		path = File(uri).get_parent().get_parse_name()
 		path = path.replace(self.__editor.home_folder, "").strip("/\\")
@@ -42,6 +45,7 @@ class Generator(SignalManager):
 		return path
 
 	def __format(self, info):
+		self.__editor.response()
 		uri = info.get_uri()
 		file_path = self.__get_search_path_from(uri)
 		display_path = self.__get_display_path_from(uri)

@@ -43,7 +43,6 @@ class Positioner(object):
 		return False
 
 	def __move_to_cursor(self, adjustment_value):
-#		self.__editor.move_view_to_cursor(True)
 		vadjustment = self.__editor.gui.get_widget("ScrolledWindow").get_vadjustment()
 		vadjustment.set_value(adjustment_value)
 		self.__editor.textview.window.thaw_updates()
@@ -59,7 +58,7 @@ class Positioner(object):
 		return False
 
 	def __inserted_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__position, priority=9999)
-#		self.__position()
+#		from gobject import idle_add
+#		idle_add(self.__position, priority=9999)
+		self.__position()
 		return False

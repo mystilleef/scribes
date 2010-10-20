@@ -23,10 +23,10 @@ class Monitor(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __process(self, string):
+		self.__editor.refresh()
 		matches = self.__find_matches(string)
 		self.__emit_matches(matches) if matches else self.__emit_no_matches()
 		return False
@@ -35,6 +35,7 @@ class Monitor(object):
 		match_list = []
 		dictionary = self.__dictionary
 		for items in dictionary.items():
+			self.__editor.refresh(False)
 			if not (items[0].startswith(word) and (items[0] != word)): continue
 			match_list.append(list(items))
 		return match_list
@@ -42,10 +43,12 @@ class Monitor(object):
 	def __get_matches(self, match_list):
 		matches = []
 		for items in match_list:
+			self.__editor.refresh(False)
 			matches.append(items[0])
 		return matches
 
 	def __find_matches(self, word):
+		self.__editor.refresh(False)
 		dictionary = self.__dictionary
 		if not dictionary: return None
 		match_list = self.__get_match_list(word)
@@ -54,6 +57,7 @@ class Monitor(object):
 		return self.__get_matches(match_list)
 
 	def __sort(self, x, y):
+		self.__editor.refresh(False)
 		if (x[1] < y[1]): return 1
 		if (x[1] > y[1]): return -1
 		return 0
