@@ -1,11 +1,14 @@
-class Saver(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Saver(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = editor.connect("close", self.__close_cb)
-		self.__sigid2 = manager.connect("save-succeeded", self.__saved_cb)
-		self.__sigid3 = manager.connect("save-failed", self.__error_cb)
-		self.__sigid4 = manager.connect("session-id", self.__session_cb)
+		self.connect(editor, "close", self.__close_cb)
+		self.connect(manager, "save-succeeded", self.__saved_cb)
+		self.connect(manager, "save-failed", self.__error_cb)
+		self.connect(manager, "session-id", self.__session_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
@@ -17,14 +20,10 @@ class Saver(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		self.__editor.emit("quit")
 		del self
-		self = None
 		return False
 
 	def __save(self):
@@ -37,7 +36,6 @@ class Saver(object):
 			if self.__error: raise ValueError
 			if self.__editor.modified is False: raise ValueError
 			self.__quit = True
-			#if not self.__editor.uri: raise StandardError
 			from gobject import idle_add
 			idle_add(self.__save, priority=9999)
 		except ValueError:
@@ -48,8 +46,7 @@ class Saver(object):
 		return False
 
 	def __close_cb(self, editor, save_file):
-		from gobject import idle_add
-		idle_add(self.__close, save_file, priority=9999)
+		self.__close(save_file)
 		return False
 
 	def __saved_cb(self, manager, data):
