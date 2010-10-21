@@ -22,6 +22,7 @@ class Initializer(SignalManager):
 		from PluginInitializer.Manager import Manager
 		Manager(self.__editor)
 		self.__editor.emit("ready")
+		self.__editor.textview.grab_focus()
 		self.__destroy()
 		return False
 

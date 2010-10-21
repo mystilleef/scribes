@@ -163,8 +163,8 @@ class Manager(object):
 
 	def __init_psyco(self):
 		try:
-			from psyco import profile
-			profile()
+			from psyco import background
+			background()
 		except ImportError:
 			pass
 		return False

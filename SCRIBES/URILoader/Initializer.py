@@ -31,7 +31,7 @@ class Initializer(SignalManager):
 
 	def __load_file_cb(self, editor, uri, encoding):
 		from gobject import timeout_add
-		timeout_add(125, self.__load_timeout, uri, encoding, priority=99999)
+		timeout_add(25, self.__load_timeout, uri, encoding, priority=99999)
 		return False
 
 	def __destroy_cb(self, *args):
