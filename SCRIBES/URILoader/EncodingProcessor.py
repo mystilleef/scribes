@@ -43,7 +43,8 @@ class Processor(object):
 
 	def __process_cb(self, manager, uri, string):
 		from gobject import idle_add
-		idle_add(self.__send, uri, string)
+		from glib import PRIORITY_HIGH
+		idle_add(self.__send, uri, string, priority=PRIORITY_HIGH)
 		return False
 
 	def __init_loading_cb(self, manager, uri, encoding):

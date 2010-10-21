@@ -14,7 +14,6 @@ class Inserter(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		del self
-		self = None
 		return
 
 	def __insert(self, uri, string, encoding):
@@ -27,20 +26,8 @@ class Inserter(object):
 			self.__editor.textbuffer.set_text(utf8_string)
 			self.__editor.refresh(True)
 			self.__manager.emit("load-success", uri, encoding)
-#			from gobject import timeout_add
-#			timeout_add(125, self.__set_cursor_timeout)
 		except:
 			self.__manager.emit("insertion-error", uri, string)
-		return False
-
-	def __set_cursor(self):
-		self.__editor.move_view_to_cursor(True)
-		self.__editor.textview.window.thaw_updates()
-		return False
-
-	def __set_cursor_timeout(self):
-		from gobject import idle_add
-		idle_add(self.__set_cursor)
 		return False
 
 	def __destroy_cb(self, *args):
@@ -49,5 +36,6 @@ class Inserter(object):
 
 	def __insert_cb(self, manager, uri, string, encoding):
 		from gobject import idle_add
-		idle_add(self.__insert, uri, string, encoding, priority=99999)
+		from glib import PRIORITY_HIGH
+		idle_add(self.__insert, uri, string, encoding, priority=PRIORITY_HIGH)
 		return False

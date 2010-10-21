@@ -14,7 +14,6 @@ class Reader(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __read(self, uri):
@@ -42,5 +41,6 @@ class Reader(object):
 
 	def __read_uri_cb(self, manager, uri):
 		from gobject import idle_add
-		idle_add(self.__read, uri)
+		from glib import PRIORITY_HIGH
+		idle_add(self.__read, uri, priority=PRIORITY_HIGH)
 		return False

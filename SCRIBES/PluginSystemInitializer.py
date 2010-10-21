@@ -27,6 +27,7 @@ class Initializer(SignalManager):
 		return False
 
 	def __loaded_cb(self, *args):
+		from glib import PRIORITY_LOW
 		from gobject import idle_add
-		idle_add(self.__init_plugins, priority=999999999)
+		idle_add(self.__init_plugins, priority=PRIORITY_LOW)
 		return False

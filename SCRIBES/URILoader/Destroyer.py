@@ -29,5 +29,6 @@ class Destroyer(object):
 
 	def __loaded_file_cb(self, *args):
 		from gobject import timeout_add
-		timeout_add(100, self.__emit, priority=9999)
+		from glib import PRIORITY_LOW
+		timeout_add(1000, self.__emit, priority=PRIORITY_LOW)
 		return False

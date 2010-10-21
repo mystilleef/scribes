@@ -49,5 +49,6 @@ class Mounter(object):
 
 	def __mount_cb(self, manager, data):
 		from gobject import idle_add
-		idle_add(self.__mount, data, priority=9999)
+		from glib import PRIORITY_HIGH
+		idle_add(self.__mount, data, priority=PRIORITY_HIGH)
 		return False

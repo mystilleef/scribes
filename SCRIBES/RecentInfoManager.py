@@ -5,8 +5,9 @@ class Manager(object):
 	def __init__(self, manager):
 		self.__init_attributes(manager)
 		self.__recent_manager.connect("changed", self.__changed_cb)
+		from glib import PRIORITY_LOW
 		from gobject import idle_add
-		idle_add(self.__update, priority=9999)
+		idle_add(self.__update, priority=PRIORITY_LOW)
 
 	def recent_infos(self):
 		return self.__infos
@@ -50,8 +51,9 @@ class Manager(object):
 		return False
 
 	def __update_editors_timeout(self):
+		from glib import PRIORITY_LOW
 		from gobject import idle_add
-		self.__timer = idle_add(self.__update_editors, priority=999999)
+		self.__timer = idle_add(self.__update_editors, priority=PRIORITY_LOW)
 		return False
 
 	def __changed_cb(self, *args):
@@ -61,5 +63,6 @@ class Manager(object):
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(1000, self.__update_editors_timeout, priority=999999)
+			from glib import PRIORITY_LOW
+			self.__timer = timeout_add(1000, self.__update_editors_timeout, priority=PRIORITY_LOW)
 		return False
