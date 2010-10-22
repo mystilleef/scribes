@@ -129,17 +129,18 @@
 	../GenericPlugins/TriggerArea/GUI/GUI.glade \
 	../GenericPlugins/TriggerArea/MenuItem.py \
 	../GenericPlugins/TriggerArea/Trigger.py \
+	../GenericPlugins/UndoClosedFiles/Trigger.py \
 	../GenericPlugins/UndoRedo/Trigger.py \
 	../GenericPlugins/UserGuide/Trigger.py \
 	../LanguagePlugins/HashComments/Trigger.py \
 	../LanguagePlugins/HashComments/i18n.py \
 	../LanguagePlugins/JavaScriptComment/FeedbackManager.py \
 	../LanguagePlugins/JavaScriptComment/Trigger.py \
+	../LanguagePlugins/PythonErrorChecker/Feedback.py \
+	../LanguagePlugins/PythonErrorChecker/Trigger.py \
 	../LanguagePlugins/PythonNavigationSelection/Trigger.py \
 	../LanguagePlugins/PythonSymbolBrowser/SymbolBrowser.glade \
 	../LanguagePlugins/PythonSymbolBrowser/Trigger.py \
-	../LanguagePlugins/PythonSyntaxErrorChecker/Manager.py \
-	../LanguagePlugins/PythonSyntaxErrorChecker/Trigger.py \
 	../LanguagePlugins/zencoding/GUI/GUI.glade \
 	../LanguagePlugins/zencoding/Trigger.py \
 	../SCRIBES/CommandLineParser.py \
