@@ -12,23 +12,19 @@ class Trigger(SignalManager, TriggerManager):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__manager = None
+		from Manager import Manager
+		self.__manager = Manager(editor)
 		name, shortcut, description, category = (
-			"check-python-syntax-errors", 
-			"F2", 
-			_("Check for syntax errors"), 
-			_("Python")
+			"move-cursor-to-errors",
+			"F2",
+			_("Move cursor to errors in python code"),
+			_("Python"),
 		)
 		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		return
 
 	def __activate_cb(self, *args):
-		try:
-			self.__manager.check()
-		except AttributeError:
-			from Manager import Manager
-			self.__manager = Manager(self.__editor)
-			self.__manager.check()
+		self.__manager.activate()
 		return
 
 	def destroy(self):
