@@ -76,7 +76,7 @@ class Editor(Signals):
 	selection_bounds = property(lambda self: self.textbuffer.get_selection_bounds())
 	selected_text = property(lambda self: self.textbuffer.get_text(*(self.selection_bounds)))
 	has_selection = property(lambda self: self.textbuffer.props.has_selection)
-	pwd = property(lambda self: File(self.uri).get_parent().get_path() if self.uri else self.desktop_folder)
+	pwd = property(lambda self: EditorImports.File(self.uri).get_parent().get_path() if self.uri else self.desktop_folder)
 	pwd_uri = property(lambda self: EditorImports.File(self.uri).get_parent().get_uri() if self.uri else EditorImports.File(self.desktop_folder).get_uri())
 	dialog_filters = property(lambda self: EditorImports.create_filter_list())
 	bar_is_active = property(lambda self: self.get_data("bar_is_active"))
@@ -105,7 +105,7 @@ class Editor(Signals):
 		result = show_uri(self.window.get_screen(), uri, get_current_event_time())
 		message = _("Launching user guide") if result else _("Failed to launch user guide")
 		image = "help" if result else "fail"
-		show = self.update_message(message, image, 10)
+		self.update_message(message, image, 10)
 		return
 
 	def new(self):
@@ -230,7 +230,6 @@ class Editor(Signals):
 		self.__response()
 		self.textview.scroll_to_iter(iterator, 0.001, use_align=align, xalign=1.0)
 		self.__response()
-		self.textview.grab_focus()
 		return False
 
 	def __response(self):

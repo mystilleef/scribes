@@ -23,7 +23,6 @@ class Manager(object):
 
 	def __sensitive(self, sensitive):
 		self.__swin.props.sensitive = sensitive
-		self.__view.grab_focus()
 		return False
 
 	def __quit_cb(self, *args):

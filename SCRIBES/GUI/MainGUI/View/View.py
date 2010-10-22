@@ -23,13 +23,12 @@ class View(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __set_properties(self):
 		from gtk import DEST_DEFAULT_ALL
 		targets = [("text/uri-list", 0, 80)]
-		from gtk.gdk import ACTION_COPY, BUTTON1_MASK, ACTION_DEFAULT
+		from gtk.gdk import ACTION_COPY
 		self.__view.drag_dest_set(DEST_DEFAULT_ALL, targets, ACTION_COPY)
 		self.__view.drag_dest_add_text_targets()
 		self.__view.set_property("is-focus", True)
