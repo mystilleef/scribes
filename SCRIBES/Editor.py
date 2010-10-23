@@ -103,7 +103,8 @@ class Editor(Signals):
 		uri = "ghelp:scribes"
 		from gtk import show_uri, get_current_event_time
 		result = show_uri(self.window.get_screen(), uri, get_current_event_time())
-		message = _("Launching user guide") if result else _("Failed to launch user guide")
+		from gettext import gettext as i18n
+		message = i18n("Launching user guide") if result else i18n("Failed to launch user guide")
 		image = "help" if result else "fail"
 		self.update_message(message, image, 10)
 		return

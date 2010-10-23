@@ -193,7 +193,7 @@ class Manager(object):
 
 	def __remove_swap_area(self):
 		from glob import glob
-		from Globals import home_folder, metadata_folder, tmp_folder
+		from Globals import metadata_folder, tmp_folder
 		from os.path import join
 		files = glob(join(tmp_folder, ".Scribes*scribes"))
 		from shutil import rmtree

@@ -5,9 +5,8 @@ class Manager(object):
 	def __init__(self, manager):
 		self.__init_attributes(manager)
 		self.__recent_manager.connect("changed", self.__changed_cb)
-		from glib import PRIORITY_LOW
 		from gobject import idle_add
-		idle_add(self.__update, priority=PRIORITY_LOW)
+		idle_add(self.__update)
 
 	def recent_infos(self):
 		return self.__infos
@@ -45,15 +44,10 @@ class Manager(object):
 		exist_infos = (info for info in scribes_infos if self.__resource_exists(info))
 		return sorted(exist_infos, cmp=self.__compare, reverse=True)
 
-	def __update_editors(self):
-		self.__update()
-		[editor.emit("recent-infos", self.__infos) for editor in self.__manager.get_editor_instances()]
-		return False
-
-	def __update_editors_timeout(self):
+	def __update_timeout(self):
 		from glib import PRIORITY_LOW
 		from gobject import idle_add
-		self.__timer = idle_add(self.__update_editors, priority=PRIORITY_LOW)
+		self.__timer = idle_add(self.__update, priority=PRIORITY_LOW)
 		return False
 
 	def __changed_cb(self, *args):
@@ -64,5 +58,5 @@ class Manager(object):
 			pass
 		finally:
 			from glib import PRIORITY_LOW
-			self.__timer = timeout_add(1000, self.__update_editors_timeout, priority=PRIORITY_LOW)
+			self.__timer = timeout_add(1000, self.__update_timeout, priority=PRIORITY_LOW)
 		return False

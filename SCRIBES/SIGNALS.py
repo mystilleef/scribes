@@ -72,7 +72,6 @@ class Signals(GObject):
 		"add-to-popup": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
 		"add-to-pref-menu": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
 		"remove-from-pref-menu": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
-		"recent-infos": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"reset-buffer": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"fullscreen": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"message-bar-is-visible": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),

@@ -6,14 +6,13 @@ class Generator(SignalManager):
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor, manager)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(editor, "recent-infos", self.__info_cb)
+		self.connect(editor.recent_manager, "changed", self.__changed_cb)
 		from gobject import idle_add
 		idle_add(self.__process)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
 		self.__manager = manager
-		self.__infos = editor.recent_infos
 		return
 
 	def __destroy(self):
@@ -27,7 +26,7 @@ class Generator(SignalManager):
 
 	def __process(self):
 		from copy import copy
-		data = [self.__get_uri(info) for info in copy(self.__infos)]
+		data = [self.__get_uri(info) for info in copy(self.__editor.recent_infos)]
 		self.__manager.emit("recent-uris", data)
 		return False
 
@@ -35,8 +34,7 @@ class Generator(SignalManager):
 		self.__destroy()
 		return False
 
-	def __info_cb(self, editor, infos):
-		self.__infos = infos
+	def __changed_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__process)
 		return False

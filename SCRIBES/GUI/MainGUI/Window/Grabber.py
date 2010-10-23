@@ -13,7 +13,7 @@ class Grabber(SignalManager):
 		self.connect(self.__window, "focus-in-event", self.__in_cb, True)
 		self.connect(editor, "ready", self.__in_cb, True)
 		self.connect(editor, "loaded-file", self.__in_cb, True)
-		self.connect(self.__window, "focus-out-event", self.__out_cb)
+#		self.connect(self.__window, "focus-out-event", self.__out_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
@@ -43,7 +43,7 @@ class Grabber(SignalManager):
 		return False
 
 	def __in_cb(self, *args):
-		self.__grab()
+		self.__editor.textview.grab_focus()
 		return False
 
 	def __out_cb(self, *args):

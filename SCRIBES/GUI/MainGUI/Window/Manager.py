@@ -5,8 +5,8 @@ class Manager(object):
 		Window(editor)
 		from StateTracker import Tracker
 		Tracker(editor)
-#		from Grabber import Grabber
-#		Grabber(editor)
+		from Grabber import Grabber
+		Grabber(editor)
 		from FullscreenManager import Manager
 		Manager(editor)
 		from Positioner import Positioner
