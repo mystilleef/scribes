@@ -43,7 +43,8 @@ class Grabber(SignalManager):
 		return False
 
 	def __in_cb(self, *args):
-		self.__editor.textview.grab_focus()
+		if self.__window.props.is_active is False: return False
+		self.__editor.refresh(True)
 		return False
 
 	def __out_cb(self, *args):

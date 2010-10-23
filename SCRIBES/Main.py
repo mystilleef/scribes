@@ -1,12 +1,10 @@
 scribes_dbus_service = "net.sourceforge.Scribes"
 scribes_dbus_path = "/net/sourceforge/Scribes"
-from sys import setcheckinterval
-setcheckinterval(1000)
 
 def main():
-	__open()
 	from gobject import threads_init
 	threads_init()
+	__open()
 	from gtk import main
 	main()
 	return

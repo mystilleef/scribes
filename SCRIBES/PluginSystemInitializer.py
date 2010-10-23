@@ -20,7 +20,10 @@ class Initializer(SignalManager):
 
 	def __init_plugins(self):
 		from PluginInitializer.Manager import Manager
-		Manager(self.__editor)
+		from threading import Thread
+		t = Thread(target=Manager, args=(self.__editor,))
+		t.start()
+#		Manager(self.__editor)
 		self.__editor.emit("ready")
 		self.__editor.textview.grab_focus()
 		self.__destroy()

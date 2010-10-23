@@ -206,4 +206,3 @@ class Manager(object):
 	def __quit(self):
 		self.__remove_swap_area()
 		raise SystemExit
-		return

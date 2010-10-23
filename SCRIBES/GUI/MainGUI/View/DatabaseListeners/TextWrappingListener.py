@@ -19,7 +19,6 @@ class Listener(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __update(self):

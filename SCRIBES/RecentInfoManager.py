@@ -5,8 +5,9 @@ class Manager(object):
 	def __init__(self, manager):
 		self.__init_attributes(manager)
 		self.__recent_manager.connect("changed", self.__changed_cb)
-		from gobject import idle_add
-		idle_add(self.__update)
+		self.__update()
+#		from gobject import idle_add
+#		idle_add(self.__update)
 
 	def recent_infos(self):
 		return self.__infos

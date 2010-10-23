@@ -45,7 +45,7 @@ class Animator(SignalManager):
 			self.__manager.emit("animation", "begin")
 			from gobject import timeout_add, source_remove
 			source_remove(self.__timer)
-		except AttributeError, KeyError:
+		except AttributeError:
 			pass
 		finally:
 			self.__update_animation_start_point(direction)
@@ -70,7 +70,7 @@ class Animator(SignalManager):
 			animate = True
 			self.__can_end(direction)
 			self.__reposition_in(direction)
-		except ValueError, KeyError:
+		except ValueError:
 			animate = False
 			if direction == "down": self.__bar.hide()
 			self.__manager.emit("animation", "end")
@@ -129,14 +129,17 @@ class Animator(SignalManager):
 	def __slide_cb(self, manager, direction):
 		if not self.__bar: return False
 		if self.__busy: return False
-		try:
-			self.__busy = True
-			from gobject import idle_add, source_remove
-			source_remove(self.__timer2)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer2 = idle_add(self.__slide, direction, priority=9999)
+		self.__busy = True
+		from threading import Thread
+		t = Thread(target=self.__slide, args=(direction,))
+		t.start()
+#		try:
+#			from gobject import idle_add, source_remove
+#			source_remove(self.__timer2)
+#		except AttributeError:
+#			pass
+#		finally:
+#			self.__timer2 = idle_add(self.__slide, direction, priority=9999)
 		return False
 
 	def __deltas_cb(self, manager, deltas):

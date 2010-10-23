@@ -8,7 +8,7 @@ class Generator(SignalManager):
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor, manager)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(manager, "activate", self.__activate_cb)
+		self.connect(editor.recent_manager, "changed", self.__changed_cb)
 		from gobject import idle_add
 		idle_add(self.__process)
 
@@ -62,11 +62,21 @@ class Generator(SignalManager):
 		self.__manager.emit("recent-infos-data", data)
 		return False
 
+	def __process_timeout(self):
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer = idle_add(self.__process, priority=PRIORITY_LOW)
+		return False
+
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
-	def __activate_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__process)
+	def __changed_cb(self, *args):
+		try:
+			from gobject import timeout_add, source_remove, PRIORITY_LOW
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = timeout_add(5000, self.__process_timeout, priority=PRIORITY_LOW)
 		return False

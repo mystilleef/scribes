@@ -18,7 +18,6 @@ class Formatter(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __format(self, message, bold, italic, color):
