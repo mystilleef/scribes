@@ -28,7 +28,6 @@ def __open_via_dbus(uris):
 	uris = uris if uris else ""
 	dbus_service.open_files(uris, dbus_interface=scribes_dbus_service)
 	raise SystemExit
-	return
 
 def __get_dbus_service():
 	from Globals import dbus_iface, session_bus

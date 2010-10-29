@@ -199,10 +199,14 @@ class Manager(object):
 		from shutil import rmtree
 		[rmtree(file_, True) for file_ in files]
 		files = glob(join(metadata_folder, "__db*"))
-		from shutil import rmtree
 		[rmtree(file_, True) for file_ in files]
 		return
 
 	def __quit(self):
 		self.__remove_swap_area()
 		raise SystemExit
+
+	def force_quit(self):
+		from os import _exit
+		_exit(0)
+		return
