@@ -7,10 +7,14 @@ class DBusService(Object):
 
 	def __init__(self, manager):
 		from SCRIBES.Globals import session_bus
-		bus_name = BusName(indexer_dbus_service, bus=session_bus)
-		Object.__init__(self, bus_name, indexer_dbus_path)
-		self.__manager = manager
-		manager.connect("finished", self.__finished_cb)
+		from dbus.exceptions import NameExistsException
+		try:
+			bus_name = BusName(indexer_dbus_service, bus=session_bus, do_not_queue=True)
+			Object.__init__(self, bus_name, indexer_dbus_path)
+			self.__manager = manager
+			manager.connect("finished", self.__finished_cb)
+		except NameExistsException:
+			manager.quit()
 
 	@method(indexer_dbus_service, in_signature="sx")
 	def process(self, text, id_):

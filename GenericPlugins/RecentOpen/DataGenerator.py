@@ -32,34 +32,49 @@ class Generator(SignalManager):
 		self.__editor.refresh()
 		from gio import File
 		path = File(uri).get_parse_name()
+		self.__editor.refresh()
 		path = path.replace(self.__editor.home_folder, "").strip("/\\")
+		self.__editor.refresh()
 		return path
 
 	def __get_display_path_from(self, uri):
 		self.__editor.refresh()
 		from gio import File
 		path = File(uri).get_parent().get_parse_name()
+		self.__editor.refresh()
 		path = path.replace(self.__editor.home_folder, "").strip("/\\")
+		self.__editor.refresh()
 		from os.path import split
+		self.__editor.refresh()
 		if not path: return split(self.__editor.home_folder)[-1].strip("/\\")
+		self.__editor.refresh()
 		return path
 
 	def __format(self, info):
 		self.__editor.refresh()
 		uri = info.get_uri()
+		self.__editor.refresh(False)
 		file_path = self.__get_search_path_from(uri)
+		self.__editor.refresh(False)
 		display_path = self.__get_display_path_from(uri)
+		self.__editor.refresh()
 		display_name = info.get_display_name()
+		self.__editor.refresh()
 		modified = pretty_date(info.get_modified())
+		self.__editor.refresh()
 		location = "" if info.is_local() else _("remote")
 		filetype = self.__get_language(info.get_mime_type())
+		self.__editor.refresh()
 		icon = info.get_icon(32)
+		self.__editor.refresh()
 		return file_path, icon, display_name, display_path, modified, location, filetype, uri
 
 	def __process(self):
-		from copy import copy
-		data = [self.__format(info) for info in copy(self.__editor.recent_infos)]
+		self.__editor.refresh(False)
+		data = [self.__format(info) for info in self.__editor.recent_infos]
+		self.__editor.refresh(False)
 		self.__manager.emit("recent-infos-data", data)
+		self.__editor.refresh(False)
 		return False
 
 	def __process_timeout(self):

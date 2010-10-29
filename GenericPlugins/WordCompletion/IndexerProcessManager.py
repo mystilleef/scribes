@@ -16,7 +16,7 @@ class Manager(object):
 		timeout_add(2000, self.__start, priority=99999)
 
 	def __init_attributes(self, manager, editor):
-		from os.path import join, split
+		from os.path import join
 		from sys import prefix
 		self.__manager = manager
 		self.__editor = editor
@@ -35,7 +35,6 @@ class Manager(object):
 			'/org/freedesktop/DBus',
 			arg0=indexer_dbus_service)
 		del self
-		self = None
 		return False
 
 	def __start(self):
@@ -58,7 +57,7 @@ class Manager(object):
 			from gobject import spawn_async
 			spawn_async([self.__python_executable, self.__executable,
 			self.__editor.python_path], working_directory=self.__cwd)
-		except:
+		except Exception:
 			pass
 		return False
 

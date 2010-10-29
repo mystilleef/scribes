@@ -14,14 +14,17 @@ class Editor(Signals):
 #
 ########################################################################
 
+	@property
+	def id_(self): return id(self)
+
 	imanager = property(lambda self: self.get_data("InstanceManager"))
 	gui = property(lambda self: self.get_data("gui"))
 	window = property(lambda self: self.gui.get_widget("Window"))
 	textview = view = property(lambda self: self.gui.get_widget("ScrolledWindow").get_child())
-	textbuffer = buffer_ = property(lambda self: self.textview.get_property("buffer"))
+	textbuffer = buf = buffer_ = property(lambda self: self.textview.get_property("buffer"))
 	toolbar = property(lambda self: self.get_data("Toolbar"))
 #	toolbar = property(lambda self: self.gui.get_widget("Toolbar"))
-	id_ = property(lambda self: id(self))
+#	id_ = property(lambda self: id(self))
 	uri = property(lambda self: self.get_data("uri"))
 	uris = property(lambda self: self.imanager.get_uris())
 	# All editor instances
@@ -71,7 +74,7 @@ class Editor(Signals):
 	website = property(lambda self: EditorImports.website)
 	save_processor = property(lambda self: self.imanager.get_save_processor())
 	supported_encodings = property(lambda self: EditorImports.supported_encodings)
-	word_pattern = property(lambda self: EditorImports.word_pattern)
+	word_pattern = property(lambda self: EditorImports.WORD_PATTERN)
 	selection_range = property(lambda self: self.get_selection_range())
 	selection_bounds = property(lambda self: self.textbuffer.get_selection_bounds())
 	selected_text = property(lambda self: self.textbuffer.get_text(*(self.selection_bounds)))
@@ -158,7 +161,7 @@ class Editor(Signals):
 		self.emit("rename-file", uri, encoding)
 		return
 
-	def load_file(self, uri, encoding="utf-8", readonly=False):
+	def load_file(self, uri, encoding="utf-8"):
 		self.set_data("contains_document", True)
 		self.emit("load-file", uri, encoding)
 		return False
@@ -239,9 +242,9 @@ class Editor(Signals):
 		return
 
 	def response(self):
-#		from gtk import events_pending, main_iteration
-#		while events_pending(): main_iteration(False)
-		return self.imanager.response()
+		from gtk import events_pending, main_iteration
+		while events_pending(): main_iteration(False)
+#		return self.imanager.response()
 
 	def busy(self, busy=True):
 		self.emit("private-busy", busy)
@@ -466,7 +469,7 @@ class Editor(Signals):
 		gui.add_from_file(file_)
 		return gui
 
-	def set_vm_interval(self, response=True):
+	def set_vm_interval(self):
 		#FIXME: This function is deprecated!
 		return
 

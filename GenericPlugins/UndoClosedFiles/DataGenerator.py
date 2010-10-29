@@ -21,12 +21,13 @@ class Generator(SignalManager):
 		return False
 
 	def __get_uri(self, info):
-		self.__editor.response()
+		self.__editor.refresh()
 		return info.get_uri()
 
 	def __process(self):
-		from copy import copy
-		data = [self.__get_uri(info) for info in copy(self.__editor.recent_infos)]
+		self.__editor.refresh(False)
+		data = [self.__get_uri(info) for info in self.__editor.recent_infos]
+		self.__editor.refresh(False)
 		self.__manager.emit("recent-uris", data)
 		return False
 

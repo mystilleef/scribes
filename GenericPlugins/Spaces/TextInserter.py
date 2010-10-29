@@ -14,7 +14,6 @@ class Inserter(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __insert(self, text):
@@ -22,7 +21,9 @@ class Inserter(object):
 		self.__editor.textview.window.freeze_updates()
 		self.__editor.textbuffer.begin_user_action()
 #		self.__editor.textbuffer.set_text(text)
+		self.__editor.refresh(True)
 		self.__editor.set_text(text)
+		self.__editor.refresh(True)
 		self.__editor.textbuffer.end_user_action()
 		self.__editor.busy(False)
 		self.__manager.emit("inserted-text")

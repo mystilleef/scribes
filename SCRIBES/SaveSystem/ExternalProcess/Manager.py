@@ -20,4 +20,13 @@ class Manager(Signals):
 		Encoder(self)
 		from JobSpooler import Spooler
 		Spooler(self)
+		from gobject import timeout_add
+		timeout_add(1000, self.__response)
 		self.emit("is-ready")
+
+	def __response(self):
+		# Make this process as responsive as possible to signals and events.
+		from SCRIBES.Utils import response
+		response()
+		return True
+

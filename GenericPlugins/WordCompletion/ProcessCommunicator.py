@@ -36,11 +36,10 @@ class Communicator(object):
 			signal_name="finished",
 			dbus_interface=indexer_dbus_service)
 		del self
-		self = None
 		return False
 
 	def __get_indexer(self):
-		from SCRIBES.Globals import dbus_iface, session_bus, python_path
+		from SCRIBES.Globals import dbus_iface, session_bus
 		services = dbus_iface.ListNames()
 		if not (indexer_dbus_service in services): return None
 		indexer = session_bus.get_object(indexer_dbus_service, indexer_dbus_path)
@@ -57,7 +56,7 @@ class Communicator(object):
 			print "ERROR:No word completion indexer process found"
 			self.__indexer = self.__get_indexer()
 			if self.__indexer is None: self.__manager.emit("finished-indexing")
-		except:
+		except Exception:
 			print "ERROR: Cannot send message to word completion indexer"
 			self.__manager.emit("finished-indexing")
 		return False

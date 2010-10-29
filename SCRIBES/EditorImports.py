@@ -13,5 +13,5 @@ from EncodingSystem.EncodingGuessListMetadata import get_value as get_encoding_g
 from EncodingSystem.FileEncodingsMetadata import get_value as get_encoding
 from EncodingSystem.EncodingListMetadata import get_value as get_encoding_list
 from EncodingSystem.SupportedEncodings.Encodings import encodings as supported_encodings
-from Utils import get_language, word_pattern
+from Utils import get_language, WORD_PATTERN
 from gettext import gettext as _

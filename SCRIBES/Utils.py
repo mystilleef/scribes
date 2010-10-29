@@ -1,5 +1,5 @@
 from re import UNICODE, compile as compile_
-word_pattern = compile_("\w+|[-]", UNICODE)
+WORD_PATTERN = compile_("\w+|[-]", UNICODE)
 
 def calculate_resolution_independence(window, width, height):
 	screen = window.get_screen()
@@ -35,7 +35,7 @@ def process_color(color):
 	return color
 
 def create_scrollwin():
-	from gtk import ScrolledWindow, RESIZE_PARENT, POLICY_AUTOMATIC
+	from gtk import ScrolledWindow, POLICY_AUTOMATIC
 	from gtk import SHADOW_IN
 	scrollwin = ScrolledWindow()
 	scrollwin.set_border_width(1)
@@ -66,10 +66,13 @@ def get_folder_monitor(path):
 def monitor_events(args, event_types):
 	return args[-1] in event_types
 
-def get_fileinfo(path):
+def get_fileinfo(path, attribute="standard::*"):
 	if not path: return None
 	from gio import File
-	return File(path).query_info("standard::*")
+	return File(path).query_info(attribute)
+
+def get_modification_time(path):
+	return get_fileinfo(path, "time::modified,time::modified-usec").get_modification_time()
 
 def get_mimetype(path):
 	if not path: return None
@@ -97,14 +100,14 @@ def create_encoding_box(combobox):
 def generate_random_number(sequence):
 	from random import random
 	while True:
-		exit = True
+		_exit = True
 		number = random()
 		if sequence:
 			for item in sequence:
 				if number == item:
-					exit = False
+					_exit = False
 					break
-		if exit: break
+		if _exit: break
 	return number
 
 def check_uri_permission(uri):
@@ -144,33 +147,33 @@ def create_menuitem(string, stock_id=None):
 	menuitem.add(hbox)
 	return menuitem
 
-def calculate_completion_window_position(editor, width, height):
+def calculate_completion_window_position(editor, width, height): pass
 	# The flag is true when the position of the word completion window needs to
 	# adjusted accross the y-axis.
-	editor.y_coordinate_flag = False
-
-	# Get the cursor's coordinate and size.
-	cursor_x, cursor_y = get_cursor_window_coordinates(editor)
-	cursor_height = get_cursor_size(editor)[1]
-
-	# Get the text editor's textview coordinate and size.
-	window = editor.text_view.get_window(TEXT_WINDOW_TEXT)
-	rectangle = editor.text_view.get_visible_rect()
-	window_x, window_y = window.get_origin()
-	window_width, window_height = rectangle.width, rectangle.height
-
-	# Determine where to position the completion window.
-	position_x = window_x + cursor_x
-	position_y = window_y + cursor_y + cursor_height
-
-	# If the completion window extends past the text editor's buffer,
-	# reposition the completion window inside the text editor's buffer area.
-	if (position_x + width) > (window_x + window_width):
-		position_x = (window_x + window_width) - width
-	if (position_y + height) > (window_y + window_height):
-		position_y = (window_y + cursor_y) - height
-		editor.y_coordinate_flag = True
-	return position_x, position_y
+#	editor.y_coordinate_flag = False
+#
+#	 Get the cursor's coordinate and size.
+#	cursor_x, cursor_y = get_cursor_window_coordinates(editor)
+#	cursor_height = get_cursor_size(editor)[1]
+#
+#	 Get the text editor's textview coordinate and size.
+#	window = editor.text_view.get_window(TEXT_WINDOW_TEXT)
+#	rectangle = editor.text_view.get_visible_rect()
+#	window_x, window_y = window.get_origin()
+#	window_width, window_height = rectangle.width, rectangle.height
+#
+#	 Determine where to position the completion window.
+#	position_x = window_x + cursor_x
+#	position_y = window_y + cursor_y + cursor_height
+#
+#	 If the completion window extends past the text editor's buffer,
+#	 reposition the completion window inside the text editor's buffer area.
+#	if (position_x + width) > (window_x + window_width):
+#		position_x = (window_x + window_width) - width
+#	if (position_y + height) > (window_y + window_height):
+#		position_y = (window_y + cursor_y) - height
+#		editor.y_coordinate_flag = True
+#	return position_x, position_y
 
 def find_file(filename):
 	from os import path
@@ -389,7 +392,7 @@ def open_database(basepath, flag="c"):
 def get_save_processor():
 	try:
 		from dbus import DBusException
-		from Globals import dbus_iface, session_bus, python_path
+		from Globals import dbus_iface, session_bus
 		from Globals import SCRIBES_SAVE_PROCESS_DBUS_PATH
 		from Globals import SCRIBES_SAVE_PROCESS_DBUS_SERVICE
 		services = dbus_iface.ListNames()

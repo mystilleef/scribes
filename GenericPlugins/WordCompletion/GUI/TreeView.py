@@ -57,7 +57,7 @@ class TreeView(object):
 		return model
 
 	def __create_column(self):
-		from gtk import TreeViewColumn, CellRendererText, TREE_VIEW_COLUMN_FIXED
+		from gtk import TreeViewColumn, CellRendererText
 		column = TreeViewColumn()
 		renderer = CellRendererText()
 		column.pack_start(renderer, False)
@@ -142,7 +142,8 @@ class TreeView(object):
 
 	def __match_found_cb(self, manager, matches):
 		self.__unblock_view()
-		self.__populate_model(matches)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__populate_model, matches, priority=PRIORITY_LOW)
 		return False
 
 	def __key_press_event_cb(self, textview, event):
