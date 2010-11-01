@@ -434,3 +434,12 @@ def uri_is_folder(uri):
 
 def set_vm_interval(response=True):
 	return False
+
+def window_is_active(editor):
+	try:
+		if editor is None: return False
+		if editor.window.props.is_active is False: return False
+		if editor.textview.props.has_focus is False: return False
+	except AttributeError:
+		return False
+	return True

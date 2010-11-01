@@ -1,5 +1,5 @@
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_PYOBJECT
-from gobject import SIGNAL_NO_RECURSE, SIGNAL_ACTION, TYPE_STRING
+from gobject import SIGNAL_NO_RECURSE, SIGNAL_ACTION
 SCRIBES_SIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 
 class Manager(GObject):
@@ -20,6 +20,9 @@ class Manager(GObject):
 		Generator(self)
 		from JobSpooler import Spooler
 		Spooler(self)
+		# Keep this process as responsive as possible to events and signals.
+		from gobject import timeout_add
+		timeout_add(1000, self.__response)
 
 	def quit(self):
 		from os import _exit
@@ -29,3 +32,8 @@ class Manager(GObject):
 	def process(self, text, editor_id):
 		self.emit("new-job", (text, editor_id))
 		return False
+
+	def __response(self):
+		from SCRIBES.Utils import response
+		response()
+		return True

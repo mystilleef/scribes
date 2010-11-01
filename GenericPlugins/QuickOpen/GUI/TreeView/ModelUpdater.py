@@ -14,6 +14,7 @@ class Updater(object):
 		self.__column1 = self.__view.get_column(0)
 		self.__column2 = self.__view.get_column(1)
 		self.__data = []
+		self.__timer = 1
 		return
 
 	def __destroy(self):
@@ -21,17 +22,19 @@ class Updater(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __populate(self, data):
 		if self.__data == data: return False
 		from copy import copy
 		self.__data = copy(data)
+		self.__view.window.freeze_updates()
 		self.__view.set_model(None)
 		self.__model.clear()
 		for name, path in data:
+			self.__editor.refresh()
 			self.__model.append([name, path])
+			self.__editor.refresh()
 		self.__column1.queue_resize()
 		self.__column2.queue_resize()
 		self.__view.set_model(self.__model)

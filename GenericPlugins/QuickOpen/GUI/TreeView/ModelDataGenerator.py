@@ -14,16 +14,15 @@ class Generator(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __generate(self, files):
-		from os.path import split
 		data = [self.__split(_file) for _file in files]
 		self.__manager.emit("model-data", data)
 		return False
 
 	def __split(self, _file):
+		self.__editor.refresh(False)
 		from os.path import split
 		return split(_file)[-1], _file
 

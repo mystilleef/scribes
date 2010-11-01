@@ -17,6 +17,11 @@ class Editor(Signals):
 	@property
 	def id_(self): return id(self)
 
+	@property
+	def window_is_active(self):
+		from Utils import window_is_active
+		return window_is_active(self)
+
 	imanager = property(lambda self: self.get_data("InstanceManager"))
 	gui = property(lambda self: self.get_data("gui"))
 	window = property(lambda self: self.gui.get_widget("Window"))

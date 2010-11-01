@@ -5,10 +5,9 @@
   <object class="GtkWindow" id="Window">
     <property name="border_width">10</property>
     <property name="title" translatable="yes">Open Files</property>
-    <property name="startup_id">QuickOpenWindowID</property>
     <property name="role">QuickOpenWindowRole</property>
     <property name="modal">True</property>
-    <property name="window_position">center-on-parent</property>
+    <property name="window_position">center-always</property>
     <property name="default_width">640</property>
     <property name="default_height">320</property>
     <property name="destroy_with_parent">True</property>
@@ -17,10 +16,11 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="urgency_hint">True</property>
+    <property name="gravity">static</property>
+    <property name="startup_id">QuickOpenWindowID</property>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">10</property>
         <child>
           <object class="GtkHBox" id="hbox1">
