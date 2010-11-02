@@ -443,3 +443,17 @@ def window_is_active(editor):
 	except AttributeError:
 		return False
 	return True
+
+def get_current_folder(globals_):
+	from os.path import split
+	folder = split(globals_["__file__"])[0]
+	return folder
+
+def get_gui_object(globals_, basepath):
+	from os.path import join
+	folder = get_current_folder(globals_)
+	file_ = join(folder, basepath)
+	from gtk import Builder
+	gui = Builder()
+	gui.add_from_file(file_)
+	return gui

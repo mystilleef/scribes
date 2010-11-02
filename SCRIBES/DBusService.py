@@ -23,3 +23,7 @@ class DBusService(Object):
 	def open_files(self, uris):
 		uris = uris if uris else None
 		return self.__manager.open_files(uris)
+
+	@method("net.sourceforge.Scribes", out_signature="as")
+	def get_uris(self):
+		return self.__manager.get_uris()

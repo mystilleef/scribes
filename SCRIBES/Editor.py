@@ -466,13 +466,8 @@ class Editor(Signals):
 		return glade
 
 	def get_gui_object(self, globals_, basepath):
-		from os.path import join
-		folder = self.get_current_folder(globals_)
-		file_ = join(folder, basepath)
-		from gtk import Builder
-		gui = Builder()
-		gui.add_from_file(file_)
-		return gui
+		from Utils import get_gui_object
+		return get_gui_object(globals_, basepath)
 
 	def set_vm_interval(self):
 		#FIXME: This function is deprecated!
