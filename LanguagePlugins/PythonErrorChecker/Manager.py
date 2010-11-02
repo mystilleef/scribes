@@ -8,14 +8,12 @@ class Manager(Signal):
 		Feedback(self, editor)
 		from LineJumper import Jumper
 		Jumper(self, editor)
-		from Rechecker import Rechecker
-		Rechecker(self, editor)
-		from PyFlakesChecker import Checker
+		from Checker import Checker
 		Checker(self, editor)
-		from SyntaxChecker import Checker
-		Checker(self, editor)
-		from CheckTimer import Timer
-		Timer(self, editor)
+		from ProcessCommunicator import Communicator
+		Communicator(self, editor)
+		from ExternalProcessStarter import Starter
+		Starter(self, editor)
 
 	def destroy(self):
 		self.emit("destroy")

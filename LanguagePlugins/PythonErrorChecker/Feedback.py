@@ -1,16 +1,15 @@
+from gettext import gettext as _
 from SCRIBES.SignalConnectionManager import SignalManager
 
 class Feedback(SignalManager):
 
 	def __init__(self, manager, editor):
-		editor.refresh()
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(manager, "syntax-error", self.__syntax_cb)
-		self.connect(manager, "tree-error", self.__tree_cb)
-		self.connect(manager, "no-error-message", self.__no_error_cb)
-		editor.refresh()
+		self.connect(manager, "error-data", self.__message_cb)
+		self.connect(manager, "remote-file-message", self.__error_cb)
+		self.connect(manager, "check-message", self.__check_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -26,17 +25,21 @@ class Feedback(SignalManager):
 		self.__destroy()
 		return False
 
-	def __syntax_cb(self, manager, data):
-		message = "Error: %s on line %s" % (data[2], data[0])
-		self.__editor.update_message(message, "error", 10)
+	def __message_cb(self, manager, data):
+		if data[0]:
+			message = "Error: %s on line %s" % (data[1], data[0])
+			self.__editor.update_message(message, "error", 10)
+		else:
+			message = _("No errors found")
+			self.__editor.update_message(message, "yes")
 		return False
 
-	def __tree_cb(self, manager, data):
-		message = "Error: %s on line %s" % (data.message % data.message_args, data.lineno)
-		self.__editor.update_message(message, "error", 10)
+	def __error_cb(self, *args):
+		message = _("No error checking on remote file")
+		self.__editor.update_message(message, "no", 3)
 		return False
 
-	def __no_error_cb(self, *args):
-		message = _("No errors found")
-		self.__editor.update_message(message, "yes")
+	def __check_cb(self, *args):
+		message = _("checking for errors please wait...")
+		self.__editor.update_message(message, "run", 60)
 		return False

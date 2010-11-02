@@ -30,7 +30,7 @@ class View(object):
 		targets = [("text/uri-list", 0, 80)]
 		from gtk.gdk import ACTION_COPY
 		self.__view.set_pixels_above_lines(2)
-		self.__view.set_pixels_below_lines(2)
+		self.__view.set_pixels_below_lines(1)
 		self.__view.set_pixels_inside_wrap(2)
 		self.__view.drag_dest_set(DEST_DEFAULT_ALL, targets, ACTION_COPY)
 		self.__view.drag_dest_add_text_targets()

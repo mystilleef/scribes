@@ -1,7 +1,7 @@
 name = "Python error checker plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 languages = ["python"]
-version = 0.2
+version = 0.3
 autoload = True
 class_name = "ErrorCheckerPlugin"
 short_description = "Automatically check Python source code for errors."
