@@ -5,6 +5,7 @@ class Manager(SignalManager):
 	def __init__(self, editor):
 		SignalManager.__init__(self)
 		self.__init_attributes(editor)
+		editor.set_data("RecentManager", self.__manager)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "loaded-file", self.__loaded_file_cb)
 		self.connect(editor, "renamed-file", self.__renamed_file_cb)
@@ -12,7 +13,8 @@ class Manager(SignalManager):
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
-		self.__manager = editor.recent_manager
+		from gtk import recent_manager_get_default
+		self.__manager = recent_manager_get_default()
 		return
 
 	def __create_recent_data(self, uri):

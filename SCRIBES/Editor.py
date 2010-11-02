@@ -95,8 +95,7 @@ class Editor(Signals):
 	mimetype = property(lambda self: self.get_mimetype(self.uri))
 	fileinfo = property(lambda self: self.get_fileinfo(self.uri))
 	view_bg_color = property(lambda self: self.textview.get_modifier_style().base[-1])
-	recent_infos = property(lambda self: self.imanager.get_recent_infos())
-	recent_manager = property(lambda self: self.imanager.get_recent_manager())
+	recent_manager = property(lambda self: self.get_data("RecentManager"))
 
 	def optimize(self, functions):
 		try:
