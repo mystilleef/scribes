@@ -1,6 +1,6 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 
-SAVE_TIMER = 7000
+SAVE_TIMER = 3000
 
 class Saver(SignalManager):
 
@@ -10,14 +10,13 @@ class Saver(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.__sigid1 = self.connect(editor, "modified-file", self.__modified_cb)
 		self.connect(editor, "close", self.__close_cb)
-		self.connect(editor.buf, "changed", self.__changed_cb)
+		self.connect(editor.buf, "changed", self.__changed_cb, True)
 		self.connect(manager, "reset-modification-flag", self.__modified_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__count = 1
 		return
 
 	def __destroy(self):
@@ -37,13 +36,13 @@ class Saver(SignalManager):
 
 	def __process(self):
 		self.__remove_timer()
-		from gobject import timeout_add
-		self.__timer = timeout_add(SAVE_TIMER, self.__save_on_idle, priority=9999)
+		from gobject import timeout_add as ta, PRIORITY_LOW
+		self.__timer = ta(SAVE_TIMER, self.__save_on_idle, priority=PRIORITY_LOW)
 		return False
 
 	def __save_on_idle(self):
-		from gobject import idle_add
-		idle_add(self.__save, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer = idle_add(self.__save, priority=PRIORITY_LOW)
 		return False
 
 	def __save(self):
@@ -66,6 +65,5 @@ class Saver(SignalManager):
 		return False
 
 	def __changed_cb(self, *args):
-		print "yeah change happened: ", self.__count + 1
-#		self.__process()
+		self.__process()
 		return False
