@@ -36,6 +36,7 @@ class Detector(SignalManager):
 		module, plugin_class = unloaded_plugin_data
 		from copy import copy
 		for _module, _plugin in copy(self.__modules):
+			self.__editor.refresh(False)
 			if module.class_name == _module.class_name: return (_module, _plugin)
 		return None
 

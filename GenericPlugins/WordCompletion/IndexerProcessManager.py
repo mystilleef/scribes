@@ -12,8 +12,8 @@ class Manager(object):
 						'org.freedesktop.DBus',
 						'/org/freedesktop/DBus',
 						arg0=indexer_dbus_service)
-		from gobject import timeout_add
-		timeout_add(2000, self.__start, priority=99999)
+		from gobject import timeout_add, PRIORITY_LOW
+		timeout_add(1000, self.__start, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		from os.path import join
@@ -38,8 +38,8 @@ class Manager(object):
 		return False
 
 	def __start(self):
-		from gobject import idle_add
-		idle_add(self.__start_process, priority=99999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__start_process, priority=PRIORITY_LOW)
 		return False
 
 	def __start_process(self):
@@ -66,6 +66,6 @@ class Manager(object):
 		return False
 
 	def __name_change_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__start_process)
+		from gobject import timeout_add, PRIORITY_LOW
+		timeout_add(7000, self.__start, priority=PRIORITY_LOW)
 		return False

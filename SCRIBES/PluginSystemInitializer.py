@@ -26,7 +26,12 @@ class Initializer(SignalManager):
 		self.__destroy()
 		return False
 
-	def __loaded_cb(self, *args):
+	def __init_plugins_on_idle(self):
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__init_plugins, priority=PRIORITY_LOW)
+		return False
+
+	def __loaded_cb(self, *args):
+		from gobject import timeout_add, PRIORITY_LOW
+		timeout_add(1000, self.__init_plugins, priority=PRIORITY_LOW)
 		return False

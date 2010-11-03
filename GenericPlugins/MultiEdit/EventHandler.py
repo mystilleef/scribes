@@ -87,6 +87,7 @@ class Handler(SignalManager):
 		data = translate(event.hardware_keycode, event.state, event.group)
 		keyval, egroup, level, consumed = data
 		active_mask = any_on = event.state & ~consumed & MODIFIER_MASK
+		print any_on
 		ctrl_on = active_mask == CONTROL_MASK
 		shift_on = active_mask == SHIFT_MASK
 		# Handle backspace key press event.
@@ -104,7 +105,7 @@ class Handler(SignalManager):
 		# Allow insertion of special unicode characters.
 		if ctrl_on and shift_on and event.keyval in UNICODE_KEYS: return False
 		# Escape exits multi edit mode
-		if not any_on and event.keyval == Escape: return False
+		if not any_on and (event.keyval == Escape): return False
 		# <ctrl>i adds or removes edit points.
 		if ctrl_on and (event.keyval == i): return self.__handle_ctrl_i()
 		return True

@@ -60,8 +60,9 @@ class Saver(SignalManager):
 		return False
 
 	def __modified_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__process)
+		self.__remove_timer()
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer = idle_add(self.__process, priority=PRIORITY_LOW)
 		return False
 
 	def __changed_cb(self, *args):

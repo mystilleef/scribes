@@ -28,7 +28,7 @@ class Creator(SignalManager):
 			handle = open(filename, "w")
 			handle.close()
 			self.__manager.emit("validate-path", plugin_path)
-		except OSError, IOError:
+		except (OSError, IOError):
 			self.__manager.emit("plugin-folder-creation-error", plugin_path)
 		return False
 

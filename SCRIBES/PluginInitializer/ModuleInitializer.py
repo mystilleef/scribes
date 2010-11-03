@@ -24,7 +24,9 @@ class Initializer(SignalManager):
 		from os.path import split
 		module_name = split(module_path)[-1][:-3]
 		from imp import load_source
+		self.__editor.refresh(False)
 		module = load_source(module_name, module_path)
+		self.__editor.refresh(False)
 		self.__manager.emit("initialized-module", module)
 		return False
 

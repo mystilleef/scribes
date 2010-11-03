@@ -23,8 +23,11 @@ class Loader(SignalManager):
 	def __load(self, data):
 		module, PluginClass = data
 		if module.autoload is False: return False
+		self.__editor.refresh(False)
 		plugin = PluginClass(self.__editor)
+		self.__editor.refresh(False)
 		plugin.load()
+		self.__editor.refresh(False)
 		self.__manager.emit("loaded-plugin", (module, plugin))
 		return False
 
