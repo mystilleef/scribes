@@ -19,7 +19,7 @@ main pylint class
 """
 
 import sys
-from os import linesep
+#from os import linesep
 from os.path import dirname, basename, splitext, exists, isdir, join, normpath
 
 from logilab.common.modutils import modpath_from_file, get_module_files, \

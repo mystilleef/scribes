@@ -34,7 +34,6 @@ class Checker(SignalManager):
 		except FileChangedError:
 			self.__manager.emit("ignored")
 		except StaleSessionError:
-			print "Ignoring python error checking on stale session."
 			self.__manager.emit("ignored")
 		return False
 

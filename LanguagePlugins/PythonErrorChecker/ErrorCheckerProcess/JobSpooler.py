@@ -34,7 +34,6 @@ class Spooler(object):
 		return False
 
 	def __ignored_cb(self, *args):
-		print "File has changed stopping analysis!"
 		self.__busy = False
 		self.__check()
 		return False

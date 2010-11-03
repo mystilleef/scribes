@@ -38,7 +38,6 @@ class Checker(SignalManager):
 		except FileChangedError:
 			self.__manager.emit("ignored")
 		except StaleSessionError:
-			print "Ignoring Python error checking on stale session."
 			self.__manager.emit("ignored")
 		else:
 			from compiler import parse
