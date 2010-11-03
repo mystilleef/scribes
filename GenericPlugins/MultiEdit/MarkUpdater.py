@@ -38,7 +38,9 @@ class Updater(SignalManager):
 		from copy import copy
 		self.__editor.textview.window.freeze_updates()
 		from Utils import delete_mark
+		self.__editor.refresh(False)
 		[delete_mark(self.__buffer, mark) for mark in copy(self.__marks)]
+		self.__editor.refresh(False)
 		self.__marks = []
 		self.__editor.textview.window.thaw_updates()
 		return False

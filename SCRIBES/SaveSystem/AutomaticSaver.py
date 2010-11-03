@@ -10,12 +10,14 @@ class Saver(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.__sigid1 = self.connect(editor, "modified-file", self.__modified_cb)
 		self.connect(editor, "close", self.__close_cb)
+		self.connect(editor.buf, "changed", self.__changed_cb)
 		self.connect(manager, "reset-modification-flag", self.__modified_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
+		self.__count = 1
 		return
 
 	def __destroy(self):
@@ -61,4 +63,9 @@ class Saver(SignalManager):
 	def __modified_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__process)
+		return False
+
+	def __changed_cb(self, *args):
+		print "yeah change happened: ", self.__count + 1
+#		self.__process()
 		return False

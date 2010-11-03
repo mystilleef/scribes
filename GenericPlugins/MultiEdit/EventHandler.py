@@ -1,16 +1,16 @@
 from gtk.keysyms import Shift_L, Shift_R, Caps_Lock, BackSpace, Return
 from gtk.keysyms import Tab, Delete, Up, Down, Left, Right, Escape
 from gtk.keysyms import Alt_L, Alt_R, Control_R, Control_L, U, A, B, C
-from gtk.keysyms import D, E, F, i
-from gtk.gdk import CONTROL_MASK, SHIFT_MASK, MOD1_MASK, LOCK_MASK
-from gtk.gdk import MODIFIER_MASK, KEY_PRESS, BUTTON_PRESS, BUTTON_RELEASE
+from gtk.keysyms import D, E, F, i, Num_Lock
+from gtk.gdk import CONTROL_MASK, SHIFT_MASK, MODIFIER_MASK
+from gtk.gdk import BUTTON_PRESS
 from gtk.gdk import keyval_to_unicode
 
 from SCRIBES.SignalConnectionManager import SignalManager
 
 SAFE_KEYS = (
 		Shift_L, Shift_R, Alt_L, Alt_R, Control_L, Control_R, Caps_Lock,
-		Return, Tab
+		Return, Tab, Num_Lock,
 	)
 
 ARROW_KEYS = (Up, Down, Left, Right,)
@@ -81,11 +81,14 @@ class Handler(SignalManager):
 
 	def __keyboard_handler(self, event):
 		# Modifier checks
-		keyval, egroup, level, consumed = self.__keymap.translate_keyboard_state(
-				event.hardware_keycode, event.state, event.group)
-		any_on = event.state & ~consumed & MODIFIER_MASK
-		ctrl_on = event.state & CONTROL_MASK
-		shift_on = event.state & SHIFT_MASK
+#		from gtk import accelerator_get_default_mod_mask
+#		modifier_mask = accelerator_get_default_mod_mask()
+		translate = self.__keymap.translate_keyboard_state
+		data = translate(event.hardware_keycode, event.state, event.group)
+		keyval, egroup, level, consumed = data
+		active_mask = any_on = event.state & ~consumed & MODIFIER_MASK
+		ctrl_on = active_mask == CONTROL_MASK
+		shift_on = active_mask == SHIFT_MASK
 		# Handle backspace key press event.
 		if not any_on and event.keyval == BackSpace: return self.__handle_deletion("backspace")
 		# Handle delete key press event.
@@ -103,7 +106,7 @@ class Handler(SignalManager):
 		# Escape exits multi edit mode
 		if not any_on and event.keyval == Escape: return False
 		# <ctrl>i adds or removes edit points.
-		if ctrl_on and  event.keyval == i: return self.__handle_ctrl_i()
+		if ctrl_on and (event.keyval == i): return self.__handle_ctrl_i()
 		return True
 
 	def __mouse_handler(self, event):

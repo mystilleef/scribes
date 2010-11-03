@@ -44,8 +44,11 @@ class Handler(SignalManager):
 		if self.__edit_point_exists(): return False
 		from time import time
 		name = MARK_NAME + str(time())
+		self.__editor.refresh(False)
 		mark = self.__buffer.create_mark(name, self.__editor.cursor)
+		self.__editor.refresh(False)
 		mark.set_visible(True)
+		self.__editor.refresh(False)
 		self.__manager.emit("add-mark", mark)
 		return False
 

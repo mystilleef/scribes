@@ -107,8 +107,8 @@ class Linter(MessagesHandlerMixIn, ReportsHandlerMixIn, BaseRawChecker):
 		register(self)
 		from ScribesPylint.checkers.format import register
 		register(self)
-#		from ScribesPylint.checkers.imports import register
-#		register(self)
+		from ScribesPylint.checkers.imports import register
+		register(self)
 		from ScribesPylint.checkers.newstyle import register
 		register(self)
 		from ScribesPylint.checkers.string_format import register

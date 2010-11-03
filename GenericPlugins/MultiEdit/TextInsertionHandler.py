@@ -29,7 +29,9 @@ class Handler(SignalManager):
 
 	def __insert_text_at(self, mark, text):
 		iterator = self.__buffer.get_iter_at_mark(mark)
+		self.__editor.refresh(False)
 		self.__buffer.insert(iterator, text)
+		self.__editor.refresh(False)
 		return False
 
 	def __insert(self, text):

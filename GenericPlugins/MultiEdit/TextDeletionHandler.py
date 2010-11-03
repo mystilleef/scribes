@@ -33,7 +33,9 @@ class Handler(SignalManager):
 		start = end.copy()
 		result = start.backward_char() if method == "backspace" else start.forward_char()
 		if result is False: return False
+		self.__editor.refresh(False)
 		self.__buffer.delete(start, end)
+		self.__editor.refresh(False)
 		return False
 
 	def __remove_with(self, method):

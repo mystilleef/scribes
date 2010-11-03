@@ -1,6 +1,6 @@
 name = "Multi Edit Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-version = 0.1
+version = 0.2
 autoload = True
 class_name = "MultiEditPlugin"
 short_description = "Edit several places in the editing area simultaneously"
