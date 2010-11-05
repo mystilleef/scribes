@@ -2,7 +2,6 @@ from gettext import gettext as _
 from SCRIBES.SignalConnectionManager import SignalManager
 
 ENABLE_READONLY_MESSAGE = _("Enabled readonly mode")
-DISABLE_READONLY_MESSAGE = _("Disabled readonly mode")
 READONLY_MESSAGE = _("File is in readonly mode")
 
 class Handler(SignalManager):
@@ -32,7 +31,6 @@ class Handler(SignalManager):
 
 	def __unset(self):
 		self.__editor.unset_message(READONLY_MESSAGE)
-		self.__editor.update_message(DISABLE_READONLY_MESSAGE, "yes")
 		return False
 
 	def __quit_cb(self, *args):
