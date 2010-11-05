@@ -1,11 +1,14 @@
-class Extractor(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Extractor(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("start-indexing", self.__start_indexing_cb)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=9999)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "start-indexing", self.__start_indexing_cb)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -13,10 +16,8 @@ class Extractor(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		del self
-		self = None
 		return False
 
 	def __extract_text(self):
@@ -24,6 +25,7 @@ class Extractor(object):
 		for editor in self.__editor.instances:
 			self.__editor.refresh(False)
 			texts.append(editor.text)
+			self.__editor.refresh(False)
 		text = " ".join(texts)
 		self.__manager.emit("extracted-text", text)
 		return False
