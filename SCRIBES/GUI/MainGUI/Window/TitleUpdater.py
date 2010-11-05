@@ -42,6 +42,7 @@ class Updater(SignalManager):
 		if uri: parent_path = File(uri).get_parent().get_parse_name()
 		if uri: parent_path = ellipsize(parent_path.replace(self.__editor.home_folder, "~").strip("/\\"))
 		fulltitle = "%s - (%s)" % (title, parent_path) if uri else title
+		fulltitle = title if len(title) > 30 else fulltitle
 		dictionary = {
 			"normal": fulltitle,
 			"modified": "*" + fulltitle,
