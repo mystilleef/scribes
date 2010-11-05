@@ -79,6 +79,7 @@ class TreeView(object):
 			for word in matches:
 				self.__editor.refresh(False)
 				self.__model.append([word])
+				self.__editor.refresh(False)
 			self.__treeview.set_model(self.__model)
 			if view_window: view_window.thaw_updates()
 			self.__column.queue_resize()
@@ -142,8 +143,9 @@ class TreeView(object):
 
 	def __match_found_cb(self, manager, matches):
 		self.__unblock_view()
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__populate_model, matches, priority=PRIORITY_LOW)
+		self.__populate_model(matches)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__populate_model, matches, priority=PRIORITY_LOW)
 		return False
 
 	def __key_press_event_cb(self, textview, event):
