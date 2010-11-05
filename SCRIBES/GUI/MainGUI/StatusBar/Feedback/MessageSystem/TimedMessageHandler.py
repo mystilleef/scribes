@@ -70,9 +70,9 @@ class Handler(SignalManager):
 		return False
 
 	def __update_cb(self, manager, data):
-#		from gobject import idle_add, PRIORITY_LOW # . 
-#		idle_add(self.__update, data, priority=PRIORITY_LOW)
-		self.__update(data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__update, data, priority=PRIORITY_LOW)
+#		self.__update(data)
 		return False
 
 	def __quit_cb(self, *args):

@@ -10,6 +10,12 @@ class Manager(Signal):
 		Updater(self, editor)
 		from MessageFormatter import Formatter
 		Formatter(self, editor)
+		from ReadonlyHandler import Handler
+		Handler(self, editor)
+		from SavedHandler import Handler
+		Handler(self, editor)
+		from FileLoadHandler import Handler
+		Handler(self, editor)
 		from FallbackMessageHandler import Handler
 		Handler(self, editor)
 		from StackMessageHandler import Handler

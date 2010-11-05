@@ -1,4 +1,4 @@
-statusmessagedir = $(pythondir)/SCRIBES/GUI/MainGUI/StatusBar/Feedback/TestMessage
+statusmessagedir = $(pythondir)/SCRIBES/GUI/MainGUI/StatusBar/Feedback/MessageSystem
 statusmessage_PYTHON = \
 	__init__.py \
 	Signals.py \
@@ -8,7 +8,10 @@ statusmessage_PYTHON = \
 	FallbackMessageHandler.py \
 	MessageBarUpdater.py \
 	MessageBarDisplayer.py \
-	MessageFormatter.py
+	MessageFormatter.py \
+	FileLoadHandler.py \
+	SavedHandler.py \
+	ReadonlyHandler.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

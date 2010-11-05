@@ -31,9 +31,9 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-subdir = SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusImage
+subdir = SCRIBES/GUI/MainGUI/StatusBar/Feedback/MessageSystem
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(statusimage_PYTHON)
+	$(statusmessage_PYTHON)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gnome-doc-utils.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/configure.ac
@@ -65,7 +65,7 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(statusimagedir)"
+am__installdirs = "$(DESTDIR)$(statusmessagedir)"
 py_compile = $(top_srcdir)/py-compile
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
@@ -198,21 +198,20 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-statusimagedir = $(pythondir)/SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusImage
-statusimage_PYTHON = \
+statusmessagedir = $(pythondir)/SCRIBES/GUI/MainGUI/StatusBar/Feedback/MessageSystem
+statusmessage_PYTHON = \
 	__init__.py \
+	Signals.py \
 	Manager.py \
-	ImageDisplayer.py \
-	ImageIDProcessor.py \
-	TimedImageSwitcher.py \
-	FeedbackDispatcher.py \
-	StackImageSwitcher.py \
-	FallbackImageSwitcher.py \
-	FileModificationStateSwitcher.py \
-	SavedStateSwitcher.py \
-	ReadonlyModeSwitcher.py \
-	FileLoadingStateSwitcher.py \
-	SaveErrorSwitcher.py
+	TimedMessageHandler.py \
+	StackMessageHandler.py \
+	FallbackMessageHandler.py \
+	MessageBarUpdater.py \
+	MessageBarDisplayer.py \
+	MessageFormatter.py \
+	FileLoadHandler.py \
+	SavedHandler.py \
+	ReadonlyHandler.py
 
 all: all-am
 
@@ -226,9 +225,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusImage/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu SCRIBES/GUI/MainGUI/StatusBar/Feedback/MessageSystem/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusImage/Makefile
+	  $(AUTOMAKE) --gnu SCRIBES/GUI/MainGUI/StatusBar/Feedback/MessageSystem/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -247,10 +246,10 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
-install-statusimagePYTHON: $(statusimage_PYTHON)
+install-statusmessagePYTHON: $(statusmessage_PYTHON)
 	@$(NORMAL_INSTALL)
-	test -z "$(statusimagedir)" || $(MKDIR_P) "$(DESTDIR)$(statusimagedir)"
-	@list='$(statusimage_PYTHON)'; dlist=; list2=; test -n "$(statusimagedir)" || list=; \
+	test -z "$(statusmessagedir)" || $(MKDIR_P) "$(DESTDIR)$(statusmessagedir)"
+	@list='$(statusmessage_PYTHON)'; dlist=; list2=; test -n "$(statusmessagedir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then b=; else b="$(srcdir)/"; fi; \
 	  if test -f $$b$$p; then \
@@ -261,30 +260,30 @@ install-statusimagePYTHON: $(statusimage_PYTHON)
 	done; \
 	for file in $$list2; do echo $$file; done | $(am__base_list) | \
 	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(statusimagedir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(statusimagedir)" || exit $$?; \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(statusmessagedir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(statusmessagedir)" || exit $$?; \
 	done || exit $$?; \
 	if test -n "$$dlist"; then \
 	  if test -z "$(DESTDIR)"; then \
-	    PYTHON=$(PYTHON) $(py_compile) --basedir "$(statusimagedir)" $$dlist; \
+	    PYTHON=$(PYTHON) $(py_compile) --basedir "$(statusmessagedir)" $$dlist; \
 	  else \
-	    PYTHON=$(PYTHON) $(py_compile) --destdir "$(DESTDIR)" --basedir "$(statusimagedir)" $$dlist; \
+	    PYTHON=$(PYTHON) $(py_compile) --destdir "$(DESTDIR)" --basedir "$(statusmessagedir)" $$dlist; \
 	  fi; \
 	else :; fi
 
-uninstall-statusimagePYTHON:
+uninstall-statusmessagePYTHON:
 	@$(NORMAL_UNINSTALL)
-	@list='$(statusimage_PYTHON)'; test -n "$(statusimagedir)" || list=; \
+	@list='$(statusmessage_PYTHON)'; test -n "$(statusmessagedir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	test -n "$$files" || exit 0; \
 	filesc=`echo "$$files" | sed 's|$$|c|'`; \
 	fileso=`echo "$$files" | sed 's|$$|o|'`; \
-	echo " ( cd '$(DESTDIR)$(statusimagedir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(statusimagedir)" && rm -f $$files || exit $$?; \
-	echo " ( cd '$(DESTDIR)$(statusimagedir)' && rm -f" $$filesc ")"; \
-	cd "$(DESTDIR)$(statusimagedir)" && rm -f $$filesc || exit $$?; \
-	echo " ( cd '$(DESTDIR)$(statusimagedir)' && rm -f" $$fileso ")"; \
-	cd "$(DESTDIR)$(statusimagedir)" && rm -f $$fileso
+	echo " ( cd '$(DESTDIR)$(statusmessagedir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(statusmessagedir)" && rm -f $$files || exit $$?; \
+	echo " ( cd '$(DESTDIR)$(statusmessagedir)' && rm -f" $$filesc ")"; \
+	cd "$(DESTDIR)$(statusmessagedir)" && rm -f $$filesc || exit $$?; \
+	echo " ( cd '$(DESTDIR)$(statusmessagedir)' && rm -f" $$fileso ")"; \
+	cd "$(DESTDIR)$(statusmessagedir)" && rm -f $$fileso
 tags: TAGS
 TAGS:
 
@@ -326,7 +325,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile
 installdirs:
-	for dir in "$(DESTDIR)$(statusimagedir)"; do \
+	for dir in "$(DESTDIR)$(statusmessagedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -374,7 +373,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-statusimagePYTHON
+install-data-am: install-statusmessagePYTHON
 
 install-dvi: install-dvi-am
 
@@ -418,7 +417,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-statusimagePYTHON
+uninstall-am: uninstall-statusmessagePYTHON
 
 .MAKE: install-am install-strip
 
@@ -428,11 +427,11 @@ uninstall-am: uninstall-statusimagePYTHON
 	install-dvi install-dvi-am install-exec install-exec-am \
 	install-html install-html-am install-info install-info-am \
 	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-statusimagePYTHON install-strip \
+	install-ps-am install-statusmessagePYTHON install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-statusimagePYTHON
+	uninstall-statusmessagePYTHON
 
 
 clean-local:

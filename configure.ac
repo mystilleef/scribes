@@ -62,9 +62,7 @@ SCRIBES/GUI/MainGUI/Makefile
 SCRIBES/GUI/MainGUI/StatusBar/Makefile
 SCRIBES/GUI/MainGUI/StatusBar/MessageBar/Makefile
 SCRIBES/GUI/MainGUI/StatusBar/Feedback/Makefile
-SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusImage/Makefile
-SCRIBES/GUI/MainGUI/StatusBar/Feedback/StatusMessage/Makefile
-SCRIBES/GUI/MainGUI/StatusBar/Feedback/TestMessage/Makefile
+SCRIBES/GUI/MainGUI/StatusBar/Feedback/MessageSystem/Makefile
 SCRIBES/GUI/MainGUI/Window/Makefile
 SCRIBES/GUI/MainGUI/Toolbar/Makefile
 SCRIBES/GUI/MainGUI/Toolbar/ToolbarVisibility/Makefile

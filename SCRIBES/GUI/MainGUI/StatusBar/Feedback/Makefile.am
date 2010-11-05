@@ -1,4 +1,4 @@
-SUBDIRS = StatusImage StatusMessage TestMessage
+SUBDIRS = MessageSystem
 feedbackdir = $(pythondir)/SCRIBES/GUI/MainGUI/StatusBar/Feedback
 feedback_PYTHON = \
 	__init__.py \

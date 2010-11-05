@@ -87,7 +87,6 @@ class Handler(SignalManager):
 		data = translate(event.hardware_keycode, event.state, event.group)
 		keyval, egroup, level, consumed = data
 		active_mask = any_on = event.state & ~consumed & MODIFIER_MASK
-		print any_on
 		ctrl_on = active_mask == CONTROL_MASK
 		shift_on = active_mask == SHIFT_MASK
 		# Handle backspace key press event.

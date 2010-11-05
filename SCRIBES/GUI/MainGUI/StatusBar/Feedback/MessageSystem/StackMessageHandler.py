@@ -57,15 +57,21 @@ class Handler(SignalManager):
 		return False
 
 	def __set_cb(self, editor, data):
-		self.__set(data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set, data, priority=PRIORITY_LOW)
+#		self.__set(data)
 		return False
 
 	def __unset_cb(self, editor, data):
-		self.__unset(data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__unset, data, priority=PRIORITY_LOW)
+#		self.__unset(data)
 		return False
 
 	def __reset_cb(self, *args):
-		self.__reset()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__reset, priority=PRIORITY_LOW)
+#		self.__reset()
 		return False
 
 	def __busy_cb(self, manager, busy):

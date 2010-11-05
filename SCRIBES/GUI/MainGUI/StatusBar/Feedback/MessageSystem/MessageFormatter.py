@@ -18,7 +18,7 @@ class Formatter(SignalManager):
 		self.__editor = editor
 		from gtk import stock_list_ids
 		self.__image_ids = [name[4:] for name in stock_list_ids()]
-		self.__scribes_image_ids = ("error", "pass", "fail", "scribes", "busy")
+		self.__scribes_image_ids = ("error", "pass", "fail", "scribes", "busy", "run")
 		self.__image_dictionary = self.__map_scribes_ids()
 		return False
 
@@ -51,7 +51,7 @@ class Formatter(SignalManager):
 
 	def __map_scribes_ids(self):
 		dictionary = {"error": "gtk-dialog-error", "pass": "gtk-yes", "fail": "gtk-no",
-		"scribes":"scribes", "busy": "gtk-execute"}
+		"scribes":"scribes", "busy": "gtk-execute", "run": "gtk-execute"}
 		return dictionary
 
 	def __remove_timer(self):
@@ -63,10 +63,10 @@ class Formatter(SignalManager):
 		return False
 
 	def __format_cb(self, manager, data):
-#		self.__remove_timer()
-#		from gobject import idle_add, PRIORITY_LOW
-#		self.__timer = idle_add(self.__format, data, priority=PRIORITY_LOW)
-		self.__format(data)
+		self.__remove_timer()
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer = idle_add(self.__format, data, priority=PRIORITY_LOW)
+#		self.__format(data)
 		return False
 
 	def __quit_cb(self, *args):

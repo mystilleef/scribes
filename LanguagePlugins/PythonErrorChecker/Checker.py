@@ -68,7 +68,7 @@ class Checker(SignalManager):
 	def __check_cb(self, *args):
 		self.__remove_timer()
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer = timeout_add(1000, self.__check_timeout, priority=PRIORITY_LOW)
+		self.__timer = timeout_add(3000, self.__check_timeout, priority=PRIORITY_LOW)
 		return False
 
 	def __error_cb(self, manager, data):
