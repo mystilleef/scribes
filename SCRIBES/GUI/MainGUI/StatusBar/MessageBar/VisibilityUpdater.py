@@ -43,7 +43,7 @@ class Updater(SignalManager):
 		return False
 
 	def __animate_cb(self, manager, animation_type):
-		from gobject import idle_add
-		idle_add(self.__update, animation_type, priority=9999)
-#		self.__update(animation_type)
+#		from gobject import idle_add
+#		idle_add(self.__update, animation_type, priority=9999)
+		self.__update(animation_type)
 		return False

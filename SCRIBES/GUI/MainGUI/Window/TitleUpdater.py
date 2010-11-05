@@ -28,7 +28,6 @@ class Updater(SignalManager):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __update_attributes(self, uri):
@@ -39,9 +38,10 @@ class Updater(SignalManager):
 	def __get_dictionary(self, uri):
 		from gio import File
 		title = File(uri).get_basename() if uri else _("Unnamed Document")
+		ellipsize = self.__ellipsize
 		if uri: parent_path = File(uri).get_parent().get_parse_name()
-		if uri: parent_path = parent_path.replace(self.__editor.home_folder, "~").strip("/\\")
-		fulltitle = "%s - ( %s )" % (title, parent_path) if uri else title
+		if uri: parent_path = ellipsize(parent_path.replace(self.__editor.home_folder, "~").strip("/\\"))
+		fulltitle = "%s - (%s)" % (title, parent_path) if uri else title
 		dictionary = {
 			"normal": fulltitle,
 			"modified": "*" + fulltitle,
@@ -49,6 +49,17 @@ class Updater(SignalManager):
 			"loading": _("Loading %s ...") % title,
 		}
 		return dictionary
+
+	def __ellipsize(self, path):
+		number_of_folders = 8
+		from os import sep
+		folder_paths = path.split(sep)
+		if len (folder_paths) < number_of_folders: return path
+		first_item = folder_paths[0]
+		first_path = "%s%s..." % (first_item, sep) if first_item == "~" else "%s%s..." % (first_item, sep*2)
+		last_paths = tuple(folder_paths[-5:])
+		from os.path import join
+		return join(first_path, *last_paths).strip(sep)
 
 	def __update_title(self, uri, title):
 		self.__update_attributes(uri)

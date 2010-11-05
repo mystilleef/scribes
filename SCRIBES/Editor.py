@@ -281,16 +281,19 @@ class Editor(Signals):
 		self.emit("spin-throbber", spin)
 		return False
 
-	def update_message(self, message, icon_name="scribes", time=5):
-		self.emit("update-message", message, icon_name, time)
+	def update_message(self, message, icon_name="scribes", time=5, priority="normal"):
+		data = message, icon_name, time, priority
+		self.emit("update-message", data)
 		return False
 
 	def set_message(self, message, icon_name="scribes"):
-		self.emit("set-message", message, icon_name)
+		data = message, icon_name
+		self.emit("set-message", data)
 		return False
 
 	def unset_message(self, message, icon_name="scribes"):
-		self.emit("unset-message", message, icon_name)
+		data = message, icon_name
+		self.emit("unset-message", data)
 		return False
 
 	def get_toolbutton(self, name):

@@ -21,7 +21,6 @@ class Switcher(SignalManager):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __update(self, message, image, time):
@@ -53,7 +52,8 @@ class Switcher(SignalManager):
 	def __update_cb(self, manager, message, image, time):
 		from gobject import idle_add
 		idle_add(self.__update, message, image, time, priority=9999)
-		return False # This is a test message. I think it works well.
+		
+		return False
 
 	def __visible_cb(self, editor, visible):
 		self.__visible == visible
