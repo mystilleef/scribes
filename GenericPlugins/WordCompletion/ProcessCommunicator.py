@@ -7,6 +7,7 @@ class Communicator(object):
 		self.__init_attributes(manager, editor)
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = editor.connect_after("saved-file", self.__saved_cb)
+		self.__sigid3 = editor.connect_after("loaded-file", self.__saved_cb)
 		editor.session_bus.add_signal_receiver(self.__name_change_cb,
 						'NameOwnerChanged',
 						'org.freedesktop.DBus',
@@ -16,6 +17,7 @@ class Communicator(object):
 		editor.session_bus.add_signal_receiver(self.__finished_cb,
 						signal_name="finished",
 						dbus_interface=indexer_dbus_service)
+		self.__start_index()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -36,6 +38,14 @@ class Communicator(object):
 			signal_name="finished",
 			dbus_interface=indexer_dbus_service)
 		del self
+		return False
+
+	def __start_index(self):
+		if not self.__indexer: return False
+		# Avoid unnecessary calls to the indexer when launching multiple editors.
+		if self.__editor.window_is_active is False: return False
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__index, priority=PRIORITY_LOW)
 		return False
 
 	def __get_indexer(self):
@@ -63,10 +73,7 @@ class Communicator(object):
 
 	def __name_change_cb(self, *args):
 		self.__indexer = self.__get_indexer()
-		# Avoid unnecessary calls to the indexer when launching multiple editors.
-		if self.__editor.window_is_active is False: return False
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__index, priority=PRIORITY_LOW)
+		self.__start_index()
 		return False
 
 	def __finished_cb(self, dictionary):
