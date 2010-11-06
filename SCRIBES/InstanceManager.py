@@ -101,6 +101,10 @@ class Manager(object):
 		if not self.__editor_instances: return []
 		return [editor.uri for editor in self.__editor_instances if editor.uri]
 
+	def get_text(self):
+		if not self.__editor_instances: return []
+		return [editor.text for editor in self.__editor_instances]
+
 	def get_editor_instances(self):
 		return self.__editor_instances
 

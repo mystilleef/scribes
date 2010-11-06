@@ -27,3 +27,7 @@ class DBusService(Object):
 	@method("net.sourceforge.Scribes", out_signature="as")
 	def get_uris(self):
 		return self.__manager.get_uris()
+
+	@method("net.sourceforge.Scribes", out_signature="as")
+	def get_text(self):
+		return self.__manager.get_text()
