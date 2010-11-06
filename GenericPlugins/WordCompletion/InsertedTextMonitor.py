@@ -56,12 +56,11 @@ class Monitor(object):
 		self.__editor.disconnect_signal(self.__sigid17, self.__view)
 		self.__editor.disconnect_signal(self.__sigid18, self.__view)
 		del self
-		self = None
 		return False
 
 	def __send_valid_string_async(self):
 		try:
-			from gobject import idle_add, source_remove, timeout_add
+			from gobject import source_remove, timeout_add
 			source_remove(self.__timer)
 		except AttributeError:
 			pass

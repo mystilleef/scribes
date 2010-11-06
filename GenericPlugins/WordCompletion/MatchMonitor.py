@@ -38,6 +38,7 @@ class Monitor(object):
 			self.__editor.refresh(False)
 			if not (items[0].startswith(word) and (items[0] != word)): continue
 			match_list.append(list(items))
+			self.__editor.refresh(False)
 		return match_list
 
 	def __get_matches(self, match_list):
@@ -45,6 +46,7 @@ class Monitor(object):
 		for items in match_list:
 			self.__editor.refresh(False)
 			matches.append(items[0])
+			self.__editor.refresh(False)
 		return matches
 
 	def __find_matches(self, word):
@@ -78,6 +80,14 @@ class Monitor(object):
 		self.__found = False
 		return False
 
+	def __remove_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		return
+
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
@@ -87,8 +97,9 @@ class Monitor(object):
 		return False
 
 	def __valid_cb(self, manager, string):
+		self.__remove_timer()
 		from gobject import idle_add
-		idle_add(self.__process, string)
+		self.__timer = idle_add(self.__process, string)
 		return False
 
 	def __dictionary_cb(self, manager, dictionary):

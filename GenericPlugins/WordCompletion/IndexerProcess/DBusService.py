@@ -20,11 +20,14 @@ class DBusService(Object):
 	def process(self, text, id_):
 		return self.__manager.process(text, id_)
 
-	@signal(indexer_dbus_service, signature="xa{sx}")
-	def finished(self, id_, dictionary):
-		return # return
+	@method(indexer_dbus_service)
+	def index(self):
+		return self.__manager.index()
 
-	def __finished_cb(self, manager, data):
-		editor_id, dictionary = data
-		self.finished(editor_id, dictionary)
+	@signal(indexer_dbus_service, signature="a{sx}")
+	def finished(self, dictionary):
+		return
+
+	def __finished_cb(self, manager, dictionary):
+		self.finished(dictionary)
 		return False

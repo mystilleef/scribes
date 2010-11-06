@@ -2,7 +2,7 @@ class Generator(object):
 
 	def __init__(self, manager):
 		self.__init_attributes(manager)
-		self.__sigid1 = manager.connect("generate-dictionary", self.__generate_cb)
+		manager.connect("index", self.__index_cb)
 
 	def __init_attributes(self, manager):
 		self.__manager = manager
@@ -15,23 +15,22 @@ class Generator(object):
 			self.__empty_dict = Dictionary({}, key_type=String, value_type=Int32)
 		return
 
-	def __generate(self, data):
+	def __index(self, text):
 		try:
-			text, editor_id = data
 			if not text: raise ValueError
-			words = self.__generate_words(text)
+			words = self.__get_words(text)
 			if not words: raise ValueError
-			dictionary = self.__generate_dictionary(words)
+			dictionary = self.__make_dictionary(words)
 			if not dictionary: raise ValueError
-			self.__manager.emit("finished", (editor_id, dictionary))
+			self.__manager.emit("finished", dictionary)
 		except ValueError:
-			self.__manager.emit("finished", (editor_id, self.__empty_dict))
+			self.__manager.emit("finished", self.__empty_dict)
 		return False
 
-	def __generate_words(self, text):
+	def __get_words(self, text):
 		from re import split
 		words = split(self.__pattern, text)
-		words =[word for word in words if self.__filter(word)]
+		words = [word for word in words if self.__filter(word)]
 		return words
 
 	def __filter(self, word):
@@ -40,7 +39,7 @@ class Generator(object):
 		if word.startswith("___"): return False
 		return True
 
-	def __generate_dictionary(self, words):
+	def __make_dictionary(self, words):
 		dictionary = {}
 		for string in words:
 			if string in dictionary.keys():
@@ -49,6 +48,16 @@ class Generator(object):
 				dictionary[string] = 1
 		return dictionary
 
-	def __generate_cb(self, manager, data):
-		self.__generate(data)
+	def __remove_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		return
+
+	def __index_cb(self, manager, texts):
+		self.__remove_timer()
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer = idle_add(self.__index, texts, priority=PRIORITY_LOW)
 		return False

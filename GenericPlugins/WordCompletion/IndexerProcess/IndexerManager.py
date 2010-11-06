@@ -5,9 +5,9 @@ SCRIBES_SIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 class Manager(GObject):
 
 	__gsignals__ = {
-		"new-job": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"get-text": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"index": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"finished": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"generate-dictionary": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self):
@@ -18,9 +18,9 @@ class Manager(GObject):
 		DBusService(self)
 		from DictionaryGenerator import Generator
 		Generator(self)
-		from JobSpooler import Spooler
-		Spooler(self)
-		# Keep this process as responsive as possible to events and signals.
+		from TextGetter import Getter
+		Getter(self)
+		# Keep this process as responsive as possible nappy to events and signals.
 		from gobject import timeout_add
 		timeout_add(1000, self.__response)
 
@@ -29,8 +29,8 @@ class Manager(GObject):
 		_exit(0)
 		return
 
-	def process(self, text, editor_id):
-		self.emit("new-job", (text, editor_id))
+	def index(self):
+		self.emit("get-text")
 		return False
 
 	def __response(self):
