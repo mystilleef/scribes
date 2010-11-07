@@ -24,10 +24,12 @@ class Filterer(object):
 	def __is_a_match(self, pattern, _file):
 		self.__editor.refresh()
 		if self.__pattern != pattern: raise StandardError
-		if pattern.lower() in _file: return 2
+		if self.__is_a_match_re(pattern, _file): return 2
 		index = 0
 		for character in pattern:
+			self.__editor.refresh(False)
 			index = _file.lower().find(character.lower(), index)
+			self.__editor.refresh(False)
 			if index == -1: return 0
 		return 1
 
@@ -47,15 +49,16 @@ class Filterer(object):
 		try:
 			self.__editor.refresh()
 			if not pattern: raise ValueError
-			matches = [_file for _file in self.__files if self.__is_a_match_re(pattern, _file)]
-#			higher_matches = []
-#			lower_matches = []
-#			for _file in self.__files:
-#				self.__editor.refresh()
-#				rank = self.__is_a_match(pattern, _file)
-#				if not rank: continue
-#				higher_matches.append(_file) if rank == 2 else lower_matches.append(_file)
-#			matches = higher_matches + lower_matches
+#			matches = [_file for _file in self.__files if self.__is_a_match_re(pattern, _file)]
+			higher_matches = []
+			lower_matches = []
+			for _file in self.__files:
+				self.__editor.refresh()
+				rank = self.__is_a_match(pattern, _file)
+				if not rank: continue
+				higher_matches.append(_file) if rank == 2 else lower_matches.append(_file)
+				self.__editor.refresh(False)
+			matches = higher_matches + lower_matches
 			self.__manager.emit("filtered-files", matches)
 		except ValueError:
 			self.__manager.emit("filtered-files", [])

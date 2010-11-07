@@ -43,7 +43,7 @@ class Grabber(SignalManager):
 		return False
 
 	def __in_cb(self, *args):
-		if self.__window.props.is_active is False: return False
+		if self.__editor.window_is_active is False: return False
 		self.__editor.refresh(True)
 		return False
 

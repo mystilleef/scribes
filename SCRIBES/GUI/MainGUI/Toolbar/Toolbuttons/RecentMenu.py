@@ -44,7 +44,6 @@ class RecentMenu(RecentChooserMenu):
 		self.destroy()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return
 
 	def __activated_cb(self, recent_chooser):
