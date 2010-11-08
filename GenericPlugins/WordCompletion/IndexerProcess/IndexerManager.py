@@ -8,6 +8,7 @@ class Manager(GObject):
 		"get-text": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"index": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"finished": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"clipboard-text": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self):
@@ -20,6 +21,8 @@ class Manager(GObject):
 		Generator(self)
 		from TextGetter import Getter
 		Getter(self)
+		from ClipboardManager import Manager
+		Manager(self)
 		# Keep this process as responsive as possible nappy to events and signals.
 		from gobject import timeout_add
 		timeout_add(1000, self.__response)

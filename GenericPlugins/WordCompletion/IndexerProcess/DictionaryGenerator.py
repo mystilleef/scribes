@@ -2,10 +2,12 @@ class Generator(object):
 
 	def __init__(self, manager):
 		self.__init_attributes(manager)
+		manager.connect("clipboard-text", self.__text_cb)
 		manager.connect("index", self.__index_cb)
 
 	def __init_attributes(self, manager):
 		self.__manager = manager
+		self.__clipboard_text = ""
 		from re import UNICODE, compile
 		self.__pattern = compile(r"[^-\w]", UNICODE)
 		from dbus import Dictionary, String, Int32
@@ -17,6 +19,7 @@ class Generator(object):
 
 	def __index(self, text):
 		try:
+			text = text + self.__clipboard_text
 			if not text: raise ValueError
 			words = self.__get_words(text)
 			if not words: raise ValueError
@@ -60,4 +63,8 @@ class Generator(object):
 		self.__remove_timer()
 		from gobject import idle_add, PRIORITY_LOW
 		self.__timer = idle_add(self.__index, texts, priority=PRIORITY_LOW)
+		return False
+
+	def __text_cb(self, manager, text):
+		self.__clipboard_text = text
 		return False

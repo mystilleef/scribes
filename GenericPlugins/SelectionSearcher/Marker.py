@@ -24,8 +24,13 @@ class Marker(SignalManager):
 		if not self.__marks: return
 		del_ = self.__editor.delete_mark
 		remove_marks = lambda start, end: (del_(start), del_(end))
+		self.__editor.textview.set_editable(False)
+		self.__editor.textview.window.freeze_updates()
+		self.__editor.refresh(False)
 		(remove_marks(*mark) for mark in self.__marks)
-		self.__marks[:]
+		self.__editor.textview.window.thaw_updates()
+		self.__editor.refresh(False)
+		self.__editor.textview.set_editable(True)
 		self.__marks = None
 		return False
 
