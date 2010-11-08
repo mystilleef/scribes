@@ -147,6 +147,7 @@ class Inserter(object):
 		from collections import deque
 		placeholder_marks = deque([])
 		for placeholder in placeholders:
+			self.__editor.refresh(False)
 			epos = buffer_.get_iter_at_mark(mend)
 			begin, end_ = start.forward_search(placeholder, TEXT_SEARCH_VISIBLE_ONLY, epos)
 			buffer_.place_cursor(begin)
@@ -170,6 +171,7 @@ class Inserter(object):
 			buffer_.insert_at_cursor(nplaceholder)
 			self.__manager.emit("tag-placeholder", pmark)
 			start = buffer_.get_iter_at_mark(mark)
+			self.__editor.refresh(False)
 		self.__editor.delete_mark(mark)
 		self.__manager.emit("activate-template-mode")
 		self.__manager.emit("template-boundaries", (mstart, mend))
