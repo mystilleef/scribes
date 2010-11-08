@@ -8,8 +8,6 @@ class Colorer(object):
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("trigger-found", self.__trigger_found_cb)
 		self.__sigid3 = manager.connect("no-trigger-found", self.__no_trigger_found_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=9000)
 
 	def __init_attributes(self, editor, manager):
 		self.__manager = manager
@@ -32,15 +30,7 @@ class Colorer(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		del self
-		self = None
 		return
-
-	def __precompile_methods(self):
-		methods = (self.__trigger_found_cb, self.__no_trigger_found_cb,
-			self.__color_trigger, self.__uncolor_trigger, self.__process,
-			self.__get_trigger_position, self.__mark_trigger_position)
-		self.__editor.optimize(methods)
-		return False
 
 	def __create_highlight_tag(self):
 		from gtk import TextTag
@@ -102,34 +92,28 @@ class Colorer(object):
 		self.__editor.unset_message(message, "info")
 		return False
 
-################################################################################
-#
-# 						Event and Signal Callbacks
-#
-################################################################################
+	def __remove_timer(self, timer=1):
+		try:
+			from gobject import source_remove
+			timer_id = self.__tid if timer == 1 else self.__textid
+			source_remove(timer_id)
+		except AttributeError:
+			pass
+		return False
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return
 
 	def __trigger_found_cb(self, manager, trigger):
-#		if self.__is_highlighted: return
-		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__tid)
-		except AttributeError:
-			pass
-		finally:
-			self.__tid = idle_add(self.__process, trigger, priority=9999)
+		self.__remove_timer()
+		from gobject import idle_add, PRIORITY_LOW
+		self.__tid = idle_add(self.__process, trigger, priority=PRIORITY_LOW)
 		return
 
 	def __no_trigger_found_cb(self, *args):
 		if self.__is_highlighted is False: return
-		try:
-			from gobject import idle_add, PRIORITY_LOW, source_remove
-			source_remove(self.__textid)
-		except AttributeError:
-			pass
-		finally:
-			self.__textid = idle_add(self.__uncolor_trigger, priority=9999)
+		self.__remove_timer(2)
+		from gobject import idle_add, PRIORITY_LOW
+		self.__textid = idle_add(self.__uncolor_trigger, priority=PRIORITY_LOW)
 		return

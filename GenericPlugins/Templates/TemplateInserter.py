@@ -109,8 +109,8 @@ class Inserter(object):
 		self.__editor.textview.scroll_mark_onscreen(end)
 		self.__expand_special_placeholders(template, start, end)
 		self.__mark_placeholders(template, start, end)
-		self.__editor.textview.window.thaw_updates()
 		self.__editor.textview.set_editable(True)
+		self.__editor.textview.window.thaw_updates()
 		return False
 
 	def __expand_special_placeholders(self, template, mstart, end):

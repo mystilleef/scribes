@@ -42,7 +42,6 @@ class Monitor(object):
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		del self
-		self = None
 		return
 
 	def __is_trigger(self, word):
@@ -102,18 +101,18 @@ class Monitor(object):
 		return False
 
 	def __check_idleadd(self):
-		from gobject import timeout_add
-		self.__cursor_id = timeout_add(250, self.__check_trigger, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		self.__cursor_id = idle_add(self.__check_trigger, priority=PRIORITY_LOW)
 		return False
 
 	def __cursor_moved_cb(self, *args):
 		try:
-			from gobject import idle_add, source_remove
+			from gobject import timeout_add, source_remove, PRIORITY_LOW
 			source_remove(self.__cursor_id)
 		except AttributeError:
 			pass
 		finally:
-			self.__cursor_id = idle_add(self.__check_idleadd, priority=9999)
+			self.__cursor_id = timeout_add(125, self.__check_idleadd, priority=PRIORITY_LOW)
 		return False
 
 	def __key_press_event_cb(self, view, event):
@@ -130,4 +129,3 @@ class Monitor(object):
 			self.__manager.emit("previous-placeholder")
 			result = True
 		return result
-
