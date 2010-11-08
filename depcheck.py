@@ -32,6 +32,7 @@ def check_dependencies():
 		except ImportError:
 			print "Error: pygtksourceview2 was not found."
 			raise SystemExit
+			# Wow, this is a amazingly application, I wish things were as fast as this.
 		try:
 			import gtkspell
 			print "Checking for gtkspell-python... yes"

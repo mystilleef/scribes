@@ -30,7 +30,6 @@ class Inserter(object):
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		del self
-		self = None
 		return
 
 	def __precompile_methods(self):
@@ -100,6 +99,7 @@ class Inserter(object):
 		return
 
 	def __place_template_in_buffer_callback(self):
+		self.__editor.textview.set_editable(False)
 		self.__editor.textview.window.freeze_updates()
 		template = self.__get_template()
 		self.__remove_trigger()
@@ -110,6 +110,7 @@ class Inserter(object):
 		self.__expand_special_placeholders(template, start, end)
 		self.__mark_placeholders(template, start, end)
 		self.__editor.textview.window.thaw_updates()
+		self.__editor.textview.set_editable(True)
 		return False
 
 	def __expand_special_placeholders(self, template, mstart, end):
@@ -139,7 +140,7 @@ class Inserter(object):
 		placeholders = get_placeholders(template)
 		if not placeholders: return
 		from gtk import TEXT_SEARCH_VISIBLE_ONLY
-		from utils import replace_special_placeholder
+#		from utils import replace_special_placeholder
 		buffer_ = self.__editor.textbuffer
 		mark = self.__editor.create_right_mark()
 		start = buffer_.get_iter_at_mark(mstart)
