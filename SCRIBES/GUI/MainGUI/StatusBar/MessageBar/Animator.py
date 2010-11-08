@@ -27,9 +27,9 @@ class Animator(SignalManager):
 		self.__end_point = 0
 		self.__hdelta = 0
 		self.__vdelta = 0
-		self.__bheight =0
+		self.__bheight = 0
 		self.__bwidth = 0
-		self.__vheight =0
+		self.__vheight = 0
 		self.__vwidth = 0
 		self.__busy = False
 		return

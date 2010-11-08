@@ -67,12 +67,10 @@ class Handler(SignalManager):
 			source_remove(self.__timer)
 		except AttributeError:
 			pass
-		return False
+		return 
 
 	def __update_cb(self, manager, data):
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__update, data, priority=PRIORITY_LOW)
-#		self.__update(data)
+		self.__update(data)
 		return False
 
 	def __quit_cb(self, *args):

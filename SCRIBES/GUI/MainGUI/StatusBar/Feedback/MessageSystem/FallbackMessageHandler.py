@@ -42,6 +42,11 @@ class Handler(SignalManager):
 		self.__manager.emit("format-feedback-message", data)
 		return False
 
+	def __fallback_on_idle(self):
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer = idle_add(self.__fallback, priority=PRIORITY_LOW)
+		return False
+
 	def __update_names(self, uri):
 		from gio import File
 		filename = File(uri).get_parse_name()
@@ -63,8 +68,8 @@ class Handler(SignalManager):
 
 	def __fallback_cb(self, *args):
 		self.__remove_timer()
-		from gobject import idle_add, PRIORITY_LOW as LOW
-		self.__timer = idle_add(self.__fallback, priority=LOW)
+		from gobject import timeout_add, PRIORITY_LOW as LOW
+		self.__timer = timeout_add(300, self.__fallback_on_idle, priority=LOW)
 		return False
 
 	def __busy_cb(self, manager, busy):

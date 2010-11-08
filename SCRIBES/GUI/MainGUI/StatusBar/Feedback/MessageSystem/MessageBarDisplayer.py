@@ -25,7 +25,9 @@ class Displayer(SignalManager):
 
 	def __update_cb(self, manager, data):
 		show_bar = data[-1]
-		if show_bar: self.__bar.show()
+		if not show_bar: return False
+#		self.__bar.hide()
+		self.__bar.show()
 		return False
 
 	def __fallback_cb(self, *args):
