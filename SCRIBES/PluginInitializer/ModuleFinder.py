@@ -36,6 +36,7 @@ class Finder(SignalManager):
 		return
 
 	def __initialize_modules(self, plugin_path):
+		self.__editor.refresh(False)
 		_path = plugin_path.strip("/")
 		if not self.__editor.language and _path.endswith("LanguagePlugins"): return False
 		from os import listdir

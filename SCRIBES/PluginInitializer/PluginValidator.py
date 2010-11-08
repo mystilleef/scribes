@@ -22,6 +22,7 @@ class Validator(SignalManager):
 
 	def __validate(self, module):
 		try:
+			self.__editor.refresh(False)
 			class_name = getattr(module, "class_name")
 			if not hasattr(module, class_name): raise ValueError
 			PluginClass = getattr(module, class_name)

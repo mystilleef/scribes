@@ -34,7 +34,9 @@ class Initializer(SignalManager):
 		return
 
 	def __validate(self):
+		self.__editor.refresh(False)
 		[self.__emit(plugin_path) for plugin_path in self.__plugin_paths]
+		self.__editor.refresh(False)
 		return False
 
 	def __validate_timeout(self):

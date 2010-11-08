@@ -1,5 +1,3 @@
-from gettext import gettext as _
-
 from SCRIBES.SignalConnectionManager import SignalManager
 
 class Handler(SignalManager):
@@ -24,18 +22,12 @@ class Handler(SignalManager):
 		self.__editor = editor
 		self.__busy = False
 		self.__default_name = ""
-		self.__modified_name = ""
 		return False
 
 	def __destroy(self):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		return False
-
-	def __fallback_on_idle(self):
-		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__fallback, priority=PRIORITY_LOW)
 		return False
 
 	def __fallback(self):
@@ -54,7 +46,6 @@ class Handler(SignalManager):
 		from gio import File
 		filename = File(uri).get_parse_name()
 		filename = filename.replace(self.__editor.home_folder.rstrip("/"), "~")
-		self.__modified_name = filename + _(" [modified]")
 		self.__default_name = filename
 		return False
 
@@ -72,8 +63,8 @@ class Handler(SignalManager):
 
 	def __fallback_cb(self, *args):
 		self.__remove_timer()
-		from gobject import timeout_add, PRIORITY_LOW as LOW
-		self.__timer = timeout_add(300, self.__fallback_on_idle, priority=LOW)
+		from gobject import idle_add, PRIORITY_LOW as LOW
+		self.__timer = idle_add(self.__fallback, priority=LOW)
 		return False
 
 	def __busy_cb(self, manager, busy):
