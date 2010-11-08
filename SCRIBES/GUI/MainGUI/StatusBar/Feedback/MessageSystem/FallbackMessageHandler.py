@@ -40,17 +40,14 @@ class Handler(SignalManager):
 
 	def __fallback(self):
 		if self.__busy: return False
-		try:
-			if not self.__editor.uri: raise ValueError
-			mname, dname = self.__modified_name, self.__default_name
-			modified = self.__editor.modified
-			message, image_id, italic = (mname, "edit", True) if modified else (dname, "new", False)
-			color, bold, show_bar = "", False, False
+		if self.__editor.uri:
+			message, color = self.__default_name, ""
+			bold, italic = True, False
+			image_id, show_bar = "new", False
 			data = message, image_id, color, bold, italic, show_bar
-		except ValueError:
+		else:
 			data = "", "", "", False, False, False
-		finally:
-			self.__manager.emit("format-feedback-message", data)
+		self.__manager.emit("format-feedback-message", data)
 		return False
 
 	def __update_names(self, uri):
