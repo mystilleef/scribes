@@ -52,9 +52,6 @@ class Manager(SignalManager):
 		return False
 
 	def __show_cb(self, *args):
-#		self.__remove_timer()
-#		from gobject import timeout_add
-#		self.__timer = timeout_add(300, self.__show)
 		self.__show()
 		return False
 
