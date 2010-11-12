@@ -1,11 +1,11 @@
 from SCRIBES.SignalConnectionManager import SignalManager
-ADJUSTMENT = 10
 
 class Positioner(SignalManager):
 
 	def __init__(self, manager, editor):
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
+		self.__set_properties()
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "treeview-size", self.__size_cb)
 		self.connect(manager, "show-window", self.__show_cb)
@@ -26,6 +26,12 @@ class Positioner(SignalManager):
 		del self
 		return
 
+	def __set_properties(self):
+		self.__window.set_property("allow-shrink", True)
+		self.__window.set_property("allow-grow", True)
+		self.__window.set_property("resizable", True)
+		return
+
 	def __set_scroll_policy(self, data):
 		width, height = data
 		from gtk import POLICY_AUTOMATIC, POLICY_NEVER
@@ -33,10 +39,10 @@ class Positioner(SignalManager):
 		self.__scroll.set_policy(POLICY_NEVER, policy)
 		return False
 
-	def __get_size(self, data):
-		width, height = data
-		height = (200 + ADJUSTMENT) if height > 200 else (height + ADJUSTMENT)
-		width = 200 if width < 200 else (width + ADJUSTMENT+10)
+	def __get_size(self):
+		width, height = self.__window.size_request()
+		height = 200 if height > 200 else height
+		width = 200 if width < 200 else width
 		return width, height
 
 	def __get_x(self, width, cursor_data, textview_data):
@@ -82,11 +88,10 @@ class Positioner(SignalManager):
 		position_y = self.__get_y(height, cursor_data, textview_data)
 		return position_x, position_y
 
-	def __position_window(self, data):
-		width, height = self.__get_size(data)
+	def __position_window(self):
+		width, height = self.__get_size()
 		xcord, ycord = self.__get_cords(width, height)
 		self.__set_scroll_policy((width, height))
-		self.__window.set_size_request(width, height)
 		self.__window.resize(width, height)
 		self.__window.move(xcord, ycord)
 		self.__manager.emit("show-window")
@@ -105,7 +110,7 @@ class Positioner(SignalManager):
 		return False
 
 	def __size_cb(self, manager, data):
-		self.__position_window(data)
+		self.__position_window() # __position_window __get_cords
 		return False
 
 	def __show_cb(self, *args):
