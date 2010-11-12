@@ -17,14 +17,14 @@ class Trigger(SignalManager, TriggerManager):
 		self.__editor = editor
 		name, shortcut, description, category = (
 			"next-paragraph",
-			"<alt>Right",
+			"<ctrl>Down",
 			_("Move cursor to next paragraph"),
 			_("Navigation Operations")
 		)
 		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
 		name, shortcut, description, category = (
 			"previous-paragraph",
-			"<alt>Left",
+			"<ctrl>Up",
 			_("Move cursor to previous paragraph"),
 			_("Navigation Operations")
 		)
