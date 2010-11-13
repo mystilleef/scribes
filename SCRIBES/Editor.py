@@ -285,6 +285,10 @@ class Editor(Signals):
 		data = message, icon_name, time, priority
 		self.emit("update-message", data)
 		return False
+	
+	def hide_message(self):
+		self.emit("hide-message")
+		return False
 
 	def set_message(self, message, icon_name="scribes"):
 		data = message, icon_name

@@ -1,5 +1,5 @@
 from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_BOOLEAN
-from gobject import TYPE_STRING, TYPE_OBJECT, TYPE_PYOBJECT, TYPE_INT
+from gobject import TYPE_STRING, TYPE_OBJECT, TYPE_PYOBJECT
 from gobject import SIGNAL_ACTION, type_register, SIGNAL_NO_RECURSE
 SSIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 SACTION = SIGNAL_RUN_LAST|SIGNAL_ACTION
@@ -53,6 +53,7 @@ class Signals(GObject):
 		"add-bar-object": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
 		"spin-throbber": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"bar-is-active": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
+		"hide-message": (SSIGNAL, TYPE_NONE, ()),
 		"update-message": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"set-message": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"unset-message": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
@@ -79,6 +80,7 @@ class Signals(GObject):
 	}
 
 	def __init__(self):
-		self.__gobject_init__()
+		GObject.__init__(self)
+#		self.__gobject_init__()
 
 type_register(Signals)

@@ -70,8 +70,11 @@ class Positioner(SignalManager):
 		textview = self.__editor.textview
 		rectangle = textview.get_iter_location(self.__editor.cursor)
 		from gtk import TEXT_WINDOW_TEXT
-		position = textview.buffer_to_window_coords(TEXT_WINDOW_TEXT, rectangle.x,
-												rectangle.y)
+		position = textview.buffer_to_window_coords(
+			TEXT_WINDOW_TEXT, 
+			rectangle.x,
+			rectangle.y
+		)
 		return position[0], position[1], rectangle.width, rectangle.height
 
 	def __get_textview_data(self):
@@ -98,10 +101,12 @@ class Positioner(SignalManager):
 		return False
 
 	def __precompile_methods(self):
-		methods = (self.__size_cb, self.__position_window,
-			self.__get_size, self.__get_cords, self.__get_y,
-			self.__get_x, self.__get_textview_data,
-			self.__get_cursor_data,)
+		methods = (
+			self.__size_cb, self.__position_window,
+			self.__get_size, self.__get_cords, 
+			self.__get_y, self.__get_x, 
+			self.__get_textview_data, self.__get_cursor_data,
+		)
 		self.__editor.optimize(methods)
 		return False
 
@@ -110,7 +115,7 @@ class Positioner(SignalManager):
 		return False
 
 	def __size_cb(self, manager, data):
-		self.__position_window() # __position_window __get_cords
+		self.__position_window()
 		return False
 
 	def __show_cb(self, *args):

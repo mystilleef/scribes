@@ -18,6 +18,7 @@ class Handler(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "update-message", self.__update_cb)
+		self.connect(editor, "hide-message", self.__hide_cb)
 		self.__editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
@@ -71,6 +72,10 @@ class Handler(SignalManager):
 
 	def __update_cb(self, manager, data):
 		self.__update(data)
+		return False
+
+	def __hide_cb(self, *args):
+		self.__reset()
 		return False
 
 	def __quit_cb(self, *args):

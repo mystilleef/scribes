@@ -67,7 +67,6 @@ class Handler(SignalManager):
 	def __reset_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__reset)
-#		self.__reset()
 		return False
 
 	def __busy_cb(self, manager, busy):

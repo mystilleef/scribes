@@ -1,24 +1,24 @@
 from gettext import gettext as _
+from SCRIBES.SignalConnectionManager import SignalManager
 
-class Label(object):
+class Label(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("show-bar", self.__show_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "show", self.__show_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__label = manager.gui.get_widget("Label")
-		return 
+		self.__label = manager.gui.get_object("LineLabel")
+		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		del self
-		self = None
-		return 
+		return
 
 	def __update(self):
 		message = _("of <b>%d</b>") % self.__editor.textbuffer.get_line_count()
