@@ -12,7 +12,7 @@ workflow by ensuring common and repetitive operations are
 intelligently automated and by eliminating factors that
 prevent you from focusing on your tasks.
 
-	http://Scribes.sf.net/
+	http://scribes.sf.net/
 
 You can also write Python plugins to extend or customize the
 editor for specialized text editing needs.
@@ -34,7 +34,7 @@ Installation
 ============
 
 To install Scribes, launch gnome-terminal and type the
-following at the command prompt as root:
+following at the command prompt as root: 
 
 	./configure
 	make

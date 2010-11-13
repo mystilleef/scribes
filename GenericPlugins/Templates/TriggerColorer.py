@@ -107,13 +107,13 @@ class Colorer(object):
 
 	def __trigger_found_cb(self, manager, trigger):
 		self.__remove_timer()
-		from gobject import idle_add, PRIORITY_LOW
-		self.__tid = idle_add(self.__process, trigger, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		self.__tid = idle_add(self.__process, trigger)
 		return
 
 	def __no_trigger_found_cb(self, *args):
 		if self.__is_highlighted is False: return
 		self.__remove_timer(2)
-		from gobject import idle_add, PRIORITY_LOW
-		self.__textid = idle_add(self.__uncolor_trigger, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		self.__textid = idle_add(self.__uncolor_trigger)
 		return
