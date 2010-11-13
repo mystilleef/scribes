@@ -23,7 +23,6 @@ class Button(MenuToolButton):
 		self.__editor.disconnect_signal(self.__sigid2, self)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return
 
 	def __set_properties(self):
@@ -37,7 +36,7 @@ class Button(MenuToolButton):
 		from gtk import Tooltips
 #		menu_tip = _("Advanced configuration editors")
 #		self.set_arrow_tooltip(Tooltips(), menu_tip, menu_tip)
-		self.set_tooltip_text(_("Show window to customize the editor"))
+		self.set_tooltip_text(_("Show window to customize the editor (F12)"))
 		return
 
 	def __quit_cb(self, *args):

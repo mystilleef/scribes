@@ -34,7 +34,7 @@ Installation
 ============
 
 To install Scribes, launch gnome-terminal and type the
-following at the command prompt as root: 
+following at the command prompt as root:
 
 	./configure
 	make

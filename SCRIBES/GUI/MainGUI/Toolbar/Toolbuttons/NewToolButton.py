@@ -20,7 +20,6 @@ class Button(ToolButton):
 		self.__editor.disconnect_signal(self.__sigid2, self)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return
 
 	def __set_properties(self):
@@ -31,7 +30,7 @@ class Button(ToolButton):
 		self.set_property("name", "NewToolButton")
 		self.set_property("sensitive", True)
 		from gettext import gettext as _
-		self.set_tooltip_text(_("Open a new window"))
+		self.set_tooltip_text(_("Open a new window (ctrl + n)"))
 		return
 
 	def __quit_cb(self, *args):

@@ -20,7 +20,6 @@ class Button(ToolButton):
 		self.__editor.disconnect_signal(self.__sigid2, self)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return
 
 	def __set_properties(self):
@@ -31,7 +30,7 @@ class Button(ToolButton):
 		self.set_property("name", "GotoToolButton")
 		self.set_property("sensitive", False)
 		from gettext import gettext as _
-		self.set_tooltip_text(_("Show bar to move cursor to a specific line"))
+		self.set_tooltip_text(_("Show bar to move cursor to a specific line (ctrl + i)"))
 		return
 
 	def __quit_cb(self, *args):

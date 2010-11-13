@@ -31,7 +31,7 @@ class Button(ToolButton):
 		self.set_property("name", "HelpToolButton")
 		self.set_property("sensitive", True)
 		from gettext import gettext as _
-		self.set_tooltip_text(_("Show keyboard shortcuts"))
+		self.set_tooltip_text(_("Show keyboard shortcuts (ctrl + h)"))
 		return
 
 	def __quit_cb(self, *args):

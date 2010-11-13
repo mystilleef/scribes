@@ -28,7 +28,6 @@ class Button(ToolButton):
 		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return
 
 	def __set_properties(self):
@@ -39,7 +38,7 @@ class Button(ToolButton):
 		self.set_property("name", "UndoToolButton")
 		self.set_property("sensitive", False)
 		from gettext import gettext as _
-		self.set_tooltip_text(_("Undo last action"))
+		self.set_tooltip_text(_("Undo last action (ctrl + z)"))
 		return
 
 	def __quit_cb(self, *args):

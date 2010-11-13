@@ -21,7 +21,6 @@ class Button(MenuToolButton):
 		self.__editor.disconnect_signal(self.__sigid2, self)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return
 
 	def __set_properties(self):
@@ -31,11 +30,11 @@ class Button(MenuToolButton):
 		self.set_property("sensitive", False)
 		from RecentMenu import RecentMenu
 		self.set_menu(RecentMenu(self.__editor))
-		from gtk import Tooltips
+#		from gtk import Tooltips
 		from gettext import gettext as _
 #		menu_tip = _("Recently opened files")
 #		self.set_arrow_tooltip(Tooltips(), menu_tip, menu_tip)
-		self.set_tooltip_text(_("Open a new file"))
+		self.set_tooltip_text(_("Open a new file (ctrl + o)"))
 		return
 
 	def __quit_cb(self, *args):

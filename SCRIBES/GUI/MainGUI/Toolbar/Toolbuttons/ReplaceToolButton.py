@@ -31,7 +31,7 @@ class Button(ToolButton):
 		self.set_property("name", "ReplaceToolButton")
 		self.set_property("sensitive", False)
 		from gettext import gettext as _
-		self.set_tooltip_text(_("Show bar to search for and replace text"))
+		self.set_tooltip_text(_("Show bar to search for and replace text (ctrl + r)"))
 		return
 
 	def __quit_cb(self, *args):
