@@ -30,7 +30,6 @@ class Manager(GObject):
 		self.__class_pixbuf = pixbuf_new_from_file(class_pixbuf)
 		function_pixbuf = join(current_folder, "function.png")
 		self.__function_pixbuf = pixbuf_new_from_file(function_pixbuf)
-		from gtk.glade import XML
 		method_pixbuf = join(current_folder, "method.png")
 		self.__method_pixbuf = pixbuf_new_from_file(method_pixbuf)
 		from gtk.glade import XML
@@ -61,5 +60,4 @@ class Manager(GObject):
 	def destroy(self):
 		self.emit("destroy")
 		del self
-		self = None
 		return
