@@ -17,6 +17,8 @@ class Operator(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__view = editor.textview
+		from gtk import clipboard_get
+		self.__clipboard = clipboard_get()
 		return False
 
 	def __destroy(self):
@@ -29,13 +31,12 @@ class Operator(object):
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
 		del self
-		self = None
 		return
 
 	def __join(self, start, end):
 		text = self.__editor.textbuffer.get_text(start, end)
 		lines = text.splitlines()
-		if len(lines) in (0,1): raise TypeError
+		if len(lines) in (0, 1): raise TypeError
 		newlines = [line.strip("\t ") for line in lines[1:]]
 		newlines.insert(0, lines[0].rstrip("\t "))
 		text = " ".join(newlines)
@@ -138,8 +139,19 @@ class Operator(object):
 		self.__editor.move_view_to_cursor()
 		return False
 
+	def __copy(self, textbuffer, start, end):
+		from string import whitespace
+		text = textbuffer.get_text(start, end)
+		if not text.strip(whitespace): return
+		end = end.copy()
+		end.backward_char()
+		textbuffer.select_range(start, end)
+		textbuffer.copy_clipboard(self.__clipboard)
+		return
+
 	def __del(self, start, end):
 		textbuffer = self.__editor.textbuffer
+		self.__copy(textbuffer, start, end)
 		textbuffer.begin_user_action()
 		textbuffer.delete(start, end)
 		textbuffer.end_user_action()
@@ -165,14 +177,12 @@ class Operator(object):
 		start = self.__editor.backward_to_line_begin(self.__editor.cursor.copy())
 		end = self.__editor.forward_to_line_end(self.__editor.cursor.copy())
 		end.forward_char()
-		self.__editor.textbuffer.delete(start, end)
+		self.__del(start, end)
 		return
 
 	def __delete_line(self):
 		try:
-			self.__editor.textbuffer.begin_user_action()
 			self.__delete_single_line()
-			self.__editor.textbuffer.end_user_action()
 			message = _("Deleted line %d") % (self.__editor.cursor.get_line() + 1)
 			self.__editor.update_message(message, "pass")
 		finally:
@@ -184,9 +194,7 @@ class Operator(object):
 		start = self.__editor.backward_to_line_begin(start)
 		end = self.__editor.forward_to_line_end(end)
 		end.forward_char()
-		self.__editor.textbuffer.begin_user_action()
-		self.__editor.textbuffer.delete(start, end)
-		self.__editor.textbuffer.end_user_action()
+		self.__del(start, end)
 		message = _("Deleted selected lines")
 		self.__editor.update_message(message, "pass")
 		self.__editor.move_view_to_cursor()
@@ -194,9 +202,7 @@ class Operator(object):
 
 	def __delete_selection(self):
 		start, end = self.__editor.textbuffer.get_selection_bounds()
-		self.__editor.textbuffer.begin_user_action()
-		self.__editor.textbuffer.delete(start, end)
-		self.__editor.textbuffer.end_user_action()
+		self.__del(start, end)
 		message = _("Deleted selection on line %d") % (start.get_line() + 1)
 		self.__editor.update_message(message, "pass")
 		self.__editor.move_view_to_cursor()
@@ -234,42 +240,56 @@ class Operator(object):
 
 	def __delete_line_cb(self, *args):
 		self.__view.window.freeze_updates()
+		self.__view.set_editable(False)
 		self.__delete()
+		self.__view.set_editable(True)
 		self.__view.window.thaw_updates()
 		return False
 
 	def __delete_cursor_to_start_cb(self, *args):
 		self.__view.window.freeze_updates()
+		self.__view.set_editable(False)
 		self.__delete_to_start()
+		self.__view.set_editable(True)
 		self.__view.window.thaw_updates()
 		return False
 
 	def __delete_cursor_to_end_cb(self, *args):
 		self.__view.window.freeze_updates()
+		self.__view.set_editable(False)
 		self.__delete_to_end()
+		self.__view.set_editable(True)
 		self.__view.window.thaw_updates()
 		return False
 
 	def __duplicate_line_cb(self, *args):
 		self.__view.window.freeze_updates()
+		self.__view.set_editable(False)
 		self.__duplicate_line()
+		self.__view.set_editable(True)
 		self.__view.window.thaw_updates()
 		return False
 
 	def __line_below_cb(self, *args):
 		self.__view.window.freeze_updates()
+		self.__view.set_editable(False)
 		self.__line_below()
+		self.__view.set_editable(True)
 		self.__view.window.thaw_updates()
 		return False
 
 	def __line_above_cb(self, *args):
 		self.__view.window.freeze_updates()
+		self.__view.set_editable(False)
 		self.__line_above()
+		self.__view.set_editable(True)
 		self.__view.window.thaw_updates()
 		return False
 
 	def __join_line_cb(self, *args):
 		self.__view.window.freeze_updates()
+		self.__view.set_editable(False)
 		self.__join_line()
+		self.__view.set_editable(True)
 		self.__view.window.thaw_updates()
 		return False
