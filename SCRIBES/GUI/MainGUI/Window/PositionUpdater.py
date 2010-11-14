@@ -16,7 +16,9 @@ class Updater(SignalManager):
 	def __destroy(self):
 		self.disconnect()
 		self.__set_position_in_database()
+		self.__editor.refresh(False)
 		self.__window.hide()
+		self.__editor.refresh(False)
 		self.__editor.unregister_object(self)
 		del self
 		return False

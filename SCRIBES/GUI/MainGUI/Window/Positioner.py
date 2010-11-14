@@ -20,7 +20,6 @@ class Positioner(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __position(self, uri):
@@ -30,7 +29,7 @@ class Positioner(object):
 			if uri != "<EMPTY>": self.__positioned = True
 			# Get window position from the position database, if possible.
 			from SCRIBES.PositionMetadata import get_window_position_from_database as gp
-			maximize, width, height, xcoordinate, ycoordinate = gp(uri)
+			maximize, width, height, xcoordinate, ycoordinate = gp(str(uri))
 			if maximize:
 				self.__window.maximize()
 			else:

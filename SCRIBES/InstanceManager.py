@@ -67,16 +67,16 @@ class Manager(object):
 			has_not_uri = lambda x: not (x in self.get_uris())
 			open_file = lambda x: self.__open_file(x, encoding)
 			# Focus respective window if file is already open.
-			[self.focus_file(uri) for uri in uris if has_uri(uri)]
+			[self.focus_file(str(uri)) for uri in uris if has_uri(str(uri))]
 			# Open new file if it's not already open.
-			[open_file(uri) for uri in uris if has_not_uri(uri)]
+			[open_file(str(uri)) for uri in uris if has_not_uri(str(uri))]
 		except ValueError:
 			self.__new_editor()
 		return False
 
 	def close_files(self, uris):
 		if not uris: return False
-		[self.__close_file(uri) for uri in uris]
+		[self.__close_file(str(uri)) for uri in uris]
 		return False
 
 	def close_all_windows(self):
@@ -85,7 +85,7 @@ class Manager(object):
 		return False
 
 	def focus_file(self, uri):
-		found_instance = [editor for editor in self.__editor_instances if editor.uri == uri]
+		found_instance = [editor for editor in self.__editor_instances if editor.uri == str(uri)]
 		if not found_instance: return False
 		editor = found_instance[0]
 		self.__focus(editor)
@@ -99,7 +99,7 @@ class Manager(object):
 
 	def get_uris(self):
 		if not self.__editor_instances: return []
-		return [editor.uri for editor in self.__editor_instances if editor.uri]
+		return [str(editor.uri) for editor in self.__editor_instances if editor.uri]
 
 	def get_text(self):
 		if not self.__editor_instances: return []
@@ -130,6 +130,7 @@ class Manager(object):
 		return False
 
 	def __open_file(self, uri, encoding="utf-8"):
+		uri = str(uri)
 		if not uri: return False
 		instances = self.__editor_instances
 		empty_windows = [x for x in instances if not x.contains_document]
@@ -138,12 +139,12 @@ class Manager(object):
 
 	def __close_file(self, uri):
 		from copy import copy
-		[editor.close() for editor in copy(self.__editor_instances) if editor.uri == uri]
+		[editor.close() for editor in copy(self.__editor_instances) if editor.uri == str(uri)]
 		return False
 
 	def __new_editor(self, uri=None, encoding="utf-8"):
 		from Editor import Editor
-		Editor(self, uri, encoding)
+		Editor(self, str(uri), encoding)
 		return False
 
 	def __focus(self, editor):
