@@ -32,7 +32,6 @@ class Manager(GObject):
 	glade = property(lambda self: self.__glade)
 
 	def show(self):
-		from gobject import idle_add
 		self.emit("get-uris")
 		self.emit("show-window")
 		return
@@ -40,5 +39,4 @@ class Manager(GObject):
 	def destroy(self):
 		self.emit("destroy")
 		del self
-		self = None
 		return

@@ -11,7 +11,8 @@ statusmessage_PYTHON = \
 	MessageFormatter.py \
 	FileLoadHandler.py \
 	SavedHandler.py \
-	ReadonlyHandler.py
+	ReadonlyHandler.py \
+	ClipboardHandler.py
 
 clean-local:
 	rm -rf *.pyc *.pyo

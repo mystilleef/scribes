@@ -10,6 +10,8 @@ class Manager(Signal):
 		Updater(self, editor)
 		from MessageFormatter import Formatter
 		Formatter(self, editor)
+		from ClipboardHandler import Handler
+		Handler(self, editor)
 		from ReadonlyHandler import Handler
 		Handler(self, editor)
 		from SavedHandler import Handler
@@ -22,4 +24,3 @@ class Manager(Signal):
 		Handler(self, editor)
 		from TimedMessageHandler import Handler
 		Handler(self, editor)
-

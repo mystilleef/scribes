@@ -62,7 +62,6 @@ class TreeView(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__treeview)
 		self.__treeview.destroy()
 		del self
-		self = None
 		return
 
 	def __update_cb(self, manager, data):
@@ -74,6 +73,7 @@ class TreeView(object):
 		return False
 
 	def __populate_model(self, data):
+		print "got here"
 		self.__treeview.set_property("sensitive", False)
 		self.__treeview.set_model(None)
 		self.__model.clear()

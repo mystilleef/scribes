@@ -6,10 +6,10 @@ class SignalManager(object):
 #		if editor: editor.refresh()
 		self.__editor = editor
 
-	def connect(self, gobject, signal_name, callback, after=False):
+	def connect(self, gobject, signal_name, callback, after=False, data=None):
 #		if self.__editor: self.__editor.refresh()
 		connect = gobject.connect if after is False else gobject.connect_after
-		signal_id = connect(signal_name, callback)
+		signal_id = connect(signal_name, callback, data) if data else connect(signal_name, callback)
 		self.__signals.append((gobject, signal_id))
 #		if self.__editor: self.__editor.refresh()
 		return signal_id
