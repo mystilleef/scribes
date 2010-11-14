@@ -22,6 +22,7 @@ class TreeView(object):
 
 	def __set_properties(self):
 		self.__treeview.append_column(self.__column)
+		self.__treeview.map()
 		return
 
 	def __create_model(self):
@@ -151,7 +152,6 @@ class TreeView(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__treeview)
 		self.__treeview.destroy()
 		del self
-		self = None
 		return
 
 	def __row_activated_cb(self, treeview, path, column):
