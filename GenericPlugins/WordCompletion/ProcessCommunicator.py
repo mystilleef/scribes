@@ -8,6 +8,7 @@ class Communicator(object):
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = editor.connect_after("saved-file", self.__saved_cb)
 		self.__sigid3 = editor.connect_after("loaded-file", self.__saved_cb)
+		self.__sigid4 = editor.textbuffer.connect_after("insert-text", self.__insert_cb)
 		editor.session_bus.add_signal_receiver(self.__name_change_cb,
 						'NameOwnerChanged',
 						'org.freedesktop.DBus',
@@ -28,6 +29,8 @@ class Communicator(object):
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid4, self.__editor.buf)
 		self.__editor.session_bus.remove_signal_receiver(self.__name_change_cb,
 			'NameOwnerChanged',
 			'org.freedesktop.DBus',
@@ -88,6 +91,13 @@ class Communicator(object):
 		return False
 
 	def __saved_cb(self, *args):
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__index, priority=PRIORITY_LOW)
+		return False
+
+	def __insert_cb(self, textbuffer, iterator, text, length):
+		from string import whitespace
+		if not ((len(text) > 1) or (text in whitespace)): return False
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__index, priority=PRIORITY_LOW)
 		return False
