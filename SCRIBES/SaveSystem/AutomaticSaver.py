@@ -10,7 +10,7 @@ class Saver(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.__sigid1 = self.connect(editor, "modified-file", self.__modified_cb)
 		self.connect(editor, "close", self.__close_cb)
-		self.connect(editor.buf, "changed", self.__changed_cb, True)
+		self.connect(editor, "cursor-moved", self.__changed_cb, True)
 		self.connect(manager, "reset-modification-flag", self.__modified_cb)
 		editor.register_object(self)
 
