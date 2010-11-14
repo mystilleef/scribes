@@ -106,21 +106,21 @@ class Navigator(SignalManager):
 		return False
 
 	def __matches_cb(self, manager, matches):
-		from gobject import idle_add
-		idle_add(self.__process, matches, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__process, matches, priority=PRIORITY_LOW)
 		return False
 
 	def __next_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__navigate, self.__process_next, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__navigate, self.__process_next, priority=PRIORITY_LOW)
 		return False
 
 	def __previous_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__navigate, self.__process_previous, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__navigate, self.__process_previous, priority=PRIORITY_LOW)
 		return False
 
 	def __reset_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__clear, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__clear, priority=PRIORITY_LOW)
 		return False

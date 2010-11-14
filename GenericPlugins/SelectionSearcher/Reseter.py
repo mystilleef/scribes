@@ -60,13 +60,13 @@ class Reseter(SignalManager):
 		return False
 
 	def __changed_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__reset, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__reset, priority=PRIORITY_LOW)
 		return False
 
 	def __key_cb(self, window, event):
 		from gtk.keysyms import Escape
 		if event.keyval != Escape: return False
-		from gobject import idle_add
-		idle_add(self.__reset, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__reset, priority=PRIORITY_LOW)
 		return True

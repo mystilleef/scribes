@@ -29,6 +29,6 @@ class Searcher(SignalManager):
 		return False
 
 	def __regex_cb(self, manager, regex_object):
-		from gobject import idle_add
-		idle_add(self.__find_matches, regex_object, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__find_matches, regex_object, priority=PRIORITY_LOW)
 		return False

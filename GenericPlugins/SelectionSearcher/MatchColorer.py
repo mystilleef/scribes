@@ -55,11 +55,11 @@ class Colorer(SignalManager):
 		return False
 
 	def __matches_cb(self, manager, marks):
-		from gobject import idle_add
-		idle_add(self.__color, marks, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__color, marks, priority=PRIORITY_LOW)
 		return False
 
 	def __clear_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__clear, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__clear, priority=PRIORITY_LOW)
 		return False

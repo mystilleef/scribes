@@ -31,6 +31,6 @@ class Selector(SignalManager):
 		return False
 
 	def __match_cb(self, manager, mark):
-		from gobject import idle_add
-		idle_add(self.__select, mark, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__select, mark, priority=PRIORITY_LOW)
 		return False

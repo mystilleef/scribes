@@ -39,9 +39,10 @@ class Indexer(SignalManager):
 		return
 
 	def __reset(self):
-		message = _("Removed selection highlights")
-		if len(self.__matches) > 1: self.__editor.update_message(message, "yes", 3)
 		self.__matches.clear()
+		self.__editor.hide_message()
+#		message = _("Removed selection highlights")
+#		if len(self.__matches) > 1: self.__editor.update_message(message, "yes", 3)
 		return False
 
 	def __destroy_cb(self, *args):
@@ -59,6 +60,6 @@ class Indexer(SignalManager):
 		return False
 
 	def __reset_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__reset, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__reset, priority=PRIORITY_LOW)
 		return False

@@ -34,6 +34,7 @@ class Creator(SignalManager):
 			pattern = r"\b%s\b" % string if MATCH_WORD else r"%s" % string
 			self.__manager.emit("search-pattern", pattern)
 		except ValueError:
+			from gettext import gettext as _
 			message = _("ERROR: Search string not found") 
 			self.__editor.update_message(message, "fail", 10)
 		return False
@@ -43,8 +44,8 @@ class Creator(SignalManager):
 		return False
 
 	def __search_cb(self, manager, string):
-		from gobject import idle_add
-		idle_add(self.__create_pattern, string.decode("utf-8"), priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__create_pattern, string.decode("utf-8"), priority=PRIORITY_LOW)
 		return False
 
 	def __reset_cb(self, *args):
@@ -52,6 +53,6 @@ class Creator(SignalManager):
 		return False
 
 	def __research_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__create_pattern, self.__string.decode("utf-8"), priority=9999)
+		from gobject import idle_add, PRIORITY_LOW as LOW
+		idle_add(self.__create_pattern, self.__string.decode("utf-8"), priority=LOW)
 		return False

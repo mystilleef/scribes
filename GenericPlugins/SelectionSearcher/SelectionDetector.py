@@ -33,8 +33,8 @@ class Detector(SignalManager):
 		return False
 
 	def __emit_tcb(self):
-		from gobject import idle_add
-		self.__timer = idle_add(self.__emit, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer = idle_add(self.__emit, priority=PRIORITY_LOW)
 		return False
 
 	def __destroy_cb(self, *args):
@@ -43,10 +43,10 @@ class Detector(SignalManager):
 
 	def __moved_cb(self, *args):
 		try:
-			from gobject import source_remove, timeout_add
+			from gobject import source_remove, timeout_add, PRIORITY_LOW
 			source_remove(self.__timer)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(1000, self.__emit_tcb, priority=9999)
+			self.__timer = timeout_add(1000, self.__emit_tcb, priority=PRIORITY_LOW)
 		return False

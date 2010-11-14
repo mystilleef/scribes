@@ -31,6 +31,6 @@ class Creator(SignalManager):
 		return False
 
 	def __pattern_cb(self, manager, pattern):
-		from gobject import idle_add
-		idle_add(self.__regex_object, pattern, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__regex_object, pattern, priority=PRIORITY_LOW)
 		return False
