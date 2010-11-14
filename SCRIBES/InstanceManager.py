@@ -85,6 +85,7 @@ class Manager(object):
 		return False
 
 	def focus_file(self, uri):
+		if uri is None: uri = ""
 		found_instance = [editor for editor in self.__editor_instances if editor.uri == str(uri)]
 		if not found_instance: return False
 		editor = found_instance[0]
@@ -130,11 +131,11 @@ class Manager(object):
 		return False
 
 	def __open_file(self, uri, encoding="utf-8"):
-		uri = str(uri)
 		if not uri: return False
+		uri = str(uri)
 		instances = self.__editor_instances
 		empty_windows = [x for x in instances if not x.contains_document]
-		empty_windows[0].load_file(uri, encoding) if empty_windows else self.__new_editor(uri, encoding)
+		empty_windows[0].load_file(str(uri), encoding) if empty_windows else self.__new_editor(uri, encoding)
 		return False
 
 	def __close_file(self, uri):
@@ -143,6 +144,7 @@ class Manager(object):
 		return False
 
 	def __new_editor(self, uri=None, encoding="utf-8"):
+		if uri is None: uri = ""
 		from Editor import Editor
 		Editor(self, str(uri), encoding)
 		return False

@@ -40,7 +40,6 @@ class Indexer(SignalManager):
 
 	def __reset(self):
 		self.__matches.clear()
-		self.__editor.hide_message()
 #		message = _("Removed selection highlights")
 #		if len(self.__matches) > 1: self.__editor.update_message(message, "yes", 3)
 		return False
