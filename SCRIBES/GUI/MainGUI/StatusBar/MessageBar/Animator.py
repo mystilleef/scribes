@@ -32,6 +32,7 @@ class Animator(SignalManager):
 		self.__vheight = 0
 		self.__vwidth = 0
 		self.__busy = False
+		self.__direction = ""
 		return
 
 	def __destroy(self):
@@ -40,17 +41,21 @@ class Animator(SignalManager):
 		del self
 		return False
 
-	def __slide(self, direction):
+	def __remove_slide_timer(self):
 		try:
-			self.__manager.emit("animation", "begin")
-			from gobject import timeout_add, source_remove
-			source_remove(self.__timer)
+			from gobject import source_remove
+			source_remove(self.__slide_timer)
 		except AttributeError:
 			pass
-		finally:
-			self.__update_animation_start_point(direction)
-			self.__update_animation_end_point(direction)
-			self.__timer = timeout_add(REFRESH_TIME, self.__move, direction)
+		return
+
+	def __slide(self, direction):
+		self.__remove_slide_timer()
+		self.__manager.emit("animation", "begin")
+		self.__update_animation_start_point(direction)
+		self.__update_animation_end_point(direction)
+		from gobject import timeout_add
+		self.__slide_timer = timeout_add(REFRESH_TIME, self.__move, direction)
 		return False
 
 	def __reposition_in(self, direction):
@@ -126,20 +131,26 @@ class Animator(SignalManager):
 		self.__destroy()
 		return False
 
+	def __remove_direction_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__direction_timer)
+		except AttributeError:
+			pass
+		return
+
 	def __slide_cb(self, manager, direction):
+		if direction == self.__direction: return False
+		self.__direction = direction
 		if not self.__bar: return False
-		if self.__busy: return False
+		self.__remove_direction_timer()
 		self.__busy = True
-		from threading import Thread
-		t = Thread(target=self.__slide, args=(direction,))
-		t.start()
-#		try:
-#			from gobject import idle_add, source_remove
-#			source_remove(self.__timer2)
-#		except AttributeError:
-#			pass
-#		finally:
-#			self.__timer2 = idle_add(self.__slide, direction, priority=9999)
+#		if self.__busy: return False
+#		from threading import Thread
+#		t = Thread(target=self.__slide, args=(direction,))
+#		t.start()
+		from gobject import idle_add, PRIORITY_LOW as LOW
+		self.__direction_timer = idle_add(self.__slide, direction, priority=LOW)
 		return False
 
 	def __deltas_cb(self, manager, deltas):

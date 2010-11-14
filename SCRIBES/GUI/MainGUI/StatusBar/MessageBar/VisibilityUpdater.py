@@ -13,7 +13,6 @@ class Updater(SignalManager):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__visible = False
 		self.__slide = ""
 		return False
 
@@ -25,8 +24,6 @@ class Updater(SignalManager):
 
 	def __update(self, animation_type):
 		visible = self.__is_visible(animation_type)
-		if self.__visible == visible: return False
-		self.__visible = visible
 		self.__manager.emit("visible", visible)
 		return False
 
@@ -43,7 +40,5 @@ class Updater(SignalManager):
 		return False
 
 	def __animate_cb(self, manager, animation_type):
-#		from gobject import idle_add
-#		idle_add(self.__update, animation_type, priority=9999)
 		self.__update(animation_type)
 		return False

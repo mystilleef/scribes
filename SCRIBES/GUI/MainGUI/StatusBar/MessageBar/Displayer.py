@@ -30,7 +30,7 @@ class Displayer(SignalManager):
 		return False
 
 	def __hide(self):
-		if self.__pointer_on_messagebar(): return False
+#		if self.__pointer_on_messagebar(): return False
 		self.__manager.emit("slide", "down")
 		return False
 
@@ -50,6 +50,7 @@ class Displayer(SignalManager):
 		return False
 
 	def __hide_cb(self, *args):
+#		self.__hide()
 		from gobject import idle_add
 		idle_add(self.__hide)
 		return False

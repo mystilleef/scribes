@@ -58,14 +58,16 @@ class Updater(SignalManager):
 		return False
 
 	def __update_cb(self, manager, data):
-#		from gobject import idle_add
-#		idle_add(self.__update, data)
-		self.__update(data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__update, data, priority=PRIORITY_LOW)
+#		self.__update(data)
 		return False
 
 	def __visible_cb(self, manager, visible):
 		self.__visible = visible
-		self.__check()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__check, priority=PRIORITY_LOW)
+#		self.__check()
 		return False
 
 	def __quit_cb(self, *args):

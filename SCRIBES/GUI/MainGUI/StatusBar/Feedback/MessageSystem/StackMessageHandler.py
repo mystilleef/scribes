@@ -36,37 +36,34 @@ class Handler(SignalManager):
 		return False
 
 	def __unset(self, data):
-		try:
-			self.__queue.remove(data)
-		except ValueError:
-			pass
-		finally:
-			self.__reset()
+		if data in self.__queue: self.__queue.remove(data)
+		self.__reset()
 		return False
 
 	def __reset(self):
-		try:
-			if self.__busy: return False
-			if not self.__queue: raise ValueError
+		if self.__busy: return False
+		if self.__queue:
 			message, image_id = self.__queue[-1]
 			bold, italic, color, show_bar = True, False, "brown", True
 			data = message, image_id, color, bold, italic, show_bar
 			self.__manager.emit("format-feedback-message", data)
-		except ValueError:
+		else:
 			self.__manager.emit("fallback")
 		return False
 
 	def __set_cb(self, editor, data):
-		self.__set(data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set, data, priority=PRIORITY_LOW)
 		return False
 
 	def __unset_cb(self, editor, data):
-		self.__unset(data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__unset, data, priority=PRIORITY_LOW)
 		return False
 
 	def __reset_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__reset)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__reset, priority=PRIORITY_LOW)
 		return False
 
 	def __busy_cb(self, manager, busy):

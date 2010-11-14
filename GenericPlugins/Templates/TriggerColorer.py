@@ -88,6 +88,7 @@ class Colorer(object):
 
 	def __unset_message(self):
 		if not self.__feedback_counter: return False
+		self.__editor.hide_message()
 		self.__feedback_counter -= 1
 		self.__editor.unset_message(message, "info")
 		return False

@@ -73,12 +73,13 @@ class TreeView(object):
 		return False
 
 	def __populate_model(self, data):
-		print "got here"
 		self.__treeview.set_property("sensitive", False)
 		self.__treeview.set_model(None)
 		self.__model.clear()
 		for type_, name, path, uri in data:
+			self.__editor.refresh(False)
 			self.__model.append([name, type_, path, uri])
+			self.__editor.refresh(False)
 		self.__treeview.set_model(self.__model)
 		self.__editor.select_row(self.__treeview)
 		self.__treeview.set_property("sensitive", True)
