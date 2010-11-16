@@ -1,19 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Aug  7 11:29:32 2008 -->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.12 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="Window">
     <property name="border_width">10</property>
     <property name="title" translatable="yes">Document Information</property>
     <property name="role">ScribesDocumentStatisticsRole</property>
-    <property name="startup_id">ScribesDocumentStatisticsID</property>
     <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="icon_name">scribes</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="urgency_hint">True</property>
+    <property name="gravity">static</property>
+    <property name="startup_id">ScribesDocumentStatisticsID</property>
     <child>
       <widget class="GtkTable" id="table1">
         <property name="visible">True</property>
@@ -183,7 +185,7 @@
             <property name="xalign">0</property>
             <property name="label" translatable="yes">/home/goldenmyst/Desktop</property>
             <property name="selectable">True</property>
-            <property name="ellipsize">PANGO_ELLIPSIZE_END</property>
+            <property name="ellipsize">end</property>
           </widget>
           <packing>
             <property name="left_attach">1</property>
