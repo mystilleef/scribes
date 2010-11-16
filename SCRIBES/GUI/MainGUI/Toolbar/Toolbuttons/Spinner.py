@@ -38,12 +38,12 @@ class Spinner(ToolItem):
 		self.__editor.unregister_object(self)
 		self.destroy()
 		del self
-		self = None
 		return
 
 	def __set_properties(self):
 		from ..Utils import never_focus
 		never_focus(self)
+		self.__image.set_property("xpad", 10)
 		self.add(self.__image)
 		return
 
