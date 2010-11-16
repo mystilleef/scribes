@@ -20,7 +20,7 @@ class Manager(SignalManager):
 		self.disconnect()
 		self.__editor.emit("post-quit")
 		self.__editor.imanager.unregister_editor(self.__editor)
-		self.__editor.window.destroy()
+#		self.__editor.window.destroy()
 		del self
 		return False
 

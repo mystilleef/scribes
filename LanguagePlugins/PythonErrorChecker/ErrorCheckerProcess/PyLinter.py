@@ -36,7 +36,7 @@ class Linter(MessagesHandlerMixIn, ReportsHandlerMixIn, BaseRawChecker):
 		self.reporter.reveal = (
 			"W0101", "W0102", "W0104", "W0107", "W0211", "W0231", "W0233", "W0301", "W0311",
 			"W0331", "W0333", "W0404", "W0406", "W0410", "W0601", "W0602", "W0604", "C0121",
-			"C0202", "C0203", "C0322", "C0323", "C0324", "R0801", "W1111"
+			"C0202", "C0203", "R0801", "W1111"
 		)
 
 	def check(self, filename, modification_time):
