@@ -11,6 +11,7 @@
     <property name="default_height">480</property>
     <property name="icon_name">scribes</property>
     <property name="urgency_hint">True</property>
+    <property name="gravity">static</property>
     <property name="startup_id">ScribesWindowID</property>
     <child>
       <widget class="GtkHBox" id="hbox1">
@@ -23,7 +24,7 @@
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
-                <property name="border_width">2</property>
+                <property name="border_width">3</property>
                 <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">automatic</property>
                 <property name="shadow_type">in</property>

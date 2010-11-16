@@ -23,7 +23,7 @@ class Animator(SignalManager):
 		self.__end_point = 0
 		self.__hdelta = 0
 		self.__vdelta = 0
-		self.__height =0
+		self.__height = 0
 		self.__width = 0
 		self.__busy = False
 		return
@@ -64,6 +64,7 @@ class Animator(SignalManager):
 			self.__reposition_in(direction)
 		except ValueError:
 			animate = False
+			if direction == "up": self.__container.hide()
 			self.__manager.emit("animation", "end")
 			self.__busy = False
 		return animate

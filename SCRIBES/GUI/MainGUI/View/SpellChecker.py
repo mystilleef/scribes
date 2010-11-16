@@ -6,6 +6,7 @@ class Checker(object):
 		self.__sigid2 = editor.connect("enable-spell-checking", self.__checking_cb)
 		self.__sigid3 = editor.connect("load-error", self.__check_cb)
 		self.__sigid4 = editor.connect("checking-file", self.__check_cb)
+		self.__sigid5 = editor.connect("renamed-file", self.__check_cb)
 		self.__set()
 		editor.register_object(self)
 
@@ -20,9 +21,9 @@ class Checker(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
+		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __set(self):
@@ -52,11 +53,11 @@ class Checker(object):
 		return False
 
 	def __checking_cb(self, editor, enable):
-		from gobject import idle_add
-		idle_add(self.__enable if enable else self.__disable)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__enable if enable else self.__disable, priority=PRIORITY_LOW)
 		return False
 
 	def __check_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__set, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__set, priority=PRIORITY_LOW)
 		return False
