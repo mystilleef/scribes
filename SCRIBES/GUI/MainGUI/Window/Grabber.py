@@ -10,7 +10,7 @@ class Grabber(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(editor)
 		self.connect(editor, "quit", self.__quit_cb)
-		self.connect(self.__window, "focus-in-event", self.__in_cb, True)
+#		self.connect(self.__window, "focus-in-event", self.__in_cb, True)
 		self.connect(editor, "ready", self.__in_cb, True)
 		self.connect(editor, "loaded-file", self.__in_cb, True)
 #		self.connect(self.__window, "focus-out-event", self.__out_cb)

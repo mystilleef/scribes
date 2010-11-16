@@ -27,13 +27,15 @@ class Window(object):
 
 	def __show(self):
 		self.__window.show_all()
-		self.__editor.busy()
+#		self.__editor.busy()
 		self.__editor.set_message(_("Select document"), "open")
 		return
 
 	def __hide(self):
+		self.__editor.refresh(False)
 		self.__window.hide()
-		self.__editor.busy(False)
+		self.__editor.refresh(False)
+#		self.__editor.busy(False)
 		self.__editor.unset_message(_("Select document"), "open")
 		return
 
@@ -45,7 +47,6 @@ class Window(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__window)
 		self.__window.destroy()
 		del self
-		self = None
 		return
 
 	def __destroy_cb(self, *args):

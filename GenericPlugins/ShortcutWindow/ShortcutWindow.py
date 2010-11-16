@@ -47,13 +47,15 @@ class ShortcutWindow(SignalManager):
 
 		# Create window box
 		windowbox = gtk.VBox()
-
+#		scrolled_window = gtk.ScrolledWindow()
+#		scrolled_window.add_with_viewport(windowbox)
 		# Pack window box
 		windowbox.pack_start(shortcut_top)
 		windowbox.pack_start(shortcut_table)
 
 		# Create Window
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+#		self.window.set_default_size(800, 600)
 
 		# Set window opacity
 		self.window.set_opacity(0.95)
@@ -70,6 +72,7 @@ class ShortcutWindow(SignalManager):
 		self.window.set_property("skip-taskbar-hint", True)
 
 		self.window.add(windowbox)
+#		self.window.add(scrolled_window)
 		from gtk import WIN_POS_CENTER_ALWAYS
 		self.window.set_position(WIN_POS_CENTER_ALWAYS)
 
@@ -321,7 +324,6 @@ class ShortcutWindow(SignalManager):
 			)
 			shortcuts.append(trigger_tuple)
 			self.__editor.refresh(False)
-		print shortcuts
 		from Utils import DEFAULT_TRIGGERS
 		return shortcuts + DEFAULT_TRIGGERS
 
@@ -332,7 +334,6 @@ class ShortcutWindow(SignalManager):
 		#		0		1			2			3
 		shortcuts = self.__cleanShortcuts()
 		shortcuts_sorted = sorted(shortcuts, key=itemgetter(2,1))
-
 		return shortcuts_sorted
 
 	def __cleanShortcuts(self):
@@ -370,7 +371,6 @@ class ShortcutWindow(SignalManager):
 	def __setTextBuffer(self, text):
 		textbuf = gtk.TextBuffer()
 		textbuf.set_text(text)
-
 		return textbuf
 
 	def __setTags(self, textbuf, justify):
