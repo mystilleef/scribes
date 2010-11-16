@@ -1,4 +1,5 @@
-# Utility functions shared among modules belong here.
-
-def answer_to_life():
-	return 42
+DEFAULT_TRIGGERS = [
+	("Copy Selected Text", "<ctrl> + c", "Common Operations", "Copy selected text"),
+	("Cut selected Text", "<ctrl> + x", "Common Operations", "Cut selected text"),
+	("Paste Text", "<ctrl> + v", "Common Operations", "Paste text"),
+]

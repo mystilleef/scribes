@@ -36,8 +36,8 @@ class Manager(object):
 
 	def unregister_editor(self, instance):
 		try:
-			self.__wingroup.remove_window(instance.window)
 			self.__editor_instances.remove(instance)
+			self.__wingroup.remove_window(instance.window)
 		except (ValueError, TypeError):
 			print "===================================================="
 			print "Module: InstanceManager.py"
@@ -47,7 +47,7 @@ class Manager(object):
 			print "Error: Instance not found", instance
 			print "===================================================="
 		finally:
-			if instance: instance.window.destroy()
+			if instance and instance.window: instance.window.destroy()
 			if instance: del instance
 			# Quit when there are no editor instances.
 			if not self.__editor_instances: self.__quit()

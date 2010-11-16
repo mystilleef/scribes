@@ -1,6 +1,5 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 from operator import itemgetter
-import pygtk
 import gtk
 import pango
 
@@ -114,7 +113,7 @@ class ShortcutWindow(SignalManager):
 		shortcuts = self.__getShortcutsSorted()
 
 		for s in shortcuts:
-
+			self.__editor.refresh(False)
 			# Strip whitespaces
 			name = s[0].strip()
 			key = s[1].strip()
@@ -130,7 +129,7 @@ class ShortcutWindow(SignalManager):
 					table.resize(self.table_rows, table_columns)
 
 					# Setup bottom padding view
-					botbuf = self.__setTextBuffer("")
+					padbuf = self.__setTextBuffer("")
 					botview = self.__setTextView(padbuf, self.textcolor)
 
 					# Add bottom padding view
@@ -182,7 +181,7 @@ class ShortcutWindow(SignalManager):
 
 				# Add blank view
 				table.attach(blankview, 0, 2, self.table_rows - 1, self.table_rows, xoptions=gtk.FILL, yoptions=gtk.FILL)
-
+				self.__editor.refresh(False)
 			# Setup key view
 			keybuf = self.__setTextBuffer(key)
 			self.__setTags(keybuf, gtk.JUSTIFY_RIGHT)
@@ -209,14 +208,14 @@ class ShortcutWindow(SignalManager):
 
 			# Set column count
 			column_count = column_count + 1
-
+			self.__editor.refresh(False)
 		# Padding to fill in missing space on bottom (when needed)
 		# Make room for bottom column padding
 		self.table_rows = self.table_rows + 1
 		table.resize(self.table_rows, table_columns)
 
 		# Setup bottom padding view
-		botbuf = self.__setTextBuffer("")
+		padbuf = self.__setTextBuffer("")
 		botview = self.__setTextView(padbuf, self.textcolor)
 
 		# Add bottom padding view
@@ -290,17 +289,14 @@ class ShortcutWindow(SignalManager):
 		# Setup buffer
 		buf = self.__setTextBuffer(text)
 		self.__setTags(buf, gtk.JUSTIFY_LEFT)
-
 		# Setup buffer text format tags
 		start = buf.get_start_iter()
 		end = buf.get_end_iter()
 		tag = buf.create_tag(weight=pango.WEIGHT_BOLD)
 		tag = buf.create_tag(scale=pango.SCALE_LARGE)
 		buf.apply_tag(tag, start, end)
-
 		# Setup view
 		view = self.__setTextView(buf, self.textcolor)
-
 		return view
 
 	def __getShortcuts(self):
@@ -312,16 +308,22 @@ class ShortcutWindow(SignalManager):
 		#
 		# trigger tuple format:
 		#	name, shortcut, category, description
-
 		triggerlist = self.__editor.triggers
 		shortcuts = []
-
 		for trigger in triggerlist:
+			self.__editor.refresh(False)
 			# Create tuple of format: name, accel, category, desc
-			trigger_tuple = (self.__formatName(trigger.name), self.__formatAccel(trigger.accelerator), trigger.category, trigger.description)
+			trigger_tuple = (
+				self.__formatName(trigger.name),
+				self.__formatAccel(trigger.accelerator),
+				trigger.category,
+				trigger.description
+			)
 			shortcuts.append(trigger_tuple)
-
-		return shortcuts
+			self.__editor.refresh(False)
+		print shortcuts
+		from Utils import DEFAULT_TRIGGERS
+		return shortcuts + DEFAULT_TRIGGERS
 
 	def __getShortcutsSorted(self):
 		# sort according to category, shortcut
@@ -337,9 +339,9 @@ class ShortcutWindow(SignalManager):
 		cleaned = []
 		s = self.__getShortcuts()
 		for e in s:
-			if e[0] and e[1] and e[2] and e[3]:
-				cleaned.append(e)
-
+			self.__editor.refresh(False)
+			if e[0] and e[1] and e[2] and e[3]: cleaned.append(e)
+			self.__editor.refresh(False)
 		return cleaned
 
 	def __getShortcutsMissing(self):
@@ -347,6 +349,7 @@ class ShortcutWindow(SignalManager):
 		 # 0 = name, 1 = shortcut, 2 = category, 3 = description
 		shortcuts = self.__getShortcuts()
 		for e in shortcuts:
+			self.__editor.refresh(False)
 			# check if anything is missing
 			if not e[0] or not e[1] or not e[2] or not e[3]:
 				if e[0]:
@@ -362,6 +365,7 @@ class ShortcutWindow(SignalManager):
 				if not e[3]:
 					print "missing description"
 				print "-----"
+			self.__editor.refresh(False)
 
 	def __setTextBuffer(self, text):
 		textbuf = gtk.TextBuffer()
