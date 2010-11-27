@@ -35,7 +35,6 @@ class Manager(SignalManager):
 		return False
 
 	def __response_cb(self, *args):
-		from glib import PRIORITY_HIGH
-		from gobject import idle_add
+		from gobject import idle_add, PRIORITY_HIGH
 		idle_add(self.__refresh, priority=PRIORITY_HIGH)
 		return False

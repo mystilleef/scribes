@@ -14,8 +14,6 @@ class Window(SignalManager):
 	def __init_attributes(self, manager):
 		self.__manager = manager
 		self.__window = manager.gui.get_object("Window")
-		self.__window.set_property("focus-on-map", True)
-		self.__window.set_property("accept-focus", True)
 		return
 
 	def __show(self):

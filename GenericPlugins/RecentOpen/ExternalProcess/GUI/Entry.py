@@ -37,4 +37,5 @@ class Entry(SignalManager):
 
 	def __focus_cb(self, *args):
 		self.__entry.grab_focus()
+		self.__entry.window.focus()
 		return False

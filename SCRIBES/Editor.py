@@ -7,6 +7,7 @@ class Editor(Signals):
 		Signals.__init__(self)
 		from ServicesInitializer import Initializer
 		Initializer(self, manager, uri, encoding)
+		self.__count = 0
 
 ########################################################################
 #
@@ -235,20 +236,15 @@ class Editor(Signals):
 
 	def move_view_to_cursor(self, align=False, iterator=None):
 		if iterator is None: iterator = self.cursor
-		self.__response()
+		self.response()
 		self.textview.scroll_to_iter(iterator, 0.001, use_align=align, xalign=1.0)
-		self.__response()
+		self.response()
 		return False
-
-	def __response(self):
-		from gtk import events_pending, main_iteration
-		while events_pending(): main_iteration(False)
-		return
 
 	def response(self):
 		from gtk import events_pending, main_iteration
 		while events_pending(): main_iteration(False)
-#		return self.imanager.response()
+		return False
 
 	def busy(self, busy=True):
 		self.emit("private-busy", busy)

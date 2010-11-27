@@ -3,19 +3,22 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="Window">
+    <property name="can_focus">True</property>
     <property name="border_width">10</property>
     <property name="title" translatable="yes">Open Recent Files</property>
+    <property name="role">OpenRecentFilesRole</property>
     <property name="modal">True</property>
     <property name="window_position">center-always</property>
     <property name="default_width">800</property>
     <property name="default_height">480</property>
     <property name="destroy_with_parent">True</property>
     <property name="icon_name">scribes</property>
-    <property name="type_hint">dialog</property>
+    <property name="type_hint">utility</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="urgency_hint">True</property>
     <property name="gravity">static</property>
+    <property name="startup_id">ScribesRecentOpenFilesID</property>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -60,7 +63,7 @@
         <child>
           <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can_focus">False</property>
             <property name="hscrollbar_policy">never</property>
             <property name="vscrollbar_policy">automatic</property>
             <property name="shadow_type">in</property>
