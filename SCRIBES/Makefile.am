@@ -33,6 +33,7 @@ scribes_PYTHON = \
 	CommandLineInfo.py \
 	CommandLineProcessor.py \
 	CommandLineParser.py \
+	CompletionWindowVisibilityManager.py \
 	ContentDetector.py \
 	CursorMetadata.py \
 	DBusService.py \

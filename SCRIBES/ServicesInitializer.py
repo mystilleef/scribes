@@ -20,6 +20,8 @@ class Initializer(object):
 		Manager(editor)
 		from GladeObjectManager import Manager
 		Manager(editor)
+		from CompletionWindowVisibilityManager import Manager
+		Manager(editor)
 		from BusyManager import Manager
 		Manager(editor)
 		from RecentManager import Manager
