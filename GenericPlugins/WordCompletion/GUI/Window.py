@@ -32,14 +32,18 @@ class Window(SignalManager):
 
 	def __show(self):
 		if self.__visible: return True
+		self.__editor.refresh(False)
 		self.__window.show_all()
+		self.__editor.refresh(False)
 		self.__editor.emit("completion-window-is-visible", True)
 		self.__visible = True
 		return False
 
 	def __hide(self):
 		if self.__visible is False: return False
+		self.__editor.refresh(False)
 		self.__window.hide()
+		self.__editor.refresh(False)
 		self.__editor.emit("completion-window-is-visible", False)
 		self.__visible = False
 		return False
