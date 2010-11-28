@@ -6,6 +6,11 @@ class Manager(object):
 		self.__init_attributes()
 		from SaveProcessInitializer.Manager import Manager
 		Manager()
+		from TerminalSignalHandler import Handler
+		Handler(self)
+		from signal import signal, SIGINT, SIGQUIT, SIG_DFL
+		signal(SIGINT, SIG_DFL)
+		signal(SIGQUIT, SIG_DFL)
 		from sys import setcheckinterval
 		setcheckinterval(-1)
 		from gobject import timeout_add

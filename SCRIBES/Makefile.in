@@ -294,6 +294,7 @@ scribes_PYTHON = \
 	PluginSystemInitializer.py \
 	PositionMetadata.py \
 	TabWidthMetadata.py \
+	TerminalSignalHandler.py \
 	TextWrappingMetadata.py \
 	Trigger.py \
 	TriggerManager.py \
