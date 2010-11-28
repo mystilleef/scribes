@@ -38,7 +38,6 @@ class BracketManager(object):
 		self.__match = editor.find_matching_bracket
 		self.__monitor_list = []
 		self.__escape_character = "\\"
-		from gtk import keysyms
 		self.__open_pair_characters = [keysyms.quotedbl,
 			keysyms.braceleft, keysyms.bracketleft,
 			keysyms.parenleft, keysyms.leftdoublequotemark,
@@ -56,6 +55,7 @@ class BracketManager(object):
 			self.__insert_closing_pair_character)
 		self.__editor.optimize(methods)
 		return False
+
 ########################################################################
 #
 #							Public Methods
@@ -73,7 +73,6 @@ class BracketManager(object):
 ########################################################################
 
 	def __insert_closing_pair_character(self, keyval):
-		from gtk import keysyms
 		if keyval == keysyms.apostrophe:
 			if self.__can_insert_apostrophe():
 				self.__insert_pair_characters(keyval, keysyms.apostrophe)
@@ -84,7 +83,6 @@ class BracketManager(object):
 		return
 
 	def __enclose_selection(self, keyval):
-		from gtk import keysyms
 		self.__insert_enclosed_selection(keyval, KEYSYMS[keyval])
 		return
 
@@ -190,7 +188,6 @@ class BracketManager(object):
 
 	def __insert_apostrophe(self):
 		self.__editor.textview.window.freeze_updates()
-		from gtk import keysyms
 		from gtk.gdk import keyval_to_unicode
 		utf8_apostrophe_character = unichr(keyval_to_unicode(keysyms.apostrophe)).encode("utf-8")
 		self.__editor.textbuffer.insert_at_cursor(utf8_apostrophe_character)
@@ -198,7 +195,6 @@ class BracketManager(object):
 		return
 
 	def __check_mimetype(self):
-		from gtk import keysyms
 		markup_mimetype = ["text/html", "application/xml", "text/xml", "application/docbook+xml"]
 		if not (self.__editor.uri): return
 		try:
@@ -229,17 +225,20 @@ class BracketManager(object):
 		#from gtk.gdk import keyval_name
 		#print keyval_name(event.keyval)
 		if self.__editor.has_selection and (event.keyval in self.__open_pair_characters_for_enclosement):
+			self.__editor.hide_completion_window()
 			self.__enclose_selection(event.keyval)
 			return True
 		if (self.__monitor_list):
-			from gtk import keysyms
 			if (event.keyval == keysyms.BackSpace):
+				self.__editor.hide_completion_window()
 				result = self.__remove_closing_pair_character()
 				return result
 			if (keysyms.Escape == event.keyval):
+				self.__editor.hide_completion_window()
 				self.__move_cursor_out_of_bracket_region()
 				return True
 			if (self.__monitor_list[-1][0] == event.keyval):
+				self.__editor.hide_completion_window()
 				if event.keyval in (keysyms.quotedbl, keysyms.apostrophe):
 					if (self.__has_escape_character()):
 						self.__remove_escape_character()
@@ -248,6 +247,7 @@ class BracketManager(object):
 				self.__move_cursor_out_of_bracket_region()
 				return True
 		if event.keyval in self.__open_pair_characters:
+			self.__editor.hide_completion_window()
 			self.__insert_closing_pair_character(event.keyval)
 			return True
 		return False
@@ -273,5 +273,5 @@ class BracketManager(object):
 
 	def __loaded_document_cb(self, *args):
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__check_mimetype, priority=9999)
+		idle_add(self.__check_mimetype, priority=PRIORITY_LOW)
 		return
