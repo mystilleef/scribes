@@ -1,13 +1,17 @@
-class Window(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Window(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("no-match-found", self.__hide_cb)
-		self.__sigid3 = manager.connect("hide-window", self.__hide_cb)
-		self.__sigid4 = manager.connect("show-window", self.__show_cb)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=5555)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(editor, "hide-completion-window", self.__hide_cb)
+		self.connect(manager, "no-match-found", self.__hide_cb)
+		self.connect(manager, "hide-window", self.__hide_cb)
+		self.connect(manager, "show-window", self.__show_cb)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -21,24 +25,22 @@ class Window(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.disconnect()
 		self.__window.destroy()
 		del self
-		self = None
 		return 
 
 	def __show(self):
 		if self.__visible: return True
 		self.__window.show_all()
+		self.__editor.emit("completion-window-is-visible", True)
 		self.__visible = True
 		return False
 
 	def __hide(self):
 		if self.__visible is False: return False
 		self.__window.hide()
+		self.__editor.emit("completion-window-is-visible", False)
 		self.__visible = False
 		return False
 
