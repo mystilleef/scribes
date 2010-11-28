@@ -206,6 +206,7 @@ class Inserter(object):
 		return
 
 	def __expand_trigger_cb(self, *args):
+		self.__editor.hide_completion_window()
 		self.__place_template_in_buffer()
 		return
 

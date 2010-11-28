@@ -26,7 +26,6 @@ class Navigator(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		del self
-		self = None
 		return
 
 	def __precompile_methods(self):
@@ -177,7 +176,7 @@ class Navigator(object):
 
 	def __remove_recent_boundaries(self):
 		key = len(self.__boundaries_dictionary)
-		marks = self.__boundaries_dictionary[key]
+#		marks = self.__boundaries_dictionary[key]
 		del self.__boundaries_dictionary[key]
 		return False
 
@@ -186,10 +185,12 @@ class Navigator(object):
 		return False
 
 	def __previous_placeholder_cb(self, *args):
+		self.__editor.hide_completion_window()
 		self.__previous_placeholder()
 		return
 
 	def __next_placeholder_cb(self, *args):
+		self.__editor.hide_completion_window()
 		self.__next_placeholder()
 		return
 
@@ -202,6 +203,7 @@ class Navigator(object):
 		return
 
 	def __deactivate_template_mode_cb(self, *args):
+		self.__editor.hide_completion_window()
 		self.__remove_recent_placeholders()
 		self.__remove_recent_boundaries()
 #		self.__editor.response()
