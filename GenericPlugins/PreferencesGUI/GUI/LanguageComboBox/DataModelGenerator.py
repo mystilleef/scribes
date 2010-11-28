@@ -14,14 +14,18 @@ class Generator(object):
 	def __destroy(self):
 		self.__editor.disconnect_signals(((self.__sigid1, self.__manager),))
 		del self
-		self = None
 		return False
 
 	def __extract(self, _object):
+		self.__editor.refresh(False)
 		return _object.get_name(), _object.get_id()
 
 	def __generate(self):
+		from gettext import gettext as _
 		data = [self.__extract(_object) for _object in self.__editor.language_objects]
+		data.append((_("Plain Text"), "plain text"))
+		by_id = lambda x: x[1]
+		data = sorted(data, key=by_id)
 		self.__manager.emit("language-combobox-data", data)
 		return False
 

@@ -1,5 +1,3 @@
-from gettext import gettext as _
-
 class Updater(object):
 
 	def __init__(self, manager, editor):
@@ -21,15 +19,15 @@ class Updater(object):
 		)
 		self.__editor.disconnect_signals(signals_data)
 		del self
-		self = None
 		return False
 
 	def __update(self, data):
 		self.__combo.set_model(None)
 		self.__model.clear()
-		self.__model.append([_("Plain Text"), "plain text"])
 		for language_name, language_id in data:
+			self.__editor.refresh(False)
 			self.__model.append([language_name, language_id])
+			self.__editor.refresh(False)
 		self.__combo.set_model(self.__model)
 		self.__manager.emit("updated-language-combobox")
 		return False
