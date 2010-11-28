@@ -89,6 +89,7 @@ class Editor(Signals):
 	pwd_uri = property(lambda self: EditorImports.File(self.uri).get_parent().get_uri() if self.uri else EditorImports.File(self.desktop_folder).get_uri())
 	dialog_filters = property(lambda self: EditorImports.create_filter_list())
 	bar_is_active = property(lambda self: self.get_data("bar_is_active"))
+	completion_window_is_visible = property(lambda self: self.get_data("completion_window_is_visible"))
 	minimized = property(lambda self: self.get_data("minimized"))
 	maximized = property(lambda self: self.get_data("maximized"))
 	uniquestamp = property(lambda self: self.get_data("uniquestamp"))
@@ -244,6 +245,10 @@ class Editor(Signals):
 	def response(self):
 		from gtk import events_pending, main_iteration
 		while events_pending(): main_iteration(False)
+		return False
+
+	def hide_completion_window(self):
+		self.emit("hide-completion-window")
 		return False
 
 	def busy(self, busy=True):

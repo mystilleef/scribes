@@ -68,6 +68,8 @@ class Signals(GObject):
 		"remove-triggers": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"register-object": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"unregister-object": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"hide-completion-window": (SSIGNAL, TYPE_NONE, ()),
+		"completion-window-is-visible": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"trigger": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"refresh": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
 		"add-to-popup": (SSIGNAL, TYPE_NONE, (TYPE_OBJECT,)),
