@@ -140,6 +140,41 @@ class Operator(object):
 		self.__editor.move_view_to_cursor()
 		return False
 
+	def __find_non_whitespace_char(self, iterator):
+		result = iterator.backward_char()
+		if not result: return iterator
+		whitespace = (" ", "\t")
+		while iterator.get_char() in whitespace:
+			result = iterator.backward_char()
+			if not result: break
+		return iterator
+
+	def __find_word_begin(self, iterator):
+		result = iterator.backward_char()
+		if not result: return iterator
+		whitespace = (" ", "\t")
+		while not (iterator.get_char() in whitespace):
+			result = iterator.backward_char()
+			if not result: return iterator
+		iterator.forward_char()
+		return iterator
+
+	def __backspace_delete(self):
+		from Exceptions import StartError
+		try:
+			self.__editor.freeze()
+			cursor = self.__editor.cursor
+			if cursor.is_start(): raise StartError
+			end = cursor.copy()
+			start = self.__find_non_whitespace_char(end.copy())
+			start = self.__find_word_begin(start.copy())
+			self.__del(start, end)
+		except StartError:
+			pass
+		finally:
+			self.__editor.thaw()
+		return False
+
 	def __copy(self, textbuffer, start, end):
 		from string import whitespace
 		text = textbuffer.get_text(start, end)
@@ -296,5 +331,7 @@ class Operator(object):
 		return False
 
 	def __backward_word_cb(self, *args):
-		print "Backward word deletion using <ctrl>Backspace"
+		self.__backspace_delete()
+		message = _("Backspace delete")
+		self.__editor.update_message(message, "yes")
 		return False
