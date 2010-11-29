@@ -208,6 +208,18 @@ class Editor(Signals):
 		from Utils import create_image
 		return create_image(path)
 
+	def freeze(self):
+		self.view.set_editable(False)
+		self.view.window.freeze_updates()
+		self.response()
+		return False
+
+	def thaw(self):
+		self.response()
+		self.view.window.thaw_updates()
+		self.view.set_editable(True)
+		return False
+
 	def register_object(self, instance):
 		self.emit("register-object", instance)
 		return False
