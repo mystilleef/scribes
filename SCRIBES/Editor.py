@@ -211,11 +211,11 @@ class Editor(Signals):
 	def freeze(self):
 		self.view.set_editable(False)
 		self.view.window.freeze_updates()
-		self.response()
+		self.refresh()
 		return False
 
 	def thaw(self):
-		self.response()
+		self.refresh()
 		self.view.window.thaw_updates()
 		self.view.set_editable(True)
 		return False
