@@ -12,6 +12,7 @@ class Manager(GObject):
 	"delete-cursor-to-start": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	"free-line-below": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	"free-line-above": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+	"backward-word-deletion": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	"destroy": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	}
 
@@ -53,3 +54,7 @@ class Manager(GObject):
 	def free_line_below(self):
 		self.emit("free-line-below")
 		return
+
+	def backward_word_deletion(self):
+		self.emit("backward-word-deletion")
+		return False

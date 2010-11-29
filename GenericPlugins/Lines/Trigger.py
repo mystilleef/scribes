@@ -15,6 +15,7 @@ class Trigger(SignalManager, TriggerManager):
 		self.connect(self.__trigger5, "activate", self.__activate_cb)
 		self.connect(self.__trigger6, "activate", self.__activate_cb)
 		self.connect(self.__trigger7, "activate", self.__activate_cb)
+		self.connect(self.__trigger8, "activate", self.__activate_cb)
 		self.connect(editor.textview, "populate-popup", self.__popup_cb)
 
 	def __init_attributes(self, editor):
@@ -69,6 +70,13 @@ class Trigger(SignalManager, TriggerManager):
 			_("Line Operations")
 		)
 		self.__trigger7 = self.create_trigger(name, shortcut, description, category)
+		name, shortcut, description, category = (
+			"backward-word-deletion", 
+			"<ctrl>BackSpace", 
+			_("Duplicate line or selected lines"), 
+			_("Line Operations")
+		)
+		self.__trigger8 = self.create_trigger(name, shortcut, description, category)
 		return
 
 	def destroy(self):
@@ -92,6 +100,7 @@ class Trigger(SignalManager, TriggerManager):
 			"delete-cursor-to-start": self.__manager.delete_cursor_to_start,
 			"delete-cursor-to-end": self.__manager.delete_cursor_to_end,
 			"duplicate-line": self.__manager.duplicate_line,
+			"backward-word-deletion": self.__manager.backward_word_deletion,
 		}
 		dictionary[trigger.name]()
 		return False

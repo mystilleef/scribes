@@ -12,6 +12,7 @@ class Operator(object):
 		self.__sigid6 = manager.connect("delete-cursor-to-start", self.__delete_cursor_to_start_cb)
 		self.__sigid7 = manager.connect("free-line-below", self.__line_below_cb)
 		self.__sigid8 = manager.connect("free-line-above", self.__line_above_cb)
+		self.__sigid9 = manager.connect("backward-word-deletion", self.__backward_word_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -292,4 +293,8 @@ class Operator(object):
 		self.__join_line()
 		self.__view.set_editable(True)
 		self.__view.window.thaw_updates()
+		return False
+
+	def __backward_word_cb(self, *args):
+		print "Backward word deletion using <ctrl>Backspace"
 		return False
