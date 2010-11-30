@@ -25,7 +25,6 @@ class Selector(SignalManager):
 
 	def __select(self):
 		if self.__offsets is None or self.__indentation is None: return False
-		self.__editor.textview.window.freeze_updates()
 		get_iter = self.__editor.textbuffer.get_iter_at_line_offset
 		if len(self.__offsets) == 1:
 			indentation = self.__indentation[0]
@@ -47,7 +46,6 @@ class Selector(SignalManager):
 			self.__buffer.select_range(start, end)
 		self.__indentation = None
 		self.__offsets = None
-		self.__editor.textview.window.thaw_updates()
 		self.__manager.emit("complete")
 		return False
 
@@ -55,14 +53,18 @@ class Selector(SignalManager):
 		self.__destroy()
 		return False
 
-	def __insert_cb(self, *args):
+	def __remove_timer(self):
 		try:
-			from gobject import timeout_add, source_remove, idle_add
+			from gobject import source_remove
 			source_remove(self.__timer)
 		except AttributeError:
 			pass
-		finally:
-			self.__timer = idle_add(self.__select)
+		return
+
+	def __insert_cb(self, *args):
+		self.__remove_timer()
+		from gobject import idle_add
+		self.__timer = idle_add(self.__select)
 		return False
 
 	def __offsets_cb(self, manager, offsets):

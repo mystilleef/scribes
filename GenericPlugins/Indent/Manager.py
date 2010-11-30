@@ -37,6 +37,8 @@ class Manager(GObject):
 		Marker(self, editor)
 		from OffsetExtractor import Extractor
 		Extractor(self, editor)
+		from Refresher import Refresher
+		Refresher(self, editor)
 
 	def indent(self):
 		self.emit("indent")
