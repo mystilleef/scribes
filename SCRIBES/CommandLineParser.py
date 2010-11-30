@@ -55,13 +55,11 @@ class Parser(object):
 		encoding = getpreferredencoding(True)
 		print msg0042.decode("utf-8").encode(encoding) % version.encode(encoding, "replace")
 		raise SystemExit
-		return False
 
 	def __print_info(self, *args):
 		from CommandLineInfo import print_info
 		print_info()
 		raise SystemExit
-		return False
 
 	def __create_newfile(self, *args):
 		if not self.__args: return False
@@ -73,11 +71,9 @@ class Parser(object):
 		self.__encoding = "utf-8"
 		print "ERROR: NOT YET IMPLEMENTED"
 		raise SystemExit
-		return False
 
 	def __enable_readonly(self, *args):
 		if not self.__args: return False
 		self.__readonly = True
 		print "ERROR: NOT YET IMPLEMENTED"
 		raise SystemExit
-		return False
