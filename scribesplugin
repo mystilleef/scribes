@@ -5,10 +5,12 @@ PLUGIN_FILES = []
 MAIN_PLUGIN_FOLDER = ""
 
 def main():
+	print "creating plugin files and folders..."
 	options = parse_command_line()[0]
 	validate(options)
 	create_files_and_folders(options)
 	populate_plugin_files(options)
+	print "Done!"
 	return
 
 def populate_plugin_files(options):
@@ -25,6 +27,7 @@ def populate_plugin_loader(options):
 	if options.language: source_code = add_language_to(source_code, options.language)
 	loader_module = PLUGIN_FILES[0]
 	create_file(loader_module, source_code)
+	print "created %s" % loader_module
 	return
 
 def populate_plugin_modules(options):
@@ -46,26 +49,32 @@ def process_plugin_modules(_file, options):
 
 def populate_signals_module(_file, options):
 	create_file(_file, SIGNALS_MODULE_SOURCE_CODE)
+	print "created %s" % _file
 	return
 
 def populate_exceptions_module(_file, options):
 	create_file(_file, EXCEPTION_MODULE_SOURCE_CODE % options.name)
+	print "created %s" % _file
 	return
 
 def populate_utils_module(_file, options):
 	create_file(_file, UTILS_MODULE_SOURCE_CODE)
+	print "created %s" % _file
 	return
 
 def populate_manager_module(_file, options):
 	create_file(_file, MANAGER_MODULE_SOURCE_CODE.format(name=options.name))
+	print "created %s" % _file
 	return
 
 def populate_implementation_module(_file, options):
 	create_file(_file, IMPLEMENTATION_MODULE_SOURCE_CODE.format(Name=options.name, name=options.name.lower()))
+	print "created %s" % _file
 	return
 
 def populate_trigger_module(_file, options):
 	create_file(_file, TRIGGER_MODULE_SOURCE_CODE.format(name=options.name, shortcut=options.shortcut))
+	print "created %s" % _file
 	return
 
 def add_language_to(source_code, language):
