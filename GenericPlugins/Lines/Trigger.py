@@ -16,8 +16,6 @@ class Trigger(SignalManager, TriggerManager):
 		self.connect(self.__trigger6, "activate", self.__activate_cb)
 		self.connect(self.__trigger7, "activate", self.__activate_cb)
 		self.connect(self.__trigger8, "activate", self.__activate_cb)
-		self.connect(self.__trigger9, "activate", self.__activate_cb)
-		self.connect(self.__trigger10, "activate", self.__activate_cb)
 		self.connect(editor.textview, "populate-popup", self.__popup_cb)
 
 	def __init_attributes(self, editor):
@@ -79,20 +77,6 @@ class Trigger(SignalManager, TriggerManager):
 			_("Line Operations")
 		)
 		self.__trigger8 = self.create_trigger(name, shortcut, description, category)
-		name, shortcut, description, category = (
-			"move-word-left", 
-			"<alt>Left", 
-			_("Move word or selection to the left"), 
-			_("Line Operations")
-		)
-		self.__trigger9 = self.create_trigger(name, shortcut, description, category)
-		name, shortcut, description, category = (
-			"move-word-right", 
-			"<alt>Right", 
-			_("Move word or selection to the right"), 
-			_("Line Operations")
-		)
-		self.__trigger10 = self.create_trigger(name, shortcut, description, category)
 		return
 
 	def destroy(self):
@@ -117,8 +101,6 @@ class Trigger(SignalManager, TriggerManager):
 			"delete-cursor-to-end": self.__manager.delete_cursor_to_end,
 			"duplicate-line": self.__manager.duplicate_line,
 			"backward-word-deletion": self.__manager.backward_word_deletion,
-			"move-word-left": self.__manager.move_left,
-			"move-word-right": self.__manager.move_right,
 		}
 		dictionary[trigger.name]()
 		return False

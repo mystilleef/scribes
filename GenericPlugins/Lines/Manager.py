@@ -13,8 +13,6 @@ class Manager(GObject):
 	"free-line-below": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	"free-line-above": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	"backward-word-deletion": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-	"move-word-left": (SCRIBES_SIGNAL, TYPE_NONE, ()),
-	"move-word-right": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	"destroy": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 	}
 
@@ -58,12 +56,4 @@ class Manager(GObject):
 
 	def backward_word_deletion(self):
 		self.emit("backward-word-deletion")
-		return False
-
-	def move_left(self):
-		self.emit("move-word-left")
-		return False
-
-	def move_right(self):
-		self.emit("move-word-right")
 		return False
