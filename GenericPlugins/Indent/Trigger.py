@@ -16,14 +16,14 @@ class Trigger(SignalManager, TriggerManager):
 		self.__editor = editor
 		name, shortcut, description, category = (
 			"indent", 
-			"<ctrl>t", 
+			"<alt>Right", 
 			_("Indent line or selected lines"), 
 			_("Line Operations")
 		)
 		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
 		name, shortcut, description, category = (
 			"unindent", 
-			"<ctrl><shift>t", 
+			"<alt>Left", 
 			_("Unindent line or selected lines"), 
 			_("Line Operations")
 		)
