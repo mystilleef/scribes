@@ -83,9 +83,7 @@ class Manager(object):
 
 	def destroy(self):
 		del self
-		self = None
 		return
-
 
 	def __get_paragraph_position(self):
 		iterator = self.__get_current_line_iterator()

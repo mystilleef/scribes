@@ -22,27 +22,28 @@ class Manager(SignalManager):
 		return False
 
 	def __update(self, fullscreen):
-		self.__view.window.freeze_updates()
+		self.__editor.freeze()
 		self.__view.set_property("show-right-margin", False if fullscreen else self.__margin())
 		self.__view.set_property("show-line-numbers", False if fullscreen else True)
+		self.__view.set_property("highlight-current-line", False if fullscreen else True)
 		self.__view.set_left_margin(self.__adjust_margin() if fullscreen else self.__lmargin)
-		self.__view.set_right_margin(self.__adjust_margin(False) if fullscreen else self.__rmargin)
+		self.__view.set_right_margin(self.__adjust_margin() if fullscreen else self.__rmargin)
 		from gobject import idle_add
 		idle_add(self.__move_view_to_cursor)
 		return False
 
 	def __move_view_to_cursor(self):
 		self.__editor.move_view_to_cursor(True)
-		self.__view.window.thaw_updates()
+		self.__editor.thaw()
 		return False
 
-	def __adjust_margin(self, left=True):
+	def __adjust_margin(self):
 		width = self.__view.get_visible_rect()[2]
 		return int(0.25 * width)
 
 	def __margin(self):
 		language = self.__editor.language
-		language = language	if language else "plain text"
+		language = language if language else "plain text"
 		from SCRIBES.DisplayRightMarginMetadata import get_value as show_margin
 		return show_margin(language)
 
