@@ -7,7 +7,6 @@
     <property name="border_width">10</property>
     <property name="title" translatable="yes">Rename File</property>
     <property name="role">ScribesSaveFileRole</property>
-    <property name="startup_id">ScribesSaveFileID</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="default_width">640</property>
@@ -17,7 +16,8 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="urgency_hint">True</property>
-    <property name="gravity">center</property>
+    <property name="gravity">static</property>
+    <property name="startup_id">ScribesSaveFileID</property>
     <child>
       <object class="GtkFileChooserWidget" id="FileChooser">
         <property name="visible">True</property>
@@ -25,10 +25,10 @@
         <property name="orientation">vertical</property>
         <property name="spacing">10</property>
         <property name="use_preview_label">False</property>
-        <property name="local_only">False</property>
-        <property name="action">save</property>
         <property name="do_overwrite_confirmation">True</property>
+        <property name="action">save</property>
         <property name="preview_widget_active">False</property>
+        <property name="local_only">False</property>
         <child>
           <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
@@ -71,7 +71,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="CancelButton">
-                <property name="label" translatable="yes">gtk-cancel</property>
+                <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
@@ -87,7 +87,7 @@
             </child>
             <child>
               <object class="GtkButton" id="SaveButton">
-                <property name="label" translatable="yes">gtk-save</property>
+                <property name="label">gtk-save</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
