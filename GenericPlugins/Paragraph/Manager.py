@@ -10,6 +10,7 @@ class Manager(object):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__buffer = editor.textbuffer
+		self.__view = editor.textview
 		return
 
 	def previous_paragraph(self):
@@ -60,9 +61,11 @@ class Manager(object):
 
 	def reflow_paragraph(self):
 		if self.__is_readonly(): return
+		self.__editor.freeze()
 		try:
 			start, end = self.__get_paragraph_position()
 		except RuntimeError:
+			self.__editor.thaw()
 			message = _("No paragraph found")
 			self.__editor.update_message(message, "fail")
 			return
@@ -70,6 +73,7 @@ class Manager(object):
 		try:
 			text = self.__reflow_text(text)
 		except RuntimeError:
+			self.__editor.thaw()
 			message = _("No text found")
 			self.__editor.update_message(message, "fail")
 			return
@@ -77,6 +81,7 @@ class Manager(object):
 		self.__buffer.delete(start, end)
 		self.__buffer.insert_at_cursor(text)
 		self.__buffer.end_user_action()
+		self.__editor.thaw()
 		message = _("Reflowed paragraph")
 		self.__editor.update_message(message, "pass")
 		return
@@ -206,6 +211,7 @@ class Manager(object):
 		return True
 
 	def __get_right_margin_width(self):
+		if self.__editor.fullscreen: return int(0.5*self.__view.get_visible_rect()[2])
 		return self.__editor.textview.get_right_margin_position()
 
 	def __precompile_methods(self):
