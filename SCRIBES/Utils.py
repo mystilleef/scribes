@@ -76,13 +76,12 @@ def get_modification_time(path):
 
 def get_mimetype(path):
 	if not path: return None
-	from gio import File, content_type_guess
-	gfile = File(path)
-	uri = gfile.get_uri()
-	if File(uri).get_uri_scheme() != "file": return content_type_guess(uri)
-	return gfile.query_info("standard::content-type").get_content_type()
+	from gio import File
+	if File(path).get_uri_scheme() != "file": return get_fileinfo(path, "standard::fast-content-type").get_content_type()
+	return get_fileinfo(path, "standard::content-type").get_content_type()
 
 def get_language(uri):
+	if not uri: return None
 	from gtksourceview2 import language_manager_get_default
 	language_manager = language_manager_get_default()
 	return language_manager.guess_language(uri, get_mimetype(uri))

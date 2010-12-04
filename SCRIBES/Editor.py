@@ -92,6 +92,7 @@ class Editor(Signals):
 	completion_window_is_visible = property(lambda self: self.get_data("completion_window_is_visible"))
 	minimized = property(lambda self: self.get_data("minimized"))
 	maximized = property(lambda self: self.get_data("maximized"))
+	in_fullscreen_mode = property(lambda self: self.get_data("in_fullscreen_mode"))
 	uniquestamp = property(lambda self: self.get_data("uniquestamp"))
 	generate_filename = property(lambda self: self.get_data("generate_filename"))
 	mimetype = property(lambda self: self.get_mimetype(self.uri))

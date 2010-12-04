@@ -211,7 +211,7 @@ class Manager(object):
 		return True
 
 	def __get_right_margin_width(self):
-		if self.__editor.fullscreen: return int(0.5*self.__view.get_visible_rect()[2])
+		if self.__editor.in_fullscreen_mode: return int(0.5*self.__view.get_visible_rect()[2])
 		return self.__editor.textview.get_right_margin_position()
 
 	def __precompile_methods(self):
