@@ -1,0 +1,329 @@
+#! /usr/bin/env python
+# -*- coding: utf8 -*-
+
+MODULE_DICTIONARY = {
+	"trigger": "Trigger.py",
+	"manager": "Manager.py",
+	"signals": "Signals.py",
+	"utils": "Utils.py",
+	"exceptions": "Exceptions.py",
+	"guimanager": "Manager.py",
+	"module": None,
+	"emodule": None,
+	"all": None,
+}
+
+def main():
+	options = parse_command_line()[0]
+	validate(options)
+	create_files(options)
+	return
+
+def validate(options):
+	module_types = ("module", "emodule")
+	if not (options.type in module_types): return
+	if not options.name: fail("Error: Please provide a filename with -n option")
+	return
+
+def create_files(options):
+	option_type_handler(options) if options.type else option_name_handler(options)
+	return
+
+def create_file(_file, content=""):
+	try:
+		with open(_file, "w") as f:
+			f.write(content)
+	except IOError:
+		fail("Error: Failed to create %s" % _file)
+	return
+
+def create_scribes_module(filename, content):
+	if __exists(filename): fail("Error: %s already exists!" % filename)
+	create_file(filename, content)
+	return
+
+def option_type_handler(options):
+	try:
+		filename = MODULE_DICTIONARY[options.type]
+		if not filename: raise ValueError
+		content = MODULE_CONTENT_DICTIONARY[options.type]
+		create_scribes_module(filename, content)
+	except ValueError:
+		option_type_all_handler() if options.type == "all" else option_type_module_handler(options)
+	except KeyError:
+		fail("Error: Wrong type option - %s" % options.type)
+	return
+
+def option_type_all_handler():
+	fail("Error: all option has not been implemented")
+	return
+
+def option_type_module_handler(options):
+	create_module(options.name, options.type)
+	return
+
+def option_name_handler(options):
+	create_module(options.name, "module")
+	return
+
+def create_module(name, content_type):
+	content = MODULE_CONTENT_DICTIONARY[content_type]
+	create_scribes_module(append_extension(name), content)
+	return
+
+def append_extension(filename):
+	if filename.endswith(".py"): return filename
+	return "%s%s" % (filename, ".py")
+
+def __exists(_file):
+	from os.path import exists
+	return exists(_file)
+
+def fail(message):
+	print message
+	raise SystemExit
+
+def parse_command_line():
+	# options.name, options.type
+	from optparse import OptionParser
+	usage = USAGE
+	parser = OptionParser(usage=usage)
+	parser.add_option("-n", "--name",
+		dest="name",
+		help="Creates a scribes template module with signal connectors and destructors",
+	)
+	parser.add_option("-t", "--type",
+		dest="type",
+		help="The type of module to create. [signals, manager, trigger, utils, exceptions, module, emodule, all]",
+	)
+	return parser.parse_args()
+
+USAGE ="""%prog -t option [-n filename]
+
+Examples:
+
+	scribesmodule -n Foo.py             # Creates Foo.py template with manager signal connectors
+
+	scribesmodule -t signals            # Creates Signals.py template
+	scribesmodule -t manager            # Creates Manager.py template
+	scribesmodule -t guimanager         # Creates Manager.py template with "gui" attribute
+	scribesmodule -t trigger            # Creates Trigger.py template
+	scribesmodule -t utils              # Creates Utils.py template
+	scribesmodule -t exceptions         # Creates Exceptions.py template
+
+	scribesmodule -t module -n Foo.py   # Creates Foo.py template with manager signal connectors
+	scribesmodule -t emodule -n Foo.py  # Creates Foo.py template with editor signal connectors
+"""
+
+TRIGGER_MODULE_SOURCE_CODE = """from SCRIBES.SignalConnectionManager import SignalManager
+from SCRIBES.TriggerManager import TriggerManager
+from gettext import gettext as _
+
+class Trigger(SignalManager, TriggerManager):
+
+	def __init__(self, editor):
+		SignalManager.__init__(self)
+		TriggerManager.__init__(self, editor)
+		self.__init_attributes(editor)
+		self.connect(self.__trigger, "activate", self.__activate_cb)
+
+	def __init_attributes(self, editor):
+		self.__editor = editor
+		self.__manager = None
+		name, shortcut, description, category = (
+			"activate-scribes-foo", #FIXME: Update this!
+			"<ctrl><shift>c", #FIXME: Update this!
+			_("Activate Scribes Foo"), #FIXME: Update this!
+			_("Miscellaneous Operations") #FIXME: Update this!
+		)
+		self.__trigger = self.create_trigger(name, shortcut, description, category)
+		return
+
+	def destroy(self):
+		self.disconnect()
+		self.remove_triggers()
+		if self.__manager: self.__manager.destroy()
+		del self
+		return False
+
+	def __get_manager(self):
+		if self.__manager: return self.__manager
+		from Manager import Manager
+		self.__manager = Manager(self.__editor)
+		return self.__manager
+
+	def __activate(self):
+		self.__get_manager().activate()
+		return False
+
+	def __activate_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__activate)
+		return False
+
+"""
+
+MANAGER_MODULE_SOURCE_CODE = """from Signals import Signal
+
+class Manager(Signal):
+
+	def __init__(self, editor):
+		Signal.__init__(self)
+		from FooFighter import Fighter
+		Fighter(self, editor)
+
+	def destroy(self):
+		self.emit("destroy")
+		del self
+		return False
+
+	def activate(self):
+		self.emit("activate")
+		return False
+
+"""
+
+GUI_MANAGER_MODULE_SOURCE_CODE = """from Signals import Signal
+
+class Manager(Signal):
+
+	def __init__(self, editor):
+		Signal.__init__(self)
+		self.__init_attributes(editor)
+		from FooFighter import Fighter
+		Fighter(self, editor)
+
+	def __init_attributes(self, editor):
+		from os.path import join
+		self.__gui = editor.get_gui_object(globals(), join("GUI", "GUI.glade"))
+		return
+
+	gui = property(lambda self: self.__gui)
+
+	def destroy(self):
+		self.emit("destroy")
+		del self
+		return False
+
+	def activate(self):
+		self.emit("activate")
+		return False
+
+"""
+
+EXCEPTIONS_MODULE_SOURCE_CODE = """# Custom exceptions belong in this module.
+
+class ScribesError(Exception):
+	pass
+
+"""
+
+UTILS_MODULE_SOURCE_CODE = """# Utility functions shared among modules belong here.
+
+def answer_to_life():
+	return 42
+
+"""
+
+SIGNALS_MODULE_SOURCE_CODE = """from SCRIBES.SIGNALS import GObject, TYPE_NONE, TYPE_PYOBJECT, SSIGNAL
+
+class Signal(GObject):
+
+	__gsignals__ = {
+		"activate": (SSIGNAL, TYPE_NONE, ()),
+		"destroy": (SSIGNAL, TYPE_NONE, ()),
+	}
+
+	def __init__(self):
+		GObject.__init__(self)
+
+"""
+
+PLUGIN_LOADER_SOURCE_CODE = """name = "Scribes Plugin"
+authors = ["Your Name <youremailaddress@gmail.com>"]
+version = 0.1
+autoload = True
+class_name = "ScribesPlugin"
+short_description = "A short description"
+long_description = "A long description"
+
+class ScribesPlugin(object):
+
+	def __init__(self, editor):
+		self.__editor = editor
+		self.__trigger = None
+
+	def load(self):
+		from Foo.Trigger import Trigger
+		self.__trigger = Trigger(self.__editor)
+		return
+
+	def unload(self):
+		self.__trigger.destroy()
+		return
+
+"""
+
+SCRIBES_MODULE = """from SCRIBES.SignalConnectionManager import SignalManager
+
+class Implementer(SignalManager):
+
+	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
+		self.__init_attributes(manager, editor)
+		self.connect(manager, "activate", self.__activate_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+
+	def __init_attributes(self, manager, editor):
+		self.__manager = manager
+		self.__editor = editor
+		return
+
+	def __activate(self):
+		return False
+
+	def __activate_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__activate)
+		return False
+
+	def __destroy_cb(self, *args):
+		self.disconnect()
+		del self
+		return False
+
+"""
+
+SCRIBES_EDITOR_MODULE = """from SCRIBES.SignalConnectionManager import SignalManager
+
+class Implementer(SignalManager):
+
+	def __init__(self, editor):
+		SignalManager.__init__(self)
+		self.__init_attributes(editor)
+		self.connect(manager, "quit", self.__destroy_cb)
+
+	def __init_attributes(self, editor):
+		self.__editor = editor
+		return
+
+	def __destroy_cb(self, *args):
+		self.disconnect()
+		del self
+		return False
+
+"""
+
+MODULE_CONTENT_DICTIONARY = {
+	"trigger": TRIGGER_MODULE_SOURCE_CODE,
+	"manager": MANAGER_MODULE_SOURCE_CODE,
+	"signals": SIGNALS_MODULE_SOURCE_CODE,
+	"utils": UTILS_MODULE_SOURCE_CODE,
+	"exceptions": EXCEPTIONS_MODULE_SOURCE_CODE,
+	"guimanager": GUI_MANAGER_MODULE_SOURCE_CODE,
+	"module": SCRIBES_MODULE,
+	"emodule": SCRIBES_EDITOR_MODULE,
+}
+
+if __name__ == "__main__":
+	main()

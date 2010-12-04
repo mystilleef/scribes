@@ -36,6 +36,8 @@ EXTRA_DIST = m4 \
 	Examples \
 	compile.py \
 	removepyc.py \
+	scribesplugin \
+	scribesplugin \
 	TRANSLATORS
 
 DISTCLEANFILES = $(startup_script) \
@@ -71,6 +73,10 @@ install-data-hook:
 	mkdir -p $(DESTDIR)$(libdir)/scribes
 	cp -R GenericPlugins $(DESTDIR)$(libdir)/scribes
 	cp -R LanguagePlugins $(DESTDIR)$(libdir)/scribes
+	cp scribesmodule $(DESTDIR)$(startupdir)
+	cp scribesplugin $(DESTDIR)$(startupdir)
 	chmod 755 $(DESTDIR)$(startupdir)/$(startup_script)
+	chmod 755 $(DESTDIR)$(startupdir)/scribesmodule
+	chmod 755 $(DESTDIR)$(startupdir)/scribesplugin
 	rm -rf $(startup_script)
 	python removepyc.py

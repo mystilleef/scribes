@@ -5,7 +5,7 @@ class Manager(SignalManager):
 	def __init__(self, editor):
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		editor.set_data("in_fullscreen_mode", True)
+		editor.set_data("in_fullscreen_mode", False)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "toggle-fullscreen", self.__toggle_cb)
 		self.connect(editor, "fullscreen", self.__fullscreen_cb)
