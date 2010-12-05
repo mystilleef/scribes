@@ -30,5 +30,7 @@ class Unloader(SignalManager):
 		return False
 
 	def __unload_cb(self, manager, data):
-		self.__unload(data)
+#		self.__unload(data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__unload, data, priority=PRIORITY_LOW)
 		return False

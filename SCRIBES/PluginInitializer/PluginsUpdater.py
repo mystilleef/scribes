@@ -31,9 +31,13 @@ class Updater(SignalManager):
 		return False
 
 	def __loaded_cb(self, manager, data):
-		self.__update(data)
+#		self.__update(data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__update, data, priority=PRIORITY_LOW)
 		return False
 
 	def __unloaded_cb(self, manager, data):
-		self.__update(data, True)
+#		self.__update(data, True)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__update, data, True, priority=PRIORITY_LOW)
 		return False

@@ -35,5 +35,7 @@ class Initializer(SignalManager):
 		return False
 
 	def __initialize_cb(self, manager, module_path):
-		self.__initialize(module_path)
+#		self.__initialize(module_path)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__initialize, module_path, priority=PRIORITY_LOW)
 		return False

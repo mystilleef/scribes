@@ -58,5 +58,7 @@ class Detector(SignalManager):
 		return False
 
 	def __check_cb(self, manager, unloaded_plugin_data):
-		self.__check(unloaded_plugin_data)
+#		self.__check(unloaded_plugin_data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__check, unloaded_plugin_data, priority=PRIORITY_LOW)
 		return False

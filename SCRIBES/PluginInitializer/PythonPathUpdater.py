@@ -31,5 +31,7 @@ class Updater(SignalManager):
 		return False
 
 	def __update_cb(self, manager, plugin_path):
-		self.__update(plugin_path)
+#		self.__update(plugin_path)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__update, plugin_path, priority=PRIORITY_LOW)
 		return False

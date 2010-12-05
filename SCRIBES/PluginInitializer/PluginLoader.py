@@ -36,5 +36,7 @@ class Loader(SignalManager):
 		return False
 
 	def __load_cb(self, manager, data):
-		self.__load(data)
+#		self.__load(data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__load, data, priority=PRIORITY_LOW)
 		return False
