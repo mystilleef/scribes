@@ -99,6 +99,7 @@ class Editor(Signals):
 	fileinfo = property(lambda self: self.get_fileinfo(self.uri))
 	view_bg_color = property(lambda self: self.textview.get_modifier_style().base[-1])
 	recent_manager = property(lambda self: self.get_data("RecentManager"))
+	last_session_uris = property(lambda self: self.imanager.get_last_session_uris())
 
 	def optimize(self, functions):
 		try:
@@ -172,6 +173,12 @@ class Editor(Signals):
 		self.set_data("contains_document", True)
 		self.emit("load-file", uri, encoding)
 		return False
+
+	def load_last_session(self):
+		uris = self.last_session_uris
+		if not uris: return
+		self.open_files(uris)
+		return
 
 	def open_file(self, uri, encoding="utf8"):
 		self.imanager.open_files([uri], encoding)

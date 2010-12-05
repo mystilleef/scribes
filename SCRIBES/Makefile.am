@@ -54,6 +54,7 @@ scribes_PYTHON = \
 	i18n.py \
 	LanguageManager.py \
 	LanguagePluginManager.py \
+	LastSessionMetadata.py \
 	License.py \
 	Main.py \
 	MarginPositionMetadata.py \

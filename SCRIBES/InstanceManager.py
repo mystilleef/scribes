@@ -87,9 +87,17 @@ class Manager(object):
 		return False
 
 	def close_all_windows(self):
+		# This is the best place I can think of to capture last session files.
+		last_session_uris = self.get_uris()
+		from LastSessionMetadata import set_value
+		set_value(last_session_uris)
 		from copy import copy
 		[instance.close() for instance in copy(self.__editor_instances)]
 		return False
+
+	def get_last_session_uris(self):
+		from LastSessionMetadata import get_value
+		return get_value()
 
 	def focus_file(self, uri):
 		if uri is None: uri = ""
