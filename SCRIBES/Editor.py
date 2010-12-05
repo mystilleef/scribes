@@ -175,7 +175,7 @@ class Editor(Signals):
 		return False
 
 	def load_last_session(self):
-		uris = self.last_session_uris
+		uris = [uri for uri in self.last_session_uris if self.uri_exists(uri)]
 		if not uris: return
 		self.open_files(uris)
 		return
@@ -443,6 +443,10 @@ class Editor(Signals):
 		from os.path import split
 		folder = split(globals_["__file__"])[0]
 		return folder
+
+	def uri_exists(self, uri):
+		from Utils import uri_exists
+		return uri_exists(uri)
 
 	def uri_is_folder(self, uri):
 		from Utils import uri_is_folder

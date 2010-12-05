@@ -146,6 +146,10 @@ def create_menuitem(string, stock_id=None):
 	menuitem.add(hbox)
 	return menuitem
 
+def uri_exists(uri):
+	from gio import File
+	return File(uri).query_exists()
+
 def calculate_completion_window_position(editor, width, height): pass
 	# The flag is true when the position of the word completion window needs to
 	# adjusted accross the y-axis.
