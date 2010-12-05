@@ -96,8 +96,7 @@ class Communicator(object):
 		return False
 
 	def __insert_cb(self, textbuffer, iterator, text, length):
-		from string import whitespace
-		if not ((len(text) > 1) or (text in whitespace)): return False
+		if text.isalnum() : return False
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__index, priority=PRIORITY_LOW)
 		return False
