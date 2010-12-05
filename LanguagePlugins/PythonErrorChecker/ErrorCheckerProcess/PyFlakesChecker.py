@@ -17,7 +17,7 @@ class Checker(SignalManager):
 	def __check(self, data):
 		from Exceptions import StaleSessionError, FileChangedError
 		try:
-			filename, editor_id, session_id, modification_time, tree = data
+			filename, editor_id, session_id, check_type, modification_time, tree = data
 			from Utils import validate_session
 			validate_session(filename, self.__stale_session, editor_id, session_id, modification_time)
 			messages = checker.Checker(tree, filename).messages
@@ -31,7 +31,10 @@ class Checker(SignalManager):
 				error_message = messages[0][0], reformat_error(messages[0][1]), editor_id, session_id, modification_time
 				emit("finished", error_message)
 			else:
-				emit("pylint-check", (filename, editor_id, session_id, modification_time))
+				if check_type == 2:
+					emit("finished", (0, "", editor_id, session_id, modification_time))
+				else:
+					emit("pylint-check", (filename, editor_id, session_id, modification_time))
 		except FileChangedError:
 			self.__manager.emit("ignored")
 		except StaleSessionError:

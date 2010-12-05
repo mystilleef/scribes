@@ -10,6 +10,8 @@ class Feedback(SignalManager):
 		self.connect(manager, "error-data", self.__message_cb)
 		self.connect(manager, "remote-file-message", self.__error_cb)
 		self.connect(manager, "check-message", self.__check_cb)
+		self.connect(manager, "error-check-type", self.__type_cb)
+		self.connect(manager, "toggle-error-check", self.__toggle_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -43,3 +45,14 @@ class Feedback(SignalManager):
 		message = _("checking for errors please wait...")
 		self.__editor.update_message(message, "run", 60)
 		return False
+
+	def __type_cb(self, manager, more_error_checks):
+		message = _("Switched to Python error checking") if more_error_checks else _("Switched to syntax error checking")
+		self.__editor.update_message(message, "yes")
+		return False
+
+	def __toggle_cb(self, *args):
+		message = _("switching please wait...")
+		self.__editor.update_message(message, "run", 20)
+		return False
+

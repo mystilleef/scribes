@@ -15,9 +15,9 @@ class DBusService(Object):
 		except NameExistsException:
 			manager.quit()
 
-	@method(DBUS_SERVICE, in_signature="(ssxxd)")
+	@method(DBUS_SERVICE, in_signature="(ssxxid)")
 	def check(self, data):
-		# data is (file_content, file_path, editor_id, session_id, modification_time)
+		# data is (file_content, file_path, editor_id, session_id, check_type, modification_time)
 		return self.__manager.check(data)
 
 	@method(DBUS_SERVICE, in_signature="(xx)")

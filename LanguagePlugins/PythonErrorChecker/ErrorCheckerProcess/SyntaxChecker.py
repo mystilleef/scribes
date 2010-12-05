@@ -19,7 +19,7 @@ class Checker(SignalManager):
 		from Exceptions import StaleSessionError, FileChangedError
 		try:
 			try:
-				file_content, file_path, editor_id, session_id, modification_time = data
+				file_content, file_path, editor_id, session_id, check_type, modification_time = data
 				from Utils import validate_session
 				validate_session(file_path, self.__stale_session, editor_id, session_id, modification_time)
 				compile(file_content, file_path, "exec")
@@ -40,10 +40,15 @@ class Checker(SignalManager):
 		except StaleSessionError:
 			self.__manager.emit("ignored")
 		else:
-			from compiler import parse
-			parse_tree = parse(file_content)
-			data = file_path, editor_id, session_id, modification_time, parse_tree 
-			self.__manager.emit("flakes-check", data)
+			if check_type == 1:
+				data = 0, "", editor_id, session_id, modification_time
+				signal = "finished"
+			else:
+				from compiler import parse
+				parse_tree = parse(file_content)
+				data = file_path, editor_id, session_id, check_type, modification_time, parse_tree
+				signal = "flakes-check"
+			self.__manager.emit(signal, data)
 		return False
 
 	def __check_cb(self, manager, data):

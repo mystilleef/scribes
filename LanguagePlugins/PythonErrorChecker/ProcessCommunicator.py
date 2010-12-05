@@ -8,6 +8,7 @@ class Communicator(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "check", self.__check_cb)
+		self.connect(manager, "error-check-type", self.__check_type_cb)
 		self.__sigid1 = self.connect(editor.textbuffer, "changed", self.__changed_cb)
 		editor.session_bus.add_signal_receiver(self.__name_change_cb,
 						'NameOwnerChanged',
@@ -28,6 +29,8 @@ class Communicator(SignalManager):
 		self.__session_id = 0
 		self.__is_blocked = False
 		self.__modtime = 0
+		# 1 = syntax checking, 2 = syntax + pyflakes, 3 = syntax + pyflakes + pylint
+		self.__check_type = 1
 		return
 
 	def __destroy(self):
@@ -63,7 +66,14 @@ class Communicator(SignalManager):
 			file_content, file_path = self.__editor.text.decode("utf8"), self.__editor.filename.decode("utf8")
 			self.__session_id += 1
 			self.__modtime = get_modification_time(file_path)
-			data = (file_content, file_path, self.__editor.id_, self.__session_id, self.__modtime)
+			data = (
+				file_content,
+				file_path,
+				self.__editor.id_,
+				self.__session_id,
+				self.__check_type,
+				self.__modtime,
+			)
 			self.__checker.check(data, dbus_interface=DBUS_SERVICE,
 				reply_handler=self.__reply_handler_cb,
 				error_handler=self.__error_handler_cb)
@@ -128,6 +138,12 @@ class Communicator(SignalManager):
 
 	def __error_handler_cb(self, *args):
 		print "ERROR: Failed to communicate with scribes python checker process"
+		return False
+
+	def __check_type_cb(self, manager, more_error_checks):
+		# 1 = syntax checking, 2 = syntax + pyflakes, 3 = syntax + pyflakes + pylint
+		error_check_type = 3 if more_error_checks else 1
+		self.__check_type = error_check_type
 		return False
 
 	def __changed_cb(self, *args):

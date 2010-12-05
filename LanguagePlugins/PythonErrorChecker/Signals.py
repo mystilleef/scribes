@@ -11,6 +11,9 @@ class Signal(GObject):
 		"remote-file-message": (SSIGNAL, TYPE_NONE, ()),
 		"check-message": (SSIGNAL, TYPE_NONE, ()),
 		"error-data": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"error-check-type": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"database-updated": (SSIGNAL, TYPE_NONE, ()),
+		"toggle-error-check": (SSIGNAL, TYPE_NONE, ()),
 	}
 
 	def __init__(self):
