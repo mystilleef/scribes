@@ -43,7 +43,7 @@ class Finder(SignalManager):
 		self.__editor.refresh(False)
 		modules = (self.__fullpath(plugin_path, filename) for filename in listdir(plugin_path) if self.__is_plugin(filename))
 		self.__editor.refresh(False)
-		(self.__initialize(module) for module in modules)
+		[self.__initialize(module) for module in modules]
 		self.__editor.refresh(False)
 		return False
 
