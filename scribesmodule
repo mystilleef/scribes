@@ -8,6 +8,8 @@ MODULE_DICTIONARY = {
 	"utils": "Utils.py",
 	"exceptions": "Exceptions.py",
 	"guimanager": "Manager.py",
+	"metadata": "Metadata.py",
+	"dbmon": "DatabaseMonitor.py",
 	"module": None,
 	"emodule": None,
 	"all": None,
@@ -110,6 +112,8 @@ Examples:
 	scribesmodule -t trigger            # Creates Trigger.py template
 	scribesmodule -t utils              # Creates Utils.py template
 	scribesmodule -t exceptions         # Creates Exceptions.py template
+	scribesmodule -t metadata           # Creates Metadata.py template
+	scribesmodule -t dbmon              # Creates DatabaseMonitor.py template
 
 	scribesmodule -t module -n Foo.py   # Creates Foo.py template with manager signal connectors
 	scribesmodule -t emodule -n Foo.py  # Creates Foo.py template with editor signal connectors
@@ -314,8 +318,85 @@ class Implementer(SignalManager):
 
 """
 
+METADATA_MODULE_SOURCE_CODE = """from SCRIBES.Utils import open_database
+from os.path import join
+basepath = join("PluginPreferences", "MyConfig.gdb")
+
+def get_value():
+	try:
+		value = True
+		database = open_database(basepath, "r")
+		value = database["storage_value"]
+	except:
+		pass
+	finally:
+		database.close()
+	return value
+
+def set_value(value):
+	try:
+		database = open_database(basepath, "w")
+		database["storage_value"] = value
+	finally:
+		database.close()
+	return
+
+"""
+
+DBMON_MODULE_SOURCE_CODE = """from SCRIBES.SignalConnectionManager import SignalManager
+
+class Monitor(SignalManager):
+
+	def __init__(self, manager, editor):
+		SignalManager.__init__(self, editor)
+		self.__init_attributes(manager, editor)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.__monitor.connect("changed", self.__update_cb)
+
+	def __init_attributes(self, manager, editor):
+		self.__editor = editor
+		self.__manager = manager
+		from os.path import join
+		_file = join(editor.metadata_folder, "PluginPreferences", "MyConfig.gdb")
+		self.__monitor = editor.get_file_monitor(_file)
+		return
+
+	def __destroy(self):
+		self.__monitor.cancel()
+		self.disconnect()
+		del self
+		return
+
+	def __update(self):
+		self.__manager.emit("database-update")
+		return False
+
+	def __update_timeout(self):
+		from gobject import idle_add
+		self.__timer = idle_add(self.__update, priority=9999)
+		return False
+
+	def __destroy_cb(self, *args):
+		self.__destroy()
+		return False
+
+	def __update_cb(self, *args):
+		if not self.__editor.monitor_events(args, (0,2,3)): return False
+		try:
+			from gobject import timeout_add, source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		finally:
+			self.__timer = timeout_add(250, self.__update_timeout, priority=9999)
+		return False
+
+"""
+
 MODULE_CONTENT_DICTIONARY = {
 	"trigger": TRIGGER_MODULE_SOURCE_CODE,
+	"metadata": METADATA_MODULE_SOURCE_CODE,
+	"dbmon": DBMON_MODULE_SOURCE_CODE,
 	"manager": MANAGER_MODULE_SOURCE_CODE,
 	"signals": SIGNALS_MODULE_SOURCE_CODE,
 	"utils": UTILS_MODULE_SOURCE_CODE,
