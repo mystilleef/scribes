@@ -6,15 +6,15 @@ class Manager(object):
 		self.__init_attributes()
 		from SaveProcessInitializer.Manager import Manager
 		Manager()
-		from TerminalSignalHandler import Handler
-		Handler(self)
+#		from TerminalSignalHandler import Handler
+#		Handler(self)
 		from signal import signal, SIGINT, SIGQUIT, SIG_DFL
 		signal(SIGINT, SIG_DFL)
 		signal(SIGQUIT, SIG_DFL)
 		from sys import setcheckinterval
 		setcheckinterval(-1)
-		from gobject import timeout_add
-		timeout_add(60000, self.__init_psyco, priority=9999)
+		from gobject import timeout_add, PRIORITY_LOW
+		timeout_add(60000, self.__init_psyco, priority=PRIORITY_LOW)
 		self.__init_i18n()
 
 	def __init_attributes(self):
@@ -69,14 +69,15 @@ class Manager(object):
 
 	def open_files(self, uris=None, encoding="utf-8"):
 		try:
+			
 			if not uris: raise ValueError
 			has_uri = lambda x: x in self.get_uris()
 			has_not_uri = lambda x: not (x in self.get_uris())
 			open_file = lambda x: self.__open_file(x, encoding)
 			# Focus respective window if file is already open.
-			[self.focus_file(str(uri)) for uri in uris if has_uri(str(uri))]
+			tuple([self.focus_file(str(uri)) for uri in uris if has_uri(str(uri))])
 			# Open new file if it's not already open.
-			[open_file(str(uri)) for uri in uris if has_not_uri(str(uri))]
+			tuple([open_file(str(uri)) for uri in uris if has_not_uri(str(uri))])
 		except ValueError:
 			self.__new_editor()
 		return False
@@ -97,29 +98,30 @@ class Manager(object):
 
 	def get_last_session_uris(self):
 		from LastSessionMetadata import get_value
-		return get_value()
+		from Utils import uri_exists
+		return tuple([uri for uri in get_value() if uri_exists(uri)])
 
 	def focus_file(self, uri):
 		if uri is None: uri = ""
-		found_instance = [editor for editor in self.__editor_instances if editor.uri == str(uri)]
+		found_instance = tuple([editor for editor in self.__editor_instances if editor.uri == str(uri)])
 		if not found_instance: return False
 		editor = found_instance[0]
 		self.__focus(editor)
 		return False
 
 	def focus_by_id(self, id_):
-		instance = [instance for instance in self.__editor_instances if instance.id_ == id_]
+		instance = tuple([instance for instance in self.__editor_instances if instance.id_ == id_])
 		editor = instance[0]
 		self.__focus(editor)
 		return False
 
 	def get_uris(self):
-		if not self.__editor_instances: return []
-		return [str(editor.uri) for editor in self.__editor_instances if editor.uri]
+		if not self.__editor_instances: return ()
+		return tuple([str(editor.uri) for editor in self.__editor_instances if editor.uri])
 
 	def get_text(self):
 		if not self.__editor_instances: return []
-		return [editor.text for editor in self.__editor_instances]
+		return tuple([editor.text for editor in self.__editor_instances])
 
 	def get_editor_instances(self):
 		return self.__editor_instances
@@ -149,7 +151,7 @@ class Manager(object):
 		if not uri: return False
 		uri = str(uri)
 		instances = self.__editor_instances
-		empty_windows = [x for x in instances if not x.contains_document]
+		empty_windows = tuple([x for x in instances if not x.contains_document])
 		empty_windows[0].load_file(str(uri), encoding) if empty_windows else self.__new_editor(uri, encoding)
 		return False
 
@@ -169,7 +171,6 @@ class Manager(object):
 		if editor.window.get_data("minimized"): editor.window.deiconify()
 		editor.window.present()
 		editor.refresh(True)
-#		editor.textview.grab_focus()
 		return False
 
 	def __init_garbage_collector(self):

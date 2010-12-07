@@ -175,17 +175,17 @@ class Editor(Signals):
 		return False
 
 	def load_last_session(self):
-		uris = [uri for uri in self.last_session_uris if self.uri_exists(uri)]
+		uris = self.last_session_uris
 		if not uris: return
 		self.open_files(uris)
 		return
 
 	def open_file(self, uri, encoding="utf8"):
-		self.imanager.open_files([uri], encoding)
+		self.imanager.open_files((uri,), encoding)
 		return
 
 	def open_files(self, uris, encoding="utf8"):
-		self.imanager.open_files(uris, encoding)
+		self.imanager.open_files(tuple(uris), encoding)
 		return
 
 	def focus_file(self, uri):
