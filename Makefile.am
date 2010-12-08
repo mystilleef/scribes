@@ -37,7 +37,7 @@ EXTRA_DIST = m4 \
 	compile.py \
 	removepyc.py \
 	scribesplugin \
-	scribesplugin \
+	scribesmodule \
 	TRANSLATORS
 
 DISTCLEANFILES = $(startup_script) \
