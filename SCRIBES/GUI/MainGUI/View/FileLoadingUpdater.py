@@ -17,11 +17,9 @@ class Updater(SignalManager):
 		return False
 
 	def __freeze_cb(self, editor, *args):
-		print "--- Freezing View ---"
 		editor.freeze()
 		return False
 
 	def __thaw_cb(self, editor, *args):
 		editor.thaw()
-		print "--- Thawed View ---"
 		return False

@@ -33,7 +33,7 @@ root_plugin_folder = join(library_path, "scribes")
 core_plugin_folder = core_generic_plugin_folder = join(root_plugin_folder, "GenericPlugins")
 core_language_plugin_folder = join(root_plugin_folder, "LanguagePlugins")
 python_path = "/usr/lib/python2.6/dist-packages"
-version = "0.4-dev-build732"
+version = "0.4-dev-build733"
 author = ["Author:", "\tLateef Alabi-Oki <mystilleef@gmail.com>\n",
 			"Contributors:",
 			"\tIb Lundgren <ib.lundgren@gmail.com>",
