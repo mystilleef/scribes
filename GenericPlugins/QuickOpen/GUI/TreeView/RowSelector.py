@@ -12,7 +12,6 @@ class Selector(object):
 		self.__selection = self.__view.get_selection()
 		self.__column = self.__view.get_column(0)
 		self.__model = self.__view.get_model()
-		self.__timer = 1
 		return
 
 	def __destroy(self):

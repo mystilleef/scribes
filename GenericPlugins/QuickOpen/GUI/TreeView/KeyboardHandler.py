@@ -10,7 +10,7 @@ class Handler(object):
 		self.__manager = manager
 		self.__editor = editor
 		self.__view = manager.gui.get_object("TreeView")
-		from gtk.keysyms import Up, Down, Return, Escape
+		from gtk.keysyms import Up, Return, Escape
 		self.__dictionary = {
 			Up: "up-key-press",
 			Return: "row-activated",
@@ -23,7 +23,6 @@ class Handler(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__view)
 		self.__editor.disconnect_signal(self.__sigid3, self.__view)
 		del self
-		self = None
 		return False
 
 	def __emit(self, signal):
@@ -44,4 +43,3 @@ class Handler(object):
 		if event.type != _2BUTTON_PRESS: return False
 		self.__manager.emit("row-activated")
 		return True
-

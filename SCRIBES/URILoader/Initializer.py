@@ -1,4 +1,3 @@
-from glib import PRIORITY_HIGH
 from SCRIBES.SignalConnectionManager import SignalManager
 
 class Initializer(SignalManager):
@@ -26,7 +25,7 @@ class Initializer(SignalManager):
 		return False
 
 	def __load_file_cb(self, editor, uri, encoding):
-		from gobject import idle_add
+		from gobject import idle_add, PRIORITY_HIGH
 		idle_add(self.__load, uri, encoding, priority=PRIORITY_HIGH)
 		return False
 

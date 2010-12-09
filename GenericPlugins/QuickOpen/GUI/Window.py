@@ -31,7 +31,6 @@ class Window(object):
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		self.__window.destroy()
 		del self
-		self = None
 		return False
 
 	def __hide(self):
@@ -48,7 +47,7 @@ class Window(object):
 
 	def __delete_event_cb(self, *args):
 		self.__manager.emit("hide")
-		return True
+		return False
 
 	def __key_press_event_cb(self, window, event):
 		from gtk.gdk import MOD1_MASK
@@ -75,7 +74,7 @@ class Window(object):
 	def __files_cb(self, *args):
 		self.__window.set_property("sensitive", True)
 		return False
-	
+
 	def __path_cb(self, *args):
 		self.__window.set_property("sensitive", False)
 		return False

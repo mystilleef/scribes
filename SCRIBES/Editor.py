@@ -182,11 +182,11 @@ class Editor(Signals):
 
 	def open_file(self, uri, encoding="utf8"):
 		self.imanager.open_files((uri,), encoding)
-		return
+		return False
 
 	def open_files(self, uris, encoding="utf8"):
 		self.imanager.open_files(tuple(uris), encoding)
-		return
+		return False
 
 	def focus_file(self, uri):
 		self.imanager.focus_file(uri)

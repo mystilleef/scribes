@@ -1,5 +1,3 @@
-from gettext import gettext as _
-
 class Initializer(object):
 
 	def __init__(self, manager, editor):
@@ -16,13 +14,12 @@ class Initializer(object):
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __set_properties(self):
-		from gtk import TreeView, CellRendererToggle, TreeViewColumn
+		from gtk import TreeViewColumn
 		from gtk import TREE_VIEW_COLUMN_AUTOSIZE, CellRendererText
-		from gtk import SORT_DESCENDING, SELECTION_MULTIPLE
+		from gtk import SELECTION_MULTIPLE
 		view = self.__view
 		view.get_selection().set_mode(SELECTION_MULTIPLE)
 		# Create a column for selecting encodings.
@@ -52,7 +49,7 @@ class Initializer(object):
 
 	def __create_model(self):
 		from gtk import ListStore
-		model = ListStore(str, str)
+		model = ListStore(str, str, str)
 		return model
 
 	def __destroy_cb(self, *args):

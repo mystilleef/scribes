@@ -1,4 +1,5 @@
 from gio import Error, ERROR_NOT_FOUND
+
 class GIOError(Error):
 
 	def __init__(self):
@@ -21,12 +22,11 @@ class Replacer(object):
 		return False
 
 	def __test_error(self):
-		from gio import Error
 		raise Error, GIOError()
 
 	def __replace(self, data):
-		session_id, uri, encoding, text = data
 		from gio import File, FILE_CREATE_NONE
+		session_id, uri, encoding, text = data
 		from glib import PRIORITY_DEFAULT
 		File(uri).replace_async(self.__replace_async_cb,
 			etag=None, make_backup=False, flags=FILE_CREATE_NONE,
@@ -34,7 +34,6 @@ class Replacer(object):
 		return False
 
 	def __replace_async_cb(self, gfile, result, data):
-		from gio import Error
 		try:
 			text = data[-1]
 			if not text: raise AssertionError
@@ -50,10 +49,9 @@ class Replacer(object):
 		return False
 
 	def __write_async_cb(self, output_streamer, result, data):
-		from gio import Error
 		try:
 		#	raise self.__test_error()
-			success = output_streamer.write_finish(result)
+			output_streamer.write_finish(result)
 			from glib import PRIORITY_DEFAULT
 			output_streamer.close_async(self.__close_async_cb, io_priority=PRIORITY_DEFAULT,
 			cancellable=None, user_data=data)
@@ -63,9 +61,8 @@ class Replacer(object):
 		return False
 
 	def __close_async_cb(self, output_streamer, result, data):
-		from gio import Error
 		try:
-			success = output_streamer.close_finish(result)
+			output_streamer.close_finish(result)
 			self.__manager.emit("finished", data)
 		except Error, e:
 			from gobject import idle_add

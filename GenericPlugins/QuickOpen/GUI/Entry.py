@@ -26,7 +26,6 @@ class Entry(object):
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __send(self):
@@ -36,11 +35,11 @@ class Entry(object):
 	def __timeout_send(self):
 		try:
 			from gobject import timeout_add, source_remove
-			source_remove(self.__timer)
+			source_remove(self.__timer1)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(250, self.__send, priority=9999)
+			self.__timer1 = timeout_add(250, self.__send, priority=9999)
 		return False
 
 	def __clear(self):
@@ -81,7 +80,7 @@ class Entry(object):
 	def __focus_cb(self, *args):
 		self.__entry.grab_focus()
 		return False
-	
+
 	def __files_cb(self, *args):
 		self.__entry.grab_focus()
 		if not self.__entry.get_text().strip(): return False

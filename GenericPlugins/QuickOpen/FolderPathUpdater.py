@@ -1,12 +1,15 @@
-class Updater(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Updater(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("parent-path", self.__parent_cb)
-		self.__sigid3 = manager.connect("show", self.__show_cb)
-		self.__sigid4 = manager.connect("hide", self.__hide_cb)
-		self.__sigid5 = manager.connect("enumeration-error", self.__error_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "parent-path", self.__parent_cb)
+		self.connect(manager, "show", self.__show_cb)
+		self.connect(manager, "hide", self.__hide_cb)
+		self.connect(manager, "enumeration-error", self.__error_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -15,13 +18,8 @@ class Updater(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
+		self.disconnect()
 		del self
-		self = None
 		return False
 
 	def __update(self, parent=False):

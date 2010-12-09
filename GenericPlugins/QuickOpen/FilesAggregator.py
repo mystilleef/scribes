@@ -19,28 +19,35 @@ class Aggregator(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __get_uri(self, folder, fileinfo):
 		from gio import File 
 		from os.path import join
+		self.__editor.refresh(False)
 		path = join(File(folder).get_path(), fileinfo.get_name())
+		self.__editor.refresh(False)
 		return File(path).get_uri()
 
 	def __update_afiles(self, afiles, folder, fileinfos):
-		uris = [self.__get_uri(folder, fileinfo) for fileinfo in fileinfos]
+		self.__editor.refresh(False)
+		uris = (self.__get_uri(folder, fileinfo) for fileinfo in fileinfos)
+		self.__editor.refresh(False)
 		[afiles.append(_file) for _file in uris]
+		self.__editor.refresh(False)
 		return False
 
 	def __aggregate(self):
+		self.__editor.refresh(False)
 		afiles = []
 		[self.__update_afiles(afiles, folder, fileinfos) for folder, fileinfos in self.__files]
 		self.__manager.emit("files", afiles)
 		return False
 
 	def __update_folder_and_files(self, fileinfo, _folders, _files):
+		self.__editor.refresh(False)
 		_files.append(fileinfo) if fileinfo.get_file_type() == 1 else _folders.append(fileinfo)
+		self.__editor.refresh(False)
 		return False
 
 	def __update_files(self, data):
@@ -54,15 +61,25 @@ class Aggregator(object):
 		if not self.__folders: self.__aggregate()
 		return False
 
-	def __emit_children_documents(self, folder):
+	def __get_children_files_and_folders(self, folder):
+		self.__editor.refresh(False)
 		self.__folders.clear()
 		self.__files = []
 		self.__send_to_fileinfo_processor(folder)
 		return False
 
 	def __send_to_fileinfo_processor(self, folder):
+		self.__editor.refresh(False)
 		self.__folders.append(folder)
 		self.__manager.emit("get-fileinfos", folder)
+		return False
+
+	def __remove_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
 		return False
 
 	def __destroy_cb(self, *args):
@@ -70,16 +87,12 @@ class Aggregator(object):
 		return False
 
 	def __path_cb(self, manager, folder):
-		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = idle_add(self.__emit_children_documents, folder)
+		self.__remove_timer()
+		from gobject import idle_add
+		self.__timer = idle_add(self.__get_children_files_and_folders, folder)
 		return False
 
 	def __fileinfos_cb(self, manager, data):
-		from gobject import idle_add
-		self.__timer = idle_add(self.__update_files, data, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer = idle_add(self.__update_files, data, priority=PRIORITY_LOW)
 		return False

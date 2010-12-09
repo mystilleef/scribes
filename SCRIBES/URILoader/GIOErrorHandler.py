@@ -23,7 +23,6 @@ class Handler(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __process(self, data):
@@ -36,7 +35,7 @@ class Handler(object):
 
 	def __error_cb(self, manager, data):
 		from gobject import idle_add
-		idle_add(self.__process, data, priority=9999)
+		idle_add(self.__process, data)
 		return False
 
 	def __destroy_cb(self, *args):

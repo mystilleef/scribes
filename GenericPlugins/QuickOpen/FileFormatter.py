@@ -17,17 +17,24 @@ class Formatter(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __replace(self, _file):
 		from gio import File
-		_file = File(_file).get_parse_name()
-		return _file.replace(self.__path, "").lstrip("/")
+		__file = File(_file).get_path()
+		return __file.replace(self.__path, "").lstrip("/"), File(_file).get_uri()
 
 	def __format(self, files):
 		paths = [self.__replace(_file) for _file in files]
 		self.__manager.emit("formatted-files", paths)
+		return False
+
+	def __remove_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
 		return False
 
 	def __destroy_cb(self, *args):
@@ -35,16 +42,12 @@ class Formatter(object):
 		return False
 
 	def __files_cb(self, manager, files):
-		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = idle_add(self.__format, files)
+		self.__remove_timer()
+		from gobject import idle_add
+		self.__timer = idle_add(self.__format, files)
 		return False
 
 	def __path_cb(self, manager, path):
 		from gio import File
-		self.__path = File(path).get_parse_name()
+		self.__path = File(path).get_path()
 		return False

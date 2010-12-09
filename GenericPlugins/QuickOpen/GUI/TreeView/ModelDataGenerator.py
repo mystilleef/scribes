@@ -18,17 +18,18 @@ class Generator(object):
 
 	def __generate(self, files):
 		self.__editor.refresh(False)
-		data = [self.__split(_file) for _file in files]
+		data = [self.__split(file_data) for file_data in files]
 		self.__editor.refresh(False)
 		self.__manager.emit("model-data", data)
 		self.__editor.refresh(False)
 		return False
 
-	def __split(self, _file):
+	def __split(self, file_data):
+		_file, uri = file_data
 		self.__editor.refresh(False)
 		from os.path import split
 		self.__editor.refresh(False)
-		return split(_file)[-1], _file
+		return split(_file)[-1], _file, uri
 
 	def __destroy_cb(self, *args):
 		self.__destroy()

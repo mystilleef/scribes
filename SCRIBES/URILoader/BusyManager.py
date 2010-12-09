@@ -8,7 +8,6 @@ class Manager(object):
 		self.__sigid4 = manager.connect("encoding-error", self.__nobusy_cb)
 		self.__sigid5 = manager.connect("load-success", self.__nobusy_cb)
 		self.__sigid6 = editor.connect("load-error", self.__nobusy_cb)
-#		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
@@ -25,9 +24,7 @@ class Manager(object):
 			(self.__sigid6, self.__editor),
 		)
 		self.__editor.disconnect_signals(signals)
-#		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __destroy_cb(self, *args):
@@ -35,9 +32,9 @@ class Manager(object):
 		return False
 
 	def __busy_cb(self, *args):
-		self.__editor.busy()
+		#self.__editor.busy()
 		return False
 
 	def __nobusy_cb(self, *args):
-		self.__editor.busy(False)
+		#self.__editor.busy(False)
 		return False

@@ -2,7 +2,7 @@ class Destroyer(object):
 
 	def __init__(self, manager, editor):
 		self.__init_attributes(manager, editor)
-		self.__sigid2 = editor.connect("loaded-file", self.__loaded_file_cb)
+		self.__sigid2 = editor.connect("loaded-file", self.__loaded_file_cb, True)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager

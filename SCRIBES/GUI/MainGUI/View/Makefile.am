@@ -11,6 +11,7 @@ view_PYTHON = \
 	ResponsivenessManager.py \
 	PopupMenuManager.py \
 	DragAndDrop.py \
+	FileLoadingUpdater.py \
 	FullscreenManager.py
 
 clean-local:

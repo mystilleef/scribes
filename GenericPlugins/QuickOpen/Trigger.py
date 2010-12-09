@@ -29,13 +29,14 @@ class Trigger(SignalManager, TriggerManager):
 		del self
 		return False
 
+	def __get_manager(self):
+		if self.__manager: return self.__manager
+		from Manager import Manager
+		self.__manager = Manager(self.__editor)
+		return self.__manager
+
 	def __activate(self):
-		try :
-			self.__manager.show()
-		except AttributeError :
-			from Manager import Manager
-			self.__manager = Manager(self.__editor)
-			self.__manager.show()
+		self.__get_manager().show()
 		return False
 
 	def __activate_cb(self, *args):

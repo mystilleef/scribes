@@ -14,7 +14,6 @@ class Updater(object):
 		self.__column1 = self.__view.get_column(0)
 		self.__column2 = self.__view.get_column(1)
 		self.__data = []
-		self.__timer = 1
 		return
 
 	def __destroy(self):
@@ -31,10 +30,10 @@ class Updater(object):
 		self.__view.window.freeze_updates()
 		self.__view.set_model(None)
 		self.__model.clear()
-		for name, path in data:
-			self.__editor.refresh()
-			self.__model.append([name, path])
-			self.__editor.refresh()
+		for name, path, uri in data:
+			self.__editor.refresh(False)
+			self.__model.append([name, path, uri])
+			self.__editor.refresh(False)
 		self.__column1.queue_resize()
 		self.__column2.queue_resize()
 		self.__view.set_model(self.__model)

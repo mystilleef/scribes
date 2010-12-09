@@ -35,6 +35,9 @@ class Sender(SignalManager):
 	def __send(self, data):
 		uri, encoding, session_id = data
 		if self.__session_id != session_id: return False
+#		from gio import File
+#		 Make sure uri is properly escaped.
+#		uri = File(uri).get_uri()
 		if not encoding: encoding = "utf-8"
 		data = session_id, uri, encoding, self.__get_text()
 		self.__processor.process(data,

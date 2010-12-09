@@ -16,13 +16,17 @@ class Enumerator(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __send(self, folder):
 		attributes = "standard::*"
 		from gio import File
-		File(folder).enumerate_children_async(attributes, self.__children_async_cb, cancellable=self.__cancellable, user_data=folder)
+		File(folder).enumerate_children_async(
+			attributes, 
+			self.__children_async_cb, 
+			cancellable=self.__cancellable, 
+			user_data=folder
+		)
 		return False
 
 	def __children_async_cb(self, gfile, result, folder):
@@ -31,7 +35,8 @@ class Enumerator(object):
 			enumerator = gfile.enumerate_children_finish(result)
 			from gobject import idle_add
 			idle_add(self.__get_fileinfos, (enumerator, folder))
-		except Error, e:
+		except Error:
+			print "Enumration Error Exception in Emumerator.py of QuickOpen plugin in __children_async_cb"
 			self.__manager.emit("enumeration-error")
 		return False
 

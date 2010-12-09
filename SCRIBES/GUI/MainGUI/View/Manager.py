@@ -3,6 +3,8 @@ class Manager(object):
 	def __init__(self, editor, uri):
 		from View import View
 		View(editor)
+		from FileLoadingUpdater import Updater
+		Updater(editor)
 		from Refresher import Refresher
 		Refresher(editor)
 		from SensitivityManager import Manager

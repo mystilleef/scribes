@@ -32,7 +32,7 @@ class Checker(object):
 		return False
 
 	def __async_result_cb(self, gfile, result):
-		from gio import FILE_TYPE_REGULAR, ERROR_NOT_REGULAR_FILE, Error
+		from gio import FILE_TYPE_REGULAR, Error
 		try:
 			fileinfo = gfile.query_info_finish(result)
 			if fileinfo.get_file_type() != FILE_TYPE_REGULAR: self.__raise_error()

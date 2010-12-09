@@ -11,7 +11,6 @@ class Filterer(object):
 		self.__editor = editor
 		self.__files = []
 		self.__pattern = ""
-		self.__timer = 1
 		return False
 
 	def __destroy(self):
@@ -22,48 +21,28 @@ class Filterer(object):
 		return False
 
 	def __is_a_match(self, pattern, _file):
-		self.__editor.refresh()
-		if self.__pattern != pattern: raise StandardError
-		if self.__is_a_match_re(pattern, _file): return 2
-		index = 0
-		for character in pattern:
-			self.__editor.refresh(False)
-			index = _file.lower().find(character.lower(), index)
-			self.__editor.refresh(False)
-			if index == -1: return 0
-		return 1
-
-	def __is_a_match_re(self, pattern, _file):
-		self.__editor.refresh()
-		if self.__pattern != pattern: raise StandardError
-		from fnmatch import translate
-		pattern = r"%s" % translate(pattern).replace("\Z(?ms)", "")
-		from re import search, U, I, error
-		flags = U | I
-		try:
-			return search(pattern, _file, flags)
-		except error:
-			return False
+		self.__editor.refresh(False)
+		if self.__pattern != pattern: raise AssertionError
+		return pattern.lower() in _file.lower()
 
 	def __filter(self, pattern):
 		try:
-			self.__editor.refresh()
+			self.__editor.refresh(False)
 			if not pattern: raise ValueError
-#			matches = [_file for _file in self.__files if self.__is_a_match_re(pattern, _file)]
-			higher_matches = []
-			lower_matches = []
-			for _file in self.__files:
-				self.__editor.refresh()
-				rank = self.__is_a_match(pattern, _file)
-				if not rank: continue
-				higher_matches.append(_file) if rank == 2 else lower_matches.append(_file)
-				self.__editor.refresh(False)
-			matches = higher_matches + lower_matches
-			self.__manager.emit("filtered-files", matches)
+			filtered_files = [(_file, uri) for _file, uri in self.__files if self.__is_a_match(pattern, _file)]
+			self.__manager.emit("filtered-files", filtered_files)
 		except ValueError:
 			self.__manager.emit("filtered-files", [])
-		except StandardError:
+		except AssertionError:
 			return False
+		return False
+
+	def __remove_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
 		return False
 
 	def __destroy_cb(self, *args):
@@ -75,12 +54,8 @@ class Filterer(object):
 		return False
 
 	def __pattern_cb(self, manager, pattern):
-		try:
-			self.__pattern = pattern
-			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = idle_add(self.__filter, pattern)
+		self.__pattern = pattern
+		self.__remove_timer()
+		from gobject import idle_add
+		self.__timer = idle_add(self.__filter, pattern)
 		return False

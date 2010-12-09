@@ -30,7 +30,6 @@ class Feedback(object):
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __clear(self, pattern):

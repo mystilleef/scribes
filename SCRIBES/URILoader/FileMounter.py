@@ -16,7 +16,6 @@ class Mounter(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __mount(self, data):
@@ -36,8 +35,8 @@ class Mounter(object):
 		from gio import Error
 		try:
 			success = gfile.mount_enclosing_volume_finish(result)
-			from gobject import idle_add
-			if success: idle_add(self.__check, gfile.get_uri(), priority=9999)
+			from gobject import idle_add, PRIORITY_HIGH
+			if success: idle_add(self.__check, gfile.get_uri(), priority=PRIORITY_HIGH)
 		except Error, e:
 			from gobject import idle_add
 			idle_add(self.__error, (gfile, e))

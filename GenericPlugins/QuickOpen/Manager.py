@@ -37,8 +37,6 @@ class Manager(GObject):
 		Feedback(self, editor)
 		from URIOpener import Opener
 		Opener(self, editor)
-		from URIReconstructor import Reconstructor
-		Reconstructor(self, editor)
 		from MatchFilterer import Filterer
 		Filterer(self, editor)
 		from FileFormatter import Formatter

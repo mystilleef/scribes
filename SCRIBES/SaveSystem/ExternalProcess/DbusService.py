@@ -4,9 +4,9 @@ from SCRIBES.Globals import SCRIBES_SAVE_PROCESS_DBUS_SERVICE as dbus_service
 class DbusService(Object):
 
 	def __init__(self, manager):
-		from SCRIBES.Globals import session_bus as session, SCRIBES_SAVE_PROCESS_DBUS_SERVICE
+		from SCRIBES.Globals import session_bus as session
 		from SCRIBES.Globals import SCRIBES_SAVE_PROCESS_DBUS_PATH
-		bus_name = BusName(SCRIBES_SAVE_PROCESS_DBUS_SERVICE, bus=session)
+		bus_name = BusName(dbus_service, bus=session)
 		Object.__init__(self, bus_name, SCRIBES_SAVE_PROCESS_DBUS_PATH)
 		self.__manager = manager
 		manager.connect("is-ready", self.__is_ready_cb)

@@ -29,4 +29,3 @@ class Manager(Signals):
 		from SCRIBES.Utils import response
 		response()
 		return True
-

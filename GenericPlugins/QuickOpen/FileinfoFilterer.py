@@ -33,6 +33,7 @@ class Filterer(SignalManager):
 		return False
 
 	def __valid(self, fileinfo):
+		self.__editor.refresh(False)
 		from gio import FILE_TYPE_DIRECTORY, FILE_TYPE_REGULAR
 		if fileinfo.get_file_type() not in (FILE_TYPE_DIRECTORY, FILE_TYPE_REGULAR): return False
 		if fileinfo.get_is_hidden(): return False

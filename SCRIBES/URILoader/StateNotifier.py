@@ -22,7 +22,6 @@ class Notifier(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __destroy_cb(self, *args):
