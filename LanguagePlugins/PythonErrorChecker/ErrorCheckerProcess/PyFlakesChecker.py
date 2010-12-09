@@ -24,8 +24,8 @@ class Checker(SignalManager):
 			messages.sort(lambda a, b: cmp(a.lineno, b.lineno))
 			emit = self.__manager.emit
 			ignore_errors = ("ImportStarUsed", )
-			if messages: messages = [(warning.lineno, warning.message % warning.message_args, warning) for warning in messages 
-										if not (warning.__class__.__name__ in ignore_errors)]
+			if messages: messages = [(warning.lineno, warning.message % warning.message_args, warning) 
+				for warning in messages if not (warning.__class__.__name__ in ignore_errors)]
 			if messages:
 				from Utils import reformat_error
 				error_message = messages[0][0], reformat_error(messages[0][1]), editor_id, session_id, modification_time

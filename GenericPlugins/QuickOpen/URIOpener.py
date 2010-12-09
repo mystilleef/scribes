@@ -1,9 +1,12 @@
-class Opener(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Opener(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("uris", self.__uris_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "uris", self.__uris_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -11,10 +14,8 @@ class Opener(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
+		self.disconnect()
 		del self
-		self = None
 		return False
 
 	def __open(self, uris):

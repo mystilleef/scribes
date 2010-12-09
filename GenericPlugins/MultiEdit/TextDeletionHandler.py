@@ -41,11 +41,11 @@ class Handler(SignalManager):
 	def __remove_with(self, method):
 		try:
 			if not self.__marks: raise ValueError
+			self.__editor.freeze()
 			self.__buffer.begin_user_action()
-			self.__editor.textview.window.freeze_updates()
 			[self.__delete_with(method, mark) for mark in self.__marks]
-			self.__editor.textview.window.thaw_updates()
 			self.__buffer.end_user_action()
+			self.__editor.thaw()
 		except ValueError:
 			self.__manager.emit("no-edit-point-error")
 		return False

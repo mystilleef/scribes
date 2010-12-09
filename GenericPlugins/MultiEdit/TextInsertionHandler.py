@@ -37,13 +37,13 @@ class Handler(SignalManager):
 	def __insert(self, text):
 		try:
 			if not self.__marks: raise ValueError
-			self.__editor.textview.window.freeze_updates()
+			self.__editor.freeze()
 			self.__block()
 			self.__buffer.begin_user_action()
 			[self.__insert_text_at(mark, text) for mark in self.__marks]
 			self.__buffer.end_user_action()
 			self.__unblock()
-			self.__editor.textview.window.thaw_updates()
+			self.__editor.thaw()
 		except ValueError:
 			self.__manager.emit("no-edit-point-error")
 		return False
