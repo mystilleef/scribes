@@ -75,6 +75,7 @@
 	../GenericPlugins/QuickOpen/Feedback.py \
 	../GenericPlugins/QuickOpen/GUI/GUI.glade \
 	../GenericPlugins/QuickOpen/Trigger.py \
+	../GenericPlugins/Readonly/Trigger.py \
 	../GenericPlugins/RecentOpen/ExternalProcess/DataGenerator.py \
 	../GenericPlugins/RecentOpen/ExternalProcess/Feedback.py \
 	../GenericPlugins/RecentOpen/ExternalProcess/GUI/GUI.glade \

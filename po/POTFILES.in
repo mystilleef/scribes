@@ -75,6 +75,7 @@ GenericPlugins/Printing/Trigger.py
 GenericPlugins/QuickOpen/Feedback.py
 GenericPlugins/QuickOpen/GUI/GUI.glade
 GenericPlugins/QuickOpen/Trigger.py
+GenericPlugins/Readonly/Trigger.py
 GenericPlugins/RecentOpen/ExternalProcess/DataGenerator.py
 GenericPlugins/RecentOpen/ExternalProcess/Feedback.py
 GenericPlugins/RecentOpen/ExternalProcess/GUI/GUI.glade
@@ -184,4 +185,3 @@ data/EncodingSelectionWindow.glade
 data/MessageWindow.glade
 data/ModificationDialog.glade
 data/scribes.desktop.in
-
