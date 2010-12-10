@@ -30,10 +30,11 @@ class Spooler(object):
 
 	def __new_job_cb(self, manager, data):
 		from gobject import idle_add
-		idle_add(self.__new_job, data)
+		# idle_add(self.__new_job, data)
+		idle_add(self.__send, data)
 		return False
 
 	def __finished_cb(self, *args):
-		self.__busy = False
-		self.__check()
+		# self.__busy = False
+		# self.__check()
 		return False

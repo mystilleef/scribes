@@ -1,12 +1,13 @@
 def main():
 	__start()
-	from gobject import MainLoop, threads_init
-	threads_init()
+	from gobject import MainLoop
 	MainLoop().run()
 	return
 
 def __start():
 	if __save_process_exists(): raise SystemExit
+	from gobject import threads_init
+	threads_init()
 	from Manager import Manager
 	Manager()
 	return
