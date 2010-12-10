@@ -1,12 +1,15 @@
-class Manager(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Manager(SignalManager):
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(editor)
-		self.__editor.set_data("readonly", False)
-		self.__sigid1 = editor.connect("loaded-file", self.__loaded_cb)
-		self.__sigid2 = editor.connect("renamed-file", self.__loaded_cb)
-		self.__sigid3 = editor.connect("toggle-readonly", self.__toggle_cb)
-		self.__sigid4 = editor.connect("quit", self.__quit_cb)
+		editor.set_data("readonly", False)
+		self.connect(editor, "loaded-file", self.__loaded_cb)
+		self.connect(editor, "renamed-file", self.__loaded_cb)
+		self.connect(editor, "toggle-readonly", self.__toggle_cb)
+		self.connect(editor, "quit", self.__quit_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
@@ -14,13 +17,9 @@ class Manager(object):
 		return False
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __set(self, readonly):
