@@ -76,8 +76,8 @@ def get_modification_time(path):
 
 def get_mimetype(path):
 	if not path: return None
-	from gio import File
-	if File(path).get_uri_scheme() != "file": return get_fileinfo(path, "standard::fast-content-type").get_content_type()
+	from gio import File, content_type_guess
+	if File(path).get_uri_scheme() != "file": return content_type_guess(path)
 	return get_fileinfo(path, "standard::content-type").get_content_type()
 
 def get_language(uri):
