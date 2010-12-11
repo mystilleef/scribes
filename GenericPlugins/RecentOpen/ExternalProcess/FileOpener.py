@@ -17,7 +17,7 @@ class Opener(SignalManager):
 	def __open(self, uris):
 		from SCRIBES.Globals import session_bus
 		proxy_object = session_bus.get_object(scribes_dbus_service, scribes_dbus_path)
-		proxy_object.open_files(uris, dbus_interface=scribes_dbus_service,
+		proxy_object.open_files(uris, "utf-8", "", dbus_interface=scribes_dbus_service,
 				reply_handler=self.__reply_handler_cb,
 				error_handler=self.__error_handler_cb)
 		return False

@@ -66,6 +66,12 @@ class Parser(object):
 		self.__newfile = True
 		return False
 
+	def __open_pipe_input(self, *args):
+		from sys.stdin import read
+		self.__stdin = read()
+		print self.__stdin
+		raise SystemExit
+
 	def __use_encoding(self, *args):
 		if not self.__args: return False
 		self.__encoding = "utf-8"

@@ -3,10 +3,10 @@ from SIGNALS import Signals
 
 class Editor(Signals):
 
-	def __init__(self, manager, uri=None, encoding="utf-8"):
+	def __init__(self, manager, uri=None, encoding="utf-8", stdin=None):
 		Signals.__init__(self)
 		from ServicesInitializer import Initializer
-		Initializer(self, manager, uri, encoding)
+		Initializer(self, manager, uri, encoding, stdin)
 		self.__count = 0
 
 ########################################################################
@@ -153,6 +153,14 @@ class Editor(Signals):
 
 	def refresh(self, grab_focus=False):
 		self.emit("refresh", grab_focus)
+		return False
+
+	def reset_text(self, text):
+		self.freeze()
+		self.buffer_.set_text(text)
+		iterator = self.buffer_.get_start_iter()
+		self.buffer_.place_cursor(iterator)
+		self.thaw()
 		return False
 
 	def set_text(self, text):

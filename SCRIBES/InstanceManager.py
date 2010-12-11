@@ -67,9 +67,8 @@ class Manager(object):
 		from Utils import get_save_processor
 		return get_save_processor()
 
-	def open_files(self, uris=None, encoding="utf-8"):
+	def open_files(self, uris=None, encoding="utf-8", stdin=None):
 		try:
-			
 			if not uris: raise ValueError
 			has_uri = lambda x: x in self.get_uris()
 			has_not_uri = lambda x: not (x in self.get_uris())
@@ -79,7 +78,7 @@ class Manager(object):
 			# Open new file if it's not already open.
 			tuple([open_file(str(uri)) for uri in uris if has_not_uri(str(uri))])
 		except ValueError:
-			self.__new_editor()
+			self.__new_editor(stdin=stdin)
 		return False
 
 	def close_files(self, uris):
@@ -160,10 +159,10 @@ class Manager(object):
 		[editor.close() for editor in copy(self.__editor_instances) if editor.uri == str(uri)]
 		return False
 
-	def __new_editor(self, uri=None, encoding="utf-8"):
+	def __new_editor(self, uri=None, encoding="utf-8", stdin=None):
 		if uri is None: uri = ""
 		from Editor import Editor
-		Editor(self, str(uri), encoding)
+		Editor(self, str(uri), encoding, stdin)
 		return False
 
 	def __focus(self, editor):

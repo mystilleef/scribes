@@ -13,20 +13,27 @@ def __open():
 	from CommandLineParser import Parser
 	parser = Parser()
 	args, newfile = parser.args, parser.newfile
+	stdin = __get_pipe_input(args)
 	from CommandLineProcessor import get_uris
-	uris = get_uris(args, newfile)
-	__open_via_dbus(uris)
+	uris = get_uris(args, newfile) if stdin is None else ""
+	__open_via_dbus(uris, stdin)
 	from Utils import init_gnome
 	init_gnome()
 	from InstanceManager import Manager
-	Manager().open_files(uris)
+	Manager().open_files(uris, "utf-8", stdin)
 	return
 
-def __open_via_dbus(uris):
+def __get_pipe_input(args):
+	if not ("-" in args): return None
+	from sys import stdin
+	_stdin = stdin.read()
+	return _stdin
+
+def __open_via_dbus(uris, stdin=""):
 	dbus_service = __get_dbus_service()
 	if not dbus_service: return
 	uris = uris if uris else ""
-	dbus_service.open_files(uris, dbus_interface=scribes_dbus_service)
+	dbus_service.open_files(uris, "utf-8", stdin, dbus_interface=scribes_dbus_service)
 	raise SystemExit
 
 def __get_dbus_service():

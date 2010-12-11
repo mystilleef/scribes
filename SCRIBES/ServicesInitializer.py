@@ -1,6 +1,6 @@
 class Initializer(object):
 
-	def __init__(self, editor, manager, uri, encoding):
+	def __init__(self, editor, manager, uri, encoding, stdin):
 		editor.set_data("InstanceManager", manager)
 		from UniqueStampGenerator import Generator
 		Generator(editor)
@@ -49,5 +49,6 @@ class Initializer(object):
 		# This should be the last lines in this method.
 		from PluginSystemInitializer import Initializer
 		Initializer(editor, uri)
+		if stdin: editor.reset_text(stdin)
 		from URILoader.Manager import Manager
 		Manager(editor, uri, encoding)
