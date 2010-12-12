@@ -33,6 +33,7 @@ def __open_via_dbus(uris, stdin=""):
 	dbus_service = __get_dbus_service()
 	if not dbus_service: return
 	uris = uris if uris else ""
+	if stdin is None: stdin = ""
 	dbus_service.open_files(uris, "utf-8", stdin, dbus_interface=scribes_dbus_service)
 	raise SystemExit
 

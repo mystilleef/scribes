@@ -29,7 +29,6 @@ class ComboBox(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__combo.destroy()
 		del self
-		self = None
 		return
 
 	def __set_properties(self):
