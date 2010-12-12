@@ -120,8 +120,8 @@ class Editor(Signals):
 		self.update_message(message, image, 10)
 		return
 
-	def new(self):
-		return self.imanager.open_files()
+	def new(self, text=None):
+		return self.imanager.open_files(stdin=text)
 
 	def shutdown(self):
 		self.close()
