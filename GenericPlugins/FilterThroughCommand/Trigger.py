@@ -14,10 +14,10 @@ class Trigger(SignalManager, TriggerManager):
 		self.__editor = editor
 		self.__manager = None
 		name, shortcut, description, category = (
-			"activate-FilterThroughCommand", 
+			"filter-through-command", 
 			"<alt>x", 
-			_("Activate FilterThroughCommand"), 
-			_("Miscellaneous Operations") ##### <--- Update this!
+			_("Text transformation via command line tools"), 
+			_("Miscellaneous Operations")
 		)
 		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		return
@@ -43,4 +43,3 @@ class Trigger(SignalManager, TriggerManager):
 		from gobject import idle_add
 		idle_add(self.__activate)
 		return False
-
