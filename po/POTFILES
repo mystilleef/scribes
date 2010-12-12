@@ -34,6 +34,10 @@
 	../GenericPlugins/DrawWhitespace/Trigger.py \
 	../GenericPlugins/EscapeQuotes/Escaper.py \
 	../GenericPlugins/EscapeQuotes/Trigger.py \
+	../GenericPlugins/FilterThroughCommand/Feedback.py \
+	../GenericPlugins/FilterThroughCommand/GUI/ComboBox.py \
+	../GenericPlugins/FilterThroughCommand/GUI/GUI.glade \
+	../GenericPlugins/FilterThroughCommand/Trigger.py \
 	../GenericPlugins/Indent/IndentationProcessor.py \
 	../GenericPlugins/Indent/PopupMenuItem.py \
 	../GenericPlugins/Indent/Trigger.py \
