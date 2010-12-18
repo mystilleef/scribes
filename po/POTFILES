@@ -148,6 +148,9 @@
 	../LanguagePlugins/PythonNavigationSelection/Trigger.py \
 	../LanguagePlugins/PythonSymbolBrowser/SymbolBrowser.glade \
 	../LanguagePlugins/PythonSymbolBrowser/Trigger.py \
+	../LanguagePlugins/Sparkup/Feedback.py \
+	../LanguagePlugins/Sparkup/GUI/GUI.glade \
+	../LanguagePlugins/Sparkup/Trigger.py \
 	../LanguagePlugins/zencoding/GUI/GUI.glade \
 	../LanguagePlugins/zencoding/Trigger.py \
 	../SCRIBES/CommandLineParser.py \

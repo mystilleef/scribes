@@ -27,31 +27,26 @@ clipboard_text = None
 
 #def replace_special_placeholder(placeholder):
 def replace_special_placeholder(placeholder, uri="", clipboards=None):
+	from time import localtime
 	if placeholder == "${day}":
-		from time import localtime
 		thetime = localtime()
 		return pad_zero(thetime[2])
 	if placeholder == "${month}":
-		from time import localtime
 		thetime = localtime()
 		return pad_zero(thetime[1])
 	if placeholder == "${year}":
-		from time import localtime
 		thetime = localtime()
 		return pad_zero(thetime[0])
 	if placeholder == "${date}":
-		from time import localtime
 		thetime = localtime()
 		return "%s:%s:%s" % (pad_zero(thetime[0]), pad_zero(thetime[1]), pad_zero(thetime[2]))
 	if placeholder == "${time}":
-		from time import localtime
 		thetime = localtime()
 		return "%s:%s:%s" % (pad_zero(thetime[3]), pad_zero(thetime[4]), pad_zero(thetime[5]))
 	if placeholder == "${timestring}":
 		from time import ctime
 		return ctime() # utils.py
 	if placeholder == "${timestamp}":
-		from time import localtime
 		thetime = localtime()
 		return "[%s-%s-%s] %s:%s:%s" % (thetime[0], pad_zero(thetime[1]), pad_zero(thetime[2]), pad_zero(thetime[3]), pad_zero(thetime[4]), pad_zero(thetime[5]))
 	if placeholder == "${rfc2822}":
@@ -101,12 +96,12 @@ def get_placeholders(string):
 	if not has_placeholders(string): return []
 	is_not_special = lambda placeholder: not (placeholder in special_placeholders)
 	# Return all strings enclosed in ${} with the exception of ${}.
-	from re import findall, UNICODE
+	from re import findall
 	placeholders = findall(placeholder_pattern, string)
 	return filter(is_not_special, placeholders)
 
 def has_placeholders(string):
-	from re import search, UNICODE
+	from re import search
 	# Match any strings enclosed in ${} with the exception of ${}.
 	if search(placeholder_pattern, string): return True
 	return False

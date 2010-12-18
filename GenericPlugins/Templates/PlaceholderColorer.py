@@ -33,7 +33,6 @@ class Colorer(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid6, self.__editor)
 		del self
-		self = None
 		return
 
 	def __precompile_methods(self):
