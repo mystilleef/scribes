@@ -96,7 +96,7 @@ class Trigger(SignalManager, TriggerManager):
 		self.__trigger9.zen_action = "merge_lines"
 		name, shortcut, description, category = (
 			"zencoding-wrap-with-abbreviation",
-			"<ctrl><shift>e",
+			"<ctrl><shift>comma",
 			_("Wrap with abbreviation"),
 			_("Markup Operations")
 		)
