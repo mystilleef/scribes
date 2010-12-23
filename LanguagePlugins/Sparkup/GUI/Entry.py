@@ -30,6 +30,7 @@ class Entry(SignalManager):
 
 	def __activate_cb(self, *args):
 		abbreviation = self.__entry.get_text().strip()
+		if not abbreviation: return False
 		self.__manager.emit("hide")
 		self.__manager.emit("execute", abbreviation)
 		return False
