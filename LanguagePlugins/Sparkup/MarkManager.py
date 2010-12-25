@@ -6,7 +6,7 @@ class Manager(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "exit-sparkup-mode", self.__remove_cb, True)
-		self.connect(manager, "remove-marks", self.__remove_cb)
+#		self.connect(manager, "remove-marks", self.__remove_cb)
 		self.connect(manager, "placeholder-offsets", self.__offsets_cb)
 		self.connect(manager, "execute", self.__execute_cb)
 		self.connect(manager, "destroy", self.__destroy_cb)
@@ -15,6 +15,7 @@ class Manager(SignalManager):
 		self.__manager = manager
 		self.__editor = editor
 		self.__marks = {}
+		self.__nesting_level = 0
 		return
 
 	def __create_boundary_marks(self):
@@ -26,8 +27,7 @@ class Manager(SignalManager):
 		return False
 
 	def __update_marks(self, mark):
-		nesting_level = len(self.__marks)
-		self.__marks[nesting_level].append(mark)
+		self.__marks[self.__nesting_level].append(mark)
 		return False
 
 	def __del(self, mark):
@@ -38,9 +38,12 @@ class Manager(SignalManager):
 		return False
 
 	def __remove_marks(self):
+		if not self.__nesting_level: return False
 		self.__editor.freeze()
-		[self.__del(mark) for mark in self.__marks[len(self.__marks)]]
-		del self.__marks[len(self.__marks)]
+		[self.__del(mark) for mark in self.__marks[self.__nesting_level]]
+		del self.__marks[self.__nesting_level]
+		self.__nesting_level -= 1
+		if self.__nesting_level < 0: self.__nesting_level = 0
 		self.__editor.thaw()
 		return False
 
@@ -61,8 +64,8 @@ class Manager(SignalManager):
 		return False
 
 	def __execute_cb(self, *args):
-		nesting_level = len(self.__marks) + 1
-		self.__marks[nesting_level] = []
+		self.__nesting_level += 1
+		self.__marks[self.__nesting_level] = []
 		self.__create_boundary_marks()
 		return False
 
