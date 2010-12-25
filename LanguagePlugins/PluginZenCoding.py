@@ -1,7 +1,7 @@
 name = "Zen Coding Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-languages = ["html", "xml", "css", "javascript"]
+languages = ["html", "xml", "css", "javascript", "php"]
 autoload = True
 class_name = "ZenCodingPlugin"
 short_description = "Zen Coding Plugin"

@@ -1,7 +1,7 @@
 name = "Sparkup Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 version = 0.1
-languages = ["html", "xml", "css", "javascript"]
+languages = ["html", "xml", "css", "javascript", "php"]
 autoload = True
 class_name = "SparkupPlugin"
 short_description = "Advanced dynamic templates for HTML/XML/Javascript/CSS"
