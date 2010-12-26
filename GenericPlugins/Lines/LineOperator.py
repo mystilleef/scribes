@@ -107,7 +107,7 @@ class Operator(object):
 		return
 
 	def __line_below(self):
-		indentation = self.__editor.get_indentation()
+		#indentation = self.__editor.get_indentation()
 		start = self.__editor.backward_to_line_begin()
 		end = self.__editor.forward_to_line_end()
 		textbuffer = self.__editor.textbuffer
@@ -117,7 +117,7 @@ class Operator(object):
 		else:
 			textbuffer.place_cursor(end)
 			textbuffer.insert(end, "\n")
-		if indentation: textbuffer.insert(self.__editor.cursor, indentation)
+		#if indentation: textbuffer.insert(self.__editor.cursor, indentation)
 		textbuffer.end_user_action()
 		message = _("Freed line %d") % (self.__editor.cursor.get_line() + 1)
 		self.__editor.update_message(message, "pass")
@@ -125,7 +125,7 @@ class Operator(object):
 		return False
 
 	def __line_above(self):
-		indentation = self.__editor.get_indentation()
+		#indentation = self.__editor.get_indentation()
 		start = self.__editor.backward_to_line_begin()
 		textbuffer = self.__editor.textbuffer
 		textbuffer.begin_user_action()
@@ -133,7 +133,7 @@ class Operator(object):
 		start = self.__editor.backward_to_line_begin()
 		start.backward_line()
 		textbuffer.place_cursor(start)
-		if indentation: textbuffer.insert(start, indentation)
+		#if indentation: textbuffer.insert(start, indentation)
 		textbuffer.end_user_action()
 		message = _("Freed line %d") % (self.__editor.cursor.get_line() + 1)
 		self.__editor.update_message(message, "pass")

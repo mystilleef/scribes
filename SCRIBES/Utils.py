@@ -1,5 +1,6 @@
-from re import UNICODE, compile as compile_
-WORD_PATTERN = compile_("\w+|[-]", UNICODE)
+from re import compile as compile_, M, U, L
+NEWLINE_RE = compile_("\r\n|\n|\r", M|U|L)
+WORD_PATTERN = compile_("\w+|[-]", U)
 
 def calculate_resolution_independence(window, width, height):
 	screen = window.get_screen()

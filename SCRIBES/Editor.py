@@ -83,6 +83,8 @@ class Editor(Signals):
 	word_pattern = property(lambda self: EditorImports.WORD_PATTERN)
 	selection_range = property(lambda self: self.get_selection_range())
 	selection_bounds = property(lambda self: self.textbuffer.get_selection_bounds())
+	newline_character = property(lambda self: self.get_newline_character())
+	line_indentation = property(lambda self: self.get_line_indentation())
 	selected_text = property(lambda self: self.textbuffer.get_text(*(self.selection_bounds)))
 	has_selection = property(lambda self: self.textbuffer.props.has_selection)
 	pwd = property(lambda self: EditorImports.File(self.uri).get_parent().get_path() if self.uri else self.desktop_folder)
@@ -344,6 +346,19 @@ class Editor(Signals):
 		end = start.copy()
 		while end.get_char() in (" ", "\t"): end.forward_char()
 		return self.textbuffer.get_text(start, end)
+
+	def get_line_indentation(self):
+		indentation = []
+		for character in self.get_line_text():
+			if character not in (" ", "\t"): break
+			indentation.append(character)
+		return "".join(indentation)
+
+	def get_newline_character(self):
+		from Utils import NEWLINE_RE
+		match = NEWLINE_RE.search(self.text)
+		character = match.group(0) if match else "\n"
+		return character
 
 	def redo(self):
 		self.emit("redo")
