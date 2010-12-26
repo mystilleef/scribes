@@ -112,7 +112,7 @@ class Operator(object):
 		textbuffer = self.__editor.textbuffer
 		textbuffer.place_cursor(start)
 		indentation = self.__editor.line_indentation
-		text = self.__editor.get_line_text()
+		text = self.__editor.line_text
 		text = "%s%s%s" % (text, self.__editor.newline_character, indentation)
 		textbuffer.begin_user_action()
 		textbuffer.delete(start, end) 
@@ -125,7 +125,7 @@ class Operator(object):
 
 	def __line_above(self):
 		indentation = self.__editor.line_indentation
-		text = self.__editor.get_line_text()
+		text = self.__editor.line_text
 		start = self.__editor.backward_to_line_begin()
 		end = self.__editor.forward_to_line_end()
 		textbuffer = self.__editor.textbuffer
