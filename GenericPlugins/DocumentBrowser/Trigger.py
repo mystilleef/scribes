@@ -8,7 +8,8 @@ class Trigger(SignalManager, TriggerManager):
 		SignalManager.__init__(self)
 		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.connect(self.__trigger, "activate", self.__activate_cb)
+		self.connect(self.__trigger1, "activate", self.__activate_cb)
+		self.connect(self.__trigger2, "activate", self.__activate_cb)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -19,7 +20,14 @@ class Trigger(SignalManager, TriggerManager):
 			_("Focus any file window"), 
 			_("Window Operations")
 		)
-		self.__trigger = self.create_trigger(name, shortcut, description, category)
+		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
+		name, shortcut, description, category = (
+			"show-document-browser_", 
+			"<super>b", 
+			_("Focus any file window"), 
+			_("Window Operations")
+		)
+		self.__trigger2 = self.create_trigger(name, shortcut, description, category)
 		return
 
 	def __activate_cb(self, *args):
