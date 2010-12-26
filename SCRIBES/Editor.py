@@ -23,6 +23,9 @@ class Editor(Signals):
 		from Utils import window_is_active
 		return window_is_active(self)
 
+	@property
+	def line_text(self): return self.get_line_text()
+
 	imanager = property(lambda self: self.get_data("InstanceManager"))
 	gui = property(lambda self: self.get_data("gui"))
 	window = property(lambda self: self.gui.get_widget("Window"))
