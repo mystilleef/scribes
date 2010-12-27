@@ -112,6 +112,8 @@
 	../GenericPlugins/Spaces/PopupMenuItem.py \
 	../GenericPlugins/Spaces/SpaceProcessor.py \
 	../GenericPlugins/Spaces/Trigger.py \
+	../GenericPlugins/SwitchCharacter/Switcher.py \
+	../GenericPlugins/SwitchCharacter/Trigger.py \
 	../GenericPlugins/TemplateEditor/EditorGUI/GUI.glade \
 	../GenericPlugins/TemplateEditor/EditorGUI/Window.py \
 	../GenericPlugins/TemplateEditor/Export/GUI/FileChooser.py \
