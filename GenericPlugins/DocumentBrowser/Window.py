@@ -22,7 +22,7 @@ class Window(object):
 		width, height = self.__editor.calculate_resolution_independence(self.__editor.window, 1.6, 2.5)
 		self.__window.set_property("default-width", width)
 		self.__window.set_property("default-height", height)
-		self.__window.set_transient_for(self.__editor.window)
+#		self.__window.set_transient_for(self.__editor.window)
 		return
 
 	def __show(self):
