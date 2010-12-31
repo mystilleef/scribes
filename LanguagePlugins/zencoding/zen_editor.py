@@ -46,8 +46,8 @@ class ZenEditor(object):
 #		else:
 #			set_variable('lang', default_locale)
 #			set_variable('locale', default_locale)
-#		self.encoding = self.document.get_encoding().get_charset()
-#		set_variable('charset', self.encoding)
+		self.encoding = "utf8" # self.document.get_encoding().get_charset()
+		set_variable('charset', self.encoding)
 		if self.__view.get_insert_spaces_instead_of_tabs():
 			set_variable('indentation', " " * self.__view.get_tab_width())
 		else:
