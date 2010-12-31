@@ -27,6 +27,9 @@ class Editor(Signals):
 	def tab_width(self): return self.view.get_tab_width()
 
 	@property
+	def spaces_instead_of_tabs(self): return self.view.get_insert_spaces_instead_of_tabs()
+
+	@property
 	def indentation_width(self): return self.view.get_tab_width()
 
 	@property
