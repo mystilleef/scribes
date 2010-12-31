@@ -24,13 +24,13 @@ class Editor(Signals):
 	def id_(self): return id(self)
 
 	@property
-	def tab_width(self): return self.view.get_tab_width()
-
-	@property
 	def spaces_instead_of_tabs(self): return self.view.get_insert_spaces_instead_of_tabs()
 
 	@property
 	def tabs_instead_of_spaces(self): return not self.view.get_insert_spaces_instead_of_tabs()
+
+	@property
+	def tab_width(self): return self.view.get_tab_width()
 
 	@property
 	def indentation_width(self): return self.view.get_tab_width()
