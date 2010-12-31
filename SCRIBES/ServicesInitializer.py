@@ -52,3 +52,5 @@ class Initializer(object):
 		if stdin: editor.reset_text(stdin)
 		from URILoader.Manager import Manager
 		Manager(editor, uri, encoding)
+		from gtk.gdk import notify_startup_complete
+		notify_startup_complete()
