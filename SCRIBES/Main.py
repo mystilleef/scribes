@@ -2,6 +2,7 @@ scribes_dbus_service = "net.sourceforge.Scribes"
 scribes_dbus_path = "/net/sourceforge/Scribes"
 
 def main():
+	__fork_scribes()
 	from gobject import threads_init
 	threads_init()
 	__open()
