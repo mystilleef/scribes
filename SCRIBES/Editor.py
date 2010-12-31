@@ -16,12 +16,18 @@ class Editor(Signals):
 ########################################################################
 
 	@property
-	def id_(self): return id(self)
-
-	@property
 	def window_is_active(self):
 		from Utils import window_is_active
 		return window_is_active(self)
+
+	@property
+	def id_(self): return id(self)
+
+	@property
+	def tab_width(self): return self.view.get_tab_width()
+
+	@property
+	def indentation_width(self): return self.view.get_tab_width()
 
 	@property
 	def line_text(self): return self.get_line_text()
@@ -319,7 +325,7 @@ class Editor(Signals):
 		data = message, icon_name, time, priority
 		self.emit("update-message", data)
 		return False
-	
+
 	def hide_message(self):
 		self.emit("hide-message")
 		return False

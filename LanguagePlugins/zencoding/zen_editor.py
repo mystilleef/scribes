@@ -39,7 +39,7 @@ class ZenEditor(object):
 #		default_locale = locale.getdefaultlocale()[0]
 #		lang = re.sub(r'_[^_]+$', '', default_locale)
 		from zen_core import set_caret_placeholder, set_variable
-		set_caret_placeholder('')
+		set_caret_placeholder('$')
 #		if lang != default_locale:
 #			set_variable('lang', lang)
 #			set_variable('locale', default_locale.replace('_', '-'))
