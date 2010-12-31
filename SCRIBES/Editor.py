@@ -30,6 +30,9 @@ class Editor(Signals):
 	def spaces_instead_of_tabs(self): return self.view.get_insert_spaces_instead_of_tabs()
 
 	@property
+	def tabs_instead_of_spaces(self): return not self.view.get_insert_spaces_instead_of_tabs()
+
+	@property
 	def indentation_width(self): return self.view.get_tab_width()
 
 	@property
@@ -41,8 +44,6 @@ class Editor(Signals):
 	textview = view = property(lambda self: self.gui.get_widget("ScrolledWindow").get_child())
 	textbuffer = buf = buffer_ = property(lambda self: self.textview.get_property("buffer"))
 	toolbar = property(lambda self: self.get_data("Toolbar"))
-#	toolbar = property(lambda self: self.gui.get_widget("Toolbar"))
-#	id_ = property(lambda self: id(self))
 	uri = property(lambda self: self.get_data("uri"))
 	uris = property(lambda self: self.imanager.get_uris())
 	# All editor instances
