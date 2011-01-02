@@ -6,7 +6,6 @@ class Manager(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "exit-sparkup-mode", self.__remove_cb, True)
-#		self.connect(manager, "remove-marks", self.__remove_cb)
 		self.connect(manager, "placeholder-offsets", self.__offsets_cb)
 		self.connect(manager, "execute", self.__execute_cb)
 		self.connect(manager, "destroy", self.__destroy_cb)

@@ -10,7 +10,7 @@ class Signal(GObject):
 		"hide": (SSIGNAL, TYPE_NONE, ()),
 		"failed": (SSIGNAL, TYPE_NONE, ()),
 		"finish": (SSIGNAL, TYPE_NONE, ()),
-		"remove-marks": (SSIGNAL, TYPE_NONE, ()),
+#		"remove-marks": (SSIGNAL, TYPE_NONE, ()),
 		"removed-placeholders": (SSIGNAL, TYPE_NONE, ()),
 		"exit-sparkup-mode": (SSIGNAL, TYPE_NONE, ()),
 		"next-placeholder": (SSIGNAL, TYPE_NONE, ()),

@@ -20,14 +20,24 @@ class Monitor(SignalManager):
 		self.__boundaries = {}
 		return
 
+	def __check_on_idle(self):
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer = idle_add(self.__check, priority=PRIORITY_LOW)
+		return False
+
 	def __check(self):
 		cursor_offset = self.__editor.cursor.get_offset()
 		end_mark = self.__boundaries[self.__nesting_level][-1]
-		go = lambda mark: self.__buffer.get_iter_at_mark(mark).get_offset()
+		go = self.__offset_at_mark
 		end_offset = go(end_mark)
+		if end_offset is None: return False
 		if cursor_offset < end_offset: return False
 		self.__manager.emit("exit-sparkup-mode")
 		return False
+
+	def __offset_at_mark(self, mark):
+		if mark.get_deleted(): return None
+		return self.__buffer.get_iter_at_mark(mark).get_offset()
 
 	def __block(self):
 		if self.__blocked: return False
@@ -63,10 +73,10 @@ class Monitor(SignalManager):
 		self.__block()
 		return False
 
-	def __insert_cb(self, *args):
+	def __insert_cb(self, textbuffer, iterator, text, length):
 		self.__remove_timer()
-		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__check, priority=PRIORITY_LOW)
+		from gobject import PRIORITY_LOW, timeout_add
+		self.__timer = timeout_add(125, self.__check_on_idle, priority=PRIORITY_LOW)
 		return False
 
 	def __destroy_cb(self, *args):

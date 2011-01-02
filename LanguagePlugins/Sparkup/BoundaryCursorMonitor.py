@@ -21,6 +21,7 @@ class Monitor(SignalManager):
 		return
 
 	def __check(self):
+		if not self.__nesting_level: return False
 		cursor_offset = self.__editor.cursor.get_offset()
 		start_mark, end_mark = self.__boundaries[self.__nesting_level]
 		go = lambda mark: self.__buffer.get_iter_at_mark(mark).get_offset()

@@ -23,11 +23,14 @@ class Monitor(SignalManager):
 		return
 
 	def __check(self):
-		if self.__in_range(self.__current_placeholder): return False
-		current_placeholder = self.__get_current_placeholder()
-		if current_placeholder == self.__current_placeholder: return False
-		self.__current_placeholder = current_placeholder
-		self.__manager.emit("cursor-in-placeholder", current_placeholder)
+		try:
+			if self.__in_range(self.__current_placeholder): return False
+			current_placeholder = self.__get_current_placeholder()
+			if current_placeholder == self.__current_placeholder: return False
+			self.__current_placeholder = current_placeholder
+			self.__manager.emit("cursor-in-placeholder", current_placeholder)
+		except KeyError:
+			pass
 		return False
 
 	def __get_current_placeholder(self):
@@ -78,7 +81,7 @@ class Monitor(SignalManager):
 		return False
 
 	def __exit_cb(self, *args):
-		del self.__marks[self.__nesting_level]
+		if self.__nesting_level in self.__marks: del self.__marks[self.__nesting_level]
 		self.__nesting_level -= 1
 		if self.__nesting_level < 0: self.__nesting_level = 0
 		self.__current_placeholder = ()

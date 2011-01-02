@@ -34,6 +34,8 @@ class Colorer(SignalManager):
 			self.__tag(placeholder, self.__mod_tag)
 		except AssertionError:
 			pass
+		except TypeError:
+			pass
 		finally:
 			self.__editor.thaw()
 		return False
@@ -65,6 +67,7 @@ class Colorer(SignalManager):
 
 	def __iter_at_marks(self, marks):
 		if not marks: return None
+		if marks[0].get_deleted() or marks[1].get_deleted(): return None
 		begin = self.__editor.textbuffer.get_iter_at_mark(marks[0])
 		end = self.__editor.textbuffer.get_iter_at_mark(marks[1])
 		return begin, end
@@ -119,7 +122,7 @@ class Colorer(SignalManager):
 
 	def __exit_cb(self, *args):
 		self.__remove_tags()
-		del self.__marks[self.__nesting_level]
+		if self.__nesting_level in self.__marks: del self.__marks[self.__nesting_level]
 		self.__nesting_level -= 1
 		if self.__nesting_level < 0: self.__nesting_level = 0
 		self.__placeholder = ()
