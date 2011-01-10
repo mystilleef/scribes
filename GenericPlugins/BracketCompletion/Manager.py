@@ -47,7 +47,7 @@ class BracketManager(object):
 			keysyms.topleftsqbracket, keysyms.upleftcorner,
 			keysyms.botleftparens, keysyms.botleftsqbracket,
 			keysyms.apostrophe]
-		self.__open_pair_characters_for_enclosement = self.__open_pair_characters + [keysyms.less, keysyms.apostrophe]
+		self.__open_pair_characters_for_enclosement = self.__open_pair_characters + [keysyms.less, keysyms.apostrophe, keysyms.dollar]
 		return
 
 	def __precompile_methods(self):
@@ -73,6 +73,7 @@ class BracketManager(object):
 ########################################################################
 
 	def __insert_closing_pair_character(self, keyval):
+		self.__editor.begin_user_action()
 		if keyval == keysyms.apostrophe:
 			if self.__can_insert_apostrophe():
 				self.__insert_pair_characters(keyval, keysyms.apostrophe)
@@ -80,14 +81,16 @@ class BracketManager(object):
 				self.__insert_apostrophe()
 		else:
 			self.__insert_pair_characters(keyval, KEYSYMS[keyval])
+		self.__editor.end_user_action()
 		return
 
 	def __enclose_selection(self, keyval):
+		self.__editor.begin_user_action()
 		self.__insert_enclosed_selection(keyval, KEYSYMS[keyval])
+		self.__editor.end_user_action()
 		return
 
 	def __insert_pair_characters(self, open_keyval, close_keyval):
-		self.__editor.textview.window.freeze_updates()
 		textbuffer = self.__editor.textbuffer
 		from gtk.gdk import keyval_to_unicode
 		utf8_open_character = unichr(keyval_to_unicode(open_keyval)).encode("utf-8")
@@ -104,12 +107,10 @@ class BracketManager(object):
 		self.__monitor_list.append((close_keyval, (begin_mark, end_mark)))
 		message = _("Pair character completion occurred")
 		self.__editor.update_message(message, "pass")
-		self.__editor.textview.window.thaw_updates()
 		return
 
 
 	def __insert_enclosed_selection(self, open_keyval, close_keyval):
-		self.__editor.textview.window.freeze_updates()
 		textbuffer = self.__editor.textbuffer
 		from gtk.gdk import keyval_to_unicode
 		utf8_open_character = unichr(keyval_to_unicode(open_keyval)).encode("utf-8")
@@ -117,13 +118,10 @@ class BracketManager(object):
 		selection = textbuffer.get_selection_bounds()
 		string = textbuffer.get_text(selection[0], selection[1])
 		text = utf8_open_character + string + utf8_closing_character
-		textbuffer.begin_user_action()
 		textbuffer.delete(selection[0], selection[1])
 		textbuffer.insert_at_cursor(text)
-		textbuffer.end_user_action()
 		message = _("Enclosed selected text")
 		self.__editor.update_message(message, "pass")
-		self.__editor.textview.window.thaw_updates()
 		return
 
 	def __move_cursor_out_of_bracket_region(self):
@@ -154,14 +152,14 @@ class BracketManager(object):
 		close_keyval = self.__monitor_list[-1][0]
 		character = unichr(keyval_to_unicode(close_keyval)).encode("utf-8")
 		if (begin.get_char() != character): return False
-		self.__editor.textview.window.freeze_updates()
+		self.__editor.begin_user_action()
 		begin.backward_char()
 		textbuffer.begin_user_action()
 		textbuffer.delete(begin, end)
 		textbuffer.end_user_action()
 		message = _("Removed pair character")
 		self.__editor.update_message(message, "pass")
-		self.__editor.textview.window.thaw_updates()
+		self.__editor.end_user_action()
 		return True
 
 	def __has_escape_character(self):
@@ -187,11 +185,9 @@ class BracketManager(object):
 		return True
 
 	def __insert_apostrophe(self):
-		self.__editor.textview.window.freeze_updates()
 		from gtk.gdk import keyval_to_unicode
 		utf8_apostrophe_character = unichr(keyval_to_unicode(keysyms.apostrophe)).encode("utf-8")
 		self.__editor.textbuffer.insert_at_cursor(utf8_apostrophe_character)
-		self.__editor.textview.window.thaw_updates()
 		return
 
 	def __check_mimetype(self):
@@ -222,8 +218,6 @@ class BracketManager(object):
 ########################################################################
 
 	def __key_press_event_cb(self, textview, event):
-		#from gtk.gdk import keyval_name
-		#print keyval_name(event.keyval)
 		if self.__editor.has_selection and (event.keyval in self.__open_pair_characters_for_enclosement):
 			self.__editor.hide_completion_window()
 			self.__enclose_selection(event.keyval)
