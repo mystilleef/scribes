@@ -565,6 +565,16 @@ class Editor(Signals):
 		from Utils import get_mimetype
 		return get_mimetype(path)
 
+	def begin_user_action(self):
+		self.freeze()
+		self.textbuffer.begin_user_action()
+		return False
+
+	def end_user_action(self):
+		self.textbuffer.end_user_action()
+		self.thaw()
+		return False
+
 	def enable_busy_pointer(self):
 		print "Not yet implemented"
 		return False
