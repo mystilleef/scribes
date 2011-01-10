@@ -575,6 +575,12 @@ class Editor(Signals):
 		self.thaw()
 		return False
 
+	def execute(self, command):
+		#FIXME: Not yet implemented!
+		# Reserving this API.
+		#command = None
+		return False
+
 	def enable_busy_pointer(self):
 		print "Not yet implemented"
 		return False
