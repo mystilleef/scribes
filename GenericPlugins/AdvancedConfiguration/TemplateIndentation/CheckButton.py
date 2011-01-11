@@ -18,7 +18,6 @@ class Button(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __update(self, active):

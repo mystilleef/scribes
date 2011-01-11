@@ -46,9 +46,8 @@ def __get_dbus_service():
 	return proxy_object
 
 def __fork_scribes():
-	# Very buggy. Don't use for now.
-#	from ForkScribesMetadata import get_value as can_fork
-#	if not can_fork(): return
+	from ForkScribesMetadata import get_value as can_fork
+	if not can_fork(): return
 	from os import fork
 	pid = fork()
 	if pid != 0: raise SystemExit

@@ -13,6 +13,8 @@ class Manager(GObject):
 	def __init__(self, editor):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
+		from ForkScribesCheckButton import Button
+		Button(self, editor)
 		from BracketSelectionColorButton import ColorButton
 		ColorButton(editor, self)
 		from Window import Window
@@ -28,7 +30,6 @@ class Manager(GObject):
 	def __destroy(self):
 		self.emit("destroy")
 		del self
-		self = None
 		return
 
 	# Public API reference to the advanced configuration window GUI
