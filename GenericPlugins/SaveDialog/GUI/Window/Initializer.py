@@ -13,13 +13,12 @@ class Initializer(object):
 
 	def __set_properties(self):
 		self.__window.set_property("sensitive", True)
-		self.__window.set_transient_for(self.__editor.window)
+#		self.__window.set_transient_for(self.__editor.window)
 		return
 
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		del self
-		self = None
 		return
 
 	def __destroy_cb(self, *args):

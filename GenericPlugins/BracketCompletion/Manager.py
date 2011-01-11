@@ -47,7 +47,7 @@ class BracketManager(object):
 			keysyms.topleftsqbracket, keysyms.upleftcorner,
 			keysyms.botleftparens, keysyms.botleftsqbracket,
 			keysyms.apostrophe]
-		self.__open_pair_characters_for_enclosement = self.__open_pair_characters + [keysyms.less, keysyms.apostrophe, keysyms.dollar]
+		self.__open_pair_characters_for_enclosement = self.__open_pair_characters + [keysyms.less, keysyms.apostrophe]
 		return
 
 	def __precompile_methods(self):
@@ -199,6 +199,7 @@ class BracketManager(object):
 			return
 		if (mimetype == "text/x-tex"):
 			self.__open_pair_characters.append(keysyms.dollar)
+			self.__open_pair_characters_for_enclosement.append(keysyms.dollar)
 		elif mimetype in markup_mimetype:
 			self.__open_pair_characters.append(keysyms.less)
 		return
