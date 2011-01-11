@@ -24,12 +24,18 @@ class Window(SignalManager):
 		del self
 		return False
 
-	def __set_properties(self):
+	def __set_rgba(self):
 		screen = self.__window.get_screen()
 		colormap = screen.get_rgba_colormap()
-		from gtk import AccelGroup, widget_set_default_colormap
+		from gtk import widget_set_default_colormap
 		if colormap: widget_set_default_colormap(colormap)
+		return False
+
+	def __set_properties(self):
+		from SCRIBES.WidgetTransparencyMetadata import get_value
+		if get_value(): self.__set_rgba()
 		self.__add_signal()
+		from gtk import AccelGroup
 		self.__window.add_accel_group(AccelGroup())
 		from gtk.gdk import KEY_PRESS_MASK
 		self.__window.add_events(KEY_PRESS_MASK)

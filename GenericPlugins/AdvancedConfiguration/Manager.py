@@ -13,6 +13,8 @@ class Manager(GObject):
 	def __init__(self, editor):
 		GObject.__init__(self)
 		self.__init_attributes(editor)
+		from WidgetTransparencyCheckButton import Button
+		Button(self, editor)
 		from ForkScribesCheckButton import Button
 		Button(self, editor)
 		from BracketSelectionColorButton import ColorButton
