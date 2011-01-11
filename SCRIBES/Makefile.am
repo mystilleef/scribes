@@ -80,6 +80,7 @@ scribes_PYTHON = \
 	UseTabsMetadata.py \
 	UniqueStampGenerator.py \
 	Utils.py \
+	WidgetTransparencyMetadata.py \
 	Word.py
 
 clean-local:
