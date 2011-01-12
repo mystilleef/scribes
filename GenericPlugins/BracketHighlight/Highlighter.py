@@ -29,8 +29,8 @@ class Highlighter(SignalManager):
 		self.__match = editor.find_matching_bracket
 		self.__start_mark = None
 		self.__end_mark = None
-		self.__start_characters = ("(", "[", "<", "{")
-		self.__end_characters = (")", "]", ">", "}")
+		self.__start_characters = ("(", "[", "{")
+		self.__end_characters = (")", "]", "}")
 		from os.path import join
 		preference_folder = join(editor.metadata_folder, "PluginPreferences")
 		database_path = join(preference_folder, "LexicalScopeHighlight.gdb")
