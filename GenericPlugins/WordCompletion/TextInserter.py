@@ -5,8 +5,6 @@ class Inserter(object):
 		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid2 = manager.connect("valid-string", self.__valid_cb)
 		self.__sigid3 = manager.connect("insert-text", self.__insert_cb)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -22,15 +20,11 @@ class Inserter(object):
 		return False
 
 	def __insert(self, text):
-		self.__editor.textview.window.freeze_updates()
+		self.__editor.begin_user_action()
 		self.__manager.emit("inserting-text")
-		self.__editor.textbuffer.begin_user_action()
-		self.__editor.refresh(False)
 		self.__editor.textbuffer.insert_at_cursor(text[len(self.__string):].encode("utf8"))
-		self.__editor.refresh(False)
-		self.__editor.textbuffer.end_user_action()
 		self.__manager.emit("inserted-text")
-		self.__editor.textview.window.thaw_updates()
+		self.__editor.end_user_action()
 		return False
 
 	def __destroy_cb(self, *args):
@@ -42,11 +36,7 @@ class Inserter(object):
 		return False
 
 	def __insert_cb(self, manager, text):
-		from gobject import idle_add
-		idle_add(self.__insert, text)
-		return False
-
-	def __precompile_methods(self):
-		methods = (self.__insert,)
-		self.__editor.optimize(methods)
+#		from gobject import idle_add
+#		idle_add(self.__insert, text)
+		self.__insert(text)
 		return False
