@@ -48,7 +48,6 @@ def __get_dbus_service():
 def __fork_scribes():
 	from ForkScribesMetadata import get_value as can_fork
 	if not can_fork(): return
-	from os import fork
-	pid = fork()
-	if pid != 0: raise SystemExit
+	from Utils import fork_process
+	fork_process()
 	return

@@ -406,6 +406,12 @@ def get_save_processor():
 		return None
 	return processor_object
 
+def fork_process():
+	from os import fork
+	pid = fork()
+	if pid != 0: raise SystemExit
+	return
+
 def response():
 	from gtk import events_pending, main_iteration
 	while events_pending(): main_iteration(False)
