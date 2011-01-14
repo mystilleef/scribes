@@ -47,8 +47,6 @@ class ShortcutWindow(SignalManager):
 
 		# Create window box
 		windowbox = gtk.VBox()
-#		scrolled_window = gtk.ScrolledWindow()
-#		scrolled_window.add_with_viewport(windowbox)
 		# Pack window box
 		windowbox.pack_start(shortcut_top)
 		windowbox.pack_start(shortcut_table)
@@ -72,14 +70,13 @@ class ShortcutWindow(SignalManager):
 		self.window.set_property("skip-taskbar-hint", True)
 
 		self.window.add(windowbox)
-#		self.window.add(scrolled_window)
 		from gtk import WIN_POS_CENTER_ALWAYS
 		self.window.set_position(WIN_POS_CENTER_ALWAYS)
 
-		self.window.connect('key-press-event', self.__hide_cb)
+		self.window.connect('key-press-event', self.__event_cb)
 
 		# hides help window when focus changes to something else
-		self.window.connect('focus-out-event', self.__hide_cb)
+#		self.window.connect('focus-out-event', self.__hide_cb)
 
 		# show window
 		self.__show()
@@ -420,13 +417,15 @@ class ShortcutWindow(SignalManager):
 		textview.modify_text(gtk.STATE_NORMAL, textcolor)
 
 		# close help window on mouse button press
-		textview.connect('button-press-event', self.__hide_cb)
+		# textview.connect('button-press-event', self.__hide_cb)
 
 		return textview
 
 	def __formatAccel(self, accel):
 		accel_str = str(accel)
-		format = self.__rreplace(accel_str, ">", "> + ", 1)
+		accel_str = accel_str.replace("<", "")
+		format = accel_str.replace(">", "+")
+#		format = self.__rreplace(accel_str, ">", "> + ", 1)
 		return format
 
 	def __formatName(self, name):
@@ -452,6 +451,11 @@ class ShortcutWindow(SignalManager):
 	def __openHelp(self):
 		self.__editor.help()
 		return
+
+	def __event_cb(self, window, event):
+		from gtk.keysyms import Escape
+		if event.keyval == Escape : self.__hide()
+		return False
 
 	def __show_cb(self, *args):
 		self.__show()
