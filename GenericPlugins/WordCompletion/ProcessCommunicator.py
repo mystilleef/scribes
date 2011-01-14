@@ -1,14 +1,17 @@
+from SCRIBES.SignalConnectionManager import SignalManager
+
 indexer_dbus_service = "org.sourceforge.ScribesWordCompletionIndexer"
 indexer_dbus_path = "/org/sourceforge/ScribesWordCompletionIndexer"
 
-class Communicator(object):
+class Communicator(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = editor.connect_after("saved-file", self.__saved_cb)
-		self.__sigid3 = editor.connect_after("loaded-file", self.__saved_cb)
-		self.__sigid4 = editor.textbuffer.connect_after("insert-text", self.__insert_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "index", self.__index_cb, True)
+		self.connect(editor, "saved-file", self.__saved_cb, True)
+		self.connect(editor, "loaded-file", self.__saved_cb, True)
 		editor.session_bus.add_signal_receiver(self.__name_change_cb,
 						'NameOwnerChanged',
 						'org.freedesktop.DBus',
@@ -27,10 +30,7 @@ class Communicator(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid4, self.__editor.buf)
+		self.disconnect()
 		self.__editor.session_bus.remove_signal_receiver(self.__name_change_cb,
 			'NameOwnerChanged',
 			'org.freedesktop.DBus',
@@ -64,10 +64,18 @@ class Communicator(object):
 				reply_handler=self.__reply_handler_cb,
 				error_handler=self.__error_handler_cb)
 		except AttributeError:
-			print "ERROR:No word completion indexer process found"
+#			print "ERROR:No word completion indexer process found"
 			self.__indexer = self.__get_indexer()
 		except Exception:
 			print "ERROR: Cannot send message to word completion indexer"
+		return False
+
+	def __remove_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
 		return False
 
 	def __destroy_cb(self, *args):
@@ -95,8 +103,8 @@ class Communicator(object):
 		idle_add(self.__index, priority=PRIORITY_LOW)
 		return False
 
-	def __insert_cb(self, textbuffer, iterator, text, length):
-		if text.isalnum() : return False
+	def __index_cb(self, *args):
+		self.__remove_timer()
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__index, priority=PRIORITY_LOW)
+		self.__timer = idle_add(self.__index, priority=PRIORITY_LOW)
 		return False

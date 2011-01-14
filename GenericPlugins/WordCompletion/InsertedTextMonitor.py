@@ -1,29 +1,30 @@
+from SCRIBES.SignalConnectionManager import SignalManager
+
 WORDS_BEFORE_CURSOR = 2
 
-class Monitor(object):
+class Monitor(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = self.__buffer.connect_after("insert-text", self.__insert_text_cb)
-		self.__sigid3 = self.__buffer.connect("delete-range", self.__generic_hide_cb)
-		self.__sigid4 = self.__view.connect("backspace", self.__generic_hide_cb)
-		self.__sigid5 = self.__view.connect("cut-clipboard", self.__generic_hide_cb)
-		self.__sigid6 = self.__view.connect("paste-clipboard", self.__generic_hide_cb)
-		self.__sigid7 = self.__view.connect("delete-from-cursor", self.__generic_hide_cb)
-		self.__sigid8 = self.__view.connect("move-cursor", self.__generic_hide_cb)
-		self.__sigid9 = self.__view.connect("move-viewport", self.__generic_hide_cb)
-		self.__sigid10 = self.__view.connect("page-horizontally", self.__generic_hide_cb)
-		self.__sigid11 = self.__view.connect("populate-popup", self.__generic_hide_cb)
-		self.__sigid12 = self.__view.connect("move-focus", self.__generic_hide_cb)
-		self.__sigid13 = manager.connect("match-found", self.__match_found_cb)
-		self.__sigid14 = manager.connect("no-match-found", self.__no_match_found_cb)
-		self.__sigid15 = manager.connect("inserting-text", self.__inserting_cb)
-		self.__sigid16 = manager.connect("inserted-text", self.__inserted_cb)
-		self.__sigid17 = self.__view.connect("button-press-event", self.__generic_hide_cb)
-		self.__sigid18 = self.__view.connect("focus-out-event", self.__generic_hide_cb)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=555)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "match-found", self.__match_found_cb)
+		self.connect(manager, "no-match-found", self.__no_match_found_cb)
+		self.connect(manager, "inserting-text", self.__inserting_cb)
+		self.connect(manager, "inserted-text", self.__inserted_cb)
+		self.connect(self.__view, "backspace", self.__hide_cb)
+		self.connect(self.__view, "cut-clipboard", self.__hide_cb)
+		self.connect(self.__view, "paste-clipboard", self.__hide_cb)
+		self.connect(self.__view, "delete-from-cursor", self.__hide_cb)
+		self.connect(self.__view, "move-cursor", self.__hide_cb)
+		self.connect(self.__view, "move-viewport", self.__hide_cb)
+		self.connect(self.__view, "page-horizontally", self.__hide_cb)
+		self.connect(self.__view, "populate-popup", self.__hide_cb)
+		self.connect(self.__view, "move-focus", self.__hide_cb)
+		self.connect(self.__view, "button-press-event", self.__hide_cb)
+		self.connect(self.__view, "focus-out-event", self.__hide_cb)
+		self.connect(self.__buffer, "insert-text", self.__insert_text_cb, True)
+		self.connect(self.__buffer, "delete-range", self.__hide_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -37,43 +38,34 @@ class Monitor(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__buffer)
-		self.__editor.disconnect_signal(self.__sigid3, self.__buffer)
-		self.__editor.disconnect_signal(self.__sigid4, self.__view)
-		self.__editor.disconnect_signal(self.__sigid5, self.__view)
-		self.__editor.disconnect_signal(self.__sigid6, self.__view)
-		self.__editor.disconnect_signal(self.__sigid7, self.__view)
-		self.__editor.disconnect_signal(self.__sigid8, self.__view)
-		self.__editor.disconnect_signal(self.__sigid9, self.__view)
-		self.__editor.disconnect_signal(self.__sigid10, self.__view)
-		self.__editor.disconnect_signal(self.__sigid11, self.__view)
-		self.__editor.disconnect_signal(self.__sigid12, self.__view)
-		self.__editor.disconnect_signal(self.__sigid13, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid14, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid15, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid16, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid17, self.__view)
-		self.__editor.disconnect_signal(self.__sigid18, self.__view)
+		self.disconnect()
 		del self
 		return False
 
 	def __send_valid_string_async(self):
 		try:
-			from gobject import source_remove, timeout_add
+			from gobject import source_remove, timeout_add, PRIORITY_LOW
 			source_remove(self.__timer)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(350, self.__send_valid_string, priority=999999)
+			self.__timer = timeout_add(350, self.__send_valid_string, priority=PRIORITY_LOW)
 		return False
 
 	def __send_valid_string(self):
-		from gobject import idle_add
-		self.__timer = idle_add(self.__send, priority=999999)
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer = idle_add(self.__send, priority=PRIORITY_LOW)
+		return False
+
+	def __send(self):
+		self.__editor.freeze()
+		string = self.__get_word_before_cursor()
+		self.__editor.thaw()
+		self.__emit_valid(string) if string else self.__emit_invalid()
 		return False
 
 	def __is_valid_character(self, character):
+		self.__editor.refresh(False)
 		from string import whitespace
 		if character in whitespace: return False
 		return character.isalpha() or character.isdigit() or (character in ("-", "_"))
@@ -82,6 +74,7 @@ class Monitor(object):
 		if iterator.starts_line(): return iterator
 		iterator.backward_char()
 		while self.__is_valid_character(iterator.get_char()):
+			self.__editor.refresh(False)
 			iterator.backward_char()
 			if iterator.starts_line(): return iterator
 		iterator.forward_char()
@@ -91,6 +84,7 @@ class Monitor(object):
 		if iterator.ends_line(): return iterator
 		if not self.__is_valid_character(iterator.get_char()): return iterator
 		while self.__is_valid_character(iterator.get_char()):
+			self.__editor.refresh(False)
 			iterator.forward_char()
 			if iterator.ends_line(): return iterator
 		return iterator
@@ -110,11 +104,6 @@ class Monitor(object):
 		if len(word) > WORDS_BEFORE_CURSOR: return word
 		return None
 
-	def __send(self):
-		string = self.__get_word_before_cursor()
-		self.__emit_valid(string) if string else self.__emit_invalid()
-		return False
-
 	def __emit_valid(self, string):
 		self.__valid = True
 		self.__manager.emit("valid-string", string)
@@ -127,13 +116,10 @@ class Monitor(object):
 		return False
 
 	def __insert_text_cb(self, textbuffer, iterator, text, length):
-		try:
-			if self.__inserting: return False
-			if (length > 1): raise ValueError
-			from string import whitespace
-			if text in whitespace: raise ValueError
+		if self.__inserting: return False
+		if (text.isalnum() or (text in ("_", "-"))) and (length == 1):
 			self.__send() if self.__is_visible else self.__send_valid_string_async()
-		except ValueError:
+		else:
 			self.__emit_invalid()
 		return False
 
@@ -141,7 +127,7 @@ class Monitor(object):
 		self.__destroy()
 		return False
 
-	def __generic_hide_cb(self, *args):
+	def __hide_cb(self, *args):
 		self.__emit_invalid()
 		return False
 
@@ -151,7 +137,7 @@ class Monitor(object):
 
 	def __match_found_cb(self, *args):
 		self.__is_visible = True
-		return False #
+		return False
 
 	def __inserting_cb(self, *args):
 		self.__inserting = True
@@ -161,12 +147,4 @@ class Monitor(object):
 	def __inserted_cb(self, *args):
 		self.__inserting = False
 		self.__emit_invalid()
-		return False
-
-	def __precompile_methods(self):
-		methods = (self.__insert_text_cb, self.__get_word_before_cursor,
-			self.__send, self.__send_valid_string,
-			self.__send_valid_string_async, self.__is_valid_character,
-			self.__forward_to_word_end, self.__backward_to_word_begin)
-		self.__editor.optimize(methods)
 		return False

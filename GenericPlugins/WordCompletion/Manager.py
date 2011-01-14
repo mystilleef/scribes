@@ -8,6 +8,7 @@ class Manager(GObject):
 		"destroy": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"inserting-text": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"inserted-text": (SCRIBES_SIGNAL, TYPE_NONE, ()),
+		"index": (SCRIBES_SIGNAL, TYPE_NONE, ()),
 		"dictionary": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"match-found": (SCRIBES_SIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"no-match-found": (SCRIBES_SIGNAL, TYPE_NONE, ()),
@@ -34,6 +35,8 @@ class Manager(GObject):
 		Monitor(self, editor)
 		from IndexerProcessManager import Manager
 		Manager(self, editor)
+		from IndexRequester import Requester
+		Requester(self, editor)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

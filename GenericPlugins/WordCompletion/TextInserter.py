@@ -1,10 +1,13 @@
-class Inserter(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Inserter(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("valid-string", self.__valid_cb)
-		self.__sigid3 = manager.connect("insert-text", self.__insert_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "valid-string", self.__valid_cb)
+		self.connect(manager, "insert-text", self.__insert_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -13,18 +16,16 @@ class Inserter(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
+		self.disconnect()
 		del self
 		return False
 
 	def __insert(self, text):
-		self.__editor.begin_user_action()
 		self.__manager.emit("inserting-text")
+		self.__editor.begin_user_action()
 		self.__editor.textbuffer.insert_at_cursor(text[len(self.__string):].encode("utf8"))
-		self.__manager.emit("inserted-text")
 		self.__editor.end_user_action()
+		self.__manager.emit("inserted-text")
 		return False
 
 	def __destroy_cb(self, *args):
@@ -36,7 +37,5 @@ class Inserter(object):
 		return False
 
 	def __insert_cb(self, manager, text):
-#		from gobject import idle_add
-#		idle_add(self.__insert, text)
 		self.__insert(text)
 		return False

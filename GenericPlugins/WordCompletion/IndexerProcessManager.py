@@ -1,11 +1,14 @@
+from SCRIBES.SignalConnectionManager import SignalManager
+
 indexer_dbus_service = "org.sourceforge.ScribesWordCompletionIndexer"
 indexer_dbus_path = "/org/sourceforge/ScribesWordCompletionIndexer"
 
-class Manager(object):
+class Manager(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
 		editor.session_bus.add_signal_receiver(self.__name_change_cb,
 						'NameOwnerChanged',
 						'org.freedesktop.DBus',
@@ -27,7 +30,7 @@ class Manager(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
+		self.disconnect()
 		self.__editor.session_bus.remove_signal_receiver(self.__name_change_cb,
 			'NameOwnerChanged',
 			'org.freedesktop.DBus',

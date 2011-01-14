@@ -10,8 +10,6 @@ class Window(SignalManager):
 		self.connect(manager, "no-match-found", self.__hide_cb)
 		self.connect(manager, "hide-window", self.__hide_cb)
 		self.connect(manager, "show-window", self.__show_cb)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -32,11 +30,11 @@ class Window(SignalManager):
 
 	def __show(self):
 		if self.__visible: return True
+		self.__visible = True
+		self.__editor.emit("completion-window-is-visible", True)
 		self.__editor.refresh(False)
 		self.__window.show_all()
 		self.__editor.refresh(False)
-		self.__editor.emit("completion-window-is-visible", True)
-		self.__visible = True
 		return False
 
 	def __hide(self):
@@ -46,11 +44,6 @@ class Window(SignalManager):
 		self.__editor.refresh(False)
 		self.__editor.emit("completion-window-is-visible", False)
 		self.__visible = False
-		return False
-
-	def __precompile_methods(self):
-		methods = (self.__hide, self.__show)
-		self.__editor.optimize(methods)
 		return False
 
 	def __destroy_cb(self, *args):

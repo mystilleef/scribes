@@ -9,8 +9,6 @@ class TreeView(object):
 		self.__sigid3 = manager.connect("match-found", self.__match_found_cb)
 		self.__sigid4 = manager.connect("no-match-found", self.__no_match_found_cb)
 		self.__sigid5 = manager.connect("show-window", self.__map_cb)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=8888)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -131,12 +129,6 @@ class TreeView(object):
 		width = 210 if width < 200 else width
 		return width, height
 
-	def __precompile_methods(self):
-		methods = (self.__populate_model, self.__get_treeview_size,
-			self.__select, self.__activate_selection)
-		self.__editor.optimize(methods)
-		return False
-
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
@@ -144,8 +136,6 @@ class TreeView(object):
 	def __match_found_cb(self, manager, matches):
 		self.__unblock_view()
 		self.__populate_model(matches)
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__populate_model, matches, priority=PRIORITY_LOW)
 		return False
 
 	def __key_press_event_cb(self, textview, event):

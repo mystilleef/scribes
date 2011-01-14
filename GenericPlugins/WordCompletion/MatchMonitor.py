@@ -1,13 +1,14 @@
-class Monitor(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Monitor(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("invalid-string", self.__invalid_cb)
-		self.__sigid3 = manager.connect("valid-string", self.__valid_cb)
-		self.__sigid4 = manager.connect("dictionary", self.__dictionary_cb)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=444)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "invalid-string", self.__invalid_cb)
+		self.connect(manager, "valid-string", self.__valid_cb)
+		self.connect(manager, "dictionary", self.__dictionary_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -18,10 +19,7 @@ class Monitor(object):
 
 	def __destroy(self):
 		del self.__dictionary
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.disconnect()
 		del self
 		return False
 
@@ -64,11 +62,6 @@ class Monitor(object):
 		if (x[1] > y[1]): return -1
 		return 0
 
-	def __precompile_methods(self):
-		methods = (self.__find_matches, self.__sort, self.__process)
-		self.__editor.optimize(methods)
-		return False
-
 	def __emit_matches(self, matches):
 		self.__found = True
 		self.__manager.emit("match-found", matches)
@@ -97,9 +90,7 @@ class Monitor(object):
 		return False
 
 	def __valid_cb(self, manager, string):
-		self.__remove_timer()
-		from gobject import idle_add
-		self.__timer = idle_add(self.__process, string)
+		self.__process(string)
 		return False
 
 	def __dictionary_cb(self, manager, dictionary):

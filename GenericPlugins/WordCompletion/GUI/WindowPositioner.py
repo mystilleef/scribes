@@ -10,8 +10,6 @@ class Positioner(SignalManager):
 		self.connect(manager, "treeview-size", self.__size_cb)
 		self.connect(manager, "show-window", self.__show_cb)
 		self.connect(manager, "no-match-found", self.__hide_cb)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=9999)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -98,16 +96,6 @@ class Positioner(SignalManager):
 		self.__window.resize(width, height)
 		self.__window.move(xcord, ycord)
 		self.__manager.emit("show-window")
-		return False
-
-	def __precompile_methods(self):
-		methods = (
-			self.__size_cb, self.__position_window,
-			self.__get_size, self.__get_cords, 
-			self.__get_y, self.__get_x, 
-			self.__get_textview_data, self.__get_cursor_data,
-		)
-		self.__editor.optimize(methods)
 		return False
 
 	def __destroy_cb(self, *args):
