@@ -24,7 +24,8 @@ class Monitor(SignalManager):
 		self.connect(self.__view, "button-press-event", self.__hide_cb)
 		self.connect(self.__view, "focus-out-event", self.__hide_cb)
 		self.connect(self.__buffer, "insert-text", self.__insert_text_cb, True)
-		self.connect(self.__buffer, "delete-range", self.__hide_cb)
+		self.connect(self.__buffer, "insert-text", self.__insert_cb)
+		self.connect(self.__buffer, "delete-range", self.__hide_cb, True)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -42,14 +43,17 @@ class Monitor(SignalManager):
 		del self
 		return False
 
-	def __send_valid_string_async(self):
+	def __remove_timer(self):
 		try:
-			from gobject import source_remove, timeout_add, PRIORITY_LOW
+			from gobject import source_remove
 			source_remove(self.__timer)
 		except AttributeError:
 			pass
-		finally:
-			self.__timer = timeout_add(350, self.__send_valid_string, priority=PRIORITY_LOW)
+		return False
+
+	def __send_valid_string_async(self):
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__timer = timeout_add(350, self.__send_valid_string, priority=PRIORITY_LOW)
 		return False
 
 	def __send_valid_string(self):
@@ -65,7 +69,7 @@ class Monitor(SignalManager):
 		return False
 
 	def __is_valid_character(self, character):
-#		self.__editor.refresh(False)
+		self.__editor.refresh(False)
 		from string import whitespace
 		if character in whitespace: return False
 		return character.isalpha() or character.isdigit() or (character in ("-", "_"))
@@ -74,7 +78,7 @@ class Monitor(SignalManager):
 		if iterator.starts_line(): return iterator
 		iterator.backward_char()
 		while self.__is_valid_character(iterator.get_char()):
-#			self.__editor.refresh(False)
+			self.__editor.refresh(False)
 			iterator.backward_char()
 			if iterator.starts_line(): return iterator
 		iterator.forward_char()
@@ -84,13 +88,13 @@ class Monitor(SignalManager):
 		if iterator.ends_line(): return iterator
 		if not self.__is_valid_character(iterator.get_char()): return iterator
 		while self.__is_valid_character(iterator.get_char()):
-#			self.__editor.refresh(False)
+			self.__editor.refresh(False)
 			iterator.forward_char()
 			if iterator.ends_line(): return iterator
 		return iterator
 
 	def __get_word_before_cursor(self):
-#		self.__editor.refresh(False)
+		self.__editor.refresh(False)
 		iterator = self.__editor.cursor.copy()
 		# If the cursor is in front of a valid character we ignore
 		# word completion.
@@ -115,8 +119,13 @@ class Monitor(SignalManager):
 		self.__valid = False
 		return False
 
+	def __insert_cb(self, *args):
+		self.__remove_timer()
+		return False
+
 	def __insert_text_cb(self, textbuffer, iterator, text, length):
 		if self.__inserting: return False
+		self.__remove_timer()
 		if (text.isalnum() or (text in ("_", "-"))) and (length == 1):
 			self.__send() if self.__is_visible else self.__send_valid_string_async()
 		else:

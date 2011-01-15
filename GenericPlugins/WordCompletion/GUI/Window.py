@@ -7,8 +7,13 @@ class Window(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(editor, "hide-completion-window", self.__hide_cb)
+		self.connect(editor, "hide-completion-window", self.__hide_cb, True)
 		self.connect(manager, "no-match-found", self.__hide_cb)
+		self.connect(manager, "no-match-found", self.__hide_cb, True)
+		self.connect(manager, "invalid-string", self.__hide_cb)
+		self.connect(manager, "invalid-string", self.__hide_cb, True)
 		self.connect(manager, "hide-window", self.__hide_cb)
+		self.connect(manager, "hide-window", self.__hide_cb, True)
 		self.connect(manager, "show-window", self.__show_cb)
 
 	def __init_attributes(self, manager, editor):
@@ -30,18 +35,13 @@ class Window(SignalManager):
 
 	def __show(self):
 		if self.__visible: return True
-		self.__visible = True
-		self.__editor.emit("completion-window-is-visible", True)
-		self.__editor.refresh(False)
 		self.__window.show_all()
-		self.__editor.refresh(False)
+		self.__editor.emit("completion-window-is-visible", True)
+		self.__visible = True
 		return False
 
 	def __hide(self):
-		if self.__visible is False: return False
-		self.__editor.refresh(False)
 		self.__window.hide()
-		self.__editor.refresh(False)
 		self.__editor.emit("completion-window-is-visible", False)
 		self.__visible = False
 		return False
