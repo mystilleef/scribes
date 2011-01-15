@@ -22,7 +22,7 @@ class ShortcutWindow(SignalManager):
 		# Prevents memory leaks (tested) & instant access after init
 		try:
 			if self.window:
-				# Window already exists, show it
+				# Window already exists, show it self.__shortcutWindow
 				self.__show()
 		except:
 			# Window does not exist, create it

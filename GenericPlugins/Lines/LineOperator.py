@@ -149,15 +149,18 @@ class Operator(object):
 		if not result: return iterator
 		whitespace = (" ", "\t")
 		while iterator.get_char() in whitespace:
+			self.__editor.refresh(False)
 			result = iterator.backward_char()
 			if not result: break
 		return iterator
 
 	def __find_word_begin(self, iterator):
+		if iterator.starts_line() or iterator.ends_line(): return iterator
 		result = iterator.backward_char()
 		if not result: return iterator
-		whitespace = (" ", "\t")
+		whitespace = (" ", "\t",)
 		while not (iterator.get_char() in whitespace):
+			self.__editor.refresh(False)
 			result = iterator.backward_char()
 			if not result: return iterator
 		iterator.forward_char()
@@ -166,7 +169,7 @@ class Operator(object):
 	def __backspace_delete(self):
 		from Exceptions import StartError
 		try:
-			self.__editor.freeze()
+			self.__editor.begin_user_action()
 			cursor = self.__editor.cursor
 			if cursor.is_start(): raise StartError
 			end = cursor.copy()
@@ -176,7 +179,7 @@ class Operator(object):
 		except StartError:
 			pass
 		finally:
-			self.__editor.thaw()
+			self.__editor.end_user_action()
 		return False
 
 	def __copy(self, textbuffer, start, end):
