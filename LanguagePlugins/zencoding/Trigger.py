@@ -8,7 +8,7 @@ class Trigger(SignalManager, TriggerManager):
 		SignalManager.__init__(self, editor)
 		TriggerManager.__init__(self, editor)
 		self.__init_attributes(editor)
-		self.connect(self.__trigger1, "activate", self.__activate_cb)
+#		self.connect(self.__trigger1, "activate", self.__activate_cb)
 		self.connect(self.__trigger2, "activate", self.__activate_cb)
 		self.connect(self.__trigger3, "activate", self.__activate_cb)
 		self.connect(self.__trigger4, "activate", self.__activate_cb)
@@ -22,14 +22,14 @@ class Trigger(SignalManager, TriggerManager):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__manager = None
-		name, shortcut, description, category = (
-			"zencoding-toggle-comment",
-			"<alt>c",
-			_("Add or remove comments in most web languages"),
-			_("Markup Operations")
-		)
-		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
-		self.__trigger1.zen_action = "toggle_comment"
+#		name, shortcut, description, category = (
+#			"zencoding-toggle-comment",
+#			"<alt>c",
+#			_("Add or remove comments in most web languages"),
+#			_("Markup Operations")
+#		)
+#		self.__trigger1 = self.create_trigger(name, shortcut, description, category)
+#		self.__trigger1.zen_action = "toggle_comment"
 		name, shortcut, description, category = (
 			"zencoding-expand-abbreviation",
 			"<ctrl>comma",
