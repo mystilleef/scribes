@@ -280,7 +280,7 @@
                         <child>
                           <object class="GtkLabel" id="label8">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">_Right margin postion:</property>
+                            <property name="label" translatable="yes">_Right margin position:</property>
                             <property name="use_underline">True</property>
                             <property name="single_line_mode">True</property>
                           </object>

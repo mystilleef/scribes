@@ -27,7 +27,6 @@ class Button(object):
 		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __delayed_set(self):
@@ -66,7 +65,7 @@ class Button(object):
 		self.__button.set_width_chars(3)
 		self.__button.set_digits(0)
 		self.__button.set_increments(1, 5)
-		self.__button.set_range(1, 120)
+		self.__button.set_range(1, 300)
 		from gtk import UPDATE_ALWAYS
 		self.__button.set_update_policy(UPDATE_ALWAYS)
 		self.__button.set_numeric(True)
