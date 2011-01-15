@@ -13,10 +13,10 @@ class Trigger(SignalManager, TriggerManager):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		name, shortcut, description, category = (
-			"toggle-javascript-comment", 
+			"toggle-comment", 
 			"<alt>c", 
-			_("Toggle JavaScript comment"), 
-			_("JavaScript Operations")
+			_("Toggle comment"), 
+			_("Miscellaneous Operations")
 		)
 		self.__trigger = self.create_trigger(name, shortcut, description, category)
 		self.__manager = None
