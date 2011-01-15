@@ -187,7 +187,8 @@ class Operator(object):
 		text = textbuffer.get_text(start, end)
 		if not text.strip(whitespace): return
 		end = end.copy()
-		end.backward_char()
+		if text[-1] in ("\n", "\r"): end.backward_char()
+		if text.endswith("\r\n"): end.backward_char()
 		textbuffer.select_range(start, end)
 		textbuffer.copy_clipboard(self.__clipboard)
 		return
