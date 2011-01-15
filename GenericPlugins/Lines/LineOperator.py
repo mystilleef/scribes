@@ -150,6 +150,7 @@ class Operator(object):
 		whitespace = (" ", "\t")
 		while iterator.get_char() in whitespace:
 			self.__editor.refresh(False)
+			if iterator.starts_line() or iterator.ends_line(): return iterator
 			result = iterator.backward_char()
 			if not result: break
 		return iterator
@@ -161,6 +162,7 @@ class Operator(object):
 		whitespace = (" ", "\t",)
 		while not (iterator.get_char() in whitespace):
 			self.__editor.refresh(False)
+			if iterator.starts_line() or iterator.ends_line(): return iterator
 			result = iterator.backward_char()
 			if not result: return iterator
 		iterator.forward_char()
