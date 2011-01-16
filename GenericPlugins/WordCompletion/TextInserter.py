@@ -24,8 +24,8 @@ class Inserter(SignalManager):
 		self.__manager.emit("inserting-text")
 		self.__editor.begin_user_action()
 		self.__editor.textbuffer.insert_at_cursor(text[len(self.__string):].encode("utf8"))
-		self.__editor.end_user_action()
 		self.__manager.emit("inserted-text")
+		self.__editor.end_user_action()
 		return False
 
 	def __destroy_cb(self, *args):
@@ -37,5 +37,7 @@ class Inserter(SignalManager):
 		return False
 
 	def __insert_cb(self, manager, text):
-		self.__insert(text)
+		from gobject import idle_add, PRIORITY_HIGH
+		idle_add(self.__insert, text, priority=PRIORITY_HIGH)
+#		self.__insert(text)
 		return False

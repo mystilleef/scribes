@@ -34,16 +34,17 @@ class Window(SignalManager):
 		return 
 
 	def __show(self):
-		if self.__visible: return True
+		if self.__visible: return False
+		self.__visible = True
 		self.__window.show_all()
 		self.__editor.emit("completion-window-is-visible", True)
-		self.__visible = True
 		return False
 
 	def __hide(self):
+		if self.__visible is False: return False
 		self.__window.hide()
-		self.__editor.emit("completion-window-is-visible", False)
 		self.__visible = False
+		self.__editor.emit("completion-window-is-visible", False)
 		return False
 
 	def __destroy_cb(self, *args):

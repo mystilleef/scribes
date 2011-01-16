@@ -36,6 +36,7 @@ class Monitor(SignalManager):
 		self.__is_active = False
 		self.__is_visible = False
 		self.__inserting = False
+		self.__smark, self.__emark = None, None
 		return
 
 	def __destroy(self):
@@ -62,14 +63,11 @@ class Monitor(SignalManager):
 		return False
 
 	def __send(self):
-#		self.__editor.freeze()
 		string = self.__get_word_before_cursor()
-#		self.__editor.thaw()
 		self.__emit_valid(string) if string else self.__emit_invalid()
 		return False
 
 	def __is_valid_character(self, character):
-		self.__editor.refresh(False)
 		from string import whitespace
 		if character in whitespace: return False
 		return character.isalpha() or character.isdigit() or (character in ("-", "_"))
@@ -78,7 +76,6 @@ class Monitor(SignalManager):
 		if iterator.starts_line(): return iterator
 		iterator.backward_char()
 		while self.__is_valid_character(iterator.get_char()):
-			self.__editor.refresh(False)
 			iterator.backward_char()
 			if iterator.starts_line(): return iterator
 		iterator.forward_char()
@@ -88,13 +85,11 @@ class Monitor(SignalManager):
 		if iterator.ends_line(): return iterator
 		if not self.__is_valid_character(iterator.get_char()): return iterator
 		while self.__is_valid_character(iterator.get_char()):
-			self.__editor.refresh(False)
 			iterator.forward_char()
 			if iterator.ends_line(): return iterator
 		return iterator
 
 	def __get_word_before_cursor(self):
-		self.__editor.refresh(False)
 		iterator = self.__editor.cursor.copy()
 		# If the cursor is in front of a valid character we ignore
 		# word completion.
@@ -119,17 +114,18 @@ class Monitor(SignalManager):
 		self.__valid = False
 		return False
 
-	def __insert_cb(self, *args):
+	def __insert_cb(self, textbuffer, iterator, text, length):
 		self.__remove_timer()
+		from Utils import is_delimeter
+		if length > 1 or is_delimeter(text): self.__manager.emit("no-match-found")
 		return False
 
 	def __insert_text_cb(self, textbuffer, iterator, text, length):
 		if self.__inserting: return False
-		self.__remove_timer()
-		if (text.isalnum() or (text in ("_", "-"))) and (length == 1):
-			self.__send() if self.__is_visible else self.__send_valid_string_async()
-		else:
-			self.__emit_invalid()
+		if length > 1: return False
+		from Utils import is_delimeter
+		if is_delimeter(text): return False
+		self.__send() if self.__is_visible else self.__send_valid_string_async()
 		return False
 
 	def __destroy_cb(self, *args):

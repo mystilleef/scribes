@@ -75,9 +75,7 @@ class TreeView(object):
 			self.__treeview.set_model(None)
 			self.__model.clear()
 			for word in matches:
-				self.__editor.refresh(False)
 				self.__model.append([word])
-				self.__editor.refresh(False)
 			self.__treeview.set_model(self.__model)
 			if view_window: view_window.thaw_updates()
 			self.__column.queue_resize()
@@ -129,12 +127,24 @@ class TreeView(object):
 		width = 210 if width < 200 else width
 		return width, height
 
+	def __remove_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		return False
+
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __match_found_cb(self, manager, matches):
 		self.__unblock_view()
+#		self.__remove_timer()
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__populate_model, matches, priority=PRIORITY_LOW)
+#		self.__timer = idle_add(self.__populate_model, matches, priority=PRIORITY_LOW)
 		self.__populate_model(matches)
 		return False
 
