@@ -1,6 +1,6 @@
 name = "Automatic Word Completion Plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
-version = 0.5
+version = 0.6
 autoload = True
 class_name = "WordCompletionPlugin"
 short_description = "Automatic word completion for Scribes"
@@ -12,10 +12,10 @@ class WordCompletionPlugin(object):
 		self.__editor = editor
 
 	def load(self):
-		from WordCompletion.Manager import Manager
-		self.__manager = Manager(self.__editor)
+		from WordCompletion.Trigger import Trigger
+		self.__trigger = Trigger(self.__editor)
 		return
 
 	def unload(self):
-		self.__manager.destroy()
+		self.__trigger.destroy()
 		return

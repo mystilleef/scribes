@@ -6,14 +6,17 @@ class Monitor(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(manager, "invalid-string", self.__invalid_cb)
-		self.connect(manager, "valid-string", self.__valid_cb)
+		self.__sigid1 = self.connect(manager, "invalid-string", self.__invalid_cb)
+		self.__sigid2 = self.connect(manager, "valid-string", self.__valid_cb)
 		self.connect(manager, "dictionary", self.__dictionary_cb)
+		self.connect(manager, "enable-word-completion", self.__completion_cb)
+		self.__block()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
 		self.__found = False
+		self.__blocked = False
 		self.__dictionary = {}
 		return False
 
@@ -73,6 +76,20 @@ class Monitor(SignalManager):
 		self.__found = False
 		return False
 
+	def __block(self):
+		if self.__blocked: return False
+		self.__manager.handler_block(self.__sigid1)
+		self.__manager.handler_block(self.__sigid2)
+		self.__blocked = True
+		return False
+
+	def __unblock(self):
+		if self.__blocked is False: return False
+		self.__manager.handler_unblock(self.__sigid1)
+		self.__manager.handler_unblock(self.__sigid2)
+		self.__blocked = False
+		return False
+
 	def __remove_timer(self):
 		try:
 			from gobject import source_remove
@@ -95,4 +112,8 @@ class Monitor(SignalManager):
 
 	def __dictionary_cb(self, manager, dictionary):
 		self.__dictionary = dictionary
+		return False
+
+	def __completion_cb(self, manager, enable_word_completion):
+		self.__unblock() if enable_word_completion else self.__block()
 		return False

@@ -15,12 +15,18 @@ class Manager(Signal):
 		Monitor(self, editor)
 		from InsertedTextMonitor import Monitor
 		Monitor(self, editor)
-		from TriggerMarker import Marker 
+		from TriggerMarker import Marker
 		Marker(self, editor)
 		from IndexerProcessManager import Manager
 		Manager(self, editor)
 		from IndexRequester import Requester
 		Requester(self, editor)
+		from DatabaseMonitor import Monitor
+		Monitor(self, editor)
+		from DatabaseWriter import Writer
+		Writer(self, editor)
+		from DatabaseReader import Reader
+		Reader(self, editor)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -33,4 +39,16 @@ class Manager(Signal):
 	def destroy(self):
 		self.emit("destroy")
 		del self
+		return False
+
+	def activate(self):
+		from Metadata import get_value
+		enable_word_completion = not get_value()
+		self.emit("update-database", enable_word_completion)
+		# This looks very ugly. Fix later. Yeah right.
+		from gettext import gettext as _
+		ENABLE_MESSAGE = _("Enabled automatic word completion")
+		DISABLE_MESSAGE = _("Disabled automatic word completion")
+		feedback = self.__editor.update_message 
+		feedback(ENABLE_MESSAGE, "yes", 7) if enable_word_completion else feedback(DISABLE_MESSAGE, "no")
 		return False
