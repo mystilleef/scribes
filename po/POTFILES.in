@@ -139,6 +139,8 @@ GenericPlugins/TriggerArea/MenuItem.py
 GenericPlugins/TriggerArea/Trigger.py
 GenericPlugins/UndoRedo/Trigger.py
 GenericPlugins/UserGuide/Trigger.py
+GenericPlugins/WordCompletion/Manager.py
+GenericPlugins/WordCompletion/Trigger.py
 LanguagePlugins/HashComments/Trigger.py
 LanguagePlugins/HashComments/i18n.py
 LanguagePlugins/JavaScriptComment/FeedbackManager.py
