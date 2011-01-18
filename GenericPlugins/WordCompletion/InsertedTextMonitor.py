@@ -13,6 +13,7 @@ class Monitor(SignalManager):
 		self.connect(manager, "no-match-found", self.__no_match_found_cb)
 		self.connect(manager, "inserting-text", self.__inserting_cb)
 		self.connect(manager, "inserted-text", self.__inserted_cb)
+		self.connect(manager, "insertion-marks", self.__marks_cb)
 		self.connect(self.__view, "backspace", self.__hide_cb)
 		self.connect(self.__view, "cut-clipboard", self.__hide_cb)
 		self.connect(self.__view, "paste-clipboard", self.__hide_cb)
@@ -39,7 +40,7 @@ class Monitor(SignalManager):
 		self.__is_active = False
 		self.__is_visible = False
 		self.__inserting = False
-		self.__smark, self.__emark = None, None
+		self.__lmark, self.__rmark = None, None
 		return
 
 	def __destroy(self):
@@ -71,40 +72,11 @@ class Monitor(SignalManager):
 		return False
 
 	def __get_word_before_cursor(self):
-		self.__editor.refresh(False)
-		iterator = self.__editor.cursor.copy()
-		start = self.__backward_to_word_begin(iterator.copy())
-		end = self.__forward_to_word_end(iterator.copy())
+		start = self.__buffer.get_iter_at_mark(self.__lmark)
+		end = self.__buffer.get_iter_at_mark(self.__rmark)
 		word = self.__buffer.get_text(start, end).strip()
 		if len(word) > WORDS_BEFORE_CURSOR: return word
 		return None
-
-	def __is_valid_character(self, character):
-		self.__editor.refresh(False)
-		from string import whitespace
-		if character in whitespace: return False
-		return character.isalpha() or character.isdigit() or (character in ("-", "_"))
-
-	def __backward_to_word_begin(self, iterator):
-		self.__editor.refresh(False)
-		if iterator.starts_line(): return iterator
-		iterator.backward_char()
-		while self.__is_valid_character(iterator.get_char()):
-			self.__editor.refresh(False)
-			iterator.backward_char()
-			if iterator.starts_line(): return iterator
-		iterator.forward_char()
-		return iterator
-
-	def __forward_to_word_end(self, iterator):
-		self.__editor.refresh(False)
-		if iterator.ends_line(): return iterator
-		if not self.__is_valid_character(iterator.get_char()): return iterator
-		while self.__is_valid_character(iterator.get_char()):
-			self.__editor.refresh(False)
-			iterator.forward_char()
-			if iterator.ends_line(): return iterator
-		return iterator
 
 	def __emit_valid(self, string):
 		self.__valid = True
@@ -118,11 +90,12 @@ class Monitor(SignalManager):
 		return False
 
 	def __compile(self):
-		methods = (
-			self.__insert_cb, self.__insert_text_cb, self.__get_word_before_cursor,
-			self.__backward_to_word_begin, self.__forward_to_word_end, self.__is_valid_character
-		)
+		methods = ( self.__insert_cb, self.__insert_text_cb, self.__get_word_before_cursor, )
 		self.__editor.optimize(methods)
+		return False
+
+	def __marks_cb(self, manager, marks):
+		self.__lmark, self.__rmark = marks
 		return False
 
 	def __insert_cb(self, textbuffer, iterator, text, length):
@@ -131,7 +104,7 @@ class Monitor(SignalManager):
 		return False
 
 	def __insert_text_cb(self, textbuffer, iterator, text, length):
-		if self.__inserting: return False
+		if self.__inserting or self.__lmark is None: return False
 		if length > 1: return False
 		if is_delimeter(text) or not is_delimeter(iterator.get_char()): return False
 		self.__send() if self.__is_visible else self.__send_valid_string_async()
