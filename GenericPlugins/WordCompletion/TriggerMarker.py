@@ -6,8 +6,10 @@ class Marker(SignalManager):
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(self.__buffer, "insert-text", self.__insert_cb, True)
+		self.__sigid1 = self.connect(self.__buffer, "insert-text", self.__insert_cb, True)
+		self.connect(manager, "enable-word-completion", self.__completion_cb)
 		manager.emit("insertion-marks", (self.__lmark, self.__rmark))
+		self.__block()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -15,6 +17,7 @@ class Marker(SignalManager):
 		self.__buffer = editor.textbuffer
 		self.__lmark = editor.create_left_mark()
 		self.__rmark = editor.create_right_mark()
+		self.__blocked = False
 		return
 
 	def __move_marks_to(self, iterator):
@@ -43,6 +46,23 @@ class Marker(SignalManager):
 			if iterator.starts_line(): return iterator
 		iterator.forward_char()
 		return iterator
+
+	def __block(self):
+		if self.__blocked: return False
+		self.__buffer.handler_block(self.__sigid1)
+		self.__blocked = True
+		return False
+
+	def __unblock(self):
+		if self.__blocked is False: return False
+		self.__buffer.handler_unblock(self.__sigid1)
+		self.__blocked = False
+		return False
+
+	def __completion_cb(self, manager, enable_word_completion):
+		self.__unblock() if enable_word_completion else self.__block()
+		if enable_word_completion: self.__reposition_marks(self.__editor.cursor)
+		return False
 
 	def __insert_cb(self, textbuffer, iterator, text, length):
 		from Utils import is_delimeter

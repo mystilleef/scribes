@@ -25,9 +25,11 @@ class Monitor(SignalManager):
 		self.connect(self.__view, "move-focus", self.__hide_cb)
 		self.connect(self.__view, "button-press-event", self.__hide_cb)
 		self.connect(self.__view, "focus-out-event", self.__hide_cb)
-		self.connect(self.__buffer, "insert-text", self.__insert_text_cb, True)
-		self.connect(self.__buffer, "insert-text", self.__insert_cb)
+		self.__sigid1 = self.connect(self.__buffer, "insert-text", self.__insert_text_cb, True)
+		self.__sigid2 = self.connect(self.__buffer, "insert-text", self.__insert_cb)
 		self.connect(self.__buffer, "delete-range", self.__hide_cb, True)
+		self.connect(manager, "enable-word-completion", self.__completion_cb)
+		self.__block()
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__compile, priority=PRIORITY_LOW)
 
@@ -40,6 +42,7 @@ class Monitor(SignalManager):
 		self.__is_active = False
 		self.__is_visible = False
 		self.__inserting = False
+		self.__blocked = False
 		self.__lmark, self.__rmark = None, None
 		return
 
@@ -89,9 +92,27 @@ class Monitor(SignalManager):
 		self.__valid = False
 		return False
 
+	def __block(self):
+		if self.__blocked: return False
+		self.__buffer.handler_block(self.__sigid1)
+		self.__buffer.handler_block(self.__sigid2)
+		self.__blocked = True
+		return False
+
+	def __unblock(self):
+		if self.__blocked is False: return False
+		self.__buffer.handler_unblock(self.__sigid1)
+		self.__buffer.handler_unblock(self.__sigid2)
+		self.__blocked = False
+		return False
+
 	def __compile(self):
 		methods = ( self.__insert_cb, self.__insert_text_cb, self.__get_word_before_cursor, )
 		self.__editor.optimize(methods)
+		return False
+
+	def __completion_cb(self, manager, enable_word_completion):
+		self.__unblock() if enable_word_completion else self.__block()
 		return False
 
 	def __marks_cb(self, manager, marks):

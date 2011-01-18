@@ -8,9 +8,11 @@ class Requester(SignalManager):
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.__sigid1 = self.connect(editor, "cursor-moved", self.__moved_cb, True)
 		self.__sigid2 = self.connect(self.__view, "key-press-event", self.__event_cb)
-		self.connect(self.__buffer, "changed", self.__changed_cb, True)
-		self.connect(self.__buffer, "insert-text", self.__insert_cb, True)
+		self.__sigid3 = self.connect(self.__buffer, "changed", self.__changed_cb, True)
+		self.__sigid4 = self.connect(self.__buffer, "insert-text", self.__insert_cb, True)
+		self.connect(manager, "enable-word-completion", self.__completion_cb)
 		self.__block()
+		self.__block1()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -18,6 +20,7 @@ class Requester(SignalManager):
 		self.__buffer = editor.textbuffer
 		self.__view = editor.textview
 		self.__blocked = False
+		self.__blocked1 = False
 		self.__line_number = 0
 		return
 
@@ -53,6 +56,20 @@ class Requester(SignalManager):
 		self.__blocked = False
 		return False
 
+	def __block1(self):
+		if self.__blocked1: return False
+		self.__buffer.handler_block(self.__sigid3)
+		self.__buffer.handler_block(self.__sigid4)
+		self.__blocked1 = True
+		return False
+
+	def __unblock1(self):
+		if self.__blocked1 is False: return False
+		self.__buffer.handler_unblock(self.__sigid3)
+		self.__buffer.handler_unblock(self.__sigid4)
+		self.__blocked1 = False
+		return False
+
 	def __remove_timer(self, timer=1):
 		try:
 			timers = {
@@ -83,6 +100,11 @@ class Requester(SignalManager):
 	def __event_cb(self, textview, event):
 		from gtk.keysyms import Left, Right
 		if event.keyval in (Left, Right): self.__index_async()
+		return False
+
+	def __completion_cb(self, manager, enable_word_completion):
+		self.__unblock1() if enable_word_completion else self.__block1()
+		if enable_word_completion is False: self.__block()
 		return False
 
 	def __destroy_cb(self, *args):
