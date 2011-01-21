@@ -20,18 +20,21 @@ class Marker(SignalManager):
 		self.__blocked = False
 		return
 
-	def __move_marks_to(self, iterator):
+	def __move_marks(self):
+		iterator = self.__editor.cursor.copy()
 		self.__buffer.move_mark(self.__lmark, iterator)
 		self.__buffer.move_mark(self.__rmark, iterator)
 		return False
 
-	def __reposition_marks(self, iterator):
+	def __reposition_marks(self):
+		iterator = self.__editor.cursor.copy()
 		self.__buffer.move_mark(self.__rmark, iterator)
 		iterator = self.__backward_to_word_begin(iterator.copy())
 		self.__buffer.move_mark(self.__lmark, iterator)
 		return False
 
-	def __in_mark_range(self, iterator):
+	def __in_mark_range(self):
+		iterator = self.__editor.cursor.copy()
 		loffset = self.__buffer.get_iter_at_mark(self.__lmark).get_offset()
 		roffset = self.__buffer.get_iter_at_mark(self.__rmark).get_offset()
 		ioffset = iterator.get_offset()
@@ -61,16 +64,16 @@ class Marker(SignalManager):
 
 	def __completion_cb(self, manager, enable_word_completion):
 		self.__unblock() if enable_word_completion else self.__block()
-		if enable_word_completion: self.__reposition_marks(self.__editor.cursor)
+		if enable_word_completion: self.__reposition_marks()
 		return False
 
 	def __insert_cb(self, textbuffer, iterator, text, length):
 		from Utils import is_delimeter
-		if not is_delimeter(iterator.get_char()): return False
+		if not is_delimeter(self.__editor.cursor.get_char()): return False
 		if is_delimeter(text):
-			self.__move_marks_to(iterator)
+			self.__move_marks()
 		else:
-			if self.__in_mark_range(iterator) is False: self.__reposition_marks(iterator)
+			if self.__in_mark_range() is False: self.__reposition_marks()
 		return False
 
 	def __destroy_cb(self, *args):

@@ -141,10 +141,6 @@ class TreeView(object):
 
 	def __match_found_cb(self, manager, matches):
 		self.__unblock_view()
-#		self.__remove_timer()
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__populate_model, matches, priority=PRIORITY_LOW)
-#		self.__timer = idle_add(self.__populate_model, matches, priority=PRIORITY_LOW)
 		self.__populate_model(matches)
 		return False
 

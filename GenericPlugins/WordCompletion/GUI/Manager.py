@@ -18,10 +18,8 @@ class Manager(object):
 	def __destroy(self):
 		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
 		del self
-		self = None
 		return False
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
-
