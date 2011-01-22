@@ -29,6 +29,8 @@ class Initializer(object):
 		from GUI.Manager import Manager
 		Manager(editor, uri)
 ########################################################################
+		from FreezeManager import Manager
+		Manager(editor)
 		from EncodingSystem.Manager import Manager
 		Manager(editor)
 		from FileChangeMonitor import Monitor

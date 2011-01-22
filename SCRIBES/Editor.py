@@ -240,15 +240,11 @@ class Editor(Signals):
 		return create_image(path)
 
 	def freeze(self):
-#		self.refresh()
-		self.view.window.freeze_updates()
-		self.view.set_editable(False)
+		self.emit("freeze")
 		return False
 
 	def thaw(self):
-		self.view.set_editable(True)
-		self.view.window.thaw_updates()
-		self.refresh()
+		self.emit("thaw")
 		return False
 
 	def register_object(self, instance):

@@ -276,6 +276,7 @@ scribes_PYTHON = \
 	FileModificationMonitor.py \
 	FontMetadata.py \
 	ForkScribesMetadata.py \
+	FreezeManager.py \
 	FullScreenManager.py \
 	GladeObjectManager.py \
 	GlobalStore.py \
