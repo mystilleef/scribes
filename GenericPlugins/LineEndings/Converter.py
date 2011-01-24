@@ -24,7 +24,7 @@ class Converter(object):
 		from gobject import timeout_add
 		timeout_add(100, self.__center, iterator, priority=9999)
 		return False
-	
+
 	def __center(self, iterator):
 		self.__editor.textbuffer.place_cursor(iterator)
 		self.__editor.textview.scroll_to_iter(iterator, 0.3, use_align=True, xalign=1.0)
@@ -38,7 +38,6 @@ class Converter(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		del self
-		self = None
 		return
 
 	def __to_unix_cb(self, *args):
@@ -49,13 +48,13 @@ class Converter(object):
 
 	def __to_mac_cb(self, *args):
 		self.__convert("\r")
-		message = _("Converted line endings to WINDOWS")
+		message = _("Converted line endings to MAC")
 		self.__editor.update_message(message, "pass")
 		return False
 
 	def __to_windows_cb(self, *args):
 		self.__convert("\r\n")
-		message = _("Converted line ends to MAC")
+		message = _("Converted line ends to WINDOWS")
 		self.__editor.update_message(message, "pass")
 		return False
 
