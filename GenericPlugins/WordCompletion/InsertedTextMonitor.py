@@ -38,7 +38,6 @@ class Monitor(SignalManager):
 		self.__editor = editor
 		self.__buffer = editor.textbuffer
 		self.__view = editor.textview
-		self.__valid = False
 		self.__is_active = False
 		self.__is_visible = False
 		self.__inserting = False
@@ -59,19 +58,19 @@ class Monitor(SignalManager):
 			pass
 		return False
 
-	def __send_valid_string_async(self):
-		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer = timeout_add(350, self.__send_valid_string, priority=PRIORITY_LOW)
+	def __send(self):
+		string = self.__get_word_before_cursor()
+		self.__manager.emit("generate", string) if string else self.__emit_invalid()
 		return False
 
-	def __send_valid_string(self):
+	def __send_idle(self):
 		from gobject import idle_add, PRIORITY_LOW
 		self.__timer = idle_add(self.__send, priority=PRIORITY_LOW)
 		return False
 
-	def __send(self):
-		string = self.__get_word_before_cursor()
-		self.__emit_valid(string) if string else self.__emit_invalid()
+	def __send_timeout(self):
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__timer = timeout_add(500, self.__send_idle, priority=PRIORITY_LOW)
 		return False
 
 	def __get_word_before_cursor(self):
@@ -81,15 +80,8 @@ class Monitor(SignalManager):
 		if len(word) > WORDS_BEFORE_CURSOR: return word
 		return None
 
-	def __emit_valid(self, string):
-		self.__valid = True
-		self.__manager.emit("valid-string", string)
-		return False
-
 	def __emit_invalid(self):
-		if self.__valid is False: return
-		self.__manager.emit("invalid-string")
-		self.__valid = False
+		self.__manager.emit("no-match-found")
 		return False
 
 	def __block(self):
@@ -125,10 +117,10 @@ class Monitor(SignalManager):
 		return False
 
 	def __insert_text_cb(self, textbuffer, iterator, text, length):
-		if self.__inserting or self.__lmark is None: return False
-		if length > 1: return False
+		if self.__inserting or self.__lmark is None or length > 1: return False
 		if is_delimeter(text) or not is_delimeter(iterator.get_char()): return False
-		self.__send() if self.__is_visible else self.__send_valid_string_async()
+		self.__remove_timer()
+		self.__send() if self.__is_visible else self.__send_timeout()
 		return False
 
 	def __destroy_cb(self, *args):

@@ -9,15 +9,19 @@ class Manager(Signal):
 		Manager(self, editor)
 		from ProcessCommunicator import Communicator
 		Communicator(self, editor)
+		from SuggestionProcessCommunicator import Communicator
+		Communicator(self, editor)
 		from TextInserter import Inserter
 		Inserter(self, editor)
-		from MatchMonitor import Monitor
-		Monitor(self, editor)
+#		from MatchMonitor import Monitor
+#		Monitor(self, editor)
 		from InsertedTextMonitor import Monitor
 		Monitor(self, editor)
 		from TriggerMarker import Marker
 		Marker(self, editor)
 		from IndexerProcessManager import Manager
+		Manager(self, editor)
+		from SuggestionProcessManager import Manager
 		Manager(self, editor)
 		from IndexRequester import Requester
 		Requester(self, editor)

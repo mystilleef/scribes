@@ -10,6 +10,8 @@ class Marker(SignalManager):
 		self.connect(manager, "enable-word-completion", self.__completion_cb)
 		manager.emit("insertion-marks", (self.__lmark, self.__rmark))
 		self.__block()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__compile, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -21,22 +23,22 @@ class Marker(SignalManager):
 		return
 
 	def __move_marks(self):
-		iterator = self.__editor.cursor.copy()
+		iterator = self.__editor.cursor
 		self.__buffer.move_mark(self.__lmark, iterator)
 		self.__buffer.move_mark(self.__rmark, iterator)
 		return False
 
 	def __reposition_marks(self):
-		iterator = self.__editor.cursor.copy()
+		iterator = self.__editor.cursor
 		self.__buffer.move_mark(self.__rmark, iterator)
 		iterator = self.__backward_to_word_begin(iterator.copy())
 		self.__buffer.move_mark(self.__lmark, iterator)
 		return False
 
 	def __in_mark_range(self):
-		iterator = self.__editor.cursor.copy()
 		loffset = self.__buffer.get_iter_at_mark(self.__lmark).get_offset()
 		roffset = self.__buffer.get_iter_at_mark(self.__rmark).get_offset()
+		iterator = self.__editor.cursor
 		ioffset = iterator.get_offset()
 		return loffset <= ioffset <= roffset
 
@@ -60,6 +62,14 @@ class Marker(SignalManager):
 		if self.__blocked is False: return False
 		self.__buffer.handler_unblock(self.__sigid1)
 		self.__blocked = False
+		return False
+
+	def __compile(self):
+		methods = (
+			self.__insert_cb, self.__backward_to_word_begin, self.__move_marks,
+			self.__in_mark_range, self.__reposition_marks,
+		)
+		self.__editor.optimize(methods)
 		return False
 
 	def __completion_cb(self, manager, enable_word_completion):

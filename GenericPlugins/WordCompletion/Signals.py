@@ -20,6 +20,7 @@ class Signal(GObject):
 		"treeview-size": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"insertion-marks": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"insert-text": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"generate": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}
 
 	def __init__(self):

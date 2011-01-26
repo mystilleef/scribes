@@ -100,6 +100,7 @@ class Monitor(SignalManager):
 		return False
 
 	def __valid_cb(self, manager, string):
+		manager.emit("generate", string)
 		self.__process(string)
 		return False
 

@@ -18,9 +18,6 @@ class Communicator(SignalManager):
 						'org.freedesktop.DBus',
 						'/org/freedesktop/DBus',
 						arg0=indexer_dbus_service)
-		editor.session_bus.add_signal_receiver(self.__finished_cb,
-						signal_name="finished",
-						dbus_interface=indexer_dbus_service)
 		self.__start_index()
 
 	def __init_attributes(self, manager, editor):
@@ -37,9 +34,6 @@ class Communicator(SignalManager):
 			'org.freedesktop.DBus',
 			'/org/freedesktop/DBus',
 			arg0=indexer_dbus_service)
-		self.__editor.session_bus.remove_signal_receiver(self.__finished_cb,
-			signal_name="finished",
-			dbus_interface=indexer_dbus_service)
 		del self
 		return False
 
@@ -85,10 +79,6 @@ class Communicator(SignalManager):
 	def __name_change_cb(self, *args):
 		self.__indexer = self.__get_indexer()
 		self.__start_index()
-		return False
-
-	def __finished_cb(self, dictionary):
-		self.__manager.emit("dictionary", dictionary)
 		return False
 
 	def __reply_handler_cb(self, *args):
