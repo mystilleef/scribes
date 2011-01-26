@@ -13,10 +13,8 @@ class Manager(Signal):
 		Communicator(self, editor)
 		from TextInserter import Inserter
 		Inserter(self, editor)
-#		from MatchMonitor import Monitor
-#		Monitor(self, editor)
-		from InsertedTextMonitor import Monitor
-		Monitor(self, editor)
+		from TriggerDetector import Detector
+		Detector(self, editor)
 		from TriggerMarker import Marker
 		Marker(self, editor)
 		from IndexerProcessManager import Manager
@@ -53,6 +51,6 @@ class Manager(Signal):
 		from gettext import gettext as _
 		ENABLE_MESSAGE = _("Enabled automatic word completion")
 		DISABLE_MESSAGE = _("Disabled automatic word completion")
-		feedback = self.__editor.update_message 
+		feedback = self.__editor.update_message
 		feedback(ENABLE_MESSAGE, "yes", 7) if enable_word_completion else feedback(DISABLE_MESSAGE, "no")
 		return False

@@ -3,7 +3,7 @@ from Utils import is_delimeter
 
 WORDS_BEFORE_CURSOR = 2
 
-class Monitor(SignalManager):
+class Detector(SignalManager):
 
 	def __init__(self, manager, editor):
 		SignalManager.__init__(self)
