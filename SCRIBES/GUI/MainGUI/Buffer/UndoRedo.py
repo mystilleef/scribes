@@ -75,11 +75,9 @@ class UndoRedo(object):
 		return False
 
 	def __undo_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__undo)
+		self.__undo()
 		return False
 
 	def __redo_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__redo)
+		self.__redo()
 		return False

@@ -95,9 +95,7 @@ class Operator(object):
 		end = self.__editor.forward_to_line_end(end)
 		end_offset = end.get_offset()
 		text = "\n" + textbuffer.get_text(start, end)
-		textbuffer.begin_user_action()
 		textbuffer.insert(end, text)
-		textbuffer.end_user_action()
 		iterator = textbuffer.get_iter_at_offset(end_offset)
 		iterator.forward_line()
 		iterator.set_line_offset(cursor_offset)
@@ -114,10 +112,8 @@ class Operator(object):
 		indentation = self.__editor.line_indentation
 		text = self.__editor.line_text
 		text = "%s%s%s" % (text, self.__editor.newline_character, indentation)
-		textbuffer.begin_user_action()
 		textbuffer.delete(start, end) 
 		textbuffer.insert_at_cursor(text)
-		textbuffer.end_user_action()
 		message = _("Freed line %d") % (self.__editor.cursor.get_line() + 1)
 		self.__editor.update_message(message, "pass")
 		self.__editor.move_view_to_cursor()
@@ -130,7 +126,6 @@ class Operator(object):
 		end = self.__editor.forward_to_line_end()
 		textbuffer = self.__editor.textbuffer
 		textbuffer.place_cursor(start)
-		textbuffer.begin_user_action()
 		textbuffer.delete(start, end)
 		text = "%s%s%s" % (indentation, self.__editor.newline_character, text)
 		textbuffer.insert_at_cursor(text)
@@ -138,7 +133,6 @@ class Operator(object):
 		iterator.backward_line()
 		iterator = self.__editor.forward_to_line_end(iterator)
 		textbuffer.place_cursor(iterator)
-		textbuffer.end_user_action()
 		message = _("Freed line %d") % (self.__editor.cursor.get_line() + 1)
 		self.__editor.update_message(message, "pass")
 		self.__editor.move_view_to_cursor()
@@ -149,7 +143,6 @@ class Operator(object):
 		if not result: return iterator
 		whitespace = (" ", "\t")
 		while iterator.get_char() in whitespace:
-			self.__editor.refresh(False)
 			if iterator.starts_line() or iterator.ends_line(): return iterator
 			result = iterator.backward_char()
 			if not result: break
@@ -161,7 +154,6 @@ class Operator(object):
 		if not result: return iterator
 		whitespace = (" ", "\t",)
 		while not (iterator.get_char() in whitespace):
-			self.__editor.refresh(False)
 			if iterator.starts_line() or iterator.ends_line(): return iterator
 			result = iterator.backward_char()
 			if not result: return iterator
@@ -169,19 +161,12 @@ class Operator(object):
 		return iterator
 
 	def __backspace_delete(self):
-		from Exceptions import StartError
-		try:
-			self.__editor.begin_user_action()
-			cursor = self.__editor.cursor
-			if cursor.is_start(): raise StartError
-			end = cursor.copy()
-			start = self.__find_non_whitespace_char(end.copy())
-			start = self.__find_word_begin(start.copy())
-			self.__del(start, end)
-		except StartError:
-			pass
-		finally:
-			self.__editor.end_user_action()
+		cursor = self.__editor.cursor
+		if cursor.is_start(): return False
+		end = cursor.copy()
+		start = self.__find_non_whitespace_char(end.copy())
+		start = self.__find_word_begin(start.copy())
+		self.__del(start, end)
 		return False
 
 	def __copy(self, textbuffer, start, end):
@@ -198,9 +183,7 @@ class Operator(object):
 	def __del(self, start, end):
 		textbuffer = self.__editor.textbuffer
 		self.__copy(textbuffer, start, end)
-		textbuffer.begin_user_action()
 		textbuffer.delete(start, end)
-		textbuffer.end_user_action()
 		return False
 
 	def __delete_to_end(self):
@@ -256,7 +239,6 @@ class Operator(object):
 
 	def __delete_last_line(self):
 		try:
-			self.__editor.textbuffer.begin_user_action()
 			self.__delete_single_line()
 			iterator = self.__editor.cursor.copy()
 			iterator.backward_line()
@@ -264,7 +246,6 @@ class Operator(object):
 			end.forward_char()
 			start = self.__editor.forward_to_line_end(iterator.copy())
 			self.__editor.textbuffer.delete(start, end)
-			self.__editor.textbuffer.end_user_action()
 			self.__editor.update_message(_("Deleted last line"), "pass")
 		finally:
 			self.__editor.move_view_to_cursor()
@@ -285,63 +266,51 @@ class Operator(object):
 		return False
 
 	def __delete_line_cb(self, *args):
-		self.__view.window.freeze_updates()
-		self.__view.set_editable(False)
+		self.__editor.begin_user_action()
 		self.__delete()
-		self.__view.set_editable(True)
-		self.__view.window.thaw_updates()
+		self.__editor.end_user_action()
 		return False
 
 	def __delete_cursor_to_start_cb(self, *args):
-		self.__view.window.freeze_updates()
-		self.__view.set_editable(False)
+		self.__editor.begin_user_action()
 		self.__delete_to_start()
-		self.__view.set_editable(True)
-		self.__view.window.thaw_updates()
+		self.__editor.end_user_action()
 		return False
 
 	def __delete_cursor_to_end_cb(self, *args):
-		self.__view.window.freeze_updates()
-		self.__view.set_editable(False)
+		self.__editor.begin_user_action()
 		self.__delete_to_end()
-		self.__view.set_editable(True)
-		self.__view.window.thaw_updates()
+		self.__editor.end_user_action()
 		return False
 
 	def __duplicate_line_cb(self, *args):
-		self.__view.window.freeze_updates()
-		self.__view.set_editable(False)
+		self.__editor.begin_user_action()
 		self.__duplicate_line()
-		self.__view.set_editable(True)
-		self.__view.window.thaw_updates()
+		self.__editor.end_user_action()
 		return False
 
 	def __line_below_cb(self, *args):
-		self.__view.window.freeze_updates()
-		self.__view.set_editable(False)
+		self.__editor.begin_user_action()
 		self.__line_below()
-		self.__view.set_editable(True)
-		self.__view.window.thaw_updates()
+		self.__editor.end_user_action()
 		return False
 
 	def __line_above_cb(self, *args):
-		self.__view.window.freeze_updates()
-		self.__view.set_editable(False)
+		self.__editor.begin_user_action()
 		self.__line_above()
-		self.__view.set_editable(True)
-		self.__view.window.thaw_updates()
+		self.__editor.end_user_action()
 		return False
 
 	def __join_line_cb(self, *args):
-		self.__view.window.freeze_updates()
-		self.__view.set_editable(False)
+		self.__editor.begin_user_action()
 		self.__join_line()
-		self.__view.set_editable(True)
-		self.__view.window.thaw_updates()
+		self.__editor.end_user_action()
 		return False
 
 	def __backward_word_cb(self, *args):
+		self.__editor.begin_user_action()
 		self.__backspace_delete()
+		self.__editor.end_user_action()
 		message = _("Backspace delete")
 		self.__editor.update_message(message, "yes")
 		return False

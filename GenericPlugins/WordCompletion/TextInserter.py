@@ -37,7 +37,7 @@ class Inserter(SignalManager):
 		return False
 
 	def __insert_cb(self, manager, text):
-		from gobject import idle_add, PRIORITY_HIGH
-		idle_add(self.__insert, text, priority=PRIORITY_HIGH)
-#		self.__insert(text)
+#		from gobject import idle_add, PRIORITY_HIGH
+#		idle_add(self.__insert, text, priority=PRIORITY_HIGH)
+		self.__insert(text)
 		return False

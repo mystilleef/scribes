@@ -22,8 +22,8 @@ class Marker(SignalManager):
 		self.__blocked = False
 		return
 
-	def __move_marks(self):
-		iterator = self.__editor.cursor
+	def __move_marks(self, iterator):
+#		iterator = self.__editor.cursor
 		self.__buffer.move_mark(self.__lmark, iterator)
 		self.__buffer.move_mark(self.__rmark, iterator)
 		return False
@@ -79,9 +79,11 @@ class Marker(SignalManager):
 
 	def __insert_cb(self, textbuffer, iterator, text, length):
 		from Utils import is_delimeter
-		if not is_delimeter(self.__editor.cursor.get_char()): return False
+		if not is_delimeter(iterator.get_char()): return False
+#		if not is_delimeter(self.__editor.cursor.get_char()): return False
+#		is_delimeter
 		if is_delimeter(text):
-			self.__move_marks()
+			self.__move_marks(iterator.copy())
 		else:
 			if self.__in_mark_range() is False: self.__reposition_marks()
 		return False

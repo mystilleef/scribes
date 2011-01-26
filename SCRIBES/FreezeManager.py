@@ -12,22 +12,34 @@ class Manager(SignalManager):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__view = editor.textview
-		self.__is_frozen = False
+		self.__is_frozen = 0
 		return
 
 	def __freeze_cb(self, *args):
-		if self.__is_frozen: return False
-		self.__is_frozen = True
-		self.__view.set_editable(False)
-		self.__view.window.freeze_updates()
+		try:
+			if self.__is_frozen: raise ValueError
+			from sys import setcheckinterval
+			setcheckinterval(1000)
+			self.__view.set_editable(False)
+			self.__view.window.freeze_updates()
+		except ValueError:
+			pass
+		finally:
+			self.__is_frozen += 1
 		return False
 
 	def __thaw_cb(self, *args):
-		if self.__is_frozen is False: return False
-		self.__is_frozen = False
-		self.__view.set_editable(True)
-		self.__view.window.thaw_updates()
-		self.__editor.refresh()
+		try:
+			if not self.__is_frozen: raise ValueError
+			self.__view.set_editable(True)
+			self.__view.window.thaw_updates()
+			from sys import setcheckinterval
+			setcheckinterval(-1)
+		except ValueError:
+			pass
+		finally:
+			self.__is_frozen -= 1
+			if self.__is_frozen < 0: self.__is_frozen = 0
 		return False
 
 	def __destroy_cb(self, *args):

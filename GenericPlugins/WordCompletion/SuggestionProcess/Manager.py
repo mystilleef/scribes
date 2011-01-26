@@ -12,6 +12,7 @@ class Manager(Signal):
 		Generator(self)
 		from DictionaryUpdater import Updater
 		Updater(self)
+		self.set_data("WordCompletionSuggestions", [])
 		from gobject import timeout_add
 		timeout_add(1000, self.__response)
 
