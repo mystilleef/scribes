@@ -7,12 +7,12 @@ class Manager(Signal):
 		self.__init_attributes(editor)
 		from GUI.Manager import Manager
 		Manager(self, editor)
+		from TextInserter import Inserter
+		Inserter(self, editor)
 		from ProcessCommunicator import Communicator
 		Communicator(self, editor)
 		from SuggestionProcessCommunicator import Communicator
 		Communicator(self, editor)
-		from TextInserter import Inserter
-		Inserter(self, editor)
 		from TriggerMarker import Marker
 		Marker(self, editor)
 		from TriggerDetector import Detector

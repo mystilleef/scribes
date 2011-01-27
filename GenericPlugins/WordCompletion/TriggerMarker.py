@@ -12,7 +12,6 @@ class Marker(SignalManager):
 		self.__sigid3 = self.connect(self.__buffer, "delete-range", self.__delete_cb, True)
 		self.connect(manager, "enable-word-completion", self.__completion_cb)
 		manager.set_data("InsertionMarks", (self.__lmark, self.__rmark))
-#		manager.emit("insertion-marks", (self.__lmark, self.__rmark))
 		self.__block()
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__compile, priority=PRIORITY_LOW)
@@ -23,9 +22,7 @@ class Marker(SignalManager):
 		self.__buffer = editor.textbuffer
 		self.__view = editor.textview
 		self.__lmark = editor.create_left_mark()
-		self.__lmark.set_visible(True)
 		self.__rmark = editor.create_right_mark()
-		self.__rmark.set_visible(True)
 		self.__blocked = False
 		return
 
