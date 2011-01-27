@@ -18,7 +18,6 @@ class Tracker(object):
 		self.__editor.disconnect_signal(self.__sigid2, self.__window)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __update(self, state):

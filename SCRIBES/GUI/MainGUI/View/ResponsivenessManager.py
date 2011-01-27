@@ -8,6 +8,8 @@ class Manager(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(self.__view, "move-cursor", self.__response_cb)
 		self.connect(self.__view, "move-cursor", self.__response_cb, True)
+		self.connect(self.__view, "scroll-event", self.__response_cb)
+		self.connect(self.__view, "scroll-event", self.__response_cb, True)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
