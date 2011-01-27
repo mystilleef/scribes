@@ -1,6 +1,12 @@
+from string import punctuation, whitespace
 from re import compile as compile_, M, U, L
+DELIMETER = ("%s%s" % (punctuation, whitespace)).replace("-", "").replace("_", "")
 NEWLINE_RE = compile_("\r\n|\n|\r", M|U|L)
 WORD_PATTERN = compile_("\w+|[-]", U)
+
+def is_delimeter(character): return character in DELIMETER
+
+def is_not_delimeter(character): return not (character in DELIMETER)
 
 def calculate_resolution_independence(window, width, height):
 	screen = window.get_screen()

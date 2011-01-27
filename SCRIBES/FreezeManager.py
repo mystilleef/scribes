@@ -32,9 +32,9 @@ class Manager(SignalManager):
 		try:
 			if not self.__is_frozen: raise ValueError
 			self.__view.set_editable(True)
-			self.__view.window.thaw_updates()
 			from sys import setcheckinterval
 			setcheckinterval(-1)
+			self.__view.window.thaw_updates()
 		except ValueError:
 			pass
 		finally:

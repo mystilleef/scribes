@@ -1,5 +1,5 @@
 from SCRIBES.SignalConnectionManager import SignalManager
-from Utils import is_delimeter
+from Utils import is_delimeter, is_not_delimeter
 
 WORDS_BEFORE_CURSOR = 2
 
@@ -13,7 +13,6 @@ class Detector(SignalManager):
 		self.connect(manager, "no-match-found", self.__no_match_found_cb)
 		self.connect(manager, "inserting-text", self.__inserting_cb)
 		self.connect(manager, "inserted-text", self.__inserted_cb)
-		self.connect(manager, "insertion-marks", self.__marks_cb)
 		self.connect(self.__view, "backspace", self.__hide_cb)
 		self.connect(self.__view, "cut-clipboard", self.__hide_cb)
 		self.connect(self.__view, "paste-clipboard", self.__hide_cb)
@@ -42,21 +41,8 @@ class Detector(SignalManager):
 		self.__is_visible = False
 		self.__inserting = False
 		self.__blocked = False
-		self.__lmark, self.__rmark = None, None
+		self.__lmark, self.__rmark = manager.get_data("InsertionMarks")
 		return
-
-	def __destroy(self):
-		self.disconnect()
-		del self
-		return False
-
-	def __remove_timer(self):
-		try:
-			from gobject import source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		return False
 
 	def __send(self):
 		string = self.__get_word_before_cursor()
@@ -98,6 +84,14 @@ class Detector(SignalManager):
 		self.__blocked = False
 		return False
 
+	def __remove_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		return False
+
 	def __compile(self):
 		methods = ( self.__insert_cb, self.__insert_text_cb, self.__get_word_before_cursor, )
 		self.__editor.optimize(methods)
@@ -107,10 +101,6 @@ class Detector(SignalManager):
 		self.__unblock() if enable_word_completion else self.__block()
 		return False
 
-	def __marks_cb(self, manager, marks):
-		self.__lmark, self.__rmark = marks
-		return False
-
 	def __insert_cb(self, textbuffer, iterator, text, length):
 		self.__remove_timer()
 		if length > 1 or is_delimeter(text): self.__manager.emit("no-match-found")
@@ -118,13 +108,14 @@ class Detector(SignalManager):
 
 	def __insert_text_cb(self, textbuffer, iterator, text, length):
 		if self.__inserting or self.__lmark is None or length > 1: return False
-		if is_delimeter(text) or not is_delimeter(iterator.get_char()): return False
+		if is_delimeter(text) or is_not_delimeter(iterator.get_char()): return False
 		self.__remove_timer()
 		self.__send() if self.__is_visible else self.__send_timeout()
 		return False
 
 	def __destroy_cb(self, *args):
-		self.__destroy()
+		self.disconnect()
+		del self
 		return False
 
 	def __hide_cb(self, *args):

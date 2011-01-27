@@ -577,6 +577,14 @@ class Editor(Signals):
 		#command = None
 		return False
 
+	def is_delimeter(self, character):
+		from Utils import is_delimeter
+		return is_delimeter(character)
+
+	def is_not_delimeter(self, character):
+		from Utils import is_not_delimeter
+		return is_not_delimeter(character)
+
 	def enable_busy_pointer(self):
 		print "Not yet implemented"
 		return False

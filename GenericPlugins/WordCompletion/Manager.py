@@ -13,10 +13,10 @@ class Manager(Signal):
 		Communicator(self, editor)
 		from TextInserter import Inserter
 		Inserter(self, editor)
-		from TriggerDetector import Detector
-		Detector(self, editor)
 		from TriggerMarker import Marker
 		Marker(self, editor)
+		from TriggerDetector import Detector
+		Detector(self, editor)
 		from IndexerProcessManager import Manager
 		Manager(self, editor)
 		from SuggestionProcessManager import Manager
