@@ -35,7 +35,7 @@ class Validator(SignalManager):
 		return False
 
 	def __validate_cb(self, manager, plugin_path):
-#		self.__validate(plugin_path)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__validate, plugin_path, priority=PRIORITY_LOW)
+		self.__validate(plugin_path)
+#		from gobject import idle_add, PRIORITY_LOW
+#		idle_add(self.__validate, plugin_path, priority=PRIORITY_LOW)
 		return False

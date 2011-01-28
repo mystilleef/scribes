@@ -12,7 +12,6 @@ class Detector(SignalManager):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		# Successfully loaded plugin modules.
 		self.__modules = []
 		return
 
@@ -32,21 +31,19 @@ class Detector(SignalManager):
 		return False
 
 	def __get_duplicate(self, unloaded_plugin_data):
-		self.__editor.refresh(False)
 		if not self.__modules: return None
 		module, plugin_class = unloaded_plugin_data
 		from copy import copy
 		for _module, _plugin in copy(self.__modules):
-			self.__editor.refresh(False)
 			if module.class_name == _module.class_name: return (_module, _plugin)
-			self.__editor.refresh(False)
 		return None
 
 	def __check(self, unloaded_plugin_data):
-		self.__editor.refresh(False)
 		loaded_plugin_data = self.__get_duplicate(unloaded_plugin_data)
-		self.__handle_duplicate(unloaded_plugin_data, loaded_plugin_data) if loaded_plugin_data else self.__manager.emit("load-plugin", unloaded_plugin_data)
-		self.__editor.refresh(False)
+		if loaded_plugin_data:
+			self.__handle_duplicate(unloaded_plugin_data, loaded_plugin_data) 
+		else:
+			self.__manager.emit("load-plugin", unloaded_plugin_data)
 		return False
 
 	def __quit_cb(self, *args):
@@ -58,7 +55,5 @@ class Detector(SignalManager):
 		return False
 
 	def __check_cb(self, manager, unloaded_plugin_data):
-#		self.__check(unloaded_plugin_data)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__check, unloaded_plugin_data, priority=PRIORITY_LOW)
+		self.__check(unloaded_plugin_data)
 		return False

@@ -20,17 +20,14 @@ class Validator(SignalManager):
 		del self
 		return False
 
-	def __emit(self, signal, module):
-		self.__manager.emit(signal, module)
-		return False
-
 	def __validate(self, module):
 		try:
+			emit = self.__manager.emit 
 			if not hasattr(module, "autoload"): raise ValueError
 			if not hasattr(module, "name"): raise ValueError
 			if not hasattr(module, "version"): raise ValueError
 			if not hasattr(module, "class_name"): raise ValueError
-			self.__emit("validate-language-module", module) if hasattr(module, "languages") else self.__emit("valid-module", module)
+			emit("validate-language-module", module) if hasattr(module, "languages") else emit("valid-module", module)
 		except ValueError:
 			print module, " is an invalid plugin module"
 		return False
@@ -40,7 +37,5 @@ class Validator(SignalManager):
 		return False
 
 	def __validate_cb(self, manager, module):
-#		self.__validate(module)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__validate, module, priority=PRIORITY_LOW)
+		self.__validate(module)
 		return False

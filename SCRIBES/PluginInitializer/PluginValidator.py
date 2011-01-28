@@ -22,7 +22,6 @@ class Validator(SignalManager):
 
 	def __validate(self, module):
 		try:
-			self.__editor.refresh(False)
 			class_name = getattr(module, "class_name")
 			if not hasattr(module, class_name): raise ValueError
 			PluginClass = getattr(module, class_name)
@@ -39,7 +38,5 @@ class Validator(SignalManager):
 		return False
 
 	def __validate_cb(self, manager, module):
-#		self.__validate(module)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__validate, module, priority=PRIORITY_LOW)
+		self.__validate(module)
 		return False

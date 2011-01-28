@@ -7,7 +7,6 @@ class Destroyer(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "active-plugins", self.__plugins_cb, True)
-#		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -19,7 +18,6 @@ class Destroyer(SignalManager):
 
 	def __destroy(self):
 		self.disconnect()
-#		self.__editor.unregister_object(self)
 		del self
 		return False
 

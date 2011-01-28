@@ -17,12 +17,6 @@ class Reloader(SignalManager):
 		self.__plugins = []
 		return
 
-	def __destroy(self):
-		self.disconnect()
-		self.__editor.unregister_object(self)
-		del self
-		return False
-
 	def __load_language_plugins(self):
 		is_language_plugin = lambda data: hasattr(data[0], "languages")
 		unload = lambda plugin: self.__manager.emit("unload-plugin", plugin)
@@ -33,16 +27,17 @@ class Reloader(SignalManager):
 		[load(path) for path in paths]
 		return False
 
-	def __quit_cb(self, *args):
-		self.__destroy()
-		return False
 
 	def __plugins_cb(self, manager, data):
 		self.__plugins = data
 		return False
 
 	def __loaded_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__load_language_plugins)
-#		self.__load_language_plugins()
+		self.__load_language_plugins()
+		return False
+
+	def __quit_cb(self, *args):
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		del self
 		return False

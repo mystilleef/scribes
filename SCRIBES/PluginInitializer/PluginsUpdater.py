@@ -15,29 +15,20 @@ class Updater(SignalManager):
 		self.__plugins = []
 		return
 
-	def __destroy(self):
-		self.disconnect()
-		del self
-		return False
-
 	def __update(self, data, remove=False):
 		self.__plugins.remove(data) if remove else self.__plugins.append(data)
 		self.__manager.emit("active-plugins", self.__plugins)
 		return False
 
-	def __quit_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
-		return False
-
 	def __loaded_cb(self, manager, data):
-#		self.__update(data)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__update, data, priority=PRIORITY_LOW)
+		self.__update(data)
 		return False
 
 	def __unloaded_cb(self, manager, data):
-#		self.__update(data, True)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__update, data, True, priority=PRIORITY_LOW)
+		self.__update(data, True)
+		return False
+
+	def __quit_cb(self, *args):
+		self.disconnect()
+		del self
 		return False

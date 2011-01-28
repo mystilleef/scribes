@@ -1,4 +1,5 @@
 from SCRIBES.SignalConnectionManager import SignalManager
+STARTUP_ID = "ScribesRecentOpenWindow"
 
 class Window(SignalManager):
 
@@ -17,6 +18,7 @@ class Window(SignalManager):
 		return
 
 	def __show(self):
+#		self.__window.set_startup_id(STARTUP_ID)
 		self.__window.present()
 		return False
 

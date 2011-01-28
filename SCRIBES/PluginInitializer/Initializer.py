@@ -27,16 +27,9 @@ class Initializer(SignalManager):
 		del self
 		return False
 
-	def __emit(self, plugin_path):
-		self.__editor.refresh(False)
-		self.__manager.emit("validate-path", plugin_path)
-		self.__editor.refresh(False)
-		return
-
 	def __validate(self):
-		self.__editor.refresh(False)
-		[self.__emit(plugin_path) for plugin_path in self.__plugin_paths]
-		self.__editor.refresh(False)
+		emit = self.__manager.emit
+		[emit("validate-path", plugin_path) for plugin_path in self.__plugin_paths]
 		return False
 
 	def __validate_timeout(self):

@@ -14,28 +14,21 @@ class Initializer(SignalManager):
 		self.__editor = editor
 		return
 
-	def __destroy(self):
+	def __initialize(self, module_path):
+		from os.path import split
+		module_name = split(module_path)[-1][:-3]
+		from imp import load_source
+		module = load_source(module_name, module_path)
+		self.__manager.emit("initialized-module", module)
+		return False
+
+	def __initialize_cb(self, manager, module_path):
+		self.__initialize(module_path)
+		return False
+
+	def __quit_cb(self, *args):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
 		return False
 
-	def __initialize(self, module_path):
-		from os.path import split
-		module_name = split(module_path)[-1][:-3]
-		from imp import load_source
-		self.__editor.refresh(False)
-		module = load_source(module_name, module_path)
-		self.__editor.refresh(False)
-		self.__manager.emit("initialized-module", module)
-		return False
-
-	def __quit_cb(self, *args):
-		self.__destroy()
-		return False
-
-	def __initialize_cb(self, manager, module_path):
-#		self.__initialize(module_path)
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__initialize, module_path, priority=PRIORITY_LOW)
-		return False
