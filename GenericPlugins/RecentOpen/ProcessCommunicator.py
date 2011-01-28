@@ -52,21 +52,30 @@ class Communicator(SignalManager):
 			print "ERROR: Cannot send message to python checker process"
 		return False
 
+	def __not_ready_message(self):
+		from gettext import gettext as _
+		message = _("Recent open process is not ready")
+		self.__editor.update(message, "fail", 5)
+		return False
+
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __activate_cb(self, *args):
+		if self.__process is None: return self.__not_ready_message()
 		from gobject import idle_add
 		idle_add(self.__activate, self.__process.activate)
 		return False
 
 	def __file_cb(self, *args):
+		if self.__process is None: return self.__not_ready_message()
 		from gobject import idle_add
 		idle_add(self.__activate, self.__process.open_last_file)
 		return False
 
 	def __files_cb(self, *args):
+		if self.__process is None: return self.__not_ready_message()
 		from gobject import idle_add
 		idle_add(self.__activate, self.__process.open_last_files)
 		return False

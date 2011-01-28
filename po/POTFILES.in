@@ -84,6 +84,7 @@ GenericPlugins/RecentOpen/ExternalProcess/DataGenerator.py
 GenericPlugins/RecentOpen/ExternalProcess/Feedback.py
 GenericPlugins/RecentOpen/ExternalProcess/GUI/GUI.glade
 GenericPlugins/RecentOpen/ExternalProcess/__init__.py
+GenericPlugins/RecentOpen/ProcessCommunicator.py
 GenericPlugins/RecentOpen/Trigger.py
 GenericPlugins/SaveDialog/GUI/FeedbackUpdater.py
 GenericPlugins/SaveDialog/GUI/FileChooser/URISelector.py
@@ -140,6 +141,7 @@ GenericPlugins/TriggerArea/Trigger.py
 GenericPlugins/UndoRedo/Trigger.py
 GenericPlugins/UserGuide/Trigger.py
 GenericPlugins/WordCompletion/Manager.py
+GenericPlugins/WordCompletion/SuggestionProcess/__init__.py
 GenericPlugins/WordCompletion/Trigger.py
 LanguagePlugins/HashComments/Trigger.py
 LanguagePlugins/HashComments/i18n.py
