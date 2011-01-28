@@ -38,7 +38,11 @@ class Positioner(object):
 		except TypeError:
 			pass
 		finally:
-			self.__window.present()
+			from SCRIBES.Utils import SCRIBES_MAIN_WINDOW_STARTUP_ID
+			self.__window.set_startup_id(SCRIBES_MAIN_WINDOW_STARTUP_ID)
+			from time import time
+			self.__window.present_with_time(int(time()))
+			self.__window.window.focus()
 		return False
 
 	def __quit_cb(self, *args):

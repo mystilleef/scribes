@@ -18,8 +18,10 @@ class Window(SignalManager):
 		return
 
 	def __show(self):
-#		self.__window.set_startup_id(STARTUP_ID)
-		self.__window.present()
+		self.__window.set_startup_id(STARTUP_ID)
+		from time import time
+		self.__window.present_with_time(int(time()))
+		self.__window.window.focus()
 		return False
 
 	def __hide(self):

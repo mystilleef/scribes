@@ -4,6 +4,8 @@ DELIMETER = ("%s%s" % (punctuation, whitespace)).replace("-", "").replace("_", "
 NEWLINE_RE = compile_("\r\n|\n|\r", M|U|L)
 WORD_PATTERN = compile_("\w+|[-]", U)
 
+SCRIBES_MAIN_WINDOW_STARTUP_ID = "ScribesMainWindow"
+
 def is_delimeter(character): return character in DELIMETER
 
 def is_not_delimeter(character): return not (character in DELIMETER)

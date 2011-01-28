@@ -27,7 +27,6 @@ class Window(object):
 		self.__editor.disconnect_signal(self.__sigid7, self.__window)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __show_window(self, window):
