@@ -42,6 +42,7 @@ scribes_PYTHON = \
 	Editor.py \
 	EditorImports.py \
 	Exceptions.py \
+	filedict.py \
 	FileChangeMonitor.py \
 	FilenameGeneratorModeManager.py \
 	FileModificationMonitor.py \

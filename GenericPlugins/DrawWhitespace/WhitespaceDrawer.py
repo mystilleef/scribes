@@ -1,11 +1,14 @@
-class Drawer(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Drawer(SignalManager):
 
 	def __init__(self, editor, manager):
+		SignalManager.__init__(self)
 		self.__init_attributes(editor, manager)
 		self.__sigid1 = self.__textview.connect('event-after', self.__event_after_cb)
 		self.__sigid2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid3 = manager.connect("color", self.__color_cb)
-		self.__sigid4 = manager.connect("show", self.__show_cb)
+		self.__sigid4 = manager.connect("show-whitespaces", self.__show_cb)
 		from gobject import idle_add
 		idle_add(self.__precompile_methods, priority=9999)
 
@@ -139,5 +142,4 @@ class Drawer(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		del self
-		self = None
 		return

@@ -23,12 +23,12 @@ class Manager(Signal):
 		Manager(self, editor)
 		from IndexRequester import Requester
 		Requester(self, editor)
-		from DatabaseMonitor import Monitor
-		Monitor(self, editor)
 		from DatabaseWriter import Writer
 		Writer(self, editor)
 		from DatabaseReader import Reader
 		Reader(self, editor)
+		from DatabaseMonitor import Monitor
+		Monitor(self, editor)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor

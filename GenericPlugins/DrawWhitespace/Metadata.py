@@ -1,10 +1,10 @@
 from SCRIBES.Utils import open_storage
-STORAGE_FILE = "ToggleWordCompletion.dict"
-KEY = "enable_word_completion"
+STORAGE_FILE = "ToggleDrawWhiteSpaces.dict"
+KEY = "toggle_white_spaces"
 
 def get_value():
 	try:
-		value = True
+		value = False
 		storage = open_storage(STORAGE_FILE)
 		value = storage[KEY]
 	except KeyError:

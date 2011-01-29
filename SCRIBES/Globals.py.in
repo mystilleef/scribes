@@ -21,6 +21,7 @@ print_settings_filename = join(metadata_folder, "ScribesPrintSettings.txt")
 home_plugin_folder = home_generic_plugin_folder = join(config_folder, "GenericPlugins")
 home_language_plugin_folder = join(config_folder, "LanguagePlugins")
 scribes_theme_folder = join(config_folder, "styles")
+storage_folder = join(config_folder, ".config")
 default_home_theme_folder = join(xdg_data_home, "gtksourceview-2.0", "styles")
 name = "scribes"
 prefix = "@scribes_prefix@"

@@ -39,6 +39,7 @@ def __get_default_font():
 		from gconf import client_get_default
 		client = client_get_default()
 		font = client.get_string(gconf_font_location)
-	except ImportError:
+		if font is None: font = "Monospace 11"
+	except Exception:
 		pass
 	return font

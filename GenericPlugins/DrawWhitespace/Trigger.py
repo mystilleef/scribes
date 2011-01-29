@@ -31,7 +31,7 @@ class Trigger(SignalManager, TriggerManager):
 		return False
 
 	def __activate_cb(self, *args):
-		from DrawWhitespaceMetadata import get_value, set_value
+		from Metadata import get_value, set_value
 		value = False if get_value() else True
 		set_value(value)
 		if value:
@@ -40,5 +40,5 @@ class Trigger(SignalManager, TriggerManager):
 		else:
 			icon = "no"
 			message = "Hiding whitespace"
-		self.__editor.update_message(message, icon, 7)
+		self.__editor.update_message(message, icon, 10)
 		return

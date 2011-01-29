@@ -12,7 +12,7 @@ class Monitor(SignalManager):
 		self.__editor = editor
 		self.__manager = manager
 		from os.path import join
-		_file = join(editor.storage_folder, "ToggleWordCompletion.dict")
+		_file = join(editor.storage_folder, "ToggleDrawWhiteSpaces.dict")
 		self.__monitor = editor.get_file_monitor(_file)
 		return
 

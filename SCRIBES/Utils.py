@@ -401,6 +401,15 @@ def open_database(basepath, flag="c"):
 		database = open_(database_path, flag="n", writeback=False)
 	return database
 
+def open_storage(filename):
+	from Globals import storage_folder
+	from os import makedirs
+	from os.path import join, exists
+	if not exists(storage_folder): makedirs(storage_folder)
+	filename = join(storage_folder, filename.strip("/"))
+	from filedict import FileDict
+	return FileDict(filename=filename)
+
 def get_save_processor():
 	try:
 		from dbus import DBusException

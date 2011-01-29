@@ -70,6 +70,7 @@ class Editor(Signals):
 	print_settings_filename = property(lambda self: EditorImports.print_settings_filename)
 	data_folder = property(lambda self: EditorImports.data_folder)
 	metadata_folder = property(lambda self: EditorImports.metadata_folder)
+	storage_folder = property(lambda self: EditorImports.storage_folder)
 	home_folder = property(lambda self: EditorImports.home_folder)
 	desktop_folder = property(lambda self: EditorImports.desktop_folder)
 	home_folder_uri = property(lambda self: EditorImports.File(self.home_folder).get_uri())
