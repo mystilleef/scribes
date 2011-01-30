@@ -13,12 +13,9 @@ class Signal(GObject):
 		"dictionary": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"match-found": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"no-match-found": (SSIGNAL, TYPE_NONE, ()),
-		"valid-string": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"invalid-string": (SSIGNAL, TYPE_NONE, ()),
 		"hide-window": (SSIGNAL, TYPE_NONE, ()),
 		"show-window": (SSIGNAL, TYPE_NONE, ()),
 		"treeview-size": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"insertion-marks": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"insert-text": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"generate": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 	}

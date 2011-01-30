@@ -7,13 +7,8 @@ class Window(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(editor, "hide-completion-window", self.__hide_cb)
-		self.connect(editor, "hide-completion-window", self.__hide_cb, True)
 		self.connect(manager, "no-match-found", self.__hide_cb)
-		self.connect(manager, "no-match-found", self.__hide_cb, True)
-		self.connect(manager, "invalid-string", self.__hide_cb)
-		self.connect(manager, "invalid-string", self.__hide_cb, True)
 		self.connect(manager, "hide-window", self.__hide_cb)
-		self.connect(manager, "hide-window", self.__hide_cb, True)
 		self.connect(manager, "show-window", self.__show_cb)
 
 	def __init_attributes(self, manager, editor):

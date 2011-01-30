@@ -109,7 +109,7 @@ class Detector(SignalManager):
 	def __insert_text_cb(self, textbuffer, iterator, text, length):
 		if self.__inserting or self.__lmark is None or length > 1: return False
 		if is_delimeter(text) or is_not_delimeter(iterator.get_char()): return False
-		self.__remove_timer()
+#		self.__remove_timer()
 		self.__send() if self.__is_visible else self.__send_timeout()
 		return False
 

@@ -9,7 +9,7 @@ class Communicator(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(manager, "generate", self.__generate_cb)
+		self.connect(manager, "generate", self.__generate_cb, True)
 		editor.session_bus.add_signal_receiver(self.__name_change_cb,
 						'NameOwnerChanged',
 						'org.freedesktop.DBus',

@@ -68,17 +68,23 @@ class TreeView(object):
 		return False
 
 	def __populate_model(self, matches):
-		self.__treeview.set_model(None)
-		self.__model.clear()
-		for word in matches:
-			self.__editor.refresh(False)
-			self.__model.append([word])
-		self.__treeview.set_model(self.__model)
-		self.__column.queue_resize()
-		self.__treeview.queue_resize()
-		self.__treeview.columns_autosize()
-		self.__select(self.__model[0])
-		self.__manager.emit("treeview-size", self.__treeview.size_request())
+		try:
+			if self.__matches == matches: raise ValueError
+			self.__matches = matches
+			self.__treeview.set_model(None)
+			self.__model.clear()
+			for word in matches:
+				self.__editor.refresh(False)
+				self.__model.append([word])
+			self.__treeview.set_model(self.__model)
+			self.__column.queue_resize()
+			self.__treeview.queue_resize()
+			self.__treeview.columns_autosize()
+		except ValueError:
+			pass
+		finally:
+			self.__select(self.__model[0])
+			self.__manager.emit("treeview-size", self.__treeview.size_request())
 		return False
 
 	def __select(self, row):
@@ -131,8 +137,6 @@ class TreeView(object):
 		return False
 
 	def __match_found_cb(self, manager, matches):
-		if self.__matches == matches: return False
-		self.__matches = matches
 		self.__unblock_view()
 		self.__populate_model(matches)
 		return False
