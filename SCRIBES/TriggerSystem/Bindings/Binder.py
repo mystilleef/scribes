@@ -34,6 +34,5 @@ class BaseBinder(SignalManager):
 		return False
 
 	def __activate_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.activate)
+		self.activate()
 		return False

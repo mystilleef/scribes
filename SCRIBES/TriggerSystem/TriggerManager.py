@@ -15,12 +15,6 @@ class Manager(SignalManager):
 		self.__triggers = []
 		return False
 
-	def __destroy(self):
-		self.disconnect()
-		self.__triggers = []
-		del self
-		return False
-
 	def __add(self, trigger):
 		self.__triggers.append(trigger)
 		return False
@@ -34,14 +28,16 @@ class Manager(SignalManager):
 		self.__editor.set_data("triggers", self.__triggers)
 		return False
 
-	def __quit_cb(self, *args):
-		self.__destroy()
-		return False
-
 	def __add_cb(self, manager, trigger):
 		self.__update(self.__add, trigger)
 		return False
 
 	def __remove_cb(self, manager, trigger):
 		self.__update(self.__remove, trigger)
+		return False
+
+	def __quit_cb(self, *args):
+		self.disconnect()
+		self.__triggers = []
+		del self
 		return False

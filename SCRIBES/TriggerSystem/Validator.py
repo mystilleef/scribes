@@ -1,10 +1,15 @@
-class Validator(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Validator(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("add-trigger", self.__add_cb)
-		self.__sigid3 = editor.connect("add-triggers", self.__adds_cb)
+		self.connect(manager, "quit", self.__quit_cb)
+		self.connect(editor, "add-trigger", self.__add_cb)
+		self.connect(editor, "add-triggers", self.__adds_cb)
+		self.connect(editor, "remove-trigger", self.__remove_cb)
+		self.connect(editor, "remove-triggers", self.__removes_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
@@ -13,15 +18,6 @@ class Validator(object):
 		self.__names = []
 		self.__accelerators = []
 		return
-
-	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
-		self.__editor.unregister_object(self)
-		del self
-		self = None
-		return False
 
 	def __validate(self, trigger):
 		from Exceptions import NoTriggerNameError, DuplicateAcceleratorError
@@ -59,22 +55,35 @@ class Validator(object):
 		if accelerator_valid(keyval, modifier): return False
 		from Exceptions import InvalidAcceleratorError
 		raise InvalidAcceleratorError
+
+	def __remove(self, trigger):
+		name, accelerator = trigger.name, trigger.accelerator
+		if name in self.__names: self.__names.remove(name)
+		if accelerator in self.__accelerators: self.__accelerators.remove(accelerator)
 		return False
 
 	def __validate_triggers(self, triggers):
 		[self.__validate(trigger) for trigger in triggers]
 		return False
 
-	def __quit_cb(self, *args):
-		self.__destroy()
-		return False
-
 	def __add_cb(self, editor, trigger):
-		from gobject import idle_add
-		idle_add(self.__validate_triggers, (trigger,))
+		self.__validate_triggers((trigger,))
 		return False
 
 	def __adds_cb(self, editor, triggers):
-		from gobject import idle_add
-		idle_add(self.__validate_triggers, triggers)
+		self.__validate_triggers(triggers)
+		return False
+
+	def __remove_cb(self, editor, trigger):
+		self.__remove(trigger)
+		return False
+
+	def __removes_cb(self, editor, triggers):
+		[self.__remove(trigger) for trigger in triggers]
+		return False
+
+	def __quit_cb(self, *args):
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		del self
 		return False

@@ -1,11 +1,14 @@
-class Activator(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Activator(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("quit", self.__quit_cb)
-		self.__sigid2 = self.__accelgroup.connect("accel-activate", self.__activate_cb)
-		self.__sigid3 = manager.connect("add", self.__add_cb)
-		self.__sigid4 = manager.connect("remove", self.__remove_cb)
+		self.connect(manager, "quit", self.__quit_cb)
+		self.connect(manager, "add", self.__add_cb)
+		self.connect(manager, "remove", self.__remove_cb)
+		self.connect(self.__accelgroup, "accel-activate", self.__activate_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
@@ -15,16 +18,6 @@ class Activator(object):
 		self.__dictionary = {}
 		from gtk import accel_groups_from_object
 		self.__accelgroup = accel_groups_from_object(self.__editor.window)[0]
-		return False
-
-	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__accelgroup)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
-		self.__editor.unregister_object(self)
-		del self
-		self = None
 		return False
 
 	def __add(self, trigger):
@@ -53,22 +46,20 @@ class Activator(object):
 		self.__dictionary[keyvalmodifier].activate()
 		return False
 
-	def __quit_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
-		return False
-
 	def __activate_cb(self, accelgroup, window, keyval, modifier, *args):
-		from gobject import idle_add
-		idle_add(self.__activate, (keyval, modifier))
+		self.__activate((keyval, modifier))
 		return False
 
 	def __add_cb(self, manager, trigger):
-		from gobject import idle_add
-		idle_add(self.__add, trigger)
+		self.__add(trigger)
 		return False
 
 	def __remove_cb(self, manager, trigger):
-		from gobject import idle_add
-		idle_add(self.__remove, trigger)
+		self.__remove(trigger)
+		return False
+
+	def __quit_cb(self, *args):
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		del self
 		return False

@@ -4,6 +4,7 @@ triggersystemdir = $(pythondir)/SCRIBES/TriggerSystem
 triggersystem_PYTHON = \
 	__init__.py \
 	Manager.py \
+	Signals.py \
 	TriggerActivator.py \
 	AcceleratorActivator.py \
 	Validator.py \
