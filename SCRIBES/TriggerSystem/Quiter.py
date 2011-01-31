@@ -37,6 +37,7 @@ class Quiter(SignalManager):
 		return False
 
 	def __cleared_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__emit_quit_signal)
+		self.__emit_quit_signal()
+#		from gobject import idle_add
+#		idle_add(self.__emit_quit_signal)
 		return False
