@@ -6,6 +6,7 @@ class Window(SignalManager):
 	def __init__(self, manager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager)
+		self.__window.set_startup_id(STARTUP_ID)
 		self.connect(manager, "show-window", self.__show_cb)
 		self.connect(manager, "hide-window", self.__hide_cb)
 		self.connect(manager, "activate", self.__activate_cb)
