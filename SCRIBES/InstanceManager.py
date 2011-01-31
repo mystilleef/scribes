@@ -170,8 +170,7 @@ class Manager(object):
 		if editor.window.get_data("minimized"): editor.window.deiconify()
 		from Utils import SCRIBES_MAIN_WINDOW_STARTUP_ID
 		editor.window.set_startup_id(SCRIBES_MAIN_WINDOW_STARTUP_ID)
-		from time import time  
-		editor.window.present_with_time(int(time()))
+		editor.window.present()
 		editor.window.window.focus()
 		editor.refresh(True)
 		return False
