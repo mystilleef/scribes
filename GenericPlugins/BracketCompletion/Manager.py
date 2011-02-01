@@ -125,6 +125,7 @@ class BracketManager(object):
 		return
 
 	def __move_cursor_out_of_bracket_region(self):
+		self.__editor.hide_completion_window()
 		textbuffer = self.__editor.textbuffer
 		end_mark = self.__monitor_list[-1][1][1]
 		iterator = textbuffer.get_iter_at_mark(end_mark)
