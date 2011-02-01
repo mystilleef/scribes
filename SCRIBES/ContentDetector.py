@@ -22,7 +22,6 @@ class Detector(object):
 		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __set(self, contains_document, block_or_unblock_signal):

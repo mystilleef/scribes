@@ -33,8 +33,8 @@ class Initializer(object):
 		Manager(editor)
 		from EncodingSystem.Manager import Manager
 		Manager(editor)
-		from FileChangeMonitor import Monitor
-		Monitor(editor)
+#		from FileChangeMonitor import Monitor
+#		Monitor(editor)
 		from SaveSystem.Manager import Manager
 		Manager(editor)
 		from TriggerSystem.Manager import Manager
