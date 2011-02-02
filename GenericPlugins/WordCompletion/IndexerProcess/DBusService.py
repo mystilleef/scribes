@@ -16,10 +16,6 @@ class DBusService(Object):
 		except NameExistsException:
 			manager.quit()
 
-	@method(indexer_dbus_service, in_signature="sx")
-	def process(self, text, id_):
-		return self.__manager.process(text, id_)
-
 	@method(indexer_dbus_service)
 	def index(self):
 		return self.__manager.index()

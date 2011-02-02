@@ -1,22 +1,17 @@
-from Utils import open_database
-from os.path import join
-basepath = join("Preferences", "ForkScribes.gdb")
+from SCRIBES.Utils import open_storage
+STORAGE_FILE = "ForkScribes.dict"
+KEY = "fork_scribes"
 
 def get_value():
 	try:
 		value = True
-		database = open_database(basepath, "r")
-		value = database["fork"]
-	except KeyError:
+		storage = open_storage(STORAGE_FILE)
+		value = storage[KEY]
+	except:
 		pass
-	finally:
-		database.close()
 	return value
 
-def set_value(fork):
-	try:
-		database = open_database(basepath, "w")
-		database["fork"] = fork
-	finally:
-		database.close()
+def set_value(value):
+	storage = open_storage(STORAGE_FILE)
+	storage[KEY] = value
 	return

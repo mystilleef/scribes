@@ -84,13 +84,20 @@ class Communicator(SignalManager):
 	def __reply_handler_cb(self, *args):
 		return False
 
-	def __error_handler_cb(self, *args):
-		print "ERROR: Failed to communicate with word completion indexer"
+	def __error_handler_cb(self, error_message):
+		print "================================================================"
+		print "ERROR:"
+		print "Plugin Package: WordCompletion"
+		print "Module Name: ProcessCommunicator"
+		print "Class Name: Communicator"
+		print "Method Name: __error_handler_cb"
+		print "Error Message: ", error_message
+		print "================================================================"
 		return False
 
 	def __saved_cb(self, *args):
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__index, priority=PRIORITY_LOW)
+		self.__timer = idle_add(self.__index, priority=PRIORITY_LOW)
 		return False
 
 	def __index_cb(self, *args):

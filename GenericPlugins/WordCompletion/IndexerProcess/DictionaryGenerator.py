@@ -32,19 +32,26 @@ class Generator(object):
 
 	def __get_words(self, text):
 		from re import split
+		self.__manager.response()
 		words = split(self.__pattern, text)
+		self.__manager.response()
 		words = [word for word in words if self.__filter(word)]
 		return words
 
 	def __filter(self, word):
+		self.__manager.response()
 		if len(word) < 4: return False
+		self.__manager.response()
 		if word.startswith("---"): return False
+		self.__manager.response()
 		if word.startswith("___"): return False
+		self.__manager.response()
 		return True
 
 	def __make_dictionary(self, words):
 		dictionary = {}
 		for string in words:
+			self.__manager.response()
 			if string in dictionary.keys():
 				dictionary[string] += 1
 			else:

@@ -25,7 +25,9 @@ class Manager(GObject):
 		Manager(self)
 		# Keep this process as responsive as possible nappy to events and signals.
 		from gobject import timeout_add
-		timeout_add(1000, self.__response)
+		timeout_add(1000, self.response)
+		from os import nice
+		nice(19)
 
 	def quit(self):
 		from os import _exit
@@ -36,7 +38,7 @@ class Manager(GObject):
 		self.emit("get-text")
 		return False
 
-	def __response(self):
+	def response(self):
 		from SCRIBES.Utils import response
 		response()
 		return True
