@@ -1,5 +1,5 @@
 from string import punctuation, whitespace
-DELIMETER = ("%s%s" % (punctuation, whitespace)).replace("-", "").replace("_", "")
+DELIMETER = ("%s%s%s" % (punctuation, whitespace, "\x00")).replace("-", "").replace("_", "")
 
 def is_delimeter(character): return character in DELIMETER
 
