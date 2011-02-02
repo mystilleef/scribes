@@ -1,6 +1,6 @@
 from string import punctuation, whitespace
 from re import compile as compile_, M, U, L
-DELIMETER = ("%s%s" % (punctuation, whitespace)).replace("-", "").replace("_", "")
+DELIMETER = ("%s%s%s" % (punctuation, whitespace, "\x00")).replace("-", "").replace("_", "")
 NEWLINE_RE = compile_("\r\n|\n|\r", M|U|L)
 WORD_PATTERN = compile_("\w+|[-]", U)
 
