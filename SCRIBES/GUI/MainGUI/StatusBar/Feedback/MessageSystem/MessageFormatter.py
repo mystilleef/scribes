@@ -64,10 +64,9 @@ class Formatter(SignalManager):
 		return False
 
 	def __format_cb(self, manager, data):
-#		self.__remove_timer()
+		self.__remove_timer()
 		from gobject import idle_add, PRIORITY_LOW
 		self.__timer = idle_add(self.__format, data, priority=PRIORITY_LOW)
-#		self.__format(data)
 		return False
 
 	def __quit_cb(self, *args):

@@ -46,28 +46,22 @@ class Updater(SignalManager):
 
 	def __set(self, data):
 		message, image_id, show_bar = data
-		self.__editor.refresh(False)
 		self.__label.set_label(message)
-		self.__editor.refresh(False)
 		from gtk import ICON_SIZE_MENU as SIZE
-		self.__editor.refresh(False)
 		if image_id: self.__image.set_from_icon_name(image_id, SIZE)
 		self.__image.show() if image_id else self.__image.hide()
-		self.__editor.refresh(False)
 		self.__manager.emit("message-bar-is-updated", (message, image_id, show_bar))
 		return False
 
 	def __update_cb(self, manager, data):
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__update, data, priority=PRIORITY_LOW)
-#		self.__update(data)
 		return False
 
 	def __visible_cb(self, manager, visible):
 		self.__visible = visible
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__check, priority=PRIORITY_LOW)
-#		self.__check()
 		return False
 
 	def __quit_cb(self, *args):

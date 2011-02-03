@@ -28,5 +28,5 @@ class Manager(SignalManager):
 		return False
 
 	def __response_cb(self, *args):
-		self.__editor.refresh(False)
+#		self.__editor.refresh(False)
 		return False

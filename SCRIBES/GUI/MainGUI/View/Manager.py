@@ -9,8 +9,8 @@ class Manager(object):
 		Refresher(editor)
 		from SensitivityManager import Manager
 		Manager(editor)
-		from ResponsivenessManager import Manager
-		Manager(editor)
+#		from ResponsivenessManager import Manager
+#		Manager(editor)
 		from ReadonlyManager import Manager
 		Manager(editor)
 		from DragAndDrop import DragAndDrop
