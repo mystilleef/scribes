@@ -8,6 +8,8 @@ class Manager(Signal):
 		Monitor(self)
 		from DBusService import DBusService
 		DBusService(self)
+		from PyChecker import Checker
+		Checker(self)
 		from PyLintChecker import Checker
 		Checker(self)
 		from PyFlakesChecker import Checker

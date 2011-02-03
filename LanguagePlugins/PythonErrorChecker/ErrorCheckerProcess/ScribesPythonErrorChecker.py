@@ -2,6 +2,8 @@
 # -*- coding: utf8 -*-
 
 if __name__ == "__main__":
+	from SCRIBES.Utils import fork_process
+	fork_process()
 	from os import nice
 	nice(19)
 	from sys import argv, path

@@ -472,9 +472,8 @@ class Editor(Signals):
 		return find_matching_bracket(iterator)
 
 	def get_current_folder(self, globals_):
-		from os.path import split
-		folder = split(globals_["__file__"])[0]
-		return folder
+		from Utils import get_current_folder
+		return get_current_folder(globals_)
 
 	def uri_exists(self, uri):
 		from Utils import uri_exists

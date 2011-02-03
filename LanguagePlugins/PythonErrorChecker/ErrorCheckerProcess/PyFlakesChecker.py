@@ -34,6 +34,7 @@ class Checker(SignalManager):
 				if check_type == 2:
 					emit("finished", (0, "", editor_id, session_id, modification_time))
 				else:
+#					emit("pycheck", (filename, editor_id, session_id, modification_time))
 					emit("pylint-check", (filename, editor_id, session_id, modification_time))
 		except FileChangedError:
 			self.__manager.emit("ignored")

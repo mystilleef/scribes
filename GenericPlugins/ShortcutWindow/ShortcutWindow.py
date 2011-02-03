@@ -1,6 +1,5 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 from operator import itemgetter
-import pygtk
 import gtk
 import pango
 
@@ -131,7 +130,7 @@ class ShortcutWindow(SignalManager):
 
 					# Setup bottom padding view
 					botbuf = self.__setTextBuffer("")
-					botview = self.__setTextView(padbuf, self.textcolor)
+					botview = self.__setTextView(botbuf, self.textcolor)
 
 					# Add bottom padding view
 					table.attach(botview, 0, 3, self.table_rows - 1, self.table_rows, xoptions=gtk.EXPAND|gtk.FILL, yoptions=gtk.EXPAND|gtk.FILL)

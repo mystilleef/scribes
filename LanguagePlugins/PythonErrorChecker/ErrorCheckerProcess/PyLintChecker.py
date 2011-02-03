@@ -30,7 +30,7 @@ class Checker(SignalManager):
 				error_message = messages[0][0], messages[0][1], editor_id, session_id, modification_time
 				emit("finished", error_message)
 			else:
-				emit("finished", (0, "", editor_id, session_id, modification_time))
+				emit("pycheck", data)
 		except FileChangedError:
 			self.__manager.emit("ignored")
 		except StaleSessionError:
