@@ -285,6 +285,8 @@ class Editor(Signals):
 	def response(self):
 		from gtk import events_pending, main_iteration
 		while events_pending(): main_iteration(False)
+#		self.__count += 1
+#		print "Response count: ", self.__count
 		return False
 
 	def hide_completion_window(self):
