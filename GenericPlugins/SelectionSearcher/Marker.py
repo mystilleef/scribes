@@ -12,7 +12,7 @@ class Marker(SignalManager):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__marks = None
+		self.__marks = []
 		return 
 
 	def __destroy(self):
@@ -24,14 +24,11 @@ class Marker(SignalManager):
 		if not self.__marks: return
 		del_ = self.__editor.delete_mark
 		remove_marks = lambda start, end: (del_(start), del_(end))
-		self.__editor.textview.set_editable(False)
-		self.__editor.textview.window.freeze_updates()
+		self.__editor.freeze()
+		[remove_marks(*mark) for mark in self.__marks]
+		self.__editor.thaw()
 		self.__editor.refresh(False)
-		(remove_marks(*mark) for mark in self.__marks)
-		self.__editor.textview.window.thaw_updates()
-		self.__editor.refresh(False)
-		self.__editor.textview.set_editable(True)
-		self.__marks = None
+		self.__marks = []
 		return False
 
 	def __mark(self, matches):
