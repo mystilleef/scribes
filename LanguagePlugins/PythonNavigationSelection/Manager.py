@@ -100,7 +100,6 @@ class Manager(object):
 		return iterator
 
 	def __move_to_previous_block(self, iterator):
-		indentation = iterator.get_line_offset()
 		while True:
 			try:
 				success = iterator.backward_line()
@@ -116,7 +115,6 @@ class Manager(object):
 		return iterator
 
 	def __move_to_next_block(self, iterator):
-		indentation = iterator.get_line_offset()
 		while True:
 			try:
 				success = iterator.forward_line()
@@ -373,5 +371,4 @@ class Manager(object):
 
 	def destroy(self):
 		del self
-		self = None
 		return

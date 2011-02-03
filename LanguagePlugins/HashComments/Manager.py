@@ -12,7 +12,6 @@ class Manager(object):
 		self.__has_selection = False
 		self.__commented = False
 		self.__readonly = False
-		iterator = editor.cursor
 		self.__selection_begin_index = None
 		self.__selection_begin_line = None
 		self.__selection_end_index = None

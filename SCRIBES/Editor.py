@@ -345,7 +345,6 @@ class Editor(Signals):
 		toolbutton = None
 		for toolbutton in self.toolbar.get_children():
 			if name != toolbutton.get_property("name"): continue
-			toolbutton = toolbutton
 			break
 		return toolbutton
 
