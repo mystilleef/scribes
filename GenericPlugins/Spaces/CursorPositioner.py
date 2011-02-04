@@ -39,14 +39,14 @@ class Positioner(object):
 		idle_add(self.__move_to_cursor, adjustment_value, priority=9999)
 		self.__data = None
 		self.__old_text = None
-		self.__editor.refresh(True)
+		# self.__editor.refresh(True)
 		return False
 
 	def __move_to_cursor(self, adjustment_value):
 		vadjustment = self.__editor.gui.get_widget("ScrolledWindow").get_vadjustment()
 		vadjustment.set_value(adjustment_value)
 		self.__editor.textview.window.thaw_updates()
-		self.__editor.refresh(True)
+		# self.__editor.refresh(True)
 		return False
 
 	def __destroy_cb(self, *args):

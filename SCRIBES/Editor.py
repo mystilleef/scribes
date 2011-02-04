@@ -277,16 +277,16 @@ class Editor(Signals):
 
 	def move_view_to_cursor(self, align=False, iterator=None):
 		if iterator is None: iterator = self.cursor
-		self.response()
+#		self.response()
 		self.textview.scroll_to_iter(iterator, 0.001, use_align=align, xalign=1.0)
-		self.response()
+#		self.response()
 		return False
 
 	def response(self):
 		from gtk import events_pending, main_iteration
 		while events_pending(): main_iteration(False)
-#		self.__count += 1
-#		print "Response count: ", self.__count
+		self.__count += 1
+		print "Response count: ", self.__count
 		return False
 
 	def hide_completion_window(self):

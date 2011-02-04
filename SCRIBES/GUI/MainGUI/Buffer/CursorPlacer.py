@@ -34,7 +34,7 @@ class Placer(SignalManager):
 		iterator.set_line_index(index)
 		self.__buffer.place_cursor(iterator)
 		self.__editor.move_view_to_cursor(True)
-		self.__editor.refresh(True)
+		#self.__editor.refresh(True)
 		self.__editor.textview.grab_focus()
 		return False
 
