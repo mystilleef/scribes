@@ -24,9 +24,11 @@ class Manager(SignalManager):
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __response_cb(self, *args):
-#		self.__editor.refresh(False)
+		self.__editor.refresh(False)
+#		print "Move or scroll event calling refresh"
 		return False

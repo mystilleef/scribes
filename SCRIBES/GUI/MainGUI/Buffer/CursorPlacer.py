@@ -32,10 +32,10 @@ class Placer(SignalManager):
 		iterator = self.__get_cursor_iterator(line)
 		index = self.__get_cursor_index(iterator, index)
 		iterator.set_line_index(index)
+		self.__editor.refresh(False)
 		self.__buffer.place_cursor(iterator)
 		self.__editor.move_view_to_cursor(True)
-		#self.__editor.refresh(True)
-		self.__editor.textview.grab_focus()
+		self.__editor.refresh(True)
 		return False
 
 	def __get_cursor_data(self):
