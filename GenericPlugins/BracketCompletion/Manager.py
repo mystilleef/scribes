@@ -105,8 +105,6 @@ class BracketManager(object):
 		cursor_position.backward_char()
 		textbuffer.place_cursor(cursor_position)
 		self.__monitor_list.append((close_keyval, (begin_mark, end_mark)))
-		message = _("Pair character completion occurred")
-		self.__editor.update_message(message, "pass")
 		return
 
 
