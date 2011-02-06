@@ -5,11 +5,13 @@ class Getter(object):
 
 	def __init__(self, manager):
 		self.__init_attributes(manager)
-		manager.connect("get-text", self.__get_cb)
+		manager.connect("index-request", self.__request_cb)
+		manager.connect("clipboard-text", self.__clipboard_cb)
 
 	def __init_attributes(self, manager):
 		self.__manager = manager
 		self.__process = self.__get_process()
+		self.__clipboard_text = ""
 		return
 
 	def __get_process(self):
@@ -26,9 +28,11 @@ class Getter(object):
 		return False
 
 	def __combine(self, texts):
+		clipboard_plus_texts = list(texts)
+		clipboard_plus_texts.append(self.__clipboard_text)
 		from string import whitespace
-		texts = [text.strip(whitespace) for text in texts]
-		text = " ".join(texts)
+		strings = [text.strip(whitespace) for text in clipboard_plus_texts]
+		text = " ".join(strings)
 		self.__manager.emit("index", text.strip(whitespace))
 		return False
 
@@ -40,7 +44,7 @@ class Getter(object):
 			pass
 		return
 
-	def __get_cb(self, *args):
+	def __request_cb(self, *args):
 		self.__remove_timer()
 		from gobject import idle_add, PRIORITY_LOW
 		self.__timer = idle_add(self.__get_text, priority=PRIORITY_LOW)
@@ -52,4 +56,8 @@ class Getter(object):
 		return
 
 	def __error_cb(self, *args):
+		return False
+
+	def __clipboard_cb(self, manager, text):
+		self.__clipboard_text = "%s%s" % (self.__clipboard_text, text)
 		return False
