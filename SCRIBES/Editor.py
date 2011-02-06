@@ -325,6 +325,7 @@ class Editor(Signals):
 		return False
 
 	def update_message(self, message, icon_name="scribes", time=5, priority="normal"):
+		if self.window_is_active is False: return False
 		data = message, icon_name, time, priority
 		self.emit("update-message", data)
 		return False
