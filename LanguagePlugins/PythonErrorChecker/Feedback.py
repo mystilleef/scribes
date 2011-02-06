@@ -16,6 +16,7 @@ class Feedback(SignalManager):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
+		self.__is_first_time = True
 		return
 
 	def __destroy(self):
@@ -47,6 +48,8 @@ class Feedback(SignalManager):
 		return False
 
 	def __type_cb(self, manager, more_error_checks):
+		if self.__is_first_time: return False
+		self.__is_first_time = False
 		message = _("Switched to Python error checking") if more_error_checks else _("Switched to syntax error checking")
 		self.__editor.update_message(message, "yes")
 		return False
@@ -55,4 +58,3 @@ class Feedback(SignalManager):
 		message = _("switching please wait...")
 		self.__editor.update_message(message, "run", 20)
 		return False
-
