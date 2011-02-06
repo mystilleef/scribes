@@ -9,6 +9,7 @@ class TreeView(object):
 		self.__sigid3 = manager.connect("match-found", self.__match_found_cb)
 		self.__sigid4 = manager.connect("no-match-found", self.__no_match_found_cb)
 		self.__sigid5 = manager.connect("show-window", self.__map_cb)
+		self.__sigid5 = manager.connect("hide-window", self.__no_match_found_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -121,16 +122,8 @@ class TreeView(object):
 		width, height = self.__treeview.size_request()
 		if width < 200: width = 210
 		height = 210 if height > 200 else (height + 6)
-		width = 210 if width < 200 else width
-		return width, height
-
-	def __remove_timer(self):
-		try:
-			from gobject import source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		return False
+		_width = 210 if width < 200 else width
+		return _width, height
 
 	def __destroy_cb(self, *args):
 		self.__destroy()

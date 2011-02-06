@@ -6,7 +6,7 @@ class Window(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(editor, "hide-completion-window", self.__hide_cb)
+		self.connect(editor, "hide-completion-window", self.__hide_completion_cb)
 		self.connect(manager, "no-match-found", self.__hide_cb)
 		self.connect(manager, "hide-window", self.__hide_cb)
 		self.connect(manager, "show-window", self.__show_cb)
@@ -52,4 +52,8 @@ class Window(SignalManager):
 
 	def __show_cb(self, *args):
 		self.__show()
+		return False
+
+	def __hide_completion_cb(self, *args):
+		self.__manager.emit("hide-window")
 		return False

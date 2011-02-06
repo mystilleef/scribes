@@ -11,6 +11,7 @@ class Generator(SignalManager):
 	def __init_attributes(self, manager):
 		self.__manager = manager
 		self.__dictionary = {}
+		self.__triggers = ()
 		return False
 
 	def __get_suggestions_from(self, string):

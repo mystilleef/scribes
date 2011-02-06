@@ -1,0 +1,2 @@
+class NoChangeError(Exception):
+	pass
