@@ -19,18 +19,19 @@ class Manager(SignalManager):
 		try:
 			if self.__is_frozen: raise ValueError
 			from sys import setcheckinterval
-			setcheckinterval(1000)
+			setcheckinterval(10000)
 			self.__view.set_editable(False)
 			self.__view.window.freeze_updates()
 		except ValueError:
 			pass
 		finally:
+			if self.__is_frozen < 0: self.__is_frozen = 0
 			self.__is_frozen += 1
 		return False
 
 	def __thaw_cb(self, *args):
 		try:
-			if not self.__is_frozen: raise ValueError
+			if self.__is_frozen != 1: raise ValueError
 			self.__view.set_editable(True)
 			from sys import setcheckinterval
 			setcheckinterval(-1)
