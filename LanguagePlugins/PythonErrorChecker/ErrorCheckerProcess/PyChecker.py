@@ -15,9 +15,9 @@ class Checker(SignalManager):
 		from sys import prefix
 		from SCRIBES.Utils import get_current_folder
 		cwd = get_current_folder(globals())
-		self.__pychecker = join(cwd, "pychecker", "checker.py")
+		self.__checker = join(cwd, "pychecker", "checker.py")
 		self.__python = join(prefix, "bin", "python")
-		self.__flags = "-T -s -w -Q"
+		self.__flags = "-T -s -w -Q -q -r -C -G --only -O --no-noeffect"
 		return
 
 	def __check(self, data):
@@ -43,7 +43,7 @@ class Checker(SignalManager):
 
 	def __get_errors(self, filename):
 		from pipes import quote
-		command = "%s %s %s %s" % (self.__python, self.__pychecker, self.__flags, quote(filename))
+		command = "%s %s %s %s" % (self.__python, self.__checker, self.__flags, quote(filename))
 		errors = self.__execute(command)[1][0]
 		if not errors: return ()
 		error_lines = errors.splitlines()
