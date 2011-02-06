@@ -112,7 +112,7 @@ class Operator(object):
 		indentation = self.__editor.line_indentation
 		text = self.__editor.line_text
 		text = "%s%s%s" % (text, self.__editor.newline_character, indentation)
-		textbuffer.delete(start, end) 
+		textbuffer.delete(start, end)
 		textbuffer.insert_at_cursor(text)
 		message = _("Freed line %d") % (self.__editor.cursor.get_line() + 1)
 		self.__editor.update_message(message, "pass")
@@ -138,26 +138,26 @@ class Operator(object):
 		self.__editor.move_view_to_cursor()
 		return False
 
-	def __find_non_whitespace_char(self, iterator):
+	def __find_word_begin(self, iterator):
 		result = iterator.backward_char()
 		if not result: return iterator
-#		whitespace = (" ", "\t")
-#		while iterator.get_char() in whitespace:
-		delimeter = ("-", "_", ".", " ", "\t", ",", "(", "{", "[", "<", "'", '"')
-		while iterator.get_char() in delimeter:
-			if iterator.starts_line() or iterator.ends_line(): return iterator
-			result = iterator.backward_char()
-			if not result: break
-		return iterator
-
-	def __find_word_begin(self, iterator):
 		if iterator.starts_line() or iterator.ends_line(): return iterator
 		result = iterator.backward_char()
 		if not result: return iterator
-#		whitespace = (" ", "\t",)
-#		while not (iterator.get_char() in whitespace):
-		delimeter = ("-", "_", ".", " ", "\t", ",", "(", "{", "[", "<", "'", '"')
+		if iterator.starts_line() or iterator.ends_line(): return iterator
+		delimeter = (
+			"-", "_", ".", " ", "\t", ",", "(", "{", "[", "'", '"',
+		)
 		while iterator.get_char() not in delimeter:
+			if iterator.starts_line() or iterator.ends_line(): return iterator
+			result = iterator.backward_char()
+			if not result: return iterator
+		iterator.forward_char()
+		if iterator.get_char() in (" ", "\t"): return self.__find_whitespace_begin(iterator)
+		return iterator
+
+	def __find_whitespace_begin(self, iterator):
+		while iterator.get_char() in (" ", "\t"):
 			if iterator.starts_line() or iterator.ends_line(): return iterator
 			result = iterator.backward_char()
 			if not result: return iterator
@@ -168,8 +168,7 @@ class Operator(object):
 		cursor = self.__editor.cursor
 		if cursor.is_start(): return False
 		end = cursor.copy()
-		start = self.__find_non_whitespace_char(end.copy())
-		start = self.__find_word_begin(start.copy())
+		start = self.__find_word_begin(end.copy())
 		self.__del(start, end)
 		return False
 
