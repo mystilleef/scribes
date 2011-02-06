@@ -43,5 +43,5 @@ class Initializer(SignalManager):
 
 	def __loaded_after_cb(self, *args):
 		from gobject import timeout_add, PRIORITY_LOW
-		timeout_add(1000, self.__init_plugins_on_idle, priority=PRIORITY_LOW)
+		timeout_add(100, self.__init_plugins_on_idle, priority=PRIORITY_LOW)
 		return False
