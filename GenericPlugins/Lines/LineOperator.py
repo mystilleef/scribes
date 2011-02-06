@@ -141,8 +141,10 @@ class Operator(object):
 	def __find_non_whitespace_char(self, iterator):
 		result = iterator.backward_char()
 		if not result: return iterator
-		whitespace = (" ", "\t")
-		while iterator.get_char() in whitespace:
+#		whitespace = (" ", "\t")
+#		while iterator.get_char() in whitespace:
+		delimeter = ("-", "_", ".", " ", "\t", ",", "(", "{", "[", "<", "'", '"')
+		while iterator.get_char() in delimeter:
 			if iterator.starts_line() or iterator.ends_line(): return iterator
 			result = iterator.backward_char()
 			if not result: break
@@ -152,8 +154,10 @@ class Operator(object):
 		if iterator.starts_line() or iterator.ends_line(): return iterator
 		result = iterator.backward_char()
 		if not result: return iterator
-		whitespace = (" ", "\t",)
-		while not (iterator.get_char() in whitespace):
+#		whitespace = (" ", "\t",)
+#		while not (iterator.get_char() in whitespace):
+		delimeter = ("-", "_", ".", " ", "\t", ",", "(", "{", "[", "<", "'", '"')
+		while iterator.get_char() not in delimeter:
 			if iterator.starts_line() or iterator.ends_line(): return iterator
 			result = iterator.backward_char()
 			if not result: return iterator
