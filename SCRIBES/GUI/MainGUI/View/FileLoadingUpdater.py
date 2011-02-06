@@ -17,9 +17,11 @@ class Updater(SignalManager):
 		return False
 
 	def __freeze_cb(self, editor, *args):
+		editor.window.window.freeze_updates()
 		editor.freeze()
 		return False
 
 	def __thaw_cb(self, editor, *args):
 		editor.thaw()
+		editor.window.window.thaw_updates()
 		return False
