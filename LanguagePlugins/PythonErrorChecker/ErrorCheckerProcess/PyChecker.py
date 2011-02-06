@@ -44,7 +44,7 @@ class Checker(SignalManager):
 	def __get_errors(self, filename):
 		from pipes import quote
 		command = "%s %s %s %s" % (self.__python, self.__checker, self.__flags, quote(filename))
-		errors = self.__execute(command)[1][0]
+		errors = self.__execute(command)
 		if not errors: return ()
 		error_lines = errors.splitlines()
 		cannot_import = [error for error in error_lines if error.endswith("UNABLE TO IMPORT")]
@@ -57,8 +57,9 @@ class Checker(SignalManager):
 		from subprocess import Popen, PIPE
 		process = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE)
 		result = process.communicate()
-		retcode = process.wait()
-		return retcode, result
+		return result[0]
+#		retcode = process.wait()
+#		return retcode, result
 
 	def __check_cb(self, manager, data):
 		from gobject import idle_add
