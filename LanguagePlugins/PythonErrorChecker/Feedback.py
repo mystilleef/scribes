@@ -10,7 +10,7 @@ class Feedback(SignalManager):
 		self.connect(manager, "error-data", self.__message_cb)
 		self.connect(manager, "remote-file-message", self.__error_cb)
 		self.connect(manager, "check-message", self.__check_cb)
-		self.connect(manager, "error-check-type", self.__type_cb)
+		self.connect(manager, "error-check-type", self.__type_cb, True)
 		self.connect(manager, "toggle-error-check", self.__toggle_cb)
 
 	def __init_attributes(self, manager, editor):
@@ -48,10 +48,14 @@ class Feedback(SignalManager):
 		return False
 
 	def __type_cb(self, manager, more_error_checks):
-		if self.__is_first_time: return False
-		self.__is_first_time = False
-		message = _("Switched to Python error checking") if more_error_checks else _("Switched to syntax error checking")
-		self.__editor.update_message(message, "yes")
+		from Exceptions import FirstTimeError
+		try:
+			if self.__is_first_time: raise FirstTimeError
+			message = _("Switched to Python error checking") if more_error_checks else _("Switched to syntax error checking")
+			self.__editor.hide_message()
+			self.__editor.update_message(message, "yes")
+		except FirstTimeError:
+			self.__is_first_time = False
 		return False
 
 	def __toggle_cb(self, *args):

@@ -1,22 +1,17 @@
-from SCRIBES.Utils import open_database
-from os.path import join
-basepath = join("PluginPreferences", "PythonErrorCheckType.gdb")
+from SCRIBES.Utils import open_storage
+STORAGE_FILE = "PythonErrorCheckType.dict"
+KEY = "more_error_checks"
 
 def get_value():
 	try:
 		value = True
-		database = open_database(basepath, "r")
-		value = database["more_error_checks"]
+		storage = open_storage(STORAGE_FILE)
+		value = storage[KEY]
 	except:
 		pass
-	finally:
-		database.close()
 	return value
 
 def set_value(value):
-	try:
-		database = open_database(basepath, "w")
-		database["more_error_checks"] = value
-	finally:
-		database.close()
+	storage = open_storage(STORAGE_FILE)
+	storage[KEY] = value
 	return

@@ -12,7 +12,7 @@ class Monitor(SignalManager):
 		self.__editor = editor
 		self.__manager = manager
 		from os.path import join
-		_file = join(editor.metadata_folder, "PluginPreferences", "PythonErrorCheckType.gdb")
+		_file = join(editor.storage_folder, "PythonErrorCheckType.dict")
 		self.__monitor = editor.get_file_monitor(_file)
 		return
 
@@ -25,6 +25,14 @@ class Monitor(SignalManager):
 		self.__timer = idle_add(self.__update, priority=PRIORITY_LOW)
 		return False
 
+	def __remove_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		return False
+
 	def __destroy_cb(self, *args):
 		self.__monitor.cancel()
 		self.disconnect()
@@ -33,11 +41,7 @@ class Monitor(SignalManager):
 
 	def __update_cb(self, *args):
 		if not self.__editor.monitor_events(args, (0,2,3)): return False
-		try:
-			from gobject import timeout_add, source_remove, PRIORITY_LOW
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = timeout_add(250, self.__update_timeout, priority=PRIORITY_LOW)
+		self.__remove_timer()
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__timer = timeout_add(250, self.__update_timeout, priority=PRIORITY_LOW)
 		return False

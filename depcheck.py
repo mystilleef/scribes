@@ -43,4 +43,5 @@ def check_dependencies():
 		exit(1)
 	return
 
+__reset()
 check_dependencies()

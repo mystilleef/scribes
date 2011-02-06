@@ -3,3 +3,6 @@ class RemoteFileError(Exception):
 
 class FileSaveError(Exception):
 	pass
+
+class FirstTimeError(Exception):
+	pass
