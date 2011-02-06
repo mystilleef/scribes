@@ -54,8 +54,8 @@ class Animator(SignalManager):
 		self.__manager.emit("animation", "begin")
 		self.__update_animation_start_point(direction)
 		self.__update_animation_end_point(direction)
-		from gobject import timeout_add
-		self.__slide_timer = timeout_add(REFRESH_TIME, self.__move_idle, direction)
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__slide_timer = timeout_add(REFRESH_TIME, self.__move_idle, direction, priority=PRIORITY_LOW)
 		return False
 
 	def __reposition_in(self, direction):
