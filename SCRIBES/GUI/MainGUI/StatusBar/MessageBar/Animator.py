@@ -55,19 +55,32 @@ class Animator(SignalManager):
 		self.__update_animation_start_point(direction)
 		self.__update_animation_end_point(direction)
 		from gobject import timeout_add
-		self.__slide_timer = timeout_add(REFRESH_TIME, self.__move, direction)
+		self.__slide_timer = timeout_add(REFRESH_TIME, self.__move_idle, direction)
 		return False
 
 	def __reposition_in(self, direction):
 		try:
 			x = int(self.__get_x(direction))
 			y = int(self.__get_y(direction))
-			self.__editor.refresh(False)
 			self.__editor.textview.move_child(self.__bar, x, y)
 			self.__bar.show_all()
 			self.__editor.refresh(False)
 		except AttributeError:
 			pass
+		return False
+
+	def __remove_move_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__move_timer)
+		except AttributeError:
+			pass
+		return False
+
+	def __move_idle(self, direction):
+		self.__remove_move_timer()
+		from gobject import idle_add, PRIORITY_LOW
+		self.__move_timer = idle_add(self.__move, direction, priority=PRIORITY_LOW)
 		return False
 
 	def __move(self, direction):

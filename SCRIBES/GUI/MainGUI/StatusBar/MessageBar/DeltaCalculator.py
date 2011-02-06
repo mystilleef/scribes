@@ -30,12 +30,20 @@ class Calculator(SignalManager):
 		self.__manager.emit("deltas", (int(round(hdelta)), int(round(vdelta))))
 		return False
 
+	def __remove_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__timer)
+		except AttributeError:
+			pass
+		return False
+
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __size_cb(self, manager, size):
-		from gobject import idle_add
-		idle_add(self.__update, size, priority=9999)
-#		self.__update(size)
+		self.__remove_timer()
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer = idle_add(self.__update, size, priority=PRIORITY_LOW)
 		return False
