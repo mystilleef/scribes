@@ -62,10 +62,10 @@ class Animator(SignalManager):
 		try:
 			x = int(self.__get_x(direction))
 			y = int(self.__get_y(direction))
-#			self.__editor.refresh(False)
+			self.__editor.refresh(False)
 			self.__editor.textview.move_child(self.__bar, x, y)
 			self.__bar.show_all()
-#			self.__editor.refresh(False)
+			self.__editor.refresh(False)
 		except AttributeError:
 			pass
 		return False
