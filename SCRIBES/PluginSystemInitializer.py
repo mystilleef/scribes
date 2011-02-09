@@ -33,8 +33,8 @@ class Initializer(SignalManager):
 		return
 
 	def __init_plugins_on_idle(self):
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__init_plugins, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__init_plugins)
 		return False
 
 	def __loaded_cb(self, *args):
@@ -42,6 +42,6 @@ class Initializer(SignalManager):
 		return False
 
 	def __loaded_after_cb(self, *args):
-		from gobject import timeout_add, PRIORITY_LOW
-		timeout_add(100, self.__init_plugins_on_idle, priority=PRIORITY_LOW)
+		from gobject import timeout_add
+		timeout_add(100, self.__init_plugins_on_idle)
 		return False
