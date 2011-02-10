@@ -41,9 +41,7 @@ class Saver(SignalManager):
 		return False
 
 	def __remove_all_timers(self):
-		self.__remove_timer(1)
-		self.__remove_timer(2)
-		self.__remove_timer(3)
+		[self.__remove_timer(_timer) for _timer in xrange(1, 4)]
 		return False
 
 	def __process(self):
