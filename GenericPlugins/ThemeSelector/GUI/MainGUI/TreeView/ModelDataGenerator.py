@@ -28,7 +28,7 @@ class Generator(SignalManager):
 
 	def __process_timeout(self, schemes):
 		from gobject import idle_add
-		self.__timer = idle_add(self.__process, schemes)
+		idle_add(self.__process, schemes)
 		return False
 
 	def __destroy_cb(self, *args):
