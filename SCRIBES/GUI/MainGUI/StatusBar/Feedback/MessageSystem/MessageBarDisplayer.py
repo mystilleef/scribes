@@ -41,7 +41,7 @@ class Displayer(SignalManager):
 
 	def __show_on_idle(self):
 		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__show, priority=PRIORITY_LOW)
+		idle_add(self.__show, priority=PRIORITY_LOW)
 		return False
 
 	def __update_cb(self, manager, data):
