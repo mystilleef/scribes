@@ -29,7 +29,7 @@ class Listener(object):
 
 	def __update_timeout(self, manager):
 		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__update, manager, priority=PRIORITY_LOW)
+		idle_add(self.__update, manager, priority=PRIORITY_LOW)
 		return False
 
 	def __changed_cb(self, rmanager, manager):
