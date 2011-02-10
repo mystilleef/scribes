@@ -22,7 +22,7 @@ class Aggregator(object):
 		return False
 
 	def __get_uri(self, folder, fileinfo):
-		from gio import File 
+		from gio import File
 		from os.path import join
 		self.__editor.refresh(False)
 		path = join(File(folder).get_path(), fileinfo.get_name())
@@ -94,5 +94,5 @@ class Aggregator(object):
 
 	def __fileinfos_cb(self, manager, data):
 		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__update_files, data, priority=PRIORITY_LOW)
+		idle_add(self.__update_files, data, priority=PRIORITY_LOW)
 		return False
