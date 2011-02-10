@@ -28,7 +28,7 @@ class Monitor(SignalManager):
 
 	def __update_timeout(self):
 		from gobject import idle_add
-		self.__timer = idle_add(self.__update, priority=9999)
+		idle_add(self.__update, priority=9999)
 		return False
 
 	def __destroy_cb(self, *args):
