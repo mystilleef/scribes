@@ -48,11 +48,11 @@ class Feedback(object):
 			if not files: raise ValueError
 			message = _("<span foreground='blue'><b>%s matches found</b></span>") % len(files)
 			self.__manager.emit("message", message)
-			self.__timer = timeout_add(5000, self.__clear, "")
+			self.__timer1 = timeout_add(5000, self.__clear, "")
 		except ValueError:
 			message = _("<span foreground='red'><b>No match found</b></span>")
 			self.__manager.emit("message", message)
-			self.__timer = timeout_add(7000, self.__clear, "")
+			self.__timer2 = timeout_add(7000, self.__clear, "")
 		return False
 
 	def __current_path(self, uri):
@@ -67,7 +67,29 @@ class Feedback(object):
 		message = _("<span foreground='blue'><b>%s is the current search path</b></span>") % path
 		self.__manager.emit("message", message)
 		from gobject import timeout_add
-		self.__timer = timeout_add(5000, self.__clear, "")
+		self.__timer3 = timeout_add(5000, self.__clear, "")
+		return False
+
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+				3: self.__timer3,
+				4: self.__timer4,
+				5: self.__timer5,
+				6: self.__timer6,
+				7: self.__timer7,
+				8: self.__timer8,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
+		return False
+
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 9)]
 		return False
 
 	def __destroy_cb(self, *args):
@@ -75,59 +97,39 @@ class Feedback(object):
 		return False
 
 	def __pattern_cb(self, manager, pattern):
-		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = idle_add(self.__clear, pattern, priority=9999)
+		self.__remove_all_timers()
+		from gobject import idle_add
+		self.__timer4 = idle_add(self.__clear, pattern, priority=9999)
 		return False
 
 	def __files_cb(self, manager, files):
-		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = idle_add(self.__message, files, priority=9999)
+		self.__remove_all_timers()
+		from gobject import idle_add
+		self.__timer5 = idle_add(self.__message, files, priority=9999)
 		return False
 
 	def __changed_cb(self, *args):
-		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = idle_add(self.__search, priority=9999)
+		self.__remove_all_timers()
+		from gobject import idle_add
+		self.__timer6 = idle_add(self.__search, priority=9999)
 		return False
 
 	def __path_cb(self, manager, uri):
-		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = idle_add(self.__current_path, uri, priority=9999)
+		self.__remove_all_timers()
+		from gobject import idle_add
+		self.__timer7 = idle_add(self.__current_path, uri, priority=9999)
 		return False
 
 	def __formatted_cb(self, *args):
-		try:
-			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = idle_add(self.__path_message, priority=9999)
+		self.__remove_all_timers()
+		from gobject import idle_add
+		self.__timer8 = idle_add(self.__path_message, priority=9999)
 		return False
 
 	def __show_cb(self, *args):
 		self.__editor.set_message(STATUS_MESSAGE)
 		return False
-	
+
 	def __hide_cb(self, *args):
 		self.__editor.unset_message(STATUS_MESSAGE)
 		return False
