@@ -17,6 +17,11 @@ class Manager(SignalManager):
 	def __index(self, content):
 		text1 = self.__old_text.splitlines(1)
 		text2 = content.splitlines(1)
+#		print "*" * 20
+#		print text1
+#		print "*" * 20
+#		print text2
+#		print "*" * 20
 		result = self.__differ.compare(text1, text2)
 		is_delta = lambda line: line.startswith("+") or line.startswith("-")
 		diff_lines = [line for line in result if is_delta(line)]

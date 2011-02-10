@@ -16,10 +16,11 @@ class Generator(object):
 
 	def __update(self, dictionary):
 		try:
-			from Utils import merge, no_zero_value_dictionary
+			from Utils import merge, no_zero_value_dictionary, utf8_dictionary
 			_dictionary = merge(self.__dictionary, dictionary) if self.__dictionary else dictionary
-			self.__dictionary = no_zero_value_dictionary(_dictionary)
-			if not self.__dictionary: raise ValueError
+			__dictionary = no_zero_value_dictionary(_dictionary)
+			if not __dictionary: raise ValueError
+			self.__dictionary = utf8_dictionary(__dictionary)
 			self.__manager.emit("finished", self.__dictionary)
 		except ValueError:
 			self.__manager.emit("finished", self.__empty_dict)

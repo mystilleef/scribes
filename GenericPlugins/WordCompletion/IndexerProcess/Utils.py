@@ -1,5 +1,5 @@
-from re import UNICODE, LOCALE, compile
-word_pattern = compile(r"[^-\w]", UNICODE|LOCALE)
+from re import UNICODE, compile
+word_pattern = compile(r"[^-\w]", UNICODE)
 
 def merge(d1, d2, merge=lambda x,y:x+y):
 	"""
@@ -31,6 +31,9 @@ def merge(d1, d2, merge=lambda x,y:x+y):
 
 def no_zero_value_dictionary(dictionary):
 	return dict([(k,v) for k,v in dictionary.items() if v != 0])
+
+def utf8_dictionary(dictionary):
+	return dict([(k.decode("utf8"), v) for k,v in dictionary.items()])
 
 def index(string, negative=False):
 	from re import split

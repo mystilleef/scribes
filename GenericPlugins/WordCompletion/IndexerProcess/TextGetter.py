@@ -59,5 +59,5 @@ class Getter(object):
 		return False
 
 	def __clipboard_cb(self, manager, text):
-		self.__clipboard_text = "%s%s" % (self.__clipboard_text, text)
+		self.__clipboard_text = " %s %s " % (self.__clipboard_text, text)
 		return False
