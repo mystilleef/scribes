@@ -32,7 +32,7 @@ class Activator(SignalManager):
 
 	def __activate_timeout(self):
 		from gobject import source_remove, idle_add
-		self.__timer = idle_add(self.__activate, priority=99999)
+		idle_add(self.__activate, priority=99999)
 		return False
 
 	def __destroy_cb(self, *args):
