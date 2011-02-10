@@ -27,9 +27,9 @@ class Feedback(SignalManager):
 		return False
 
 	def __hide_after(self, time):
-		self.__remove_timer(1)
+		self.__remove_all_timers()
 		from gobject import timeout_add
-		self.__timer = timeout_add(time*1000, self.__hide)
+		self.__timer1 = timeout_add(time*1000, self.__hide)
 		return False
 
 	def __set_message(self):
@@ -51,17 +51,25 @@ class Feedback(SignalManager):
 		self.__update_message(data, 21)
 		return False
 
-	def __remove_timer(self, timer=1):
+	def __remove_timer(self, _timer=1):
 		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+			}
 			from gobject import source_remove
-			source_remove(self.__timer) if timer == 1 else source_remove(self.__timer2)
+			source_remove(timers[_timer])
 		except AttributeError:
 			pass
 		return False
 
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
+		return False
+
 	def __search_cb(self, manager, pattern):
 		self.__pattern = pattern
-		self.__remove_timer(2)
+		self.__remove_all_timers()
 		from gobject import timeout_add
 		self.__timer2 = timeout_add(250, self.__search_message, priority=9999)
 		return False
@@ -71,7 +79,7 @@ class Feedback(SignalManager):
 		return False
 
 	def __row_cb(self, *args):
-		self.__remove_timer(2)
+		self.__remove_all_timers()
 		from gobject import idle_add
 		idle_add(self.__set_message, priority=9999)
 		return False
