@@ -64,12 +64,20 @@ class Communicator(SignalManager):
 			print "ERROR: Cannot send message to word completion indexer"
 		return False
 
-	def __remove_timer(self):
+	def __remove_timer(self, _timer=1):
 		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+			}
 			from gobject import source_remove
-			source_remove(self.__timer)
+			source_remove(timers[_timer])
 		except AttributeError:
 			pass
+		return False
+
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
 		return False
 
 	def __destroy_cb(self, *args):
@@ -96,12 +104,13 @@ class Communicator(SignalManager):
 		return False
 
 	def __saved_cb(self, *args):
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__index, priority=PRIORITY_LOW)
+		self.__timer1 = idle_add(self.__index, priority=PRIORITY_LOW)
 		return False
 
 	def __index_cb(self, *args):
-		self.__remove_timer()
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__index, priority=PRIORITY_LOW)
+		self.__timer2 = idle_add(self.__index, priority=PRIORITY_LOW)
 		return False
