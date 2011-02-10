@@ -31,11 +31,11 @@ class Emitter(object):
 	def __delayed_emit(self):
 		try:
 			from gobject import timeout_add, source_remove
-			source_remove(self.__timer)
+			source_remove(self.__timer1)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(250, self.__emit, priority=9999)
+			self.__timer1 = timeout_add(250, self.__emit, priority=9999)
 		return False
 
 	def __destroy_cb(self, *args):
