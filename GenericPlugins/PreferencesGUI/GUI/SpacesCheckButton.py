@@ -51,31 +51,31 @@ class Button(object):
 	def __toggled_cb(self, *args):
 		try:
 			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
+			source_remove(self.__timer1)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = idle_add(self.__set)
+			self.__timer1 = idle_add(self.__set)
 		return True
 
 	def __update_cb(self, *args):
 		try:
 			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
+			source_remove(self.__timer2)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = idle_add(self.__update)
+			self.__timer2 = idle_add(self.__update)
 		return False
 
 	def __language_cb(self, manager, language):
 		try:
 			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
+			source_remove(self.__timer3)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = idle_add(self.__update, language)
+			self.__timer3 = idle_add(self.__update, language)
 		return
 
 	def __sensitive_cb(self, manager, sensitive):
