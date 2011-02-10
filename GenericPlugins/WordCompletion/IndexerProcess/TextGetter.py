@@ -52,7 +52,7 @@ class Getter(object):
 
 	def __reply_cb(self, texts):
 		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__combine, texts, priority=PRIORITY_LOW)
+		idle_add(self.__combine, texts, priority=PRIORITY_LOW)
 		return
 
 	def __error_cb(self, *args):
