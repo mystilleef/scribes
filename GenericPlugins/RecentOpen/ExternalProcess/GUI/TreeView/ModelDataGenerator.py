@@ -34,7 +34,7 @@ class Generator(SignalManager):
 
 	def __process_timeout(self, filtered_data):
 		from gobject import idle_add
-		self.__timer = idle_add(self.__process, filtered_data)
+		idle_add(self.__process, filtered_data)
 		return False
 
 	def __data_cb(self, manager, filtered_data):
