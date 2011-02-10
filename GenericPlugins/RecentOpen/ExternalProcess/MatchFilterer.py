@@ -33,24 +33,32 @@ class Filterer(SignalManager):
 			pass
 		return False
 
-	def __remove_timer(self):
+	def __remove_timer(self, _timer=1):
 		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+			}
 			from gobject import source_remove
-			source_remove(self.__timer)
+			source_remove(timers[_timer])
 		except AttributeError:
 			pass
-		return
+		return False
+
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
+		return False
 
 	def __data_cb(self, manager, data):
 		self.__data = data
-		self.__remove_timer()
+		self.__remove_all_timers()
 		from gobject import idle_add
-		self.__timer = idle_add(self.__filter, self.__pattern)
+		self.__timer1 = idle_add(self.__filter, self.__pattern)
 		return False
 
 	def __pattern_cb(self, manager, pattern):
 		self.__pattern = pattern
-		self.__remove_timer()
+		self.__remove_all_timers()
 		from gobject import idle_add
-		self.__timer = idle_add(self.__filter, pattern)
+		self.__timer2 = idle_add(self.__filter, pattern)
 		return False
