@@ -20,6 +20,8 @@ KEYSYMS = {
 	keysyms.less                 : keysyms.greater,
 	keysyms.dollar               : keysyms.dollar,
 	keysyms.apostrophe           : keysyms.apostrophe,
+	keysyms.singlelowquotemark   : keysyms.leftsinglequotemark,
+	keysyms.doublelowquotemark   : keysyms.leftdoublequotemark,
 }
 
 class BracketManager(object):
@@ -38,15 +40,15 @@ class BracketManager(object):
 		self.__match = editor.find_matching_bracket
 		self.__monitor_list = []
 		self.__escape_character = "\\"
-		self.__open_pair_characters = [keysyms.quotedbl,
-			keysyms.braceleft, keysyms.bracketleft,
-			keysyms.parenleft, keysyms.leftdoublequotemark,
-			keysyms.guillemotleft, keysyms.guillemotright,
+		self.__open_pair_characters = [
+			keysyms.quotedbl, keysyms.braceleft, keysyms.bracketleft, keysyms.parenleft,
+			keysyms.leftdoublequotemark, keysyms.guillemotleft, keysyms.guillemotright,
 			keysyms.leftsinglequotemark, keysyms.leftmiddlecurlybrace,
-			keysyms.lowleftcorner, keysyms.topleftparens,
-			keysyms.topleftsqbracket, keysyms.upleftcorner,
-			keysyms.botleftparens, keysyms.botleftsqbracket,
-			keysyms.apostrophe]
+			keysyms.lowleftcorner,
+			keysyms.topleftparens, keysyms.topleftsqbracket, keysyms.upleftcorner,
+			keysyms.botleftparens, keysyms.botleftsqbracket, keysyms.apostrophe,
+			keysyms.singlelowquotemark, keysyms.doublelowquotemark
+		]
 		self.__open_pair_characters_for_enclosement = self.__open_pair_characters + [keysyms.less, keysyms.apostrophe]
 		return
 
