@@ -27,23 +27,35 @@ class Saver(SignalManager):
 		del self
 		return False
 
-	def __remove_timer(self):
+	def __remove_timer(self, _timer=1):
 		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+				3: self.__timer3,
+			}
 			from gobject import source_remove
-			source_remove(self.__timer)
+			source_remove(timers[_timer])
 		except AttributeError:
 			pass
 		return False
 
+	def __remove_all_timers(self):
+		self.__remove_timer(1)
+		self.__remove_timer(2)
+		self.__remove_timer(3)
+		return False
+
 	def __process(self):
-		self.__remove_timer()
+		self.__remove_all_timers()
 		from gobject import timeout_add as ta, PRIORITY_LOW
-		self.__timer = ta(SAVE_TIMER, self.__save_on_idle, priority=PRIORITY_LOW)
+		self.__timer1 = ta(SAVE_TIMER, self.__save_on_idle, priority=PRIORITY_LOW)
 		return False
 
 	def __save_on_idle(self):
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__save, priority=PRIORITY_LOW)
+		self.__timer2 = idle_add(self.__save, priority=PRIORITY_LOW)
 		return False
 
 	def __save(self):
@@ -56,14 +68,14 @@ class Saver(SignalManager):
 		return False
 
 	def __close_cb(self, *args):
-		self.__remove_timer()
+		self.__remove_all_timers()
 		self.__editor.handler_block(self.__sigid1)
 		return False
 
 	def __modified_cb(self, *args):
-		self.__remove_timer()
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__process, priority=PRIORITY_LOW)
+		self.__timer3 = idle_add(self.__process, priority=PRIORITY_LOW)
 		return False
 
 	def __changed_cb(self, *args):
