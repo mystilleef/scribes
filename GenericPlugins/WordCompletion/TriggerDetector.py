@@ -51,7 +51,7 @@ class Detector(SignalManager):
 
 	def __send_idle(self):
 		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__send, priority=PRIORITY_LOW)
+		idle_add(self.__send, priority=PRIORITY_LOW)
 		return False
 
 	def __send_timeout(self):
