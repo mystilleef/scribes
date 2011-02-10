@@ -53,7 +53,6 @@ class Saver(SignalManager):
 		return False
 
 	def __save_on_idle(self):
-		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
 		self.__timer2 = idle_add(self.__save, priority=PRIORITY_LOW)
 		return False
