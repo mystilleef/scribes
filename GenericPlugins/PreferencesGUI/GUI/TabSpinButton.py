@@ -31,11 +31,11 @@ class Button(object):
 	def __delayed_set(self):
 		try:
 			from gobject import timeout_add, source_remove
-			source_remove(self.__timer)
+			source_remove(self.__timer1)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = timeout_add(250, self.__set, priority=9999)
+			self.__timer1 = timeout_add(250, self.__set, priority=9999)
 		return False
 
 	def __reset(self):
@@ -74,21 +74,21 @@ class Button(object):
 	def __changed_cb(self, *args):
 		try:
 			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
+			source_remove(self.__timer2)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = idle_add(self.__delayed_set, priority=9999)
+			self.__timer2 = idle_add(self.__delayed_set, priority=9999)
 		return True
 
 	def __update_cb(self, *args):
 		try:
 			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
+			source_remove(self.__timer3)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = idle_add(self.__update)
+			self.__timer3 = idle_add(self.__update)
 		return False
 
 	def __destroy_cb(self, *args):
@@ -98,11 +98,11 @@ class Button(object):
 	def __language_cb(self, manager, language):
 		try:
 			from gobject import idle_add, source_remove
-			source_remove(self.__timer)
+			source_remove(self.__timer4)
 		except AttributeError:
 			pass
 		finally:
-			self.__timer = idle_add(self.__update, language)
+			self.__timer4 = idle_add(self.__update, language)
 		return
 
 	def __sensitive_cb(self, manager, sensitive):
