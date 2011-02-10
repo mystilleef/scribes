@@ -29,7 +29,7 @@ class Dispatcher(SignalManager):
 
 	def __dispatch_timeout(self):
 		from gobject import idle_add
-		self.__timer = idle_add(self.__dispatch, priority=99999)
+		idle_add(self.__dispatch, priority=99999)
 		return False
 
 	def __destroy_cb(self, *args):
