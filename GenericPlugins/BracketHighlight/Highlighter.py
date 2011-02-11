@@ -95,6 +95,7 @@ class Highlighter(SignalManager):
 		return tag
 
 	def __destroy(self):
+		self.__remove_all_timers()
 		self.__monitor.cancel()
 		self.disconnect()
 		self.__remove_highlight_tag()
@@ -110,14 +111,27 @@ class Highlighter(SignalManager):
 			pass
 		return False
 
-	def __highlight_region_timeout(self):
-		from gobject import timeout_add
-		self.__timer = timeout_add(250, self.__highlight_on_idle, priority=9999)
-		return False
-
 	def __highlight_on_idle(self):
 		from gobject import idle_add
-		self.__timer = idle_add(self.__highlight_region, priority=9999)
+		self.__timer4 = idle_add(self.__highlight_region, priority=9999)
+		return False
+
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+				3: self.__timer3,
+				4: self.__timer4,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
+		return False
+
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 5)]
 		return False
 
 ########################################################################
@@ -128,13 +142,9 @@ class Highlighter(SignalManager):
 
 	def __cursor_moved_cb(self, editor):
 		if not (self.__can_highlight): return
-		try:
-			from gobject import source_remove, idle_add
-			source_remove(self.__timer)
-		except:
-			pass
-		finally:
-			self.__timer = idle_add(self.__highlight_region_timeout, priority=9999)
+		self.__remove_all_timers()
+		from gobject import timeout_add as tadd, PRIORITY_LOW
+		self.__timer3 = tadd(250, self.__highlight_on_idle, priority=PRIORITY_LOW)
 		return
 
 	def __apply_tag_cb(self, textbuffer, tag, start, end):
@@ -160,12 +170,9 @@ class Highlighter(SignalManager):
 
 	def __generic_highlight_on_cb(self, *args):
 		self.__can_highlight = True
-		from gobject import idle_add, source_remove
-		try:
-			source_remove(self.__generic_id)
-		except:
-			pass
-		self.__generic_id = idle_add(self.__highlight_region, priority=9999)
+		self.__remove_all_timers()
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer2 = idle_add(self.__highlight_region, priority=PRIORITY_LOW)
 		return
 
 ########################################################################
@@ -182,10 +189,7 @@ class Highlighter(SignalManager):
 		from LexicalScopeHighlightMetadata import get_value
 		color = get_value()
 		self.__highlight_tag.set_property("background", color)
-		from gobject import idle_add, source_remove
-		try:
-			source_remove(self.__highlight_id)
-		except AttributeError:
-			pass
-		self.__highlight_id = idle_add(self.__highlight_region, priority=9999)
+		self.__remove_all_timers()
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer1 = idle_add(self.__highlight_region, priority=PRIORITY_LOW)
 		return
