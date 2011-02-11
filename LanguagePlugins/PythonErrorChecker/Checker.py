@@ -18,15 +18,15 @@ class Checker(SignalManager):
 		return
 
 	def __destroy(self):
-		self.__remove_timer()
+		self.__remove_all_timers()
 		self.disconnect()
 		del self
 		return False
 
 	def __recheck(self):
-		self.__remove_timer()
+		self.__remove_all_timers()
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer = timeout_add(15000, self.__check_timeout, priority=PRIORITY_LOW)
+		self.__timer1 = timeout_add(15000, self.__check_timeout, priority=PRIORITY_LOW)
 		return False
 
 	def __check(self):
@@ -50,15 +50,24 @@ class Checker(SignalManager):
 
 	def __check_timeout(self):
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__check, priority=PRIORITY_LOW)
+		self.__timer2 = idle_add(self.__check, priority=PRIORITY_LOW)
 		return False
 
-	def __remove_timer(self):
+	def __remove_timer(self, _timer=1):
 		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+				3: self.__timer3,
+			}
 			from gobject import source_remove
-			source_remove(self.__timer)
+			source_remove(timers[_timer])
 		except AttributeError:
 			pass
+		return False
+
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 4)]
 		return False
 
 	def __destroy_cb(self, *args):
@@ -66,9 +75,9 @@ class Checker(SignalManager):
 		return False
 
 	def __check_cb(self, *args):
-		self.__remove_timer()
+		self.__remove_all_timers()
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer = timeout_add(3000, self.__check_timeout, priority=PRIORITY_LOW)
+		self.__timer3 = timeout_add(3000, self.__check_timeout, priority=PRIORITY_LOW)
 		return False
 
 	def __error_cb(self, manager, data):
@@ -77,5 +86,5 @@ class Checker(SignalManager):
 		return False
 
 	def __remove_cb(self, *args):
-		self.__remove_timer()
+		self.__remove_all_timers()
 		return False
