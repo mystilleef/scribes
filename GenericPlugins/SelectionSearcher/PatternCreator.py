@@ -35,8 +35,24 @@ class Creator(SignalManager):
 			self.__manager.emit("search-pattern", pattern)
 		except ValueError:
 			from gettext import gettext as _
-			message = _("ERROR: Search string not found") 
+			message = _("ERROR: Search string not found")
 			self.__editor.update_message(message, "fail", 10)
+		return False
+
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
+		return False
+
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
 		return False
 
 	def __destroy_cb(self, *args):
@@ -44,8 +60,9 @@ class Creator(SignalManager):
 		return False
 
 	def __search_cb(self, manager, string):
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__create_pattern, string.decode("utf-8"), priority=PRIORITY_LOW)
+		self.__timer1 = idle_add(self.__create_pattern, string.decode("utf-8"), priority=PRIORITY_LOW)
 		return False
 
 	def __reset_cb(self, *args):
@@ -53,6 +70,7 @@ class Creator(SignalManager):
 		return False
 
 	def __research_cb(self, *args):
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW as LOW
-		idle_add(self.__create_pattern, self.__string.decode("utf-8"), priority=LOW)
+		self.__timer2 = idle_add(self.__create_pattern, self.__string.decode("utf-8"), priority=LOW)
 		return False

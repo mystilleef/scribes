@@ -101,26 +101,48 @@ class Navigator(SignalManager):
 		del self
 		return
 
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+				3: self.__timer3,
+				4: self.__timer4,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
+		return False
+
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 5)]
+		return False
+
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __matches_cb(self, manager, matches):
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__process, matches, priority=PRIORITY_LOW)
+		self.__timer1 = idle_add(self.__process, matches, priority=PRIORITY_LOW)
 		return False
 
 	def __next_cb(self, *args):
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__navigate, self.__process_next, priority=PRIORITY_LOW)
+		self.__timer2 = idle_add(self.__navigate, self.__process_next, priority=PRIORITY_LOW)
 		return False
 
 	def __previous_cb(self, *args):
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__navigate, self.__process_previous, priority=PRIORITY_LOW)
+		self.__timer3 = idle_add(self.__navigate, self.__process_previous, priority=PRIORITY_LOW)
 		return False
 
 	def __reset_cb(self, *args):
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__clear, priority=PRIORITY_LOW)
+		self.__timer4 = idle_add(self.__clear, priority=PRIORITY_LOW)
 		return False

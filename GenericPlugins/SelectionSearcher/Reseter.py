@@ -50,6 +50,22 @@ class Reseter(SignalManager):
 		self.__blocked = False
 		return False
 
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
+		return False
+
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
+		return False
+
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
@@ -60,13 +76,15 @@ class Reseter(SignalManager):
 		return False
 
 	def __changed_cb(self, *args):
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__reset, priority=PRIORITY_LOW)
+		self.__timer1 = idle_add(self.__reset, priority=PRIORITY_LOW)
 		return False
 
 	def __key_cb(self, window, event):
 		from gtk.keysyms import Escape
 		if event.keyval != Escape: return False
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__reset, priority=PRIORITY_LOW)
+		self.__timer2 = idle_add(self.__reset, priority=PRIORITY_LOW)
 		return True

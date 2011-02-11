@@ -51,12 +51,12 @@ class Detector(SignalManager):
 
 	def __send_idle(self):
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__send, priority=PRIORITY_LOW)
+		self.__timer1 = idle_add(self.__send, priority=PRIORITY_LOW)
 		return False
 
 	def __send_timeout(self):
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer = timeout_add(500, self.__send_idle, priority=PRIORITY_LOW)
+		self.__timer2 = timeout_add(500, self.__send_idle, priority=PRIORITY_LOW)
 		return False
 
 	def __get_word_before_cursor(self):
@@ -84,12 +84,20 @@ class Detector(SignalManager):
 		self.__blocked = False
 		return False
 
-	def __remove_timer(self):
+	def __remove_timer(self, _timer=1):
 		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+			}
 			from gobject import source_remove
-			source_remove(self.__timer)
+			source_remove(timers[_timer])
 		except AttributeError:
 			pass
+		return False
+
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
 		return False
 
 	def __compile(self):
@@ -102,15 +110,16 @@ class Detector(SignalManager):
 		return False
 
 	def __insert_cb(self, textbuffer, iterator, text, length):
-		
-		self.__remove_timer()
+		length = len(text.decode("utf8"))
+		self.__remove_all_timers()
 		if length > 1 or is_delimeter(text): self.__manager.emit("no-match-found")
 		return False
 
 	def __insert_text_cb(self, textbuffer, iterator, text, length):
+		length = len(text.decode("utf8"))
 		if self.__inserting or self.__lmark is None or length > 1: return False
 		if is_delimeter(text) or is_not_delimeter(iterator.get_char()): return False
-		self.__remove_timer()
+		self.__remove_all_timers()
 		self.__send() if self.__is_visible else self.__send_timeout()
 		return False
 

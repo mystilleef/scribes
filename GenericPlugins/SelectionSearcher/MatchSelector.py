@@ -25,7 +25,7 @@ class Selector(SignalManager):
 		self.__editor.textbuffer.select_range(start, end)
 		self.__editor.textview.scroll_mark_onscreen(mark[1])
 		return False
-	
+
 	def __remove_timer(self, _timer=1):
 		try:
 			timers = {
@@ -36,7 +36,6 @@ class Selector(SignalManager):
 		except AttributeError:
 			pass
 		return False
-	
 
 	def __destroy_cb(self, *args):
 		self.__destroy()

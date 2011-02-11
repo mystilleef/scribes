@@ -24,11 +24,23 @@ class Searcher(SignalManager):
 		self.__manager.emit("found-matches", matches)
 		return
 
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
+		return False
+
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __regex_cb(self, manager, regex_object):
+		self.__remove_timer(1)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__find_matches, regex_object, priority=PRIORITY_LOW)
+		self.__timer1 = idle_add(self.__find_matches, regex_object, priority=PRIORITY_LOW)
 		return False

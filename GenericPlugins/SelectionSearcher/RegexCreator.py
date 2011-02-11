@@ -12,12 +12,12 @@ class Creator(SignalManager):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		return 
+		return
 
 	def __destroy(self):
 		self.disconnect()
 		del self
-		return 
+		return
 
 	def __regex_object(self, pattern):
 		from re import I, U, M, L, compile as compile_
@@ -26,11 +26,23 @@ class Creator(SignalManager):
 		self.__manager.emit("regex-object", regex_object)
 		return False
 
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
+		return False
+
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __pattern_cb(self, manager, pattern):
+		self.__remove_timer(1)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__regex_object, pattern, priority=PRIORITY_LOW)
+		self.__timer1 = idle_add(self.__regex_object, pattern, priority=PRIORITY_LOW)
 		return False
