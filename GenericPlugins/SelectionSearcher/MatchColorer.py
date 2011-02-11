@@ -34,9 +34,11 @@ class Colorer(SignalManager):
 
 	def __clear(self):
 		if self.__colored is False: return False
+		self.__editor.freeze()
 		bounds = self.__editor.textbuffer.get_bounds()
 		self.__editor.textbuffer.remove_tag(self.__tag, *bounds)
 		self.__colored = False
+		self.__editor.thaw()
 		return False
 
 	def __color(self, marks):

@@ -13,21 +13,20 @@ class Marker(SignalManager):
 		self.__manager = manager
 		self.__editor = editor
 		self.__marks = []
+		self.__old_marks = []
 		return
 
 	def __destroy(self):
 		self.disconnect()
+		del_ = self.__editor.delete_mark
+		remove_marks = lambda start, end: (del_(start), del_(end))
+		[remove_marks(*mark) for mark in self.__old_marks]
 		del self
 		return
 
 	def __clear(self):
 		if not self.__marks: return
-		del_ = self.__editor.delete_mark
-		remove_marks = lambda start, end: (del_(start), del_(end))
-		self.__editor.freeze()
-		[remove_marks(*mark) for mark in self.__marks]
-		self.__editor.thaw()
-		self.__editor.refresh(False)
+		self.__old_marks += self.__marks
 		self.__marks = []
 		return False
 
