@@ -102,6 +102,7 @@ class Detector(SignalManager):
 		return False
 
 	def __insert_cb(self, textbuffer, iterator, text, length):
+		
 		self.__remove_timer()
 		if length > 1 or is_delimeter(text): self.__manager.emit("no-match-found")
 		return False

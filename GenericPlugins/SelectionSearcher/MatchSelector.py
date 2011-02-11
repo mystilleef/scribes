@@ -25,12 +25,25 @@ class Selector(SignalManager):
 		self.__editor.textbuffer.select_range(start, end)
 		self.__editor.textview.scroll_mark_onscreen(mark[1])
 		return False
+	
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
+		return False
+	
 
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __match_cb(self, manager, mark):
+		self.__remove_timer(1)
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__select, mark, priority=PRIORITY_LOW)
+		self.__timer1 = idle_add(self.__select, mark, priority=PRIORITY_LOW)
 		return False

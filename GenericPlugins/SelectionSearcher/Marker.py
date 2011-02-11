@@ -13,12 +13,12 @@ class Marker(SignalManager):
 		self.__manager = manager
 		self.__editor = editor
 		self.__marks = []
-		return 
+		return
 
 	def __destroy(self):
 		self.disconnect()
 		del self
-		return 
+		return
 
 	def __clear(self):
 		if not self.__marks: return
@@ -45,16 +45,34 @@ class Marker(SignalManager):
 		self.__manager.emit("marked-matches", marks)
 		return False
 
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
+		return False
+
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
+		return False
+
 	def __destroy_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __clear_cb(self, *args):
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__clear, priority=PRIORITY_LOW)
+		self.__timer1 = idle_add(self.__clear, priority=PRIORITY_LOW)
 		return False
 
 	def __matches_cb(self, manager, matches):
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__mark, matches, priority=PRIORITY_LOW)
+		self.__timer2 = idle_add(self.__mark, matches, priority=PRIORITY_LOW)
 		return False

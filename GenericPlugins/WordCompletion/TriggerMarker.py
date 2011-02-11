@@ -94,6 +94,7 @@ class Marker(SignalManager):
 
 	def __insert_cb(self, textbuffer, iterator, text, length):
 		if is_not_delimeter(iterator.get_char()): return False
+		length = len(text.decode("utf8"))
 		if (length == 1) and is_delimeter(text):
 			self.__move_marks(iterator)
 		else:
