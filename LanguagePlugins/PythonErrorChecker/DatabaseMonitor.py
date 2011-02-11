@@ -22,7 +22,7 @@ class Monitor(SignalManager):
 
 	def __update_timeout(self):
 		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__update, priority=PRIORITY_LOW)
+		idle_add(self.__update, priority=PRIORITY_LOW)
 		return False
 
 	def __remove_timer(self):
