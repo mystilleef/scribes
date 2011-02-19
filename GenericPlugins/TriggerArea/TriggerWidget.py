@@ -46,9 +46,9 @@ class TriggerWidget(EventBox):
 	border_color = property(lambda self: self.__bcolor, __set_border_color)
 	fill_color = property(lambda self: self.__fcolor, __set_fill_color)
 
-	def __draw(self, cr, size, position="top-right"):
+	def __draw(self, cr, _size, position="top-right"):
 		offset = self.__offset
-		size, radius = size, size - offset
+		size, radius = _size, _size - offset
 		corner = {
 			"top-right": ((size, 0), (size, radius), (offset, 0)),
 			"top-left": ((0, 0), (0, radius), (radius, 0)),
@@ -71,11 +71,22 @@ class TriggerWidget(EventBox):
 		cr.stroke_preserve()
 		return False
 
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
+		return False
+
 	def __allocate_cb(self, win, allocation):
 		from gtk.gdk import Pixmap
 		bitmap = Pixmap(self.window, self.__size, self.__size, 1)
 		cr = bitmap.cairo_create()
-		from cairo import OPERATOR_SOURCE, OPERATOR_CLEAR, OPERATOR_OVER
+		from cairo import OPERATOR_CLEAR, OPERATOR_OVER
 #		 Clear the bitmap
 		cr.set_operator(OPERATOR_CLEAR)
 		cr.paint()
@@ -109,5 +120,7 @@ class TriggerWidget(EventBox):
 		return False
 
 	def __expose_cb(self, *args):
-		self.__paint()
+		self.__remove_timer(1)
+		from gobject import idle_add, PRIORITY_HIGH
+		self.__timer1 = idle_add(self.__paint, priority=PRIORITY_HIGH)
 		return False
