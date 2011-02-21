@@ -71,17 +71,6 @@ class TriggerWidget(EventBox):
 		cr.stroke_preserve()
 		return False
 
-	def __remove_timer(self, _timer=1):
-		try:
-			timers = {
-				1: self.__timer1,
-			}
-			from gobject import source_remove
-			source_remove(timers[_timer])
-		except AttributeError:
-			pass
-		return False
-
 	def __allocate_cb(self, win, allocation):
 		from gtk.gdk import Pixmap
 		bitmap = Pixmap(self.window, self.__size, self.__size, 1)
@@ -108,19 +97,13 @@ class TriggerWidget(EventBox):
 		self.set_style(style)
 		return False
 
-	def __paint(self):
-		cr = self.window.cairo_create()
+	def __expose_cb(self, *args):
 		# Draw arc
+		cr = self.window.cairo_create()
 		bcolor = Color(self.__bcolor)
 		cr.set_source_rgba(bcolor.red_float, bcolor.green_float, bcolor.blue_float, 1.0)
 		self.__draw(cr, self.__size, self.__position)
 		fcolor = Color(self.__fcolor)
 		cr.set_source_rgba(fcolor.red_float, fcolor.green_float, fcolor.blue_float, 0.5)
 		cr.fill()
-		return False
-
-	def __expose_cb(self, *args):
-		self.__remove_timer(1)
-		from gobject import idle_add, PRIORITY_HIGH
-		self.__timer1 = idle_add(self.__paint, priority=PRIORITY_HIGH)
-		return False
+		return True
