@@ -11,8 +11,6 @@ class Manager(object):
 		from signal import signal, SIGINT, SIGQUIT, SIG_DFL
 		signal(SIGINT, SIG_DFL)
 		signal(SIGQUIT, SIG_DFL)
-		from sys import setcheckinterval
-		setcheckinterval(-1)
 		from gobject import timeout_add, PRIORITY_LOW
 		timeout_add(60000, self.__init_psyco, priority=PRIORITY_LOW)
 		self.__init_i18n()
