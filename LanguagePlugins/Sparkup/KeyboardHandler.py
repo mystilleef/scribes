@@ -1,4 +1,4 @@
-from gtk.gdk import MODIFIER_MASK
+from gtk.gdk import SHIFT_MASK, CONTROL_MASK, MOD1_MASK, SUPER_MASK, HYPER_MASK, META_MASK
 from gtk.keysyms import Tab, Escape, ISO_Left_Tab
 
 from SCRIBES.SignalConnectionManager import SignalManager
@@ -49,7 +49,8 @@ class Handler(SignalManager):
 		translate = self.__keymap.translate_keyboard_state
 		data = translate(event.hardware_keycode, event.state, event.group)
 		keyval, egroup, level, consumed = data
-		any_on = event.state & ~consumed & MODIFIER_MASK
+		ALL_MASK = CONTROL_MASK | SHIFT_MASK | MOD1_MASK | SUPER_MASK | HYPER_MASK | META_MASK
+		any_on = event.state & ~consumed & ALL_MASK
 		# Handle backspace key press event.
 		if not any_on and event.keyval == ISO_Left_Tab: return self.__emit("previous-placeholder")
 		# Handle delete key press event.

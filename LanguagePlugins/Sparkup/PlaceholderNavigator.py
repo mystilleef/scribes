@@ -63,6 +63,7 @@ class Navigator(SignalManager):
 		gifm = self.__buffer.get_iter_at_mark
 		start, end = gifm(marks[0]), gifm(marks[1])
 		self.__buffer.select_range(start, end)
+		self.__editor.textview.move_mark_onscreen(marks[1])
 		return False
 
 	def __destroy_cb(self, *args):
