@@ -19,7 +19,7 @@ class Searcher(SignalManager):
 
 	def __search(self, template):
 		offset = self.__buffer.get_iter_at_mark(self.__boundary[0]).get_offset()
-		placeholder_pattern = "\$+\d"
+		placeholder_pattern = "\$+\d+"
 		from re import finditer, M, U
 		flags =  M|U
 		matches = finditer(placeholder_pattern, template, flags)
