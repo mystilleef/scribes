@@ -2,11 +2,13 @@ from gtk.keysyms import Shift_L, Shift_R, Caps_Lock, BackSpace, Return
 from gtk.keysyms import Tab, Delete, Up, Down, Left, Right, Escape
 from gtk.keysyms import Alt_L, Alt_R, Control_R, Control_L, U, A, B, C
 from gtk.keysyms import D, E, F, i, Num_Lock
-from gtk.gdk import CONTROL_MASK, SHIFT_MASK, MODIFIER_MASK
-from gtk.gdk import BUTTON_PRESS
+from gtk.gdk import CONTROL_MASK, SHIFT_MASK, SUPER_MASK, META_MASK, HYPER_MASK
+from gtk.gdk import BUTTON_PRESS, MOD1_MASK
 from gtk.gdk import keyval_to_unicode
 
 from SCRIBES.SignalConnectionManager import SignalManager
+
+ALL_MASK = MOD1_MASK | SHIFT_MASK | CONTROL_MASK | SUPER_MASK | META_MASK | HYPER_MASK 
 
 SAFE_KEYS = (
 		Shift_L, Shift_R, Alt_L, Alt_R, Control_L, Control_R, Caps_Lock,
@@ -86,7 +88,7 @@ class Handler(SignalManager):
 		translate = self.__keymap.translate_keyboard_state
 		data = translate(event.hardware_keycode, event.state, event.group)
 		keyval, egroup, level, consumed = data
-		active_mask = any_on = event.state & ~consumed & MODIFIER_MASK
+		active_mask = any_on = event.state & ~consumed & ALL_MASK
 		ctrl_on = active_mask == CONTROL_MASK
 		shift_on = active_mask == SHIFT_MASK
 		# Handle backspace key press event.
