@@ -17,7 +17,7 @@ class Checker(SignalManager):
 		cwd = get_current_folder(globals())
 		self.__checker = join(cwd, "pychecker", "checker.py")
 		self.__python = join(prefix, "bin", "python")
-		self.__flags = "-T -s -w -Q -r -C -G --no-noeffect -M" # -O --only
+		self.__flags = "-T -s -w -Q -r -C -G --only --no-noeffect -M" # -O --only
 		return
 
 	def __check(self, data):
