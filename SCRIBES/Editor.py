@@ -587,6 +587,10 @@ class Editor(Signals):
 		from Utils import is_not_delimeter
 		return is_not_delimeter(character)
 
+	def grab_focus(self):
+		self.textview.grab_focus()
+		return False
+
 	def enable_busy_pointer(self):
 		print "Not yet implemented"
 		return False

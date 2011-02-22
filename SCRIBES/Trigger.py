@@ -32,15 +32,15 @@ class Trigger(GObject):
 	removable = property(lambda self: self.__removable)
 
 	def __activate(self):
+		self.__editor.grab_focus()
 		if self.__editor.bar_is_active: return False
 		self.__editor.hide_completion_window()
 		self.emit("activate")
 		return False
 
 	def activate(self):
-#		from gobject import idle_add
-#		idle_add(self.__activate)
-		self.__activate()
+		from gobject import idle_add, PRIORITY_HIGH
+		idle_add(self.__activate, priority=PRIORITY_HIGH)
 		return
 
 	def destroy(self):
