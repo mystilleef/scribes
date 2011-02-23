@@ -38,11 +38,48 @@ class Editor(Signals):
 	@property
 	def line_text(self): return self.get_line_text()
 
+	@property
+	def gui(self):
+		try:
+			if self.__gui: return self.__gui
+		except AttributeError:
+			self.__gui = self.get_data("gui")
+		return self.__gui
+
+	@property
+	def textview(self):
+		try:
+			if self.__view: return self.__view
+		except AttributeError:
+			self.__view = self.gui.get_widget("ScrolledWindow").get_child()
+		return self.__view
+
+	@property
+	def view(self): return self.textview
+
+	@property
+	def textbuffer(self):
+		try:
+			if self.__buffer: return self.__buffer
+		except AttributeError:
+			self.__buffer = self.textview.get_property("buffer")
+		return self.__buffer
+
+	@property
+	def buf(self): return self.textbuffer
+
+	@property
+	def buffer_(self): return self.textbuffer
+
+	@property
+	def window(self):
+		try:
+			if self.__window: return self.__window
+		except AttributeError:
+			self.__window = self.gui.get_widget("Window")
+		return self.__window
+
 	imanager = property(lambda self: self.get_data("InstanceManager"))
-	gui = property(lambda self: self.get_data("gui"))
-	window = property(lambda self: self.gui.get_widget("Window"))
-	textview = view = property(lambda self: self.gui.get_widget("ScrolledWindow").get_child())
-	textbuffer = buf = buffer_ = property(lambda self: self.textview.get_property("buffer"))
 	toolbar = property(lambda self: self.get_data("Toolbar"))
 	uri = property(lambda self: self.get_data("uri"))
 	uris = property(lambda self: self.imanager.get_uris())

@@ -58,25 +58,6 @@ class Animator(SignalManager):
 		self.__slide_timer = timeout_add(REFRESH_TIME, self.__move_idle, direction, priority=PRIORITY_LOW)
 		return False
 
-	def __reposition_in(self, direction):
-		try:
-			x = int(self.__get_x(direction))
-			y = int(self.__get_y(direction))
-			self.__editor.textview.move_child(self.__bar, x, y)
-			self.__bar.show_all()
-			self.__editor.refresh(False)
-		except AttributeError:
-			pass
-		return False
-
-	def __remove_move_timer(self):
-		try:
-			from gobject import source_remove
-			source_remove(self.__move_timer)
-		except AttributeError:
-			pass
-		return False
-
 	def __move_idle(self, direction):
 		self.__remove_move_timer()
 		from gobject import idle_add, PRIORITY_LOW
@@ -95,6 +76,24 @@ class Animator(SignalManager):
 			self.__busy = False
 		return animate
 
+	def __reposition_in(self, direction):
+		try:
+			x = int(self.__get_x(direction))
+			y = int(self.__get_y(direction))
+			self.__view.move_child(self.__bar, x, y)
+			self.__bar.show_all()
+		except AttributeError:
+			pass
+		return False
+
+	def __remove_move_timer(self):
+		try:
+			from gobject import source_remove
+			source_remove(self.__move_timer)
+		except AttributeError:
+			pass
+		return False
+
 	def __can_end(self, direction):
 		if direction == "down" and self.__start_point >= self.__end_point: raise ValueError
 		if direction == "up" and self.__start_point <= self.__end_point: raise ValueError
@@ -112,8 +111,6 @@ class Animator(SignalManager):
 		if direction in ("left", "right"): return self.__vheight - self.__bheight + 4
 		if direction == "up": self.__start_point -= self.__vdelta
 		if direction == "down": self.__start_point += self.__vdelta
-#		if self.__start_point > self.__vheight + 4: return self.__vheight + 4
-#		if self.__start_point < self.__end_point: return self.__end_point
 		return self.__start_point
 
 	def __update_animation_start_point(self, direction):
@@ -158,10 +155,6 @@ class Animator(SignalManager):
 		if not self.__bar: return False
 		self.__remove_direction_timer()
 		self.__busy = True
-#		if self.__busy: return False
-#		from threading import Thread
-#		t = Thread(target=self.__slide, args=(direction,))
-#		t.start()
 		from gobject import idle_add, PRIORITY_LOW as LOW
 		self.__direction_timer = idle_add(self.__slide, direction, priority=LOW)
 		return False
