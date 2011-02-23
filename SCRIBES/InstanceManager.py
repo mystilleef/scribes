@@ -8,9 +8,9 @@ class Manager(object):
 		Manager()
 #		from TerminalSignalHandler import Handler
 #		Handler(self)
-		from signal import signal, SIGINT, SIGQUIT, SIG_DFL
-		signal(SIGINT, SIG_DFL)
-		signal(SIGQUIT, SIG_DFL)
+		from signal import signal, SIGTERM, SIG_DFL
+		signal(SIGTERM, SIG_DFL)
+#		signal(SIGQUIT, SIG_DFL)
 		from gobject import timeout_add, PRIORITY_LOW
 		timeout_add(60000, self.__init_psyco, priority=PRIORITY_LOW)
 		self.__init_i18n()

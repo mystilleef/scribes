@@ -5,7 +5,6 @@ bar_PYTHON = \
 	Widget.py \
 	Displayer.py \
 	Signals.py \
-	Compositor.py \
 	BarSizeUpdater.py \
 	ViewSizeUpdater.py \
 	Positioner.py \

@@ -33,7 +33,8 @@ class Updater(SignalManager):
 		return False
 
 	def __animation_cb(self, manager, animation):
-		self.__update(animation)
+		from gobject import idle_add
+		idle_add(self.__update, animation)
 		return False
 
 	def __slide_cb(self, manager, slide):

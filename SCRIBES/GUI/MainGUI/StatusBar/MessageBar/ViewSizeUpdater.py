@@ -6,7 +6,7 @@ class Updater(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
-		self.connect(self.__view, "expose-event", self.__expose_cb)
+		self.connect(editor.window, "configure-event", self.__event_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
@@ -23,20 +23,31 @@ class Updater(SignalManager):
 		del self
 		return False
 
-	def __update(self): 
+	def __update(self):
 		geometry = self.__view.window.get_geometry()
 		width, height = geometry[2], geometry[3]
 		if width == self.__width and height == self.__height: return False
 		self.__width, self.__height = width, height
 		self.__manager.emit("view-size", (width, height))
-		return False 
+		return False
+
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
+		return False
 
 	def __quit_cb(self, *args):
 		self.__destroy()
-		return False 
+		return False
 
-	def __expose_cb(self, *args):
-#		from gobject import idle_add
-#		idle_add(self.__update, priority=9999)
-		self.__update()
+	def __event_cb(self, *args):
+		self.__remove_timer(1)
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer1 = idle_add(self.__update, priority=PRIORITY_LOW)
 		return False

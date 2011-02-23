@@ -28,7 +28,8 @@ class Resizer(SignalManager):
 		return False
 
 	def __size_cb(self, *args):
-		self.__update_size()
+		from gobject import idle_add
+		idle_add(self.__update_size)
 		return False
 
 	def __quit_cb(self, *args):

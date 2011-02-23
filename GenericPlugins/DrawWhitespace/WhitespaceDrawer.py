@@ -9,8 +9,8 @@ class Drawer(SignalManager):
 		self.__sigid2 = manager.connect("destroy", self.__destroy_cb)
 		self.__sigid3 = manager.connect("color", self.__color_cb)
 		self.__sigid4 = manager.connect("show-whitespaces", self.__show_cb)
-		from gobject import idle_add
-		idle_add(self.__precompile_methods, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__precompile_methods, priority=PRIORITY_LOW)
 
 	def __init_attributes(self, editor, manager):
 		self.__editor = editor
@@ -111,14 +111,15 @@ class Drawer(SignalManager):
 	def __event_after_cb(self, textview, event):
 		if self.__show is False: return False
 		from gtk.gdk import EXPOSE
+		if event.type != EXPOSE: return False
 		from gtk import TEXT_WINDOW_TEXT
-		if event.type != EXPOSE or \
-			event.window != textview.get_window(TEXT_WINDOW_TEXT):
-			return False
+		if event.window != textview.get_window(TEXT_WINDOW_TEXT): return False
 		y = textview.window_to_buffer_coords(TEXT_WINDOW_TEXT, event.area.x, event.area.y)[1]
 		start = textview.get_line_at_y(y)[0]
 		end = textview.get_line_at_y(y + event.area.height)[0]
 		end.forward_to_line_end()
+		#from gobject import idle_add, PRIORITY_HIGH
+		#idle_add(self.__draw_whitespaces, event, start, end, priority=PRIORITY_HIGH)
 		self.__draw_whitespaces(event, start, end)
 		return False
 

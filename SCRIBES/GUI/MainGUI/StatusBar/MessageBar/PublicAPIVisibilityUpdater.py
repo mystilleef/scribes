@@ -29,5 +29,6 @@ class Updater(SignalManager):
 		return False
 
 	def __visible_cb(self, manager, visible):
-		self.__update(visible)
+		from gobject import idle_add
+		idle_add(self.__update, visible)
 		return False

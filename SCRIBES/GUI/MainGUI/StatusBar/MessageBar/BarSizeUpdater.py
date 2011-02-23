@@ -7,8 +7,6 @@ class Updater(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "bar", self.__bar_cb)
-#		self.connect(manager, "slide", self.__size_cb)
-#		self.connect(manager, "visible", self.__visible_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
@@ -42,14 +40,12 @@ class Updater(SignalManager):
 		return False
 
 	def __size_cb(self, *args):
-		self.__update()
-#		from gobject import idle_add
-#		idle_add(self.__update, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__update, priority=PRIORITY_LOW)
 		return False
 
 	def __visible_cb(self, manager, visible):
-		if visible is False: self.__update()
-#		if visible: return False
-#		from gobject import idle_add
-#		idle_add(self.__update, priority=9999)
+		if visible: return False
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__update, priority=PRIORITY_LOW)
 		return False

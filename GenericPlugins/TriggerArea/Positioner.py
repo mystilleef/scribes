@@ -8,7 +8,7 @@ class Positioner(SignalManager):
 		self.__widget.hide()
 		from gtk import TEXT_WINDOW_WIDGET
 		self.__view.add_child_in_window(self.__widget, TEXT_WINDOW_WIDGET, 0, -120)
-		self.connect(editor.window, "expose-event", self.__expose_cb)
+		self.connect(editor.window, "configure-event", self.__event_cb)
 		self.connect(editor, "toolbar-is-visible", self.__show_cb, True)
 		self.connect(editor, "show-full-view", self.__hide_cb)
 		self.__position()
@@ -59,7 +59,8 @@ class Positioner(SignalManager):
 		self.__view.move_child(self.__widget, 0, -120)
 		return False
 
-	def __expose_cb(self, *args):
+	def __event_cb(self, *args):
 		if self.__ignore_expose: return False
-		self.__position()
+		from gobject import idle_add
+		idle_add(self.__position)
 		return False

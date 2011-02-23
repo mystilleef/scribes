@@ -53,7 +53,7 @@ class Displayer(SignalManager):
 
 	def __show_cb(self, *args):
 		from gobject import idle_add
-		idle_add(self.__show, priority=9999)
+		idle_add(self.__show)
 		return False
 
 	def __focus_cb(self, *args):
