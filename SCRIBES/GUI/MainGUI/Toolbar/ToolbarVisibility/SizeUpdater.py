@@ -7,6 +7,7 @@ class Updater(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor.window, "configure-event", self.__event_cb)
+		self.connect(editor, "scrollbar-visibility-update", self.__event_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
