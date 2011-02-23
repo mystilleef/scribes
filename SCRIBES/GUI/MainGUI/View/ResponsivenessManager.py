@@ -30,5 +30,4 @@ class Manager(SignalManager):
 
 	def __response_cb(self, *args):
 		self.__editor.refresh(False)
-#		print "Move or scroll event calling refresh"
 		return False

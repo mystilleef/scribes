@@ -8,7 +8,7 @@ from gtk.gdk import keyval_to_unicode
 
 from SCRIBES.SignalConnectionManager import SignalManager
 
-ALL_MASK = MOD1_MASK | SHIFT_MASK | CONTROL_MASK | SUPER_MASK | META_MASK | HYPER_MASK 
+ALL_MASK = MOD1_MASK | SHIFT_MASK | CONTROL_MASK | SUPER_MASK | META_MASK | HYPER_MASK
 
 SAFE_KEYS = (
 		Shift_L, Shift_R, Alt_L, Alt_R, Control_L, Control_R, Caps_Lock,

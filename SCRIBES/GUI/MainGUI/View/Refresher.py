@@ -12,7 +12,6 @@ class Refresher(SignalManager):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__view = editor.textview
-		self.__count = 0
 		return
 
 	def __destroy(self):
@@ -26,15 +25,6 @@ class Refresher(SignalManager):
 		return False
 
 	def __refresh_cb(self, editor, grab_focus):
-		try:
-			while events_pending(): main_iteration(False)
-			self.__view.window.process_updates(True)
-		except AttributeError:
-			pass
-		finally:
-			while events_pending(): main_iteration(False)
-			if grab_focus: self.__view.grab_focus()
-			while events_pending(): main_iteration(False)
-#		self.__count += 1 # this counts 
-#		print "refresher count: ", self.__count
+		if grab_focus: self.__view.grab_focus()
+		while events_pending(): main_iteration(False)
 		return False
