@@ -8,6 +8,7 @@ class Updater(SignalManager):
 		self.connect(editor, "quit", self.__destroy_cb)
 		self.connect(self.__vscrollbar, "value-changed", self.__changed_cb, data=True)
 		self.connect(self.__hscrollbar, "value-changed", self.__changed_cb, data=False)
+		self.connect(editor, "loaded-file", self.__loaded_cb, True)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -46,4 +47,8 @@ class Updater(SignalManager):
 		self.__remove_timer(1)
 		from gobject import idle_add, PRIORITY_LOW
 		self.__timer1 = idle_add(self.__update, _range, vertical, priority=PRIORITY_LOW)
+		return False
+
+	def __loaded_cb(self, *args):
+		self.__editor.emit("scrollbar-visibility-update")
 		return False
