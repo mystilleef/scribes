@@ -18,6 +18,7 @@ class Animator(SignalManager):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
+		self.__view = editor.view
 		self.__container = editor.get_data("ToolContainer")
 		self.__start_point = 0
 		self.__end_point = 0
@@ -51,8 +52,8 @@ class Animator(SignalManager):
 		try:
 			x = int(self.__get_x(direction))
 			y = int(self.__get_y(direction))
-			self.__editor.textview.move_child(self.__container, x, y)
-			if not self.__container.get_property("visible"): self.__container.show_all()
+			self.__view.move_child(self.__container, x, y)
+			self.__container.show_all()
 		except AttributeError:
 			pass
 		return False
