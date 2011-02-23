@@ -41,7 +41,7 @@ class Editor(Signals):
 	@property
 	def gui(self):
 		try:
-			if self.__gui: return self.__gui
+			return self.__gui
 		except AttributeError:
 			self.__gui = self.get_data("gui")
 		return self.__gui
@@ -49,7 +49,7 @@ class Editor(Signals):
 	@property
 	def textview(self):
 		try:
-			if self.__view: return self.__view
+			return self.__view
 		except AttributeError:
 			self.__view = self.gui.get_widget("ScrolledWindow").get_child()
 		return self.__view
@@ -60,7 +60,7 @@ class Editor(Signals):
 	@property
 	def textbuffer(self):
 		try:
-			if self.__buffer: return self.__buffer
+			return self.__buffer
 		except AttributeError:
 			self.__buffer = self.textview.get_property("buffer")
 		return self.__buffer
@@ -74,7 +74,7 @@ class Editor(Signals):
 	@property
 	def window(self):
 		try:
-			if self.__window: return self.__window
+			return self.__window
 		except AttributeError:
 			self.__window = self.gui.get_widget("Window")
 		return self.__window
