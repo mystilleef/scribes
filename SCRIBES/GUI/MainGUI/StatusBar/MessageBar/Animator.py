@@ -33,6 +33,7 @@ class Animator(SignalManager):
 		self.__vwidth = 0
 		self.__busy = False
 		self.__direction = ""
+		self.__cycle_count = 0
 		return
 
 	def __destroy(self):
@@ -66,14 +67,19 @@ class Animator(SignalManager):
 
 	def __move(self, direction):
 		try:
+			if self.__cycle_count >= 50: raise AssertionError
+			self.__cycle_count += 1
 			animate = True
 			self.__can_end(direction)
-			self.__reposition_in(direction)
-		except ValueError:
+			from gobject import idle_add
+			idle_add(self.__reposition_in, direction)
+		except AssertionError:
+			self.__remove_slide_timer()
 			animate = False
 			if direction == "down": self.__bar.hide()
 			self.__manager.emit("animation", "end")
 			self.__busy = False
+			self.__cycle_count = 0
 		return animate
 
 	def __reposition_in(self, direction):
@@ -95,8 +101,8 @@ class Animator(SignalManager):
 		return False
 
 	def __can_end(self, direction):
-		if direction == "down" and self.__start_point >= self.__end_point: raise ValueError
-		if direction == "up" and self.__start_point <= self.__end_point: raise ValueError
+		if direction == "down" and self.__start_point >= self.__end_point: raise AssertionError
+		if direction == "up" and self.__start_point <= self.__end_point: raise AssertionError
 		return False
 
 	def __get_x(self, direction):
@@ -153,6 +159,7 @@ class Animator(SignalManager):
 		if direction == self.__direction: return False
 		self.__direction = direction
 		if not self.__bar: return False
+		self.__remove_slide_timer()
 		self.__remove_direction_timer()
 		self.__busy = True
 		from gobject import idle_add, PRIORITY_LOW as LOW
