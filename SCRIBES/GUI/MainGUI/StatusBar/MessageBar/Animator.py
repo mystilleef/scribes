@@ -59,14 +59,9 @@ class Animator(SignalManager):
 		self.__slide_timer = timeout_add(REFRESH_TIME, self.__move, direction, priority=PRIORITY_LOW)
 		return False
 
-	def __move_idle(self, direction):
-		self.__remove_move_timer()
-		from gobject import idle_add, PRIORITY_LOW
-		self.__move_timer = idle_add(self.__move, direction, priority=PRIORITY_LOW)
-		return False
-
 	def __move(self, direction):
 		try:
+			self.__editor.refresh(False)
 			if self.__cycle_count >= 50: raise AssertionError
 			self.__cycle_count += 1
 			animate = True
@@ -86,26 +81,22 @@ class Animator(SignalManager):
 		try:
 			x = int(self.__get_x(direction))
 			y = int(self.__get_y(direction))
+			self.__editor.refresh(False)
 			self.__view.move_child(self.__bar, x, y)
 			self.__bar.show_all()
-		except AttributeError:
-			pass
-		return False
-
-	def __remove_move_timer(self):
-		try:
-			from gobject import source_remove
-			source_remove(self.__move_timer)
+			self.__editor.refresh(False)
 		except AttributeError:
 			pass
 		return False
 
 	def __can_end(self, direction):
+		self.__editor.refresh(False)
 		if direction == "down" and self.__start_point >= self.__end_point: raise AssertionError
 		if direction == "up" and self.__start_point <= self.__end_point: raise AssertionError
 		return False
 
 	def __get_x(self, direction):
+		self.__editor.refresh(False)
 		if direction in ("up", "down"): return self.__vwidth - self.__bwidth + 4
 		if direction == "left": self.__start_point -= self.__hdelta
 		if direction == "right": self.__start_point += self.__hdelta
@@ -114,6 +105,7 @@ class Animator(SignalManager):
 		return self.__start_point
 
 	def __get_y(self, direction):
+		self.__editor.refresh(False)
 		if direction in ("left", "right"): return self.__vheight - self.__bheight + 4
 		if direction == "up": self.__start_point -= self.__vdelta
 		if direction == "down": self.__start_point += self.__vdelta
