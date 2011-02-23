@@ -14,8 +14,8 @@ class Animator(SignalManager):
 		self.connect(manager, "bar-size", self.__bsize_cb)
 		self.connect(manager, "view-size", self.__vsize_cb)
 		self.connect(manager, "bar", self.__bar_cb)
-		from gobject import idle_add
-		idle_add(self.__compile, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__compile, priority=PRIORITY_LOW)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
@@ -55,7 +55,7 @@ class Animator(SignalManager):
 		self.__update_animation_start_point(direction)
 		self.__update_animation_end_point(direction)
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__slide_timer = timeout_add(REFRESH_TIME, self.__move_idle, direction, priority=PRIORITY_LOW)
+		self.__slide_timer = timeout_add(REFRESH_TIME, self.__move, direction, priority=PRIORITY_LOW)
 		return False
 
 	def __move_idle(self, direction):
