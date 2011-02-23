@@ -10,7 +10,6 @@ class Saver(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.__sigid1 = self.connect(editor, "modified-file", self.__modified_cb)
 		self.connect(editor, "close", self.__close_cb)
-		self.connect(editor, "cursor-moved", self.__changed_cb, True)
 		self.connect(editor.buf, "changed", self.__changed_cb, True)
 		self.connect(manager, "reset-modification-flag", self.__modified_cb)
 		editor.register_object(self)
@@ -33,6 +32,7 @@ class Saver(SignalManager):
 				1: self.__timer1,
 				2: self.__timer2,
 				3: self.__timer3,
+				4: self.__timer3,
 			}
 			from gobject import source_remove
 			source_remove(timers[_timer])
@@ -41,7 +41,7 @@ class Saver(SignalManager):
 		return False
 
 	def __remove_all_timers(self):
-		[self.__remove_timer(_timer) for _timer in xrange(1, 4)]
+		[self.__remove_timer(_timer) for _timer in xrange(1, 5)]
 		return False
 
 	def __process(self):
@@ -76,5 +76,7 @@ class Saver(SignalManager):
 		return False
 
 	def __changed_cb(self, *args):
-		self.__process()
+		self.__remove_all_timers()
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer5 = idle_add(self.__process, priority=PRIORITY_LOW)
 		return False
