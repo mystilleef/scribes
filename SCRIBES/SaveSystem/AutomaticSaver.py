@@ -77,6 +77,6 @@ class Saver(SignalManager):
 
 	def __changed_cb(self, *args):
 		self.__remove_all_timers()
-		from gobject import idle_add, PRIORITY_LOW
-		self.__timer5 = idle_add(self.__process, priority=PRIORITY_LOW)
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__timer5 = timeout_add(150, self.__process, priority=PRIORITY_LOW)
 		return False
