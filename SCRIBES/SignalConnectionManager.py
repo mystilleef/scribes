@@ -6,7 +6,7 @@ class SignalManager(object):
 
 	def connect(self, gobject, signal_name, callback, after=False, data=None):
 		connect = gobject.connect if after is False else gobject.connect_after
-		signal_id = connect(signal_name, callback, data) if data else connect(signal_name, callback)
+		signal_id = connect(signal_name, callback, data) if data is not None else connect(signal_name, callback)
 		self.__signals.append((gobject, signal_id))
 		return signal_id
 

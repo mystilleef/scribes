@@ -28,6 +28,8 @@ class Initializer(object):
 		Manager(editor)
 		from GUI.Manager import Manager
 		Manager(editor, uri)
+		from ScrollbarVisibilityUpdater import Updater
+		Updater(editor)
 ########################################################################
 		from FreezeManager import Manager
 		Manager(editor)

@@ -62,6 +62,7 @@ scribes_PYTHON = \
 	MarginPositionMetadata.py \
 	MinimalModeMetadata.py \
 	SchemeManager.py \
+	ScrollbarVisibilityUpdater.py \
 	ServicesInitializer.py \
 	SIGNALS.py \
 	SignalConnectionManager.py \

@@ -71,6 +71,7 @@ class Signals(GObject):
 		"hide-completion-window": (SSIGNAL, TYPE_NONE, ()),
 		"freeze": (SSIGNAL, TYPE_NONE, ()),
 		"thaw": (SSIGNAL, TYPE_NONE, ()),
+		"scrollbar-visibility-update": (SSIGNAL, TYPE_NONE, ()),
 		"completion-window-is-visible": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"trigger": (SSIGNAL, TYPE_NONE, (TYPE_STRING,)),
 		"refresh": (SSIGNAL, TYPE_NONE, (TYPE_BOOLEAN,)),
