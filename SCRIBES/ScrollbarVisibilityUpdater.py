@@ -9,6 +9,8 @@ class Updater(SignalManager):
 		self.connect(self.__vscrollbar, "value-changed", self.__changed_cb, data=True)
 		self.connect(self.__hscrollbar, "value-changed", self.__changed_cb, data=False)
 		self.connect(editor, "loaded-file", self.__loaded_cb, True)
+		self.connect(editor, "add-bar-object", self.__loaded_cb, True)
+		self.connect(editor, "remove-bar-object", self.__loaded_cb, True)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
@@ -24,18 +26,27 @@ class Updater(SignalManager):
 		if delta == idelta: return False
 		if vertical: self.__vdelta = delta
 		if vertical is False: self.__hdelta = delta
+		self.__emit()
+		return False
+
+	def __emit(self):
 		self.__editor.emit("scrollbar-visibility-update")
-		return True
+		return False
 
 	def __remove_timer(self, _timer=1):
 		try:
 			timers = {
 				1: self.__timer1,
+				2: self.__timer2,
 			}
 			from gobject import source_remove
 			source_remove(timers[_timer])
 		except AttributeError:
 			pass
+		return False
+
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
 		return False
 
 	def __destroy_cb(self, *args):
@@ -44,11 +55,13 @@ class Updater(SignalManager):
 		return False
 
 	def __changed_cb(self, _range, vertical):
-		self.__remove_timer(1)
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
 		self.__timer1 = idle_add(self.__update, _range, vertical, priority=PRIORITY_LOW)
 		return False
 
 	def __loaded_cb(self, *args):
-		self.__editor.emit("scrollbar-visibility-update")
+		self.__remove_all_timers()
+		from gobject import timeout_add
+		self.__timer2 = timeout_add(125, self.__emit)
 		return False
