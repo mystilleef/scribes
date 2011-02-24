@@ -83,6 +83,7 @@ class Animator(SignalManager):
 			y = int(self.__get_y(direction))
 			self.__editor.refresh(False)
 			self.__view.move_child(self.__bar, x, y)
+			self.__editor.refresh(False)
 			self.__bar.show_all()
 			self.__editor.refresh(False)
 		except AttributeError:
