@@ -68,6 +68,7 @@ class Editor(Signals):
 	@property
 	def buf(self): return self.textbuffer
 
+
 	@property
 	def buffer_(self): return self.textbuffer
 
@@ -78,6 +79,9 @@ class Editor(Signals):
 		except AttributeError:
 			self.__window = self.gui.get_widget("Window")
 		return self.__window
+
+	@property
+	def cursor_mark(self): return self.textbuffer.get_insert()
 
 	imanager = property(lambda self: self.get_data("InstanceManager"))
 	toolbar = property(lambda self: self.get_data("Toolbar"))
@@ -313,10 +317,19 @@ class Editor(Signals):
 		return [self.disconnect_signal(sigid, instance) for sigid, instance in data]
 
 	def move_view_to_cursor(self, align=False, iterator=None):
+		#FIXME: Deprecate this ugly thing. Use scroll_to_mark and scroll_to_iter instead.
 		if iterator is None: iterator = self.cursor
-#		self.response()
 		self.textview.scroll_to_iter(iterator, 0.001, use_align=align, xalign=1.0)
-#		self.response()
+		return False
+
+	def scroll_to_mark(self, mark=None):
+		if mark is None: mark = self.cursor_mark
+		self.textview.scroll_to_mark(mark, 0.001, True)
+		return False
+
+	def scroll_to_iter(self, iterator=None):
+		if iterator is None: iterator = self.cursor
+		self.textview.scroll_to_iter(iterator, 0.001, True)
 		return False
 
 	def response(self):

@@ -1,5 +1,3 @@
-from gettext import gettext as _
-
 class Navigator(object):
 
 	def __init__(self, manager, editor):
@@ -81,6 +79,7 @@ class Navigator(object):
 			pappend(marks) if cursor_offset > get_offset(mark) else nappend(marks)
 		match = self.__next_queue.popleft() if self.__next_queue else self.__prev_queue.popleft()
 		self.__current_match = match
+		self.__editor.view.scroll_mark_onscreen(match[-1])
 		self.__manager.emit("current-match", match)
 		return False
 
@@ -94,7 +93,6 @@ class Navigator(object):
 		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
 		del self
-		self = None
 		return
 
 	def __destroy_cb(self, *args):

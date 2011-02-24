@@ -13,6 +13,7 @@ class Colorer(object):
 		self.__editor = editor
 		self.__tag = self.__create_tag()
 		self.__colored = False
+		self.__view = editor.view
 		return
 
 	def __destroy(self):
@@ -22,7 +23,6 @@ class Colorer(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		del self
-		self = None
 		return 
 
 	def __create_tag(self):
@@ -47,7 +47,7 @@ class Colorer(object):
 		iter1 = giam(mark[0])
 		iter2 = giam(mark[1])
 		apply_tag(self.__tag, iter1, iter2)
-		self.__editor.move_view_to_cursor(False, iter1)
+		self.__editor.scroll_to_mark(mark[-1])
 		self.__colored = True
 		self.__manager.emit("selected-mark", mark)
 		return False
