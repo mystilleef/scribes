@@ -32,10 +32,16 @@ class Updater(SignalManager):
 		self.__manager.emit("view-size", (width, height))
 		return False
 
+	def __update_on_idle(self):
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer2 = idle_add(self.__update, priority=PRIORITY_LOW)
+		return False
+
 	def __remove_timer(self, _timer=1):
 		try:
 			timers = {
 				1: self.__timer1,
+				2: self.__timer2,
 			}
 			from gobject import source_remove
 			source_remove(timers[_timer])
@@ -43,12 +49,16 @@ class Updater(SignalManager):
 			pass
 		return False
 
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
+		return False
+
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __allocate_cb(self, *args):
-		self.__remove_timer(1)
-		from gobject import idle_add, PRIORITY_LOW
-		self.__timer1 = idle_add(self.__update, priority=PRIORITY_LOW)
+		self.__remove_all_timers()
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__timer1 = timeout_add(250, self.__update_on_idle, priority=PRIORITY_LOW)
 		return False
