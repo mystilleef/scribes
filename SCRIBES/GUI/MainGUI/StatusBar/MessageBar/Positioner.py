@@ -6,9 +6,9 @@ class Positioner(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
-#		self.connect(manager, "bar", self.__bar_cb)
-#		self.connect(manager, "view-size", self.__view_size_cb)
-#		self.connect(manager, "bar-size", self.__bar_size_cb)
+		self.connect(manager, "bar", self.__bar_cb)
+		self.connect(manager, "view-size", self.__view_size_cb)
+		self.connect(manager, "bar-size", self.__bar_size_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):

@@ -44,6 +44,6 @@ class Calculator(SignalManager):
 
 	def __size_cb(self, manager, size):
 		self.__remove_timer()
-		from gobject import idle_add, PRIORITY_LOW
-		self.__timer = idle_add(self.__update, size, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		self.__timer = idle_add(self.__update, size)
 		return False

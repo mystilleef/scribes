@@ -18,7 +18,6 @@ class Manager(object):
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
 		self.__editor.unregister_object(self)
 		del self
-		self = None
 		return False
 
 	def __add(self, bar):

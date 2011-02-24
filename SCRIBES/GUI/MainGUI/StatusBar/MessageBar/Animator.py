@@ -168,6 +168,7 @@ class Animator(SignalManager):
 
 	def __vsize_cb(self, manager, size):
 		self.__vwidth, self.__vheight = size
+		if self.__direction == "up": self.__reposition_in(self.__direction)
 		return False
 
 	def __bar_cb(self, manager, bar):

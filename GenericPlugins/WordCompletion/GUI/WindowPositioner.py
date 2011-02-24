@@ -92,7 +92,7 @@ class Positioner(SignalManager):
 	def __position_window(self):
 		width, height = self.__get_size()
 		xcord, ycord = self.__get_cords(width, height)
-		self.__set_scroll_policy((width, height))
+#		self.__set_scroll_policy((width, height))
 		self.__window.resize(width, height)
 		self.__window.move(xcord, ycord)
 		self.__manager.emit("show-window")

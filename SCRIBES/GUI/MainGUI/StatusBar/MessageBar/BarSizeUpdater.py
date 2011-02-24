@@ -24,7 +24,7 @@ class Updater(SignalManager):
 		return False
 
 	def __update(self):
-		width, height = self.__bar.size_request() # requisition.width, requisition.height
+		width, height = self.__bar.size_request()
 		if width == self.__width and height == self.__height: return False
 		self.__width, self.__height = width, height
 		self.__manager.emit("bar-size", (width, height))
@@ -40,12 +40,12 @@ class Updater(SignalManager):
 		return False
 
 	def __size_cb(self, *args):
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__update, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__update)
 		return False
 
 	def __visible_cb(self, manager, visible):
 		if visible: return False
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__update, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__update)
 		return False
