@@ -123,4 +123,4 @@ class Trigger(SignalManager, TriggerManager):
 	def __activate_cb(self, trigger):
 		from gobject import idle_add
 		idle_add(self.__activate, trigger.zen_action)
-		return
+		return False
