@@ -43,6 +43,7 @@ class Trigger(SignalManager, TriggerManager):
 		return Manager(self.__editor)
 
 	def __activate_cb(self, trigger):
+		if self.__editor.readonly: return False
 		if self.__manager is None: self.__manager = self.__create_manager()
 		dictionary = {
 			"indent": self.__manager.indent,
