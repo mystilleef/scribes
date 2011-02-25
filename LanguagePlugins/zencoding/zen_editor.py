@@ -169,7 +169,7 @@ class ZenEditor(object):
 		Returns editor's content
 		@return: str
 		"""
-		return self.__editor.text
+		return self.__editor.text.decode(self.encoding)
 
 	def get_syntax(self):
 		"""
