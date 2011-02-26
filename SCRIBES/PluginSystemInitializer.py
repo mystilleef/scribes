@@ -19,18 +19,19 @@ class Initializer(SignalManager):
 	def __destroy(self):
 		self.disconnect()
 		del self
-		return
+		return False
 
 	def __init_plugins(self):
 		from PluginInitializer.Manager import Manager
 		Manager(self.__editor)
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __ready(self):
 		self.__editor.emit("ready")
-		self.__editor.textview.grab_focus()
-		return
+		self.__editor.refresh(True)
+		return False
 
 	def __init_plugins_on_idle(self):
 		from gobject import idle_add, PRIORITY_HIGH
@@ -38,10 +39,11 @@ class Initializer(SignalManager):
 		return False
 
 	def __loaded_cb(self, *args):
-		self.__ready()
+		from gobject import idle_add
+		idle_add(self.__ready)
 		return False
 
 	def __loaded_after_cb(self, *args):
 		from gobject import timeout_add, PRIORITY_HIGH
-		timeout_add(100, self.__init_plugins_on_idle, priority=PRIORITY_HIGH)
+		timeout_add(50, self.__init_plugins_on_idle, priority=PRIORITY_HIGH)
 		return False
