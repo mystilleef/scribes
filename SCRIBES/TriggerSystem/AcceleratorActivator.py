@@ -46,20 +46,28 @@ class Activator(SignalManager):
 		self.__dictionary[keyvalmodifier].activate()
 		return False
 
-	def __activate_cb(self, accelgroup, window, keyval, modifier, *args):
-		self.__activate((keyval, modifier))
-		return False
-
-	def __add_cb(self, manager, trigger):
-		self.__add(trigger)
-		return False
-
-	def __remove_cb(self, manager, trigger):
-		self.__remove(trigger)
-		return False
-
-	def __quit_cb(self, *args):
+	def __destroy(self):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
+		return False
+
+	def __activate_cb(self, accelgroup, window, keyval, modifier, *args):
+		from gobject import idle_add
+		idle_add(self.__activate, (keyval, modifier))
+		return False
+
+	def __add_cb(self, manager, trigger):
+		from gobject import idle_add
+		idle_add(self.__add, trigger)
+		return False
+
+	def __remove_cb(self, manager, trigger):
+		from gobject import idle_add
+		idle_add(self.__remove, trigger)
+		return False
+
+	def __quit_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

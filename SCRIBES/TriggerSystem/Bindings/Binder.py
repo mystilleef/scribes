@@ -30,9 +30,11 @@ class BaseBinder(SignalManager):
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __activate_cb(self, *args):
-		self.activate()
+		from gobject import idle_add
+		idle_add(self.activate)
 		return False

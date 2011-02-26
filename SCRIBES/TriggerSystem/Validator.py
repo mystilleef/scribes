@@ -63,27 +63,37 @@ class Validator(SignalManager):
 		return False
 
 	def __validate_triggers(self, triggers):
-		[self.__validate(trigger) for trigger in triggers]
+		from gobject import idle_add
+		[idle_add(self.__validate, trigger) for trigger in triggers]
 		return False
 
-	def __add_cb(self, editor, trigger):
-		self.__validate_triggers((trigger,))
-		return False
-
-	def __adds_cb(self, editor, triggers):
-		self.__validate_triggers(triggers)
-		return False
-
-	def __remove_cb(self, editor, trigger):
-		self.__remove(trigger)
-		return False
-
-	def __removes_cb(self, editor, triggers):
-		[self.__remove(trigger) for trigger in triggers]
-		return False
-
-	def __quit_cb(self, *args):
+	def __destroy(self):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
+		return False
+
+	def __add_cb(self, editor, trigger):
+		from gobject import idle_add
+		idle_add(self.__validate_triggers, (trigger,))
+		return False
+
+	def __adds_cb(self, editor, triggers):
+		from gobject import idle_add
+		idle_add(self.__validate_triggers, triggers)
+		return False
+
+	def __remove_cb(self, editor, trigger):
+		from gobject import idle_add
+		idle_add(self.__remove, trigger)
+		return False
+
+	def __removes_cb(self, editor, triggers):
+		from gobject import idle_add
+		[idle_add(self.__remove, trigger) for trigger in triggers]
+		return False
+
+	def __quit_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

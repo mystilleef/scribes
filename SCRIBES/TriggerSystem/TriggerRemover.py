@@ -20,19 +20,27 @@ class Remover(SignalManager):
 		return False
 
 	def __remove_triggers(self, triggers):
-		[self.__remove(trigger) for trigger in triggers]
+		from gobject import idle_add
+		[idle_add(self.__remove, trigger) for trigger in triggers]
 		return False
 
-	def __trigger_cb(self, editor, trigger):
-		self.__remove_triggers((trigger,))
-		return False
-
-	def __triggers_cb(self, editor, triggers):
-		self.__remove_triggers(triggers)
-		return False
-
-	def __quit_cb(self, *args):
+	def __destroy(self):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
+		return False
+
+	def __trigger_cb(self, editor, trigger):
+		from gobject import idle_add
+		idle_add(self.__remove_triggers, (trigger,))
+		return False
+
+	def __triggers_cb(self, editor, triggers):
+		from gobject import idle_add
+		idle_add(self.__remove_triggers, triggers)
+		return False
+
+	def __quit_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

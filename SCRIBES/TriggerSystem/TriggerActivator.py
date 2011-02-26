@@ -19,10 +19,7 @@ class Activator(SignalManager):
 		return False
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
 		return False
@@ -48,19 +45,21 @@ class Activator(SignalManager):
 		return False
 
 	def __activate_cb(self, editor, name):
-		self.__activate(name)
+		from gobject import idle_add
+		idle_add(self.__activate, name)
 		return False
 
 	def __add_cb(self, manager, trigger):
-		self.__add(trigger)
+		from gobject import idle_add
+		idle_add(self.__add, trigger)
 		return False
 
 	def __remove_cb(self, manager, trigger):
-		self.__remove(trigger)
+		from gobject import idle_add
+		idle_add(self.__remove, trigger)
 		return False
 
 	def __quit_cb(self, *args):
-		self.disconnect()
-		self.__editor.unregister_object(self)
-		del self
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

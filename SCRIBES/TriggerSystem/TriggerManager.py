@@ -28,16 +28,23 @@ class Manager(SignalManager):
 		self.__editor.set_data("triggers", self.__triggers)
 		return False
 
-	def __add_cb(self, manager, trigger):
-		self.__update(self.__add, trigger)
-		return False
-
-	def __remove_cb(self, manager, trigger):
-		self.__update(self.__remove, trigger)
-		return False
-
-	def __quit_cb(self, *args):
+	def __destroy(self):
 		self.disconnect()
 		self.__triggers = []
 		del self
+		return False
+
+	def __add_cb(self, manager, trigger):
+		from gobject import idle_add
+		idle_add(self.__update, self.__add, trigger)
+		return False
+
+	def __remove_cb(self, manager, trigger):
+		from gobject import idle_add
+		idle_add(self.__update, self.__remove, trigger)
+		return False
+
+	def __quit_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
