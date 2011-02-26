@@ -31,16 +31,16 @@ class Reader(object):
 			data = gfile.load_contents_finish(result)
 			self.__manager.emit("process-encoding", gfile.get_uri(), data[0])
 		except Error, e:
-			from gobject import idle_add
-			idle_add(self.__error, (gfile, e), priority=9999)
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.__error, (gfile, e), priority=PRIORITY_LOW)
 		return False
 
 	def __destroy_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __read_uri_cb(self, manager, uri):
-		from gobject import idle_add
-		from glib import PRIORITY_HIGH
+		from gobject import idle_add, PRIORITY_HIGH
 		idle_add(self.__read, uri, priority=PRIORITY_HIGH)
 		return False

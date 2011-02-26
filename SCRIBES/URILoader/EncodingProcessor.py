@@ -37,7 +37,8 @@ class Processor(object):
 		return encodings
 
 	def __destroy_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __process_cb(self, manager, uri, string):

@@ -39,5 +39,6 @@ class Handler(object):
 		return False
 
 	def __destroy_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

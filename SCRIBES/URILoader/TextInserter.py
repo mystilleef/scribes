@@ -21,16 +21,15 @@ class Inserter(object):
 			if encoding is None: encoding = "utf-8"
 			unicode_string = string.decode(encoding, "strict")
 			utf8_string = unicode_string.encode("utf-8", "strict")
-#			self.__editor.refresh(True)
 			self.__editor.textbuffer.set_text(utf8_string)
-#			self.__editor.refresh(True)
 			self.__manager.emit("load-success", uri, encoding)
 		except:
 			self.__manager.emit("insertion-error", uri, string)
 		return False
 
 	def __destroy_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __insert_cb(self, manager, uri, string, encoding):

@@ -25,7 +25,8 @@ class Notifier(object):
 		return False
 
 	def __destroy_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __init_loading_cb(self, manager, uri, encoding):

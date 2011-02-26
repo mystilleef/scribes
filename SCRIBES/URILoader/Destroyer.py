@@ -11,11 +11,11 @@ class Destroyer(object):
 
 	def __destroy(self):
 		self.__manager.emit("destroy")
-		self.__editor.textview.grab_focus()
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		del self
 		return False
 
 	def __loaded_file_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__destroy, priority=PRIORITY_LOW)
 		return False
