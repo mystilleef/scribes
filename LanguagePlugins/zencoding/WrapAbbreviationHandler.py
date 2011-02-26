@@ -37,11 +37,10 @@ class Handler(SignalManager):
 	def __expand(self, abbreviation):
 		self.__zeditor.set_context(self.__editor)
 		self.__editor.textview.grab_focus()
-		if self.__bmark: #raise ValueError
+		if self.__bmark:
 			start_iterator = self.__editor.textbuffer.get_iter_at_mark(self.__bmark)
 			end_iterator = self.__editor.textbuffer.get_iter_at_mark(self.__emark)
 			self.__editor.textbuffer.select_range(start_iterator, end_iterator)
-#		self.__manager.emit("action", "wrap_with_abbreviation")
 		from zen_core import run_action
 		run_action("wrap_with_abbreviation", self.__zeditor, abbreviation)
 		return False

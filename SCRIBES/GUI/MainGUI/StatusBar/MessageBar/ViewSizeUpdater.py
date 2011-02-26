@@ -6,14 +6,15 @@ class Updater(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
-		self.connect(self.__view, "size-allocate", self.__allocate_cb, True)
+		self.connect(self.__view, "size-allocate", self.__update_cb, True)
+		self.connect(editor, "scrollbar-visibility-update", self.__update_cb, True)
+		self.connect(editor.window, "configure-event", self.__update_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
 		self.__view = editor.textview
-		self.__count = 0
 		self.__width = 0
 		self.__height = 0
 		return
@@ -25,6 +26,7 @@ class Updater(SignalManager):
 		return False
 
 	def __update(self):
+		self.__editor.refresh(False)
 		geometry = self.__view.window.get_geometry()
 		width, height = geometry[2], geometry[3]
 		if self.__width == width and self.__height == height: return False
@@ -57,7 +59,7 @@ class Updater(SignalManager):
 		self.__destroy()
 		return False
 
-	def __allocate_cb(self, *args):
+	def __update_cb(self, *args):
 		self.__remove_all_timers()
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__timer1 = timeout_add(250, self.__update_on_idle, priority=PRIORITY_LOW)
