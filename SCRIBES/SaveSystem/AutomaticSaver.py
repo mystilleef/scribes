@@ -20,35 +20,9 @@ class Saver(SignalManager):
 		self.__editor = editor
 		return
 
-	def __destroy(self):
-		self.__remove_timer()
-		self.disconnect()
-		self.__editor.unregister_object(self)
-		del self
-		return False
-
-	def __remove_timer(self, _timer=1):
-		try:
-			timers = {
-				1: self.__timer1,
-				2: self.__timer2,
-				3: self.__timer3,
-				4: self.__timer3,
-			}
-			from gobject import source_remove
-			source_remove(timers[_timer])
-		except AttributeError:
-			pass
-		return False
-
-	def __remove_all_timers(self):
-		[self.__remove_timer(_timer) for _timer in xrange(1, 5)]
-		return False
-
 	def __process(self):
-		self.__remove_all_timers()
-		from gobject import timeout_add as ta, PRIORITY_LOW
-		self.__timer1 = ta(SAVE_TIMER, self.__save_on_idle, priority=PRIORITY_LOW)
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__timer1 = timeout_add(SAVE_TIMER, self.__save_on_idle, priority=PRIORITY_LOW)
 		return False
 
 	def __save_on_idle(self):
@@ -61,13 +35,29 @@ class Saver(SignalManager):
 		self.__editor.save_file(self.__editor.uri, self.__editor.encoding)
 		return False
 
-	def __quit_cb(self, *args):
-		self.__destroy()
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+				2: self.__timer2,
+				3: self.__timer3,
+				4: self.__timer4,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
 		return False
 
-	def __close_cb(self, *args):
+	def __remove_all_timers(self):
+		[self.__remove_timer(_timer) for _timer in xrange(1, 5)]
+		return False
+
+	def __destroy(self):
 		self.__remove_all_timers()
-		self.__editor.handler_block(self.__sigid1)
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		del self
 		return False
 
 	def __modified_cb(self, *args):
@@ -79,5 +69,15 @@ class Saver(SignalManager):
 	def __changed_cb(self, *args):
 		self.__remove_all_timers()
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer5 = timeout_add(150, self.__process, priority=PRIORITY_LOW)
+		self.__timer4 = timeout_add(250, self.__process, priority=PRIORITY_LOW)
+		return False
+
+	def __close_cb(self, *args):
+		self.__remove_all_timers()
+		self.__editor.handler_block(self.__sigid1)
+		return False
+
+	def __quit_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

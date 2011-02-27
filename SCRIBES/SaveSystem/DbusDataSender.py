@@ -35,9 +35,6 @@ class Sender(SignalManager):
 	def __send(self, data):
 		uri, encoding, session_id = data
 		if self.__session_id != session_id: return False
-#		from gio import File
-#		 Make sure uri is properly escaped.
-#		uri = File(uri).get_uri()
 		if not encoding: encoding = "utf-8"
 		data = session_id, uri, encoding, self.__get_text()
 		self.__processor.process(data,
@@ -47,7 +44,8 @@ class Sender(SignalManager):
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __session_cb(self, manager, session_id):
@@ -55,8 +53,8 @@ class Sender(SignalManager):
 		return False
 
 	def __data_cb(self, manager, data):
-		from gobject import idle_add
-		idle_add(self.__send, data, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__send, data, priority=PRIORITY_LOW)
 		return False
 
 	def __processor_cb(self, manager, processor):
