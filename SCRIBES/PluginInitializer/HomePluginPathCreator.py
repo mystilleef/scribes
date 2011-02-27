@@ -21,22 +21,24 @@ class Creator(SignalManager):
 		return False
 
 	def __create(self, plugin_path):
+		from gobject import idle_add
 		try:
 			from os import makedirs, path
 			filename = path.join(plugin_path, "__init__.py")
 			makedirs(plugin_path)
 			handle = open(filename, "w")
 			handle.close()
-			self.__manager.emit("validate-path", plugin_path)
+			idle_add(self.__manager.emit, "validate-path", plugin_path)
 		except (OSError, IOError):
-			self.__manager.emit("plugin-folder-creation-error", plugin_path)
+			idle_add(self.__manager.emit, "plugin-folder-creation-error", plugin_path)
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __create_cb(self, manager, plugin_path):
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__create, plugin_path, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__create, plugin_path)
 		return False

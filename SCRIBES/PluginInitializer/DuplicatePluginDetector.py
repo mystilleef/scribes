@@ -40,14 +40,16 @@ class Detector(SignalManager):
 
 	def __check(self, unloaded_plugin_data):
 		loaded_plugin_data = self.__get_duplicate(unloaded_plugin_data)
+		from gobject import idle_add
 		if loaded_plugin_data:
-			self.__handle_duplicate(unloaded_plugin_data, loaded_plugin_data) 
+			idle_add(self.__handle_duplicate, unloaded_plugin_data, loaded_plugin_data)
 		else:
-			self.__manager.emit("load-plugin", unloaded_plugin_data)
+			idle_add(self.__manager.emit, "load-plugin", unloaded_plugin_data)
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __plugins_cb(self, manager, plugins):
@@ -55,5 +57,6 @@ class Detector(SignalManager):
 		return False
 
 	def __check_cb(self, manager, unloaded_plugin_data):
-		self.__check(unloaded_plugin_data)
+		from gobject import idle_add
+		idle_add(self.__check, unloaded_plugin_data)
 		return False

@@ -19,16 +19,22 @@ class Initializer(SignalManager):
 		module_name = split(module_path)[-1][:-3]
 		from imp import load_source
 		module = load_source(module_name, module_path)
-		self.__manager.emit("initialized-module", module)
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "initialized-module", module)
 		return False
 
-	def __initialize_cb(self, manager, module_path):
-		self.__initialize(module_path)
-		return False
-
-	def __quit_cb(self, *args):
+	def __destroy(self):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
 		return False
 
+	def __initialize_cb(self, manager, module_path):
+		from gobject import idle_add
+		idle_add(self.__initialize, module_path)
+		return False
+
+	def __quit_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
+		return False

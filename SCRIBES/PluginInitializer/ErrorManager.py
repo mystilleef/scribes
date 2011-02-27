@@ -30,7 +30,8 @@ class Manager(SignalManager):
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __not_found_cb(self, *args):

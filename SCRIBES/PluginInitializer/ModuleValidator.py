@@ -22,20 +22,23 @@ class Validator(SignalManager):
 
 	def __validate(self, module):
 		try:
-			emit = self.__manager.emit 
+			from gobject import idle_add
+			emit = lambda signal: idle_add(self.__manager.emit, signal, module)
 			if not hasattr(module, "autoload"): raise ValueError
 			if not hasattr(module, "name"): raise ValueError
 			if not hasattr(module, "version"): raise ValueError
 			if not hasattr(module, "class_name"): raise ValueError
-			emit("validate-language-module", module) if hasattr(module, "languages") else emit("valid-module", module)
+			emit("validate-language-module") if hasattr(module, "languages") else emit("valid-module")
 		except ValueError:
 			print module, " is an invalid plugin module"
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __validate_cb(self, manager, module):
-		self.__validate(module)
+		from gobject import idle_add
+		idle_add(self.__validate, module)
 		return False

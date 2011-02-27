@@ -25,17 +25,19 @@ class Validator(SignalManager):
 			from os.path import join, exists
 			filename = join(plugin_path, "__init__.py")
 			if not exists(filename): raise ValueError
-			self.__manager.emit("update-python-path", plugin_path)
+			from gobject import idle_add
+			idle_add(self.__manager.emit, "update-python-path", plugin_path)
 		except ValueError:
-			self.__manager.emit("plugin-path-error", plugin_path)
+			from gobject import idle_add
+			idle_add(self.__manager.emit, "plugin-path-error", plugin_path)
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __validate_cb(self, manager, plugin_path):
-		self.__validate(plugin_path)
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__validate, plugin_path, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__validate, plugin_path)
 		return False

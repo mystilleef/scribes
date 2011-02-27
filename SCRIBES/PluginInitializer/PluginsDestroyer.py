@@ -25,12 +25,14 @@ class Destroyer(SignalManager):
 		if self.__destroyed: return False
 		if self.__quit is False: return False
 		if self.__plugins: return False
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		self.__destroyed = True
 		return False
 
 	def __unload(self, plugin_data):
-		self.__manager.emit("unload-plugin", plugin_data)
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "unload-plugin", plugin_data)
 		return
 
 	def __unload_plugins(self):
@@ -45,7 +47,8 @@ class Destroyer(SignalManager):
 			from gobject import idle_add
 			idle_add(self.__unload_plugins)
 		except ValueError:
-			self.__destroy()
+			from gobject import idle_add
+			idle_add(self.__destroy)
 		return False
 
 	def __plugins_cb(self, manager, plugins):

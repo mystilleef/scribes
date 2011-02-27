@@ -19,15 +19,22 @@ class Loader(SignalManager):
 		if module.autoload is False: return False
 		plugin = PluginClass(self.__editor)
 		plugin.load()
-		self.__manager.emit("loaded-plugin", (module, plugin))
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "loaded-plugin", (module, plugin))
 		return False
 
-	def __load_cb(self, manager, data):
-		self.__load(data)
-		return False
-
-	def __quit_cb(self, *args):
+	def __destroy(self):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
+		return False
+
+	def __load_cb(self, manager, data):
+		from gobject import idle_add
+		idle_add(self.__load, data)
+		return False
+
+	def __quit_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

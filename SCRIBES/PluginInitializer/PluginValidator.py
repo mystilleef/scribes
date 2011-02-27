@@ -28,15 +28,19 @@ class Validator(SignalManager):
 			if hasattr(PluginClass, "__init__") is False: raise ValueError
 			if hasattr(PluginClass, "load") is False: raise ValueError
 			if hasattr(PluginClass, "unload") is False: raise ValueError
-			self.__manager.emit("check-duplicate-plugins", (module, PluginClass))
+			emit = self.__manager.emit 
+			from gobject import idle_add
+			idle_add(emit, "check-duplicate-plugins", (module, PluginClass))
 		except ValueError:
 			print module, " has an invalid plugin class"
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __validate_cb(self, manager, module):
-		self.__validate(module)
+		from gobject import idle_add
+		idle_add(self.__validate, module)
 		return False

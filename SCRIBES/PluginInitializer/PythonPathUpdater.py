@@ -23,15 +23,16 @@ class Updater(SignalManager):
 	def __update(self, plugin_path):
 		from sys import path
 		if not (plugin_path in path): path.insert(0, plugin_path)
-		self.__manager.emit("search-path-updated", plugin_path)
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "search-path-updated", plugin_path)
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __update_cb(self, manager, plugin_path):
-		self.__update(plugin_path)
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__update, plugin_path, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		idle_add(self.__update, plugin_path)
 		return False

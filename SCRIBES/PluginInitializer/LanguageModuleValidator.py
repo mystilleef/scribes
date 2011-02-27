@@ -22,13 +22,16 @@ class Validator(SignalManager):
 
 	def __validate(self, module):
 		if not (self.__editor.language in module.languages): return False
-		self.__manager.emit("valid-module", module)
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "valid-module", module)
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __validate_cb(self, manager, module):
-		self.__validate(module)
+		from gobject import idle_add
+		idle_add(self.__validate, module)
 		return False

@@ -27,17 +27,22 @@ class Reloader(SignalManager):
 		[load(path) for path in paths]
 		return False
 
+	def __destroy(self):
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		del self
+		return False
 
 	def __plugins_cb(self, manager, data):
 		self.__plugins = data
 		return False
 
 	def __loaded_cb(self, *args):
-		self.__load_language_plugins()
+		from gobject import idle_add
+		idle_add(self.__load_language_plugins)
 		return False
 
 	def __quit_cb(self, *args):
-		self.disconnect()
-		self.__editor.unregister_object(self)
-		del self
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

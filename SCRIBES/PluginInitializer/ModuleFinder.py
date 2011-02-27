@@ -21,16 +21,23 @@ class Finder(SignalManager):
 		fullpath = path.join
 		is_plugin = lambda filename: filename.startswith("Plugin") and filename.endswith(".py")
 		modules = (fullpath(plugin_path, filename) for filename in listdir(plugin_path) if is_plugin(filename))
-		emit = self.__manager.emit
-		[emit("initialize-module", module) for module in modules]
+		from gobject import idle_add
+		emit = lambda module: idle_add(self.__manager.emit, "initialize-module", module)
+		[emit(module) for module in modules]
 		return False
 
-	def __find_cb(self, manager, plugin_path):
-		self.__initialize_modules(plugin_path)
-		return False
-
-	def __quit_cb(self, *args):
+	def __destroy(self):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
+		return False
+
+	def __find_cb(self, manager, plugin_path):
+		from gobject import idle_add
+		idle_add(self.__initialize_modules, plugin_path)
+		return False
+
+	def __quit_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

@@ -7,8 +7,8 @@ class Creator(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "create-new-file", self.__create_cb)
-		from gobject import idle_add
-		idle_add(self.__optimize, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__optimize, priority=PRIORITY_LOW)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
@@ -41,7 +41,7 @@ class Creator(SignalManager):
 		return False
 
 	def __close_async_cb(self, gfile, result, _data):
-		succeeded = gfile.close_finish(result)
+		gfile.close_finish(result)
 		uri, data = _data
 		data = uri, data[1], data[2]
 		self.__manager.emit("save-data", data)
@@ -49,11 +49,11 @@ class Creator(SignalManager):
 		return False
 
 	def __quit_cb(self, *args):
-		from gobject import timeout_add
-		timeout_add(50, self.__destroy, priority=9999)
+		from gobject import timeout_add, PRIORITY_LOW
+		timeout_add(250, self.__destroy, priority=PRIORITY_LOW)
 		return False
 
 	def __create_cb(self, manager, data):
-		from gobject import idle_add
-		idle_add(self.__create, data, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__create, data, priority=PRIORITY_LOW)
 		return False

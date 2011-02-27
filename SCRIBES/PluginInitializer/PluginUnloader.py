@@ -16,14 +16,22 @@ class Unloader(SignalManager):
 	def __unload(self, data):
 		module, plugin = data
 		plugin.unload()
-		self.__manager.emit("unloaded-plugin", (module, plugin))
+		emit = self.__manager.emit
+		from gobject import idle_add
+		idle_add(emit, "unloaded-plugin", (module, plugin))
+		return False
+
+	def __destroy(self):
+		self.disconnect()
+		del self
 		return False
 
 	def __unload_cb(self, manager, data):
-		self.__unload(data)
+		from gobject import idle_add
+		idle_add(self.__unload, data)
 		return False
 
 	def __quit_cb(self, *args):
-		self.disconnect()
-		del self
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

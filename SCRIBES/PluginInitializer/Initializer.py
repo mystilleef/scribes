@@ -7,7 +7,7 @@ class Initializer(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		from gobject import timeout_add, PRIORITY_HIGH as HIGH
-		timeout_add(100, self.__validate_timeout, priority=HIGH)
+		timeout_add(50, self.__validate_timeout, priority=HIGH)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
@@ -28,8 +28,9 @@ class Initializer(SignalManager):
 		return False
 
 	def __validate(self):
+		from gobject import idle_add
 		emit = self.__manager.emit
-		[emit("validate-path", plugin_path) for plugin_path in self.__plugin_paths]
+		[idle_add(emit, "validate-path", plugin_path) for plugin_path in self.__plugin_paths]
 		return False
 
 	def __validate_timeout(self):
@@ -38,5 +39,6 @@ class Initializer(SignalManager):
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
