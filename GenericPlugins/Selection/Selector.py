@@ -22,7 +22,6 @@ class Selector(object):
 		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
 		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
 		del self
-		self = None
 		return
 
 	def __select_word(self):
@@ -85,6 +84,8 @@ class Selector(object):
 				if self.__editor.is_empty_line(end): break
 				success = end.forward_line()
 				if success is False: break
+			if self.__editor.is_empty_line(end): end.backward_line()
+			end = self.__editor.forward_to_line_end(end.copy())
 			self.__editor.textbuffer.select_range(start, end)
 			message = _("Selected paragraph")
 			self.__editor.update_message(message, "pass")
