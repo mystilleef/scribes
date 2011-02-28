@@ -190,5 +190,4 @@ class Manager(object):
 
 	def destroy(self):
 		del self
-		self = None
 		return

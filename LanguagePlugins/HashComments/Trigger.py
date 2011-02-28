@@ -24,16 +24,22 @@ class Trigger(SignalManager, TriggerManager):
 
 	def __activate_cb(self, *args):
 		try:
+			if self.__editor.readonly: return False
 			self.__manager.toggle_comment()
 		except AttributeError:
 			from Manager import Manager
 			self.__manager = Manager(self.__editor)
 			self.__manager.toggle_comment()
-		return
+		return False
 
-	def destroy(self):
+	def __destroy(self):
 		self.disconnect()
 		self.remove_triggers()
 		if self.__manager: self.__manager.destroy()
 		del self
-		return
+		return False
+
+	def destroy(self):
+		from gobject import idle_add
+		idle_add(self.__destroy)
+		return False
