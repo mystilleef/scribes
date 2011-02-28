@@ -1,7 +1,7 @@
 name = "Hash (un)comment plugin"
 authors = ["Lateef Alabi-Oki <mystilleef@gmail.com>"]
 languages = ["python", "ruby", "perl", "sh", "makefile", "r"]
-version = 0.2
+version = 0.3
 autoload = True
 class_name = "CommentPlugin"
 short_description = "(Un)comment lines in source code"

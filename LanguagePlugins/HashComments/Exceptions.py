@@ -1,2 +1,0 @@
-class ReadOnlyError(Exception):
-	pass
