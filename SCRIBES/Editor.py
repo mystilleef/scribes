@@ -506,6 +506,10 @@ class Editor(Signals):
 		if text: return False
 		return True
 
+	def iter_at_mark(self, mark):
+		from Utils import iter_at_mark
+		return iter_at_mark(self.textbuffer, mark)
+
 	def get_line_bounds(self, iterator=None):
 		if iterator is None: iterator = self.cursor
 		start = self.backward_to_line_begin(iterator)

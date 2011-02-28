@@ -484,3 +484,7 @@ def get_gui_object(globals_, basepath):
 	gui = Builder()
 	gui.add_from_file(file_)
 	return gui
+
+def iter_at_mark(textbuffer, mark):
+	return textbuffer.get_iter_at_mark(mark)
+
