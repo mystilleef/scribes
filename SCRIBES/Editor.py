@@ -39,6 +39,9 @@ class Editor(Signals):
 	def line_text(self): return self.get_line_text()
 
 	@property
+	def line_bounds(self): return self.get_line_bounds()
+
+	@property
 	def gui(self):
 		try:
 			return self.__gui
