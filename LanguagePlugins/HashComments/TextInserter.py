@@ -20,12 +20,16 @@ class Inserter(SignalManager):
 		start, end = self.__editor.iter_at_mark(self.__lmark), self.__editor.iter_at_mark(self.__rmark)
 		self.__editor.begin_user_action()
 		self.__editor.textbuffer.delete(start, end)
-		self.__editor.grab_focus()
 		self.__editor.textbuffer.insert_at_cursor(text)
 		self.__editor.grab_focus()
 		self.__editor.end_user_action()
 		from gobject import idle_add
 		idle_add(self.__manager.emit, "inserted-text")
+		return False
+
+	def __destroy(self):
+		self.disconnect()
+		del self
 		return False
 
 	def __processed_cb(self, manager, text):
@@ -38,6 +42,6 @@ class Inserter(SignalManager):
 		return False
 
 	def __destroy_cb(self, *args):
-		self.disconnect()
-		del self
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

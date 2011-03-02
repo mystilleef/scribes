@@ -185,7 +185,7 @@ class Operator(object):
 
 	def __del(self, start, end):
 		textbuffer = self.__editor.textbuffer
-		self.__copy(textbuffer, start, end)
+		# self.__copy(textbuffer, start, end)
 		textbuffer.delete(start, end)
 		return False
 

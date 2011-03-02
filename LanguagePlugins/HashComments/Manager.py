@@ -22,7 +22,8 @@ class Manager(Signal):
 		Marker(self, editor)
 
 	def destroy(self):
-		self.emit("destroy")
+		from gobject import idle_add
+		idle_add(self.emit, "destroy")
 		del self
 		return False
 
