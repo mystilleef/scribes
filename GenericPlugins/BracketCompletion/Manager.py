@@ -209,7 +209,6 @@ class BracketManager(object):
 		self.__editor.disconnect_signal(self.__sigid1, self.__editor.textview)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
-		self = None
 		del self
 		return
 

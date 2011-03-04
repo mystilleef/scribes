@@ -79,5 +79,5 @@ class Creator(SignalManager):
 	def __create_cb(self, manager, data):
 		self.__remove_all_timers()
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer2 = timeout_add(1000, self.__create_on_idle, data, priority=PRIORITY_LOW)
+		self.__timer2 = timeout_add(125, self.__create_on_idle, data, priority=PRIORITY_LOW)
 		return False
