@@ -79,5 +79,5 @@ class Generator(SignalManager):
 	def __newname_cb(self, manager, data):
 		self.__remove_all_timers()
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer1 = timeout_add(250, self.__filename_on_idle, data, priority=PRIORITY_LOW)
+		self.__timer1 = timeout_add(1500, self.__filename_on_idle, data, priority=PRIORITY_LOW)
 		return False

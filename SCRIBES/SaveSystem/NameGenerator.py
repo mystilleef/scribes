@@ -35,7 +35,8 @@ class Generator(SignalManager):
 		except IndexError:
 			filename = ""
 		finally:
-			self.__manager.emit("newname", (filename, data))
+			from gobject import idle_add
+			idle_add(self.__manager.emit, "newname", (filename, data))
 		return False
 
 	def __generate_on_idle(self, data):
@@ -77,5 +78,5 @@ class Generator(SignalManager):
 	def __generate_cb(self, manager, data):
 		self.__remove_all_timers()
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer1 = timeout_add(250, self.__generate_on_idle, data, priority=PRIORITY_LOW)
+		self.__timer1 = timeout_add(1500, self.__generate_on_idle, data, priority=PRIORITY_LOW)
 		return False
