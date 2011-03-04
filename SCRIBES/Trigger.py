@@ -35,17 +35,18 @@ class Trigger(GObject):
 		self.__editor.grab_focus()
 		if self.__editor.bar_is_active: return False
 		self.__editor.hide_completion_window()
-		self.emit("activate")
+		from gobject import idle_add, PRIORITY_HIGH
+		idle_add(self.emit, "activate", priority=PRIORITY_HIGH)
 		return False
 
 	def activate(self):
 		from gobject import idle_add, PRIORITY_HIGH
 		idle_add(self.__activate, priority=PRIORITY_HIGH)
-		return
+		return False
 
 	def destroy(self):
 		del self
-		return
+		return False
 
 	def __compile(self):
 		methods = (self.activate, self.__activate)
