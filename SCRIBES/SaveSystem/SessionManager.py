@@ -34,7 +34,8 @@ class Manager(SignalManager):
 		except AssertionError:
 			self.__manager.emit("readonly-error")
 		except ValueError:
-			self.__manager.emit("generate-name", data)
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.__manager.emit, "generate-name", data, priority=PRIORITY_LOW)
 		return False
 
 	def __quit_cb(self, *args):
