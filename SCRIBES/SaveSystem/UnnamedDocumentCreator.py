@@ -37,7 +37,6 @@ class Creator(SignalManager):
 			}
 			from gobject import source_remove
 			source_remove(timers[_timer])
-			print _timer
 		except AttributeError:
 			pass
 		return False

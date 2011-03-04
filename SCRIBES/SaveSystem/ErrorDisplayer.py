@@ -18,12 +18,6 @@ class Displayer(SignalManager):
 		self.__error = False
 		return
 
-	def __destroy(self):
-		self.disconnect()
-		self.__editor.unregister_object(self)
-		del self
-		return False
-
 	def __show(self, data):
 		session_id, uri, encoding, message = data
 		if self.__session_id != tuple(session_id): return False
@@ -32,8 +26,10 @@ class Displayer(SignalManager):
 		self.__editor.show_error(uri, message, busy=True)
 		return False
 
-	def __quit_cb(self, *args):
-		self.__destroy()
+	def __destroy(self):
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		del self
 		return False
 
 	def __session_cb(self, manager, session_id):
@@ -41,10 +37,15 @@ class Displayer(SignalManager):
 		return False
 
 	def __failed_cb(self, manager, data):
-		from gobject import idle_add
-		idle_add(self.__show, data, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__show, data, priority=PRIORITY_LOW)
 		return
 
 	def __succeeded_cb(self, *args):
 		self.__error = False
+		return False
+
+	def __quit_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

@@ -19,19 +19,14 @@ class Completer(SignalManager):
 		self.__session_id = ()
 		return
 
-	def __destroy(self):
-		self.disconnect()
-		self.__editor.unregister_object(self)
-		del self
-		return False
-
 	def __verify_session(self, data):
 		try:
 			session_id = tuple(data[0])
 			self.__queue.remove(session_id)
 			if self.__session_id != session_id: raise AssertionError # False
-			emit = self.__manager.emit
-			emit("saved?", data) if len(data) == 3 else emit("error", data)
+			from gobject import idle_add
+			emit = lambda signal: idle_add(self.__manager.emit, signal, data)
+			emit("saved?") if len(data) == 3 else emit("error")
 		except ValueError:
 			print "Module Name: SCRIBES/SaveSystem/SessionCompleter"
 			print "Method Name: __verify_session"
@@ -43,8 +38,15 @@ class Completer(SignalManager):
 			print "Old session id: %s, New session id: %s" % (self.__session_id, session_id)
 		return False
 
+	def __destroy(self):
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		del self
+		return False
+
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __session_cb(self, manager, session_id):

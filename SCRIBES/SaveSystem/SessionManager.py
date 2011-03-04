@@ -16,12 +16,6 @@ class Manager(SignalManager):
 		self.__count = 0
 		return
 
-	def __destroy(self):
-		self.disconnect()
-		self.__editor.unregister_object(self)
-		del self
-		return False
-
 	def __process(self, uri, encoding):
 		try:
 			self.__count += 1
@@ -38,8 +32,15 @@ class Manager(SignalManager):
 			idle_add(self.__manager.emit, "generate-name", data, priority=PRIORITY_LOW)
 		return False
 
+	def __destroy(self):
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		del self
+		return False
+
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __save_cb(self, editor, uri, encoding):

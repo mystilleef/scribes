@@ -33,12 +33,13 @@ class Saver(SignalManager):
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __out_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__save, priority=9999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__save, priority=PRIORITY_LOW)
 		return False
 
 	def __close_cb(self, *args):

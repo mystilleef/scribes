@@ -19,12 +19,6 @@ class Sender(SignalManager):
 		self.__processor = None
 		return
 
-	def __destroy(self):
-		self.disconnect()
-		self.__editor.unregister_object(self)
-		del self
-		return False
-
 	def __get_text(self):
 		# Make sure file is always saved with a newline character.
 		text = self.__editor.text
@@ -37,15 +31,18 @@ class Sender(SignalManager):
 		if self.__session_id != session_id: return False
 		if not encoding: encoding = "utf-8"
 		data = session_id, uri, encoding, self.__get_text()
-		self.__processor.process(data,
-				dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE,
-				reply_handler=self.__reply_handler_cb,
-				error_handler=self.__error_handler_cb)
+		self.__processor.process(
+			data,
+			dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE,
+			reply_handler=self.__reply_handler_cb,
+			error_handler=self.__error_handler_cb
+		)
 		return False
 
-	def __quit_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
+	def __destroy(self):
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		del self
 		return False
 
 	def __session_cb(self, manager, session_id):
@@ -71,4 +68,9 @@ class Sender(SignalManager):
 		print "Method Name: __error_handler_cb"
 		print "ERROR MESSAGE: ", error
 		print "======================================================="
+		return False
+
+	def __quit_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

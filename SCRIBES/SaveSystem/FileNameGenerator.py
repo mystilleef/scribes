@@ -1,4 +1,5 @@
 from gettext import gettext as _
+
 from SCRIBES.SignalConnectionManager import SignalManager
 
 class Generator(SignalManager):
@@ -31,10 +32,12 @@ class Generator(SignalManager):
 			newfile = join(self.__editor.desktop_folder, newname)
 			from gio import File
 			self.__uri = File(newfile).get_uri()
-			self.__manager.emit("create-new-file", (self.__uri, data))
+			from gobject import idle_add
+			idle_add(self.__manager.emit, "create-new-file", (self.__uri, data))
 		except ValueError:
 			data = self.__uri, data[1], data[2]
-			self.__manager.emit("save-data", data)
+			from gobject import idle_add
+			idle_add(self.__manager.emit, "save-data", data)
 		return False
 
 	def __filename_on_idle(self, data):

@@ -14,23 +14,24 @@ class Handler(SignalManager):
 		self.__editor = editor
 		return
 
-	def __destroy(self):
-		self.disconnect()
-		self.__editor.unregister_object(self)
-		del self
-		return False
-
 	def __error(self):
 		from gettext import gettext as _
 		message = _("ERROR: Failed to perform operation in readonly mode")
 		self.__editor.update_message(message, "fail")
 		return False
 
-	def __quit_cb(self, *args):
-		self.__destroy()
+	def __destroy(self):
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		del self
 		return False
 
 	def __error_cb(self, *args):
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__error, priority=PRIORITY_LOW)
+		return False
+
+	def __quit_cb(self, *args):
 		from gobject import idle_add
-		idle_add(self.__error, priority=9999)
+		idle_add(self.__destroy)
 		return False

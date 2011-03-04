@@ -19,13 +19,6 @@ class Saver(SignalManager):
 		self.__error = False
 		return
 
-	def __destroy(self):
-		self.disconnect()
-		self.__editor.unregister_object(self)
-		self.__editor.emit("quit")
-		del self
-		return False
-
 	def __save(self):
 		self.__editor.save_file(self.__editor.uri, self.__editor.encoding)
 		return False
@@ -36,8 +29,8 @@ class Saver(SignalManager):
 			if self.__error: raise ValueError
 			if self.__editor.modified is False: raise ValueError
 			self.__quit = True
-			from gobject import idle_add
-			idle_add(self.__save, priority=9999)
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.__save, priority=PRIORITY_LOW)
 		except ValueError:
 			self.__destroy()
 		except StandardError:
@@ -45,14 +38,23 @@ class Saver(SignalManager):
 			self.__destroy()
 		return False
 
+	def __destroy(self):
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		self.__editor.emit("quit")
+		del self
+		return False
+
 	def __close_cb(self, editor, save_file):
-		self.__close(save_file)
+		from gobject import idle_add
+		idle_add(self.__close, save_file)
 		return False
 
 	def __saved_cb(self, manager, data):
 		if self.__session_id != tuple(data[0]): return False
 		self.__error = False
-		if self.__quit: self.__destroy()
+		from gobject import idle_add
+		if self.__quit: idle_add(self.__destroy)
 		return False
 
 	def __error_cb(self, manager, data):

@@ -19,20 +19,16 @@ class Monitor(SignalManager):
 		self.__blocked = False
 		return
 
-	def __destroy(self):
-		self.disconnect()
-		self.__editor.unregister_object(self)
-		del self
-		return False
-
 	def __emit(self, data):
 		try:
 			if self.__modified: raise ValueError
 			self.__block()
-			self.__manager.emit("saved", data)
+			from gobject import idle_add
+			idle_add(self.__manager.emit, "saved", data)
 		except ValueError:
 			self.__modified = False
-			self.__manager.emit("reset-modification-flag")
+			from gobject import idle_add
+			idle_add(self.__manager.emit, "reset-modification-flag")
 		return False
 
 	def __block(self):
@@ -47,8 +43,10 @@ class Monitor(SignalManager):
 		self.__blocked = False
 		return False
 
-	def __quit_cb(self, *args):
-		self.__destroy()
+	def __destroy(self):
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		del self
 		return False
 
 	def __save_cb(self, *args):
@@ -63,4 +61,9 @@ class Monitor(SignalManager):
 	def __changed_cb(self, *args):
 		self.__modified = True
 		self.__block()
+		return False
+
+	def __quit_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False

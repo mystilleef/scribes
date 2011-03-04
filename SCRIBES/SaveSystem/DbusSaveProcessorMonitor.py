@@ -26,9 +26,11 @@ class Monitor(object):
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __is_ready_cb(self, *args):
-		self.__manager.emit("save-processor-object", self.__editor.save_processor)
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "save-processor-object", self.__editor.save_processor)
 		return False
