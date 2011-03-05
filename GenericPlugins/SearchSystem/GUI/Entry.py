@@ -40,7 +40,6 @@ class Entry(object):
 		self.__editor.disconnect_signal(self.__sigid12, self.__entry)
 		self.__entry.destroy()
 		del self
-		self = None
 		return
 
 	def __destroy_cb(self, *args):

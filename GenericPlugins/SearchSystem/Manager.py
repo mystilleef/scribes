@@ -1,7 +1,6 @@
-from gobject import GObject, SIGNAL_RUN_LAST, TYPE_NONE, TYPE_INT
-from gobject import TYPE_STRING, TYPE_PYOBJECT, SIGNAL_RUN_FIRST
-from gobject import TYPE_BOOLEAN, SIGNAL_ACTION, SIGNAL_NO_RECURSE
-from gobject import SIGNAL_RUN_CLEANUP
+from gobject import GObject, TYPE_NONE
+from gobject import TYPE_PYOBJECT
+from gobject import SIGNAL_ACTION
 
 SCRIBES_SIGNAL = SIGNAL_ACTION
 
@@ -106,16 +105,20 @@ class Manager(GObject):
 	menu_gui = property(lambda self: self.__mglade)
 
 	def destroy(self):
-		self.emit("destroy")
+		from gobject import idle_add
+		idle_add(self.emit, "destroy")
 		del self
-		self = None
 		return
 
 	def show(self):
-		self.emit("show-bar")
+		from gobject import idle_add
+		idle_add(self.emit, "show-bar")
 		return
 
 	def show_replacebar(self):
-		self.emit("show-replacebar")
-		self.emit("show-bar")
+		from gobject import idle_add
+		idle_add(self.emit, "show-replacebar")
+		idle_add(self.emit, "show-bar")
+		# self.emit("show-replacebar")
+		# self.emit("show-bar")
 		return
