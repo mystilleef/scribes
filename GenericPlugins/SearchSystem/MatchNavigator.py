@@ -1,15 +1,18 @@
-class Navigator(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Navigator(SignalManager):
 
 	def __init__(self, manager, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.__sigid1 = manager.connect("destroy", self.__destroy_cb)
-		self.__sigid2 = manager.connect("marked-matches", self.__marked_matches_cb)
-		self.__sigid3 = manager.connect("next", self.__next_cb)
-		self.__sigid4 = manager.connect("previous", self.__previous_cb)
-		self.__sigid5 = manager.connect("reset", self.__clear_cb)
-		self.__sigid6 = manager.connect("search-type-flag", self.__search_type_cb)
-		self.__sigid7 = manager.connect("replaced-mark", self.__replaced_mark_cb)
-		self.__sigid8 = manager.connect("cursor-mark", self.__cursor_mark_cb)
+		self.connect(manager, "destroy", self.__destroy_cb)
+		self.connect(manager, "marked-matches", self.__marked_matches_cb)
+		self.connect(manager, "next", self.__next_cb)
+		self.connect(manager, "previous", self.__previous_cb)
+		self.connect(manager, "reset", self.__clear_cb)
+		self.connect(manager, "search-type-flag", self.__search_type_cb)
+		self.connect(manager, "replaced-mark", self.__replaced_mark_cb)
+		self.connect(manager, "cursor-mark", self.__cursor_mark_cb)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -35,37 +38,25 @@ class Navigator(object):
 		else:
 			self.__prev_queue = deque(reversed(self.__next_queue))
 			self.__next_queue = deque()
-		return
+		return False
 
 	def __process_next(self):
 		if not self.__next_queue: self.__swap()
 		if self.__current_match: self.__prev_queue.appendleft(self.__current_match)
 		match = self.__next_queue.popleft()
 		self.__current_match = match
-		self.__manager.emit("current-match", match)
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "current-match", match)
 		return False
 
 	def __process_previous(self):
 		if not self.__prev_queue: self.__swap()
 		if self.__current_match: self.__next_queue.appendleft(self.__current_match)
+		if not self.__prev_queue: return False
 		match = self.__prev_queue.popleft()
 		self.__current_match = match
-		self.__manager.emit("current-match", match)
-		return
-
-	def __old_navigation_behavior(self, matches):
-		self.__clear()
-		from collections import deque
-		if self.__backward_flag:
-			match = matches[-1]
-			matches = matches[:-1]
-			matches.reverse()
-			self.__prev_queue = deque(matches)
-		else:
-			self.__next_queue = deque(matches)
-			match = self.__next_queue.popleft()
-		self.__current_match = match
-		self.__manager.emit("current-match", match)
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "current-match", match)
 		return False
 
 	def __process(self, matches):
@@ -80,40 +71,33 @@ class Navigator(object):
 		match = self.__next_queue.popleft() if self.__next_queue else self.__prev_queue.popleft()
 		self.__current_match = match
 		self.__editor.view.scroll_mark_onscreen(match[-1])
-		self.__manager.emit("current-match", match)
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "current-match", match)
 		return False
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid2, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid3, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid4, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid5, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid6, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid7, self.__manager)
-		self.__editor.disconnect_signal(self.__sigid8, self.__manager)
+		self.disconnect()
 		del self
-		return
-
-	def __destroy_cb(self, *args):
-		self.__destroy()
 		return False
 
 	def __marked_matches_cb(self, manager, matches):
-		self.__process(matches)
-#		self.__default(matches)
+		from gobject import idle_add
+		idle_add(self.__process, matches)
 		return False
 
 	def __next_cb(self, *args):
-		self.__process_next()
+		from gobject import idle_add
+		idle_add(self.__process_next)
 		return False
 
 	def __previous_cb(self, *args):
-		self.__process_previous()
+		from gobject import idle_add
+		idle_add(self.__process_previous)
 		return False
 
 	def __clear_cb(self, *args):
-		self.__clear()
+		from gobject import idle_add
+		idle_add(self.__clear)
 		return False
 
 	def __search_type_cb(self, manager, search_type):
@@ -128,4 +112,9 @@ class Navigator(object):
 
 	def __cursor_mark_cb(self, manager, mark):
 		self.__cursor_mark = mark
+		return False
+
+	def __destroy_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
