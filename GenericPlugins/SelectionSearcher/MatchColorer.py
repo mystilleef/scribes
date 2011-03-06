@@ -8,18 +8,13 @@ class Colorer(SignalManager):
 		self.connect(manager, "destroy", self.__destroy_cb)
 		self.connect(manager, "marked-matches", self.__matches_cb)
 		self.connect(manager, "reset", self.__clear_cb)
+		self.connect(editor.textview, "paste-clipboard", self.__paste_cb, True)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
 		self.__tag = self.__create_tag()
 		self.__colored = False
-		return
-
-	def __destroy(self):
-		self.disconnect()
-		self.__clear()
-		del self
 		return
 
 	def __create_tag(self):
@@ -34,11 +29,17 @@ class Colorer(SignalManager):
 
 	def __clear(self):
 		if self.__colored is False: return False
+		self.__remove_tags()
+		self.__colored = False
+		return False
+
+	def __remove_tags(self):
+		self.__editor.refresh(False)
 		self.__editor.freeze()
 		bounds = self.__editor.textbuffer.get_bounds()
 		self.__editor.textbuffer.remove_tag(self.__tag, *bounds)
-		self.__colored = False
 		self.__editor.thaw()
+		self.__editor.refresh(False)
 		return False
 
 	def __color(self, marks):
@@ -68,8 +69,11 @@ class Colorer(SignalManager):
 		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
 		return False
 
-	def __destroy_cb(self, *args):
-		self.__destroy()
+	def __destroy(self):
+		self.__remove_all_timers()
+		self.disconnect()
+		self.__clear()
+		del self
 		return False
 
 	def __matches_cb(self, manager, marks):
@@ -82,4 +86,15 @@ class Colorer(SignalManager):
 		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
 		self.__timer2 = idle_add(self.__clear, priority=PRIORITY_LOW)
+		return False
+
+	def __paste_cb(self, *args):
+		self.__remove_all_timers()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__remove_tags, priority=PRIORITY_LOW)
+		return False
+
+	def __destroy_cb(self, *args):
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
