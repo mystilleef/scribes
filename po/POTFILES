@@ -83,7 +83,6 @@
 	../GenericPlugins/RecentOpen/ExternalProcess/DataGenerator.py \
 	../GenericPlugins/RecentOpen/ExternalProcess/Feedback.py \
 	../GenericPlugins/RecentOpen/ExternalProcess/GUI/GUI.glade \
-	../GenericPlugins/RecentOpen/ExternalProcess/__init__.py \
 	../GenericPlugins/RecentOpen/ProcessCommunicator.py \
 	../GenericPlugins/RecentOpen/Trigger.py \
 	../GenericPlugins/SaveDialog/GUI/FeedbackUpdater.py \
@@ -99,6 +98,7 @@
 	../GenericPlugins/SearchSystem/GUI/MenuComboBox.py \
 	../GenericPlugins/SearchSystem/MatchIndexer.py \
 	../GenericPlugins/SearchSystem/PatternCreator.py \
+	../GenericPlugins/SearchSystem/RegexCreator.py \
 	../GenericPlugins/SearchSystem/ReplaceManager.py \
 	../GenericPlugins/SearchSystem/Searcher.py \
 	../GenericPlugins/SearchSystem/Trigger.py \
@@ -141,14 +141,12 @@
 	../GenericPlugins/UndoRedo/Trigger.py \
 	../GenericPlugins/UserGuide/Trigger.py \
 	../GenericPlugins/WordCompletion/Manager.py \
-	../GenericPlugins/WordCompletion/SuggestionProcess/__init__.py \
 	../GenericPlugins/WordCompletion/Trigger.py \
+	../LanguagePlugins/HashComments/Feedback.py \
 	../LanguagePlugins/HashComments/Trigger.py \
-	../LanguagePlugins/HashComments/i18n.py \
 	../LanguagePlugins/JavaScriptComment/FeedbackManager.py \
 	../LanguagePlugins/JavaScriptComment/Trigger.py \
 	../LanguagePlugins/PythonErrorChecker/ErrorCheckerProcess/ScribesPylint/logilab/common/cli.py \
-	../LanguagePlugins/PythonErrorChecker/ErrorCheckerProcess/__init__.py \
 	../LanguagePlugins/PythonErrorChecker/Feedback.py \
 	../LanguagePlugins/PythonErrorChecker/Trigger.py \
 	../LanguagePlugins/PythonNavigationSelection/Trigger.py \
