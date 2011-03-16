@@ -1,9 +1,9 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 
-python_path = "@python_path@"
-from sys import path
-path.insert(0, python_path)
+#python_path = "@python_path@"
+# from sys import path
+# path.insert(0, python_path)
 
 if __name__ == "__main__":
 	# Start scribes.
