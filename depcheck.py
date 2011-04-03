@@ -28,12 +28,14 @@ def check_dependencies():
 		# Check for pygtksourceview2.
 		try:
 			import gtksourceview2
+			print gtksourceview2
 			print "Checking for pygtksourceview2... yes"
 		except ImportError:
 			print "Error: pygtksourceview2 was not found."
 			raise SystemExit
 		try:
 			import gtkspell
+			print gtkspell
 			print "Checking for gtkspell-python... yes"
 		except ImportError:
 			print "Error: Python bindings for gtkspell was not found."

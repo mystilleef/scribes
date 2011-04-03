@@ -22,7 +22,7 @@ class Checker(SignalManager):
 				file_content, file_path, editor_id, session_id, check_type, modification_time = data
 				from Utils import validate_session
 				validate_session(file_path, self.__stale_session, editor_id, session_id, modification_time)
-				compile(file_content, file_path, "exec")
+				compile(file_content.encode("utf8"), file_path, "exec")
 			except MemoryError:
 				# Python 2.4 will raise MemoryError if the source can't be
 				# decoded.
