@@ -1,8 +1,10 @@
+SETCHECKINTERVAL = 10000
+
 class Manager(object):
 
 	def __init__(self):
 		from sys import setcheckinterval
-		setcheckinterval(1000)
+		setcheckinterval(SETCHECKINTERVAL)
 		from DBusService import DBusService
 		DBusService(self)
 		self.__init_attributes()

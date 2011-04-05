@@ -28,9 +28,8 @@ class Refresher(SignalManager):
 		try:
 			while events_pending(): main_iteration(False)
 			self.__view.window.process_updates(True)
-			while events_pending(): main_iteration(False)
 		except AttributeError:
-			while events_pending(): main_iteration(False)
+			pass
 		finally:
 			if grab_focus: self.__view.grab_focus()
 			while events_pending(): main_iteration(False)
