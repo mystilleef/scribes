@@ -39,7 +39,8 @@ class Handler(SignalManager):
 			data = message, image_id, color, bold, italic, show_bar
 		else:
 			data = "", "", "", False, False, False
-		self.__manager.emit("format-feedback-message", data)
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "format-feedback-message", data)
 		return False
 
 	def __fallback_on_idle(self):

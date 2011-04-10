@@ -61,12 +61,14 @@ class Monitor(object):
 
 	def __emit_trigger_found_signal(self, word):
 		self.__trigger_found = True
-		self.__manager.emit("trigger-found", word)
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "trigger-found", word)
 		return
 
 	def __emit_no_trigger_found_signal(self):
 		if self.__trigger_found is False: return
-		self.__manager.emit("no-trigger-found")
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "no-trigger-found")
 		self.__trigger_found = False
 		return
 
@@ -102,30 +104,32 @@ class Monitor(object):
 
 	def __check_idleadd(self):
 		from gobject import idle_add, PRIORITY_LOW
-		self.__cursor_id = idle_add(self.__check_trigger, priority=PRIORITY_LOW)
+		self.__cursor_id1 = idle_add(self.__check_trigger, priority=PRIORITY_LOW)
 		return False
 
 	def __cursor_moved_cb(self, *args):
 		try:
 			from gobject import timeout_add, source_remove, PRIORITY_LOW
 			source_remove(self.__cursor_id)
+			source_remove(self.__cursor_id1)
 		except AttributeError:
 			pass
 		finally:
-			self.__cursor_id = timeout_add(125, self.__check_idleadd, priority=PRIORITY_LOW)
+			self.__cursor_id = timeout_add(250, self.__check_idleadd, priority=PRIORITY_LOW)
 		return False
 
 	def __key_press_event_cb(self, view, event):
 		from gtk.keysyms import Tab, ISO_Left_Tab
 		if not (event.keyval in (Tab, ISO_Left_Tab)): return False
 		result = False
+		from gobject import idle_add
 		if event.keyval == Tab and self.__trigger_found:
-			self.__manager.emit("expand-trigger")
+			idle_add(self.__manager.emit, "expand-trigger")
 			result = True
 		elif event.keyval == Tab and self.__template_mode:
-			self.__manager.emit("next-placeholder")
+			idle_add(self.__manager.emit, "next-placeholder")
 			result = True
 		elif event.keyval == ISO_Left_Tab and self.__template_mode:
-			self.__manager.emit("previous-placeholder")
+			idle_add(self.__manager.emit, "previous-placeholder")
 			result = True
 		return result

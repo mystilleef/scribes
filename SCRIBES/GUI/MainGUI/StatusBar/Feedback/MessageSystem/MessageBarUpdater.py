@@ -50,7 +50,8 @@ class Updater(SignalManager):
 		from gtk import ICON_SIZE_MENU as SIZE
 		if image_id: self.__image.set_from_icon_name(image_id, SIZE)
 		self.__image.show() if image_id else self.__image.hide()
-		self.__manager.emit("message-bar-is-updated", (message, image_id, show_bar))
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "message-bar-is-updated", (message, image_id, show_bar))
 		return False
 
 	def __update_cb(self, manager, data):

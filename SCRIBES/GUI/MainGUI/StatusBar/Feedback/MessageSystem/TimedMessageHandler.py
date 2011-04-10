@@ -38,16 +38,16 @@ class Handler(SignalManager):
 		same_message = self.__is_same_message(data[0])
 		if same_message is False: self.__reset()
 		self.__busy = True
-		self.__manager.emit("busy", True)
+		from gobject import idle_add, PRIORITY_HIGH, timeout_add
+		idle_add(self.__manager.emit, "busy", True, priority=PRIORITY_HIGH)
 		self.__remove_timer()
-		from gobject import timeout_add
 		message, image_id, time, priority = data
 		self.__timer = timeout_add(time * 1000, self.__reset)
 		if same_message: return False
 		_images = ("error", "gtk-dialog-error", "fail", "no",)
 		color = "red" if image_id in _images else "dark green"
 		message, image_id, color, bold, italic, show_bar = message, image_id, color, True, False, True
-		self.__manager.emit("format-feedback-message", (message, image_id, color, bold, italic, show_bar))
+		idle_add(self.__manager.emit, "format-feedback-message", (message, image_id, color, bold, italic, show_bar))
 		return False
 
 	def __is_same_message(self, message):
@@ -58,8 +58,9 @@ class Handler(SignalManager):
 
 	def __reset(self):
 		self.__busy = False
-		self.__manager.emit("busy", False)
-		self.__manager.emit("reset")
+		from gobject import idle_add, PRIORITY_HIGH
+		idle_add(self.__manager.emit, "busy", False, priority=PRIORITY_HIGH)
+		idle_add(self.__manager.emit, "reset")
 		return False
 
 	def __remove_timer(self):
@@ -73,13 +74,11 @@ class Handler(SignalManager):
 	def __update_cb(self, manager, data):
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__update, data, priority=PRIORITY_LOW)
-#		self.__update(data)
 		return False
 
 	def __hide_cb(self, *args):
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__reset, priority=PRIORITY_LOW)
-#		self.__reset()
 		return False
 
 	def __quit_cb(self, *args):

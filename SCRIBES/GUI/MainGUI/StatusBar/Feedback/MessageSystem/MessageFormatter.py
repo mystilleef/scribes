@@ -32,8 +32,8 @@ class Formatter(SignalManager):
 		message, image_id, color, bold, italic, show_bar = data
 		message = self.__markup((message, color, bold, italic))
 		image_id = self.__get_gtk_image_id_from(image_id)
-		if image_id in ("new", "edit") and show_bar: print "Ahhhhhh! shoot! Bar should not be visible"
-		self.__manager.emit("update-message-bar", (message, image_id, show_bar))
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "update-message-bar", (message, image_id, show_bar))
 		return False
 
 	def __markup(self, data):

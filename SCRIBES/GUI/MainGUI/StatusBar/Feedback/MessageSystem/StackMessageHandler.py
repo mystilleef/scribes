@@ -32,23 +32,26 @@ class Handler(SignalManager):
 
 	def __set(self, data):
 		self.__queue.append(data)
-		self.__reset()
+		from gobject import idle_add
+		idle_add(self.__reset)
 		return False
 
 	def __unset(self, data):
 		if data in self.__queue: self.__queue.remove(data)
-		self.__reset()
+		from gobject import idle_add
+		idle_add(self.__reset)
 		return False
 
 	def __reset(self):
 		if self.__busy: return False
+		from gobject import idle_add
 		if self.__queue:
 			message, image_id = self.__queue[-1]
 			bold, italic, color, show_bar = True, False, "brown", True
 			data = message, image_id, color, bold, italic, show_bar
-			self.__manager.emit("format-feedback-message", data)
+			idle_add(self.__manager.emit, "format-feedback-message", data)
 		else:
-			self.__manager.emit("fallback")
+			idle_add(self.__manager.emit, "fallback")
 		return False
 
 	def __set_cb(self, editor, data):
