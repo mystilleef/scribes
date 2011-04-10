@@ -20,7 +20,8 @@ class Communicator(SignalManager):
 						signal_name="finished",
 						dbus_interface=DBUS_SERVICE)
 		self.__block()
-		self.__manager.emit("start-check")
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__manager.emit, "start-check", priority=PRIORITY_LOW)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -56,7 +57,8 @@ class Communicator(SignalManager):
 
 	def __recheck(self):
 		self.__checker = self.__get_checker()
-		self.__manager.emit("start-check")
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__manager.emit, "start-check", priority=PRIORITY_LOW)
 		return False
 
 	def __check(self):
@@ -130,7 +132,8 @@ class Communicator(SignalManager):
 		if editor_id != self.__editor.id_: return False
 		if session_id != self.__session_id: return False
 		if modification_time != self.__modtime: return False
-		self.__manager.emit("error-data", data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__manager.emit, "error-data", data, priority=PRIORITY_LOW)
 		return False
 
 	def __reply_handler_cb(self, *args):

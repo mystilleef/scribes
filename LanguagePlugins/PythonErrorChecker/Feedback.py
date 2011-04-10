@@ -7,7 +7,7 @@ class Feedback(SignalManager):
 		SignalManager.__init__(self, editor)
 		self.__init_attributes(manager, editor)
 		self.connect(manager, "destroy", self.__destroy_cb)
-		self.connect(manager, "error-data", self.__message_cb)
+		self.connect(manager, "error-data", self.__message_cb, True)
 		self.connect(manager, "remote-file-message", self.__error_cb)
 		self.connect(manager, "check-message", self.__check_cb)
 		self.connect(manager, "error-check-type", self.__type_cb, True)
@@ -21,16 +21,7 @@ class Feedback(SignalManager):
 		self.__is_first_time = True
 		return
 
-	def __destroy(self):
-		self.disconnect()
-		del self
-		return False
-
-	def __destroy_cb(self, *args):
-		self.__destroy()
-		return False
-
-	def __message_cb(self, manager, data):
+	def __show_message(self, data):
 		if data[0]:
 			message = "Error: %s on line %s" % (data[1], data[0])
 			if self.__messages and self.__messages[-1] == message: return False
@@ -44,6 +35,20 @@ class Feedback(SignalManager):
 			self.__editor.update_message(message, "yes")
 		return False
 
+	def __destroy(self):
+		self.disconnect()
+		del self
+		return False
+
+	def __destroy_cb(self, *args):
+		self.__destroy()
+		return False
+
+	def __message_cb(self, manager, data):
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__show_message, data, priority=PRIORITY_LOW)
+		return False
+
 	def __error_cb(self, *args):
 		message = _("No error checking on remote file")
 		self.__editor.update_message(message, "no", 3)
@@ -51,7 +56,7 @@ class Feedback(SignalManager):
 
 	def __check_cb(self, *args):
 		message = _("checking for errors please wait...")
-		self.__editor.update_message(message, "run", 60)
+		self.__editor.update_message(message, "run", 10)
 		return False
 
 	def __type_cb(self, manager, more_error_checks):

@@ -27,5 +27,6 @@ class Manager(Signal):
 		return False
 
 	def activate(self, signal):
-		self.emit(signal)
+		from gobject import idle_add
+		idle_add(self.emit, signal)
 		return False

@@ -9,6 +9,7 @@ class Handler(SignalManager):
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "saved-file", self.__saved_cb)
 		self.connect(editor, "save-error", self.__error_cb)
+		self.connect(editor, "message-bar-is-visible", self.__visible_cb)
 		self.connect(manager, "busy", self.__busy_cb)
 		editor.register_object(self)
 
@@ -16,6 +17,7 @@ class Handler(SignalManager):
 		self.__manager = manager
 		self.__editor = editor
 		self.__busy = False
+		self.__bar_is_visible = False
 		return
 
 	def __destroy(self):
@@ -29,7 +31,7 @@ class Handler(SignalManager):
 		return False
 
 	def __saved_cb(self, *args):
-		if self.__busy: return False
+		if self.__busy or self.__bar_is_visible: return False
 		self.__editor.update_message(_("Saved file"), "save", 3, "low")
 		return False
 
@@ -40,4 +42,8 @@ class Handler(SignalManager):
 
 	def __busy_cb(self, manager, busy):
 		self.__busy = busy
+		return False
+
+	def __visible_cb(self, editor, visible):
+		self.__bar_is_visible = visible
 		return False

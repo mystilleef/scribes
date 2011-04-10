@@ -38,16 +38,18 @@ class Jumper(SignalManager):
 		self.__active = False
 		lineno = error_data[0]
 		if not lineno: return False
-		self.__jump(lineno)
+		from gobject import idle_add
+		idle_add(self.__jump, lineno)
 		return False
 
 	def __activate_cb(self, *args):
 		from Exceptions import FileSaveError
 		try:
 			self.__active = True
-			self.__manager.emit("check-message")
+			from gobject import idle_add
+			idle_add(self.__manager.emit, "check-message")
 			if self.__editor.buf.get_modified() is True: raise FileSaveError
-			self.__manager.emit("check")
+			idle_add(self.__manager.emit, "check")
 		except (FileSaveError):
 			self.__editor.save_file(self.__editor.uri)
 		return False
@@ -58,5 +60,6 @@ class Jumper(SignalManager):
 
 	def __remote_cb(self, *args):
 		self.__active = False
-		self.__manager.emit("remote-file-message")
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__manager.emit, "remote-file-message", priority=PRIORITY_LOW)
 		return False
