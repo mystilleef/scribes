@@ -15,7 +15,8 @@ class DbusService(Object):
 
 	@method(dbus_service, in_signature="(atsss)")
 	def process(self, data):
-		return self.__manager.emit("save-data", data)
+		from gobject import idle_add
+		return idle_add(self.__manager.emit, "save-data", data)
 
 	@signal(dbus_service)
 	def is_ready(self):

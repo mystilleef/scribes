@@ -34,11 +34,11 @@ class Checker(object):
 	def __async_result_cb(self, gfile, result):
 		from gio import FILE_TYPE_REGULAR, Error
 		try:
+			from gobject import idle_add
 			fileinfo = gfile.query_info_finish(result)
 			if fileinfo.get_file_type() != FILE_TYPE_REGULAR: self.__raise_error()
-			self.__manager.emit("read-uri", gfile.get_uri())
+			idle_add(self.__manager.emit, "read-uri", gfile.get_uri())
 		except Error, e:
-			from gobject import idle_add
 			idle_add(self.__error, (gfile, e))
 		return False
 

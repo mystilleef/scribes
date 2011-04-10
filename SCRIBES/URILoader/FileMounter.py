@@ -24,7 +24,8 @@ class Mounter(object):
 		return False
 
 	def __check(self, uri):
-		self.__manager.emit("check-file-type", uri)
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "check-file-type", uri)
 		return False
 
 	def __error(self, data):

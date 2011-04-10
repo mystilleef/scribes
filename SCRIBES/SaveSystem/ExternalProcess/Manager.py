@@ -1,9 +1,12 @@
 from SIGNALS import Signals
+SETCHECKINTERVAL = 10000
 
 class Manager(Signals):
 
 	def __init__(self):
 		Signals.__init__(self)
+		from sys import setcheckinterval
+		setcheckinterval(SETCHECKINTERVAL)
 		from DbusService import DbusService
 		DbusService(self)
 		from Quiter import Quiter

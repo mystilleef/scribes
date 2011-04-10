@@ -1,6 +1,6 @@
 from gobject import GObject, SIGNAL_ACTION, SIGNAL_RUN_LAST
 from gobject import SIGNAL_NO_RECURSE, TYPE_PYOBJECT
-from gobject import TYPE_NONE, TYPE_PYOBJECT
+from gobject import TYPE_NONE
 SSIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 
 class Manager(GObject):

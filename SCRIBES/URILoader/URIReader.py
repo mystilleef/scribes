@@ -22,16 +22,17 @@ class Reader(object):
 		return False
 
 	def __error(self, data):
-		self.__manager.emit("gio-error", data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__manager.emit, "gio-error", priority=PRIORITY_LOW)
 		return False
 
 	def __ready_cb(self, gfile, result):
 		from gio import Error
 		try:
-			data = gfile.load_contents_finish(result)
-			self.__manager.emit("process-encoding", gfile.get_uri(), data[0])
-		except Error, e:
 			from gobject import idle_add, PRIORITY_LOW
+			data = gfile.load_contents_finish(result)
+			idle_add(self.__manager.emit, "process-encoding", gfile.get_uri(), data[0])
+		except Error, e:
 			idle_add(self.__error, (gfile, e), priority=PRIORITY_LOW)
 		return False
 

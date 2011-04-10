@@ -41,7 +41,8 @@ class Saver(SignalManager):
 	def __destroy(self):
 		self.disconnect()
 		self.__editor.unregister_object(self)
-		self.__editor.emit("quit")
+		from gobject import idle_add
+		idle_add(self.__editor.emit, "quit")
 		del self
 		return False
 

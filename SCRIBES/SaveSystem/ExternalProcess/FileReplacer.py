@@ -42,7 +42,8 @@ class Replacer(object):
 			output_streamer.write_async(text, self.__write_async_cb,
 				io_priority=PRIORITY_DEFAULT, cancellable=None, user_data=data)
 		except AssertionError:
-			self.__manager.emit("finished", data)
+			from gobject import idle_add
+			idle_add(self.__manager.emit, "finished", data)
 		except Error, e:
 			from gobject import idle_add
 			idle_add(self.__error, (data, e))
@@ -62,10 +63,10 @@ class Replacer(object):
 
 	def __close_async_cb(self, output_streamer, result, data):
 		try:
-			output_streamer.close_finish(result)
-			self.__manager.emit("finished", data)
-		except Error, e:
 			from gobject import idle_add
+			output_streamer.close_finish(result)
+			idle_add(self.__manager.emit, "finished", data)
+		except Error, e:
 			idle_add(self.__error, (data, e))
 		return False
 

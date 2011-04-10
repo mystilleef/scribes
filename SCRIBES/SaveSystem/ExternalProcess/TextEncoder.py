@@ -10,10 +10,11 @@ class Encoder(object):
 
 	def __encode(self, data):
 		try:
+			from gobject import idle_add
 			encoding, text = data[2], data[3]
 			encoded_text = text.encode(encoding)
 			data = data[0], data[1], data[2], encoded_text
-			self.__manager.emit("replace-file", data)
+			idle_add(self.__manager.emit, "replace-file", data)
 		except:
 			from gettext import gettext as _
 			message = _("""
@@ -27,7 +28,7 @@ Automatic saving is temporarily disabled. You will loose information in
 this window if you close it. Please try saving the file again, preferably
 to a different location like your desktop.""")
 			data = data + (message, )
-			self.__manager.emit("oops", data)
+			idle_add(self.__manager.emit, "oops", data)
 		return False
 
 	def __encode_cb(self, manager, data):

@@ -1,5 +1,4 @@
 from gettext import gettext as _
-
 from SCRIBES.SignalConnectionManager import SignalManager
 
 class Generator(SignalManager):

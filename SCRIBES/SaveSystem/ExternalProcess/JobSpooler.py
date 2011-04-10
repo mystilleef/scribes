@@ -20,7 +20,8 @@ class Spooler(object):
 
 	def __send(self, data):
 		self.__busy = True
-		self.__manager.emit("encode-text", data)
+		from gobject import idle_add
+		idle_add(self.__manager.emit, "encode-text", data)
 		return False
 
 	def __new_job(self, data):

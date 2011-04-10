@@ -20,13 +20,15 @@ class Manager(SignalManager):
 		try:
 			self.__count += 1
 			session_id = self.__editor.id_, self.__count
-			self.__manager.emit("session-id", session_id)
+			from gobject import idle_add, PRIORITY_HIGH
+			idle_add(self.__manager.emit, "session-id", session_id, priority=PRIORITY_HIGH)
+			# self.__manager.emit("session-id", session_id)
 			data = uri, encoding, session_id
 			if self.__editor.readonly: raise AssertionError
 			if self.__editor.generate_filename: raise ValueError
-			self.__manager.emit("save-data", data)
+			idle_add(self.__manager.emit, "save-data", data)
 		except AssertionError:
-			self.__manager.emit("readonly-error")
+			idle_add(self.__manager.emit, "readonly-error")
 		except ValueError:
 			from gobject import idle_add, PRIORITY_LOW
 			idle_add(self.__manager.emit, "generate-name", data, priority=PRIORITY_LOW)

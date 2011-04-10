@@ -15,7 +15,8 @@ class Feedback(SignalManager):
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
-		self.__message = ""
+		from collections import deque
+		self.__messages = deque()
 		self.__editor = editor
 		self.__is_first_time = True
 		return
@@ -32,14 +33,15 @@ class Feedback(SignalManager):
 	def __message_cb(self, manager, data):
 		if data[0]:
 			message = "Error: %s on line %s" % (data[1], data[0])
-			if self.__message == message: return False
-			self.__message = message
+			if self.__messages and self.__messages[-1] == message: return False
+			self.__messages.append(message)
 			self.__editor.set_message(message, "error")
 		else:
+			if self.__messages:
+				message = self.__messages.pop()
+				self.__editor.unset_message(message, "error")
 			message = _("No errors found")
 			self.__editor.update_message(message, "yes")
-			self.__editor.unset_message(self.__message, "error")
-			self.__message = ""
 		return False
 
 	def __error_cb(self, *args):

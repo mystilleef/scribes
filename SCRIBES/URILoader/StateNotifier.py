@@ -30,21 +30,26 @@ class Notifier(object):
 		return False
 
 	def __init_loading_cb(self, manager, uri, encoding):
-		self.__editor.emit("checking-file", uri)
+		from gobject import idle_add
+		idle_add(self.__editor.emit, "checking-file", uri)
 		return False
 
 	def __error_cb(self, manager, uri, error_code):
-		self.__editor.emit("load-error", uri)
+		from gobject import idle_add
+		idle_add(self.__editor.emit, "load-error", uri)
 		return False
 
 	def __read_uri_cb(self, manager, uri):
-		self.__editor.emit("loading-file", uri)
+		from gobject import idle_add
+		idle_add(self.__editor.emit, "loading-file", uri)
 		return False
 
 	def __encoding_error_cb(self, manager, uri):
-		self.__editor.emit("load-error", uri)
+		from gobject import idle_add
+		idle_add(self.__editor.emit, "load-error", uri)
 		return False
 
 	def __load_success_cb(self, manager, uri, encoding):
-		self.__editor.emit("loaded-file", uri, encoding)
+		from gobject import idle_add
+		idle_add(self.__editor.emit, "loaded-file", uri, encoding)
 		return False

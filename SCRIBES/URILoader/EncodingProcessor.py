@@ -24,10 +24,11 @@ class Processor(object):
 
 	def __send(self, uri, string):
 		try:
+			from gobject import idle_add
 			encoding = self.__encodings.popleft()
-			self.__manager.emit("insert-text", uri, string, encoding)
+			idle_add(self.__manager.emit, "insert-text", uri, string, encoding)
 		except IndexError:
-			self.__manager.emit("encoding-error", uri)
+			idle_add(self.__manager.emit, "encoding-error", uri)
 		return False
 
 	def __generate_encoding_list(self, encoding):

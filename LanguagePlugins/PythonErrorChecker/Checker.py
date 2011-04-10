@@ -26,20 +26,21 @@ class Checker(SignalManager):
 	def __recheck(self):
 		self.__remove_all_timers()
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer1 = timeout_add(15000, self.__check_timeout, priority=PRIORITY_LOW)
+		self.__timer1 = timeout_add(30000, self.__check_timeout, priority=PRIORITY_LOW)
 		return False
 
 	def __check(self):
 		from Exceptions import RemoteFileError
 		try:
+			from gobject import idle_add, PRIORITY_LOW
 			if self.__editor.window_is_active is False: raise ValueError
 			if self.__is_local_file() is False: raise RemoteFileError
-			self.__manager.emit("check")
+			idle_add(self.__manager.emit, "check", priority=PRIORITY_LOW)
 		except ValueError:
-			self.__recheck()
+			idle_add(self.__recheck, priority=PRIORITY_LOW)
 		except RemoteFileError:
 			self.__remove_timer()
-			self.__manager.emit("remote-file-error")
+			idle_add(self.__manager.emit, "remote-file-error", priority=PRIORITY_LOW)
 		return False
 
 	def __is_local_file(self):
@@ -82,7 +83,8 @@ class Checker(SignalManager):
 
 	def __error_cb(self, manager, data):
 		if not data[0]: return False
-		self.__recheck()
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__recheck, priority=PRIORITY_LOW)
 		return False
 
 	def __remove_cb(self, *args):
