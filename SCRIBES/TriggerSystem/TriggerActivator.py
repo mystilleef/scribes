@@ -35,7 +35,8 @@ class Activator(SignalManager):
 			del trigger
 			del self.__dictionary[name]
 		except KeyError:
-			print "Error: Trigger named %s not found" % name
+			# print "Error: Trigger named %s not found" % name
+			pass
 		finally:
 			if not self.__dictionary: self.__manager.emit("triggers-cleared")
 		return False

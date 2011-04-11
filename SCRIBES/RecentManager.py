@@ -7,8 +7,8 @@ class Manager(SignalManager):
 		self.__init_attributes(editor)
 		editor.set_data("RecentManager", self.__manager)
 		self.connect(editor, "quit", self.__quit_cb)
-		self.connect(editor, "loaded-file", self.__loaded_file_cb)
-		self.connect(editor, "renamed-file", self.__renamed_file_cb)
+		self.connect(editor, "loaded-file", self.__loaded_file_cb, True)
+		self.connect(editor, "renamed-file", self.__loaded_file_cb, True)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
@@ -31,6 +31,10 @@ class Manager(SignalManager):
 		}
 		return recent_data
 
+	def __update(self, uri):
+		self.__manager.add_full(uri, self.__create_recent_data(uri))
+		return False
+
 	def __destroy(self):
 		self.disconnect()
 		self.__editor.unregister_object(self)
@@ -38,13 +42,11 @@ class Manager(SignalManager):
 		return
 
 	def __loaded_file_cb(self, editor, uri, *args):
-		self.__manager.add_full(uri, self.__create_recent_data(uri))
-		return
-
-	def __renamed_file_cb(self, editor, uri, *args):
-		self.__manager.add_full(uri, self.__create_recent_data(uri))
+		from gobject import idle_add
+		idle_add(self.__update, uri)
 		return
 
 	def __quit_cb(self, editor):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return

@@ -17,13 +17,15 @@ class DBusService(Object):
 
 	@method("net.sourceforge.Scribes")
 	def open_window(self):
-		return self.__manager.open_window()
+		from gobject import idle_add
+		return idle_add(self.__manager.open_window)
 
 	@method("net.sourceforge.Scribes", in_signature="asss")
 	def open_files(self, uris, encoding="utf-8", stdin=""):
 		uris = uris if uris else None
 		stdin = stdin if stdin else None
-		return self.__manager.open_files(uris, encoding, stdin)
+		from gobject import idle_add
+		return idle_add(self.__manager.open_files, uris, encoding, stdin)
 
 	@method("net.sourceforge.Scribes", out_signature="as")
 	def get_uris(self):

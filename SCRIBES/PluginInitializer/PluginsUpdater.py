@@ -16,9 +16,13 @@ class Updater(SignalManager):
 		return
 
 	def __update(self, data, remove=False):
-		self.__plugins.remove(data) if remove else self.__plugins.append(data)
-		from gobject import idle_add
-		idle_add(self.__manager.emit, "active-plugins", self.__plugins)
+		try:
+			self.__plugins.remove(data) if remove else self.__plugins.append(data)
+		except ValueError:
+			pass
+		finally:
+			from gobject import idle_add
+			idle_add(self.__manager.emit, "active-plugins", self.__plugins)
 		return False
 
 	def __destroy(self):

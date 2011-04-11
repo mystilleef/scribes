@@ -70,7 +70,7 @@ class Handler(SignalManager):
 	def __fallback_cb(self, *args):
 		self.__remove_timer()
 		from gobject import timeout_add, PRIORITY_LOW as LOW
-		self.__timer = timeout_add(300, self.__fallback_on_idle, priority=LOW)
+ 		self.__timer = timeout_add(300, self.__fallback_on_idle, priority=LOW)
 		return False
 
 	def __busy_cb(self, manager, busy):

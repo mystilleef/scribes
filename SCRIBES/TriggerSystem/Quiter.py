@@ -30,7 +30,7 @@ class Quiter(SignalManager):
 		if self.__cleared != 2: return False
 		self.__manager.emit("quit")
 		from gobject import timeout_add
-		timeout_add(250, self.__destroy)
+		timeout_add(500, self.__destroy)
 		return False
 
 	def __quit_cb(self, *args):

@@ -20,11 +20,15 @@ class Manager(SignalManager):
 		self.disconnect()
 		self.__editor.emit("post-quit")
 		self.__editor.imanager.unregister_editor(self.__editor)
-#		self.__editor.window.destroy()
 		del self
 		return False
 
 	def __force_quit(self):
+		try:
+			# Don't force quit if file is not yet saved.
+			if self.__editor.modified is False: return True
+		except AttributeError:
+			pass
 		print "Forcing the editor to quit. Damn something is wrong!"
 		self.__destroy()
 		return False
@@ -37,6 +41,7 @@ class Manager(SignalManager):
 		try:
 			self.__objects.remove(_object)
 		except ValueError:
+			# pass
 			print _object, "not in queue"
 		finally:
 			if not self.__objects: self.__destroy()
@@ -51,15 +56,17 @@ class Manager(SignalManager):
 		return False
 
 	def __register_cb(self, editor, _object):
-		self.__register(_object)
+		from gobject import idle_add
+		idle_add(self.__register, _object)
 		return False
 
 	def __unregister_cb(self, editor, _object):
-		self.__unregister(_object)
+		from gobject import idle_add
+		idle_add(self.__unregister, _object)
 		return False
 
 	def __quit_cb(self, *args):
-		# Give the editor 30 secs to quit properly. Otherwise force quit it.
+		# Give the editor 60 secs to quit properly. Otherwise force quit it.
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer = timeout_add(30000, self.__force_quit, priority=PRIORITY_LOW)
+		self.__timer = timeout_add(60000, self.__force_quit, priority=PRIORITY_LOW)
 		return False
