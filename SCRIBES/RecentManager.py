@@ -42,8 +42,8 @@ class Manager(SignalManager):
 		return
 
 	def __loaded_file_cb(self, editor, uri, *args):
-		from gobject import idle_add
-		idle_add(self.__update, uri)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__update, uri, priority=PRIORITY_LOW)
 		return
 
 	def __quit_cb(self, editor):

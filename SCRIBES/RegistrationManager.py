@@ -41,8 +41,8 @@ class Manager(SignalManager):
 		try:
 			self.__objects.remove(_object)
 		except ValueError:
-			# pass
-			print _object, "not in queue"
+			pass
+			# print _object, "not in queue"
 		finally:
 			if not self.__objects: self.__destroy()
 		return False
