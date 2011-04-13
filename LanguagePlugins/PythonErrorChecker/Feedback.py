@@ -21,16 +21,22 @@ class Feedback(SignalManager):
 		self.__is_first_time = True
 		return
 
+	def __unset_last_message(self):
+		if not self.__messages: return False
+		message = self.__messages.pop()
+		self.__editor.unset_message(message, "error")
+		self.__editor.hide_message()
+		return False
+
 	def __show_message(self, data):
 		if data[0]:
 			message = "Error: %s on line %s" % (data[1], data[0])
-			if self.__messages and self.__messages[-1] == message: return False
+			if self.__messages and (self.__messages[-1] == message): return False
+			self.__unset_last_message()
 			self.__messages.append(message)
 			self.__editor.set_message(message, "error")
 		else:
-			if self.__messages:
-				message = self.__messages.pop()
-				self.__editor.unset_message(message, "error")
+			self.__unset_last_message()
 			message = _("No errors found")
 			self.__editor.update_message(message, "yes")
 		return False
