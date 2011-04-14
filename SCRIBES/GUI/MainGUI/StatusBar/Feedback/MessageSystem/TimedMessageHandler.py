@@ -77,8 +77,8 @@ class Handler(SignalManager):
 		return False
 
 	def __hide_cb(self, *args):
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__reset, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_HIGH
+		idle_add(self.__reset, priority=PRIORITY_HIGH)
 		return False
 
 	def __quit_cb(self, *args):

@@ -380,21 +380,25 @@ class Editor(Signals):
 	def update_message(self, message, icon_name="scribes", time=5, priority="normal"):
 		if self.window_is_active is False: return False
 		data = message, icon_name, time, priority
-		self.emit("update-message", data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.emit, "update-message", data, priority=PRIORITY_LOW)
 		return False
 
 	def hide_message(self):
-		self.emit("hide-message")
+		from gobject import idle_add, PRIORITY_HIGH
+		idle_add(self.emit, "hide-message", priority=PRIORITY_HIGH)
 		return False
 
 	def set_message(self, message, icon_name="scribes"):
 		data = message, icon_name
-		self.emit("set-message", data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.emit, "set-message", data, priority=PRIORITY_LOW)
 		return False
 
 	def unset_message(self, message, icon_name="scribes"):
 		data = message, icon_name
-		self.emit("unset-message", data)
+		from gobject import idle_add
+		idle_add(self.emit, "unset-message", data)
 		return False
 
 	def get_toolbutton(self, name):
