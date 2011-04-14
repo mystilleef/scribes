@@ -8,7 +8,7 @@ edit = sed \
 
 # Process Scribes logo.
 pixmapsdir = $(datadir)/pixmaps
-pixmaps_DATA = scribes.png
+pixmaps_DATA = scribes.svg
 
 # Process Scribes data files.
 scribesdir = $(datadir)/scribes
@@ -21,10 +21,14 @@ scribes_DATA = Editor.glade \
 	throbber-active.gif \
 	throbber-inactive.png
 
-icondir = $(datadir)/icons/hicolor/48x48/apps
-icon_DATA = scribes.png
-#svgicondir = $(datadir)/icons/hicolor/scalable/apps
-#svgicon_DATA = scribes.png
+# icondir = $(datadir)/icons/hicolor/48x48/apps
+# icon_DATA = scribes.png
+# svgicondir = $(datadir)/icons/hicolor/scalable/apps
+# svgicon_DATA = scribes.svg
+
+icondir = $(datadir)/icons/hicolor/scalable/apps
+icon_DATA = scribes.svg
+
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
 install-data-hook:
 		@-if test -z "$(DESTDIR)"; then \
@@ -51,6 +55,6 @@ EXTRA_DIST = bookmarks.png \
 	EncodingErrorWindow.glade \
 	Editor.glade \
 	MessageWindow.glade \
-	scribes.png
+	scribes.svg
 
 CLEANFILES = $(Desktop_DATA)

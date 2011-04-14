@@ -39,11 +39,11 @@ class Handler(SignalManager):
 	def __unset(self, data):
 		if data in self.__queue: self.__queue.remove(data)
 		from gobject import idle_add
-		idle_add(self.__reset)
+		idle_add(self.__reset, True)
 		return False
 
-	def __reset(self):
-		if self.__busy: return False
+	def __reset(self, ignore_busy=False):
+		if ignore_busy is False and self.__busy: return False
 		from gobject import idle_add
 		if self.__queue:
 			message, image_id = self.__queue[-1]
