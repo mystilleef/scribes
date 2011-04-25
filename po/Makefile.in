@@ -21,7 +21,7 @@ GETTEXT_PACKAGE = scribes
 PACKAGE = scribes
 VERSION = 0.4-dev-build968
 
-SHELL = /bin/bash
+SHELL = /bin/sh
 
 srcdir = .
 top_srcdir = ..

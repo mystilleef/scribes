@@ -39,10 +39,15 @@ def __open_via_dbus(uris, stdin=""):
 	raise SystemExit
 
 def __get_dbus_service():
-	from Globals import dbus_iface, session_bus
-	services = dbus_iface.ListNames()
-	if not (scribes_dbus_service in services): return None
-	proxy_object = session_bus.get_object(scribes_dbus_service, scribes_dbus_path)
+	from dbus.exceptions import DBusException
+	try:
+		from Globals import dbus_iface, session_bus
+		services = dbus_iface.ListNames()
+		if not (scribes_dbus_service in services): return None
+		proxy_object = session_bus.get_object(scribes_dbus_service, scribes_dbus_path)
+	except DBusException:
+		print "ERROR: Cannot find DBus session."
+		raise SystemExit
 	return proxy_object
 
 def __fork_scribes():

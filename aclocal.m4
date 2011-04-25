@@ -13,8 +13,8 @@
 
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
-m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.67],,
-[m4_warning([this file was generated for autoconf 2.67.
+m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.68],,
+[m4_warning([this file was generated for autoconf 2.68.
 You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically `autoreconf'.])])
@@ -453,11 +453,13 @@ fi])
 
 
 # gnome-common.m4
+#
+# serial 3
 # 
 
 dnl GNOME_COMMON_INIT
 
-AC_DEFUN([GNOME_COMMON_INIT],
+AU_DEFUN([GNOME_COMMON_INIT],
 [
   dnl this macro should come after AC_CONFIG_MACRO_DIR
   AC_BEFORE([AC_CONFIG_MACRO_DIR], [$0])
@@ -470,7 +472,10 @@ AC_DEFUN([GNOME_COMMON_INIT],
   fi
 
   AC_SUBST([ACLOCAL_AMFLAGS])
-])
+],
+[[$0: This macro is deprecated. You should set put "ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}"
+in your top-level Makefile.am, instead, where "m4" is the macro directory set
+with AC_CONFIG_MACRO_DIR() in your configure.ac]])
 
 AC_DEFUN([GNOME_DEBUG_CHECK],
 [
@@ -815,7 +820,7 @@ $$1_PKG_ERRORS
 Consider adjusting the PKG_CONFIG_PATH environment variable if you
 installed software in a non-standard prefix.
 
-_PKG_TEXT])[]dnl
+_PKG_TEXT])
         ])
 elif test $pkg_failed = untried; then
      	AC_MSG_RESULT([no])
@@ -826,7 +831,7 @@ path to pkg-config.
 
 _PKG_TEXT
 
-To get pkg-config, see <http://pkg-config.freedesktop.org/>.])[]dnl
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.])
         ])
 else
 	$1[]_CFLAGS=$pkg_cv_[]$1[]_CFLAGS
@@ -1632,7 +1637,7 @@ AC_DEFUN([AM_PATH_PYTHON],
   dnl Find a Python interpreter.  Python versions prior to 2.0 are not
   dnl supported. (2.0 was released on October 16, 2000).
   m4_define_default([_AM_PYTHON_INTERPRETER_LIST],
-                    [python python2 python3 python3.2 python3.1 python3.0 python2.7 python2.6 python2.5 python2.4 python2.3 python2.2 dnl
+                    [python python2 python3 python3.0 python2.5 python2.4 python2.3 python2.2 dnl
 python2.1 python2.0])
 
   m4_if([$1],[],[
