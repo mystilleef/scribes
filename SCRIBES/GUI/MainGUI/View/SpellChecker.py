@@ -42,6 +42,8 @@ class Checker(object):
 			self.__checker = Spell(self.__view, getdefaultlocale()[0])
 		except GError:
 			pass
+		except ImportError:
+			print "ERROR: I cannot find the Python bindings for GtkSpell"
 		return False
 
 	def __disable(self):

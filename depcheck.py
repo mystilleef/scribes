@@ -39,7 +39,6 @@ def check_dependencies():
 			print "Checking for gtkspell-python... yes"
 		except ImportError:
 			print "Error: Python bindings for gtkspell was not found."
-			#raise SystemExit
 	except SystemExit:
 		from sys import exit
 		exit(1)

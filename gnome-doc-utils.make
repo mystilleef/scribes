@@ -361,7 +361,7 @@ $(_DOC_LC_DOCS) : $(_DOC_C_DOCS)
 
 ## @ _DOC_POT
 ## A pot file
-_DOC_POT = $(if $(DOC_MODULE),$(DOC_MODULE).pot)
+_DOC_POT = $(if $(DOC_MODULE),$(DOC_MODULE).pot,$(if $(DOC_ID),$(DOC_ID).pot))
 .PHONY: pot
 pot: $(_DOC_POT)
 $(_DOC_POT): $(_DOC_C_DOCS_NOENT)
