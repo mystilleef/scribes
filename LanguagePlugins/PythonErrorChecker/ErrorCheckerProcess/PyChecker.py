@@ -11,22 +11,17 @@ class Checker(SignalManager):
 	def __init_attributes(self, manager):
 		self.__manager = manager
 		self.__stale_session = ()
-		from os.path import join
-		from sys import prefix
-		from SCRIBES.Utils import get_current_folder
-		cwd = get_current_folder(globals())
-		self.__checker = join(cwd, "pychecker", "checker.py")
-		self.__python = join(prefix, "bin", "python")
-		self.__flags = "-T -s -w -Q -r -C -G --only --no-noeffect --no-stringiter -M -L900 -B99 -R99 -J99 -k99"
+		self.__checker = self.__get_pylint_executable()
+		self.__flags = " -E -f parseable -d E0611"
 		return
 
 	def __check(self, data):
 		from Exceptions import StaleSessionError, FileChangedError
 		try:
 			filename, editor_id, session_id, modification_time = data[0], data[1], data[2], data[3]
-			from Utils import validate_session, update_python_environment_with
+			from Utils import validate_session#, update_python_environment_with
 			validate_session(filename, self.__stale_session, editor_id, session_id, modification_time)
-			update_python_environment_with(filename)
+			# update_python_environment_with(filename)
 			error_data = self.__get_errors(filename)
 			emit = self.__manager.emit
 			if error_data:
@@ -41,9 +36,19 @@ class Checker(SignalManager):
 			self.__manager.emit("ignored")
 		return False
 
+	def __get_pylint_executable(self):
+		pylint_executables = ["/usr/bin/pylint", "/usr/local/bin/pylint"]
+		from os.path import exists
+		for _file in pylint_executables:
+			if exists(_file): return _file
+		return ""
+
 	def __get_errors(self, filename):
 		from pipes import quote
-		command = "%s %s %s %s" % (self.__python, self.__checker, self.__flags, quote(filename))
+		from os import chdir
+		from os.path import basename, dirname
+		chdir(dirname(filename))
+		command = "%s %s %s" % (self.__checker, self.__flags, quote(basename(filename)))
 		errors = self.__execute(command)
 		if not errors: return ()
 		error_lines = errors.splitlines()
@@ -58,8 +63,6 @@ class Checker(SignalManager):
 		process = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE)
 		result = process.communicate()
 		return result[0]
-#		retcode = process.wait()
-#		return retcode, result
 
 	def __check_cb(self, manager, data):
 		from gobject import idle_add

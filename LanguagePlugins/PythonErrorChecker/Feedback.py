@@ -25,7 +25,7 @@ class Feedback(SignalManager):
 		if not self.__messages: return False
 		message = self.__messages.pop()
 		self.__editor.unset_message(message, "error")
-		self.__editor.hide_message()
+		# self.__editor.hide_message()
 		return False
 
 	def __show_message(self, data):
@@ -34,6 +34,7 @@ class Feedback(SignalManager):
 			if self.__messages and (self.__messages[-1] == message): return False
 			self.__unset_last_message()
 			self.__messages.append(message)
+			self.__editor.update_message(message, "error", 3000)
 			self.__editor.set_message(message, "error")
 		else:
 			self.__unset_last_message()

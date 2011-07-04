@@ -31,11 +31,10 @@ class Checker(SignalManager):
 				error_message = messages[0][0], reformat_error(messages[0][1]), editor_id, session_id, modification_time
 				emit("finished", error_message)
 			else:
-				if check_type == 2:
+				if (check_type == 2) or self.__pylint_exists() is False:
 					emit("finished", (0, "", editor_id, session_id, modification_time))
 				else:
 					emit("pycheck", (filename, editor_id, session_id, modification_time))
-					# emit("pylint-check", (filename, editor_id, session_id, modification_time))
 		except FileChangedError:
 			self.__manager.emit("ignored")
 		except StaleSessionError:
@@ -44,6 +43,13 @@ class Checker(SignalManager):
 			self.__manager.emit("ignored")
 		except Exception:
 			self.__manager.emit("ignored")
+		return False
+
+	def __pylint_exists(self):
+		pylint_executables = ["/usr/bin/pylint", "/usr/local/bin/pylint"]
+		from os.path import exists
+		for _file in pylint_executables:
+			if exists(_file): return True
 		return False
 
 	def __check_cb(self, manager, data):

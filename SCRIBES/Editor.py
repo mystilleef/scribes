@@ -588,7 +588,8 @@ class Editor(Signals):
 		folder = self.get_current_folder(globals_)
 		file_ = join(folder, basepath)
 		from gtk.glade import XML
-		glade = XML(file_, object_name, "scribes")
+		# glade = XML(file_, object_name, "scribes")
+		glade = XML(file_)
 		return glade
 
 	def get_gui_object(self, globals_, basepath):
