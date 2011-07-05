@@ -1,0 +1,2 @@
+class EmptyModelError(Exception):
+	pass
