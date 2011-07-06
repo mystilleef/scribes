@@ -32,11 +32,4 @@ Depends: ${misc:Depends},
          python-gtk2 (>= 2.10),
          scrollkeeper,
          yelp (>= 2.12)
-Description: Ultra minimalist smart text editor.
- Imagine an experience that is devoid of distractions. An
- experience that makes you exponentially productive by
- intelligently optimizing your flow. An experience immersed
- in minimalism and efficiency. That lets your do more by
- typing less. That lets your focus exclusively on the task
- at hand. An experience that doesn't sacrifice power, yet
- remains simple. Scribes is that experience.
+Description: An ultra minimalist smart text editor.
