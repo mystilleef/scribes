@@ -1,0 +1,42 @@
+.TH SCRIBES 1 "May  9, 2007"
+.\" Please adjust this date whenever revising the manpage.
+
+.SH NAME
+\fBscribes\fP \- simple, slim, sleek and powerful text editor for GNOME
+
+.SH SYNOPSIS
+.B scribes
+.RI [OPTIONS] [FILE] [...]
+
+.SH DESCRIPTION
+This manual page documents briefly the
+.B scribes
+command.
+
+.PP
+\fBscribes\fP is a text editor for GNOME that is simple, slim and sleek, yet powerful.
+
+\fBscribes\fP focuses on streamlining your workflow. It does so by ensuring common and repetitive operations are intelligently automated. And also by eliminating factors that prevent you from focusing on your tasks.
+
+The result is a text editor that provides a fluid user experience. An editor that is easy and fun to use. And an editor that ensures the safety of your documents at all times.
+
+.SH OPTIONS
+
+.TP
+.B \-h, \-\-help
+Show summary of options.
+.TP
+.B \-v, \-\-version
+Show version of program.
+.TP
+.B \-n, \-\-newfile
+Create a new file and open it with.
+.TP
+.B \-r, \-\-readonly
+Open file in readonly mode.
+.br
+.SH AUTHOR
+scribes was written by Lateef Alabi-Oki.
+.PP
+This manual page was written by Emilio Pozuelo Monfort <pochu@ubuntu.com>,
+for the Debian project (but may be used by others).
