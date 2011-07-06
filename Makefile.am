@@ -31,6 +31,7 @@ EXTRA_DIST = m4 \
 	i18n_plugin_extractor.py \
 	CONTRIBUTORS \
 	TODO \
+	debian \
 	GenericPlugins \
 	LanguagePlugins \
 	Examples \
