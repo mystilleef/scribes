@@ -9,7 +9,7 @@ class Manager(object):
 		Manager(manager)
 		from TreeView.Manager import Manager
 		Manager(manager, editor)
-		toolbutton_names = {"back", "up", "home"}
+		toolbutton_names = ["back", "up", "home"]
 		from ToolButton import Button
 		for name in toolbutton_names: Button(manager, editor, name)
 		from ToggleToolButton import Button

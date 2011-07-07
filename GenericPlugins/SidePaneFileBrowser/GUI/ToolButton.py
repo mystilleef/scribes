@@ -25,7 +25,7 @@ class Button(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor, name)
 		self.__button.set_icon_name(ICON[name])
-		self.__toolbar.insert(self.__button, 0)
+		self.__toolbar.insert(self.__button, -1)
 		self.__button.set_tooltip_text(TOOLTIP[name])
 		if name == "back": self.__button.set_property("sensitive", False)
 		self.connect(manager, "destroy", self.__destroy_cb)

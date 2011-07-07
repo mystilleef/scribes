@@ -48,7 +48,16 @@ class Checker(SignalManager):
 		from os import chdir
 		from os.path import basename, dirname
 		chdir(dirname(filename))
-		command = "%s %s %s" % (self.__checker, self.__flags, quote(basename(filename)))
+		command = "%s %s %s" % (self.__checker, self.__flags, quote(basename(str(filename))))
+		# from glib import spawn_async, child_watch_add, SPAWN_SEARCH_PATH
+		# pid, stdin, stdout, stderr = spawn_async(
+			# command.split(), 
+			# working_directory=dirname(str(filename)), 
+			# flags=SPAWN_SEARCH_PATH,
+			# standard_output=True,
+			# standard_error=True
+		# )
+		# child_watch_add(pid, self.__child_watch_add_cb, (stdout, stderr))
 		errors = self.__execute(command)
 		if not errors: return ()
 		error_lines = errors.splitlines()
@@ -57,6 +66,12 @@ class Checker(SignalManager):
 		error_data = error_lines[0].split(":")[1:]
 		print error_data
 		return error_data
+
+	def __child_watch_add_cb(self, pid, condition, user_data):
+		print "PID: ", pid
+		print "Condition: ", condition
+		print "User Data: ", user_data
+		return False
 
 	def __execute(self, command):
 		from subprocess import Popen, PIPE
