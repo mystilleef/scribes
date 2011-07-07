@@ -11,17 +11,13 @@ class Initializer(object):
 
 	def __start(self):
 		from gobject import spawn_async
+		from sys import executable
 		from SCRIBES.Globals import python_path
-		python = self.__get_python_executable()
 		folder = self.__get_save_process_folder()
 		module = self.__get_save_process_executable(folder)
-		spawn_async([python, module, python_path], working_directory=folder)
+		spawn_async([executable, module, python_path], working_directory=folder)
 		return False
 
-	def __get_python_executable(self):
-		from sys import prefix
-		from os.path import join
-		return join(prefix, "bin", "python")
 
 	def __get_save_process_folder(self):
 		from os.path import join, split

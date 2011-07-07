@@ -18,11 +18,11 @@ class Starter(SignalManager):
 
 	def __init_attributes(self, editor):
 		from os.path import join
-		from sys import prefix
+		from sys import executable
 		self.__editor = editor
 		self.__cwd = self.__editor.get_current_folder(globals())
 		self.__executable = join(self.__cwd, "ErrorCheckerProcess", "ScribesPythonErrorChecker.py")
-		self.__python_executable = join(prefix, "bin", "python")
+		self.__python_executable = executable
 		return
 
 	def __destroy(self):

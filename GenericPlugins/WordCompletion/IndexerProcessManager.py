@@ -20,13 +20,13 @@ class Manager(SignalManager):
 
 	def __init_attributes(self, manager, editor):
 		from os.path import join
-		from sys import prefix
+		from sys import executable
 		self.__manager = manager
 		self.__editor = editor
 		self.__cwd = self.__editor.get_current_folder(globals())
 		exec_folder = join(self.__cwd, "IndexerProcess")
 		self.__executable = join(exec_folder, "ScribesWordCompletionIndexer.py")
-		self.__python_executable = join(prefix, "bin", "python")
+		self.__python_executable = str(executable)
 		return
 
 	def __destroy(self):
