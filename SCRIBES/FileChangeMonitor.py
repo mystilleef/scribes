@@ -1,4 +1,3 @@
-#FIXME: Clean up this module. Too many poorly named variables.
 from SCRIBES.SignalConnectionManager import SignalManager
 
 class Monitor(SignalManager):
@@ -7,6 +6,7 @@ class Monitor(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(editor)
 		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(editor, "close", self.__close_cb)
 		self.connect(editor, "loaded-file", self.__monitor_cb, True)
 		self.connect(editor, "renamed-file", self.__monitor_cb, True)
 		self.connect(editor, "save-file", self.__busy_cb)
@@ -19,7 +19,6 @@ class Monitor(SignalManager):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__uri = ""
-		self.__monitoring = False
 		return
 
 	def __destroy(self):
@@ -31,19 +30,15 @@ class Monitor(SignalManager):
 
 	def __monitor(self, uri):
 		self.__unmonitor(self.__uri)
-#		if uri.startswith("file:///") is False: return False
 		self.__uri = uri
 		from gio import File, FILE_MONITOR_NONE
 		self.__file_monitor = File(uri).monitor_file(FILE_MONITOR_NONE, None)
 		self.__file_monitor.connect("changed", self.__changed_cb)
-		self.__monitoring = True
 		return False
 
 	def __unmonitor(self, uri):
 		if not uri: return False
-		if self.__monitoring is False: return False
 		self.__file_monitor.cancel()
-		self.__monitoring = False
 		return False
 
 	def __reload(self):
@@ -77,7 +72,7 @@ class Monitor(SignalManager):
 	def __changed_cb(self, *args):
 		self.__remove_timer(1)
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer1 = timeout_add(1000, self.__reload, priority=PRIORITY_LOW)
+		self.__timer1 = timeout_add(1500, self.__reload, priority=PRIORITY_LOW)
 		return False
 
 	def __busy_cb(self, *args):
@@ -90,4 +85,8 @@ class Monitor(SignalManager):
 
 	def __saved_file_cb(self, editor, uri, *args):
 		self.__uri = uri
+		return False
+
+	def __close_cb(self, *args):
+		self.__unmonitor(self.__uri)
 		return False
