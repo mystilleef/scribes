@@ -82,6 +82,14 @@ class Manager(object):
 		except ValueError:
 			self.__new_editor(stdin=stdin)
 		return False
+	
+	def open_file_at_line(self, uri, encoding, lineno, string=""):
+		if uri in self.get_uris():
+			self.focus_file(str(uri))
+			#FIXME: focus the line and select text if necessary. Need to create new APIs for these.
+		else:
+			pass
+		return False
 
 	def close_files(self, uris):
 		if not uris: return False

@@ -1,7 +1,8 @@
 class Initializer(object):
 
-	def __init__(self, editor, manager, uri, encoding, stdin):
+	def __init__(self, editor, manager, uri, encoding, stdin, parameters):
 		editor.set_data("InstanceManager", manager)
+		editor.set_data("parameters", parameters)
 		from UniqueStampGenerator import Generator
 		Generator(editor)
 		from RegistrationManager import Manager
@@ -35,8 +36,8 @@ class Initializer(object):
 		Manager(editor)
 		from EncodingSystem.Manager import Manager
 		Manager(editor)
-#		from FileChangeMonitor import Monitor
-#		Monitor(editor)
+		from FileChangeMonitor import Monitor
+		Monitor(editor)
 		from SaveSystem.Manager import Manager
 		Manager(editor)
 		from TriggerSystem.Manager import Manager

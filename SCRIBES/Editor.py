@@ -3,10 +3,10 @@ from SIGNALS import Signals
 
 class Editor(Signals):
 
-	def __init__(self, manager, uri=None, encoding="utf-8", stdin=None):
+	def __init__(self, manager, uri=None, encoding="utf-8", stdin=None, parameters={}):
 		Signals.__init__(self)
 		from ServicesInitializer import Initializer
-		Initializer(self, manager, uri, encoding, stdin)
+		Initializer(self, manager, uri, encoding, stdin, parameters)
 		self.__count = 0
 
 ########################################################################
@@ -85,6 +85,9 @@ class Editor(Signals):
 
 	@property
 	def cursor_mark(self): return self.textbuffer.get_insert()
+
+	@property
+	def parameters(self): return self.get_data("parameters")
 
 	imanager = property(lambda self: self.get_data("InstanceManager"))
 	toolbar = property(lambda self: self.get_data("Toolbar"))

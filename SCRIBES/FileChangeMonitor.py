@@ -10,16 +10,16 @@ class Monitor(SignalManager):
 		self.connect(editor, "loaded-file", self.__monitor_cb, True)
 		self.connect(editor, "renamed-file", self.__monitor_cb, True)
 		self.connect(editor, "save-file", self.__busy_cb)
-		self.connect(editor, "renamed-file", self.__busy_cb)
-		self.connect(editor, "save-error", self.__error_cb)
+		self.connect(editor, "rename-file", self.__busy_cb)
+		self.connect(editor, "save-error", self.__nobusy_cb, True)
+		self.connect(editor, "saved-file", self.__nobusy_cb, True)
+		self.connect(editor, "saved-file", self.__saved_file_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__uri = ""
 		self.__monitoring = False
-		self.__busy = False
-		self.__block = False
 		return
 
 	def __destroy(self):
@@ -46,27 +46,23 @@ class Monitor(SignalManager):
 		self.__monitoring = False
 		return False
 
-	def __process(self, args):
-		try:
-			monitor, gfile, otherfile, event = args
-			if not (event in (0, 3)): return False
-			if self.__block: return False
-			self.__block = True
-			from gobject import timeout_add, idle_add
-			timeout_add(500, self.__unblock)
-			if self.__busy: raise ValueError
-			idle_add(self.__reload)
-		except ValueError:
-			self.__busy = False
-		return False
-
 	def __reload(self):
 		from URILoader.Manager import Manager
 		Manager(self.__editor, self.__editor.uri, self.__editor.encoding)
+		print "#" * 80
+		print "Reloading! An external program modified %s!" % self.__editor.uri
+		print "#" * 80
 		return False
 
-	def __unblock(self):
-		self.__block = False
+	def __remove_timer(self, _timer=1):
+		try:
+			timers = {
+				1: self.__timer1,
+			}
+			from gobject import source_remove
+			source_remove(timers[_timer])
+		except AttributeError:
+			pass
 		return False
 
 	def __quit_cb(self, *args):
@@ -74,23 +70,24 @@ class Monitor(SignalManager):
 		return False
 
 	def __monitor_cb(self, editor, uri, *args):
-		from gobject import idle_add
-		idle_add(self.__monitor, uri, priority=19999)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__monitor, uri, priority=PRIORITY_LOW)
 		return False
 
 	def __changed_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__process, args, priority=19999)
+		self.__remove_timer(1)
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__timer1 = timeout_add(1000, self.__reload, priority=PRIORITY_LOW)
 		return False
 
 	def __busy_cb(self, *args):
-		self.__busy = True
+		self.__unmonitor(self.__uri)
 		return False
 
 	def __nobusy_cb(self, *args):
-		self.__busy = False
+		self.__monitor(self.__uri)
 		return False
 
-	def __error_cb(self, *args):
-		self.__block = True
+	def __saved_file_cb(self, editor, uri, *args):
+		self.__uri = uri
 		return False
