@@ -54,7 +54,15 @@ class Monitor(SignalManager):
 	def __reload(self):
 		from URILoader.Manager import Manager
 		Manager(self.__editor, self.__editor.uri, self.__editor.encoding)
+		from gobject import timeout_add, PRIORITY_LOW
+		timeout_add(7000, self.__reload_feedback_message, priority=PRIORITY_LOW)
 		# print "File change detected! Reloading ", self.__uri
+		return False
+
+	def __reload_feedback_message(self):
+		from gettext import gettext as _
+		message = _("File modification detected. Reloaded file")
+		self.__editor.update_message(message, "info", 10)
 		return False
 
 	def __remove_timer(self, _timer=1):
