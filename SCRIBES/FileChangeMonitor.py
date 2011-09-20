@@ -51,7 +51,12 @@ class Monitor(SignalManager):
 		# print "#" * 80
 		return False
 
+	def __file_exists(self):
+		from gio import File
+		return File(self.__uri).query_exists()
+
 	def __reload(self):
+		if self.__file_exists() is False: return False
 		from URILoader.Manager import Manager
 		Manager(self.__editor, self.__editor.uri, self.__editor.encoding)
 		from gobject import timeout_add, PRIORITY_LOW
