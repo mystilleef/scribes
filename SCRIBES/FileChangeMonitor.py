@@ -19,6 +19,7 @@ class Monitor(SignalManager):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__uri = ""
+		self.__file_monitor = None
 		return
 
 	def __destroy(self):
@@ -37,22 +38,23 @@ class Monitor(SignalManager):
 		return False
 
 	def __unmonitor(self, uri):
-		if not uri: return False
-		self.__file_monitor.cancel()
+		try:
+			if not uri or not self.__file_monitor: return False
+			self.__file_monitor.cancel()
+		except AttributeError:
+			pass
 		return False
 
 	def __reload(self):
 		from URILoader.Manager import Manager
 		Manager(self.__editor, self.__editor.uri, self.__editor.encoding)
-		print "#" * 80
-		print "Reloading! An external program modified %s!" % self.__editor.uri
-		print "#" * 80
 		return False
 
 	def __remove_timer(self, _timer=1):
 		try:
 			timers = {
 				1: self.__timer1,
+				2: self.__timer2,
 			}
 			from gobject import source_remove
 			source_remove(timers[_timer])
@@ -80,7 +82,9 @@ class Monitor(SignalManager):
 		return False
 
 	def __nobusy_cb(self, *args):
-		self.__monitor(self.__uri)
+		self.__remove_timer(2)
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__timer2 = timeout_add(1000, self.__monitor, self.__uri, priority=PRIORITY_LOW)
 		return False
 
 	def __saved_file_cb(self, editor, uri, *args):
@@ -89,4 +93,6 @@ class Monitor(SignalManager):
 
 	def __close_cb(self, *args):
 		self.__unmonitor(self.__uri)
+		self.__remove_timer(1)
+		self.__remove_timer(2)
 		return False
