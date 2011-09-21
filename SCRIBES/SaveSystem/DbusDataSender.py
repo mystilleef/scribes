@@ -7,7 +7,6 @@ class Sender(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
-		self.connect(manager, "session-id", self.__session_cb)
 		self.connect(manager, "start-save-job", self.__data_cb)
 		self.connect(manager, "save-processor-object", self.__processor_cb)
 		editor.register_object(self)
@@ -15,7 +14,6 @@ class Sender(SignalManager):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__session_id = ()
 		self.__processor = None
 		return
 
@@ -27,10 +25,9 @@ class Sender(SignalManager):
 		return text + "\n"
 
 	def __send(self, data):
-		uri, encoding, session_id = data
-		# if self.__session_id != session_id: return False
+		uri, encoding = data
 		if not encoding: encoding = "utf-8"
-		data = session_id, uri, encoding, self.__get_text()
+		data = self.__editor.id_, uri, encoding, self.__get_text()
 		self.__processor.process(
 			data,
 			dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE,
@@ -43,10 +40,6 @@ class Sender(SignalManager):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		return False
-
-	def __session_cb(self, manager, session_id):
-		self.__session_id = session_id
 		return False
 
 	def __data_cb(self, manager, data):

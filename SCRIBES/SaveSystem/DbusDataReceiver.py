@@ -7,7 +7,6 @@ class Receiver(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
-		self.connect(manager, "session-id", self.__session_cb)
 		editor.session_bus.add_signal_receiver(self.__saved_file_cb,
 						signal_name="saved_file",
 						dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE)
@@ -19,11 +18,10 @@ class Receiver(SignalManager):
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
 		self.__manager = manager
-		self.__session_id = ()
 		return False
 
 	def __emit(self, data):
-		if self.__editor.id_ != data[0][0]: return False
+		if self.__editor.id_ != data[0]: return False
 		from gobject import idle_add
 		idle_add(self.__manager.emit, "finished-save-job", data)
 		return False
@@ -38,10 +36,6 @@ class Receiver(SignalManager):
 						dbus_interface=SCRIBES_SAVE_PROCESS_DBUS_SERVICE)
 		self.__editor.unregister_object(self)
 		del self
-		return False
-
-	def __session_cb(self, manager, session_id):
-		self.__session_id = session_id
 		return False
 
 	def __saved_file_cb(self, data):
