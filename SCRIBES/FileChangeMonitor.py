@@ -20,6 +20,7 @@ class Monitor(SignalManager):
 		from gio import File, FILE_MONITOR_NONE
 		self.__file_monitor = File("").monitor_file(FILE_MONITOR_NONE, None)
 		self.__timer1, self.__timer2 = "", ""
+		self.__is_monitoring = False
 		return
 
 	def __monitor(self, uri):

@@ -19,6 +19,8 @@ savesystem_PYTHON = \
 	FileModificationMonitor.py \
 	FileNameGenerator.py \
 	NameGenerator.py \
+	SaveJobSpooler.py \
+	SaveJobMonitor.py \
 	NewFileRemover.py
 
 clean-local:

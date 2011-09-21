@@ -24,10 +24,8 @@ class Receiver(SignalManager):
 
 	def __emit(self, data):
 		if self.__editor.id_ != data[0][0]: return False
-		if tuple(data[0]) != self.__session_id: return False
-		signal_name = "save-succeeded" if len(data) == 3 else "save-failed"
 		from gobject import idle_add
-		idle_add(self.__manager.emit, signal_name, data)
+		idle_add(self.__manager.emit, "finished-save-job", data)
 		return False
 
 	def __destroy(self):

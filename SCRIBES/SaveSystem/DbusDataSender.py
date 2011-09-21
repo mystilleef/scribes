@@ -8,7 +8,7 @@ class Sender(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "session-id", self.__session_cb)
-		self.connect(manager, "save-data", self.__data_cb)
+		self.connect(manager, "start-save-job", self.__data_cb)
 		self.connect(manager, "save-processor-object", self.__processor_cb)
 		editor.register_object(self)
 
@@ -28,7 +28,7 @@ class Sender(SignalManager):
 
 	def __send(self, data):
 		uri, encoding, session_id = data
-		if self.__session_id != session_id: return False
+		# if self.__session_id != session_id: return False
 		if not encoding: encoding = "utf-8"
 		data = session_id, uri, encoding, self.__get_text()
 		self.__processor.process(
@@ -50,8 +50,9 @@ class Sender(SignalManager):
 		return False
 
 	def __data_cb(self, manager, data):
-		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__send, data, priority=PRIORITY_LOW)
+		from gobject import timeout_add, PRIORITY_LOW
+		timeout_add(3000, self.__send, data, priority=PRIORITY_LOW)
+		# idle_add(self.__send, data, priority=PRIORITY_LOW)
 		return False
 
 	def __processor_cb(self, manager, processor):
