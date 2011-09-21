@@ -1,5 +1,3 @@
-#FIXME: uri parameter is useless in __unmonitor. Remove it.
-
 from SCRIBES.SignalConnectionManager import SignalManager
 
 class Monitor(SignalManager):
@@ -9,8 +7,8 @@ class Monitor(SignalManager):
 		self.__init_attributes(editor)
 		self.connect(editor, "close", self.__close_cb)
 		self.connect(editor, "quit", self.__quit_cb)
-		self.connect(editor, "save-file", self.__busy_cb)
 		self.connect(editor, "saved-file", self.__saved_file_cb)
+		self.connect(editor, "save-file", self.__busy_cb)
 		self.connect(editor, "save-error", self.__nobusy_cb, True)
 		self.connect(editor, "saved-file", self.__nobusy_cb, True)
 		self.connect(editor, "loaded-file", self.__monitor_cb, True)
@@ -19,14 +17,13 @@ class Monitor(SignalManager):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__uri = ""
-		# self.__file_monitor = ""
-		self.__is_monitoring = False
+		from gio import File, FILE_MONITOR_NONE
+		self.__file_monitor = File("").monitor_file(FILE_MONITOR_NONE, None)
 		self.__timer1, self.__timer2 = "", ""
-		self.__monitor_count = 0
 		return
 
 	def __monitor(self, uri):
-		self.__unmonitor(self.__uri)
+		self.__unmonitor()
 		self.__uri = uri
 		from gio import File, FILE_MONITOR_NONE
 		self.__file_monitor = File(uri).monitor_file(FILE_MONITOR_NONE, None)
@@ -36,8 +33,8 @@ class Monitor(SignalManager):
 		# print "Started monitoring ", self.__editor.id_
 		return False
 
-	def __unmonitor(self, uri):
-		if not self.__file_monitor or self.__is_monitoring is False: return False
+	def __unmonitor(self):
+		if self.__is_monitoring is False: return False
 		self.__file_monitor.cancel()
 		self.__is_monitoring = False
 		# print "Stopped monitoring ", self.__editor.id_
@@ -96,14 +93,14 @@ class Monitor(SignalManager):
 
 	def __changed_cb(self, *args):
 		self.__remove_all_timers()
-		self.__unmonitor(self.__uri)
+		self.__unmonitor()
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__timer1 = timeout_add(1500, self.__reload, priority=PRIORITY_LOW)
 		return False
 
 	def __busy_cb(self, *args):
 		self.__remove_all_timers()
-		self.__unmonitor(self.__uri)
+		self.__unmonitor()
 		return False
 
 	def __nobusy_cb(self, *args):
@@ -118,5 +115,5 @@ class Monitor(SignalManager):
 
 	def __close_cb(self, *args):
 		self.__remove_all_timers()
-		self.__unmonitor(self.__uri)
+		self.__unmonitor()
 		return False
