@@ -19,7 +19,10 @@ class Manager(GObject):
 		"generate-name": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"newname": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"create-new-file": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
-		"created-new-file": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"new-save-job": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"start-save-job": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"finished-save-job": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"saving-in-progress": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"remove-new-file": (SSIGNAL, TYPE_NONE, ()),
 	}
 
