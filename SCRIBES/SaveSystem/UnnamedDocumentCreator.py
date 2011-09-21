@@ -15,6 +15,7 @@ class Creator(SignalManager):
 		self.__manager = manager
 		self.__editor = editor
 		self.__count = 0
+		self.__timer1, self.__timer2 = "", ""
 		return
 
 	def __create(self, _data):
@@ -37,7 +38,7 @@ class Creator(SignalManager):
 			}
 			from gobject import source_remove
 			source_remove(timers[_timer])
-		except AttributeError:
+		except TypeError:
 			pass
 		return False
 
@@ -66,8 +67,8 @@ class Creator(SignalManager):
 		uri, data = _data
 		from gobject import idle_add
 		idle_add(self.__manager.emit, "created-new-file", uri)
-		data = uri, data[1], data[2]
-		idle_add(self.__manager.emit, "save-data", data)
+		data = uri, data[1]
+		idle_add(self.__manager.emit, "new-save-job", datat)
 		self.__count -= 1
 		return False
 

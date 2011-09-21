@@ -7,7 +7,6 @@ class Spooler(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "new-save-job", self.__update_cb, False, True)
-		self.connect(manager, "save-data", self.__update_cb, False, True)
 		self.connect(manager, "finished-save-job", self.__update_cb, False, False)
 		editor.register_object(self) 
 
@@ -43,6 +42,7 @@ class Spooler(SignalManager):
 	def __emit_is_busy(self, is_busy):
 		if is_busy == self.__is_busy: return False
 		self.__is_busy = is_busy
+		self.__editor.emit("saving-in-progress", is_busy)
 		from gobject import idle_add
 		idle_add(self.__manager.emit, "saving-in-progress", is_busy)
 		print "Saving in progress: ", is_busy

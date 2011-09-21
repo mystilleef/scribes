@@ -17,6 +17,7 @@ class Generator(SignalManager):
 		self.__editor = editor
 		self.__name = ""
 		self.__uri = ""
+		self.__timer1, self.__timer2 = "", ""
 		self.__stamp = editor.uniquestamp
 		return
 
@@ -34,9 +35,9 @@ class Generator(SignalManager):
 			from gobject import idle_add
 			idle_add(self.__manager.emit, "create-new-file", (self.__uri, data))
 		except ValueError:
-			data = self.__uri, data[1], data[2]
+			data = self.__uri, data[1]
 			from gobject import idle_add
-			idle_add(self.__manager.emit, "save-data", data)
+			idle_add(self.__manager.emit, "new-save-job", data)
 		return False
 
 	def __filename_on_idle(self, data):
@@ -52,7 +53,7 @@ class Generator(SignalManager):
 			}
 			from gobject import source_remove
 			source_remove(timers[_timer])
-		except AttributeError:
+		except TypeError:
 			pass
 		return False
 

@@ -43,6 +43,7 @@ class Signals(GObject):
 		"send-data-to-processor": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING
 		)),
 		"private-encoding-load-error": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
+		"saving-in-progress": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"dbus-saved-file": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING)),
 		"dbus-save-error": (SSIGNAL, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_STRING)),
 		"window-focus-out": (SSIGNAL, TYPE_NONE, ()),

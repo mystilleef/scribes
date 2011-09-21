@@ -21,7 +21,7 @@ class Manager(SignalManager):
 			data = uri, encoding
 			if self.__editor.readonly: raise AssertionError
 			if self.__editor.generate_filename: raise ValueError
-			idle_add(self.__manager.emit, "save-data", data)
+			idle_add(self.__manager.emit, "new-save-job", data)
 		except AssertionError:
 			idle_add(self.__manager.emit, "readonly-error")
 		except ValueError:
