@@ -32,7 +32,7 @@ class Displayer(SignalManager):
 	def __failed_cb(self, manager, data):
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__show, data, priority=PRIORITY_LOW)
-		return
+		return #
 
 	def __succeeded_cb(self, *args):
 		self.__error = False

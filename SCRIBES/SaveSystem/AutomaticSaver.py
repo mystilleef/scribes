@@ -18,6 +18,7 @@ class Saver(SignalManager):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
+		self.__timer1, self.__timer2, self.__timer3, self.__timer4 = "", "", "", ""
 		return
 
 	def __process(self):
@@ -45,7 +46,7 @@ class Saver(SignalManager):
 			}
 			from gobject import source_remove
 			source_remove(timers[_timer])
-		except AttributeError:
+		except TypeError:
 			pass
 		return False
 

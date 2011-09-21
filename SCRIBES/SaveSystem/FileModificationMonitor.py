@@ -20,12 +20,11 @@ class Monitor(SignalManager):
 		return
 
 	def __emit(self, data):
-		try:
-			if self.__modified: raise ValueError
+		if self.__modified is False:
 			self.__block()
 			from gobject import idle_add
 			idle_add(self.__manager.emit, "saved", data)
-		except ValueError:
+		else:
 			self.__modified = False
 			from gobject import idle_add
 			idle_add(self.__manager.emit, "reset-modification-flag")

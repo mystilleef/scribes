@@ -68,7 +68,7 @@ class Creator(SignalManager):
 		from gobject import idle_add
 		idle_add(self.__manager.emit, "created-new-file", uri)
 		data = uri, data[1]
-		idle_add(self.__manager.emit, "new-save-job", datat)
+		idle_add(self.__manager.emit, "new-save-job", data)
 		self.__count -= 1
 		return False
 

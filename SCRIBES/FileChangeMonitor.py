@@ -1,5 +1,7 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 
+RATE_LIMIT = 50 # in milliseconds
+
 class Monitor(SignalManager):
 
 	def __init__(self, editor):
@@ -19,6 +21,7 @@ class Monitor(SignalManager):
 		self.__uri = ""
 		from gio import File, FILE_MONITOR_NONE
 		self.__file_monitor = File("").monitor_file(FILE_MONITOR_NONE, None)
+		self.__file_monitor.set_rate_limit(RATE_LIMIT)
 		self.__timer1, self.__timer2 = "", ""
 		self.__is_monitoring = False
 		return
@@ -29,13 +32,14 @@ class Monitor(SignalManager):
 		from gio import File, FILE_MONITOR_NONE
 		self.__file_monitor = File(uri).monitor_file(FILE_MONITOR_NONE, None)
 		self.__file_monitor.connect("changed", self.__changed_cb)
+		self.__file_monitor.set_rate_limit(RATE_LIMIT)
 		self.__is_monitoring = True
 		# print "#" * 80
 		# print "Started monitoring ", self.__editor.id_
 		return False
 
 	def __unmonitor(self):
-		if self.__is_monitoring is False: return False
+		# if self.__is_monitoring is False: return False
 		self.__file_monitor.cancel()
 		self.__is_monitoring = False
 		# print "Stopped monitoring ", self.__editor.id_
@@ -92,14 +96,19 @@ class Monitor(SignalManager):
 		idle_add(self.__monitor, uri, priority=PRIORITY_LOW)
 		return False
 
-	def __changed_cb(self, *args):
+	def __changed_cb(self, monitor, child, other_child, event):
+		print "*" * 80
+		print "External file change observed"
+		print "*" * 80
+		if event not in (1, 3): return False
 		self.__remove_all_timers()
 		self.__unmonitor()
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__timer1 = timeout_add(1500, self.__reload, priority=PRIORITY_LOW)
 		return False
 
-	def __busy_cb(self, *args):
+	def __busy_cb(self, editor, *args):
+		# if is_saving is False: return False
 		self.__remove_all_timers()
 		self.__unmonitor()
 		return False
