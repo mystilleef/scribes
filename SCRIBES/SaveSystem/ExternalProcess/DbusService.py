@@ -13,7 +13,7 @@ class DbusService(Object):
 		manager.connect("saved-data", self.__saved_data_cb)
 		manager.connect("error", self.__error_cb)
 
-	@method(dbus_service, in_signature="(axsss)")
+	@method(dbus_service, in_signature="(xsss)")
 	def process(self, data):
 		from gobject import idle_add
 		return idle_add(self.__manager.emit, "save-data", data)
@@ -22,7 +22,7 @@ class DbusService(Object):
 	def is_ready(self):
 		return False
 
-	@signal(dbus_service, signature="(axss)")
+	@signal(dbus_service, signature="(xss)")
 	def saved_file(self, data):
 		return False
 

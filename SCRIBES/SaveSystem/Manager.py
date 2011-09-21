@@ -6,7 +6,6 @@ SSIGNAL = SIGNAL_RUN_LAST|SIGNAL_NO_RECURSE|SIGNAL_ACTION
 class Manager(GObject):
 
 	__gsignals__ = {
-		"session-id": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-data": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-processor-object": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),
 		"save-succeeded": (SSIGNAL, TYPE_NONE, (TYPE_PYOBJECT,)),

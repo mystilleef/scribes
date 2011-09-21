@@ -13,24 +13,18 @@ class Manager(SignalManager):
 	def __init_attributes(self, manager, editor):
 		self.__editor = editor
 		self.__manager = manager
-		self.__count = 0
 		return
 
 	def __process(self, uri, encoding):
 		try:
-			self.__count += 1
-			session_id = self.__editor.id_, self.__count
-			from gobject import idle_add, PRIORITY_HIGH
-			idle_add(self.__manager.emit, "session-id", session_id, priority=PRIORITY_HIGH)
-			# self.__manager.emit("session-id", session_id)
-			data = uri, encoding, session_id
+			from gobject import idle_add, PRIORITY_LOW
+			data = uri, encoding
 			if self.__editor.readonly: raise AssertionError
 			if self.__editor.generate_filename: raise ValueError
 			idle_add(self.__manager.emit, "save-data", data)
 		except AssertionError:
 			idle_add(self.__manager.emit, "readonly-error")
 		except ValueError:
-			from gobject import idle_add, PRIORITY_LOW
 			idle_add(self.__manager.emit, "generate-name", data, priority=PRIORITY_LOW)
 		return False
 

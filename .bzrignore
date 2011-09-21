@@ -21,3 +21,4 @@ data/Makefile
 help/Makefile
 po/Makefile
 SCRIBES/Makefile
+SCRIBES/SaveSystem/test

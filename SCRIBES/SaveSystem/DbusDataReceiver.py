@@ -21,7 +21,7 @@ class Receiver(SignalManager):
 		return False
 
 	def __emit(self, data):
-		if self.__editor.id_ != data[0]: return False
+		if self.__editor.id_ != int(data[0]): return False
 		from gobject import idle_add
 		idle_add(self.__manager.emit, "finished-save-job", data)
 		return False

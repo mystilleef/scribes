@@ -7,20 +7,17 @@ class Displayer(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(manager, "save-failed", self.__failed_cb)
-		self.connect(manager, "session-id", self.__session_cb)
 		self.connect(manager, "save-succeeded", self.__succeeded_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__session_id = ()
 		self.__error = False
 		return
 
 	def __show(self, data):
 		session_id, uri, encoding, message = data
-		if self.__session_id != tuple(session_id): return False
 		if self.__error: return False
 		self.__error = True
 		self.__editor.show_error(uri, message, busy=True)
@@ -30,10 +27,6 @@ class Displayer(SignalManager):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		return False
-
-	def __session_cb(self, manager, session_id):
-		self.__session_id = session_id
 		return False
 
 	def __failed_cb(self, manager, data):

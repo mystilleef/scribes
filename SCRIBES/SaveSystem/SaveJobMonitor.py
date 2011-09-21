@@ -20,7 +20,6 @@ class Monitor(SignalManager):
 	def __destroy(self):
 		self.disconnect()
 		self.__editor.unregister_object(self)
-		print "Destroying save job monitor instance"
 		del self
 		return False
 

@@ -6,7 +6,6 @@ class Emitter(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
-		self.connect(manager, "session-id", self.__session_cb)
 		self.connect(manager, "error", self.__failed_cb)
 		editor.register_object(self)
 
@@ -17,7 +16,6 @@ class Emitter(SignalManager):
 
 	def __emit(self, data):
 		session_id, uri, encoding, message = data
-		if tuple(session_id) != self.__session_id: return False
 		from gobject import idle_add
 		idle_add(self.__editor.emit, "save-error", uri, encoding, message)
 		return False
@@ -31,10 +29,6 @@ class Emitter(SignalManager):
 	def __quit_cb(self, *args):
 		from gobject import idle_add
 		idle_add(self.__destroy)
-		return False
-
-	def __session_cb(self, manager, session_id):
-		self.__session_id = session_id
 		return False
 
 	def __failed_cb(self, manager, data):

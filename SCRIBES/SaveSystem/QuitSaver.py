@@ -8,13 +8,11 @@ class Saver(SignalManager):
 		self.connect(editor, "close", self.__close_cb)
 		self.connect(manager, "save-succeeded", self.__saved_cb)
 		self.connect(manager, "save-failed", self.__error_cb)
-		self.connect(manager, "session-id", self.__session_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
-		self.__session_id = ()
 		self.__quit = False
 		self.__error = False
 		return
@@ -52,17 +50,12 @@ class Saver(SignalManager):
 		return False
 
 	def __saved_cb(self, manager, data):
-		if self.__session_id != tuple(data[0]): return False
 		self.__error = False
 		from gobject import idle_add
 		if self.__quit: idle_add(self.__destroy)
 		return False
 
 	def __error_cb(self, manager, data):
-		if self.__session_id != tuple(data[0]): return False
 		self.__error = True
 		return False
 
-	def __session_cb(self, manager, session_id):
-		self.__session_id = session_id
-		return False

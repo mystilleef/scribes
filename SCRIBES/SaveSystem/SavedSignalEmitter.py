@@ -7,7 +7,6 @@ class Emitter(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "rename-file", self.__rename_cb)
-		self.connect(manager, "session-id", self.__session_cb)
 		self.connect(manager, "saved", self.__saved_cb)
 		editor.register_object(self)
 
@@ -18,8 +17,7 @@ class Emitter(SignalManager):
 		return
 
 	def __emit(self, data):
-		session_id, uri, encoding = data
-		if tuple(session_id) != self.__session_id: return False
+		uri, encoding = data[1], data[2]
 		from gobject import idle_add
 		idle_add(self.__editor.emit, "saved-file", uri, encoding)
 		if not self.__rename: return False
@@ -31,10 +29,6 @@ class Emitter(SignalManager):
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		return False
-
-	def __session_cb(self, manager, session_id):
-		self.__session_id = session_id
 		return False
 
 	def __saved_cb(self, manager, data):
