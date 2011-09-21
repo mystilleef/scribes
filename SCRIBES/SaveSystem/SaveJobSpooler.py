@@ -10,7 +10,6 @@ class Spooler(SignalManager):
 		self.connect(manager, "save-data", self.__update_cb, False, True)
 		self.connect(manager, "finished-save-job", self.__update_cb, False, False)
 		editor.register_object(self) 
-		print "Initialized save job spooling object."
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -52,7 +51,6 @@ class Spooler(SignalManager):
 	def __destroy(self):
 		self.disconnect()
 		self.__editor.unregister_object(self)
-		print "Destroying save job spooling instance"
 		del self
 		return False
 

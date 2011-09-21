@@ -43,9 +43,8 @@ class Sender(SignalManager):
 		return False
 
 	def __data_cb(self, manager, data):
-		from gobject import timeout_add, PRIORITY_LOW
-		timeout_add(3000, self.__send, data, priority=PRIORITY_LOW)
-		# idle_add(self.__send, data, priority=PRIORITY_LOW)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__send, data, priority=PRIORITY_LOW)
 		return False
 
 	def __processor_cb(self, manager, processor):
