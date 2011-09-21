@@ -7,7 +7,7 @@ class Manager(SignalManager):
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "save-file", self.__save_cb)
-		self.connect(editor, "rename-file", self.__save_cb, True)
+		self.connect(editor, "rename-file", self.__rename_cb, True)
 		editor.register_object(self)
 
 	def __init_attributes(self, manager, editor):
@@ -48,4 +48,9 @@ class Manager(SignalManager):
 	def __save_cb(self, editor, uri, encoding):
 		from gobject import idle_add
 		idle_add(self.__process, uri, encoding)
+		return False
+
+	def __rename_cb(self, editor, uri, encoding):
+		from gobject import idle_add
+		idle_add(self.__editor.save_file, uri, encoding)
 		return False
