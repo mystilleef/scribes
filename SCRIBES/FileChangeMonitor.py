@@ -1,12 +1,14 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 
-RATE_LIMIT = 50 # in milliseconds
+RATE_LIMIT = 25 # in milliseconds
 
 class Monitor(SignalManager):
 
 	def __init__(self, editor):
 		SignalManager.__init__(self)
 		self.__init_attributes(editor)
+		self.__file_monitor.set_rate_limit(RATE_LIMIT)
+		self.__file_monitor.cancel()
 		self.connect(editor, "close", self.__close_cb)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "saved-file", self.__saved_file_cb)
@@ -21,7 +23,6 @@ class Monitor(SignalManager):
 		self.__uri = ""
 		from gio import File, FILE_MONITOR_NONE
 		self.__file_monitor = File("").monitor_file(FILE_MONITOR_NONE, None)
-		self.__file_monitor.set_rate_limit(RATE_LIMIT)
 		self.__timer1, self.__timer2 = "", ""
 		self.__is_monitoring = False
 		return
@@ -34,16 +35,12 @@ class Monitor(SignalManager):
 		self.__file_monitor.connect("changed", self.__changed_cb)
 		self.__file_monitor.set_rate_limit(RATE_LIMIT)
 		self.__is_monitoring = True
-		# print "#" * 80
-		# print "Started monitoring ", self.__editor.id_
 		return False
 
 	def __unmonitor(self):
-		# if self.__is_monitoring is False: return False
+		if self.__is_monitoring is False: return False
 		self.__file_monitor.cancel()
 		self.__is_monitoring = False
-		# print "Stopped monitoring ", self.__editor.id_
-		# print "#" * 80
 		return False
 
 	def __reload(self):
@@ -51,8 +48,7 @@ class Monitor(SignalManager):
 		from URILoader.Manager import Manager
 		Manager(self.__editor, self.__editor.uri, self.__editor.encoding)
 		from gobject import timeout_add, PRIORITY_LOW
-		timeout_add(7000, self.__reload_feedback_message, priority=PRIORITY_LOW)
-		# print "File change detected! Reloading ", self.__uri
+		timeout_add(3000, self.__reload_feedback_message, priority=PRIORITY_LOW)
 		return False
 
 	def __reload_feedback_message(self):
@@ -97,9 +93,6 @@ class Monitor(SignalManager):
 		return False
 
 	def __changed_cb(self, monitor, child, other_child, event):
-		print "*" * 80
-		print "External file change observed"
-		print "*" * 80
 		if event not in (1, 3): return False
 		self.__remove_all_timers()
 		self.__unmonitor()
@@ -107,8 +100,7 @@ class Monitor(SignalManager):
 		self.__timer1 = timeout_add(1500, self.__reload, priority=PRIORITY_LOW)
 		return False
 
-	def __busy_cb(self, editor, *args):
-		# if is_saving is False: return False
+	def __busy_cb(self, *args):
 		self.__remove_all_timers()
 		self.__unmonitor()
 		return False
