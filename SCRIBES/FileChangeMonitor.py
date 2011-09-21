@@ -1,3 +1,5 @@
+#FIXME: uri parameter is useless in __unmonitor. Remove it.
+
 from SCRIBES.SignalConnectionManager import SignalManager
 
 class Monitor(SignalManager):
@@ -8,29 +10,20 @@ class Monitor(SignalManager):
 		self.connect(editor, "close", self.__close_cb)
 		self.connect(editor, "quit", self.__quit_cb)
 		self.connect(editor, "save-file", self.__busy_cb)
-		self.connect(editor, "rename-file", self.__busy_cb)
 		self.connect(editor, "saved-file", self.__saved_file_cb)
 		self.connect(editor, "save-error", self.__nobusy_cb, True)
 		self.connect(editor, "saved-file", self.__nobusy_cb, True)
 		self.connect(editor, "loaded-file", self.__monitor_cb, True)
-		self.connect(editor, "renamed-file", self.__monitor_cb, True)
 		editor.register_object(self)
-		# print "Initializing file change monitoring for ", self.__editor.id_
 
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__uri = ""
-		self.__file_monitor = ""
+		# self.__file_monitor = ""
 		self.__is_monitoring = False
 		self.__timer1, self.__timer2 = "", ""
+		self.__monitor_count = 0
 		return
-
-	def __destroy(self):
-		# print "Destroying file change monitor for ", self.__editor.id_
-		self.disconnect()
-		self.__editor.unregister_object(self)
-		del self
-		return False
 
 	def __monitor(self, uri):
 		self.__unmonitor(self.__uri)
@@ -51,10 +44,6 @@ class Monitor(SignalManager):
 		# print "#" * 80
 		return False
 
-	def __file_exists(self):
-		from gio import File
-		return File(self.__uri).query_exists()
-
 	def __reload(self):
 		if self.__file_exists() is False: return False
 		from URILoader.Manager import Manager
@@ -70,13 +59,16 @@ class Monitor(SignalManager):
 		self.__editor.update_message(message, "info", 10)
 		return False
 
+	def __file_exists(self):
+		from gio import File
+		return File(self.__uri).query_exists()
+
 	def __remove_timer(self, _timer=1):
 		try:
 			timers = {
 				1: self.__timer1,
 				2: self.__timer2,
 			}
-			# print "source timer ", _timer
 			from gobject import source_remove
 			source_remove(timers[_timer])
 		except TypeError:
@@ -85,6 +77,12 @@ class Monitor(SignalManager):
 
 	def __remove_all_timers(self):
 		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
+		return False
+
+	def __destroy(self):
+		self.disconnect()
+		self.__editor.unregister_object(self)
+		del self
 		return False
 
 	def __quit_cb(self, *args):
@@ -121,5 +119,4 @@ class Monitor(SignalManager):
 	def __close_cb(self, *args):
 		self.__remove_all_timers()
 		self.__unmonitor(self.__uri)
-		# print "Stop monitoring and closing all timers"
 		return False
