@@ -24,11 +24,9 @@ class Monitor(SignalManager):
 		from gio import File, FILE_MONITOR_NONE
 		self.__file_monitor = File("").monitor_file(FILE_MONITOR_NONE, None)
 		self.__timer1, self.__timer2 = "", ""
-		self.__is_monitoring = False
 		return
 
 	def __monitor(self, uri):
-		self.__is_monitoring = True
 		self.__unmonitor()
 		self.__uri = uri
 		from gio import File, FILE_MONITOR_NONE
@@ -38,9 +36,12 @@ class Monitor(SignalManager):
 		return False
 
 	def __unmonitor(self):
-		if self.__is_monitoring is False: return False
 		self.__file_monitor.cancel()
-		self.__is_monitoring = False
+		return False
+
+	def __remove_monitor(self):
+		self.__remove_all_timers()
+		self.__unmonitor()
 		return False
 
 	def __reload(self):
@@ -94,15 +95,13 @@ class Monitor(SignalManager):
 
 	def __changed_cb(self, monitor, child, other_child, event):
 		if event not in (1, 3): return False
-		self.__remove_all_timers()
-		self.__unmonitor()
+		self.__remove_monitor()
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__timer1 = timeout_add(1500, self.__reload, priority=PRIORITY_LOW)
 		return False
 
 	def __busy_cb(self, *args):
-		self.__remove_all_timers()
-		self.__unmonitor()
+		self.__remove_monitor()
 		return False
 
 	def __nobusy_cb(self, *args):
@@ -116,6 +115,5 @@ class Monitor(SignalManager):
 		return False
 
 	def __close_cb(self, *args):
-		self.__remove_all_timers()
-		self.__unmonitor()
+		self.__remove_monitor()
 		return False
