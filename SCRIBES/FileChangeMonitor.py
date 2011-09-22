@@ -1,6 +1,6 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 
-RATE_LIMIT = 25 # in milliseconds
+RATE_LIMIT = 1 # in milliseconds
 
 class Monitor(SignalManager):
 
@@ -28,13 +28,13 @@ class Monitor(SignalManager):
 		return
 
 	def __monitor(self, uri):
+		self.__is_monitoring = True
 		self.__unmonitor()
 		self.__uri = uri
 		from gio import File, FILE_MONITOR_NONE
 		self.__file_monitor = File(uri).monitor_file(FILE_MONITOR_NONE, None)
 		self.__file_monitor.connect("changed", self.__changed_cb)
 		self.__file_monitor.set_rate_limit(RATE_LIMIT)
-		self.__is_monitoring = True
 		return False
 
 	def __unmonitor(self):
