@@ -6,7 +6,7 @@ class Manager(SignalManager):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
 		self.connect(editor, "quit", self.__quit_cb)
-		self.connect(editor, "save-file", self.__save_cb)
+		self.connect(editor, "save-file", self.__save_cb, True)
 		self.connect(editor, "rename-file", self.__rename_cb, True)
 		editor.register_object(self)
 
