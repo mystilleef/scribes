@@ -33,6 +33,6 @@ class Completer(SignalManager):
 		return False
 
 	def __data_cb(self, manager, data):
-		from gobject import idle_add
-		idle_add(self.__verify_session, data)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__verify_session, data, priority=PRIORITY_LOW)
 		return False

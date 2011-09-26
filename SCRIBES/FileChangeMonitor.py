@@ -19,22 +19,25 @@ class Monitor(SignalManager):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__uri = ""
-		from gio import File, FILE_MONITOR_NONE
-		self.__file_monitor = File("").monitor_file(FILE_MONITOR_NONE, None)
+		from gio import File, FILE_MONITOR_NONE, Cancellable
+		self.__cancellable = Cancellable()
+		self.__file_monitor = File("").monitor_file(FILE_MONITOR_NONE, self.__cancellable)
 		self.__timer1, self.__timer2 = "", ""
 		return
 
 	def __monitor(self, uri):
-		self.__unmonitor()
 		self.__uri = uri
 		from gio import File, FILE_MONITOR_NONE
-		self.__file_monitor = File(uri).monitor_file(FILE_MONITOR_NONE, None)
+		self.__unmonitor()
+		self.__file_monitor = File(uri).monitor_file(FILE_MONITOR_NONE, self.__cancellable)
 		self.__file_monitor.connect("changed", self.__changed_cb)
 		self.__file_monitor.set_rate_limit(RATE_LIMIT)
 		return False
 
 	def __unmonitor(self):
 		self.__file_monitor.cancel()
+		self.__cancellable.cancel()
+		self.__cancellable.reset()
 		return False
 
 	def __remove_monitor(self):
@@ -76,6 +79,13 @@ class Monitor(SignalManager):
 		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
 		return False
 
+	def __change_handler(self, event):
+		self.__remove_monitor()
+		if event not in (1, 3): return False
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__reload, priority=PRIORITY_LOW)
+		return False
+
 	def __destroy(self):
 		self.disconnect()
 		self.__editor.unregister_object(self)
@@ -92,10 +102,8 @@ class Monitor(SignalManager):
 		return False
 
 	def __changed_cb(self, monitor, child, other_child, event):
-		self.__remove_monitor()
-		if event not in (1, 3): return False
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer1 = timeout_add(1500, self.__reload, priority=PRIORITY_LOW)
+		self.__timer1 = timeout_add(1500, self.__change_handler, event, priority=PRIORITY_LOW)
 		return False
 
 	def __busy_cb(self, *args):
