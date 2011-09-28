@@ -1,6 +1,8 @@
 from SCRIBES.SignalConnectionManager import SignalManager
 
-RATE_LIMIT = 5 # in milliseconds
+RATE_LIMIT = 100 # in milliseconds
+WAIT_INTERVAL = 1500 # in milliseconds
+IGNORE_MONITORING_INTERVAL = WAIT_INTERVAL * 2
 
 class Monitor(SignalManager):
 
@@ -23,6 +25,7 @@ class Monitor(SignalManager):
 		self.__cancellable = Cancellable()
 		self.__file_monitor = File("").monitor_file(FILE_MONITOR_NONE, self.__cancellable)
 		self.__timer1, self.__timer2 = "", ""
+		self.__can_reload = True
 		return
 
 	def __monitor(self, uri):
@@ -32,12 +35,14 @@ class Monitor(SignalManager):
 		self.__file_monitor = File(uri).monitor_file(FILE_MONITOR_NONE, self.__cancellable)
 		self.__file_monitor.connect("changed", self.__changed_cb)
 		self.__file_monitor.set_rate_limit(RATE_LIMIT)
+		# print "Enable file change monitoring"
 		return False
 
 	def __unmonitor(self):
 		self.__file_monitor.cancel()
 		self.__cancellable.cancel()
 		self.__cancellable.reset()
+		# print "Disable file change monitoring"
 		return False
 
 	def __remove_monitor(self):
@@ -45,12 +50,16 @@ class Monitor(SignalManager):
 		self.__unmonitor()
 		return False
 
+	def __set_can_reload(self, can_reload):
+		self.__can_reload = can_reload
+		return False
+
 	def __reload(self):
 		if self.__file_exists() is False: return False
 		from URILoader.Manager import Manager
-		Manager(self.__editor, self.__editor.uri, self.__editor.encoding)
+		Manager(self.__editor, self.__uri, self.__editor.encoding)
 		from gobject import timeout_add, PRIORITY_LOW
-		timeout_add(3000, self.__reload_feedback_message, priority=PRIORITY_LOW)
+		timeout_add(1000, self.__reload_feedback_message, priority=PRIORITY_LOW)
 		return False
 
 	def __reload_feedback_message(self):
@@ -80,8 +89,9 @@ class Monitor(SignalManager):
 		return False
 
 	def __change_handler(self, event):
-		self.__remove_monitor()
-		if event not in (1, 3): return False
+		# print "File change detected!"
+		if self.__can_reload is False or event not in (1, 3): return False
+		# print "Reload document after file change detected!"
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__reload, priority=PRIORITY_LOW)
 		return False
@@ -102,22 +112,24 @@ class Monitor(SignalManager):
 		return False
 
 	def __changed_cb(self, monitor, child, other_child, event):
-		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer1 = timeout_add(1500, self.__change_handler, event, priority=PRIORITY_LOW)
+		self.__remove_timer(1)
+		from gobject import timeout_add
+		self.__timer1 = timeout_add(WAIT_INTERVAL, self.__change_handler, event)
 		return False
 
 	def __busy_cb(self, *args):
-		self.__remove_monitor()
+		self.__can_reload = False
 		return False
 
 	def __nobusy_cb(self, *args):
-		self.__remove_all_timers()
+		self.__remove_timer(2)
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer2 = timeout_add(1000, self.__monitor, self.__uri, priority=PRIORITY_LOW)
+		self.__timer2 = timeout_add(IGNORE_MONITORING_INTERVAL, self.__set_can_reload, True, priority=PRIORITY_LOW)
 		return False
 
 	def __saved_file_cb(self, editor, uri, *args):
-		self.__uri = uri
+		if self.__uri == uri: return False
+		self.__monitor(uri)
 		return False
 
 	def __close_cb(self, *args):
