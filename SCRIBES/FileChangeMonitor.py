@@ -2,7 +2,7 @@ from SCRIBES.SignalConnectionManager import SignalManager
 
 RATE_LIMIT = 100 # in milliseconds
 WAIT_INTERVAL = 1500 # in milliseconds
-IGNORE_MONITORING_INTERVAL = WAIT_INTERVAL * 2
+IGNORE_MONITORING_INTERVAL = WAIT_INTERVAL * 3
 
 class Monitor(SignalManager):
 
@@ -35,14 +35,12 @@ class Monitor(SignalManager):
 		self.__file_monitor = File(uri).monitor_file(FILE_MONITOR_NONE, self.__cancellable)
 		self.__file_monitor.connect("changed", self.__changed_cb)
 		self.__file_monitor.set_rate_limit(RATE_LIMIT)
-		# print "Enable file change monitoring"
 		return False
 
 	def __unmonitor(self):
 		self.__file_monitor.cancel()
 		self.__cancellable.cancel()
 		self.__cancellable.reset()
-		# print "Disable file change monitoring"
 		return False
 
 	def __remove_monitor(self):
@@ -89,9 +87,7 @@ class Monitor(SignalManager):
 		return False
 
 	def __change_handler(self, event):
-		# print "File change detected!"
 		if self.__can_reload is False or event not in (1, 3): return False
-		# print "Reload document after file change detected!"
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__reload, priority=PRIORITY_LOW)
 		return False
@@ -112,17 +108,18 @@ class Monitor(SignalManager):
 		return False
 
 	def __changed_cb(self, monitor, child, other_child, event):
-		self.__remove_timer(1)
+		self.__remove_all_timers()
 		from gobject import timeout_add
 		self.__timer1 = timeout_add(WAIT_INTERVAL, self.__change_handler, event)
 		return False
 
 	def __busy_cb(self, *args):
 		self.__can_reload = False
+		self.__remove_all_timers()
 		return False
 
 	def __nobusy_cb(self, *args):
-		self.__remove_timer(2)
+		self.__remove_all_timers()
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__timer2 = timeout_add(IGNORE_MONITORING_INTERVAL, self.__set_can_reload, True, priority=PRIORITY_LOW)
 		return False
