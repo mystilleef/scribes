@@ -103,6 +103,7 @@ class Monitor(SignalManager):
 		return False
 
 	def __monitor_cb(self, editor, uri, *args):
+		self.__remove_all_timers()
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__monitor, uri, priority=PRIORITY_LOW)
 		return False
@@ -126,6 +127,7 @@ class Monitor(SignalManager):
 
 	def __saved_file_cb(self, editor, uri, *args):
 		if self.__uri == uri: return False
+		self.__remove_all_timers()
 		self.__monitor(uri)
 		return False
 
