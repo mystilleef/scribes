@@ -21,10 +21,11 @@ class Monitor(SignalManager):
 	def __init_attributes(self, editor):
 		self.__editor = editor
 		self.__uri = ""
+		from SCRIBES.GObjectTimerManager import Manager
+		self.__timer_manager = Manager()
 		from gio import File, FILE_MONITOR_NONE, Cancellable
 		self.__cancellable = Cancellable()
 		self.__file_monitor = File("").monitor_file(FILE_MONITOR_NONE, self.__cancellable)
-		self.__timer1, self.__timer2 = "", ""
 		self.__can_reload = True
 		return
 
@@ -44,7 +45,7 @@ class Monitor(SignalManager):
 		return False
 
 	def __remove_monitor(self):
-		self.__remove_all_timers()
+		self.__timer_manager.remove_all()
 		self.__unmonitor()
 		return False
 
@@ -76,22 +77,6 @@ class Monitor(SignalManager):
 		from Utils import uri_is_remote
 		return uri_is_remote(self.__uri)
 
-	def __remove_timer(self, _timer=1):
-		try:
-			timers = {
-				1: self.__timer1,
-				2: self.__timer2,
-			}
-			from gobject import source_remove
-			source_remove(timers[_timer])
-		except TypeError:
-			pass
-		return False
-
-	def __remove_all_timers(self):
-		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
-		return False
-
 	def __change_handler(self, event):
 		if self.__can_reload is False or event not in (1, 2, 3, 4): return False
 		from gobject import idle_add, PRIORITY_LOW
@@ -99,6 +84,7 @@ class Monitor(SignalManager):
 		return False
 
 	def __destroy(self):
+		self.__timer_manager.destroy()
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
@@ -109,31 +95,33 @@ class Monitor(SignalManager):
 		return False
 
 	def __monitor_cb(self, editor, uri, *args):
-		self.__remove_all_timers()
+		self.__timer_manager.remove_all()
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__monitor, uri, priority=PRIORITY_LOW)
 		return False
 
 	def __changed_cb(self, monitor, child, other_child, event):
-		self.__remove_all_timers()
+		self.__timer_manager.remove_all()
 		from gobject import timeout_add
 		self.__timer1 = timeout_add(WAIT_INTERVAL, self.__change_handler, event)
+		self.__timer_manager.add(self.__timer1)
 		return False
 
 	def __busy_cb(self, *args):
 		self.__can_reload = False
-		self.__remove_all_timers()
+		self.__timer_manager.remove_all()
 		return False
 
 	def __nobusy_cb(self, *args):
-		self.__remove_all_timers()
+		self.__timer_manager.remove_all()
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__timer2 = timeout_add(IGNORE_MONITORING_INTERVAL, self.__set_can_reload, True, priority=PRIORITY_LOW)
+		self.__timer_manager.add(self.__timer2)
 		return False
 
 	def __saved_file_cb(self, editor, uri, *args):
 		if self.__uri == uri: return False
-		self.__remove_all_timers()
+		self.__timer_manager.remove_all()
 		self.__monitor(uri)
 		return False
 
