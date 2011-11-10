@@ -54,6 +54,7 @@ class Monitor(SignalManager):
 
 	def __reload(self):
 		if self.__file_exists() is False: return False
+		if self.__file_is_remote(): return False
 		from URILoader.Manager import Manager
 		Manager(self.__editor, self.__uri, self.__editor.encoding)
 		from gobject import timeout_add, PRIORITY_LOW
@@ -69,6 +70,11 @@ class Monitor(SignalManager):
 	def __file_exists(self):
 		from gio import File
 		return File(self.__uri).query_exists()
+
+	def __file_is_remote(self):
+		if not self.__uri: return False
+		from Utils import uri_is_remote
+		return uri_is_remote(self.__uri)
 
 	def __remove_timer(self, _timer=1):
 		try:
