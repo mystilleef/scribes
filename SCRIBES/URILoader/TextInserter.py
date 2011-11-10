@@ -18,22 +18,22 @@ class Inserter(object):
 
 	def __insert(self, uri, string, encoding):
 		try:
-			from gobject import idle_add
+			from gobject import idle_add, PRIORITY_LOW
 			if encoding is None: encoding = "utf-8"
 			unicode_string = string.decode(encoding, "strict")
 			utf8_string = unicode_string.encode("utf-8", "strict")
 			self.__editor.textbuffer.set_text(utf8_string)
-			idle_add(self.__manager.emit, "load-success", uri, encoding)
+			idle_add(self.__manager.emit, "load-success", uri, encoding, priority=PRIORITY_LOW)
 		except:
-			idle_add(self.__manager.emit, "insertion-error", uri, string)
+			idle_add(self.__manager.emit, "insertion-error", uri, string, priority=PRIORITY_LOW)
 		return False
 
 	def __destroy_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__destroy, priority=PRIORITY_LOW)
 		return False
 
 	def __insert_cb(self, manager, uri, string, encoding):
-		from gobject import idle_add, PRIORITY_HIGH
-		idle_add(self.__insert, uri, string, encoding, priority=PRIORITY_HIGH)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__insert, uri, string, encoding, priority=PRIORITY_LOW)
 		return False

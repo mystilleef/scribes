@@ -24,8 +24,8 @@ class Mounter(object):
 		return False
 
 	def __check(self, uri):
-		from gobject import idle_add
-		idle_add(self.__manager.emit, "check-file-type", uri)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__manager.emit, "check-file-type", uri, priority=PRIORITY_LOW)
 		return False
 
 	def __error(self, data):
@@ -36,19 +36,19 @@ class Mounter(object):
 		from gio import Error
 		try:
 			success = gfile.mount_enclosing_volume_finish(result)
-			from gobject import idle_add, PRIORITY_HIGH
-			if success: idle_add(self.__check, gfile.get_uri(), priority=PRIORITY_HIGH)
+			from gobject import idle_add, PRIORITY_LOW
+			if success: idle_add(self.__check, gfile.get_uri(), priority=PRIORITY_LOW)
 		except Error, e:
-			from gobject import idle_add
-			idle_add(self.__error, (gfile, e))
+			from gobject import idle_add, PRIORITY_LOW
+			idle_add(self.__error, (gfile, e), priority=PRIORITY_LOW)
 		return False
 
 	def __destroy_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__destroy, priority=PRIORITY_LOW)
 		return False
 
 	def __mount_cb(self, manager, data):
-		from gobject import idle_add, PRIORITY_HIGH
-		idle_add(self.__mount, data, priority=PRIORITY_HIGH)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__mount, data, priority=PRIORITY_LOW)
 		return False

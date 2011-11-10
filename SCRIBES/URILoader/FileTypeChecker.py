@@ -34,20 +34,20 @@ class Checker(object):
 	def __async_result_cb(self, gfile, result):
 		from gio import FILE_TYPE_REGULAR, Error
 		try:
-			from gobject import idle_add
+			from gobject import idle_add, PRIORITY_LOW
 			fileinfo = gfile.query_info_finish(result)
 			if fileinfo.get_file_type() != FILE_TYPE_REGULAR: self.__raise_error()
-			idle_add(self.__manager.emit, "read-uri", gfile.get_uri())
+			idle_add(self.__manager.emit, "read-uri", gfile.get_uri(), priority=PRIORITY_LOW)
 		except Error, e:
-			idle_add(self.__error, (gfile, e))
+			idle_add(self.__error, (gfile, e), priority=PRIORITY_LOW)
 		return False
 
 	def __destroy_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__destroy, priority=PRIORITY_LOW)
 		return False
 
 	def __check_cb(self, manager, uri):
-		from gobject import idle_add
-		idle_add(self.__check, uri)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__check, uri, priority=PRIORITY_LOW)
 		return False

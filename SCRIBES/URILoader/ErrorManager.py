@@ -34,8 +34,8 @@ class Manager(object):
 		return False
 
 	def __destroy_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__destroy, priority=PRIORITY_LOW)
 		return False
 
 	def __error_cb(self, manager, data):

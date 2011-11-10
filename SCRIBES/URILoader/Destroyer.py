@@ -10,8 +10,8 @@ class Destroyer(object):
 		return
 
 	def __destroy(self):
-		from gobject import idle_add
-		idle_add(self.__manager.emit, "destroy")
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__manager.emit, "destroy", priority=PRIORITY_LOW)
 		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
 		del self
 		return False

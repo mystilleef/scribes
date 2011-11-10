@@ -20,17 +20,17 @@ class Initializer(SignalManager):
 		return False
 
 	def __load(self, uri, encoding):
-		from gobject import idle_add, PRIORITY_HIGH, PRIORITY_LOW
-		idle_add(self.__manager.emit, "init-loading", uri, encoding, priority=PRIORITY_HIGH)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__manager.emit, "init-loading", uri, encoding)
 		idle_add(self.__manager.emit, "check-file-type", uri, priority=PRIORITY_LOW)
 		return False
 
 	def __load_file_cb(self, editor, uri, encoding):
-		from gobject import idle_add, PRIORITY_HIGH
-		idle_add(self.__load, uri, encoding, priority=PRIORITY_HIGH)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__load, uri, encoding, priority=PRIORITY_LOW)
 		return False
 
 	def __destroy_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__destroy, priority=PRIORITY_LOW)
 		return False

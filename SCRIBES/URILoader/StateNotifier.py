@@ -25,31 +25,31 @@ class Notifier(object):
 		return False
 
 	def __destroy_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__destroy, priority=PRIORITY_LOW)
 		return False
 
 	def __init_loading_cb(self, manager, uri, encoding):
-		from gobject import idle_add
-		idle_add(self.__editor.emit, "checking-file", uri)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__editor.emit, "checking-file", uri, priority=PRIORITY_LOW)
 		return False
 
 	def __error_cb(self, manager, uri, error_code):
-		from gobject import idle_add
-		idle_add(self.__editor.emit, "load-error", uri)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__editor.emit, "load-error", uri, priority=PRIORITY_LOW)
 		return False
 
 	def __read_uri_cb(self, manager, uri):
-		from gobject import idle_add
-		idle_add(self.__editor.emit, "loading-file", uri)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__editor.emit, "loading-file", uri, priority=PRIORITY_LOW)
 		return False
 
 	def __encoding_error_cb(self, manager, uri):
-		from gobject import idle_add
-		idle_add(self.__editor.emit, "load-error", uri)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__editor.emit, "load-error", uri, priority=PRIORITY_LOW)
 		return False
 
 	def __load_success_cb(self, manager, uri, encoding):
-		from gobject import idle_add
-		idle_add(self.__editor.emit, "loaded-file", uri, encoding)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__editor.emit, "loaded-file", uri, encoding, priority=PRIORITY_LOW)
 		return False

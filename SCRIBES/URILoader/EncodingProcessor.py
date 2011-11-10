@@ -24,11 +24,11 @@ class Processor(object):
 
 	def __send(self, uri, string):
 		try:
-			from gobject import idle_add
+			from gobject import idle_add, PRIORITY_LOW
 			encoding = self.__encodings.popleft()
-			idle_add(self.__manager.emit, "insert-text", uri, string, encoding)
+			idle_add(self.__manager.emit, "insert-text", uri, string, encoding, priority=PRIORITY_LOW)
 		except IndexError:
-			idle_add(self.__manager.emit, "encoding-error", uri)
+			idle_add(self.__manager.emit, "encoding-error", uri, priority=PRIORITY_LOW)
 		return False
 
 	def __generate_encoding_list(self, encoding):
@@ -38,13 +38,13 @@ class Processor(object):
 		return encodings
 
 	def __destroy_cb(self, *args):
-		from gobject import idle_add
-		idle_add(self.__destroy)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__destroy, priority=PRIORITY_LOW)
 		return False
 
 	def __process_cb(self, manager, uri, string):
-		from gobject import idle_add, PRIORITY_HIGH
-		idle_add(self.__send, uri, string, priority=PRIORITY_HIGH)
+		from gobject import idle_add, PRIORITY_LOW
+		idle_add(self.__send, uri, string, priority=PRIORITY_LOW)
 		return False
 
 	def __init_loading_cb(self, manager, uri, encoding):
