@@ -83,6 +83,10 @@ def get_fileinfo(path, attribute="standard::*"):
 def get_modification_time(path):
 	return get_fileinfo(path, "time::modified,time::modified-usec").get_modification_time()
 
+def uri_is_remote(uri):
+	from gio import File
+	return False if File(uri).get_uri_scheme() == "file" else True
+
 def get_mimetype(path):
 	if not path: return None
 	from gio import File, content_type_guess
