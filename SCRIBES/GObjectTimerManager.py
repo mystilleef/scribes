@@ -4,20 +4,16 @@ class Manager(object):
 		from collections import deque
 		self.__timers = deque()
 
-	def add(self, timer):
-		if timer in self.__timers: return False
-		self.__timers.append(timer)
+	def add(self, *args):
+		[self.__timers.append(timer) for timer in args if timer in self.__timers]
 		return False
 
-	def remove(self, timer):
-		if timer not in self.__timers: return False
-		self.__timers.remove(timer)
-		from gobject import source_remove
-		source_remove(timer)
+	def remove(self, *args):
+		[self.__remove(timer) for timer in args if timer in self.__timers]
 		return False
 
-	def delete(self, timer):
-		return self.remove(timer)
+	def delete(self, *args):
+		return self.remove(*args)
 
 	def remove_all(self):
 		from copy import copy
@@ -30,3 +26,9 @@ class Manager(object):
 		del self.__timers
 		del self
 		return False
+
+	def __remove(self, timer):
+		self.__timers.remove(timer)
+		from gobject import source_remove
+		source_remove(timer)
+		return
