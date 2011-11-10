@@ -6,6 +6,7 @@ class Manager(object):
 		print "Initialized GObject Timer Manager"
 
 	def add(self, timer):
+		if timer in self.__timers: return False
 		self.__timers.append(timer)
 		print "Added new GObject timer"
 		return False
