@@ -31,9 +31,9 @@
                 <property name="headers_visible">False</property>
                 <property name="enable_grid_lines">vertical</property>
                 <property name="enable_tree_lines">True</property>
-                <child internal-child="selection">
+                <!-- <child internal-child="selection">
                   <object class="GtkTreeSelection" id="treeview-selection"/>
-                </child>
+                </child> -->
               </object>
             </child>
           </object>
