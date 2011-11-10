@@ -93,7 +93,7 @@ class Monitor(SignalManager):
 		return False
 
 	def __change_handler(self, event):
-		if self.__can_reload is False or event not in (1, 3): return False
+		if self.__can_reload is False or event not in (1, 2, 3, 4): return False
 		from gobject import idle_add, PRIORITY_LOW
 		idle_add(self.__reload, priority=PRIORITY_LOW)
 		return False
