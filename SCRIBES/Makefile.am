@@ -52,6 +52,7 @@ scribes_PYTHON = \
 	FullScreenManager.py \
 	GladeObjectManager.py \
 	GlobalStore.py \
+	GObjectTimerManager.py \
 	InstanceManager.py \
 	i18n.py \
 	LanguageManager.py \
