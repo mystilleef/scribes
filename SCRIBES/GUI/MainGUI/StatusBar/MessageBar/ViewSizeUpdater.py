@@ -38,8 +38,8 @@ class Updater(SignalManager):
 		return False
 
 	def __update_on_idle(self):
-		from gobject import idle_add, PRIORITY_LOW
-		self.__timer2 = idle_add(self.__update, priority=PRIORITY_LOW)
+		from gobject import idle_add
+		self.__timer2 = idle_add(self.__update)
 		self.__timer_manager.add(self.__timer2)
 		return False
 
@@ -49,7 +49,7 @@ class Updater(SignalManager):
 
 	def __update_cb(self, *args):
 		self.__timer_manager.remove_all()
-		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer1 = timeout_add(250, self.__update_on_idle, priority=PRIORITY_LOW)
+		from gobject import timeout_add
+		self.__timer1 = timeout_add(25, self.__update_on_idle)
 		self.__timer_manager.add(self.__timer1)
 		return False

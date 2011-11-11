@@ -10,6 +10,7 @@ class Widget(SignalManager):
 		self.__update_public_api()
 		self.connect(editor, "quit", self.__quit_cb)
 		editor.register_object(self)
+		self.__bar.hide()
 
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
@@ -37,6 +38,7 @@ class Widget(SignalManager):
 		self.__box.pack_start(self.__image, False, False)
 		self.__box.pack_start(self.__label, False, False)
 		self.__bar.realize()
+		self.__bar.hide()
 		return False
 
 	def __emit(self):
