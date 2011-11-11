@@ -31,6 +31,7 @@ class Refresher(SignalManager):
 		except AttributeError:
 			pass
 		finally:
-			if grab_focus: self.__view.grab_focus()
+			from gobject import idle_add
+			if grab_focus: idle_add(self.__view.grab_focus)
 			while events_pending(): main_iteration(False)
 		return False
