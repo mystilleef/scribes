@@ -15,9 +15,12 @@ class Calculator(SignalManager):
 	def __init_attributes(self, manager, editor):
 		self.__manager = manager
 		self.__editor = editor
+		from SCRIBES.GObjectTimerManager import Manager
+		self.__timer_manager = Manager()
 		return
 
 	def __destroy(self):
+		self.__timer_manager.destroy()
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
@@ -30,20 +33,13 @@ class Calculator(SignalManager):
 		self.__manager.emit("deltas", (int(round(hdelta)), int(round(vdelta))))
 		return False
 
-	def __remove_timer(self):
-		try:
-			from gobject import source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		return False
-
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __size_cb(self, manager, size):
-		self.__remove_timer()
+		self.__timer_manager.remove_all()
 		from gobject import idle_add
-		self.__timer = idle_add(self.__update, size)
+		self.__timer1 = idle_add(self.__update, size)
+		self.__timer_manager.add(self.__timer1)
 		return False

@@ -17,9 +17,12 @@ class Updater(SignalManager):
 		self.__view = editor.textview
 		self.__width = 0
 		self.__height = 0
+		from SCRIBES.GObjectTimerManager import Manager
+		self.__timer_manager = Manager()
 		return
 
 	def __destroy(self):
+		self.__timer_manager.destroy()
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
@@ -37,22 +40,7 @@ class Updater(SignalManager):
 	def __update_on_idle(self):
 		from gobject import idle_add, PRIORITY_LOW
 		self.__timer2 = idle_add(self.__update, priority=PRIORITY_LOW)
-		return False
-
-	def __remove_timer(self, _timer=1):
-		try:
-			timers = {
-				1: self.__timer1,
-				2: self.__timer2,
-			}
-			from gobject import source_remove
-			source_remove(timers[_timer])
-		except AttributeError:
-			pass
-		return False
-
-	def __remove_all_timers(self):
-		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
+		self.__timer_manager.add(self.__timer2)
 		return False
 
 	def __quit_cb(self, *args):
@@ -60,7 +48,8 @@ class Updater(SignalManager):
 		return False
 
 	def __update_cb(self, *args):
-		self.__remove_all_timers()
+		self.__timer_manager.remove_all()
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__timer1 = timeout_add(250, self.__update_on_idle, priority=PRIORITY_LOW)
+		self.__timer_manager.add(self.__timer1)
 		return False

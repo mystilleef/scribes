@@ -19,23 +19,22 @@ class Timer(SignalManager):
 		self.__view = editor.textview
 		self.__visible = False
 		self.__blocked = None
+		from SCRIBES.GObjectTimerManager import Manager
+		self.__timer_manager = Manager()
 		return
 
 	def __destroy(self):
+		self.__timer_manager.destroy()
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
 		return False
 
 	def __hide(self):
-		try:
-			hide = lambda: self.__manager.emit("hide")
-			from gobject import timeout_add, source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = timeout_add(HIDE_TIMER, hide)
+		hide = lambda: self.__manager.emit("hide")
+		from gobject import idle_add, PRIORITY_LOW
+		self.__timer1 = idle_add(hide, priority=PRIORITY_LOW)
+		self.__timer_manager.add(self.__timer1)
 		return False
 
 	def __block(self):
@@ -52,8 +51,10 @@ class Timer(SignalManager):
 
 	def __motion_cb(self, *args):
 		if self.__visible is False: return False
-		from gobject import idle_add
-		idle_add(self.__hide, priority=9999)
+		self.__timer_manager.remove_all()
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__timer2 = timeout_add(HIDE_TIMER, self.__hide, priority=PRIORITY_LOW)
+		self.__timer_manager.add(self.__timer2)
 		return False
 
 	def __quit_cb(self, *args):
@@ -64,6 +65,8 @@ class Timer(SignalManager):
 		self.__visible = visible
 		self.__unblock() if visible else self.__block()
 		if visible is False: return False
-		from gobject import idle_add
-		idle_add(self.__hide, priority=9999)
+		self.__timer_manager.remove_all()
+		from gobject import timeout_add, PRIORITY_LOW
+		self.__timer3 = timeout_add(HIDE_TIMER, self.__hide, priority=PRIORITY_LOW)
+		self.__timer_manager.add(self.__timer3)
 		return False

@@ -34,6 +34,8 @@ class Animator(SignalManager):
 		self.__busy = False
 		self.__direction = ""
 		self.__cycle_count = 0
+		from SCRIBES.GObjectTimerManager import Manager
+		self.__timer_manager = Manager()
 		return
 
 	def __slide(self, direction):
@@ -42,6 +44,7 @@ class Animator(SignalManager):
 		self.__update_animation_end_point(direction)
 		from gobject import timeout_add, PRIORITY_LOW
 		self.__timer1 = timeout_add(REFRESH_TIME, self.__move, direction, priority=PRIORITY_LOW)
+		self.__timer_manager.add(self.__timer1)
 		return False
 
 	def __move(self, direction):
@@ -54,7 +57,7 @@ class Animator(SignalManager):
 			from gobject import idle_add
 			idle_add(self.__reposition_in, direction)
 		except AssertionError:
-			self.__remove_all_timers()
+			self.__timer_manager.remove_all()
 			animate = False
 			self.__editor.refresh(False)
 			if direction == "down": self.__bar.hide()
@@ -123,23 +126,8 @@ class Animator(SignalManager):
 		self.__editor.optimize((self.__move, self.__reposition_in))
 		return False
 
-	def __remove_timer(self, _timer=1):
-		try:
-			timers = {
-				1: self.__timer1,
-				2: self.__timer2,
-			}
-			from gobject import source_remove
-			source_remove(timers[_timer])
-		except AttributeError:
-			pass
-		return False
-
-	def __remove_all_timers(self):
-		[self.__remove_timer(_timer) for _timer in xrange(1, 3)]
-		return False
-
 	def __destroy(self):
+		self.__timer_manager.destroy()
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
@@ -149,10 +137,11 @@ class Animator(SignalManager):
 		if direction == self.__direction: return False
 		self.__direction = direction
 		if not self.__bar: return False
-		self.__remove_all_timers()
+		self.__timer_manager.remove_all()
 		self.__busy = True
 		from gobject import idle_add, PRIORITY_LOW as LOW
 		self.__timer2 = idle_add(self.__slide, direction, priority=LOW)
+		self.__timer_manager.add(self.__timer2)
 		return False
 
 	def __deltas_cb(self, manager, deltas):

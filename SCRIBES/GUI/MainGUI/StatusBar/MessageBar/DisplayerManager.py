@@ -19,9 +19,12 @@ class Manager(SignalManager):
 		self.__manager = manager
 		self.__editor = editor
 		self.__visible = False
+		from SCRIBES.GObjectTimerManager import Manager
+		self.__timer_manager = Manager()
 		return False
 
 	def __destroy(self):
+		self.__timer_manager.destroy()
 		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
@@ -41,29 +44,23 @@ class Manager(SignalManager):
 
 	def __show_on_idle(self):
 		from gobject import idle_add, PRIORITY_LOW
-		idle_add(self.__show, priority=PRIORITY_LOW)
-		return False
-
-	def __remove_timer(self):
-		try:
-			from gobject import source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
+		self.__timer2 = idle_add(self.__show, priority=PRIORITY_LOW)
+		self.__timer_manager.add(self.__timer2)
 		return False
 
 	def __hide_cb(self, *args):
-		self.__remove_timer()
+		self.__timer_manager.remove_all()
 #		from gobject import idle_add, PRIORITY_LOW
 #		idle_add(self.__hide, priority=PRIORITY_LOW)
 		self.__hide()
 		return False
 
 	def __show_cb(self, *args):
-		self.__remove_timer()
+		self.__timer_manager.remove_all()
 		self.__hide()
 		from gobject import timeout_add, PRIORITY_LOW
-		self.__timer = timeout_add(150, self.__show_on_idle, priority=PRIORITY_LOW)
+		self.__timer1 = timeout_add(150, self.__show_on_idle, priority=PRIORITY_LOW)
+		self.__timer_manager.add(self.__timer1)
 		return False
 
 	def __quit_cb(self, *args):

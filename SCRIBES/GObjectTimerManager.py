@@ -8,12 +8,12 @@ class Manager(object):
 		[self.__timers.append(timer) for timer in args if timer in self.__timers]
 		return False
 
+	def delete(self, *args):
+		return self.remove(*args)
+
 	def remove(self, *args):
 		[self.__remove(timer) for timer in args if timer in self.__timers]
 		return False
-
-	def delete(self, *args):
-		return self.remove(*args)
 
 	def remove_all(self):
 		from copy import copy
