@@ -1,9 +1,11 @@
-class Updater(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Updater(SignalManager):
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-#		self.__sigid2 = editor.connect("window-focus-out", self.__update_cb)
+		self.connect(editor, "close", self.__quit_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
@@ -12,8 +14,7 @@ class Updater(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-#		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
+		self.disconnect()
 		self.__update()
 		self.__editor.unregister_object(self)
 		del self
@@ -28,10 +29,6 @@ class Updater(object):
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
-		return False
-
-	def __update_cb(self, *args):
 		from gobject import idle_add
-		idle_add(self.__update, priority=9999)
+		idle_add(self.__destroy)
 		return False
