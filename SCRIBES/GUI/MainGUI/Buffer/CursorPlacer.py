@@ -22,11 +22,6 @@ class Placer(SignalManager):
 		del self
 		return False
 
-	def __place_timeout(self):
-		from gobject import idle_add
-		idle_add(self.__place)
-		return False
-
 	def __place(self):
 		line, index = self.__line_position
 		iterator = self.__get_cursor_iterator(line)
@@ -36,6 +31,8 @@ class Placer(SignalManager):
 		self.__buffer.place_cursor(iterator)
 		self.__editor.move_view_to_cursor(True)
 		self.__editor.refresh(True)
+		from gobject import idle_add
+		idle_add(self.__editor.textview.grab_focus)
 		return False
 
 	def __get_cursor_data(self):
@@ -57,9 +54,8 @@ class Placer(SignalManager):
 		return False
 
 	def __loaded_cb(self, *args):
-#		from gobject import timeout_add
-#		timeout_add(250, self.__place_timeout)
-		self.__place()
+		from gobject import idle_add
+		idle_add(self.__place)
 		return False
 
 	def __checking_cb(self, *args):
