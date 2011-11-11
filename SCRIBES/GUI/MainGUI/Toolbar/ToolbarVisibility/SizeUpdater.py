@@ -17,10 +17,13 @@ class Updater(SignalManager):
 		self.__height = 0
 		self.__count = 0
 		self.__pount = 0
+		from SCRIBES.GObjectTimerManager import Manager
+		self.__timer_manager = Manager()
 		return False
 
 	def __destroy(self):
 		self.disconnect()
+		self.__timer_manager.destroy()
 		self.__editor.unregister_object(self)
 		del self
 		return False
@@ -42,23 +45,13 @@ class Updater(SignalManager):
 		height = self.__editor.toolbar.size_request()[1]
 		return height
 
-	def __remove_timer(self, _timer=1):
-		try:
-			timers = {
-				1: self.__timer1,
-			}
-			from gobject import source_remove
-			source_remove(timers[_timer])
-		except AttributeError:
-			pass
-		return False
-
 	def __quit_cb(self, *args):
 		self.__destroy()
 		return False
 
 	def __event_cb(self, *args):
-		self.__remove_timer(1)
+		self.__timer_manager.remove_all()
 		from gobject import idle_add, PRIORITY_LOW
 		self.__timer1 = idle_add(self.__update, priority=PRIORITY_LOW)
+		self.__timer_manager.add(self.__timer1)
 		return False
