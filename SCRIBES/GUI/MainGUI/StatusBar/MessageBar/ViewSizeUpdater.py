@@ -5,7 +5,7 @@ class Updater(SignalManager):
 	def __init__(self, manager, editor):
 		SignalManager.__init__(self)
 		self.__init_attributes(manager, editor)
-		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(editor, "close", self.__quit_cb)
 		self.connect(self.__view, "size-allocate", self.__update_cb, True)
 		self.connect(editor, "scrollbar-visibility-update", self.__update_cb, True)
 		self.connect(editor.window, "configure-event", self.__update_cb)
@@ -22,8 +22,8 @@ class Updater(SignalManager):
 		return
 
 	def __destroy(self):
-		self.__timer_manager.destroy()
 		self.disconnect()
+		self.__timer_manager.destroy()
 		self.__editor.unregister_object(self)
 		del self
 		return False

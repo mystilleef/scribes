@@ -5,7 +5,7 @@ class Manager(object):
 		self.__timers = deque()
 
 	def add(self, *args):
-		[self.__timers.append(timer) for timer in args if timer in self.__timers]
+		[self.__timers.append(timer) for timer in args if timer not in self.__timers]
 		return False
 
 	def delete(self, *args):

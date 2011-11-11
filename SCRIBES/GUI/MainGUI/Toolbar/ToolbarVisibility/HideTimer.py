@@ -19,23 +19,23 @@ class Timer(SignalManager):
 		self.__view = editor.textview
 		self.__visible = False
 		self.__blocked = None
+		from SCRIBES.GObjectTimerManager import Manager
+		self.__timer_manager = Manager()
 		return
 
 	def __destroy(self):
 		self.disconnect()
+		self.__timer_manager.destroy()
 		self.__editor.unregister_object(self)
 		del self
 		return False
 
 	def __hide(self):
-		try:
-			hide = lambda: self.__manager.emit("hide")
-			from gobject import timeout_add, source_remove
-			source_remove(self.__timer)
-		except AttributeError:
-			pass
-		finally:
-			self.__timer = timeout_add(HIDE_TIMER, hide)
+		self.__timer_manager.remove_all()
+		hide = lambda: self.__manager.emit("hide")
+		from gobject import timeout_add
+		self.__timer1 = timeout_add(HIDE_TIMER, hide)
+		self.__timer_manager.add(self.__timer1)
 		return False
 
 	def __block(self):

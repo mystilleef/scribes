@@ -31,7 +31,7 @@ class Manager(SignalManager):
 		return False
 
 	def __hide(self):
-#		if self.__visible is False: return False
+		# if self.__visible is False: return False
 		self.__manager.emit("_hide")
 		self.__visible = False
 		return False
@@ -50,8 +50,8 @@ class Manager(SignalManager):
 
 	def __hide_cb(self, *args):
 		self.__timer_manager.remove_all()
-#		from gobject import idle_add, PRIORITY_LOW
-#		idle_add(self.__hide, priority=PRIORITY_LOW)
+		# from gobject import idle_add, PRIORITY_LOW
+		# idle_add(self.__hide, priority=PRIORITY_LOW)
 		self.__hide()
 		return False
 
