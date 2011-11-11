@@ -50,7 +50,8 @@ class Placer(SignalManager):
 		return line_index if index > line_index else index
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __loaded_cb(self, *args):
