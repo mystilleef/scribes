@@ -1,12 +1,15 @@
-class Reseter(object):
+from SCRIBES.SignalConnectionManager import SignalManager
+
+class Reseter(SignalManager):
 
 	def __init__(self, editor):
+		SignalManager.__init__(self)
 		self.__init_attributes(editor)
-		self.__sigid1 = editor.connect("quit", self.__quit_cb)
-		self.__sigid2 = editor.connect("checking-file", self.__reset_cb)
-		self.__sigid3 = editor.connect("loaded-file", self.__reset_cb)
-		self.__sigid4 = editor.connect("load-error", self.__reset_cb)
-		self.__sigid5 = editor.connect("saved-file", self.__reset_cb)
+		self.connect(editor, "quit", self.__quit_cb)
+		self.connect(editor, "checking-file", self.__reset_cb)
+		self.connect(editor, "loaded-file", self.__reset_cb)
+		self.connect(editor, "load-error", self.__reset_cb)
+		self.connect(editor, "saved-file", self.__reset_cb)
 		editor.register_object(self)
 
 	def __init_attributes(self, editor):
@@ -15,24 +18,16 @@ class Reseter(object):
 		return
 
 	def __destroy(self):
-		self.__editor.disconnect_signal(self.__sigid1, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid2, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid3, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid4, self.__editor)
-		self.__editor.disconnect_signal(self.__sigid5, self.__editor)
+		self.disconnect()
 		self.__editor.unregister_object(self)
 		del self
-		self = None
-		return False
-
-	def __reset(self):
-		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		return False
 
 	def __quit_cb(self, *args):
-		self.__destroy()
+		from gobject import idle_add
+		idle_add(self.__destroy)
 		return False
 
 	def __reset_cb(self, *args):
-		self.__reset()
+		if self.__buffer.get_modified(): self.__buffer.set_modified(False)
 		return False
